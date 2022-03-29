@@ -1,0 +1,60 @@
+# g82 edited 20160607
+
+*.apk
+
+# Built application files
+/*/build/
+
+# Crashlytics configuations
+com_crashlytics_export_strings.xml
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Gradle generated files
+.gradle/
+
+# Signing files
+.signing/
+
+# User-specific configurations
+*.iml
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+sh.exe.stackdump
+
+/.idea
+/build
+/private
+
+# Layout inspector file
+*.li
+
+# Fastlane
+# fastlane/
+# Gemfile
+# Gemfile.lock
+
+app/mapping.txt
+app/jacoco.exec
+
+fastlane/report.xml
+
+vendor/
+
+*.hprof
+
+app/private/debug.keystore
+
+app/private/keystore.jks
+
+app/private/release.properties
+
+app/private/service-account.json
