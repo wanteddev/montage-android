@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.wanted.android.designsystem"
+        applicationId "com.wanted.android.designsystem.sample"
         minSdk 26
         targetSdk 32
         versionCode 1
