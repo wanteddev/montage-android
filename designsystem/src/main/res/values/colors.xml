@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Color Pallete (Primary, Secondary) -->
+    <color name="w_blue">#3366FF</color>
+    <color name="blue">#0049DB</color>
+    <color name="red">#FE415C</color>
+
+    <!-- Neutrals / Background Color Pallete -->
+    <color name="bg_white">#FFFFFF</color>
+    <color name="bg_grey">#F2F4F7</color>
+    <color name="line_grey">#ECECEC</color>
+    <color name="line_over_grey">#E1E2E3</color>
+
+    <!-- Transparent Neutrals Color -->
+    <color name="thumbnail_bg">#19000000</color>
+
+    <!-- Text Neutrals Color -->
+    <color name="grey_100">#CCCCCC</color>
+    <color name="grey_200">#939393</color>
+    <color name="grey_250">#767676</color>
+    <color name="grey_300">#666666</color>
+    <color name="grey_400">#333333</color>
+
+    <color name="icon_light_gray">#999999</color>
+
+</resources>

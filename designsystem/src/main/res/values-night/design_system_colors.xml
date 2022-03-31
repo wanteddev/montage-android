@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--neutral-->
+    <color name="neutral_white_100">#111111</color>
+    <color name="neutral_gray_100">#222222</color>
+    <color name="neutral_gray_200">#343434</color>
+    <color name="neutral_gray_300">#4a4a4a</color>
+    <color name="neutral_gray_400">#595959</color>
+    <color name="neutral_gray_500">#666666</color>
+    <color name="neutral_gray_600">#737373</color>
+    <color name="neutral_gray_700">#868686</color>
+    <color name="neutral_gray_800">#a3a3a3</color>
+    <color name="neutral_gray_900">#f0f0f0</color>
+    <color name="neutral_black_100">#f8f8f8</color>
+    <color name="neutral_bluegray_100">#2e2f31</color>
+    <color name="neutral_bluegray_200">#35383b</color>
+
+    <!--semantic Color-->
+    <color name="semantic_base_bg">#111111</color>
+    <color name="semantic_contents_bg">#1c1c1c</color>
+    <color name="semantic_elevated_bg">#222222</color>
+    <color name="semantic_common_white">#ffffff</color> <!-- light / dark same value -->
+
+    <!--primary-->
+    <color name="primary_blue_400">#4d7dff</color>
+    <color name="primary_blue_800">#294fdd</color>
+
+    <!--secondary-->
+    <color name="secondary_red_400">#ff5c73</color>
+    <color name="secondary_green_400">#37bca6</color>
+    <color name="secondary_purple_400">#9574ff</color>
+    <color name="secondary_pink_400">#f15eac</color>
+    <color name="secondary_orange_800">#f5a61d</color>
+    <color name="secondary_pastel_green_50">#28312c</color>
+    <color name="secondary_pastel_green_100">#303e36</color>
+    <color name="secondary_pastel_cyan_50">#243130</color>
+    <color name="secondary_pastel_light_blue_50">#252b2f</color>
+    <color name="secondary_pastel_blue_50">#2d3042</color>
+    <color name="secondary_pastel_indigo_50">#2f2c3f</color>
+    <color name="secondary_pastel_purple_50">#352c38</color>
+    <color name="secondary_pastel_lime_50">#2d3027</color>
+
+</resources>

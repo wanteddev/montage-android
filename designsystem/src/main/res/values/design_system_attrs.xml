@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="text" format="string" />
+
+    <declare-styleable name="Button">
+        <!-- <b>[Require]</b> 버튼의 텍스트를 설정합니다. -->
+        <attr name="text" />
+        <!--
+        <b>[Require]</b> 버튼의 타입을 설정합니다. <br>
+        fill_blue - primary bg + white text <br>
+        line_primary - primary border + primary text <br>
+        line_blue - gray border + primary text <br>
+        line_black - gray border + black text <br>
+        -->
+        <attr name="type">
+            <flag name="fill_blue" value="0" />
+            <flag name="line_primary" value="1" />
+            <flag name="line_blue" value="2" />
+            <flag name="line_black" value="3" />
+        </attr>
+        <!-- <b>[Require]</b> 버튼의 사이즈를 설정합니다. <i>텍스트크기, minWidth, minHeight</i> 가 자동 세팅됩니다. 기본값은 large -->
+        <attr name="size">
+            <flag name="large" value="0" />
+            <flag name="medium" value="1" />
+            <flag name="small" value="2" />
+        </attr>
+        <!-- <b>[Option]</b> 버튼의 활성화 여부를 설정합니다. 기본값은 true -->
+        <attr name="enabled" format="boolean" />
+        <!-- <b>[Option]</b> 버튼 내 좌측 아이콘을 설정합니다. 기본값은 null -->
+        <attr name="icon_left" format="reference" />
+        <!-- <b>[Option]</b> 버튼 내 우측 아이콘을 설정합니다. 기본값은 null -->
+        <attr name="icon_right" format="reference" />
+        <!-- <b>[Option]</b> 버튼의 최소 width 를 지정합니다. 지정할 경우, size 에서 설정되는 minWidth 값은 무시됩니다. -->
+        <attr name="min_width" format="dimension" />
+        <!-- <b>[Option]</b> 버튼의 최소 height 를 지정합니다. 지정할 경우, size 에서 설정되는 minHeight 값은 무시됩니다. -->
+        <attr name="min_height" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="TextButton">
+        <!-- <b>[Require]</b> 버튼의 텍스트를 설정합니다. -->
+        <attr name="text" />
+        <!-- <b>[Option]</b> 버튼의 우측 아이콘 표시 여부를 설정합니다. 기본값은 false -->
+        <attr name="arrow" format="boolean" />
+        <!-- <b>[Option]</b> 버튼 및 아이콘의 색상을 설정합니다. 기본값은 primary <br> -->
+        <attr name="type_text">
+            <flag name="primary" value="0" />
+            <flag name="gray" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="IconButton">
+        <!-- <b>[Require]</b> 버튼의 아이콘을 설정합니다. -->
+        <attr name="icon" format="reference" />
+        <!-- <b>[Require]</b> 버튼의 타입을 설정합니다. <br>
+        primary - primary bg + white tint <br>
+        blue - gray border + primary tint <br>
+        black - gray border + black tint <br>
+        -->
+        <attr name="type_icon">
+            <flag name="primary" value="0" />
+            <flag name="blue" value="1" />
+            <flag name="black" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="Gradation">
+        <!-- <b>[Require]</b> 그라데이텬 타입을 지정합니다. 현재는 cta only -->
+        <attr name="type_background">
+            <flag name="cta" value="0" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BottomNavigationItem">
+        <!-- <b>[Require]</b> Normal 상태일 경우 아이콘 리소스를 지정합니다. -->
+        <attr name="icon_normal" format="reference" />
+        <!-- <b>[Option]</b> Selected 상태일 경우 아이콘 리소스를 지정합니다. <br>
+        지정되어있지 않으면 Normal 아이콘이 표시됩니다. -->
+        <attr name="icon_selected" format="reference" />
+        <!-- <b>[Require]</b> Navigation 아이템의 아이콘, 텍스트 색상을 지정합니다. -->
+        <attr name="item_color" format="reference" />
+        <!-- <b>[Require]</b> Navigation 아이템이 선택되었을 때 표시되는 텍스트를 지정합니다. -->
+        <attr name="text" />
+        <!-- <b>[Option]</b> Navigation 아이템의 선택 상태를 지정합니다. 기본값은 false -->
+        <attr name="is_selected" format="boolean" />
+        <!-- <b>[Option]</b> Navigation 아이템에 뱃지 (알림 등) 표시여부를 지정합니다. 기본값은 false -->
+        <attr name="show_badge" format="boolean" />
+    </declare-styleable>
+
+</resources>

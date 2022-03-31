@@ -1,0 +1,6 @@
+<resources>
+    <style name="WantedDSTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+</resources>

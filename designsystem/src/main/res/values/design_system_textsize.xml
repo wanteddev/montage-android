@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Headline Text Size -->
+    <dimen name="headline1">40sp</dimen>
+    <dimen name="headline2">36sp</dimen>
+    <dimen name="headline3">32sp</dimen>
+    <dimen name="headline4">28sp</dimen>
+    <dimen name="headline5">24sp</dimen>
+    <dimen name="headline6">22sp</dimen>
+
+    <!-- Title Text Size -->
+    <dimen name="title1">20sp</dimen>
+    <dimen name="title2">18sp</dimen>
+    <dimen name="title3">16sp</dimen>
+
+    <!-- Body Text Size -->
+    <dimen name="body1">15sp</dimen>
+    <dimen name="body2">14sp</dimen>
+    <dimen name="body3">13sp</dimen>
+
+    <!-- Caption Text Size -->
+    <dimen name="caption1">12sp</dimen>
+    <dimen name="caption2">11sp</dimen>
+    <dimen name="caption3">10sp</dimen>
+
+</resources>

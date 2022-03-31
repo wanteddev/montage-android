@@ -1,0 +1,57 @@
+package com.wanted.android.designsystem.button
+
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Typeface
+import android.util.AttributeSet
+import android.view.Gravity
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import com.wanted.android.designsystem.R
+import com.wanted.android.designsystem.util.dp
+import com.wanted.android.designsystem.util.sp
+
+class TextButton(context: Context, attrs: AttributeSet? = null) :
+    AppCompatTextView(context, attrs) {
+
+    enum class Type {
+        PRIMARY, GRAY
+    }
+
+    var type: Type = Type.PRIMARY
+        set(value) {
+            field = value
+            setTextColor(getTypeColor())
+        }
+
+    private fun getTypeColor() = ContextCompat.getColor(
+        context, if (type == Type.PRIMARY) R.color.primary_blue_400 else R.color.neutral_gray_500
+    )
+
+    init {
+        gravity = Gravity.CENTER
+        background = null
+        textSize = 14f.sp
+        setTypeface(ResourcesCompat.getFont(context, R.font.regular), Typeface.BOLD)
+        firstBaselineToTopHeight = 0
+        includeFontPadding = false
+
+        attrs?.let {
+            context.obtainStyledAttributes(it, R.styleable.TextButton).run {
+                text = getString(R.styleable.TextButton_text)
+                type = Type.values()[getInteger(R.styleable.TextButton_type_text, 0)]
+                if (getBoolean(R.styleable.TextButton_arrow, false)) setDrawableArrow(context)
+                recycle()
+            }
+        }
+    }
+
+    private fun setDrawableArrow(context: Context) {
+        val drawable = ContextCompat.getDrawable(context, R.drawable.icon_1_line_arrow_right_12)
+        setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
+        compoundDrawablePadding = 2.dp
+        compoundDrawableTintList = ColorStateList.valueOf(getTypeColor())
+
+    }
+}

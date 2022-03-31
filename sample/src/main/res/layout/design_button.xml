@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false" />
+
+    <com.wanted.android.designsystem.button.Button
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:icon_left="@drawable/icon_1_line_bookmark_18"
+        app:size="large"
+        app:text="Button"
+        app:type="fill_blue" />
+
+    <com.wanted.android.designsystem.button.Button
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:icon_right="@drawable/icon_1_line"
+        app:size="medium"
+        app:text="Button"
+        app:type="fill_blue" />
+
+    <com.wanted.android.designsystem.button.Button
+        android:id="@+id/text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:size="small"
+        app:text="Button"
+        app:type="fill_blue" />
+
+    <com.wanted.android.designsystem.button.Button
+        android:id="@+id/text4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:icon_right="@drawable/icon_1_line"
+        app:size="large"
+        app:text="Button"
+        app:type="line_primary" />
+
+    <com.wanted.android.designsystem.button.Button
+        android:id="@+id/text5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:icon_left="@drawable/icon_2_fill_lock_18"
+        app:size="large"
+        app:text="Button"
+        app:type="line_blue" />
+
+    <com.wanted.android.designsystem.button.Button
+        android:id="@+id/text6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:size="small"
+        app:text="Button"
+        app:type="line_black" />
+
+    <com.wanted.android.designsystem.button.Button
+        android:id="@+id/text7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:size="small"
+        app:text="Button"
+        app:type="line_black" />
+
+
+</LinearLayout>

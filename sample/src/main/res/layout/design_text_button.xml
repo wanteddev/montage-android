@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.wanted.android.designsystem.button.TextButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:arrow="true"
+        app:text="버튼레이블"
+        app:type_text="primary" />
+
+    <com.wanted.android.designsystem.button.TextButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:text="버튼레이블"
+        app:type_text="primary" />
+
+    <com.wanted.android.designsystem.button.TextButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:arrow="true"
+        app:text="버튼레이블"
+        app:type_text="gray" />
+
+    <com.wanted.android.designsystem.button.TextButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:text="버튼레이블"
+        app:type_text="gray" />
+
+
+</LinearLayout>
