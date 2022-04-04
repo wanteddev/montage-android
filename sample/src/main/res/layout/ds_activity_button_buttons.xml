@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/semantic_base_bg">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        app:title="Design System > Button > Buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/container" />
+
+    <ScrollView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:text="Button"
+                app:size="large"
+                app:type="fill_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="large"
+                app:text="Button"
+                app:type="fill_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="large"
+                app:text="Button"
+                app:type="fill_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="medium"
+                app:text="Button"
+                app:type="fill_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="medium"
+                app:text="Button"
+                app:type="fill_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="medium"
+                app:text="Button"
+                app:type="fill_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="small"
+                app:text="Button"
+                app:type="fill_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="large"
+                app:text="Button"
+                app:type="line_primary" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="large"
+                app:text="Button"
+                app:type="line_primary" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="large"
+                app:text="Button"
+                app:type="line_primary" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_primary" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_primary" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_primary" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="small"
+                app:text="Button"
+                app:type="line_primary" />
+
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="large"
+                app:text="Button"
+                app:type="line_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="large"
+                app:text="Button"
+                app:type="line_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="large"
+                app:text="Button"
+                app:type="line_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="small"
+                app:text="Button"
+                app:type="line_blue" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="large"
+                app:text="Button"
+                app:type="line_black" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="large"
+                app:text="Button"
+                app:type="line_black" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="large"
+                app:text="Button"
+                app:type="line_black" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_black" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_left="@drawable/icon_1_line_bookmark_18"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_black" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:icon_right="@drawable/icon_1_line"
+                app:size="medium"
+                app:text="Button"
+                app:type="line_black" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="small"
+                app:text="Button"
+                app:type="line_black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/neutral_gray_500" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:size="large"
+                app:type="fill_blue"
+                app:min_width="250dp"
+                app:text="large, minWidth 250dp" />
+
+            <com.wanted.android.designsystem.button.Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:text="small, minWidth 300dp"
+                app:size="small"
+                app:type="fill_blue"
+                app:min_width="300dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

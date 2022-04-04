@@ -18,6 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".text.DSTextActivity" />
+        <activity android:name=".button.DSButtonActivity" />
+        <activity android:name=".button.DSButtonButtonsActivity" />
+        <activity android:name=".button.DSButtonCTAActivity" />
+        <activity android:name=".button.DSButtonIconActivity" />
+        <activity android:name=".button.DSButtonTextActivity" />
+        <activity android:name=".component.DSComponentActivity" />
+        <activity android:name=".component.DSBottomNavigationActivity" />
+        <activity android:name=".icon.DSIconActivity" />
+        <activity android:name=".icon.DSIconListActivity" />
+        <activity android:name=".logo.DSLogoActivity" />
     </application>
 
 </manifest>

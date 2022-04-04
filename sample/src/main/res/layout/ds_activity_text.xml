@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/semantic_base_bg">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        app:title="Design System > Text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/container" />
+
+    <ScrollView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HeadLine1"
+                android:textSize="@dimen/headline1"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="HeadLine1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HeadLine2"
+                android:textSize="@dimen/headline2"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="HeadLine2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HeadLine3"
+                android:textSize="@dimen/headline3"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="HeadLine3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HeadLine4"
+                android:textSize="@dimen/headline4"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="HeadLine4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HeadLine5"
+                android:textSize="@dimen/headline5"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="HeadLine5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HeadLine6"
+                android:textSize="@dimen/headline6"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="HeadLine6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Title1"
+                android:textSize="@dimen/title1"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Title1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title2"
+                android:textSize="@dimen/title2"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Title2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title3"
+                android:textSize="@dimen/title3"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Title3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Body1"
+                android:textSize="@dimen/body1"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Body1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Body2"
+                android:textSize="@dimen/body2"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Body2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Body3"
+                android:textSize="@dimen/body3"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Body3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Caption1"
+                android:textSize="@dimen/caption1"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Caption1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Caption2"
+                android:textSize="@dimen/caption2"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Caption2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Caption3"
+                android:textSize="@dimen/caption3"
+                android:textColor="@color/neutral_gray_900"
+                android:textStyle="bold"
+                tools:text="Caption3" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
