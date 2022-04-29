@@ -51,10 +51,5 @@ vendor/
 
 *.hprof
 
-app/private/debug.keystore
-
-app/private/keystore.jks
-
-app/private/release.properties
-
-app/private/service-account.json
+/buildSrc/build/
+/private
