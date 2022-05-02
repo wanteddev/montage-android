@@ -17,7 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: main
+          ref: develop
+          token: ${{ secrets.WANTED_DEV_TOKEN }}
+
+      - name: Set VersionInfo from publish.gradle
+        id: version_info
+        run: |
+          grep "LIB_VERSION = " gradle/publish.gradle | \
+          cut -d '=' -f2 | tr -d ' ' | \
+          xargs -I {} echo "::set-output name=version_code::{}"
+
+      - name: Print Version
+        run: |
+          echo ${{steps.version_info.outputs.version_code}}
 
       - name: Secrets to File
         uses: timheuer/base64-to-file@v1.1
@@ -38,3 +50,17 @@ jobs:
       - name: publish
         run: |
           ./gradlew :designsystem:publishDeployPublicationToGithubPackagesRepository
+
+      - name: Create & Push Tag
+        run: |
+          git config --local user.name "deploy-bot"
+          git tag ${{steps.version_info.outputs.version_code}}
+          git push origin --tags
+
+#      - name: Create Release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          tag_name: ${{steps.version_info.outputs.version_code}}
+#          artifacts: "release.tar.gz,foo/*.txt"
+#          bodyFile: "body.md"
+#          token: ${{ secrets.GITHUB_TOKEN }}
