@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: develop
+          ref: main
           token: ${{ secrets.WANTED_DEV_TOKEN }}
 
       - name: Set VersionInfo from publish.gradle
@@ -57,10 +57,21 @@ jobs:
           git tag ${{steps.version_info.outputs.version_code}}
           git push origin --tags
 
-#      - name: Create Release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag_name: ${{steps.version_info.outputs.version_code}}
-#          artifacts: "release.tar.gz,foo/*.txt"
-#          bodyFile: "body.md"
-#          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          validation_depth: 10
+          version: ${{steps.version_info.outputs.version_code}}
+          path: ./CHANGELOG.md
+
+      - name: Create/update release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.changelog_reader.outputs.version }}
+          name: Release ${{ steps.changelog_reader.outputs.version }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
+          draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
