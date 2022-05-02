@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: develop
+          ref: main
           token: ${{ secrets.WANTED_DEV_TOKEN }}
 
       - name: Set VersionInfo from publish.gradle
@@ -54,13 +54,12 @@ jobs:
       - name: Create & Push Tag
         run: |
           git config --local user.name "deploy-bot"
-          git tag ${{steps.version_info.outputs.version_code}}
+          git tag v${{steps.version_info.outputs.version_code}}
           git push origin --tags
 
-#      - name: Create Release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag_name: ${{steps.version_info.outputs.version_code}}
-#          artifacts: "release.tar.gz,foo/*.txt"
-#          bodyFile: "body.md"
-#          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: release-drafter/release-drafter@master
+        with:
+          version: ${{ steps.version_info.outputs.version_code }}
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
