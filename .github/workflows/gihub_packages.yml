@@ -54,24 +54,12 @@ jobs:
       - name: Create & Push Tag
         run: |
           git config --local user.name "deploy-bot"
-          git tag ${{steps.version_info.outputs.version_code}}
+          git tag v${{steps.version_info.outputs.version_code}}
           git push origin --tags
 
-      - name: Get Changelog Entry
-        id: changelog_reader
-        uses: mindsers/changelog-reader-action@v2
+      - uses: release-drafter/release-drafter@master
         with:
-          validation_depth: 10
-          version: ${{steps.version_info.outputs.version_code}}
-          path: ./CHANGELOG.md
-
-      - name: Create/update release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.changelog_reader.outputs.version }}
-          name: Release ${{ steps.changelog_reader.outputs.version }}
-          body: ${{ steps.changelog_reader.outputs.changes }}
-          prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
-          draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
-          allowUpdates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ steps.version_info.outputs.version_code }}
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
