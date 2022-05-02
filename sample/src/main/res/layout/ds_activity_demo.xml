@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/semantic_base_bg">
@@ -10,71 +11,78 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="1dp"
-        app:title="Design System Demo"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/container"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/container" />
+        app:title="Design System Demo" />
 
     <ScrollView
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:padding="16dp">
+
+            <TextView
+                android:id="@+id/lang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/action_apply" />
 
             <com.wanted.android.designsystem.button.Button
                 android:id="@+id/textDemo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:type="fill_blue"
                 app:size="large"
-                app:text="Text" />
+                app:text="Text"
+                app:type="fill_blue" />
 
             <com.wanted.android.designsystem.button.Button
                 android:id="@+id/buttonDemo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:type="fill_blue"
                 app:size="large"
-                app:text="Button" />
+                app:text="Button"
+                app:type="fill_blue" />
 
             <com.wanted.android.designsystem.button.Button
                 android:id="@+id/iconDemo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:type="fill_blue"
                 app:size="large"
-                app:text="Icon" />
+                app:text="Icon"
+                app:type="fill_blue" />
 
             <com.wanted.android.designsystem.button.Button
                 android:id="@+id/componentDemo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:type="fill_blue"
                 app:size="large"
-                app:text="Component" />
+                app:text="Component"
+                app:type="fill_blue" />
 
             <com.wanted.android.designsystem.button.Button
                 android:id="@+id/logoDemo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:type="fill_blue"
                 app:size="large"
-                app:text="Logo" />
+                app:text="Logo"
+                app:type="fill_blue" />
 
         </LinearLayout>
 
