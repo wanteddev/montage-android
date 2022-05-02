@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: develop
+          ref: main
           token: ${{ secrets.WANTED_DEV_TOKEN }}
 
       - name: Set VersionInfo from publish.gradle
