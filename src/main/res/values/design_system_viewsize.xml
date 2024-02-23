@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- BottomNavigation Component -->
+    <dimen name="bottom_navigation_height">50dp</dimen>
+    <dimen name="bottom_navigation_textsize">9sp</dimen>
+
+</resources>

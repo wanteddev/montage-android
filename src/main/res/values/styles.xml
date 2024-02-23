@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="typography_display1">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_display1</item>
+        <item name="android:letterSpacing">-0.0319</item>
+    </style>
+
+    <style name="typography_display1_bold">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_display1</item>
+        <item name="android:letterSpacing">-0.0319</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_display2">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_display2</item>
+        <item name="android:letterSpacing">-0.0282</item>
+    </style>
+
+    <style name="typography_display2_bold">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_display2</item>
+        <item name="android:letterSpacing">-0.0282</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_title1">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_title1</item>
+        <item name="android:letterSpacing">-0.027</item>
+    </style>
+
+    <style name="typography_title1_bold">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_title1</item>
+        <item name="android:letterSpacing">-0.027</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_title2">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_title2</item>
+        <item name="android:letterSpacing">-0.0236</item>
+    </style>
+
+    <style name="typography_title2_bold">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_title2</item>
+        <item name="android:letterSpacing">-0.0236</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_title3">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_title3</item>
+        <item name="android:letterSpacing">-0.023</item>
+    </style>
+
+    <style name="typography_title3_bold">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_title3</item>
+        <item name="android:letterSpacing">-0.023</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_heading1">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_heading1</item>
+        <item name="android:letterSpacing">-0.0194</item>
+    </style>
+
+    <style name="typography_heading1_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_heading1</item>
+        <item name="android:letterSpacing">-0.0194</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_heading2">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_heading2</item>
+        <item name="android:letterSpacing">-0.012</item>
+    </style>
+
+    <style name="typography_heading2_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_heading2</item>
+        <item name="android:letterSpacing">-0.012</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_headline1">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_headline1</item>
+        <item name="android:letterSpacing">-0.002</item>
+    </style>
+
+    <style name="typography_headline1_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_headline1</item>
+        <item name="android:letterSpacing">-0.002</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_headline2">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_headline2</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="typography_headline2_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_headline2</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_body1">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body1</item>
+        <item name="android:letterSpacing">0.0057</item>
+    </style>
+
+    <style name="typography_body1_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body1</item>
+        <item name="android:letterSpacing">0.0057</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_body1_reading">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body1_reading</item>
+        <item name="android:letterSpacing">0.0057</item>
+    </style>
+
+    <style name="typography_body1_reading_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body1_reading</item>
+        <item name="android:letterSpacing">0.0057</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_body2">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body2</item>
+        <item name="android:letterSpacing">0.0096</item>
+    </style>
+
+    <style name="typography_body2_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body2</item>
+        <item name="android:letterSpacing">0.0096</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_body2_reading">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body2_reading</item>
+        <item name="android:letterSpacing">0.0096</item>
+    </style>
+
+    <style name="typography_body2_reading_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_body2_reading</item>
+        <item name="android:letterSpacing">0.0096</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_label1">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_label1</item>
+        <item name="android:letterSpacing">0.0145</item>
+    </style>
+
+    <style name="typography_label1_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_label1</item>
+        <item name="android:letterSpacing">0.0145</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_label1_reading">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_label1_reading</item>
+        <item name="android:letterSpacing">0.0145</item>
+    </style>
+
+    <style name="typography_label1_reading_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_label1_reading</item>
+        <item name="android:letterSpacing">0.0145</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_label2">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_label2</item>
+        <item name="android:letterSpacing">0.0194</item>
+    </style>
+
+    <style name="typography_label2_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_label2</item>
+        <item name="android:letterSpacing">0.0194</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_caption1">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_caption1</item>
+        <item name="android:letterSpacing">0.0252</item>
+    </style>
+
+    <style name="typography_caption1_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_caption1</item>
+        <item name="android:letterSpacing">0.0252</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="typography_caption2">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_caption2</item>
+        <item name="android:letterSpacing">0.0311</item>
+    </style>
+
+    <style name="typography_caption2_bold">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/text_caption2</item>
+        <item name="android:letterSpacing">0.0311</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WantedAppTheme.SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:thumb">@drawable/shape_switch_thumb</item>
+        <item name="track">@drawable/selector_switch_track</item>
+    </style>
+
+    <style name="WantedAppTheme.CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_check_box</item>
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="WantedAppTheme.RadioButtonStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textColor">@color/label_alternative</item>
+        <item name="android:button">@drawable/selector_radio_button</item>
+    </style>
+
+    <style name="WantedTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textColor">@color/label_alternative</item>
+    </style>
+
+    <style name="WantedButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textColor">@color/label_alternative</item>
+    </style>
+
+    <style name="WantedEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textColor">@color/label_alternative</item>
+    </style>
+</resources>

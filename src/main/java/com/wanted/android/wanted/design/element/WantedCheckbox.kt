@@ -1,0 +1,189 @@
+package com.wanted.android.wanted.design.element
+
+import android.content.Context
+import android.content.res.Configuration
+import android.util.AttributeSet
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.triStateToggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CheckboxColors
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.google.android.material.checkbox.MaterialCheckBox
+import com.wanted.android.designsystem.R
+
+class WantedCheckBox : MaterialCheckBox {
+
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    )
+}
+
+@Composable
+fun WantedCheckBox(
+    modifier: Modifier = Modifier,
+    checked: Boolean,
+    isIndeterminate: Boolean = false,
+    onCheckedChange: ((Boolean) -> Unit),
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    colors: CheckboxColors = CheckboxDefaults.colors(
+        uncheckedColor = colorResource(id = R.color.line_normal_neutral),
+        checkedColor = colorResource(id = R.color.primary_normal)
+    )
+) {
+    val toggleState = when {
+        !checked -> ToggleableState.Off
+        isIndeterminate -> ToggleableState.Indeterminate
+        else -> ToggleableState.On
+    }
+
+    val toggleableModifier = Modifier.triStateToggleable(
+        state = toggleState,
+        onClick = { onCheckedChange(!checked) },
+        enabled = enabled,
+        role = Role.Checkbox,
+        interactionSource = interactionSource,
+        indication = rememberRipple(bounded = false)
+    )
+
+    CheckboxImpl(
+        enabled = enabled,
+        value = toggleState,
+        modifier = modifier.then(toggleableModifier),
+        colors = colors
+    )
+}
+
+@Composable
+private fun CheckboxImpl(
+    modifier: Modifier,
+    enabled: Boolean,
+    value: ToggleableState,
+    colors: CheckboxColors
+) {
+    val borderColor = colors.borderColor(enabled = enabled, state = value).value
+    val boxColor = colors.boxColor(enabled = enabled, state = value).value
+    val checkmarkColor = colors.checkmarkColor(state = value).value
+
+    val height = remember { mutableStateOf(0.dp) }
+    val width = remember { mutableStateOf(0.dp) }
+    val localDensity = LocalDensity.current
+
+
+    Box(
+        modifier = Modifier
+            .padding(3.dp)
+            .defaultMinSize(18.dp)
+            .width(intrinsicSize = IntrinsicSize.Min)
+            .height(intrinsicSize = IntrinsicSize.Min)
+            .clip(RoundedCornerShape(3.dp))
+            .border(
+                width = 2.dp,
+                color = borderColor,
+                RoundedCornerShape(3.dp)
+            )
+            .background(boxColor)
+            .then(modifier)
+            .onGloballyPositioned { coordinates ->
+                // Set column height using the LayoutCoordinates
+                height.value = with(localDensity) { coordinates.size.height.toDp() }
+                width.value = with(localDensity) { coordinates.size.width.toDp() }
+            },
+        contentAlignment = Alignment.Center
+    ) {
+
+        Image(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(3.dp),
+            painter = painterResource(
+                if (value == ToggleableState.Indeterminate) {
+                    R.drawable.icon_checkbox_indeterminate
+                } else {
+                    R.drawable.icon_checkbox_checked
+                }
+            ),
+            contentDescription = "checkBox_check",
+            colorFilter = ColorFilter.tint(
+                color = checkmarkColor
+            )
+        )
+    }
+}
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun CertificationAuthInputScreenPreview() {
+    MaterialTheme {
+        Surface {
+            Column {
+                WantedCheckBox(
+                    modifier = Modifier,
+                    checked = true,
+                    onCheckedChange = {}
+                )
+
+                Spacer(modifier = Modifier.size(10.dp))
+
+                WantedCheckBox(
+                    modifier = Modifier,
+                    isIndeterminate = true,
+                    checked = true,
+                    onCheckedChange = {}
+                )
+                Spacer(modifier = Modifier.size(10.dp))
+
+                WantedCheckBox(
+                    modifier = Modifier,
+                    checked = false,
+                    onCheckedChange = {}
+                )
+            }
+        }
+    }
+}
