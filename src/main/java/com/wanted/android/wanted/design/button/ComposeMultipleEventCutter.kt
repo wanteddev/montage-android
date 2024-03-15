@@ -7,39 +7,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 
 
-fun Modifier.clickOnce(
+fun Modifier.clickOnceForDesignSystem(
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
     onClick: () -> Unit
-) = clickable(
+) = this.clickable(
     enabled = enabled,
     onClickLabel = onClickLabel,
     role = role,
-    onClick = { onClick.clickOnce() }
+    onClick = { onClick.clickOnceForDesignSystem() }
 )
 
-fun Modifier.clickOnce(
+fun Modifier.clickOnceForDesignSystem(
     interactionSource: MutableInteractionSource,
     indication: Indication?,
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
     onClick: () -> Unit
-) = clickable(
+) = this.clickable(
     interactionSource = interactionSource,
     indication = indication,
     enabled = enabled,
     onClickLabel = onClickLabel,
     role = role,
-    onClick = { onClick.clickOnce() }
+    onClick = { onClick.clickOnceForDesignSystem() }
 )
 
-fun (() -> Unit).clickOnce(time: Long = 200L) {
+fun (() -> Unit).clickOnceForDesignSystem(time: Long = 200L) {
     ComposeMultipleEventCutter.processEvent(time) { this() }
 }
 
-fun <T> ((T) -> Unit).clickOnce(value: T, time: Long = 200L) {
+fun <T> ((T) -> Unit).clickOnceForDesignSystem(value: T, time: Long = 200L) {
     ComposeMultipleEventCutter.processEvent(time) { this(value) }
 }
 

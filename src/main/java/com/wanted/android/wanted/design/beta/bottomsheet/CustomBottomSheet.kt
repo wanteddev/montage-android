@@ -47,12 +47,88 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedSolidButton
-import com.wanted.android.wanted.design.button.clickOnce
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
+
+@Composable
+fun CustomBottomSheet(
+    modifier: Modifier = Modifier,
+    isVisible: Boolean,
+    backgroundColor: Color = colorResource(id = R.color.background_normal_normal),
+    content: @Composable () -> Unit,
+    onDismissRequest: () -> Unit,
+    onDismissed: (() -> Unit)? = null
+) {
+    val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
+    val dialogVisibility: MutableState<Boolean> = remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = isVisible) {
+        if (isVisible) {
+            dialogVisibility.value = true
+            visibleState.targetState = true
+        } else if (visibleState.currentState) {
+            visibleState.targetState = false
+            launch {
+                delay(200)
+                dialogVisibility.value = false
+                onDismissed?.invoke()
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = visibleState.currentState) {
+        if (!isVisible) {
+            visibleState.targetState = false
+            dialogVisibility.value = false
+        }
+    }
+
+    if (dialogVisibility.value) {
+        Dialog(
+            onDismissRequest = {
+                onDismissRequest()
+            },
+            properties = DialogProperties(usePlatformDefaultWidth = false),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+                    .clickOnceForDesignSystem { onDismissRequest() },
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                AnimatedVisibility(
+                    visibleState = visibleState,
+                    enter = slideInVertically() + expandVertically(
+                        expandFrom = Alignment.Top
+                    ) + fadeIn(
+                        initialAlpha = 0.3f
+                    ),
+                    exit = slideOutVertically { 0 } + shrinkVertically(
+                        shrinkTowards = Alignment.Top
+                    ) + fadeOut()
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                            .background(backgroundColor)
+                            .then(modifier)
+                            .clickable(false) { }
+                    ) {
+                        content()
+                    }
+
+                }
+            }
+        }
+    }
+}
 
 
 @Composable
@@ -103,7 +179,7 @@ fun CustomBottomSheet(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Transparent)
-                    .clickOnce { onDismissRequest() },
+                    .clickOnceForDesignSystem { onDismissRequest() },
                 contentAlignment = Alignment.BottomCenter
             ) {
                 AnimatedVisibility(
@@ -182,7 +258,7 @@ private fun CustomDialogContentImpl(
                     .padding(2.dp)
                     .size(56.dp)
                     .clip(CircleShape)
-                    .clickOnce { onDismissRequest() }
+                    .clickOnceForDesignSystem { onDismissRequest() }
                     .padding(18.dp),
                 painter = painterResource(id = R.drawable.ic_normal_close_svg),
                 contentDescription = "close button",
