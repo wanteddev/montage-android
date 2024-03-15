@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.button.clickOnce
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 
 @Composable
 fun TopAppBarIconButton(
@@ -29,7 +29,7 @@ fun TopAppBarIconButton(
         modifier = modifier.defaultMinSize(56.dp),
         enabled = enabled,
         interactionSource = interactionSource,
-        onClick = { onClick.clickOnce() }
+        onClick = { onClick.clickOnceForDesignSystem() }
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
