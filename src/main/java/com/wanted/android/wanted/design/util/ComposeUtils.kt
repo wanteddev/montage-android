@@ -48,8 +48,8 @@ fun FontFixTextStyle(
     background: Color = Color.Unspecified,
     textDecoration: TextDecoration? = null,
     shadow: Shadow? = null,
-    textAlign: TextAlign? = null,
-    textDirection: TextDirection? = null,
+    textAlign: TextAlign = TextAlign.Unspecified,
+    textDirection: TextDirection = TextDirection.Unspecified,
     lineHeight: TextUnit = TextUnit.Unspecified,
     textIndent: TextIndent? = null,
 ) = TextStyle(
