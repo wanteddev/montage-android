@@ -99,7 +99,7 @@ fun WantedCustomOutlinedButton(
                 onClick = {
                     if (status == ButtonStatus.ENABLE) {
                         if (isClickOnce) {
-                            clickListener?.clickOnce()
+                            clickListener?.clickOnceForDesignSystem()
                         } else {
                             clickListener?.invoke()
                         }
