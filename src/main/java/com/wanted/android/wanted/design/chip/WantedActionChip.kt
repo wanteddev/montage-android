@@ -36,11 +36,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.button.clickOnce
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.getTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
+
 @Composable
 fun WantedActionChip(
     text: String,
@@ -68,7 +69,7 @@ fun WantedActionChip(
             ) {
                 when {
                     status == ChipActionStatus.DISABLE -> Unit
-                    isClickOnce -> onClick?.clickOnce()
+                    isClickOnce -> onClick?.clickOnceForDesignSystem()
                     else -> onClick?.invoke()
                 }
             }

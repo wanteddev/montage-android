@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.button.clickOnce
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 
 @Composable
 fun MainTopAppBarIconButton(
@@ -29,7 +29,7 @@ fun MainTopAppBarIconButton(
         modifier = modifier
             .size(44.dp)
             .clip(CircleShape)
-            .clickOnce { onClick() }
+            .clickOnceForDesignSystem { onClick() }
             .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
