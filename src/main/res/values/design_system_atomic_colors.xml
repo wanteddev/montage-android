@@ -68,8 +68,8 @@
     <color name="red_60">#FF6363</color>
     <color name="red_50">#FF4242</color>
     <color name="red_40">#E52222</color>
-    <color name="red_30">#B20C0C</color>
-    <color name="red_20">#750404</color>
+    <color name="red_30">#B00C0C</color>
+    <color name="red_20">#730303</color>
     <color name="red_10">#3B0101</color>
 
     <!-- Green -->
@@ -101,15 +101,15 @@
     <!-- Red Orange -->
     <color name="redorange_99">#FFFAF7</color>
     <color name="redorange_95">#FEEEE5</color>
-    <color name="redorange_90">#FEDBC6</color>
-    <color name="redorange_80">#FFC09C</color>
-    <color name="redorange_70">#FF9C63</color>
+    <color name="redorange_90">#FED9C4</color>
+    <color name="redorange_80">#FFBD96</color>
+    <color name="redorange_70">#FF9B61</color>
     <color name="redorange_60">#FF7B2E</color>
     <color name="redorange_50">#FF5E00</color>
-    <color name="redorange_40">#CC4B00</color>
-    <color name="redorange_30">#943600</color>
-    <color name="redorange_20">#5C2200</color>
-    <color name="redorange_10">#2E1100</color>
+    <color name="redorange_40">#C94A00</color>
+    <color name="redorange_30">#913500</color>
+    <color name="redorange_20">#592100</color>
+    <color name="redorange_10">#290F00</color>
 
     <!-- Lime -->
     <color name="lime_99">#F8FFF2</color>
