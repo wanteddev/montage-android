@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
@@ -22,6 +23,7 @@ fun TopAppBarIconButton(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tint: Color = colorResource(id = R.color.label_normal),
+    iconSize: Dp = 24.dp,
     onClick: () -> Unit
 ) {
 
@@ -32,7 +34,7 @@ fun TopAppBarIconButton(
         onClick = { onClick.clickOnceForDesignSystem() }
     ) {
         Icon(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(iconSize),
             painter = painter,
             contentDescription = null,
             tint = tint
