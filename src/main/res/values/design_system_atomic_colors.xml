@@ -163,6 +163,19 @@
     <color name="violet_20">#23098F</color>
     <color name="violet_10">#11024D</color>
 
+    <!-- Purple -->
+    <color name="purple_99">#FEFBFF</color>
+    <color name="purple_95">#F9EDFF</color>
+    <color name="purple_90">#F2D6FF</color>
+    <color name="purple_80">#E9BAFF</color>
+    <color name="purple_70">#DE96FF</color>
+    <color name="purple_60">#D478FF</color>
+    <color name="purple_50">#CB59FF</color>
+    <color name="purple_40">#AD36E3</color>
+    <color name="purple_30">#861CB8</color>
+    <color name="purple_20">#580A7D</color>
+    <color name="purple_10">#290247</color>
+
     <!-- Pink -->
     <color name="pink_99">#FFFAFE</color>
     <color name="pink_95">#FEECFB</color>

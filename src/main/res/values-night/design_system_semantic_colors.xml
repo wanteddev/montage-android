@@ -50,6 +50,7 @@
     <color name="accent_lightblue_temp">#3DC2FF</color>
     <color name="accent_violet">@color/violet_60</color>
     <color name="accent_violet_temp">#7D5EF7</color>
+    <color name="accent_purple">@color/purple_60</color>
     <color name="accent_pink">@color/pink_60</color>
     <color name="accent_redorange">@color/redorange_60</color>
 
