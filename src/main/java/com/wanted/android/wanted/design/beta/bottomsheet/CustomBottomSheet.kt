@@ -97,12 +97,10 @@ fun CustomBottomSheet(
             },
             properties = DialogProperties(usePlatformDefaultWidth = false),
         ) {
-            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(colorResource(id = R.color.material_dimmer))
+                    .background(Color.Transparent)
                     .clickOnceForDesignSystem { onDismissRequest() },
                 contentAlignment = Alignment.BottomCenter
             ) {
