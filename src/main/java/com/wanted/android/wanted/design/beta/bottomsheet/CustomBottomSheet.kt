@@ -1,6 +1,8 @@
 package com.wanted.android.wanted.design.beta.bottomsheet
 
 import android.content.res.Configuration
+import android.view.View
+import android.view.WindowManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.expandVertically
@@ -23,6 +25,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Surface
@@ -37,6 +40,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -45,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedSolidButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
@@ -95,10 +101,12 @@ fun CustomBottomSheet(
             },
             properties = DialogProperties(usePlatformDefaultWidth = false),
         ) {
+            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Transparent)
+                    .background(colorResource(id = R.color.material_dimmer))
                     .clickOnceForDesignSystem { onDismissRequest() },
                 contentAlignment = Alignment.BottomCenter
             ) {
@@ -129,7 +137,30 @@ fun CustomBottomSheet(
         }
     }
 }
+@Composable
+fun removeBottomSystemBarDimInDialog() {
+    val context = LocalContext.current
+    val dialogWindow = (LocalView.current.parent as DialogWindowProvider)
 
+    // Dialog의 Window 속성 가져오기
+    val window = dialogWindow.window
+
+    // Window의 속성을 변경하여 Bottom system bar의 dimming 제거
+    window.attributes = window.attributes.apply {
+        flags = flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
+    }
+
+    // 다이얼로그가 표시된 후 상태 표시줄과 내비게이션 바 색상 변경
+    window.decorView.setOnApplyWindowInsetsListener { _, insets ->
+        val immersiveSticky =
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+        window.decorView.systemUiVisibility = immersiveSticky
+        insets.consumeSystemWindowInsets()
+    }
+}
 
 @Composable
 fun CustomBottomSheet(
