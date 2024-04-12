@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -45,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedSolidButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
@@ -95,10 +97,12 @@ fun CustomBottomSheet(
             },
             properties = DialogProperties(usePlatformDefaultWidth = false),
         ) {
+            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Transparent)
+                    .background(colorResource(id = R.color.material_dimmer))
                     .clickOnceForDesignSystem { onDismissRequest() },
                 contentAlignment = Alignment.BottomCenter
             ) {
