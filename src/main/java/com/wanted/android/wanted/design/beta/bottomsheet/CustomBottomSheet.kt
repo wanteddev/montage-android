@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Surface
@@ -101,12 +100,10 @@ fun CustomBottomSheet(
             },
             properties = DialogProperties(usePlatformDefaultWidth = false),
         ) {
-            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(colorResource(id = R.color.material_dimmer))
+                    .background(Color.Transparent)
                     .clickOnceForDesignSystem { onDismissRequest() },
                 contentAlignment = Alignment.BottomCenter
             ) {
@@ -137,6 +134,7 @@ fun CustomBottomSheet(
         }
     }
 }
+
 @Composable
 fun removeBottomSystemBarDimInDialog() {
     val context = LocalContext.current
