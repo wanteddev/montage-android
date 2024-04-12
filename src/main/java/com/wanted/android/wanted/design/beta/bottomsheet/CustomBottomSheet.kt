@@ -1,6 +1,8 @@
 package com.wanted.android.wanted.design.beta.bottomsheet
 
 import android.content.res.Configuration
+import android.view.View
+import android.view.WindowManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.expandVertically
@@ -37,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
@@ -132,6 +135,30 @@ fun CustomBottomSheet(
     }
 }
 
+@Composable
+fun removeBottomSystemBarDimInDialog() {
+    val context = LocalContext.current
+    val dialogWindow = (LocalView.current.parent as DialogWindowProvider)
+
+    // Dialog의 Window 속성 가져오기
+    val window = dialogWindow.window
+
+    // Window의 속성을 변경하여 Bottom system bar의 dimming 제거
+    window.attributes = window.attributes.apply {
+        flags = flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
+    }
+
+    // 다이얼로그가 표시된 후 상태 표시줄과 내비게이션 바 색상 변경
+    window.decorView.setOnApplyWindowInsetsListener { _, insets ->
+        val immersiveSticky =
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+        window.decorView.systemUiVisibility = immersiveSticky
+        insets.consumeSystemWindowInsets()
+    }
+}
 
 @Composable
 fun CustomBottomSheet(
