@@ -139,7 +139,8 @@ fun CustomBottomSheet(
 
                     }
                 }
-            }, measurePolicy = { measurables, constraints ->
+            },
+            measurePolicy = { measurables, constraints ->
                 val placeables = measurables.fastMap { it.measure(constraints) }
                 val width = placeables.fastMaxBy { it.width }?.width ?: constraints.minWidth
                 val height =
@@ -192,6 +193,11 @@ fun CustomBottomSheet(
     if (dialogVisibility.value) {
         Layout(
             modifier = Modifier
+                .padding(
+                    bottom = WindowInsets.systemBars
+                        .asPaddingValues()
+                        .calculateBottomPadding()
+                )
                 .fillMaxSize()
                 .background(colorResource(id = R.color.material_dimmer)),
             content = {
@@ -199,7 +205,10 @@ fun CustomBottomSheet(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Transparent)
-                        .clickOnceForDesignSystem { onDismissRequest() },
+                        .clickOnceForDesignSystem(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) { onDismissRequest() },
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     AnimatedVisibility(
@@ -227,7 +236,8 @@ fun CustomBottomSheet(
                         )
                     }
                 }
-            }, measurePolicy = { measurables, constraints ->
+            },
+            measurePolicy = { measurables, constraints ->
                 val placeables = measurables.fastMap { it.measure(constraints) }
                 val width = placeables.fastMaxBy { it.width }?.width ?: constraints.minWidth
                 val height =
