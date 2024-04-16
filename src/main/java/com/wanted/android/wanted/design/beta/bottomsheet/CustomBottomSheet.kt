@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.beta.bottomsheet
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.expandVertically
@@ -70,6 +71,10 @@ fun CustomBottomSheet(
     onDismissRequest: () -> Unit,
     onDismissed: (() -> Unit)? = null
 ) {
+    BackHandler(isVisible) {
+        onDismissRequest()
+    }
+
     val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
     val dialogVisibility: MutableState<Boolean> = remember { mutableStateOf(false) }
 
