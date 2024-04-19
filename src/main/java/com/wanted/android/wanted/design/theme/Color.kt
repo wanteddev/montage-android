@@ -51,6 +51,7 @@ private val DefaultColors = WantedColors(
     accentCyan = Color(0xff00BDDE),
     accentLightBlue = Color(0xff00AEFF),
     accentViolet = Color(0xff6541F2),
+    accentPurple = Color(0xffCB59FF),
     accentPink = Color(0xffF553DA),
     accentRedOrange = Color(0xffFF5E00),
 
@@ -103,6 +104,7 @@ fun getDesignSystemColor() = WantedColors(
     accentCyan = colorResource(id = R.color.accent_cyan),
     accentLightBlue = colorResource(id = R.color.accent_lightblue),
     accentViolet = colorResource(id = R.color.accent_violet),
+    accentPurple = colorResource(id = R.color.accent_purple),
     accentPink = colorResource(id = R.color.accent_pink),
     accentRedOrange = colorResource(id = R.color.accent_redorange),
 
@@ -155,6 +157,7 @@ class WantedColors(
     accentCyan: Color,
     accentLightBlue: Color,
     accentViolet: Color,
+    accentPurple: Color,
     accentPink: Color,
     accentRedOrange: Color,
 
@@ -234,6 +237,8 @@ class WantedColors(
         private set
     var accentViolet by mutableStateOf(accentViolet)
         private set
+    var accentPurple by mutableStateOf(accentPurple)
+        private set
     var accentPink by mutableStateOf(accentPink)
         private set
     var accentRedOrange by mutableStateOf(accentRedOrange)
@@ -293,6 +298,7 @@ class WantedColors(
         accentCyan = other.accentCyan
         accentLightBlue = other.accentLightBlue
         accentViolet = other.accentViolet
+        accentPurple = other.accentPurple
         accentPink = other.accentPink
         accentRedOrange = other.accentRedOrange
 
