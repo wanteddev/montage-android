@@ -1,6 +1,9 @@
 package com.wanted.android.wanted.design.snackbar
 
 import android.content.res.Configuration
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
@@ -79,7 +83,33 @@ fun IconTextSnackBar(
     }
 }
 
-@Preview("light", showBackground = true, backgroundColor = 0xFFFFFFFF, uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Composable
+fun IconSnackBar(
+    @DrawableRes icon: Int,
+    @StringRes text: Int,
+    @ColorRes iconColor: Int,
+) {
+    IconTextSnackBar(
+        icon = {
+            Icon(
+                modifier = Modifier.size(16.5.dp),
+                painter = painterResource(id = icon),
+                contentDescription = null,
+                tint = colorResource(id = iconColor),
+            )
+        },
+        text = stringResource(id = text)
+    )
+}
+
+
+@Preview(
+    "light",
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko"
+)
 @Composable
 private fun TextSnackBarPreview() {
     TextSnackBar(
@@ -87,7 +117,13 @@ private fun TextSnackBarPreview() {
     )
 }
 
-@Preview("light", showBackground = true, backgroundColor = 0xFFFFFFFF, uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview(
+    "light",
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko"
+)
 @Composable
 private fun IconSnackBarPreview() {
     IconTextSnackBar(
