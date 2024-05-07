@@ -46,12 +46,12 @@ fun BottomSheetSelectItem(
                 .padding(vertical = 12.dp),
             text = text,
             style = WantedTextStyle(
-                colorRes = if (isSelect) {
-                    R.color.primary_normal
+                colorRes = R.color.label_normal,
+                style = if (isSelect) {
+                    DesignSystemTheme.typography.body1Bold
                 } else {
-                    R.color.label_strong
-                },
-                style = DesignSystemTheme.typography.label1Bold
+                    DesignSystemTheme.typography.body1Medium
+                }
             )
         )
 

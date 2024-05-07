@@ -68,8 +68,8 @@
     <color name="red_60">#FF6363</color>
     <color name="red_50">#FF4242</color>
     <color name="red_40">#E52222</color>
-    <color name="red_30">#B20C0C</color>
-    <color name="red_20">#750404</color>
+    <color name="red_30">#B00C0C</color>
+    <color name="red_20">#730303</color>
     <color name="red_10">#3B0101</color>
 
     <!-- Green -->
@@ -101,15 +101,15 @@
     <!-- Red Orange -->
     <color name="redorange_99">#FFFAF7</color>
     <color name="redorange_95">#FEEEE5</color>
-    <color name="redorange_90">#FEDBC6</color>
-    <color name="redorange_80">#FFC09C</color>
-    <color name="redorange_70">#FF9C63</color>
+    <color name="redorange_90">#FED9C4</color>
+    <color name="redorange_80">#FFBD96</color>
+    <color name="redorange_70">#FF9B61</color>
     <color name="redorange_60">#FF7B2E</color>
     <color name="redorange_50">#FF5E00</color>
-    <color name="redorange_40">#CC4B00</color>
-    <color name="redorange_30">#943600</color>
-    <color name="redorange_20">#5C2200</color>
-    <color name="redorange_10">#2E1100</color>
+    <color name="redorange_40">#C94A00</color>
+    <color name="redorange_30">#913500</color>
+    <color name="redorange_20">#592100</color>
+    <color name="redorange_10">#290F00</color>
 
     <!-- Lime -->
     <color name="lime_99">#F8FFF2</color>
@@ -162,6 +162,19 @@
     <color name="violet_30">#3A16C9</color>
     <color name="violet_20">#23098F</color>
     <color name="violet_10">#11024D</color>
+
+    <!-- Purple -->
+    <color name="purple_99">#FEFBFF</color>
+    <color name="purple_95">#F9EDFF</color>
+    <color name="purple_90">#F2D6FF</color>
+    <color name="purple_80">#E9BAFF</color>
+    <color name="purple_70">#DE96FF</color>
+    <color name="purple_60">#D478FF</color>
+    <color name="purple_50">#CB59FF</color>
+    <color name="purple_40">#AD36E3</color>
+    <color name="purple_30">#861CB8</color>
+    <color name="purple_20">#580A7D</color>
+    <color name="purple_10">#290247</color>
 
     <!-- Pink -->
     <color name="pink_99">#FFFAFE</color>
