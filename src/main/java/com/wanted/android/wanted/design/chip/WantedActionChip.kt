@@ -184,7 +184,7 @@ private fun Modifier.actionChipBorder(
             if (status == ChipActionStatus.ENABLE) {
                 border(
                     1.dp,
-                    color = colorResource(id = R.color.line_normal_normal),
+                    color = colorResource(id = R.color.line_normal_neutral),
                     shape = RoundedCornerShape(getCipRadius(size))
                 )
             } else {
@@ -286,7 +286,7 @@ private fun ChipActionTextColor(
 @Composable
 private fun getCipRadius(size: ChipActionSize) = when (size) {
     ChipActionSize.LARGE -> 8.dp
-    ChipActionSize.MEDIUM -> 6.dp
+    ChipActionSize.MEDIUM -> 8.dp
     ChipActionSize.SMALL -> 4.dp
 }
 
