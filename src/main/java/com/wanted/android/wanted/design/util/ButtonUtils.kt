@@ -64,9 +64,9 @@ internal fun getButtonRadius(
     size: ButtonSize
 ): Dp =
     when (size) {
-        ButtonSize.LARGE -> if (isLargeSizeButtonExist(shape, type)) 10.dp else 8.dp
-        ButtonSize.MEDIUM -> 8.dp
-        ButtonSize.SMALL -> 6.dp
+        ButtonSize.LARGE -> if (isLargeSizeButtonExist(shape, type)) 12.dp else 10.dp
+        ButtonSize.MEDIUM -> 10.dp
+        ButtonSize.SMALL -> 8.dp
     }
 
 internal fun getButtonSpaceBetweenTextAndIcon(
