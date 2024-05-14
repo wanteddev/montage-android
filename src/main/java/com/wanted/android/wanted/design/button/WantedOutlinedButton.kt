@@ -235,7 +235,7 @@ private fun getStrokeColor(status: ButtonStatus, type: ButtonType): Color = colo
     if (status == ButtonStatus.ENABLE && type == ButtonType.PRIMARY) {
         R.color.primary_normal
     } else {
-        R.color.line_normal_normal
+        R.color.line_normal_neutral
     }
 )
 
