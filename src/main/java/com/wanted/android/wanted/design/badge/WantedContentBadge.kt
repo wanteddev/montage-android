@@ -110,7 +110,12 @@ fun WantedContentBadge(
     leftDrawable: Int? = null,
     rightDrawable: Int? = null
 ) {
-    val roundedCornerShape = RoundedCornerShape(4.dp)
+    val roundedCornerShape = when (size) {
+        ContentBadgeSize.XSMALL -> RoundedCornerShape(4.dp)
+        ContentBadgeSize.SMALL -> RoundedCornerShape(6.dp)
+        ContentBadgeSize.MEDIUM -> RoundedCornerShape(8.dp)
+    }
+
 
     Row(modifier = Modifier
         .wrapContentSize()
