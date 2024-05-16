@@ -6,7 +6,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -110,7 +117,7 @@ fun WantedContentBadge(
     leftDrawable: Int? = null,
     rightDrawable: Int? = null
 ) {
-    val roundedCornerShape = RoundedCornerShape(4.dp)
+    val roundedCornerShape = RoundedCornerShape(getRadius(size))
 
     Row(modifier = Modifier
         .wrapContentSize()
@@ -165,6 +172,13 @@ fun WantedContentBadge(
             )
         }
     }
+}
+
+@Composable
+private fun getRadius(size: ContentBadgeSize) = when (size) {
+    ContentBadgeSize.MEDIUM -> 8.dp
+    ContentBadgeSize.SMALL -> 6.dp
+    ContentBadgeSize.XSMALL -> 4.dp
 }
 
 private fun getPadding(size: ContentBadgeSize): Pair<Dp, Dp> =
