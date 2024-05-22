@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -177,19 +176,3 @@ fun WantedCustomOutlinedButton(
         }
     }
 }
-
-@Composable
-private fun getEnableTextColor(type: ButtonType): Int =
-    when (type) {
-        ButtonType.ASSISTIVE -> R.color.label_normal
-        else -> R.color.primary_normal
-    }
-
-@Composable
-private fun getStrokeColor(status: ButtonStatus, type: ButtonType): Color = colorResource(
-    if (status == ButtonStatus.ENABLE && type == ButtonType.PRIMARY) {
-        R.color.primary_normal
-    } else {
-        R.color.line_normal_normal
-    }
-)

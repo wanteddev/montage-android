@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,8 +58,8 @@ fun WantedActionChip(
 ) {
     Row(
         modifier = modifier
-            .actionChipBackground(variant)
-            .actionChipBorder(variant, status)
+            .actionChipBackground(variant, size)
+            .actionChipBorder(variant, status, size)
             .clickable(
                 interactionSource = interactionSource,
                 indication = when (status) {
@@ -152,17 +153,18 @@ private fun ChipActionTextStyle(
 
 private fun Modifier.actionChipBackground(
     variant: ChipActionVariant,
+    size: ChipActionSize
 ): Modifier = composed {
     val modifier = when (variant) {
         ChipActionVariant.FILLED -> {
             background(
                 color = colorResource(id = R.color.fill_alternative),
-                shape = RoundedCornerShape(6.dp)
-            ).then(clip(RoundedCornerShape(6.dp)))
+                shape = RoundedCornerShape(getCipRadius(size))
+            ).then(clip(RoundedCornerShape(getCipRadius(size))))
         }
 
         ChipActionVariant.OUTLINED -> {
-            clip(RoundedCornerShape(6.dp))
+            clip(RoundedCornerShape(getCipRadius(size)))
         }
     }
     this.then(modifier)
@@ -170,7 +172,8 @@ private fun Modifier.actionChipBackground(
 
 private fun Modifier.actionChipBorder(
     variant: ChipActionVariant,
-    status: ChipActionStatus
+    status: ChipActionStatus,
+    size: ChipActionSize
 ): Modifier = composed {
     val modifier = when (variant) {
         ChipActionVariant.FILLED -> {
@@ -181,14 +184,14 @@ private fun Modifier.actionChipBorder(
             if (status == ChipActionStatus.ENABLE) {
                 border(
                     1.dp,
-                    color = colorResource(id = R.color.line_normal_normal),
-                    shape = RoundedCornerShape(6.dp)
+                    color = colorResource(id = R.color.line_normal_neutral),
+                    shape = RoundedCornerShape(getCipRadius(size))
                 )
             } else {
                 border(
                     1.dp,
                     color = colorResource(id = R.color.line_normal_alternative),
-                    shape = RoundedCornerShape(6.dp)
+                    shape = RoundedCornerShape(getCipRadius(size))
                 )
             }
         }
@@ -280,6 +283,14 @@ private fun ChipActionTextColor(
     }
 }
 
+@Composable
+private fun getCipRadius(size: ChipActionSize) = when (size) {
+    ChipActionSize.LARGE -> 8.dp
+    ChipActionSize.MEDIUM -> 6.dp
+    ChipActionSize.SMALL -> 4.dp
+}
+
+
 enum class ChipActionVariant {
     FILLED, OUTLINED
 }
@@ -325,8 +336,11 @@ fun ActionChipPreView() {
             modifier = Modifier.fillMaxSize(),
             color = colorResource(id = R.color.background_normal_normal)
         ) {
-            Column {
-                Row {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     WantedActionChip(
                         text = "텍스트",
                         variant = ChipActionVariant.FILLED,
@@ -350,7 +364,10 @@ fun ActionChipPreView() {
                         size = ChipActionSize.SMALL
                     )
                 }
-                Row {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     WantedActionChip(
                         text = "텍스트",
                         variant = ChipActionVariant.FILLED,
@@ -378,7 +395,10 @@ fun ActionChipPreView() {
                         leftIcon = R.drawable.ic_normal_bookmark_svg
                     )
                 }
-                Row {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     WantedActionChip(
                         text = "텍스트",
                         variant = ChipActionVariant.FILLED,
@@ -406,7 +426,10 @@ fun ActionChipPreView() {
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                 }
-                Row {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     WantedActionChip(
                         text = "텍스트",
                         variant = ChipActionVariant.FILLED,
@@ -438,9 +461,14 @@ fun ActionChipPreView() {
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                 }
+
                 Spacer(modifier = Modifier.height(10.dp))
-                Column {
-                    Row {
+
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         WantedActionChip(
                             text = "텍스트",
                             variant = ChipActionVariant.FILLED,
@@ -464,7 +492,10 @@ fun ActionChipPreView() {
                             size = ChipActionSize.MEDIUM
                         )
                     }
-                    Row {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         WantedActionChip(
                             text = "텍스트",
                             variant = ChipActionVariant.FILLED,
@@ -492,7 +523,10 @@ fun ActionChipPreView() {
                             leftIcon = R.drawable.ic_normal_bookmark_svg
                         )
                     }
-                    Row {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         WantedActionChip(
                             text = "텍스트",
                             variant = ChipActionVariant.FILLED,
@@ -520,7 +554,10 @@ fun ActionChipPreView() {
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                     }
-                    Row {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         WantedActionChip(
                             text = "텍스트",
                             variant = ChipActionVariant.FILLED,
@@ -553,7 +590,10 @@ fun ActionChipPreView() {
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    Row {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         WantedActionChip(
                             text = "this is very very long long long long long long text",
                             variant = ChipActionVariant.FILLED,
