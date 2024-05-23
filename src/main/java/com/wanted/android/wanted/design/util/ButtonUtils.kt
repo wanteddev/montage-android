@@ -113,7 +113,7 @@ internal fun getButtonTypography(
     )
 
 @Composable
-internal fun getButtonHorizontalPadding(
+internal fun  getButtonHorizontalPadding(
     shape: ButtonShape,
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize
