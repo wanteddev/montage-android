@@ -6,7 +6,17 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -108,13 +118,19 @@ fun WantedContentBadge(
     backgroundColor: Color? = null,
     lineColor: Color? = null,
     leftDrawable: Int? = null,
-    rightDrawable: Int? = null
+    rightDrawable: Int? = null,
+    leftContent: @Composable (BoxScope.() -> Unit)? = null,
+    rightContent: @Composable (BoxScope.() -> Unit)? = null,
+    clickListener: (() -> Unit)? = null,
 ) {
-    val roundedCornerShape = RoundedCornerShape(4.dp)
+    val roundedCornerShape = RoundedCornerShape(getRadius(size))
 
     Row(modifier = Modifier
         .wrapContentSize()
         .clip(roundedCornerShape)
+        .then(
+            if(clickListener != null) Modifier.clickable { clickListener() } else Modifier
+        )
         .then(if (type == ContentBadgeType.FILLED) {
             backgroundColor?.let {
                 Modifier.background(color = it, shape = roundedCornerShape)
@@ -126,9 +142,23 @@ fun WantedContentBadge(
                 )
             } ?: Modifier
         })
-        .padding(horizontal = getPadding(size).first, vertical = getPadding(size).second),
+        .padding(horizontal = getPadding(size).first, vertical = getPadding(size).second)
+
+        ,
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically) {
+        leftContent?.let {
+            Box(
+                modifier = getContentBadgeDrawableSize(size),
+            ){
+                it()
+            }
+            Spacer(
+                modifier = Modifier.width(
+                    getContentBadgeSpaceBetweenTextAndIcon(size)
+                )
+            )
+        }
         leftDrawable?.let {
             Image(
                 painter = painterResource(id = it), modifier = getContentBadgeDrawableSize(size),
@@ -164,7 +194,26 @@ fun WantedContentBadge(
                 colorFilter = ColorFilter.tint(textColor)
             )
         }
+        rightContent?.let {
+            Spacer(
+                modifier = Modifier.width(
+                    getContentBadgeSpaceBetweenTextAndIcon(size)
+                )
+            )
+            Box(
+                modifier = getContentBadgeDrawableSize(size),
+            ){
+                it()
+            }
+        }
     }
+}
+
+@Composable
+private fun getRadius(size: ContentBadgeSize) = when (size) {
+    ContentBadgeSize.MEDIUM -> 8.dp
+    ContentBadgeSize.SMALL -> 6.dp
+    ContentBadgeSize.XSMALL -> 4.dp
 }
 
 private fun getPadding(size: ContentBadgeSize): Pair<Dp, Dp> =
