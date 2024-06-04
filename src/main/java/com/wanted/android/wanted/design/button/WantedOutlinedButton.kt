@@ -124,11 +124,11 @@ class WantedOutlinedButton @JvmOverloads constructor(
 
 @Composable
 fun WantedOutlinedButton(
+    modifier: Modifier = Modifier.wrapContentWidth(align = Alignment.CenterHorizontally),
     text: String,
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     status: ButtonStatus = ButtonStatus.ENABLE,
-    modifier: Modifier = Modifier.wrapContentWidth(align = Alignment.CenterHorizontally),
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
     isClickOnce: Boolean = true,
