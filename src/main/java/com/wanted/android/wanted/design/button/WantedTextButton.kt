@@ -154,7 +154,7 @@ fun WantedTextButton(
         leftDrawable?.let {
             Image(
                 painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.TEXT, type, size),
+                modifier = getButtonDrawableSize(ButtonShape.TEXT, size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(
@@ -169,7 +169,6 @@ fun WantedTextButton(
                 modifier = Modifier.width(
                     getButtonSpaceBetweenTextAndIcon(
                         ButtonShape.TEXT,
-                        type,
                         size
                     )
                 )
@@ -179,7 +178,7 @@ fun WantedTextButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(ButtonShape.TEXT, type, size),
+            style = getButtonTypography(ButtonShape.TEXT, size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = getEnableTextColor(type))
             } else colorResource(id = disableTextColor),
@@ -191,14 +190,13 @@ fun WantedTextButton(
                 modifier = Modifier.width(
                     getButtonSpaceBetweenTextAndIcon(
                         ButtonShape.TEXT,
-                        type,
                         size
                     )
                 )
             )
             Image(
                 painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.TEXT, type, size),
+                modifier = getButtonDrawableSize(ButtonShape.TEXT, size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(
