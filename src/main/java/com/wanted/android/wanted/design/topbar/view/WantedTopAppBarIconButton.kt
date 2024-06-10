@@ -22,7 +22,7 @@ fun WantedTopAppBarIconButton(
     painter: Painter,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    tint: Color = colorResource(id = R.color.label_strong),
+    tint: Color = colorResource(id = R.color.label_normal),
     onClick: () -> Unit
 ) {
 
