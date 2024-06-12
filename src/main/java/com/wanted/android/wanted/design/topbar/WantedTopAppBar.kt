@@ -28,8 +28,8 @@ import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
 
 /**
- * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?m=auto&node-id=3713-37480
- * 설명 figma : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1330-37845&t=EN0A6OH1Y84V1Uge-1
+ * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
+ * 설명 figma : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1330-37845&t=KJWIkEkkcHKMDAcN-4
  */
 @Composable
 fun WantedTopAppBar(
