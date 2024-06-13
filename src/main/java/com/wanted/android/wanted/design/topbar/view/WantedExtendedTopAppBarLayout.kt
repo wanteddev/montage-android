@@ -21,7 +21,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
-fun WantedExtendedTopAppBarLayout(
+internal fun WantedExtendedTopAppBarLayout(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,

@@ -31,7 +31,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
-fun WantedTopAppBarLayout(
+internal fun WantedTopAppBarLayout(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
