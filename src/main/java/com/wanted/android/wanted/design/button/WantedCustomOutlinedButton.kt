@@ -31,7 +31,6 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
-import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonHeight
 import com.wanted.android.wanted.design.util.getButtonHorizontalPadding
@@ -63,7 +62,6 @@ fun WantedCustomOutlinedButton(
                 RoundedCornerShape(
                     size = getButtonRadius(
                         ButtonShape.OUTLINED,
-                        ButtonType.PRIMARY,
                         size
                     )
                 )
@@ -76,7 +74,6 @@ fun WantedCustomOutlinedButton(
                 RoundedCornerShape(
                     size = getButtonRadius(
                         ButtonShape.OUTLINED,
-                        ButtonType.PRIMARY,
                         size
                     )
                 )
@@ -86,12 +83,11 @@ fun WantedCustomOutlinedButton(
                 RoundedCornerShape(
                     size = getButtonRadius(
                         ButtonShape.OUTLINED,
-                        ButtonType.PRIMARY,
                         size
                     )
                 )
             )
-            .height(getButtonHeight(ButtonShape.OUTLINED, ButtonType.PRIMARY, size))
+            .height(getButtonHeight(ButtonShape.OUTLINED, size))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = if (status == ButtonStatus.ENABLE) wantedRippleEffect() else null,
@@ -108,7 +104,6 @@ fun WantedCustomOutlinedButton(
             .padding(
                 horizontal = getButtonHorizontalPadding(
                     ButtonShape.OUTLINED,
-                    ButtonType.PRIMARY,
                     size
                 )
             ),
@@ -118,7 +113,7 @@ fun WantedCustomOutlinedButton(
         leftDrawable?.let {
             Image(
                 painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, ButtonType.PRIMARY, size),
+                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(
@@ -133,7 +128,6 @@ fun WantedCustomOutlinedButton(
                 modifier = Modifier.width(
                     getButtonSpaceBetweenTextAndIcon(
                         ButtonShape.OUTLINED,
-                        ButtonType.PRIMARY,
                         size
                     )
                 )
@@ -143,7 +137,7 @@ fun WantedCustomOutlinedButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(ButtonShape.OUTLINED, ButtonType.PRIMARY, size),
+            style = getButtonTypography(ButtonShape.OUTLINED, size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = enableTextColor)
             } else colorResource(id = disableTextColor),
@@ -155,14 +149,13 @@ fun WantedCustomOutlinedButton(
                 modifier = Modifier.width(
                     getButtonSpaceBetweenTextAndIcon(
                         ButtonShape.OUTLINED,
-                        ButtonType.PRIMARY,
                         size
                     )
                 )
             )
             Image(
                 painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, ButtonType.PRIMARY, size),
+                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(

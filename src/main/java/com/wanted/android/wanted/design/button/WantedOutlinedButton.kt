@@ -52,6 +52,14 @@ import com.wanted.android.wanted.design.util.getButtonTypography
 import com.wanted.android.wanted.design.util.getButtonWidth
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
+/**
+ *
+ * Button Design System link
+ * https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=423-8298&t=YgKbX4F2B73vuTbS-0
+ *
+ * Button Design System Guide
+ * https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1373-26592&t=a5QyDszAwnnfpwdQ-0
+ */
 class WantedOutlinedButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -138,12 +146,12 @@ fun WantedOutlinedButton(
 
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, type, size)))
+            .clip(RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, size)))
             .border(
                 BorderStroke(1.dp, getStrokeColor(status, type)),
-                RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, type, size))
+                RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, size))
             )
-            .height(getButtonHeight(ButtonShape.OUTLINED, type, size))
+            .height(getButtonHeight(ButtonShape.OUTLINED, size))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = if (status == ButtonStatus.ENABLE) wantedRippleEffect() else null,
@@ -157,14 +165,14 @@ fun WantedOutlinedButton(
                     }
                 }
             )
-            .padding(horizontal = getButtonHorizontalPadding(ButtonShape.OUTLINED, type, size)),
+            .padding(horizontal = getButtonHorizontalPadding(ButtonShape.OUTLINED, size)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         leftDrawable?.let {
             Image(
                 painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, type, size),
+                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(
@@ -179,7 +187,6 @@ fun WantedOutlinedButton(
                 modifier = Modifier.width(
                     getButtonSpaceBetweenTextAndIcon(
                         ButtonShape.OUTLINED,
-                        type,
                         size
                     )
                 )
@@ -189,7 +196,7 @@ fun WantedOutlinedButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(ButtonShape.OUTLINED, type, size),
+            style = getButtonTypography(ButtonShape.OUTLINED, size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = getEnableTextColor(type))
             } else colorResource(id = disableTextColor),
@@ -201,14 +208,13 @@ fun WantedOutlinedButton(
                 modifier = Modifier.width(
                     getButtonSpaceBetweenTextAndIcon(
                         ButtonShape.OUTLINED,
-                        type,
                         size
                     )
                 )
             )
             Image(
                 painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, type, size),
+                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(

@@ -48,6 +48,14 @@ import com.wanted.android.wanted.design.util.getButtonTypography
 import com.wanted.android.wanted.design.util.getButtonWidth
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
+/**
+ *
+ * Button Design System link
+ * https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=423-8298&t=YgKbX4F2B73vuTbS-0
+ *
+ * Button Design System Guide
+ * https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1373-26592&t=a5QyDszAwnnfpwdQ-0
+ */
 class WantedSolidButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
