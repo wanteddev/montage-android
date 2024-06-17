@@ -55,9 +55,11 @@ internal fun WantedTopAppBarLayout(
             ) {
                 navigationIcon()
             }
-        }
 
-        Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(8.dp))
+        } ?: kotlin.run {
+            Spacer(modifier = Modifier.size(16.dp))
+        }
 
         Box(
             modifier = Modifier
