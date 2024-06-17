@@ -21,12 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.beta.topbar.CustomTopAppBar
 import com.wanted.android.wanted.design.button.WantedOutlinedButton
 import com.wanted.android.wanted.design.button.WantedSolidButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.dialog.ModalSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.util.ButtonType
 
 
@@ -247,7 +247,7 @@ private fun WantedDialogTopBarPreview() {
                 modalSize = ModalSize.Normal,
                 positive = "확인",
                 topBar = {
-                    CustomTopAppBar(
+                    WantedTopAppBar(
                         title = { Text(text = "다이얼로그 타이틀") },
                     )
                 },
@@ -261,7 +261,7 @@ private fun WantedDialogTopBarPreview() {
                 modalSize = ModalSize.Normal,
                 positive = "확인",
                 topBar = {
-                    CustomTopAppBar(
+                    WantedTopAppBar(
                         title = { Text(text = "다이얼로그 타이틀") },
                         actions = {
                             Icon(
@@ -282,7 +282,7 @@ private fun WantedDialogTopBarPreview() {
                 modalSize = ModalSize.Normal,
                 positive = "확인",
                 topBar = {
-                    CustomTopAppBar(
+                    WantedTopAppBar(
                         navigationIcon = {
                             Icon(
                                 modifier = Modifier.clickOnceForDesignSystem { },
