@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.core.text.HtmlCompat
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.pretendardBold
 
@@ -134,6 +135,33 @@ fun String.bold(vararg subText: String): AnnotatedString {
         }
     }
     return AnnotatedString(text = this, spanStyles = spanStyles)
+}
+
+/**
+ * Converts a [Spanned] into an [AnnotatedString] trying to keep as much formatting as possible.
+ * Currently supports `bold`, `italic`, `underline` and `color`.
+ */
+@Composable
+fun String.toAnnotatedString(): AnnotatedString  {
+    val spanned = HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_COMPACT)
+    return buildAnnotatedString {
+        append(spanned.toString())
+
+        spanned.getSpans(0, spanned.length, Any::class.java).forEach { span ->
+            val start = spanned.getSpanStart(span)
+            val end = spanned.getSpanEnd(span)
+            when (span) {
+                is StyleSpan -> when (span.style) {
+                    Typeface.BOLD -> addStyle(SpanStyle(fontWeight = FontWeight.Bold), start, end)
+                    Typeface.ITALIC -> addStyle(SpanStyle(fontStyle = FontStyle.Italic), start, end)
+                    Typeface.BOLD_ITALIC -> addStyle(SpanStyle(fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic), start, end)
+                }
+
+                is UnderlineSpan -> addStyle(SpanStyle(textDecoration = TextDecoration.Underline), start, end)
+                is ForegroundColorSpan -> addStyle(SpanStyle(color = Color(span.foregroundColor)), start, end)
+            }
+        }
+    }
 }
 
 /**
