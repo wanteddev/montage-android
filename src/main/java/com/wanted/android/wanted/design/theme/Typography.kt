@@ -6,6 +6,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.wanted.android.designsystem.R
@@ -30,6 +31,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.0319).em,
         lineHeight = 72.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val display1Medium: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -37,6 +42,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.0319).em,
         lineHeight = 72.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val display1Bold: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -44,6 +53,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W700,
         letterSpacing = (-0.0319).em,
         lineHeight = 72.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val display2Regular: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -51,6 +64,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.0282).em,
         lineHeight = 52.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val display2Medium: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -58,6 +75,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.0282).em,
         lineHeight = 52.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val display2Bold: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -65,6 +86,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W700,
         letterSpacing = (-0.0282).em,
         lineHeight = 52.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title1Regular: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -72,6 +97,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.027).em,
         lineHeight = 48.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title1Medium: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -79,6 +108,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.027).em,
         lineHeight = 48.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title1Bold: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -86,6 +119,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W700,
         letterSpacing = (-0.027).em,
         lineHeight = 48.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title2Regular: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -93,6 +130,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.0236).em,
         lineHeight = 38.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title2Medium: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -100,6 +141,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.0236).em,
         lineHeight = 38.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title2Bold: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -107,6 +152,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W700,
         letterSpacing = (-0.0236).em,
         lineHeight = 38.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title3Regular: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -114,6 +163,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.023).em,
         lineHeight = 32.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title3Medium: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -121,6 +174,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.023).em,
         lineHeight = 32.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val title3Bold: TextStyle = TextStyle(
         fontFamily = pretendardBold,
@@ -128,6 +185,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W700,
         letterSpacing = (-0.023).em,
         lineHeight = 32.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val heading1Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -135,6 +196,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.0194).em,
         lineHeight = 30.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val heading1Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -142,6 +207,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.0194).em,
         lineHeight = 30.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val heading1Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -149,6 +218,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = (-0.0194).em,
         lineHeight = 30.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val heading2Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -156,6 +229,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.012).em,
         lineHeight = 28.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val heading2Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -163,6 +240,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.012).em,
         lineHeight = 28.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val heading2Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -170,6 +251,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = (-0.012).em,
         lineHeight = 28.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val headline1Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -177,6 +262,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = (-0.002).em,
         lineHeight = 26.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val headline1Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -184,6 +273,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = (-0.002).em,
         lineHeight = 26.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val headline1Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -191,6 +284,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = (-0.002).em,
         lineHeight = 26.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val headline2Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -198,6 +295,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val headline2Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -205,6 +306,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val headline2Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -212,6 +317,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body1Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -219,6 +328,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0057.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body1Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -226,6 +339,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0057.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body1Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -233,6 +350,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0057.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body1ReadingRegular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -240,6 +361,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0057.em,
         lineHeight = 26.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body1ReadingMedium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -247,6 +372,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0057.em,
         lineHeight = 26.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body1ReadingBold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -254,6 +383,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0057.em,
         lineHeight = 26.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body2Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -261,6 +394,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0096.em,
         lineHeight = 22.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body2Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -268,6 +405,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0096.em,
         lineHeight = 22.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body2Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -275,6 +416,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0096.em,
         lineHeight = 22.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body2ReadingRegular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -282,6 +427,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0096.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body2ReadingMedium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -289,6 +438,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0096.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val body2ReadingBold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -296,6 +449,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0096.em,
         lineHeight = 24.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label1Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -303,6 +460,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0145.em,
         lineHeight = 20.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label1Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -310,6 +471,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0145.em,
         lineHeight = 20.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label1Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -317,6 +482,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0145.em,
         lineHeight = 20.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label1ReadingRegular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -324,6 +493,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0145.em,
         lineHeight = 22.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label1ReadingMedium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -331,6 +504,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0145.em,
         lineHeight = 22.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label1ReadingBold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -338,6 +515,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0145.em,
         lineHeight = 22.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label2Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -345,6 +526,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0194.em,
         lineHeight = 18.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label2Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -352,6 +537,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0194.em,
         lineHeight = 18.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val label2Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -359,6 +548,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0194.em,
         lineHeight = 18.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val caption1Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -366,6 +559,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0252.em,
         lineHeight = 16.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val caption1Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -373,6 +570,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0252.em,
         lineHeight = 16.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val caption1Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -380,6 +581,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0252.em,
         lineHeight = 16.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val caption2Regular: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -387,6 +592,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W400,
         letterSpacing = 0.0311.em,
         lineHeight = 14.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val caption2Medium: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -394,6 +603,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W500,
         letterSpacing = 0.0311.em,
         lineHeight = 14.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
     val caption2Bold: TextStyle = TextStyle(
         fontFamily = pretendard,
@@ -401,6 +614,10 @@ data class WantedTypography(
         fontWeight = FontWeight.W600,
         letterSpacing = 0.0311.em,
         lineHeight = 14.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
     ),
 )
 
