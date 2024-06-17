@@ -63,7 +63,10 @@ fun WantedDialogThreeButtonImpl(
                 onClickPositive?.let {
                     WantedSolidButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = positive.orEmpty()
+                        text = positive.orEmpty(),
+                        clickListener = {
+                            onClickPositive()
+                        }
                     )
                 }
 
@@ -71,7 +74,10 @@ fun WantedDialogThreeButtonImpl(
                     WantedOutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = natural.orEmpty(),
-                        type = ButtonType.ASSISTIVE
+                        type = ButtonType.ASSISTIVE,
+                        clickListener = {
+                            onClickNatural()
+                        }
                     )
                 }
 
@@ -79,7 +85,10 @@ fun WantedDialogThreeButtonImpl(
                     WantedOutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = negative.orEmpty(),
-                        type = ButtonType.SECONDARY
+                        type = ButtonType.SECONDARY,
+                        clickListener = {
+                            onClickNegative()
+                        }
                     )
                 }
             }
