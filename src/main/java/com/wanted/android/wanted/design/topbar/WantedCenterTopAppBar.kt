@@ -4,29 +4,20 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,51 +40,24 @@ private fun WantedCenterTopAppBar(
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
-    val elevation = remember { mutableIntStateOf(0) }
-    LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
-        if (scrollableState?.canScrollBackward == true) {
-            elevation.intValue = 4
-        } else {
-            elevation.intValue = 0
-        }
-    }
-
-    Surface(
-        elevation = elevation.intValue.dp
-    ) {
-        when (type) {
-            TopAppBarType.Normal -> {
-                WantedCenterTopAppBar(
-                    modifier = modifier.background(colorResource(id = R.color.background_normal_normal)),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-
-            TopAppBarType.Floating -> {
-                WantedCenterTopAppBar(
-                    modifier = modifier.background(Color.Transparent),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-
-            TopAppBarType.Extended -> {
-                WantedExtendedCenterTopAppBarLayout(
-                    modifier = modifier.background(Color.Transparent),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-        }
-    }
+    WantedCenterTopAppBar(
+        modifier = modifier,
+        type = type,
+        scrollableState = scrollableState,
+        navigationIcon = navigationIcon,
+        title = {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        actions = actions
+    )
 }
 
 @Composable
-fun WantedCenterTopAppBar(
+fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
@@ -117,63 +81,62 @@ fun WantedCenterTopAppBar(
 }
 
 @Composable
-private fun WantedCenterTopAppBar(
+fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
+    type: TopAppBarType = TopAppBarType.Normal,
+    scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
-    title: String = "",
+    title: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
-    val height = remember { mutableFloatStateOf(56f) }
-    val localDensity = LocalDensity.current
-    WantedCenterTopAppBarLayout(
-        modifier = modifier.fillMaxWidth(),
-        heightPx = height.floatValue,
-        navigationIcon = {
-            Row {
-                navigationIcon?.let {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        navigationIcon()
-                    }
+    val elevation = remember { mutableIntStateOf(0) }
+    LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
+        if (scrollableState?.canScrollBackward == true) {
+            elevation.intValue = 4
+        } else {
+            elevation.intValue = 0
+        }
+    }
 
-                    Spacer(modifier = Modifier.size(12.dp))
-                } ?: kotlin.run {
-                    Spacer(modifier = Modifier.size(12.dp))
-                }
+    Surface(
+        elevation = elevation.intValue.dp
+    ) {
+        when (type) {
+            TopAppBarType.Normal -> {
+                WantedCenterTopAppBarLayout(
+                    modifier = modifier.background(colorResource(id = R.color.background_normal_normal)),
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
             }
-        },
-        title = {
-            Text(
-                modifier = Modifier.onGloballyPositioned { coordinates ->
-                    height.floatValue = with(localDensity) {
-                        coordinates.size.height.toFloat() + 28.dp.toPx()
-                    }
-                },
-                text = title
-            )
-        },
-        actions = {
-            actions?.let {
-                Row(
-                    modifier = Modifier.wrapContentSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    actions()
-                }
+
+            TopAppBarType.Floating -> {
+                WantedCenterTopAppBarLayout(
+                    modifier = modifier.background(Color.Transparent),
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
+            }
+
+            TopAppBarType.Extended -> {
+                WantedExtendedCenterTopAppBarLayout(
+                    modifier = modifier.background(Color.Transparent),
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
             }
         }
-    )
+    }
 }
 
 @Composable
 private fun WantedExtendedCenterTopAppBarLayout(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit)? = null,
-    title: String = "",
+    title: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
 
@@ -231,7 +194,6 @@ private fun WantedCenterTopAppBarPreview() {
                     )
                 }
             )
-
         }
     }
 }

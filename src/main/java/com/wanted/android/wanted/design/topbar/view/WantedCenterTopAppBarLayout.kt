@@ -2,14 +2,24 @@ package com.wanted.android.wanted.design.topbar.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
@@ -23,15 +33,17 @@ import kotlin.math.roundToInt
 @Composable
 internal fun WantedCenterTopAppBarLayout(
     modifier: Modifier,
-    heightPx: Float,
-    title: @Composable () -> Unit,
+    title: (@Composable () -> Unit)? = null,
     titleVerticalArrangement: Arrangement.Vertical = Arrangement.Center,
     titleHorizontalArrangement: Arrangement.Horizontal = Arrangement.Center,
     titleBottomPadding: Int = 0,
     hideTitleSemantics: Boolean = false,
-    navigationIcon: @Composable () -> Unit,
-    actions: @Composable () -> Unit,
+    navigationIcon: (@Composable () -> Unit)? = null,
+    actions: (@Composable RowScope.() -> Unit)? = null
 ) {
+    val height = remember { mutableFloatStateOf(56f) }
+    val localDensity = LocalDensity.current
+
     Layout(
         content = {
             Box(
@@ -39,21 +51,42 @@ internal fun WantedCenterTopAppBarLayout(
                     .layoutId("navigationIcon")
                     .padding(start = 8.dp)
             ) {
-                navigationIcon()
+                Row {
+                    navigationIcon?.let {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            navigationIcon()
+                        }
+
+                        Spacer(modifier = Modifier.size(12.dp))
+                    } ?: kotlin.run {
+                        Spacer(modifier = Modifier.size(12.dp))
+                    }
+                }
             }
 
             Box(
                 Modifier
                     .layoutId("title")
                     .then(if (hideTitleSemantics) Modifier.clearAndSetSemantics { } else Modifier)
+                    .onGloballyPositioned { coordinates ->
+                        height.floatValue = with(localDensity) {
+                            coordinates.size.height.toFloat() + 28.dp.toPx()
+                        }
+                    }
             ) {
-                ProvideTextStyle(
-                    value = WantedTextStyle(
-                        colorRes = R.color.label_strong,
-                        style = DesignSystemTheme.typography.heading2Bold
-                    )
-                ) {
-                    title()
+                title?.let {
+                    ProvideTextStyle(
+                        value = WantedTextStyle(
+                            colorRes = R.color.label_strong,
+                            style = DesignSystemTheme.typography.heading2Bold
+                        )
+                    ) {
+                        title()
+                    }
                 }
             }
 
@@ -62,7 +95,15 @@ internal fun WantedCenterTopAppBarLayout(
                     .layoutId("actionIcons")
                     .padding(end = 8.dp)
             ) {
-                actions()
+                actions?.let {
+                    Row(
+                        modifier = Modifier.wrapContentSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        actions()
+                    }
+                }
             }
         },
         modifier = modifier
@@ -92,7 +133,7 @@ internal fun WantedCenterTopAppBarLayout(
                 0
             }
 
-        val layoutHeight = if (heightPx.isNaN()) 0 else heightPx.roundToInt()
+        val layoutHeight = height.floatValue.roundToInt()
 
         layout(constraints.maxWidth, layoutHeight) {
             // Navigation icon
