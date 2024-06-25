@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Surface
@@ -99,30 +100,25 @@ fun WantedTopAppBar(
     }
 
     Surface(
-        elevation = elevation.intValue.dp
+        elevation = elevation.intValue.dp,
+        color = if (type == TopAppBarType.Floating) {
+            Color.Transparent
+        } else {
+            colorResource(id = R.color.background_normal_normal)
+        }
     ) {
         when (type) {
-            TopAppBarType.Normal -> {
-                WantedTopAppBarLayout(
-                    modifier = modifier.background(colorResource(id = R.color.background_normal_normal)),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-
-            TopAppBarType.Floating -> {
-                WantedTopAppBarLayout(
-                    modifier = modifier.background(Color.Transparent),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-
             TopAppBarType.Extended -> {
                 WantedExtendedTopAppBarLayout(
                     modifier = modifier.background(Color.Transparent),
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
+            }
+
+            else -> {
+                WantedTopAppBarLayout(
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
@@ -144,9 +140,72 @@ fun WantedTopAppBar(
 @Composable
 private fun CustomTopAppBarPreview() {
     DesignSystemTheme {
+
         Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            modifier = Modifier,
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
+
+            WantedTopAppBar(
+                title = "title",
+                actions = {
+                    WantedTopAppBarIconButton(
+                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        onClick = { }
+                    )
+                }
+            )
+
+            Box(Modifier.background(Color.DarkGray)) {
+                WantedTopAppBar(
+                    type = TopAppBarType.Floating,
+                    title = "title",
+                    actions = {
+
+                    }
+                )
+            }
+
+            WantedTopAppBar(
+                type = TopAppBarType.Extended,
+                title = "title",
+                actions = {}
+            )
+
+            WantedBackTopAppBar(
+                title = "title",
+                onClickBack = {}
+            )
+
+            Box(Modifier.background(Color.DarkGray)) {
+                WantedBackTopAppBar(
+                    type = TopAppBarType.Floating,
+                    title = "title",
+                    actions = {
+                        WantedTopAppBarIconButton(
+                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                            onClick = { }
+                        )
+                        WantedTopAppBarIconButton(
+                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                            onClick = { }
+                        )
+                    },
+                    onClickBack = { }
+                )
+            }
+
+            WantedBackTopAppBar(
+                type = TopAppBarType.Extended,
+                title = "title",
+                actions = {
+                    WantedTopAppBarIconButton(
+                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        onClick = { }
+                    )
+                },
+                onClickBack = {}
+            )
         }
     }
 }

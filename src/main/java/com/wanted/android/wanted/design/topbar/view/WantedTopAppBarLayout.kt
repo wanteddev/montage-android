@@ -41,8 +41,8 @@ internal fun WantedTopAppBarLayout(
         modifier = modifier
             .fillMaxWidth()
             .defaultMinSize(minHeight = 56.dp)
-            .height(IntrinsicSize.Min)
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
         navigationIcon?.let {
@@ -88,7 +88,6 @@ internal fun WantedTopAppBarLayout(
         }
     }
 }
-
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")

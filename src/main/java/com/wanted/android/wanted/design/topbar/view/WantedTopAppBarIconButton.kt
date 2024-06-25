@@ -25,23 +25,43 @@ fun WantedTopAppBarIconButton(
     tint: Color = colorResource(id = R.color.label_normal),
     onClick: () -> Unit
 ) {
-
     /**
      * 시스템에 정의되어 있는 IconButton의 default size 56.dp
      * size를 40으로 줄이면 ripple 효과만 56.dp 로 보인다.
      */
-    IconButton(
-        modifier = modifier
-            .size(40.dp),
-        enabled = enabled,
-        interactionSource = interactionSource,
-        onClick = { onClick.clickOnceForDesignSystem() }
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            painter = painter,
-            contentDescription = null,
-            tint = tint
-        )
+    when (type) {
+        TopAppBarType.Floating -> {
+            IconButton(
+                modifier = modifier
+                    .size(40.dp),
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onClick = { onClick.clickOnceForDesignSystem() }
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painter,
+                    contentDescription = null,
+                    tint = tint
+                )
+            }
+        }
+
+        else -> {
+            IconButton(
+                modifier = modifier
+                    .size(40.dp),
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onClick = { onClick.clickOnceForDesignSystem() }
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painter,
+                    contentDescription = null,
+                    tint = tint
+                )
+            }
+        }
     }
 }
