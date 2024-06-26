@@ -14,30 +14,22 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.AlignmentLine
-import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastFirst
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
-import kotlin.math.max
 import kotlin.math.roundToInt
 
 @Composable
 internal fun WantedCenterTopAppBarLayout(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: (@Composable () -> Unit)? = null,
-    titleVerticalArrangement: Arrangement.Vertical = Arrangement.Center,
-    titleHorizontalArrangement: Arrangement.Horizontal = Arrangement.Center,
-    titleBottomPadding: Int = 0,
-    hideTitleSemantics: Boolean = false,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null
 ) {
@@ -45,6 +37,7 @@ internal fun WantedCenterTopAppBarLayout(
     val localDensity = LocalDensity.current
 
     Layout(
+        modifier = modifier,
         content = {
             Box(
                 Modifier
@@ -71,7 +64,6 @@ internal fun WantedCenterTopAppBarLayout(
             Box(
                 Modifier
                     .layoutId("title")
-                    .then(if (hideTitleSemantics) Modifier.clearAndSetSemantics { } else Modifier)
                     .onGloballyPositioned { coordinates ->
                         height.floatValue = with(localDensity) {
                             coordinates.size.height.toFloat() + 28.dp.toPx()
@@ -105,8 +97,7 @@ internal fun WantedCenterTopAppBarLayout(
                     }
                 }
             }
-        },
-        modifier = modifier
+        }
     ) { measurables, constraints ->
         val navigationIconPlaceable =
             measurables.fastFirst { it.layoutId == "navigationIcon" }
@@ -125,14 +116,6 @@ internal fun WantedCenterTopAppBarLayout(
             measurables.fastFirst { it.layoutId == "title" }
                 .measure(constraints.copy(minWidth = 0, maxWidth = maxTitleWidth))
 
-        // Locate the title's baseline.
-        val titleBaseline =
-            if (titlePlaceable[LastBaseline] != AlignmentLine.Unspecified) {
-                titlePlaceable[LastBaseline]
-            } else {
-                0
-            }
-
         val layoutHeight = height.floatValue.roundToInt()
 
         layout(constraints.maxWidth, layoutHeight) {
@@ -142,49 +125,25 @@ internal fun WantedCenterTopAppBarLayout(
                 y = (layoutHeight - navigationIconPlaceable.height) / 2
             )
 
+            var baseX = (constraints.maxWidth - titlePlaceable.width) / 2
+            if (baseX < navigationIconPlaceable.width) {
+                // May happen if the navigation is wider than the actions and the
+                // title is long. In this case, prioritize showing more of the title by
+                // offsetting it to the right.
+                baseX += (navigationIconPlaceable.width - baseX)
+            } else if (baseX + titlePlaceable.width >
+                constraints.maxWidth - actionIconsPlaceable.width
+            ) {
+                // May happen if the actions are wider than the navigation and the title
+                // is long. In this case, offset to the left.
+                baseX += ((constraints.maxWidth - actionIconsPlaceable.width) -
+                    (baseX + titlePlaceable.width))
+            }
+
             // Title
             titlePlaceable.placeRelative(
-                x = when (titleHorizontalArrangement) {
-                    Arrangement.Center -> {
-                        var baseX = (constraints.maxWidth - titlePlaceable.width) / 2
-                        if (baseX < navigationIconPlaceable.width) {
-                            // May happen if the navigation is wider than the actions and the
-                            // title is long. In this case, prioritize showing more of the title by
-                            // offsetting it to the right.
-                            baseX += (navigationIconPlaceable.width - baseX)
-                        } else if (baseX + titlePlaceable.width >
-                            constraints.maxWidth - actionIconsPlaceable.width
-                        ) {
-                            // May happen if the actions are wider than the navigation and the title
-                            // is long. In this case, offset to the left.
-                            baseX += ((constraints.maxWidth - actionIconsPlaceable.width) -
-                                (baseX + titlePlaceable.width))
-                        }
-                        baseX
-                    }
-
-                    Arrangement.End ->
-                        constraints.maxWidth - titlePlaceable.width - actionIconsPlaceable.width
-                    // Arrangement.Start.
-                    // An TopAppBarTitleInset will make sure the title is offset in case the
-                    // navigation icon is missing.
-                    else -> max(0
-                        /**TopAppBarTitleInset.roundToPx()**/
-                        , navigationIconPlaceable.width)
-                },
-                y = when (titleVerticalArrangement) {
-                    Arrangement.Center -> (layoutHeight - titlePlaceable.height) / 2
-                    // Apply bottom padding from the title's baseline only when the Arrangement is
-                    // "Bottom".
-                    Arrangement.Bottom ->
-                        if (titleBottomPadding == 0) layoutHeight - titlePlaceable.height
-                        else layoutHeight - titlePlaceable.height - max(
-                            0,
-                            titleBottomPadding - titlePlaceable.height + titleBaseline
-                        )
-                    // Arrangement.Top
-                    else -> 0
-                }
+                x = baseX,
+                y = (layoutHeight - titlePlaceable.height) / 2
             )
 
             // Action icons

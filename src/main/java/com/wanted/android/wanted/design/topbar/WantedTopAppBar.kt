@@ -36,25 +36,43 @@ import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     type: TopAppBarType = TopAppBarType.Normal,
+    titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
-    WantedTopAppBar(
-        modifier = modifier,
-        type = type,
-        scrollableState = scrollableState,
-        navigationIcon = navigationIcon,
-        title = {
-            Text(
-                text = title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        actions = actions
-    )
+    if (titleAlignCenter) {
+        WantedCenterTopAppBar(
+            modifier = modifier,
+            type = type,
+            scrollableState = scrollableState,
+            navigationIcon = navigationIcon,
+            title = {
+                Text(
+                    text = title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            actions = actions
+        )
+    } else {
+        WantedTopAppBar(
+            modifier = modifier,
+            type = type,
+            scrollableState = scrollableState,
+            navigationIcon = navigationIcon,
+            title = {
+                Text(
+                    text = title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            actions = actions
+        )
+    }
 }
 
 @Composable
@@ -72,6 +90,7 @@ fun WantedBackTopAppBar(
         scrollableState = scrollableState,
         navigationIcon = {
             WantedTopAppBarIconButton(
+                type = type,
                 painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
                 onClick = { onClickBack() }
             )
@@ -100,6 +119,7 @@ fun WantedTopAppBar(
     }
 
     Surface(
+        modifier = modifier,
         elevation = elevation.intValue.dp,
         color = if (type == TopAppBarType.Floating) {
             Color.Transparent
@@ -110,7 +130,6 @@ fun WantedTopAppBar(
         when (type) {
             TopAppBarType.Extended -> {
                 WantedExtendedTopAppBarLayout(
-                    modifier = modifier.background(Color.Transparent),
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
@@ -183,10 +202,12 @@ private fun CustomTopAppBarPreview() {
                     title = "title",
                     actions = {
                         WantedTopAppBarIconButton(
+                            type = TopAppBarType.Floating,
                             painter = painterResource(id = R.drawable.ic_normal_share_svg),
                             onClick = { }
                         )
                         WantedTopAppBarIconButton(
+                            type = TopAppBarType.Floating,
                             painter = painterResource(id = R.drawable.ic_normal_share_svg),
                             onClick = { }
                         )

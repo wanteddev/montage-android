@@ -57,7 +57,7 @@ private fun WantedCenterTopAppBar(
 }
 
 @Composable
-fun WantedCenterBackTopAppBar(
+private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
@@ -99,12 +99,12 @@ fun WantedCenterTopAppBar(
     }
 
     Surface(
+        modifier = modifier,
         elevation = elevation.intValue.dp
     ) {
         when (type) {
             TopAppBarType.Normal -> {
                 WantedCenterTopAppBarLayout(
-                    modifier = modifier.background(colorResource(id = R.color.background_normal_normal)),
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
@@ -113,7 +113,6 @@ fun WantedCenterTopAppBar(
 
             TopAppBarType.Floating -> {
                 WantedCenterTopAppBarLayout(
-                    modifier = modifier.background(Color.Transparent),
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
@@ -122,7 +121,6 @@ fun WantedCenterTopAppBar(
 
             TopAppBarType.Extended -> {
                 WantedExtendedCenterTopAppBarLayout(
-                    modifier = modifier.background(Color.Transparent),
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
