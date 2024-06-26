@@ -1,11 +1,11 @@
 package com.wanted.android.wanted.design.topbar
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +26,8 @@ import com.wanted.android.wanted.design.topbar.WantedTopAppBarContract.TopAppBar
 import com.wanted.android.wanted.design.topbar.view.WantedExtendedTopAppBarLayout
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
+import com.wanted.android.wanted.design.util.getStatusBarHeight
+import com.wanted.android.wanted.design.util.pxToDp
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
@@ -34,6 +36,7 @@ import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -42,6 +45,7 @@ fun WantedTopAppBar(
 ) {
     WantedTopAppBar(
         modifier = modifier,
+        isFullScreen = isFullScreen,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,
@@ -59,6 +63,7 @@ fun WantedTopAppBar(
 @Composable
 fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -67,6 +72,7 @@ fun WantedBackTopAppBar(
 ) {
     WantedTopAppBar(
         modifier = modifier,
+        isFullScreen = isFullScreen,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = {
@@ -83,6 +89,7 @@ fun WantedBackTopAppBar(
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -98,13 +105,25 @@ fun WantedTopAppBar(
         }
     }
 
+    val layoutModifier = if (isFullScreen) {
+        Modifier.padding(top = getStatusBarHeight().pxToDp())
+    } else {
+        Modifier
+    }
+
     Surface(
-        elevation = elevation.intValue.dp
+        modifier = modifier,
+        elevation = elevation.intValue.dp,
+        color = if (type == TopAppBarType.Floating) {
+            Color.Transparent
+        } else {
+            colorResource(id = R.color.background_normal_normal)
+        }
     ) {
         when (type) {
             TopAppBarType.Normal -> {
                 WantedTopAppBarLayout(
-                    modifier = modifier.background(colorResource(id = R.color.background_normal_normal)),
+                    modifier = layoutModifier,
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
@@ -113,7 +132,7 @@ fun WantedTopAppBar(
 
             TopAppBarType.Floating -> {
                 WantedTopAppBarLayout(
-                    modifier = modifier.background(Color.Transparent),
+                    modifier = layoutModifier,
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
@@ -122,7 +141,7 @@ fun WantedTopAppBar(
 
             TopAppBarType.Extended -> {
                 WantedExtendedTopAppBarLayout(
-                    modifier = modifier.background(Color.Transparent),
+                    modifier = layoutModifier,
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
