@@ -18,19 +18,19 @@ fun WantedButton(
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
     isClickOnce: Boolean = true,
-    onClick: (() -> Unit)? = null
+    onClick: () -> Unit = {}
 ) {
 
     when (buttonShape) {
         ButtonShape.SOLID -> {
-            WantedSolidButton(
+            NewWantedSolidButton(
                 modifier = modifier,
                 text = text,
+                type = type,
                 size = size,
                 status = status,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
-                isClickOnce = isClickOnce,
                 clickListener = onClick,
             )
         }

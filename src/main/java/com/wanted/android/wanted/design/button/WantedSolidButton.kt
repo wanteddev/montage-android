@@ -130,7 +130,7 @@ fun NewWantedSolidButton(
     status: ButtonStatus = ButtonStatus.ENABLE,
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
-    clickListener: () -> Unit = {},
+    clickListener: () -> Unit = {}
 ) {
     val textColor = remember(status) {
         if (status == ButtonStatus.ENABLE) {
