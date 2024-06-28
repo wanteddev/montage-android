@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.topbar
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -202,7 +203,6 @@ private fun CustomTopAppBarPreview() {
             Box(Modifier.background(Color.DarkGray)) {
                 WantedTopAppBar(
                     type = TopAppBarType.Floating,
-                    title = "title",
                     actions = {
 
                     }
@@ -223,7 +223,6 @@ private fun CustomTopAppBarPreview() {
             Box(Modifier.background(Color.DarkGray)) {
                 WantedBackTopAppBar(
                     type = TopAppBarType.Floating,
-                    title = "title",
                     actions = {
                         WantedTopAppBarIconButton(
                             type = TopAppBarType.Floating,
