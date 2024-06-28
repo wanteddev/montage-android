@@ -3,22 +3,14 @@ package com.wanted.android.wanted.design.button
 import android.content.Context
 import android.util.AttributeSet
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,13 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,13 +34,9 @@ import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
-import com.wanted.android.wanted.design.util.getButtonHeight
-import com.wanted.android.wanted.design.util.getButtonHorizontalPadding
 import com.wanted.android.wanted.design.util.getButtonRadius
-import com.wanted.android.wanted.design.util.getButtonSpaceBetweenTextAndIcon
 import com.wanted.android.wanted.design.util.getButtonTypography
 import com.wanted.android.wanted.design.util.getButtonWidth
-import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
  *
@@ -126,7 +110,6 @@ class WantedOutlinedButton @JvmOverloads constructor(
             status = buttonStatus,
             leftDrawable = if (leftDrawable != 0) leftDrawable else null,
             rightDrawable = if (rightDrawable != 0) rightDrawable else null,
-            isClickOnce = isClickOnce,
             clickListener = onClickListener
         )
     }
@@ -134,9 +117,9 @@ class WantedOutlinedButton @JvmOverloads constructor(
 
 
 @Composable
-fun NewWantedOutlinedButton(
+fun WantedOutlinedButton(
     modifier: Modifier = Modifier,
-    text: String,
+    text: String = "",
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     status: ButtonStatus = ButtonStatus.ENABLE,
@@ -170,16 +153,18 @@ fun NewWantedOutlinedButton(
                 )
             }
         },
-        text = {
-            Text(
-                text = text,
-                modifier = Modifier.wrapContentHeight(),
-                style = getButtonTypography(shape = ButtonShape.OUTLINED, type, size = size),
-                color = colorResource(id = textColor),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
+        text = if (text.isNotEmpty()) {
+            {
+                Text(
+                    text = text,
+                    modifier = Modifier.wrapContentHeight(),
+                    style = getButtonTypography(shape = ButtonShape.OUTLINED, type, size = size),
+                    color = colorResource(id = textColor),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        } else null,
         rightDrawable = rightDrawable?.let {
             {
                 WantedButtonSideIcon(
@@ -192,113 +177,6 @@ fun NewWantedOutlinedButton(
         clickListener = clickListener
     )
 }
-
-
-@Composable
-fun WantedOutlinedButton(
-    modifier: Modifier = Modifier.wrapContentWidth(align = Alignment.CenterHorizontally),
-    text: String,
-    type: ButtonType = ButtonType.PRIMARY,
-    size: ButtonSize = ButtonSize.LARGE,
-    status: ButtonStatus = ButtonStatus.ENABLE,
-    leftDrawable: Int? = null,
-    rightDrawable: Int? = null,
-    isClickOnce: Boolean = true,
-    clickListener: (() -> Unit)? = null,
-) {
-    val disableTextColor = R.color.label_disable
-
-    Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, size)))
-            .border(
-                BorderStroke(1.dp, getStrokeColor(status, type)),
-                RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, size))
-            )
-            .height(getButtonHeight(ButtonShape.OUTLINED, size))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = if (status == ButtonStatus.ENABLE) wantedRippleEffect() else null,
-                onClick = {
-                    if (status == ButtonStatus.ENABLE) {
-                        if (isClickOnce) {
-                            clickListener?.clickOnceForDesignSystem()
-                        } else {
-                            clickListener?.invoke()
-                        }
-                    }
-                }
-            )
-            .padding(horizontal = getButtonHorizontalPadding(ButtonShape.OUTLINED, size)),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        leftDrawable?.let {
-            Image(
-                painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, size),
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight,
-                colorFilter = ColorFilter.tint(
-                    color = colorResource(
-                        id = if (status == ButtonStatus.ENABLE) {
-                            getEnableTextColor(type)
-                        } else disableTextColor
-                    )
-                )
-            )
-            Spacer(
-                modifier = Modifier.width(
-                    getButtonSpaceBetweenTextAndIcon(
-                        ButtonShape.OUTLINED,
-                        size
-                    )
-                )
-            )
-        }
-        Text(
-            text = text,
-            modifier = Modifier
-                .wrapContentHeight(),
-            style = getButtonTypography(ButtonShape.OUTLINED, type, size),
-            color = if (status == ButtonStatus.ENABLE) {
-                colorResource(id = getEnableTextColor(type))
-            } else colorResource(id = disableTextColor),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        rightDrawable?.let {
-            Spacer(
-                modifier = Modifier.width(
-                    getButtonSpaceBetweenTextAndIcon(
-                        ButtonShape.OUTLINED,
-                        size
-                    )
-                )
-            )
-            Image(
-                painter = painterResource(id = it),
-                modifier = getButtonDrawableSize(ButtonShape.OUTLINED, size),
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight,
-                colorFilter = ColorFilter.tint(
-                    color = colorResource(
-                        id = if (status == ButtonStatus.ENABLE) {
-                            getEnableTextColor(type)
-                        } else disableTextColor
-                    )
-                )
-            )
-        }
-    }
-}
-
-@Composable
-private fun getEnableTextColor(type: ButtonType): Int =
-    when (type) {
-        ButtonType.ASSISTIVE -> R.color.label_normal
-        else -> R.color.primary_normal
-    }
 
 @Composable
 private fun getStrokeColor(status: ButtonStatus, type: ButtonType): Color = colorResource(
@@ -352,6 +230,37 @@ fun PreviewOutlinedButtons() {
 
 @Preview
 @Composable
+fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedOutlinedButton(
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+
+        WantedOutlinedButton(
+            text = "",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_fill_svg
+        )
+
+        WantedOutlinedButton(
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+    }
+}
+
+@Preview
+@Composable
 fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
@@ -365,8 +274,9 @@ fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
             modifier = Modifier.wrapContentSize()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize()
         )
@@ -389,8 +299,9 @@ fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
             leftDrawable = R.drawable.ic_normal_bookmark_svg
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg
@@ -414,8 +325,9 @@ fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             rightDrawable = R.drawable.ic_normal_heart_svg
@@ -440,8 +352,9 @@ fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg,
@@ -465,8 +378,9 @@ fun PreviewWantedOutlinedButtonMediumEnable() {
             modifier = Modifier.wrapContentSize()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.MEDIUM,
             modifier = Modifier.wrapContentSize()
         )
@@ -488,8 +402,9 @@ fun PreviewWantedOutlinedButtonLargeEnable() {
             modifier = Modifier.wrapContentSize()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
             modifier = Modifier.wrapContentSize()
         )
@@ -511,8 +426,9 @@ fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
             modifier = Modifier.fillMaxWidth()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
             modifier = Modifier.fillMaxWidth()
         )
@@ -535,8 +451,9 @@ fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
             modifier = Modifier.wrapContentSize()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             status = ButtonStatus.DISABLE,
             modifier = Modifier.wrapContentSize()
@@ -561,8 +478,9 @@ fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
             leftDrawable = R.drawable.ic_normal_bookmark_svg
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             status = ButtonStatus.DISABLE,
             modifier = Modifier.wrapContentSize(),
@@ -588,8 +506,9 @@ fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             status = ButtonStatus.DISABLE,
             modifier = Modifier.wrapContentSize(),
@@ -616,9 +535,10 @@ fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
             size = ButtonSize.SMALL,
+            type = ButtonType.ASSISTIVE,
             status = ButtonStatus.DISABLE,
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg,
@@ -643,8 +563,9 @@ fun PreviewWantedOutlinedButtonMediumDisable() {
             modifier = Modifier.wrapContentSize()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.MEDIUM,
             status = ButtonStatus.DISABLE,
             modifier = Modifier.wrapContentSize()
@@ -668,8 +589,9 @@ fun PreviewWantedOutlinedButtonLargeDisable() {
             modifier = Modifier.wrapContentSize()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
             status = ButtonStatus.DISABLE,
             modifier = Modifier.wrapContentSize()
@@ -693,8 +615,9 @@ fun PreviewWantedOutlinedButtonLargeMaxWidthDisable() {
             modifier = Modifier.fillMaxWidth()
         )
 
-        NewWantedOutlinedButton(
+        WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
             status = ButtonStatus.DISABLE,
             modifier = Modifier.fillMaxWidth()

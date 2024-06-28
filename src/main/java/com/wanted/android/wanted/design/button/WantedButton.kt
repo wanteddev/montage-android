@@ -17,13 +17,12 @@ fun WantedButton(
     status: ButtonStatus = ButtonStatus.ENABLE,
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
-    isClickOnce: Boolean = true,
     onClick: () -> Unit = {}
 ) {
 
     when (buttonShape) {
         ButtonShape.SOLID -> {
-            NewWantedSolidButton(
+            WantedSolidButton(
                 modifier = modifier,
                 text = text,
                 type = type,
@@ -36,7 +35,7 @@ fun WantedButton(
         }
 
         ButtonShape.OUTLINED -> {
-            NewWantedSolidButton(
+            WantedOutlinedButton(
                 modifier = modifier,
                 text = text,
                 size = size,
@@ -49,7 +48,7 @@ fun WantedButton(
         }
 
         ButtonShape.TEXT -> {
-            WantedTextButton(
+            NewWantedTextButton(
                 modifier = modifier,
                 text = text,
                 size = size,
@@ -57,7 +56,6 @@ fun WantedButton(
                 status = status,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
-                isClickOnce = isClickOnce,
                 clickListener = onClick,
             )
         }
