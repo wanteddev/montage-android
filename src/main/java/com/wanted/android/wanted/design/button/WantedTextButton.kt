@@ -178,7 +178,7 @@ fun WantedTextButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(ButtonShape.TEXT, size),
+            style = getButtonTypography(ButtonShape.TEXT, type, size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = getEnableTextColor(type))
             } else colorResource(id = disableTextColor),

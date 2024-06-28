@@ -36,7 +36,7 @@ fun WantedButton(
         }
 
         ButtonShape.OUTLINED -> {
-            WantedOutlinedButton(
+            NewWantedSolidButton(
                 modifier = modifier,
                 text = text,
                 size = size,
@@ -44,7 +44,6 @@ fun WantedButton(
                 status = status,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
-                isClickOnce = isClickOnce,
                 clickListener = onClick,
             )
         }

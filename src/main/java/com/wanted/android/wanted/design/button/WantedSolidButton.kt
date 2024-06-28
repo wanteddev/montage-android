@@ -132,27 +132,19 @@ fun NewWantedSolidButton(
     rightDrawable: Int? = null,
     clickListener: () -> Unit = {}
 ) {
-    val textColor = remember(status) {
-        if (status == ButtonStatus.ENABLE) {
-            if (type == ButtonType.ASSISTIVE) {
-                R.color.label_neutral
-            } else {
-                R.color.static_white
-            }
-        } else {
-            R.color.label_assistive
+    val textColor = remember(status, type) {
+        when {
+            status != ButtonStatus.ENABLE -> R.color.label_assistive
+            type == ButtonType.ASSISTIVE -> R.color.label_neutral
+            else -> R.color.static_white
         }
     }
 
-    val backgroundColor = remember(status) {
-        if (status == ButtonStatus.ENABLE) {
-            if (type == ButtonType.ASSISTIVE) {
-                R.color.fill_normal
-            } else {
-                R.color.primary_normal
-            }
-        } else {
-            R.color.interaction_disable
+    val backgroundColor = remember(status, type) {
+        when {
+            status != ButtonStatus.ENABLE -> R.color.interaction_disable
+            type == ButtonType.ASSISTIVE -> R.color.fill_normal
+            else -> R.color.primary_normal
         }
     }
 
@@ -178,7 +170,7 @@ fun NewWantedSolidButton(
                 text = text,
                 modifier = Modifier
                     .wrapContentHeight(),
-                style = getButtonTypography(shape = ButtonShape.SOLID, size = size),
+                style = getButtonTypography(shape = ButtonShape.SOLID, type, size = size),
                 color = colorResource(id = textColor),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -270,7 +262,7 @@ fun WantedSolidButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(shape = ButtonShape.SOLID, size = size),
+            style = getButtonTypography(shape = ButtonShape.SOLID, ButtonType.PRIMARY, size = size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = enableTextColor)
             } else colorResource(id = disableTextColor),
