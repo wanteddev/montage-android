@@ -31,15 +31,15 @@ import com.wanted.android.wanted.design.util.ButtonType
 
 
 @Composable
-fun WantedDialogThreeButtonImpl(
+fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
     modalSize: ModalSize,
     topBar: @Composable (() -> Unit)? = null,
+    positiveButtonType: ButtonType = ButtonType.PRIMARY,
+    negativeButtonType: ButtonType = ButtonType.ASSISTIVE,
     positive: String? = null,
-    natural: String? = null,
     negative: String? = null,
     onClickPositive: (() -> Unit)? = null,
-    onClickNatural: (() -> Unit)? = null,
     onClickNegative: (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -66,17 +66,6 @@ fun WantedDialogThreeButtonImpl(
                         text = positive.orEmpty(),
                         clickListener = {
                             onClickPositive()
-                        }
-                    )
-                }
-
-                onClickNatural?.let {
-                    WantedOutlinedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = natural.orEmpty(),
-                        type = ButtonType.ASSISTIVE,
-                        clickListener = {
-                            onClickNatural()
                         }
                     )
                 }
@@ -108,7 +97,7 @@ private fun WantedDialogPreview() {
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",
@@ -117,7 +106,7 @@ private fun WantedDialogPreview() {
                 Text(text = "다이얼로그 내용")
             }
 
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",
@@ -129,14 +118,12 @@ private fun WantedDialogPreview() {
                 Text(text = "다이얼로그 내용")
             }
 
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",
-                natural = "중립",
                 negative = "취소",
                 onClickPositive = {},
-                onClickNatural = {},
                 onClickNegative = {},
             ) {
 
@@ -157,7 +144,7 @@ private fun WantedDialogSizePreview() {
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Small,
                 positive = "확인",
@@ -166,7 +153,7 @@ private fun WantedDialogSizePreview() {
                 Text(text = "다이얼로그 내용")
             }
 
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",
@@ -176,7 +163,7 @@ private fun WantedDialogSizePreview() {
                 Text(text = "다이얼로그 내용")
             }
 
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Medium,
                 positive = "확인",
@@ -186,7 +173,7 @@ private fun WantedDialogSizePreview() {
                 Text(text = "다이얼로그 내용")
             }
 
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Large,
                 positive = "확인",
@@ -211,7 +198,7 @@ private fun WantedDialogScrollablePreview() {
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",
@@ -242,7 +229,7 @@ private fun WantedDialogTopBarPreview() {
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",
@@ -256,7 +243,7 @@ private fun WantedDialogTopBarPreview() {
                 Text(text = "다이얼로그 내용")
             }
 
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",
@@ -277,7 +264,7 @@ private fun WantedDialogTopBarPreview() {
                 Text(text = "다이얼로그 내용")
             }
 
-            WantedDialogThreeButtonImpl(
+            WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Normal,
                 positive = "확인",

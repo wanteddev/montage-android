@@ -2,7 +2,6 @@ package com.wanted.android.wanted.design.button
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -27,15 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.button.view.WantedButtonLayout
+import com.wanted.android.wanted.design.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
@@ -123,6 +121,73 @@ class WantedSolidButton @JvmOverloads constructor(
 }
 
 @Composable
+fun NewWantedSolidButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    size: ButtonSize = ButtonSize.LARGE,
+    status: ButtonStatus = ButtonStatus.ENABLE,
+    leftDrawable: Int? = null,
+    rightDrawable: Int? = null,
+    clickListener: () -> Unit = {},
+) {
+    val textColor = remember(status) {
+        if (status == ButtonStatus.ENABLE) {
+            R.color.static_white
+        } else {
+            R.color.label_assistive
+        }
+    }
+    val backgroundColor = remember(status) {
+        if (status == ButtonStatus.ENABLE) {
+            R.color.primary_normal
+        } else {
+            R.color.interaction_disable
+        }
+    }
+
+    WantedButtonLayout(
+        modifier = modifier.background(
+            colorResource(id = backgroundColor),
+            RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size))
+        ),
+        buttonShape = ButtonShape.SOLID,
+        buttonSize = size,
+        isEnable = status == ButtonStatus.ENABLE,
+        leftDrawable = leftDrawable?.let {
+            {
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
+                    drawableRes = it,
+                    tint = colorResource(id = textColor)
+                )
+            }
+        },
+        text = {
+            Text(
+                text = text,
+                modifier = Modifier
+                    .wrapContentHeight(),
+                style = getButtonTypography(shape = ButtonShape.SOLID, size = size),
+                color = colorResource(id = textColor),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        rightDrawable = rightDrawable?.let {
+            {
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
+                    drawableRes = it,
+                    tint = colorResource(id = textColor)
+                )
+            }
+        },
+        clickListener = clickListener
+    )
+}
+
+
+@Composable
 fun WantedSolidButton(
     text: String,
     size: ButtonSize = ButtonSize.LARGE,
@@ -171,19 +236,16 @@ fun WantedSolidButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         leftDrawable?.let {
-            Image(
-                painter = painterResource(id = it),
+            WantedButtonSideIcon(
                 modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight,
-                colorFilter = ColorFilter.tint(
-                    color = colorResource(
-                        id = if (status == ButtonStatus.ENABLE) {
-                            enableTextColor
-                        } else disableTextColor
-                    )
+                drawableRes = it,
+                tint = colorResource(
+                    id = if (status == ButtonStatus.ENABLE) {
+                        enableTextColor
+                    } else disableTextColor
                 )
             )
+
             Spacer(
                 modifier = Modifier.width(
                     getButtonSpaceBetweenTextAndIcon(
@@ -213,22 +275,20 @@ fun WantedSolidButton(
                     )
                 )
             )
-            Image(
-                painter = painterResource(id = it),
+
+            WantedButtonSideIcon(
                 modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight,
-                colorFilter = ColorFilter.tint(
-                    color = colorResource(
-                        id = if (status == ButtonStatus.ENABLE) {
-                            enableTextColor
-                        } else disableTextColor
-                    )
+                drawableRes = it,
+                tint = colorResource(
+                    id = if (status == ButtonStatus.ENABLE) {
+                        enableTextColor
+                    } else disableTextColor
                 )
             )
         }
     }
 }
+
 
 @Preview
 @Composable
@@ -274,154 +334,318 @@ fun PreviewSolidButtons() {
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallNoDrawableEnable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallLeftDrawableEnable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+    }
+
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallRightDrawableEnable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize(),
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallTwoDrawablesEnable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg,
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonMediumEnable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.MEDIUM,
-        modifier = Modifier.wrapContentSize()
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonLargeEnable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        modifier = Modifier.wrapContentSize()
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonLargeMaxWidthEnable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        modifier = Modifier.fillMaxWidth()
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallNoDrawableDisable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallLeftDrawableDisable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize(),
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg,
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonMediumDisable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.MEDIUM,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize()
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonLargeDisable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize()
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedSolidButtonLargeMaxWidthDisable() {
-    WantedSolidButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.fillMaxWidth()
-    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        NewWantedSolidButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
