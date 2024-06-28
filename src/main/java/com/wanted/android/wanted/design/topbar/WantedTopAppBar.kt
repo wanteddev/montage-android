@@ -1,12 +1,12 @@
 package com.wanted.android.wanted.design.topbar
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +27,8 @@ import com.wanted.android.wanted.design.topbar.WantedTopAppBarContract.TopAppBar
 import com.wanted.android.wanted.design.topbar.view.WantedExtendedTopAppBarLayout
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
+import com.wanted.android.wanted.design.util.getStatusBarHeight
+import com.wanted.android.wanted.design.util.pxToDp
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
@@ -35,6 +37,7 @@ import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
@@ -60,7 +63,7 @@ fun WantedTopAppBar(
     } else {
         WantedTopAppBar(
             modifier = modifier,
-            type = type,
+            isFullScreen = isFullScreen,type = type,
             scrollableState = scrollableState,
             navigationIcon = navigationIcon,
             title = {
@@ -78,6 +81,7 @@ fun WantedTopAppBar(
 @Composable
 fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -86,6 +90,7 @@ fun WantedBackTopAppBar(
 ) {
     WantedTopAppBar(
         modifier = modifier,
+        isFullScreen = isFullScreen,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = {
@@ -103,6 +108,7 @@ fun WantedBackTopAppBar(
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -118,6 +124,12 @@ fun WantedTopAppBar(
         }
     }
 
+    val layoutModifier = if (isFullScreen) {
+        Modifier.padding(top = getStatusBarHeight().pxToDp())
+    } else {
+        Modifier
+    }
+
     Surface(
         modifier = modifier,
         elevation = elevation.intValue.dp,
@@ -128,21 +140,33 @@ fun WantedTopAppBar(
         }
     ) {
         when (type) {
-            TopAppBarType.Extended -> {
-                WantedExtendedTopAppBarLayout(
+            TopAppBarType.Normal -> {
+                WantedTopAppBarLayout(
+                    modifier = layoutModifier,
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
                 )
             }
 
-            else -> {
-                WantedTopAppBarLayout(
+            TopAppBarType.Extended -> {
+                WantedExtendedTopAppBarLayout(
+                    modifier = layoutModifier,
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
                 )
             }
+            else -> {
+                WantedTopAppBarLayout(
+                    modifier = layoutModifier,
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
+            }
+
+
         }
     }
 }
