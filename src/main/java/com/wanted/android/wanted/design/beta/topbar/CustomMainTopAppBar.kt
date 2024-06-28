@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.topbar.WantedTopAppBar
+import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
@@ -90,16 +91,16 @@ private fun CustomTopAppBarPreview() {
     DesignSystemTheme {
         Scaffold(
             topBar = {
-                CustomTopAppBar(
+                WantedTopAppBar(
                     navigationIcon = {
-                        TopAppBarIconButton(
+                        WantedTopAppBarIconButton(
                             painter = painterResource(id = R.drawable.icon_1_line_arrow_left_12),
                             onClick = {}
                         )
                     },
-                    title = { Text(text = "타이틀") },
+                    title = "타이틀",
                     actions = {
-                        TopAppBarIconButton(
+                        WantedTopAppBarIconButton(
                             modifier = Modifier,
                             painter = painterResource(id = R.drawable.button_search_line_12dp_svg),
                             onClick = {}
