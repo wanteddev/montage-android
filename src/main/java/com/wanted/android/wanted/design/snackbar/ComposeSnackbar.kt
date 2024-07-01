@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Snackbar
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,9 +38,10 @@ fun DefaultSnackBar(
             .fillMaxWidth()
             .wrapContentHeight()
             .clip(RoundedCornerShape(8.dp)),
-        backgroundColor = colorResource(id = R.color.inverse_background),
+        containerColor = colorResource(id = R.color.inverse_background),
         contentColor = colorResource(id = R.color.inverse_label),
-        elevation = 6.dp,
+//        elevation = 6.dp,
+        // _SMY : material3
     ) {
         content()
     }
