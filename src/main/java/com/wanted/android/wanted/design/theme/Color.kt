@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.theme
 
-import androidx.compose.material.Colors
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -312,21 +313,33 @@ class WantedColors(
         materialDimmer = other.materialDimmer
     }
 
-    fun getColor(isDarkTheme: Boolean) = Colors(
-        primary = primaryNormal,
-        primaryVariant = primaryHeavy,
-        secondary = primaryNormal,
-        secondaryVariant = primaryHeavy,
-        background = backgroundNormalNormal,
-        surface = backgroundNormalNormal,
-        error = backgroundNormalNormal,
-        onPrimary = labelNormal,
-        onSecondary = labelNormal,
-        onBackground = labelNormal,
-        onSurface = labelNormal,
-        onError = statusNegative,
-        isLight = !isDarkTheme
-    )
+    fun getColor(isDarkTheme: Boolean) = if (isDarkTheme) {
+        darkColorScheme(
+            primary = primaryNormal,
+            secondary = primaryNormal,
+            background = backgroundNormalNormal,
+            surface = backgroundNormalNormal,
+            error = backgroundNormalNormal,
+            onPrimary = labelNormal,
+            onSecondary = labelNormal,
+            onBackground = labelNormal,
+            onSurface = labelNormal,
+            onError = statusNegative,
+        )
+    } else {
+        lightColorScheme(
+            primary = primaryNormal,
+            secondary = primaryNormal,
+            background = backgroundNormalNormal,
+            surface = backgroundNormalNormal,
+            error = backgroundNormalNormal,
+            onPrimary = labelNormal,
+            onSecondary = labelNormal,
+            onBackground = labelNormal,
+            onSurface = labelNormal,
+            onError = statusNegative
+        )
+    }
 }
 
 // preview

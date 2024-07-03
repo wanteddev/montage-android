@@ -10,11 +10,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.triStateToggleable
-import androidx.compose.material.CheckboxColors
-import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 enum class CheckBoxSize {
     NORMAL, SMALL
@@ -174,7 +174,7 @@ private fun RoundCheckboxImpl(
 )
 @Composable
 private fun CertificationAuthInputScreenPreview() {
-    MaterialTheme {
+    DesignSystemTheme {
         Surface {
             Column {
                 WantedRoundCheckBox(
