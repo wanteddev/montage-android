@@ -7,6 +7,9 @@ import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.ButtonType
 
+/**
+ * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40142&m=dev
+ */
 @Composable
 fun WantedButton(
     modifier: Modifier = Modifier,
