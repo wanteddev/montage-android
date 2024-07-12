@@ -28,6 +28,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
+import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonHeight
 import com.wanted.android.wanted.design.util.getButtonHorizontalPadding
@@ -110,7 +111,7 @@ fun WantedCustomSolidButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(shape = ButtonShape.SOLID, size = size),
+            style = getButtonTypography(shape = ButtonShape.SOLID, ButtonType.PRIMARY, size = size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = enableTextColor)
             } else colorResource(id = disableTextColor),

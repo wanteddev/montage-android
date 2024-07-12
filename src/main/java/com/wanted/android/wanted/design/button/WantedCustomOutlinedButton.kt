@@ -31,6 +31,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
+import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonHeight
 import com.wanted.android.wanted.design.util.getButtonHorizontalPadding
@@ -137,7 +138,7 @@ fun WantedCustomOutlinedButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(ButtonShape.OUTLINED, size),
+            style = getButtonTypography(ButtonShape.OUTLINED, ButtonType.PRIMARY, size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = enableTextColor)
             } else colorResource(id = disableTextColor),

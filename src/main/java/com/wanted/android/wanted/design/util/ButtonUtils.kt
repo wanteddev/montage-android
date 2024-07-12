@@ -86,26 +86,29 @@ internal fun getButtonSpaceBetweenTextAndIcon(
 @Composable
 internal fun getButtonTypography(
     shape: ButtonShape,
+    type: ButtonType,
     size: ButtonSize
 ): TextStyle =
     getTextStyle(
         textStyle =
         when (shape) {
-            ButtonShape.SOLID -> when (size) {
-                ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
-                ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
-                ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
-            }
-
-            ButtonShape.OUTLINED -> when (size) {
-                ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
-                ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
-                ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
-            }
-
             ButtonShape.TEXT -> when (size) {
                 ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
                 else -> WantedTextStyle.BODY1_BOLD
+            }
+
+            else -> if (type == ButtonType.ASSISTIVE) {
+                when (size) {
+                    ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
+                    ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
+                    ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
+                }
+            } else {
+                when (size) {
+                    ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
+                    ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
+                    ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                }
             }
         }
     )
