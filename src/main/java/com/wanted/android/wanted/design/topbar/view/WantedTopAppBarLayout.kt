@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.Text
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,8 +41,8 @@ internal fun WantedTopAppBarLayout(
         modifier = modifier
             .fillMaxWidth()
             .defaultMinSize(minHeight = 56.dp)
-            .height(IntrinsicSize.Min)
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
         navigationIcon?.let {
@@ -88,7 +88,6 @@ internal fun WantedTopAppBarLayout(
         }
     }
 }
-
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")

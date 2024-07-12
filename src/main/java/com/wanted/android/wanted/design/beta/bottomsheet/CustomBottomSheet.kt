@@ -28,15 +28,16 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,18 +56,51 @@ import androidx.compose.ui.util.fastMaxBy
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedSolidButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.theme.DesignSystemBottomSheetTheme
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun CustomBottomSheet(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
+    setStatusBarColor: Boolean = true,
     backgroundColor: Color = colorResource(id = R.color.background_normal_normal),
+    content: @Composable () -> Unit,
+    onDismissRequest: () -> Unit,
+    onDismissed: (() -> Unit)? = null
+) {
+    val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
+    val dialogVisibility: MutableState<Boolean> = remember { mutableStateOf(false) }
+
+    DesignSystemBottomSheetTheme(
+        isVisible = isVisible,
+        setStatusBarColor = setStatusBarColor,
+        coroutineScope = rememberCoroutineScope()
+    ) {
+        CustomBottomSheetImpl(
+            modifier = modifier,
+            visibleState = visibleState,
+            dialogVisibility = dialogVisibility,
+            isVisible = isVisible,
+            backgroundColor = backgroundColor,
+            content = content,
+            onDismissRequest = onDismissRequest,
+            onDismissed = onDismissed
+        )
+    }
+}
+
+@Composable
+private fun CustomBottomSheetImpl(
+    modifier: Modifier = Modifier,
+    visibleState: MutableTransitionState<Boolean>,
+    dialogVisibility: MutableState<Boolean>,
+    isVisible: Boolean,
+    backgroundColor: Color,
     content: @Composable () -> Unit,
     onDismissRequest: () -> Unit,
     onDismissed: (() -> Unit)? = null
@@ -74,9 +108,6 @@ fun CustomBottomSheet(
     BackHandler(isVisible) {
         onDismissRequest()
     }
-
-    val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
-    val dialogVisibility: MutableState<Boolean> = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = isVisible) {
         if (isVisible) {

@@ -4,10 +4,9 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,78 +23,53 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.topbar.WantedTopAppBarContract.TopAppBarType
-import com.wanted.android.wanted.design.topbar.view.WantedExtendedTopAppBarLayout
+import com.wanted.android.wanted.design.topbar.view.WantedCenterTopAppBarLayout
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
-import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
-import com.wanted.android.wanted.design.util.getStatusBarHeight
-import com.wanted.android.wanted.design.util.pxToDp
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
  * 설명 figma : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1330-37845&t=KJWIkEkkcHKMDAcN-4
  */
 @Composable
-fun WantedTopAppBar(
+private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
-    titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
-    if (titleAlignCenter) {
-        WantedCenterTopAppBar(
-            modifier = modifier,
-            type = type,
-            scrollableState = scrollableState,
-            navigationIcon = navigationIcon,
-            title = {
-                Text(
-                    text = title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            },
-            actions = actions
-        )
-    } else {
-        WantedTopAppBar(
-            modifier = modifier,
-            isFullScreen = isFullScreen,type = type,
-            scrollableState = scrollableState,
-            navigationIcon = navigationIcon,
-            title = {
-                Text(
-                    text = title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            },
-            actions = actions
-        )
-    }
+    WantedCenterTopAppBar(
+        modifier = modifier,
+        type = type,
+        scrollableState = scrollableState,
+        navigationIcon = navigationIcon,
+        title = {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        actions = actions
+    )
 }
 
 @Composable
-fun WantedBackTopAppBar(
+private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null,
     onClickBack: () -> Unit
 ) {
-    WantedTopAppBar(
+    WantedCenterTopAppBar(
         modifier = modifier,
-        isFullScreen = isFullScreen,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = {
             WantedTopAppBarIconButton(
-                type = type,
                 painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
                 onClick = { onClickBack() }
             )
@@ -107,9 +80,8 @@ fun WantedBackTopAppBar(
 }
 
 @Composable
-fun WantedTopAppBar(
+fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -125,25 +97,21 @@ fun WantedTopAppBar(
         }
     }
 
-    val layoutModifier = if (isFullScreen) {
-        Modifier.padding(top = getStatusBarHeight().pxToDp())
-    } else {
-        Modifier
-    }
-
     Surface(
         modifier = modifier,
-        shadowElevation = elevation.intValue.dp,
-        color = if (type == TopAppBarType.Floating) {
-            Color.Transparent
-        } else {
-            colorResource(id = R.color.background_normal_normal)
-        }
+        shadowElevation = elevation.intValue.dp
     ) {
         when (type) {
             TopAppBarType.Normal -> {
-                WantedTopAppBarLayout(
-                    modifier = layoutModifier,
+                WantedCenterTopAppBarLayout(
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
+            }
+
+            TopAppBarType.Floating -> {
+                WantedCenterTopAppBarLayout(
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
@@ -151,25 +119,24 @@ fun WantedTopAppBar(
             }
 
             TopAppBarType.Extended -> {
-                WantedExtendedTopAppBarLayout(
-                    modifier = layoutModifier,
+                WantedExtendedCenterTopAppBarLayout(
                     navigationIcon = navigationIcon,
                     title = title,
                     actions = actions
                 )
             }
-            else -> {
-                WantedTopAppBarLayout(
-                    modifier = layoutModifier,
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-
-
         }
     }
+}
+
+@Composable
+private fun WantedExtendedCenterTopAppBarLayout(
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    title: @Composable (() -> Unit)? = null,
+    actions: @Composable (RowScope.() -> Unit)? = null
+) {
+
 }
 
 
@@ -182,17 +149,22 @@ fun WantedTopAppBar(
     device = Devices.FOLDABLE
 )
 @Composable
-private fun CustomTopAppBarPreview() {
+private fun WantedCenterTopAppBarPreview() {
     DesignSystemTheme {
-
         Column(
-            modifier = Modifier,
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorResource(id = R.color.background_normal_normal)),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            WantedTopAppBar(
-                title = "title",
+            WantedCenterTopAppBar(
+                title = "타이틀",
                 actions = {
+                    WantedTopAppBarIconButton(
+                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        onClick = { }
+                    )
                     WantedTopAppBarIconButton(
                         painter = painterResource(id = R.drawable.ic_normal_share_svg),
                         onClick = { }
@@ -200,55 +172,24 @@ private fun CustomTopAppBarPreview() {
                 }
             )
 
-            Box(Modifier.background(Color.DarkGray)) {
-                WantedTopAppBar(
-                    type = TopAppBarType.Floating,
-                    actions = {
-
-                    }
-                )
-            }
-
-            WantedTopAppBar(
-                type = TopAppBarType.Extended,
-                title = "title",
-                actions = {}
-            )
-
-            WantedBackTopAppBar(
-                title = "title",
-                onClickBack = {}
-            )
-
-            Box(Modifier.background(Color.DarkGray)) {
-                WantedBackTopAppBar(
-                    type = TopAppBarType.Floating,
-                    actions = {
-                        WantedTopAppBarIconButton(
-                            type = TopAppBarType.Floating,
-                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
-                            onClick = { }
-                        )
-                        WantedTopAppBarIconButton(
-                            type = TopAppBarType.Floating,
-                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
-                            onClick = { }
-                        )
-                    },
-                    onClickBack = { }
-                )
-            }
-
-            WantedBackTopAppBar(
-                type = TopAppBarType.Extended,
-                title = "title",
+            WantedCenterTopAppBar(
+                navigationIcon = {
+                    WantedTopAppBarIconButton(
+                        painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
+                        onClick = { }
+                    )
+                },
+                title = "타이틀",
                 actions = {
                     WantedTopAppBarIconButton(
                         painter = painterResource(id = R.drawable.ic_normal_share_svg),
                         onClick = { }
                     )
-                },
-                onClickBack = {}
+                    WantedTopAppBarIconButton(
+                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        onClick = { }
+                    )
+                }
             )
         }
     }
