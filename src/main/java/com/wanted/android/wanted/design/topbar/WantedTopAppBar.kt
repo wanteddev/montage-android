@@ -7,29 +7,42 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.topbar.WantedTopAppBarContract.TopAppBarType
+import com.wanted.android.wanted.design.topbar.view.LocalWantedTopBarIconType
 import com.wanted.android.wanted.design.topbar.view.WantedExtendedTopAppBarLayout
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
 import com.wanted.android.wanted.design.util.getStatusBarHeight
 import com.wanted.android.wanted.design.util.pxToDp
+import kotlin.math.roundToInt
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
@@ -64,7 +77,7 @@ fun WantedTopAppBar(
     } else {
         WantedTopAppBar(
             modifier = modifier,
-            isFullScreen = isFullScreen,type = type,
+            isFullScreen = isFullScreen, type = type,
             scrollableState = scrollableState,
             navigationIcon = navigationIcon,
             title = {
@@ -106,6 +119,93 @@ fun WantedBackTopAppBar(
     )
 }
 
+
+@Composable
+fun WantedCollapsedScrollTopAppBar(
+    modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
+    type: TopAppBarType = TopAppBarType.Normal,
+    scrollableState: ScrollableState? = null,
+    title: @Composable (() -> Unit)? = null,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable (RowScope.() -> Unit)? = null,
+    content: @Composable () -> Unit
+) {
+    val elevation = remember { mutableIntStateOf(0) }
+    LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
+        if (scrollableState?.canScrollBackward == true) {
+            elevation.intValue = 4
+        } else {
+            elevation.intValue = 0
+        }
+    }
+
+
+    val layoutModifier = if (isFullScreen) {
+        Modifier.padding(top = getStatusBarHeight().pxToDp())
+    } else {
+        Modifier
+    }
+
+    val contentHeight = remember { mutableFloatStateOf(0f) }
+    val localDensity = LocalDensity.current
+
+    val topAppBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+
+                val delta = available.y
+                val newOffset = topAppBarOffsetHeightPx.floatValue + delta
+                topAppBarOffsetHeightPx.floatValue =
+                    newOffset.coerceIn(-contentHeight.floatValue, 0f)
+
+                return Offset.Zero
+            }
+        }
+    }
+
+    Surface(
+        modifier = modifier
+            .then(layoutModifier)
+            .nestedScroll(nestedScrollConnection),
+        shadowElevation = elevation.intValue.dp,
+        color = if (type == TopAppBarType.Floating) {
+            Color.Transparent
+        } else {
+            colorResource(id = R.color.background_normal_normal)
+        }
+    ) {
+        Box(
+            modifier = Modifier,
+            contentAlignment = Alignment.TopStart
+        ) {
+            Box(
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        contentHeight.floatValue = coordinates.size.height.toFloat()
+                    }
+                    .offset {
+                        IntOffset(x = 0, y = topAppBarOffsetHeightPx.floatValue.roundToInt())
+                    }
+            ) {
+                content()
+            }
+
+            CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
+                WantedTopAppBarLayout(
+                    modifier = Modifier,
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
+            }
+        }
+    }
+}
+
+
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
@@ -140,34 +240,36 @@ fun WantedTopAppBar(
             colorResource(id = R.color.background_normal_normal)
         }
     ) {
-        when (type) {
-            TopAppBarType.Normal -> {
-                WantedTopAppBarLayout(
-                    modifier = layoutModifier,
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
+        CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
+            when (type) {
+                TopAppBarType.Normal -> {
 
-            TopAppBarType.Extended -> {
-                WantedExtendedTopAppBarLayout(
-                    modifier = layoutModifier,
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-            else -> {
-                WantedTopAppBarLayout(
-                    modifier = layoutModifier,
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
+                    WantedTopAppBarLayout(
+                        modifier = layoutModifier,
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
+                TopAppBarType.Extended -> {
+                    WantedExtendedTopAppBarLayout(
+                        modifier = layoutModifier,
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
+                else -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier,
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+            }
         }
     }
 }
@@ -189,7 +291,6 @@ private fun CustomTopAppBarPreview() {
             modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-
             WantedTopAppBar(
                 title = "title",
                 actions = {
@@ -203,9 +304,7 @@ private fun CustomTopAppBarPreview() {
             Box(Modifier.background(Color.DarkGray)) {
                 WantedTopAppBar(
                     type = TopAppBarType.Floating,
-                    actions = {
-
-                    }
+                    actions = {}
                 )
             }
 
@@ -225,12 +324,10 @@ private fun CustomTopAppBarPreview() {
                     type = TopAppBarType.Floating,
                     actions = {
                         WantedTopAppBarIconButton(
-                            type = TopAppBarType.Floating,
                             painter = painterResource(id = R.drawable.ic_normal_share_svg),
                             onClick = { }
                         )
                         WantedTopAppBarIconButton(
-                            type = TopAppBarType.Floating,
                             painter = painterResource(id = R.drawable.ic_normal_share_svg),
                             onClick = { }
                         )
