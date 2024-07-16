@@ -83,7 +83,7 @@ fun WantedActionArea(
 
 
 @Composable
-fun WantedActionAreaLayout(
+private fun WantedActionAreaLayout(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
     type: ActionAreaType = ActionAreaType.Strong,
@@ -134,7 +134,6 @@ fun WantedActionAreaLayout(
             )
         }
     }
-
 }
 
 @Composable
