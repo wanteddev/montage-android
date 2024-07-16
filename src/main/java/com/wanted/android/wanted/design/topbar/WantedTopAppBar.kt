@@ -62,6 +62,7 @@ fun WantedTopAppBar(
     if (titleAlignCenter) {
         WantedCenterTopAppBar(
             modifier = modifier,
+            isFullScreen = isFullScreen,
             type = type,
             scrollableState = scrollableState,
             navigationIcon = navigationIcon,
@@ -119,93 +120,6 @@ fun WantedBackTopAppBar(
     )
 }
 
-
-@Composable
-fun WantedCollapsedScrollTopAppBar(
-    modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
-    type: TopAppBarType = TopAppBarType.Normal,
-    scrollableState: ScrollableState? = null,
-    title: @Composable (() -> Unit)? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
-    actions: @Composable (RowScope.() -> Unit)? = null,
-    content: @Composable () -> Unit
-) {
-    val elevation = remember { mutableIntStateOf(0) }
-    LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
-        if (scrollableState?.canScrollBackward == true) {
-            elevation.intValue = 4
-        } else {
-            elevation.intValue = 0
-        }
-    }
-
-
-    val layoutModifier = if (isFullScreen) {
-        Modifier.padding(top = getStatusBarHeight().pxToDp())
-    } else {
-        Modifier
-    }
-
-    val contentHeight = remember { mutableFloatStateOf(0f) }
-    val localDensity = LocalDensity.current
-
-    val topAppBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-
-                val delta = available.y
-                val newOffset = topAppBarOffsetHeightPx.floatValue + delta
-                topAppBarOffsetHeightPx.floatValue =
-                    newOffset.coerceIn(-contentHeight.floatValue, 0f)
-
-                return Offset.Zero
-            }
-        }
-    }
-
-    Surface(
-        modifier = modifier
-            .then(layoutModifier)
-            .nestedScroll(nestedScrollConnection),
-        shadowElevation = elevation.intValue.dp,
-        color = if (type == TopAppBarType.Floating) {
-            Color.Transparent
-        } else {
-            colorResource(id = R.color.background_normal_normal)
-        }
-    ) {
-        Box(
-            modifier = Modifier,
-            contentAlignment = Alignment.TopStart
-        ) {
-            Box(
-                modifier = Modifier
-                    .onGloballyPositioned { coordinates ->
-                        contentHeight.floatValue = coordinates.size.height.toFloat()
-                    }
-                    .offset {
-                        IntOffset(x = 0, y = topAppBarOffsetHeightPx.floatValue.roundToInt())
-                    }
-            ) {
-                content()
-            }
-
-            CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
-                WantedTopAppBarLayout(
-                    modifier = Modifier,
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-        }
-    }
-}
-
-
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
@@ -243,7 +157,6 @@ fun WantedTopAppBar(
         CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
             when (type) {
                 TopAppBarType.Normal -> {
-
                     WantedTopAppBarLayout(
                         modifier = layoutModifier,
                         navigationIcon = navigationIcon,
