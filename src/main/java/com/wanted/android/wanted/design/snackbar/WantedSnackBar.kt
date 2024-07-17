@@ -2,16 +2,20 @@ package com.wanted.android.wanted.design.snackbar
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
@@ -27,73 +31,43 @@ import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
+
+/**
+ * https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
+ */
 @Composable
 fun WantedSnackBar(
     modifier: Modifier = Modifier,
     heading: String = "",
     description: String = "",
     buttonText: String = "",
-    isClickOnce: Boolean = true,
-    extraContent: @Composable () -> Unit = {},
-    buttonClickable: () -> Unit = {}
+    extraContent: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = {}
 ) {
     WantedSnackBarLayout(
         modifier = modifier.fillMaxWidth(),
         extraContent = extraContent,
         headingSlot = {
             if (heading.isNotEmpty()) {
-                Text(
-                    text = heading,
-                    style = WantedTextStyle(
-                        colorRes = R.color.inverse_label,
-                        style = DesignSystemTheme.typography.body2Bold
-                    ).copy(
-                        lineHeightStyle = LineHeightStyle(
-                            LineHeightStyle.Alignment.Center,
-                            LineHeightStyle.Trim.None
-                        )
-                    )
-                )
+                Text(text = heading)
             }
         },
         descriptionSlot = {
             if (description.isNotEmpty()) {
-                Text(
-                    text = description,
-                    style = WantedTextStyle(
-                        colorRes = R.color.inverse_label,
-                        style = DesignSystemTheme.typography.label2Regular
-                    ).copy(
-                        lineHeightStyle = LineHeightStyle(
-                            LineHeightStyle.Alignment.Center,
-                            LineHeightStyle.Trim.None
-                        )
-                    )
-                )
+                Text(text = description)
             }
         },
         buttonTextSlot = {
             if (buttonText.isNotEmpty()) {
                 Text(
                     modifier = Modifier
-                        .clickable {
-                            if (isClickOnce) {
-                                buttonClickable.clickOnceForDesignSystem()
-                            } else {
-                                buttonClickable.invoke()
-                            }
-                        }
-                        .padding(horizontal = 2.dp, vertical = 4.dp),
+                        .defaultMinSize(minWidth = 54.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickOnceForDesignSystem { onClick() }
+                        .padding(vertical = 4.dp, horizontal = 7.dp),
+
                     text = buttonText,
-                    style = WantedTextStyle(
-                        colorRes = R.color.background_normal_normal,
-                        style = DesignSystemTheme.typography.body1Bold
-                    ).copy(
-                        lineHeightStyle = LineHeightStyle(
-                            LineHeightStyle.Alignment.Center,
-                            LineHeightStyle.Trim.None
-                        )
-                    )
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -101,37 +75,67 @@ fun WantedSnackBar(
 }
 
 
-/*
-https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
- */
 @Composable
 private fun WantedSnackBarLayout(
     modifier: Modifier = Modifier,
-    extraContent: @Composable () -> Unit = {},
+    extraContent: @Composable (() -> Unit)? = null,
     headingSlot: @Composable (() -> Unit) = {},
     descriptionSlot: @Composable (() -> Unit) = {},
     buttonTextSlot: @Composable (() -> Unit) = {}
 ) {
-    Box(
+    Row(
         modifier = modifier
+            .padding(20.dp)
+            .widthIn(max = 360.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(colorResource(id = R.color.background_normal_normal))
-            .background(colorResource(id = R.color.inverse_background).copy(0.61f))
-            .background(colorResource(id = R.color.primary_normal).copy(0.08f))
-            .padding(horizontal = 16.dp, vertical = 11.dp)
+            .background(colorResource(id = R.color.inverse_background).copy(0.32f))
+            .background(colorResource(id = R.color.primary_normal).copy(0.05f))
+            .padding(start = 16.dp, end = 11.dp)
+            .padding(vertical = 11.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 2.dp, vertical = 5.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+        extraContent?.let {
+            Box(
+                modifier = Modifier.size(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                extraContent()
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 2.dp, vertical = 5.dp),
         ) {
-            extraContent()
-            Column(
-                modifier = Modifier.weight(1f),
+            ProvideTextStyle(
+                value = WantedTextStyle(
+                    colorRes = R.color.static_white,
+                    style = DesignSystemTheme.typography.body2Bold
+                )
             ) {
                 headingSlot()
+            }
+
+            ProvideTextStyle(
+                value = WantedTextStyle(
+                    colorRes = R.color.static_white,
+                    style = DesignSystemTheme.typography.label2Regular
+                )
+            ) {
                 descriptionSlot()
             }
+        }
+
+        Spacer(modifier = Modifier.size(7.dp))
+
+        ProvideTextStyle(
+            value = WantedTextStyle(
+                colorRes = R.color.static_white,
+                style = DesignSystemTheme.typography.body2Bold
+            )
+        ) {
             buttonTextSlot()
         }
     }
@@ -171,8 +175,7 @@ fun WantedSnackBarDescriptionExtraContentPreview() {
                 Icon(
                     contentDescription = "icon",
                     painter = painterResource(id = R.drawable.ic_normal_eye_fill_svg),
-                    modifier = Modifier
-                        .size(32.dp),
+                    modifier = Modifier.fillMaxSize(),
                     tint = colorResource(id = R.color.design_default_color_error)
                 )
             }
