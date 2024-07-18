@@ -3,16 +3,22 @@ package com.wanted.android.wanted.design.toast
 import android.content.res.Configuration
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,13 +26,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
+
+/**
+ *
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-42415&m=dev
+ * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
+ **/
 sealed class WantedToastVariant(
     @DrawableRes val resourceId: Int,
     @ColorRes val tinColor: Int
@@ -37,144 +51,195 @@ sealed class WantedToastVariant(
         R.color.status_positive
     )
 
-    data object ERROR : WantedToastVariant(
+    data object WARNING : WantedToastVariant(
         R.drawable.ic_normal_circle_exclamation_fill_svg,
         R.color.status_cautionary
     )
-
-    data object CUSTOM : WantedToastVariant(-1, -1)
 }
 
 @Composable
 fun WantedToast(
+    @StringRes text: Int,
     modifier: Modifier = Modifier,
     variant: WantedToastVariant = WantedToastVariant.NORMAL,
-    text: String = "",
-    customIconSlot: @Composable () -> Unit = {},
+    @DrawableRes icon: Int? = null,
+    @ColorRes tintColor: Int? = null,
 ) {
-    val iconSlot: @Composable () -> Unit = {
-        when (variant) {
-            WantedToastVariant.NORMAL -> Unit
-            WantedToastVariant.CUSTOM -> customIconSlot()
-            else -> {
-                Box(
-                    contentAlignment = Alignment.Center
-                ) {
+    WantedToast(
+        modifier = modifier,
+        variant = variant,
+        text = stringResource(id = text),
+        icon = icon?.let {
+            {
+                Icon(
+                    contentDescription = "icon",
+                    painter = painterResource(id = icon),
+                    modifier = Modifier.fillMaxSize(),
+                    tint = tintColor?.let {
+                        colorResource(id = tintColor)
+                    } ?: LocalContentColor.current
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun WantedToast(
+    text: String,
+    modifier: Modifier = Modifier,
+    variant: WantedToastVariant = WantedToastVariant.NORMAL,
+    icon: @Composable (() -> Unit)? = null
+) {
+    val iconSlot: @Composable (() -> Unit)? = when (variant) {
+        WantedToastVariant.NORMAL -> {
+            icon?.let {
+                {
                     Box(
-                        modifier = Modifier
-                            .size(11.dp)
-                            .background(colorResource(id = R.color.static_white))
-                    )
-                    Icon(
-                        contentDescription = "icon",
-                        painter = painterResource(id = variant.resourceId),
-                        modifier = Modifier
-                            .size(22.dp),
-                        tint = colorResource(id = variant.tinColor)
-                    )
+                        modifier = Modifier.size(22.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        icon()
+                    }
                 }
             }
         }
-        Spacer(modifier = Modifier.width(8.dp))
+
+        else -> {
+            { WantedToastIcon(variant = variant) }
+        }
     }
-    ToastBasicLayout(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            iconSlot()
+
+    WantedToastLayout(
+        modifier = modifier,
+        icon = iconSlot,
+        content = {
             Text(
-                modifier = Modifier
-                    .padding(horizontal = 2.dp, vertical = 5.dp),
                 text = text,
-                style = WantedTextStyle(
-                    colorRes = R.color.inverse_label,
-                    style = DesignSystemTheme.typography.body2Bold
-                ).copy(
-                    lineHeightStyle = LineHeightStyle(
-                        LineHeightStyle.Alignment.Center,
-                        LineHeightStyle.Trim.None
-                    )
-                ),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2
             )
+        }
+    )
+}
+
+@Composable
+private fun WantedToastIcon(
+    modifier: Modifier = Modifier,
+    variant: WantedToastVariant = WantedToastVariant.NORMAL,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(11.dp)
+                .background(colorResource(id = R.color.static_white))
+        )
+
+        Icon(
+            contentDescription = "icon",
+            painter = painterResource(id = variant.resourceId),
+            modifier = Modifier.size(22.dp),
+            tint = colorResource(id = variant.tinColor)
+        )
+    }
+}
+
+@Composable
+private fun WantedToastLayout(
+    modifier: Modifier = Modifier,
+    icon: @Composable (() -> Unit)? = null,
+    content: @Composable () -> Unit = {}
+) {
+    Row(
+        modifier = modifier
+            .padding(20.dp)
+            .wrapContentHeight()
+            .widthIn(max = 360.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(colorResource(id = R.color.background_normal_normal))
+            .background(colorResource(id = R.color.inverse_background).copy(0.52f))
+            .background(colorResource(id = R.color.primary_normal).copy(0.05f))
+            .padding(horizontal = 16.dp, vertical = 11.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        icon?.invoke()
+
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 2.dp, vertical = 5.dp)
+                .weight(1f)
+                .wrapContentHeight(),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            ProvideTextStyle(
+                value = WantedTextStyle(
+                    colorRes = R.color.static_white,
+                    style = DesignSystemTheme.typography.body2Bold
+                )
+            ) {
+                content()
+            }
         }
     }
 }
 
-/*
-https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
- */
-@Composable
-fun ToastBasicLayout(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit = {}
-) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(id = R.color.background_normal_normal))
-            .background(colorResource(id = R.color.inverse_background).copy(0.61f))
-            .background(colorResource(id = R.color.primary_normal).copy(0.08f))
-            .padding(horizontal = 16.dp, vertical = 11.dp)
-    ) {
-        content()
-    }
-}
-
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
 @Composable
 fun ToastNormalPreview() {
     DesignSystemTheme {
-        WantedToast(
-            variant = WantedToastVariant.NORMAL,
-            text = "메시지에 마침표를 찍어요."
-        )
-    }
-}
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Composable
-fun ToastSuccessPreview() {
-    DesignSystemTheme {
-        WantedToast(
-            variant = WantedToastVariant.SUCCESS,
-            text = "메시지에 마침표를 찍어요."
-        )
-    }
-}
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Composable
-fun ToastErrorPreview() {
-    DesignSystemTheme {
-        WantedToast(
-            variant = WantedToastVariant.ERROR,
-            text = "메시지에 마침표를 찍어요."
-        )
-    }
-}
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Composable
-fun ToastCustomPreview() {
-    DesignSystemTheme {
-        WantedToast(
-            variant = WantedToastVariant.CUSTOM,
-            customIconSlot = {
-                Icon(
-                    contentDescription = "icon",
-                    painter = painterResource(id = R.drawable.ic_normal_eye_fill_svg),
-                    modifier = Modifier
-                        .size(22.dp),
-                    tint = colorResource(id = R.color.design_default_color_error)
+        Surface(Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WantedToast(
+                    variant = WantedToastVariant.NORMAL,
+                    text = "메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요."
                 )
-            },
-            text = "메시지에 마침표를 찍어요."
-        )
+
+                WantedToast(
+                    variant = WantedToastVariant.NORMAL,
+                    text = "메시지에 마침표를 찍어요."
+                )
+
+                WantedToast(
+                    variant = WantedToastVariant.SUCCESS,
+                    text = "메시지에 마침표를 찍어요."
+                )
+
+                WantedToast(
+                    variant = WantedToastVariant.WARNING,
+                    text = "메시지에 마침표를 찍어요."
+                )
+
+                WantedToast(
+                    icon = {
+                        Icon(
+                            contentDescription = "icon",
+                            painter = painterResource(id = R.drawable.ic_normal_eye_fill_svg),
+                            modifier = Modifier
+                                .size(22.dp),
+                            tint = colorResource(id = R.color.design_default_color_error)
+                        )
+                    },
+                    text = "메시지에 마침표를 찍어요."
+                )
+
+                WantedToast(
+                    text = "메시지에 마침표를 찍어요."
+                )
+            }
+        }
     }
 }
