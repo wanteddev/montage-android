@@ -1,7 +1,6 @@
 package com.wanted.android.wanted.design.textfield
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -14,11 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -28,8 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
@@ -47,8 +48,8 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedTextField(
     modifier: Modifier = Modifier,
     value: String,
-    placeholder: String? = null,
-    title: String? = null,
+    placeholder: String = "",
+    title: String = "",
     description: String? = null,
     rightButton: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -66,11 +67,15 @@ fun WantedTextField(
 
     WantedTextFieldLayout(
         modifier = Modifier,
-        title = {
-            WantedTextFieldTitle(
-                title = "askljd hflkjashdhdflkasjhd hflkjashdhdflkasjhdf flkjashdhdflkasjhd",
-                isRequiredBadge = true
-            )
+        title = if (title.isNotEmpty()) {
+            {
+                WantedTextFieldTitle(
+                    title = title,
+                    isRequiredBadge = requiredBadge
+                )
+            }
+        } else {
+            null
         },
         textField = {
             CustomTextField(
@@ -78,35 +83,17 @@ fun WantedTextField(
                 value = value,
                 enabled = enabled,
                 error = error,
-                rightButton = rightButton
+                rightButton = rightButton,
+                placeholder = placeholder,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                rightContent = rightContent
             )
         },
         message = {
 
         }
     )
-//
-//    OutlinedTextField(
-//        modifier = modifier,
-//        shape = RoundedCornerShape(12.dp),
-//        value = value,
-//        enabled = enabled,
-//        placeholder = {
-//            placeholder?.let {
-//                Text(text = it)
-//            }
-//        },
-//        singleLine = true,
-//        leadingIcon = leadingIcon,
-//        trailingIcon = {
-//            if (value.isNotEmpty() && enabled) {
-//            }
-//        },
-//        textStyle = DesignSystemTheme.typography.body1Regular,
-//        keyboardOptions = keyboardOptions,
-//        keyboardActions = keyboardActions,
-//        onValueChange = { onValueChange(it) }
-//    )
 }
 
 @Composable
@@ -150,9 +137,13 @@ private fun WantedTextFieldTitle(
 private fun CustomTextField(
     modifier: Modifier,
     value: String,
+    placeholder: String,
     error: Boolean,
     enabled: Boolean,
-    rightButton: String? = null
+    rightContent: @Composable (() -> Unit)? = null,
+    rightButton: String? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val focused by interactionSource.collectIsFocusedAsState()
@@ -178,7 +169,27 @@ private fun CustomTextField(
                 modifier = Modifier.fillMaxSize(),
                 value = value,
                 interactionSource = interactionSource,
-                onValueChange = {}
+                textStyle = WantedTextStyle(
+                    colorRes = R.color.label_normal,
+                    style = DesignSystemTheme.typography.body1Regular
+                ),
+                onValueChange = {},
+                decorationBox = { innerTextField ->
+                    DecorationBox(
+                        modifier = modifier,
+                        innerTextField = innerTextField,
+                        placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
+                            {
+                                Text(text = placeholder)
+                            }
+                        } else {
+                            null
+                        },
+                        leadingIcon = leadingIcon,
+                        trailingIcon = trailingIcon,
+                        rightContent = rightContent
+                    )
+                }
             )
         },
         rightButton = if (rightButton.isNullOrEmpty()) {
@@ -211,15 +222,78 @@ private fun CustomTextField(
     )
 }
 
+
 @Composable
-fun WantedTextFieldButton(
+private fun DecorationBox(
+    modifier: Modifier = Modifier,
+    innerTextField: @Composable () -> Unit,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    rightContent: @Composable (() -> Unit)? = null
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.Start),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        leadingIcon?.let {
+            Box(
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(1.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                leadingIcon()
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 4.dp)
+                .wrapContentHeight(),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            placeholder?.let {
+                placeholder()
+            } ?: run {
+                innerTextField()
+            }
+        }
+
+        trailingIcon?.let {
+            Box(
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(1.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                trailingIcon()
+            }
+        }
+
+        rightContent?.let {
+            Box(
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(1.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                rightContent()
+            }
+        }
+    }
+}
+
+@Composable
+private fun WantedTextFieldButton(
     modifier: Modifier = Modifier,
     title: String,
     enable: Boolean
 ) {
     Text(
         modifier = modifier
-
             .padding(horizontal = 16.dp)
             .padding(vertical = 12.dp),
         text = title,
@@ -237,60 +311,19 @@ fun WantedTextFieldButton(
 fun CustomTextFieldLayout(
     modifier: Modifier = Modifier,
     textField: @Composable () -> Unit,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null,
     rightButton: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .padding(horizontal = 12.dp)
                 .padding(vertical = 12.dp)
                 .weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            leadingIcon?.let {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(1.dp)
-                ) {
-
-                }
-            }
-
-            Box(
-                Modifier
-                    .background(Color.Yellow)
-                    .fillMaxSize()
-                    .padding(horizontal = 4.dp),
-            ) {
-                textField()
-            }
-
-            trailingIcon?.let {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(1.dp)
-                ) {
-                    trailingIcon()
-                }
-            }
-
-            rightContent?.let {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(1.dp)
-                ) {
-                    rightContent()
-                }
-            }
+            textField()
         }
 
         rightButton?.let {
@@ -308,7 +341,10 @@ private fun WantedTextFieldLayout(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
+        verticalArrangement = Arrangement.spacedBy(
+            space = 8.dp,
+            alignment = Alignment.CenterVertically
+        )
     ) {
         title?.invoke()
 
@@ -343,11 +379,14 @@ private fun CustomTopAppBarPreview() {
                 )
 
                 WantedTextField(
+                    title = "주제",
                     value = "",
                     placeholder = "텍스트를 입력해 주세요."
                 )
 
                 WantedTextField(
+                    title = "주제",
+                    requiredBadge = true,
                     value = "텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
@@ -358,8 +397,47 @@ private fun CustomTopAppBarPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
+
+                WantedTextField(
+                    value = "텍스트를 입력해 주세요.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    leadingIcon = {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            contentDescription = ""
+                        )
+                    }
+                )
+
+                WantedTextField(
+                    value = "텍스트를 입력해 주세요.",
+                    placeholder = "텍스트를 입력해 주세요. ",
+                    rightButton = "텍스트",
+                    leadingIcon = {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            contentDescription = ""
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            contentDescription = ""
+                        )
+                    },
+                    rightContent = {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            contentDescription = ""
+                        )
+                    }
+                )
             }
         }
-
     }
 }
