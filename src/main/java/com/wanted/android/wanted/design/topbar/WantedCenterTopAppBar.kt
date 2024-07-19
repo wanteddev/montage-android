@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -23,8 +25,12 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.topbar.WantedTopAppBarContract.TopAppBarType
+import com.wanted.android.wanted.design.topbar.view.LocalWantedTopBarIconType
 import com.wanted.android.wanted.design.topbar.view.WantedCenterTopAppBarLayout
+import com.wanted.android.wanted.design.topbar.view.WantedExtendedTopAppBarLayout
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
+import com.wanted.android.wanted.design.util.getStatusBarHeight
+import com.wanted.android.wanted.design.util.pxToDp
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
@@ -33,6 +39,7 @@ import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
 @Composable
 private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -41,6 +48,7 @@ private fun WantedCenterTopAppBar(
 ) {
     WantedCenterTopAppBar(
         modifier = modifier,
+        isFullScreen = isFullScreen,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,
@@ -58,6 +66,7 @@ private fun WantedCenterTopAppBar(
 @Composable
 private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -66,6 +75,7 @@ private fun WantedCenterBackTopAppBar(
 ) {
     WantedCenterTopAppBar(
         modifier = modifier,
+        isFullScreen = isFullScreen,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = {
@@ -82,6 +92,7 @@ private fun WantedCenterBackTopAppBar(
 @Composable
 fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -96,47 +107,46 @@ fun WantedCenterTopAppBar(
             elevation.intValue = 0
         }
     }
+    val layoutModifier = if (isFullScreen) {
+        Modifier.padding(top = getStatusBarHeight().pxToDp())
+    } else {
+        Modifier
+    }
 
     Surface(
         modifier = modifier,
         shadowElevation = elevation.intValue.dp
     ) {
-        when (type) {
-            TopAppBarType.Normal -> {
-                WantedCenterTopAppBarLayout(
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
+        CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
+            when (type) {
+                TopAppBarType.Normal -> {
+                    WantedCenterTopAppBarLayout(
+                        modifier = layoutModifier,
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
-            TopAppBarType.Floating -> {
-                WantedCenterTopAppBarLayout(
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
+                TopAppBarType.Extended -> {
+                    WantedExtendedTopAppBarLayout(
+                        modifier = layoutModifier,
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
-            TopAppBarType.Extended -> {
-                WantedExtendedCenterTopAppBarLayout(
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
+                else -> {
+                    WantedCenterTopAppBarLayout(
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
             }
         }
     }
-}
-
-@Composable
-private fun WantedExtendedCenterTopAppBarLayout(
-    modifier: Modifier = Modifier,
-    navigationIcon: @Composable (() -> Unit)? = null,
-    title: @Composable (() -> Unit)? = null,
-    actions: @Composable (RowScope.() -> Unit)? = null
-) {
-
 }
 
 
