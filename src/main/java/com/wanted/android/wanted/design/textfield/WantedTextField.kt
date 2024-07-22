@@ -52,6 +52,7 @@ fun WantedTextField(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
     WantedTextFieldLayout(
@@ -83,6 +84,7 @@ fun WantedTextField(
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
                 rightContent = rightContent,
+                onClickRightButton = onClickRightButton,
                 onValueChange = onValueChange
             )
         },

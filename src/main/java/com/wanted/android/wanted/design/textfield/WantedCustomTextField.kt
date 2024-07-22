@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -54,6 +55,7 @@ internal fun WantedCustomTextField(
     rightButton: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
     WantedCustomTextFieldLayout(
@@ -127,7 +129,7 @@ internal fun WantedCustomTextField(
                         },
                         leadingIcon = leadingIcon,
                         trailingIcon = when {
-                            enabled && error -> {
+                            !focused && enabled && error -> {
                                 {
                                     WantedTextFieldIcon(
                                         modifier = Modifier.fillMaxSize(),
@@ -150,7 +152,10 @@ internal fun WantedCustomTextField(
                             trailingIcon == null && value.isNotEmpty() && enabled -> {
                                 {
                                     WantedTextFieldIcon(
-                                        modifier = Modifier.fillMaxSize(),
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(CircleShape)
+                                            .clickOnceForDesignSystem { onValueChange("") },
                                         resourceId = R.drawable.ic_normal_circle_close_svg,
                                         tint = colorResource(id = R.color.label_alternative)
                                     )
@@ -171,7 +176,7 @@ internal fun WantedCustomTextField(
                 Row(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .clickOnceForDesignSystem(enabled) { },
+                        .clickOnceForDesignSystem(enabled) { onClickRightButton() },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (!enabled || !error && !focused) {
@@ -225,9 +230,9 @@ private fun DecorationBox(
         ) {
             placeholder?.let {
                 placeholder()
-            } ?: run {
-                innerTextField()
             }
+
+            innerTextField()
         }
 
         trailingIcon?.let {
