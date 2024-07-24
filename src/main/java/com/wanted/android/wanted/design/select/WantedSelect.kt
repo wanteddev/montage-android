@@ -34,6 +34,9 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
+/**
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-44983&m=dev
+ */
 @Composable
 fun WantedSelect(
     modifier: Modifier = Modifier,
