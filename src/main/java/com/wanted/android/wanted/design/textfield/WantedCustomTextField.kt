@@ -41,6 +41,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.icon.WantedCommonIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
@@ -84,6 +85,23 @@ internal fun WantedCustomTextField(
         textField = {
             BasicTextField(
                 modifier = Modifier
+                    .border(
+                        shape = RoundedCornerShape(
+                            topStart = 12.dp,
+                            bottomStart = 12.dp,
+                            topEnd = 0.dp,
+                            bottomEnd = 0.dp
+                        ),
+                        color = when {
+                            error || focused -> {
+                                colorResource(id = R.color.background_normal_normal)
+                                    .copy(alpha = OPACITY_43)
+                            }
+
+                            else -> colorResource(R.color.transparent)
+                        },
+                        width = if (focused) 2.dp else 1.dp
+                    )
                     .border(
                         shape = rightButton?.let {
                             RoundedCornerShape(
