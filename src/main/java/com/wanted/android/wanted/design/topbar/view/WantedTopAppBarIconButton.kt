@@ -10,7 +10,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +27,7 @@ import com.wanted.android.wanted.design.topbar.WantedTopAppBarContract.TopAppBar
 @Composable
 fun WantedTopAppBarIconButton(
     modifier: Modifier = Modifier,
-    type: TopAppBarType = TopAppBarType.Normal,
+    type: TopAppBarType = LocalWantedTopBarIconType.current,
     painter: Painter,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -83,3 +85,18 @@ fun WantedTopAppBarIconButton(
         }
     }
 }
+
+
+val LocalWantedTopBarIconType = WantedTopBarIconTypeCompositionLocal()
+
+
+@JvmInline
+value class WantedTopBarIconTypeCompositionLocal internal constructor(
+    private val delegate: ProvidableCompositionLocal<TopAppBarType> = staticCompositionLocalOf { TopAppBarType.Normal }
+) {
+    val current: TopAppBarType
+        @Composable get() = delegate.current
+
+    infix fun provides(value: TopAppBarType) = delegate provides value
+}
+

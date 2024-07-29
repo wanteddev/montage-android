@@ -34,6 +34,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.button.view.WantedButtonLayout
+import com.wanted.android.wanted.design.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
@@ -102,7 +104,7 @@ class WantedTextButton @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        WantedTextButton(
+        NewWantedTextButton(
             text = text,
             modifier = getTextButtonSize(buttonWidth = buttonWidth, buttonHeight = buttonHeight),
             type = buttonType,
@@ -110,10 +112,65 @@ class WantedTextButton @JvmOverloads constructor(
             status = buttonStatus,
             leftDrawable = if (leftDrawable != 0) leftDrawable else null,
             rightDrawable = if (rightDrawable != 0) rightDrawable else null,
-            isClickOnce = isClickOnce,
             clickListener = onClickListener
         )
     }
+}
+
+@Composable
+fun NewWantedTextButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    type: ButtonType = ButtonType.PRIMARY,
+    size: ButtonSize = ButtonSize.LARGE,
+    status: ButtonStatus = ButtonStatus.ENABLE,
+    leftDrawable: Int? = null,
+    rightDrawable: Int? = null,
+    clickListener: () -> Unit = {}
+) {
+    val textColor = remember(status, type) {
+        when {
+            status != ButtonStatus.ENABLE -> R.color.label_disable
+            type == ButtonType.ASSISTIVE -> R.color.label_alternative
+            else -> R.color.primary_normal
+        }
+    }
+
+    WantedButtonLayout(
+        modifier = modifier,
+        buttonShape = ButtonShape.TEXT,
+        buttonSize = size,
+        isEnable = status == ButtonStatus.ENABLE,
+        leftDrawable = leftDrawable?.let {
+            {
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
+                    drawableRes = it,
+                    tint = colorResource(id = textColor)
+                )
+            }
+        },
+        text = {
+            Text(
+                text = text,
+                modifier = Modifier.wrapContentHeight(),
+                style = getButtonTypography(shape = ButtonShape.TEXT, type, size = size),
+                color = colorResource(id = textColor),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        rightDrawable = rightDrawable?.let {
+            {
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
+                    drawableRes = it,
+                    tint = colorResource(id = textColor)
+                )
+            }
+        },
+        clickListener = clickListener
+    )
 }
 
 @Composable
@@ -178,7 +235,7 @@ fun WantedTextButton(
             text = text,
             modifier = Modifier
                 .wrapContentHeight(),
-            style = getButtonTypography(ButtonShape.TEXT, size),
+            style = getButtonTypography(ButtonShape.TEXT, type, size),
             color = if (status == ButtonStatus.ENABLE) {
                 colorResource(id = getEnableTextColor(type))
             } else colorResource(id = disableTextColor),
@@ -262,154 +319,351 @@ fun PreviewTextButtons() {
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallNoDrawableEnable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallRightDrawableEnable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize(),
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg,
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonMediumEnable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.MEDIUM,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonLargeEnable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonLargeMaxWidthEnable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        modifier = Modifier.fillMaxWidth()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallNoDrawableDisable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallRightDrawableDisable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize(),
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.SMALL,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize(),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg,
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonMediumDisable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.MEDIUM,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonLargeDisable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.wrapContentSize()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewWantedTextButtonLargeMaxWidthDisable() {
-    WantedTextButton(
-        text = "Button",
-        size = ButtonSize.LARGE,
-        status = ButtonStatus.DISABLE,
-        modifier = Modifier.fillMaxWidth()
-    )
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            status = ButtonStatus.DISABLE,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }

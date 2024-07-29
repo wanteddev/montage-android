@@ -17,7 +17,6 @@ android {
 
     buildFeatures.run {
         viewBinding = true
-        buildConfig = true
     }
 
     buildTypes.run {
