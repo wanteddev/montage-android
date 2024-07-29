@@ -52,6 +52,67 @@ fun WantedSelect(
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
+    WantedSelectImpl(
+        modifier = modifier,
+        title = title,
+        value = value,
+        isRequiredBadge = isRequiredBadge,
+        error = error,
+        focused = focused,
+        enabled = enabled,
+        onDelete = onDelete,
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        contents = {
+            if (value.isEmpty()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = placeHolder,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = WantedTextStyle(
+                        colorRes = if (enabled) {
+                            R.color.label_alternative
+                        } else {
+                            R.color.label_disable
+                        },
+                        style = DesignSystemTheme.typography.body1Regular
+                    )
+                )
+            } else {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = value,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = WantedTextStyle(
+                        colorRes = if (enabled) {
+                            R.color.label_normal
+                        } else {
+                            R.color.label_disable
+                        },
+                        style = DesignSystemTheme.typography.body1Regular
+                    )
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun WantedSelectImpl(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    value: String,
+    isRequiredBadge: Boolean = false,
+    error: Boolean = false,
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    onDelete: (String) -> Unit,
+    onClick: () -> Unit = {},
+    contents: @Composable () -> Unit,
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
     WantedSelectLayout(
         modifier = modifier,
         title = title?.let {
@@ -105,38 +166,8 @@ fun WantedSelect(
                     }
                     .padding(12.dp),
                 leadingIcon = leadingIcon,
-                text = {
-                    if (value.isEmpty()) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = placeHolder,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = WantedTextStyle(
-                                colorRes = if (enabled) {
-                                    R.color.label_alternative
-                                } else {
-                                    R.color.label_disable
-                                },
-                                style = DesignSystemTheme.typography.body1Regular
-                            )
-                        )
-                    } else {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = value,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = WantedTextStyle(
-                                colorRes = if (enabled) {
-                                    R.color.label_normal
-                                } else {
-                                    R.color.label_disable
-                                },
-                                style = DesignSystemTheme.typography.body1Regular
-                            )
-                        )
-                    }
+                contents = {
+                    contents()
                 },
                 rightButton = {
                     Icon(
@@ -201,7 +232,7 @@ private fun WantedSelectLayout(
 @Composable
 private fun SelectLayout(
     modifier: Modifier = Modifier,
-    text: @Composable () -> Unit,
+    contents: @Composable () -> Unit,
     rightButton: @Composable () -> Unit,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null
@@ -229,7 +260,7 @@ private fun SelectLayout(
                 .weight(weight = 1f, fill = false),
             contentAlignment = Alignment.CenterStart
         ) {
-            text()
+            contents()
         }
 
         trailingIcon?.let {
