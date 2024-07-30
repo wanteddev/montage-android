@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.badge.ContentBadgeSize
 
 enum class ButtonShape {
@@ -192,3 +194,15 @@ internal fun getContentBadgeDrawableSize(
             .size(12.dp)
             .wrapContentWidth()
     }
+
+
+@Composable
+internal fun getWantedRippleEffect(
+    type: ButtonType
+) = wantedRippleEffect(
+    if (type == ButtonType.PRIMARY) {
+        colorResource(id = R.color.primary_normal_opacity12)
+    } else {
+        colorResource(id = R.color.label_normal_opacity12)
+    }
+)

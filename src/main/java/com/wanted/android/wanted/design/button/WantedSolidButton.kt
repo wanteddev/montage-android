@@ -3,6 +3,8 @@ package com.wanted.android.wanted.design.button
 import android.content.Context
 import android.util.AttributeSet
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +36,7 @@ import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonRadius
 import com.wanted.android.wanted.design.util.getButtonTypography
 import com.wanted.android.wanted.design.util.getButtonWidth
+import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
  *
@@ -136,13 +139,21 @@ fun WantedSolidButton(
     }
 
     WantedButtonLayout(
-        modifier = modifier.background(
-            colorResource(id = backgroundColor),
-            RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size))
-        ),
+        modifier = modifier
+            .background(
+                colorResource(id = backgroundColor),
+                RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size))
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12)),
+                enabled = status == ButtonStatus.ENABLE,
+                onClick = {
+                    clickListener.clickOnceForDesignSystem()
+                }
+            ),
         buttonShape = ButtonShape.SOLID,
         buttonSize = size,
-        isEnable = status == ButtonStatus.ENABLE,
         leftDrawable = leftDrawable?.let {
             {
                 WantedButtonSideIcon(
@@ -175,8 +186,7 @@ fun WantedSolidButton(
                     tint = colorResource(id = textColor)
                 )
             }
-        },
-        clickListener = clickListener
+        }
     )
 }
 

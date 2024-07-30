@@ -44,7 +44,7 @@ import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonSpaceBetweenTextAndIcon
 import com.wanted.android.wanted.design.util.getButtonTypography
 import com.wanted.android.wanted.design.util.getTextButtonSize
-import com.wanted.android.wanted.design.util.wantedRippleEffect
+import com.wanted.android.wanted.design.util.getWantedRippleEffect
 
 class WantedTextButton @JvmOverloads constructor(
     context: Context,
@@ -137,10 +137,16 @@ fun NewWantedTextButton(
     }
 
     WantedButtonLayout(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = getWantedRippleEffect(type),
+            enabled = status == ButtonStatus.ENABLE,
+            onClick = {
+                clickListener.clickOnceForDesignSystem()
+            }
+        ),
         buttonShape = ButtonShape.TEXT,
         buttonSize = size,
-        isEnable = status == ButtonStatus.ENABLE,
         leftDrawable = leftDrawable?.let {
             {
                 WantedButtonSideIcon(
@@ -168,8 +174,7 @@ fun NewWantedTextButton(
                     tint = colorResource(id = textColor)
                 )
             }
-        },
-        clickListener = clickListener
+        }
     )
 }
 
@@ -194,7 +199,7 @@ fun WantedTextButton(
             .clip(roundedCornerShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = if (status == ButtonStatus.ENABLE) wantedRippleEffect() else null,
+                indication = getWantedRippleEffect(type),
                 onClick = {
                     if (status == ButtonStatus.ENABLE) {
                         if (isClickOnce) {
@@ -334,6 +339,20 @@ fun PreviewWantedTextButtonSmallNoDrawableEnable() {
         NewWantedTextButton(
             text = "Button",
             size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            type = ButtonType.ASSISTIVE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        NewWantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            type = ButtonType.ASSISTIVE,
             modifier = Modifier.wrapContentSize()
         )
     }

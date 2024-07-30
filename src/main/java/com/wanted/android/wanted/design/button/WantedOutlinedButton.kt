@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,6 +39,7 @@ import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonRadius
 import com.wanted.android.wanted.design.util.getButtonTypography
 import com.wanted.android.wanted.design.util.getButtonWidth
+import com.wanted.android.wanted.design.util.getWantedRippleEffect
 
 /**
  *
@@ -137,13 +140,20 @@ fun WantedOutlinedButton(
 
     WantedButtonLayout(
         modifier = modifier
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = getWantedRippleEffect(type),
+                enabled = status == ButtonStatus.ENABLE,
+                onClick = {
+                    clickListener.clickOnceForDesignSystem()
+                }
+            )
             .border(
                 BorderStroke(1.dp, getStrokeColor(status, type)),
                 RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, size))
             ),
         buttonShape = ButtonShape.OUTLINED,
         buttonSize = size,
-        isEnable = status == ButtonStatus.ENABLE,
         leftDrawable = leftDrawable?.let {
             {
                 WantedButtonSideIcon(
@@ -173,8 +183,7 @@ fun WantedOutlinedButton(
                     tint = colorResource(id = textColor)
                 )
             }
-        },
-        clickListener = clickListener
+        }
     )
 }
 
