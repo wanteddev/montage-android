@@ -59,7 +59,8 @@ internal fun WantedSelectContentLayout(
 
         Box(
             modifier = Modifier
-                .size(24.dp),
+                .size(24.dp)
+                .padding(4.dp),
             contentAlignment = Alignment.Center
         ) {
             rightButton()
