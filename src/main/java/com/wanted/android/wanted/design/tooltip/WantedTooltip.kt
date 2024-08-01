@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CaretProperties
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
@@ -24,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.CacheDrawScope
 import androidx.compose.ui.draw.DrawResult
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -54,6 +54,9 @@ fun WantedTooltip(
 ) {
     val scope = rememberCoroutineScope()
 
+    val color = colorResource(id = R.color.inverse_background).copy(0.52f)
+    val color1 = colorResource(id = R.color.primary_normal).copy(0.05f)
+
     TooltipBox(
         modifier = modifier,
         positionProvider = positionProvider,
@@ -65,11 +68,11 @@ fun WantedTooltip(
                     drawCaretWithPath(
                         density,
                         configuration,
-                        Color.Red,
+                        color,
+                        color1,
                         TooltipDefaults.caretProperties.copy(caretWidth = 12.dp, caretHeight = 6.dp),
                         anchorLayoutCoordinates
                     )
-
                 }
                 .then(modifier)
 
@@ -102,7 +105,6 @@ private fun WantedTooltipContents(
     text: String,
     isUseCloseButton: Boolean,
 ) {
-
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -114,8 +116,9 @@ private fun WantedTooltipContents(
                     maxWidth = 280.dp
                 )
                 .padding(SpacingBetweenTooltipAndAnchor.dp)
-                .background(colorResource(id = R.color.inverse_background))
-                .background(colorResource(id = R.color.primary_normal))
+                .clip(RoundedCornerShape(8.dp))
+                .background(colorResource(id = R.color.inverse_background).copy(0.52f))
+                .background(colorResource(id = R.color.primary_normal).copy(0.05f))
                 .padding(10.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -134,6 +137,7 @@ private fun CacheDrawScope.drawCaretWithPath(
     density: Density,
     configuration: Configuration,
     containerColor: Color,
+    containerColor1: Color,
     caretProperties: CaretProperties,
     anchorLayoutCoordinates: LayoutCoordinates?
 ): DrawResult {
@@ -164,7 +168,7 @@ private fun CacheDrawScope.drawCaretWithPath(
         val caretY = if (isCaretTop) {
             0f
         } else {
-            tooltipHeight
+            tooltipHeight - tooltipAnchorSpacing
         }
 
         val position =
@@ -195,28 +199,23 @@ private fun CacheDrawScope.drawCaretWithPath(
             path.apply {
                 moveTo(x = position.x, y = position.y)
                 lineTo(x = position.x + caretWidthPx / 2, y = position.y)
-
                 lineTo(x = position.x + anchorSize, y = position.y + caretHeightPx - anchorSize)
 
                 arcTo(
                     rect = Rect(
-                        left = position.x - anchorSize,
-                        top = position.y + caretHeightPx,
-                        right = position.x + anchorSize,
-                        bottom = position.y + caretHeightPx
+                        left = position.x - anchorSize/2,
+                        top = position.y + caretHeightPx - anchorSize/2,
+                        right = position.x + anchorSize/2,
+                        bottom = position.y + caretHeightPx - anchorSize/2
                     ),
                     startAngleDegrees = 0f,
                     sweepAngleDegrees = 180f,
                     forceMoveTo = false
                 )
 
-//                lineTo(x = position.x, y = position.y + caretHeightPx / 2)
-
                 lineTo(x = position.x - anchorSize, y = position.y + caretHeightPx - anchorSize)
 
                 lineTo(x = position.x - caretWidthPx / 2, y = position.y)
-
-
 
                 close()
             }
@@ -229,6 +228,10 @@ private fun CacheDrawScope.drawCaretWithPath(
             drawPath(
                 path = path,
                 color = containerColor
+            )
+            drawPath(
+                path = path,
+                color = containerColor1
             )
         }
     }
