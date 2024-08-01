@@ -203,10 +203,10 @@ private fun CacheDrawScope.drawCaretWithPath(
 
                 arcTo(
                     rect = Rect(
-                        left = position.x - anchorSize/2,
-                        top = position.y + caretHeightPx - anchorSize/2,
-                        right = position.x + anchorSize/2,
-                        bottom = position.y + caretHeightPx - anchorSize/2
+                        left = position.x - anchorSize / 2,
+                        top = position.y + caretHeightPx - anchorSize / 2,
+                        right = position.x + anchorSize / 2,
+                        bottom = position.y + caretHeightPx - anchorSize / 2
                     ),
                     startAngleDegrees = 0f,
                     sweepAngleDegrees = 180f,
