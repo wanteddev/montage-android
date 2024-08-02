@@ -33,8 +33,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.WantedButton
-import com.wanted.android.wanted.design.icon.WantedCommonIcon
 import com.wanted.android.wanted.design.textfield.WantedTextFieldContract.TextFieldType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
@@ -78,8 +78,8 @@ fun WantedTextArea(
                 shape = RoundedCornerShape(12.dp),
                 color = colorResource(
                     id = when {
-                        enabled && error -> R.color.status_negative
                         !enabled -> R.color.line_normal_neutral
+                        error -> R.color.status_negative
                         focused -> R.color.primary_normal
                         else -> R.color.line_normal_neutral
                     }

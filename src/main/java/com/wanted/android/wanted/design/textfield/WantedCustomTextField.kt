@@ -38,8 +38,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
-import com.wanted.android.wanted.design.icon.WantedCommonIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -113,8 +113,8 @@ internal fun WantedCustomTextField(
                         } ?: run { RoundedCornerShape(12.dp) },
                         color = colorResource(
                             id = when {
-                                enabled && error -> R.color.status_negative
                                 !enabled -> R.color.transparent
+                                error -> R.color.status_negative
                                 focused -> R.color.primary_normal
                                 else -> R.color.transparent
                             }

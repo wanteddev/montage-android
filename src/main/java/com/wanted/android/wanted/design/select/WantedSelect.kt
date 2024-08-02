@@ -1,0 +1,422 @@
+package com.wanted.android.wanted.design.select
+
+import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedCommonIcon
+import com.wanted.android.wanted.design.base.WantedComponentTitle
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.select.view.WantedMultiSelectContents
+import com.wanted.android.wanted.design.select.view.WantedMultiSelectPlaceHolder
+import com.wanted.android.wanted.design.select.view.WantedSelectContentLayout
+import com.wanted.android.wanted.design.select.view.WantedSelectLayout
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_43
+import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.wantedRippleEffect
+
+/**
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-44983&m=dev
+ * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1934-43909&t=33KjAy2RlyzyhLH6-4
+ */
+
+@Composable
+fun WantedSelect(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    valueList: List<WantedSelectData>,
+    placeHolder: String = "",
+    isRequiredBadge: Boolean = false,
+    errorList: List<WantedSelectData> = emptyList(),
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    isChip: Boolean = false,
+    onDelete: (WantedSelectData) -> Unit = {},
+    onClick: () -> Unit = {},
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
+    WantedSelectImpl(
+        modifier = modifier,
+        title = title,
+        isRequiredBadge = isRequiredBadge,
+        error = errorList.isNotEmpty(),
+        focused = focused,
+        enabled = enabled,
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        contents = {
+            WantedMultiSelectContents(
+                modifier = Modifier.fillMaxWidth(),
+                valueList = valueList,
+                placeHolder = placeHolder,
+                errorList = errorList,
+                enabled = enabled,
+                isChip = isChip,
+                onDelete = onDelete
+            )
+        }
+    )
+}
+
+@Composable
+fun WantedSelect(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    value: WantedSelectData,
+    placeHolder: String = "",
+    isRequiredBadge: Boolean = false,
+    error: Boolean = false,
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    onDelete: (WantedSelectData) -> Unit,
+    onClick: () -> Unit = {},
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
+    WantedSelect(
+        modifier = modifier,
+        title = title,
+        value = value.text,
+        placeHolder = placeHolder,
+        isRequiredBadge = isRequiredBadge,
+        error = error,
+        focused = focused,
+        enabled = enabled,
+        onDelete = { onDelete(value) },
+        onClick = onClick,
+        leadingIcon = leadingIcon
+    )
+}
+
+@Composable
+fun WantedSelect(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    value: String,
+    placeHolder: String = "",
+    isRequiredBadge: Boolean = false,
+    error: Boolean = false,
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    onDelete: (String) -> Unit,
+    onClick: () -> Unit = {},
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
+    WantedSelectImpl(
+        modifier = modifier,
+        title = title,
+        isRequiredBadge = isRequiredBadge,
+        error = error,
+        focused = focused,
+        enabled = enabled,
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        contents = {
+            if (value.isEmpty()) {
+                WantedMultiSelectPlaceHolder(
+                    modifier = Modifier.fillMaxWidth(),
+                    placeHolder = placeHolder,
+                    enabled = enabled
+                )
+            } else {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = value,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = WantedTextStyle(
+                        colorRes = if (enabled) {
+                            R.color.label_normal
+                        } else {
+                            R.color.label_disable
+                        },
+                        style = DesignSystemTheme.typography.body1Regular
+                    )
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun WantedSelectImpl(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    isRequiredBadge: Boolean = false,
+    error: Boolean = false,
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
+    contents: @Composable () -> Unit,
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
+    WantedSelectLayout(
+        modifier = modifier,
+        title = title?.let {
+            {
+                WantedComponentTitle(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = title,
+                    isRequiredBadge = isRequiredBadge
+                )
+            }
+        },
+        select = {
+            WantedSelectContentLayout(
+                modifier = Modifier
+                    .border(
+                        shape = RoundedCornerShape(12.dp),
+                        color = when {
+                            error || focused -> {
+                                colorResource(id = R.color.background_normal_normal)
+                                    .copy(alpha = OPACITY_43)
+                            }
+
+                            else -> colorResource(R.color.transparent)
+                        },
+                        width = if (focused) 2.dp else 1.dp
+                    )
+                    .border(
+                        shape = RoundedCornerShape(12.dp),
+                        color = colorResource(
+                            id = when {
+                                !enabled -> R.color.line_normal_alternative
+                                error -> R.color.status_negative
+                                focused -> R.color.primary_normal
+                                else -> R.color.line_normal_neutral
+                            }
+                        ),
+                        width = if (focused) 2.dp else 1.dp
+                    )
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        colorResource(
+                            id = if (enabled) {
+                                R.color.background_normal_normal
+                            } else {
+                                R.color.line_normal_alternative
+                            }
+                        )
+                    )
+                    .clickOnceForDesignSystem(
+                        enabled = enabled,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = getSelectRippleEffect(
+                            enabled = enabled,
+                            focused = focused,
+                            error = error
+                        )
+                    ) {
+                        onClick()
+                    }
+                    .padding(12.dp),
+                leadingIcon = leadingIcon,
+                contents = {
+                    contents()
+                },
+                rightButton = {
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        painter = painterResource(
+                            id = if (focused) {
+                                R.drawable.ic_normal_chevron_up_svg
+                            } else {
+                                R.drawable.ic_normal_chevron_down_svg
+                            }
+                        ),
+                        tint = colorResource(
+                            id = if (enabled) {
+                                R.color.label_alternative
+                            } else {
+                                R.color.label_disable
+                            }
+                        ),
+                        contentDescription = ""
+                    )
+                },
+                trailingIcon = if (error && !focused && enabled) {
+                    {
+                        WantedCommonIcon(
+                            modifier = Modifier.fillMaxSize(),
+                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                            tint = colorResource(id = R.color.status_negative)
+                        )
+                    }
+                } else {
+                    null
+                }
+            )
+        }
+    )
+}
+
+@Composable
+private fun getSelectRippleEffect(
+    error: Boolean = false,
+    focused: Boolean = false,
+    enabled: Boolean = true,
+) = when {
+    !enabled -> null
+    error -> wantedRippleEffect(colorResource(id = R.color.status_negative))
+    focused -> wantedRippleEffect(colorResource(id = R.color.primary_normal))
+    else -> wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12))
+}
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun WantedSelectPreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = "",
+                    placeHolder = "선택해 주세요",
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = "선택값",
+                    focused = true,
+                    placeHolder = "선택해 주세요",
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = "선택값",
+                    error = true,
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = "주제",
+                    focused = true,
+                    error = true,
+                    value = "선택값",
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = "주제",
+                    isRequiredBadge = true,
+                    enabled = false,
+                    value = "선택값",
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = "주제",
+                    isRequiredBadge = true,
+                    valueList = listOf(
+                        WantedSelectData(text = "선택값1"),
+                        WantedSelectData(text = "선택값2")
+                    ),
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = "주제",
+                    isRequiredBadge = true,
+                    valueList = listOf(
+                        WantedSelectData(text = "선택값1"),
+                        WantedSelectData(text = "선택값2")
+                    ),
+                    errorList = listOf(
+                        WantedSelectData(text = "선택값1")
+                    ),
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    isChip = true,
+                    valueList = listOf(
+                        WantedSelectData(text = "선택값1"),
+                        WantedSelectData(text = "선택값2")
+                    ),
+                    errorList = listOf(
+                        WantedSelectData(text = "선택값1")
+                    ),
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    isChip = true,
+                    focused = true,
+                    valueList = listOf(
+                        WantedSelectData(text = "선택값1"),
+                        WantedSelectData(text = "선택값2")
+                    ),
+                    errorList = listOf(
+                        WantedSelectData(text = "선택값1")
+                    ),
+                    onDelete = { },
+                    onClick = {}
+                )
+
+                WantedSelect(
+                    modifier = Modifier.fillMaxWidth(),
+                    isChip = true,
+                    enabled = false,
+                    valueList = listOf(
+                        WantedSelectData(text = "선택값1"),
+                        WantedSelectData(text = "선택값2")
+                    ),
+                    errorList = listOf(
+                        WantedSelectData(text = "선택값2")
+                    ),
+                    onDelete = { },
+                    onClick = {}
+                )
+            }
+        }
+    }
+}
