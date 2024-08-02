@@ -14,8 +14,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonSize
+import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
@@ -28,47 +32,56 @@ internal fun WantedAlertDialogButton(
     text: String,
     onClick: () -> Unit
 ) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .clickOnceForDesignSystem(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = getWantedRippleEffect(type),
-                onClick = {
-                    onClick()
-                }
+    when (type) {
+        WantedAlertDialogButtonType.Positive -> {
+            WantedButton(
+                text = text,
+                buttonShape = ButtonShape.TEXT,
+                size = ButtonSize.MEDIUM,
+                onClick = { onClick() }
             )
-            .padding(vertical = 4.dp, horizontal = 7.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            style = WantedTextStyle(
-                colorRes = when (type) {
-                    WantedAlertDialogButtonType.Positive -> R.color.primary_normal
-                    WantedAlertDialogButtonType.Negative -> R.color.status_negative
-                    else -> R.color.label_normal
-                },
-                style = DesignSystemTheme.typography.body1Bold
-            ),
-            textAlign = TextAlign.Center
-        )
+        }
+
+        WantedAlertDialogButtonType.Neutral -> {
+            WantedButton(
+                text = text,
+                buttonShape = ButtonShape.TEXT,
+                size = ButtonSize.MEDIUM,
+                type = ButtonType.ASSISTIVE,
+                onClick = { onClick() }
+            )
+        }
+
+        else -> {
+            Box(
+                modifier = modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickOnceForDesignSystem(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = wantedRippleEffect(
+                            colorResource(id = R.color.status_negative).copy(
+                                alpha = OPACITY_12
+                            )
+                        ),
+                        onClick = {
+                            onClick()
+                        }
+                    )
+                    .padding(vertical = 4.dp, horizontal = 6.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = text,
+                    style = WantedTextStyle(
+                        colorRes = R.color.status_negative,
+                        style = DesignSystemTheme.typography.body1Bold
+                    ),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }
-
-@Composable
-private fun getWantedRippleEffect(
-    type: WantedAlertDialogButtonType
-) = wantedRippleEffect(
-    when (type) {
-        WantedAlertDialogButtonType.Positive -> colorResource(id = R.color.primary_normal_opacity12)
-        WantedAlertDialogButtonType.Negative -> colorResource(id = R.color.status_negative).copy(
-            alpha = OPACITY_12
-        )
-
-        else -> colorResource(id = R.color.label_normal_opacity12)
-    }
-)
 
 internal enum class WantedAlertDialogButtonType {
     Positive,

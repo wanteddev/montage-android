@@ -71,7 +71,7 @@ private fun Modifier.buttonHeight(
     this
         .height(
             height = when (size) {
-                ButtonSize.LARGE -> 32.dp
+                ButtonSize.MEDIUM -> 32.dp
                 else -> 28.dp
             }
         )

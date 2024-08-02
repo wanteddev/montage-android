@@ -123,7 +123,7 @@ fun NewWantedTextButton(
     modifier: Modifier = Modifier,
     text: String,
     type: ButtonType = ButtonType.PRIMARY,
-    size: ButtonSize = ButtonSize.LARGE,
+    size: ButtonSize = ButtonSize.MEDIUM,
     status: ButtonStatus = ButtonStatus.ENABLE,
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
