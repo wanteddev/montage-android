@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.icon
+package com.wanted.android.wanted.design.base
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes

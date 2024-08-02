@@ -4,8 +4,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
@@ -17,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedComponentTitle
 import com.wanted.android.wanted.design.textfield.WantedTextFieldContract.TextFieldType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-42414&m=dev
+ * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1915-22967&t=33KjAy2RlyzyhLH6-4
  */
 @Composable
 fun WantedTextField(
@@ -53,7 +53,7 @@ fun WantedTextField(
         modifier = modifier,
         title = if (title.isNotEmpty()) {
             {
-                WantedTextFieldTitle(
+                WantedComponentTitle(
                     title = title,
                     isRequiredBadge = requiredBadge
                 )
@@ -120,43 +120,6 @@ fun WantedTextField(
             }
         }
     )
-}
-
-@Composable
-private fun WantedTextFieldTitle(
-    modifier: Modifier = Modifier,
-    title: String,
-    isRequiredBadge: Boolean
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier.weight(1f, fill = false),
-            text = title,
-            style = WantedTextStyle(
-                colorRes = R.color.label_neutral,
-                style = DesignSystemTheme.typography.label1Bold
-            ),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        if (isRequiredBadge) {
-            Text(
-                modifier = Modifier.wrapContentSize(),
-                text = "*",
-                style = WantedTextStyle(
-                    colorRes = R.color.status_negative,
-                    style = DesignSystemTheme.typography.label1Medium
-                ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
 }
 
 
