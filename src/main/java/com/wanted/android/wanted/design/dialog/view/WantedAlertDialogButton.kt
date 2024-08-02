@@ -67,7 +67,7 @@ internal fun WantedAlertDialogButton(
                             onClick()
                         }
                     )
-                    .padding(vertical = 4.dp, horizontal = 6.dp),
+                    .padding(vertical = 4.dp, horizontal = 7.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(

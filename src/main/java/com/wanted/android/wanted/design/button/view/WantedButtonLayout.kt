@@ -110,7 +110,7 @@ private fun Modifier.buttonHorizontalPadding(
 ): Modifier = when {
     isIconOnly -> this
     shape == ButtonShape.TEXT -> {
-        this.padding(horizontal = 6.dp)
+        this.padding(horizontal = 7.dp)
     }
 
     else -> {
