@@ -18,11 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.button.WantedButton
+import com.wanted.android.wanted.design.dialog.view.WantedAlertDialogButton
+import com.wanted.android.wanted.design.dialog.view.WantedAlertDialogButtonType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonShape
-import com.wanted.android.wanted.design.util.ButtonSize
-import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
@@ -30,10 +28,11 @@ fun WantedAlertDialog(
     properties: DialogProperties = DialogProperties(),
     title: String? = null,
     message: String,
-    positive: String,
-    negative: String? = null,
-    onClickPositive: () -> Unit,
-    onClickNegative: (() -> Unit)? = null,
+    confirm: String,
+    isNegative: Boolean = false,
+    cancel: String? = null,
+    onClickConfirm: () -> Unit,
+    onClickCancel: (() -> Unit)? = null,
     onDismissRequest: () -> Unit = {}
 ) {
     Dialog(
@@ -49,23 +48,26 @@ fun WantedAlertDialog(
             message = {
                 Text(text = message)
             },
-            negative = negative?.let {
+            negative = cancel?.let {
                 {
-                    WantedButton(
-                        text = negative,
-                        buttonShape = ButtonShape.TEXT,
-                        size = ButtonSize.MEDIUM,
-                        type = ButtonType.ASSISTIVE,
-                        onClick = { onClickNegative?.invoke() }
+                    WantedAlertDialogButton(
+                        text = cancel,
+                        type = WantedAlertDialogButtonType.Neutral,
+                        onClick = { onClickCancel?.invoke() }
+
                     )
                 }
             },
             positive = {
-                WantedButton(
-                    text = positive,
-                    buttonShape = ButtonShape.TEXT,
-                    size = ButtonSize.MEDIUM,
-                    onClick = { onClickPositive() }
+                WantedAlertDialogButton(
+                    text = confirm,
+                    type = if (isNegative) {
+                        WantedAlertDialogButtonType.Negative
+                    } else {
+                        WantedAlertDialogButtonType.Positive
+                    },
+
+                    onClick = { onClickConfirm() }
                 )
             }
         )
