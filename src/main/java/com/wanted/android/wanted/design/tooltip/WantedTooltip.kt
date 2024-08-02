@@ -4,13 +4,17 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CaretProperties
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
@@ -33,11 +37,23 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupPositionProvider
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.icon.WantedCommonIcon
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonSize
+import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.launch
 
 /**
@@ -48,12 +64,17 @@ import kotlinx.coroutines.launch
 fun WantedTooltip(
     modifier: Modifier = Modifier,
     text: String,
-    isUseCloseButton: Boolean = false,
+    action: String? = null,
+    isShowCloseButton: Boolean = false,
+    isShowArrow: Boolean = true,
     positionProvider: PopupPositionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-    state: TooltipState = remember { TooltipState(true) }
+    state: TooltipState = remember { TooltipState(false) },
+    content: @Composable () -> Unit,
+    onClickAction: (() -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
 
+    val backgroundColor = colorResource(id = R.color.background_normal_normal)
     val color = colorResource(id = R.color.inverse_background).copy(0.52f)
     val color1 = colorResource(id = R.color.primary_normal).copy(0.05f)
 
@@ -63,79 +84,149 @@ fun WantedTooltip(
         tooltip = {
             val density = LocalDensity.current
             val configuration = LocalConfiguration.current
-            val customModifier = Modifier
-                .drawCaret { anchorLayoutCoordinates ->
-                    drawCaretWithPath(
-                        density,
-                        configuration,
-                        color,
-                        color1,
-                        TooltipDefaults.caretProperties.copy(caretWidth = 12.dp, caretHeight = 6.dp),
-                        anchorLayoutCoordinates
-                    )
-                }
-                .then(modifier)
+            val customModifier = if (isShowArrow) {
+                Modifier
+                    .drawCaret { anchorLayoutCoordinates ->
+                        drawCaretWithPath(
+                            density = density,
+                            configuration = configuration,
+                            spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
+                            backgroundColor = backgroundColor,
+                            containerColor = color,
+                            containerColor1 = color1,
+                            caretProperties = TooltipDefaults.caretProperties.copy(
+                                caretWidth = 12.dp,
+                                caretHeight = 6.dp
+                            ),
+                            anchorLayoutCoordinates = anchorLayoutCoordinates
+                        )
+                    }
+                    .then(modifier)
 
-            WantedTooltipContents(
+            } else {
+                modifier
+            }
+
+            WantedTooltipContentsLayout(
                 modifier = customModifier,
-                text = text,
-                isUseCloseButton = isUseCloseButton
-            )
+                spacingBetweenTooltipAndAnchor = if (isShowArrow) {
+                    SpacingBetweenTooltipAndAnchor.dp
+                } else {
+                    SpacingBetweenTooltipAndAnchorNotArrow.dp
+                },
+                text = {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 2.dp),
+                        text = text,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
+                        style = WantedTextStyle(
+                            colorRes = R.color.inverse_label,
+                            style = DesignSystemTheme.typography.label1Medium
+                        )
+                    )
 
+                },
+                onClose = if (isShowCloseButton) {
+                    {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                                .clickOnceForDesignSystem {
+                                    scope.launch {
+                                        state.dismiss()
+                                    }
+                                }
+                                .padding(2.dp),
+                            painter = painterResource(id = R.drawable.ic_normal_close_svg),
+                            tint = colorResource(id = R.color.inverse_label),
+                            contentDescription = ""
+                        )
+                    }
+                } else null,
+                onClickAction = action?.let {
+                    {
+                        WantedButton(
+                            text = it,
+                            buttonShape = ButtonShape.TEXT,
+                            type = ButtonType.ASSISTIVE,
+                            size = ButtonSize.SMALL,
+                            onClick = {
+                                onClickAction?.invoke()
+                            }
+                        )
+                    }
+                }
+            )
         },
         state = state,
         content = {
             Box(
                 modifier = Modifier
-                    .size(100.dp)
-                    .background(Color.Gray)
+                    .wrapContentSize()
                     .clickOnceForDesignSystem {
                         scope.launch {
                             state.show()
                         }
                     }
-            )
+            ) {
+                content()
+            }
         }
     )
 }
 
 @Composable
-private fun WantedTooltipContents(
+private fun WantedTooltipContentsLayout(
     modifier: Modifier = Modifier,
-    text: String,
-    isUseCloseButton: Boolean,
+    spacingBetweenTooltipAndAnchor: Dp,
+    text: @Composable () -> Unit,
+    onClose: @Composable (() -> Unit)?,
+    onClickAction: @Composable (() -> Unit)?
 ) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
+    Column(
+        modifier = modifier
+            .sizeIn(
+                minWidth = 64.dp,
+                maxWidth = 280.dp
+            )
+            .padding(spacingBetweenTooltipAndAnchor)
+            .clip(RoundedCornerShape(8.dp))
+            .background(colorResource(id = R.color.background_normal_normal))
+            .background(colorResource(id = R.color.inverse_background).copy(0.52f))
+            .background(colorResource(id = R.color.primary_normal).copy(0.05f))
+            .padding(10.dp)
     ) {
         Row(
-            modifier = Modifier
-                .sizeIn(
-                    minWidth = 64.dp,
-                    maxWidth = 280.dp
-                )
-                .padding(SpacingBetweenTooltipAndAnchor.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(colorResource(id = R.color.inverse_background).copy(0.52f))
-                .background(colorResource(id = R.color.primary_normal).copy(0.05f))
-                .padding(10.dp),
+            modifier = Modifier.wrapContentSize(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top,
         ) {
-            Text(text = text)
+
+            Box(
+                modifier = Modifier.weight(1f, fill = false),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                text()
+            }
+
+            onClose?.let {
+                Box(modifier = Modifier.size(20.dp)) {
+                    onClose()
+                }
+            }
         }
 
-        if (isUseCloseButton) {
-
-        }
+        onClickAction?.invoke()
     }
 }
 
-@ExperimentalMaterial3Api
 private fun CacheDrawScope.drawCaretWithPath(
     density: Density,
     configuration: Configuration,
+    spacingBetweenTooltipAndAnchor: Dp,
+    backgroundColor: Color,
     containerColor: Color,
     containerColor1: Color,
     caretProperties: CaretProperties,
@@ -153,8 +244,8 @@ private fun CacheDrawScope.drawCaretWithPath(
             caretHeightPx = caretProperties.caretHeight.roundToPx()
             caretWidthPx = caretProperties.caretWidth.roundToPx()
             screenWidthPx = configuration.screenWidthDp.dp.roundToPx()
-            tooltipAnchorSpacing = SpacingBetweenTooltipAndAnchor.dp.roundToPx()
-            anchorSize = 1.dp.roundToPx() / 2f
+            tooltipAnchorSpacing = spacingBetweenTooltipAndAnchor.roundToPx()
+            anchorSize = 2.dp.roundToPx().toFloat()
         }
         val anchorBounds = anchorLayoutCoordinates.boundsInWindow()
         val anchorLeft = anchorBounds.left
@@ -166,7 +257,7 @@ private fun CacheDrawScope.drawCaretWithPath(
         val tooltipHeight = this.size.height
         val isCaretTop = anchorTop - tooltipHeight - tooltipAnchorSpacing < 0
         val caretY = if (isCaretTop) {
-            0f
+            tooltipAnchorSpacing.toFloat()
         } else {
             tooltipHeight - tooltipAnchorSpacing
         }
@@ -184,15 +275,26 @@ private fun CacheDrawScope.drawCaretWithPath(
                 Offset(caretX, caretY)
             }
 
-
-
         if (isCaretTop) {
             path.apply {
                 moveTo(x = position.x, y = position.y)
                 lineTo(x = position.x + caretWidthPx / 2, y = position.y)
-                lineTo(x = position.x, y = position.y - caretHeightPx + caretHeightPx / 2)
+                lineTo(x = position.x + anchorSize, y = position.y - caretHeightPx + anchorSize)
+
+                arcTo(
+                    rect = Rect(
+                        left = position.x - anchorSize / 2,
+                        top = position.y - caretHeightPx + anchorSize / 2,
+                        right = position.x + anchorSize / 2,
+                        bottom = position.y - caretHeightPx + anchorSize
+                    ),
+                    startAngleDegrees = -45f,
+                    sweepAngleDegrees = -135f,
+                    forceMoveTo = false
+                )
+
+                lineTo(x = position.x - anchorSize, y = position.y - caretHeightPx + anchorSize)
                 lineTo(x = position.x - caretWidthPx / 2, y = position.y)
-                lineTo(x = position.x, y = position.y)
                 close()
             }
         } else {
@@ -204,12 +306,12 @@ private fun CacheDrawScope.drawCaretWithPath(
                 arcTo(
                     rect = Rect(
                         left = position.x - anchorSize / 2,
-                        top = position.y + caretHeightPx - anchorSize / 2,
+                        top = position.y + caretHeightPx - anchorSize,
                         right = position.x + anchorSize / 2,
                         bottom = position.y + caretHeightPx - anchorSize / 2
                     ),
-                    startAngleDegrees = 0f,
-                    sweepAngleDegrees = 180f,
+                    startAngleDegrees = 45f,
+                    sweepAngleDegrees = 135f,
                     forceMoveTo = false
                 )
 
@@ -227,6 +329,10 @@ private fun CacheDrawScope.drawCaretWithPath(
             drawContent()
             drawPath(
                 path = path,
+                color = backgroundColor
+            )
+            drawPath(
+                path = path,
                 color = containerColor
             )
             drawPath(
@@ -238,3 +344,63 @@ private fun CacheDrawScope.drawCaretWithPath(
 }
 
 private const val SpacingBetweenTooltipAndAnchor = 8
+private const val SpacingBetweenTooltipAndAnchorNotArrow = 2
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun WantedTooltipPreview() {
+    DesignSystemTheme {
+        Surface(Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WantedTooltip(
+                    text = "메시지에 마침표를 찍어요.",
+                    content = {
+                        WantedCommonIcon(
+                            modifier = Modifier.size(22.dp),
+                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                            tint = colorResource(id = R.color.status_negative)
+                        )
+                    },
+                    state = remember { TooltipState(true) }
+                )
+
+                WantedTooltip(
+                    text = "메시지에 마침표를 찍어요.",
+                    action = "더 알아보기",
+                    content = {
+                        WantedCommonIcon(
+                            modifier = Modifier.size(22.dp),
+                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                            tint = colorResource(id = R.color.status_negative)
+                        )
+                    },
+                    state = remember { TooltipState(true) }
+                )
+
+                WantedTooltip(
+                    text = "메시지에 마침표를 찍어요.",
+                    action = "더 알아보기",
+                    isShowCloseButton = true,
+                    content = {
+                        WantedCommonIcon(
+                            modifier = Modifier.size(22.dp),
+                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                            tint = colorResource(id = R.color.status_negative)
+                        )
+                    },
+                    state = remember { TooltipState(true) }
+                )
+            }
+        }
+    }
+}
