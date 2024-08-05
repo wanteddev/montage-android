@@ -49,6 +49,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
@@ -75,7 +76,7 @@ fun WantedTooltip(
     val scope = rememberCoroutineScope()
 
     val backgroundColor = colorResource(id = R.color.background_normal_normal)
-    val color = colorResource(id = R.color.inverse_background).copy(0.52f)
+    val color = colorResource(id = R.color.inverse_background).copy(0.88f)
     val color1 = colorResource(id = R.color.primary_normal).copy(0.05f)
 
     TooltipBox(
@@ -152,6 +153,11 @@ fun WantedTooltip(
                             buttonShape = ButtonShape.TEXT,
                             type = ButtonType.ASSISTIVE,
                             size = ButtonSize.SMALL,
+                            buttonDefault = WantedButtonDefaults.getDefault(
+                                shape = ButtonShape.TEXT,
+                                type = ButtonType.ASSISTIVE,
+                                size = ButtonSize.SMALL,
+                            ).copy(contentColor = colorResource(id = R.color.inverse_label)),
                             onClick = {
                                 onClickAction?.invoke()
                             }
@@ -194,7 +200,7 @@ private fun WantedTooltipContentsLayout(
             .padding(spacingBetweenTooltipAndAnchor)
             .clip(RoundedCornerShape(8.dp))
             .background(colorResource(id = R.color.background_normal_normal))
-            .background(colorResource(id = R.color.inverse_background).copy(0.52f))
+            .background(colorResource(id = R.color.inverse_background).copy(0.88f))
             .background(colorResource(id = R.color.primary_normal).copy(0.05f))
             .padding(10.dp)
     ) {
@@ -218,7 +224,12 @@ private fun WantedTooltipContentsLayout(
             }
         }
 
-        onClickAction?.invoke()
+        Box(
+            modifier = Modifier.padding(start = 2.dp),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            onClickAction?.invoke()
+        }
     }
 }
 

@@ -58,7 +58,6 @@ import com.wanted.android.wanted.design.button.WantedSolidButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemBottomSheetTheme
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -370,7 +369,7 @@ private fun CustomDialogContentImpl(
                     .padding(dimensionResource(id = R.dimen.padding_20))
                     .fillMaxWidth(),
                 text = confirm,
-                status = if (isEnableConfirm) ButtonStatus.ENABLE else ButtonStatus.DISABLE,
+                enabled = isEnableConfirm,
                 clickListener = {
                     onClickConfirm?.invoke()
                 }
