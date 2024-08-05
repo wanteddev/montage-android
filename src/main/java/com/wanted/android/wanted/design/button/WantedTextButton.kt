@@ -30,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -122,7 +123,7 @@ fun NewWantedTextButton(
     modifier: Modifier = Modifier,
     text: String,
     type: ButtonType = ButtonType.PRIMARY,
-    size: ButtonSize = ButtonSize.LARGE,
+    size: ButtonSize = ButtonSize.MEDIUM,
     status: ButtonStatus = ButtonStatus.ENABLE,
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
@@ -163,7 +164,8 @@ fun NewWantedTextButton(
                 style = getButtonTypography(shape = ButtonShape.TEXT, type, size = size),
                 color = colorResource(id = textColor),
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
             )
         },
         rightDrawable = rightDrawable?.let {

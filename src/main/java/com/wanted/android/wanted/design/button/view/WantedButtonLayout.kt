@@ -71,7 +71,7 @@ private fun Modifier.buttonHeight(
     this
         .height(
             height = when (size) {
-                ButtonSize.LARGE -> 32.dp
+                ButtonSize.MEDIUM -> 32.dp
                 else -> 28.dp
             }
         )
@@ -110,7 +110,7 @@ private fun Modifier.buttonHorizontalPadding(
 ): Modifier = when {
     isIconOnly -> this
     shape == ButtonShape.TEXT -> {
-        this.padding(horizontal = 6.dp)
+        this.padding(horizontal = 7.dp)
     }
 
     else -> {
