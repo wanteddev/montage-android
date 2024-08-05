@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -106,7 +108,7 @@ fun WantedTextButton(
     text: String,
     modifier: Modifier = Modifier,
     type: ButtonType = ButtonType.PRIMARY,
-    size: ButtonSize = ButtonSize.LARGE,
+    size: ButtonSize = ButtonSize.MEDIUM,
     enabled: Boolean = true,
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
         shape = ButtonShape.TEXT,
@@ -161,7 +163,8 @@ fun WantedTextButton(
                 style = buttonDefault.textStyle,
                 color = textColor.value,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
             )
         },
         rightDrawable = rightDrawable?.let {
