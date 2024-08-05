@@ -27,15 +27,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.button.config.WantedButtonDefault
+import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
-import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonRadius
-import com.wanted.android.wanted.design.util.getButtonTypography
 import com.wanted.android.wanted.design.util.getButtonWidth
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
@@ -55,7 +55,7 @@ class WantedSolidButton @JvmOverloads constructor(
 
     lateinit var size: ButtonSize
     var text by mutableStateOf("")
-    var buttonStatus by mutableStateOf(ButtonStatus.ENABLE)
+    var buttonStatus by mutableStateOf(true)
     var leftDrawable by mutableStateOf<Int?>(null)
     var rightDrawable by mutableStateOf<Int?>(null)
     var isClickOnce by mutableStateOf(true)
@@ -70,10 +70,7 @@ class WantedSolidButton @JvmOverloads constructor(
                 size = ButtonSize.entries[getInteger(R.styleable.WantedButton_button_size, 0)]
                 leftDrawable = getResourceId(R.styleable.WantedButton_leftDrawable, 0)
                 rightDrawable = getResourceId(R.styleable.WantedButton_rightDrawable, 0)
-                buttonStatus = when (getBoolean(R.styleable.WantedButton_enabled, true)) {
-                    true -> ButtonStatus.ENABLE
-                    else -> ButtonStatus.DISABLE
-                }
+                buttonStatus = getBoolean(R.styleable.WantedButton_enabled, true)
                 isClickOnce = getBoolean(R.styleable.WantedButton_clickOnce, true)
 
                 recycle()
@@ -88,10 +85,7 @@ class WantedSolidButton @JvmOverloads constructor(
     }
 
     override fun setEnabled(enabled: Boolean) {
-        buttonStatus = when (enabled) {
-            true -> ButtonStatus.ENABLE
-            else -> ButtonStatus.DISABLE
-        }
+        buttonStatus = enabled
     }
 
     override fun setOnClickListener(listener: OnClickListener?) {
@@ -104,7 +98,7 @@ class WantedSolidButton @JvmOverloads constructor(
             text = text,
             modifier = getButtonWidth(buttonWidth = buttonWidth),
             size = size,
-            status = buttonStatus,
+            enabled = buttonStatus,
             leftDrawable = if (leftDrawable != 0) leftDrawable else null,
             rightDrawable = if (rightDrawable != 0) rightDrawable else null,
             clickListener = onClickListener
@@ -118,37 +112,27 @@ fun WantedSolidButton(
     text: String = "",
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
-    status: ButtonStatus = ButtonStatus.ENABLE,
+    enabled: Boolean = true,
+    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
+        shape = ButtonShape.SOLID,
+        type = type,
+        size = size,
+        enabled = enabled
+    ),
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
     clickListener: () -> Unit = {}
 ) {
-    val textColor = remember(status, type) {
-        when {
-            status != ButtonStatus.ENABLE -> R.color.label_assistive
-            type == ButtonType.ASSISTIVE -> R.color.label_neutral
-            else -> R.color.static_white
-        }
-    }
-
-    val backgroundColor = remember(status, type) {
-        when {
-            status != ButtonStatus.ENABLE -> R.color.interaction_disable
-            type == ButtonType.ASSISTIVE -> R.color.fill_normal
-            else -> R.color.primary_normal
-        }
-    }
-
     WantedButtonLayout(
         modifier = modifier
             .background(
-                colorResource(id = backgroundColor),
+                buttonDefault.backgroundColor,
                 RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size))
             )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12)),
-                enabled = status == ButtonStatus.ENABLE,
+                enabled = enabled,
                 onClick = {
                     clickListener.clickOnceForDesignSystem()
                 }
@@ -160,7 +144,7 @@ fun WantedSolidButton(
                 WantedButtonSideIcon(
                     modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
                     drawableRes = it,
-                    tint = colorResource(id = textColor)
+                    tint = buttonDefault.contentColor
                 )
             }
         },
@@ -170,8 +154,8 @@ fun WantedSolidButton(
                     text = text,
                     modifier = Modifier
                         .wrapContentHeight(),
-                    style = getButtonTypography(shape = ButtonShape.SOLID, type, size = size),
-                    color = colorResource(id = textColor),
+                    style = buttonDefault.textStyle,
+                    color = buttonDefault.contentColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center
@@ -185,7 +169,7 @@ fun WantedSolidButton(
                 WantedButtonSideIcon(
                     modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
                     drawableRes = it,
-                    tint = colorResource(id = textColor)
+                    tint = buttonDefault.contentColor
                 )
             }
         }
@@ -461,7 +445,7 @@ fun PreviewWantedSolidButtonSmallNoDrawableDisable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize()
         )
 
@@ -469,7 +453,7 @@ fun PreviewWantedSolidButtonSmallNoDrawableDisable() {
             text = "Button",
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -487,7 +471,7 @@ fun PreviewWantedSolidButtonSmallLeftDrawableDisable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg
         )
@@ -496,7 +480,7 @@ fun PreviewWantedSolidButtonSmallLeftDrawableDisable() {
             text = "Button",
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg
         )
@@ -516,7 +500,7 @@ fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize(),
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
@@ -525,7 +509,7 @@ fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
             text = "Button",
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize(),
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
@@ -546,7 +530,7 @@ fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg,
             rightDrawable = R.drawable.ic_normal_heart_svg
@@ -556,7 +540,7 @@ fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
             text = "Button",
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg,
             rightDrawable = R.drawable.ic_normal_heart_svg
@@ -577,7 +561,7 @@ fun PreviewWantedSolidButtonMediumDisable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.MEDIUM,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize()
         )
 
@@ -585,7 +569,7 @@ fun PreviewWantedSolidButtonMediumDisable() {
             text = "Button",
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.MEDIUM,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -604,7 +588,7 @@ fun PreviewWantedSolidButtonLargeDisable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.LARGE,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize()
         )
 
@@ -612,7 +596,7 @@ fun PreviewWantedSolidButtonLargeDisable() {
             text = "Button",
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -631,7 +615,7 @@ fun PreviewWantedSolidButtonLargeMaxWidthDisable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.LARGE,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -639,7 +623,7 @@ fun PreviewWantedSolidButtonLargeMaxWidthDisable() {
             text = "Button",
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
-            status = ButtonStatus.DISABLE,
+            enabled = false,
             modifier = Modifier.fillMaxWidth()
         )
     }

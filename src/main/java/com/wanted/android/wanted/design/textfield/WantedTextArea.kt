@@ -38,7 +38,6 @@ import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.textfield.WantedTextFieldContract.TextFieldType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
-import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -157,7 +156,7 @@ fun WantedTextArea(
                     WantedButton(
                         text = rightButton,
                         buttonShape = ButtonShape.TEXT,
-                        status = if (enabled) ButtonStatus.ENABLE else ButtonStatus.DISABLE,
+                        enabled = enabled,
                         onClick = { onClickRightButton() }
                     )
                 }

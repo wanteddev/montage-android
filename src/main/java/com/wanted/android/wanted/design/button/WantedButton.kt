@@ -2,9 +2,10 @@ package com.wanted.android.wanted.design.button
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.wanted.android.wanted.design.button.config.WantedButtonDefault
+import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
-import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.ButtonType
 
 /**
@@ -17,7 +18,13 @@ fun WantedButton(
     buttonShape: ButtonShape = ButtonShape.SOLID,
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
-    status: ButtonStatus = ButtonStatus.ENABLE,
+    enabled: Boolean = true,
+    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
+        shape = buttonShape,
+        type = type,
+        size = size,
+        enabled = enabled
+    ),
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
@@ -30,7 +37,8 @@ fun WantedButton(
                 text = text,
                 type = type,
                 size = size,
-                status = status,
+                enabled = enabled,
+                buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
                 clickListener = onClick,
@@ -43,7 +51,8 @@ fun WantedButton(
                 text = text,
                 size = size,
                 type = type,
-                status = status,
+                enabled = enabled,
+                buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
                 clickListener = onClick,
@@ -51,15 +60,16 @@ fun WantedButton(
         }
 
         ButtonShape.TEXT -> {
-            NewWantedTextButton(
+            WantedTextButton(
                 modifier = modifier,
                 text = text,
                 size = size,
                 type = type,
-                status = status,
+                enabled = enabled,
+                buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
-                clickListener = onClick,
+                onClick = onClick,
             )
         }
     }
