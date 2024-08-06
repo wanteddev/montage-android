@@ -44,7 +44,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupPositionProvider
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.WantedButton
@@ -68,7 +67,6 @@ fun WantedTooltip(
     action: String? = null,
     isShowCloseButton: Boolean = false,
     isShowArrow: Boolean = true,
-    positionProvider: PopupPositionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
     state: TooltipState = remember { TooltipState(false) },
     content: @Composable () -> Unit,
     onClickAction: (() -> Unit)? = null
@@ -81,7 +79,7 @@ fun WantedTooltip(
 
     TooltipBox(
         modifier = modifier,
-        positionProvider = positionProvider,
+        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
         tooltip = {
             val density = LocalDensity.current
             val configuration = LocalConfiguration.current
@@ -146,7 +144,7 @@ fun WantedTooltip(
                         )
                     }
                 } else null,
-                onClickAction = action?.let {
+                action = action?.let {
                     {
                         WantedButton(
                             text = it,
@@ -189,7 +187,7 @@ private fun WantedTooltipContentsLayout(
     spacingBetweenTooltipAndAnchor: Dp,
     text: @Composable () -> Unit,
     onClose: @Composable (() -> Unit)?,
-    onClickAction: @Composable (() -> Unit)?
+    action: @Composable (() -> Unit)?
 ) {
     Column(
         modifier = modifier
@@ -228,7 +226,7 @@ private fun WantedTooltipContentsLayout(
             modifier = Modifier.padding(start = 2.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            onClickAction?.invoke()
+            action?.invoke()
         }
     }
 }
