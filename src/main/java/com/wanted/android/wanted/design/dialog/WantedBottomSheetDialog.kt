@@ -16,10 +16,12 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,6 +41,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.dialog.view.WantedDialogLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -46,10 +49,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun WantedBottomSheetDialog(
     isVisible: Boolean,
+    modalSize: ModalSize = ModalSize.Normal,
     durationMillis: Long = 200,
     onDismissRequest: () -> Unit = {},
-    top: @Composable () -> Unit,
-    bottom: @Composable (() -> Unit)? = null,
+    topBar: @Composable () -> Unit,
+    bottomBar: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
@@ -101,8 +105,9 @@ fun WantedBottomSheetDialog(
                 ) + fadeOut()
             ) {
                 WantedBottomSheetLayout(
-                    top = top,
-                    bottom = bottom,
+                    modalSize = modalSize,
+                    topBar = topBar,
+                    bottomBar = bottomBar,
                     content = content
                 )
             }
@@ -113,8 +118,9 @@ fun WantedBottomSheetDialog(
 @Composable
 fun WantedBottomSheetLayout(
     modifier: Modifier = Modifier,
-    top: @Composable () -> Unit,
-    bottom: @Composable (() -> Unit)?,
+    modalSize: ModalSize,
+    topBar: @Composable () -> Unit,
+    bottomBar: @Composable (() -> Unit)?,
     content: @Composable () -> Unit
 ) {
 
@@ -124,12 +130,18 @@ fun WantedBottomSheetLayout(
         shadowElevation = 4.dp,
         color = colorResource(id = R.color.background_normal_normal)
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            top()
-
-            content()
-
-            bottom?.invoke()
+        Column(Modifier.fillMaxWidth()) {
+            WantedDialogLayout(
+                modifier = Modifier.fillMaxWidth(),
+                modalSize = modalSize,
+                topBar = topBar,
+                content = {
+                    Box(modifier = Modifier.padding(horizontal = modalSize.contentPadding)) {
+                        content()
+                    }
+                },
+                bottomBar = bottomBar
+            )
 
             Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
         }
