@@ -38,7 +38,15 @@ fun WantedDialogLayout(
          * topBar
          */
         topBar?.let {
-            topBar()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = modalSize.titleVerticalPadding)
+                    .padding(horizontal = modalSize.titleHorizontalPadding)
+            ) {
+                topBar()
+            }
+
         } ?: run {
             Spacer(modifier = androidx.compose.ui.Modifier.size(modalSize.bottomBarPadding))
         }
