@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -36,10 +34,13 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.textfield.WantedTextFieldContract.TextFieldType
+import com.wanted.android.wanted.design.textfield.view.WantedTextAreaCount
+import com.wanted.android.wanted.design.textfield.view.WantedTextAreaLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
+
 
 @Composable
 fun WantedTextArea(
@@ -56,6 +57,66 @@ fun WantedTextArea(
     keyboardActions: KeyboardActions,
     rightButton: String? = null,
     onClickRightButton: () -> Unit = {},
+    onValueChange: (String) -> Unit = {}
+) {
+    WantedTextArea(
+        modifier = modifier,
+        value = value,
+        placeholder = placeholder,
+        error = error,
+        enabled = enabled,
+        focused = focused,
+        maxLines = maxLines,
+        maxWordCount = maxWordCount,
+        interactionSource = interactionSource,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        leftContent = {
+            WantedTextAreaCount(
+                current = value.length,
+                maxWordCount = maxWordCount
+            )
+        },
+        rightContent = {
+            if (error) {
+                WantedCommonIcon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(end = 6.dp),
+                    resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                    tint = colorResource(id = R.color.status_negative)
+                )
+            } else {
+                rightButton?.let {
+                    WantedButton(
+                        text = rightButton,
+                        buttonShape = ButtonShape.TEXT,
+                        enabled = enabled,
+                        onClick = { onClickRightButton() }
+                    )
+                }
+            }
+        },
+        onValueChange = onValueChange
+    )
+}
+
+
+@Composable
+fun WantedTextArea(
+    modifier: Modifier,
+    value: String,
+    placeholder: String,
+    error: Boolean,
+    enabled: Boolean,
+    focused: Boolean,
+    maxLines: Int,
+    maxWordCount: Int,
+    interactionSource: MutableInteractionSource,
+    keyboardOptions: KeyboardOptions,
+    keyboardActions: KeyboardActions,
+    leftContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {}
 ) {
     WantedTextAreaLayout(
@@ -136,62 +197,15 @@ fun WantedTextArea(
                 }
             )
         },
-        count = {
-            WantedTextAreaCount(
-                current = value.length,
-                maxWordCount = maxWordCount
-            )
+        leftContent = {
+            leftContent?.invoke()
         },
-        rightButton = {
-            if (error) {
-                WantedCommonIcon(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(end = 6.dp),
-                    resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                    tint = colorResource(id = R.color.status_negative)
-                )
-            } else {
-                rightButton?.let {
-                    WantedButton(
-                        text = rightButton,
-                        buttonShape = ButtonShape.TEXT,
-                        enabled = enabled,
-                        onClick = { onClickRightButton() }
-                    )
-                }
-            }
+        rightContent = {
+            rightContent?.invoke()
         }
     )
 }
 
-@Composable
-fun WantedTextAreaCount(
-    modifier: Modifier = Modifier,
-    current: Int,
-    maxWordCount: Int
-) {
-    Row(
-        modifier = modifier.padding(horizontal = 6.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "$current",
-            style = WantedTextStyle(
-                colorRes = R.color.label_alternative,
-                style = DesignSystemTheme.typography.label2Medium
-            )
-        )
-
-        Text(
-            text = "/$maxWordCount",
-            style = WantedTextStyle(
-                colorRes = R.color.label_assistive,
-                style = DesignSystemTheme.typography.label2Medium
-            )
-        )
-    }
-}
 
 @Composable
 private fun DecorationBox(
@@ -211,37 +225,6 @@ private fun DecorationBox(
         }
 
         innerTextField()
-    }
-}
-
-@Composable
-private fun WantedTextAreaLayout(
-    modifier: Modifier = Modifier,
-    textField: @Composable () -> Unit,
-    count: @Composable () -> Unit,
-    rightButton: @Composable () -> Unit
-) {
-
-    Column(
-        modifier = modifier,
-    ) {
-
-        textField()
-
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .padding(bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(modifier = Modifier.weight(weight = 1f)) {
-                count()
-            }
-
-            Box(modifier = Modifier.wrapContentSize()) {
-                rightButton()
-            }
-        }
     }
 }
 

@@ -28,7 +28,7 @@ import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
-fun WantedCommonIcon(
+internal fun WantedCommonIcon(
     modifier: Modifier = Modifier,
     @DrawableRes resourceId: Int,
     tint: Color,
