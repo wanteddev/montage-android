@@ -53,6 +53,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.OPACITY_61
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.launch
 
@@ -139,7 +140,7 @@ fun WantedTooltip(
                                 }
                                 .padding(2.dp),
                             painter = painterResource(id = R.drawable.ic_normal_close_svg),
-                            tint = colorResource(id = R.color.inverse_label),
+                            tint = colorResource(id = R.color.inverse_label).copy(alpha = OPACITY_61),
                             contentDescription = ""
                         )
                     }
@@ -147,6 +148,7 @@ fun WantedTooltip(
                 action = action?.let {
                     {
                         WantedButton(
+                            modifier = Modifier.padding(vertical = 4.dp),
                             text = it,
                             buttonShape = ButtonShape.TEXT,
                             type = ButtonType.ASSISTIVE,
@@ -155,7 +157,9 @@ fun WantedTooltip(
                                 shape = ButtonShape.TEXT,
                                 type = ButtonType.ASSISTIVE,
                                 size = ButtonSize.SMALL,
-                            ).copy(contentColor = colorResource(id = R.color.inverse_label)),
+                            ).copy(
+                                contentColor = colorResource(id = R.color.inverse_label).copy(alpha = OPACITY_61)
+                            ),
                             onClick = {
                                 onClickAction?.invoke()
                             }
@@ -193,14 +197,15 @@ private fun WantedTooltipContentsLayout(
         modifier = modifier
             .sizeIn(
                 minWidth = 64.dp,
-                maxWidth = 280.dp
+                maxWidth = 296.dp //SpacingBetweenTooltipAndAnchor *2 포함해야 한다.
             )
             .padding(spacingBetweenTooltipAndAnchor)
             .clip(RoundedCornerShape(8.dp))
             .background(colorResource(id = R.color.background_normal_normal))
             .background(colorResource(id = R.color.inverse_background).copy(0.88f))
             .background(colorResource(id = R.color.primary_normal).copy(0.05f))
-            .padding(10.dp)
+            .padding(horizontal = 10.dp)
+            .padding(top = 10.dp, bottom = 6.dp)
     ) {
         Row(
             modifier = Modifier.wrapContentSize(),
@@ -222,11 +227,13 @@ private fun WantedTooltipContentsLayout(
             }
         }
 
-        Box(
-            modifier = Modifier.padding(start = 2.dp),
-            contentAlignment = Alignment.CenterStart
-        ) {
-            action?.invoke()
+        action?.let {
+            Box(
+                modifier = Modifier.padding(start = 2.dp, top = 2.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                action()
+            }
         }
     }
 }
@@ -371,6 +378,7 @@ private fun WantedTooltipPreview() {
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 WantedTooltip(
                     text = "메시지에 마침표를 찍어요.",
                     content = {

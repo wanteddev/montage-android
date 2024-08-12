@@ -33,8 +33,49 @@ fun WantedButtonLayout(
             .then(modifier)
             .buttonHeight(buttonShape, buttonSize)
             .buttonWidth(buttonSize, text == null)
-            .buttonVerticalPadding(text == null)
+            .buttonVerticalPadding(buttonShape != ButtonShape.TEXT && text != null)
             .buttonHorizontalPadding(buttonShape, buttonSize, text == null),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = getButtonSpaceBetweenTextAndIcon(
+                buttonShape,
+                buttonSize
+            ),
+            alignment = Alignment.CenterHorizontally
+        ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        leftDrawable?.let {
+            leftDrawable()
+        }
+
+        text?.let {
+            Box(
+                Modifier.wrapContentHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                text()
+            }
+        }
+
+        rightDrawable?.let {
+            rightDrawable()
+        }
+    }
+}
+
+
+@Composable
+fun WantedTextButtonLayout(
+    modifier: Modifier,
+    buttonShape: ButtonShape = ButtonShape.SOLID,
+    buttonSize: ButtonSize = ButtonSize.LARGE,
+    text: @Composable (() -> Unit)? = null,
+    leftDrawable: @Composable (() -> Unit)? = null,
+    rightDrawable: @Composable (() -> Unit)? = null,
+) {
+    Row(
+        modifier = modifier
+            .clip(RoundedCornerShape(size = getButtonRadius(buttonShape, buttonSize))),
         horizontalArrangement = Arrangement.spacedBy(
             space = getButtonSpaceBetweenTextAndIcon(
                 buttonShape,
@@ -69,12 +110,6 @@ private fun Modifier.buttonHeight(
     size: ButtonSize
 ): Modifier = if (shape == ButtonShape.TEXT) {
     this
-        .height(
-            height = when (size) {
-                ButtonSize.MEDIUM -> 32.dp
-                else -> 28.dp
-            }
-        )
 } else {
     this
         .height(
@@ -124,9 +159,9 @@ private fun Modifier.buttonHorizontalPadding(
 
 @Composable
 private fun Modifier.buttonVerticalPadding(
-    isIconOnly: Boolean
+    isUseVerticalPadding: Boolean
 ): Modifier = when {
-    isIconOnly -> this
-    else -> this.padding(vertical = 4.dp)
+    isUseVerticalPadding -> this.padding(vertical = 4.dp)
+    else -> this
 }
 
