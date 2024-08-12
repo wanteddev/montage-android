@@ -112,8 +112,8 @@ private fun WantedAlertDialogLayout(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 28.dp, end = 21.dp, bottom = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.End),
+                .padding(start = 28.dp, end = 28.dp, bottom = 20.dp, top = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(space = 24.dp, alignment = Alignment.End),
             verticalAlignment = Alignment.CenterVertically
         ) {
             negative?.invoke()
