@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.textfield
+package com.wanted.android.wanted.design.textfield.view
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.textfield.WantedTextField
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle

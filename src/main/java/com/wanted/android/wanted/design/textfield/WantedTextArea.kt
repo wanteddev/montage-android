@@ -34,7 +34,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.textfield.WantedTextFieldContract.TextFieldType
-import com.wanted.android.wanted.design.textfield.view.WantedTextAreaCount
+import com.wanted.android.wanted.design.textfield.view.WantedTextAreaCharacterCount
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
@@ -72,7 +72,7 @@ fun WantedTextArea(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         leftContent = {
-            WantedTextAreaCount(
+            WantedTextAreaCharacterCount(
                 current = value.length,
                 maxWordCount = maxWordCount
             )
