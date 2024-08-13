@@ -2,22 +2,18 @@ package com.wanted.android.wanted.design.textfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedComponentTitle
-import com.wanted.android.wanted.design.textfield.WantedTextFieldContract.TextFieldType
 import com.wanted.android.wanted.design.textfield.view.WantedCustomTextField
+import com.wanted.android.wanted.design.textfield.view.WantedTextFieldLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -31,7 +27,6 @@ fun WantedTextField(
     value: String,
     placeholder: String = "",
     title: String = "",
-    type: TextFieldType = TextFieldType.Normal,
     description: String? = null,
     rightButton: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -40,7 +35,7 @@ fun WantedTextField(
     enabled: Boolean = true,
     error: Boolean = false,
     complete: Boolean = false,
-    maxLines: Int = if (type == TextFieldType.Normal) 1 else Int.MAX_VALUE,
+    maxLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -63,46 +58,26 @@ fun WantedTextField(
             null
         },
         textField = {
-            if (type == TextFieldType.Normal) {
-                WantedCustomTextField(
-                    modifier = Modifier,
-                    value = value,
-                    error = error,
-                    enabled = enabled,
-                    focused = focused.value,
-                    complete = complete,
-                    maxLines = maxLines,
-                    maxWordCount = maxWordCount,
-                    interactionSource = interactionSource,
-                    keyboardOptions = keyboardOptions,
-                    keyboardActions = keyboardActions,
-                    rightButton = rightButton,
-                    placeholder = placeholder,
-                    leadingIcon = leadingIcon,
-                    trailingIcon = trailingIcon,
-                    rightContent = rightContent,
-                    onClickRightButton = onClickRightButton,
-                    onValueChange = onValueChange
-                )
-            } else {
-                WantedTextArea(
-                    modifier = Modifier,
-                    value = value,
-                    error = error,
-                    enabled = enabled,
-                    focused = focused.value,
-                    maxLines = maxLines,
-                    maxWordCount = maxWordCount,
-                    interactionSource = interactionSource,
-                    keyboardOptions = keyboardOptions,
-                    keyboardActions = keyboardActions,
-                    rightButton = rightButton,
-                    placeholder = placeholder,
-                    onClickRightButton = onClickRightButton,
-                    onValueChange = onValueChange
-                )
-            }
-
+            WantedCustomTextField(
+                modifier = Modifier,
+                value = value,
+                error = error,
+                enabled = enabled,
+                focused = focused.value,
+                complete = complete,
+                maxLines = maxLines,
+                maxWordCount = maxWordCount,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                rightButton = rightButton,
+                placeholder = placeholder,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                rightContent = rightContent,
+                onClickRightButton = onClickRightButton,
+                onValueChange = onValueChange
+            )
         },
         message = description?.let {
             {
@@ -121,28 +96,5 @@ fun WantedTextField(
             }
         }
     )
-}
-
-
-@Composable
-private fun WantedTextFieldLayout(
-    modifier: Modifier,
-    title: @Composable (() -> Unit)? = null,
-    textField: @Composable () -> Unit,
-    message: @Composable (() -> Unit)? = null
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(
-            space = 8.dp,
-            alignment = Alignment.CenterVertically
-        )
-    ) {
-        title?.invoke()
-
-        textField()
-
-        message?.invoke()
-    }
 }
 

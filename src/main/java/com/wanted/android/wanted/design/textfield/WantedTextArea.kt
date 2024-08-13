@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,41 +22,183 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
+import com.wanted.android.wanted.design.base.WantedComponentTitle
 import com.wanted.android.wanted.design.button.WantedButton
-import com.wanted.android.wanted.design.textfield.WantedTextFieldContract.TextFieldType
+import com.wanted.android.wanted.design.chip.WantedActionChip
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaCharacterCount
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaLayout
+import com.wanted.android.wanted.design.textfield.view.WantedTextFieldLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
+@Composable
+fun WantedTextArea(
+    modifier: Modifier = Modifier,
+    value: String,
+    placeholder: String = "",
+    title: String = "",
+    description: String? = null,
+    rightButton: String? = null,
+    enabled: Boolean = true,
+    error: Boolean = false,
+    maxLines: Int = 8,
+    maxWordCount: Int = 2000,
+    requiredBadge: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    onClickRightButton: () -> Unit = {},
+    onValueChange: (String) -> Unit = {}
+) {
+    WantedTextFieldLayout(
+        modifier = modifier,
+        title = if (title.isNotEmpty()) {
+            {
+                WantedComponentTitle(
+                    title = title,
+                    isRequiredBadge = requiredBadge
+                )
+            }
+        } else {
+            null
+        },
+        textField = {
+            WantedTextArea(
+                modifier = Modifier,
+                value = value,
+                error = error,
+                enabled = enabled,
+                focused = focused.value,
+                maxLines = maxLines,
+                maxWordCount = maxWordCount,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                rightButton = rightButton,
+                placeholder = placeholder,
+                onClickRightButton = onClickRightButton,
+                onValueChange = onValueChange
+            )
+        },
+        message = description?.let {
+            {
+                Text(
+                    text = description,
+                    style = WantedTextStyle(
+                        colorRes = when {
+                            enabled && error -> R.color.status_negative
+                            else -> R.color.label_alternative
+                        },
+                        style = DesignSystemTheme.typography.caption1Regular
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    )
+}
+
 
 @Composable
 fun WantedTextArea(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     value: String,
-    placeholder: String,
-    error: Boolean,
-    enabled: Boolean,
-    focused: Boolean,
-    maxLines: Int,
-    maxWordCount: Int,
-    interactionSource: MutableInteractionSource,
-    keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions,
-    rightButton: String? = null,
+    placeholder: String = "",
+    title: String = "",
+    description: String? = null,
+    leftContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable (() -> Unit)? = null,
+    enabled: Boolean = true,
+    error: Boolean = false,
+    maxLines: Int = 8,
+    maxWordCount: Int = 2000,
+    requiredBadge: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    onValueChange: (String) -> Unit = {}
+) {
+    WantedTextFieldLayout(
+        modifier = modifier,
+        title = if (title.isNotEmpty()) {
+            {
+                WantedComponentTitle(
+                    title = title,
+                    isRequiredBadge = requiredBadge
+                )
+            }
+        } else {
+            null
+        },
+        textField = {
+            WantedTextArea(
+                modifier = Modifier,
+                value = value,
+                error = error,
+                enabled = enabled,
+                focused = focused.value,
+                maxLines = maxLines,
+                maxWordCount = maxWordCount,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                rightContent = rightContent,
+                leftContent = leftContent,
+                placeholder = placeholder,
+                onValueChange = onValueChange
+            )
+        },
+        message = description?.let {
+            {
+                Text(
+                    text = description,
+                    style = WantedTextStyle(
+                        colorRes = when {
+                            enabled && error -> R.color.status_negative
+                            else -> R.color.label_alternative
+                        },
+                        style = DesignSystemTheme.typography.caption1Regular
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    )
+}
+
+
+@Composable
+private fun WantedTextArea(
+    modifier: Modifier = Modifier,
+    value: String,
+    placeholder: String = "",
+    error: Boolean = false,
+    enabled: Boolean = true,
+    focused: Boolean = false,
+    maxLines: Int = 8,
+    maxWordCount: Int = 2000,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    rightButton: String?,
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
@@ -103,18 +246,18 @@ fun WantedTextArea(
 
 
 @Composable
-fun WantedTextArea(
-    modifier: Modifier,
+private fun WantedTextArea(
+    modifier: Modifier = Modifier,
     value: String,
-    placeholder: String,
-    error: Boolean,
-    enabled: Boolean,
-    focused: Boolean,
-    maxLines: Int,
-    maxWordCount: Int,
-    interactionSource: MutableInteractionSource,
-    keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions,
+    placeholder: String = "",
+    error: Boolean = false,
+    enabled: Boolean = true,
+    focused: Boolean = false,
+    maxLines: Int = 8,
+    maxWordCount: Int = 2000,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {}
@@ -197,12 +340,8 @@ fun WantedTextArea(
                 }
             )
         },
-        leftContent = {
-            leftContent?.invoke()
-        },
-        rightContent = {
-            rightContent?.invoke()
-        }
+        leftContent = leftContent,
+        rightContent = rightContent
     )
 }
 
@@ -248,100 +387,51 @@ private fun WantedTextAreaPreview() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
 
-                WantedTextField(
+                WantedTextArea(
                     value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    type = TextFieldType.TextArea
+                    placeholder = "텍스트를 입력해 주세요."
                 )
 
-                WantedTextField(
-                    title = "주제",
-                    value = "",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    type = TextFieldType.TextArea
-                )
-
-                WantedTextField(
+                WantedTextArea(
                     title = "주제",
                     requiredBadge = true,
                     value = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    type = TextFieldType.TextArea
+                    rightButton = "텍스트"
                 )
 
-                WantedTextField(
+                WantedTextArea(
                     value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    type = TextFieldType.TextArea
+                    rightButton = "텍스트"
                 )
 
-                WantedTextField(
+                WantedTextArea(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    complete = true,
-                    focused = remember { mutableStateOf(false) },
-                    type = TextFieldType.TextArea
+                    rightButton = "텍스트"
                 )
 
-                WantedTextField(
+                WantedTextArea(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    focused = remember { mutableStateOf(true) },
-                    type = TextFieldType.TextArea
-                )
-            }
-        }
-    }
-}
-
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
-@Composable
-private fun WantedTextArea1Preview() {
-    DesignSystemTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-            ) {
-                WantedTextField(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    error = true,
-                    focused = remember { mutableStateOf(false) },
-                    type = TextFieldType.TextArea
+                    rightButton = "텍스트"
                 )
 
-                WantedTextField(
+                WantedTextArea(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    error = true,
-                    focused = remember { mutableStateOf(true) },
-                    type = TextFieldType.TextArea
+                    rightContent = {
+                        WantedActionChip(text = "WantedActionChip")
+                    }
                 )
 
-                WantedTextField(
+                WantedTextArea(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    enabled = false,
-                    focused = remember { mutableStateOf(true) },
-                    type = TextFieldType.TextArea
+                    leftContent = {
+                        WantedActionChip(text = "WantedActionChip")
+                    }
                 )
             }
         }

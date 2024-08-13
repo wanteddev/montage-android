@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 internal fun WantedTextAreaLayout(
     modifier: Modifier = Modifier,
     textField: @Composable () -> Unit,
-    leftContent: @Composable () -> Unit,
-    rightContent: @Composable () -> Unit
+    leftContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable (() -> Unit)? = null
 ) {
 
     Column(
@@ -25,18 +25,20 @@ internal fun WantedTextAreaLayout(
 
         textField()
 
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .padding(bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(modifier = Modifier.weight(weight = 1f)) {
-                leftContent()
-            }
+        if (leftContent != null || rightContent != null) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .padding(bottom = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(modifier = Modifier.weight(weight = 1f)) {
+                    leftContent?.invoke()
+                }
 
-            Box(modifier = Modifier.wrapContentSize()) {
-                rightContent()
+                Box(modifier = Modifier.wrapContentSize()) {
+                    rightContent?.invoke()
+                }
             }
         }
     }
