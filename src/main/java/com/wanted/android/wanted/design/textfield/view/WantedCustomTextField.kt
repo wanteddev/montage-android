@@ -151,7 +151,7 @@ internal fun WantedCustomTextField(
                                 Text(
                                     text = placeholder,
                                     style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_alternative else R.color.label_disable,
+                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
                                         style = DesignSystemTheme.typography.body1Regular
                                     )
                                 )
