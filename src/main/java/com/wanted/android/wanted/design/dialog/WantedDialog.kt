@@ -1,145 +1,124 @@
 package com.wanted.android.wanted.design.dialog
 
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.wanted.android.wanted.design.dialog.view.WantedDialogLayout
-import com.wanted.android.wanted.design.dialog.view.WantedDialogTwoButtonImpl
+import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.dialog.view.WantedAlertDialogButton
+import com.wanted.android.wanted.design.dialog.view.WantedAlertDialogButtonType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.topbar.WantedTopAppBar
-
+import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 fun WantedDialog(
-    modifier: Modifier = Modifier,
-    modalSize: ModalSize,
     properties: DialogProperties = DialogProperties(),
-    topBar: @Composable (() -> Unit)? = null,
-    positive: String? = null,
-    negative: String? = null,
-    onClickPositive: (() -> Unit)? = null,
-    onClickNegative: (() -> Unit)? = null,
-    onDismissRequest: () -> Unit,
-    content: @Composable BoxScope.() -> Unit
+    title: String? = null,
+    message: String,
+    confirm: String,
+    isNegative: Boolean = false,
+    cancel: String? = null,
+    onClickConfirm: () -> Unit,
+    onClickCancel: (() -> Unit)? = null,
+    onDismissRequest: () -> Unit = {}
 ) {
     Dialog(
         onDismissRequest = { onDismissRequest() },
         properties = properties
     ) {
-        WantedDialogTwoButtonImpl(
-            modifier = modifier,
-            modalSize = modalSize,
-            topBar = topBar,
-            positive = positive,
-            negative = negative,
-            onClickPositive = onClickPositive,
-            onClickNegative = onClickNegative,
-            content = content
-        )
-    }
-}
-
-
-@Composable
-fun WantedDialog(
-    modifier: Modifier = Modifier,
-    modalSize: ModalSize,
-    properties: DialogProperties = DialogProperties(),
-    topBar: @Composable (() -> Unit)? = null,
-    bottomBar: (@Composable () -> Unit)? = null,
-    onDismissRequest: () -> Unit,
-    content: @Composable BoxScope.() -> Unit
-) {
-    Dialog(
-        onDismissRequest = { onDismissRequest() },
-        properties = properties
-    ) {
-        WantedDialogLayout(
-            modifier = modifier,
-            modalSize = modalSize,
-            topBar = topBar,
-            content = {
-                Box(modifier = Modifier.padding(horizontal = modalSize.contentPadding)) {
-                    content()
+        WantedAlertDialogLayout(
+            title = title?.let {
+                {
+                    Text(text = title)
                 }
             },
-            bottomBar = bottomBar
-        )
-    }
-}
-
-
-@Composable
-fun WantedDialog(
-    modifier: Modifier = Modifier,
-    modalSize: ModalSize,
-    properties: DialogProperties = DialogProperties(),
-    topBar: @Composable (() -> Unit)? = null,
-    bottomBar: (@Composable () -> Unit)? = null,
-    onDismissRequest: () -> Unit,
-    lazyContent: LazyListScope.() -> Unit
-) {
-    Dialog(
-        onDismissRequest = { onDismissRequest() },
-        properties = properties
-    ) {
-        WantedDialogLayout(
-            modifier = modifier,
-            modalSize = modalSize,
-            topBar = topBar,
-            content = {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(modalSize.contentPadding)
-                ) {
-                    lazyContent()
-                }
+            message = {
+                Text(text = message)
             },
-            bottomBar = bottomBar
-        )
-    }
-}
+            negative = cancel?.let {
+                {
+                    WantedAlertDialogButton(
+                        text = cancel,
+                        type = WantedAlertDialogButtonType.Neutral,
+                        onClick = { onClickCancel?.invoke() }
 
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
-@Composable
-private fun WantedDialogPreview() {
-    DesignSystemTheme {
-        Scaffold {
-            WantedDialog(
-                modifier = Modifier.padding(it),
-                modalSize = ModalSize.Normal,
-                positive = "확인",
-                topBar = {
-                    WantedTopAppBar(
-                        title = { Text(text = "다이얼로그 타이틀") },
                     )
-                },
-                onClickPositive = {},
-                onDismissRequest = {}
-            ) {
-                Text(text = "다이얼로그 내용")
+                }
+            },
+            positive = {
+                WantedAlertDialogButton(
+                    text = confirm,
+                    type = if (isNegative) {
+                        WantedAlertDialogButtonType.Negative
+                    } else {
+                        WantedAlertDialogButtonType.Positive
+                    },
+
+                    onClick = { onClickConfirm() }
+                )
             }
+        )
+    }
+}
+
+@Composable
+private fun WantedAlertDialogLayout(
+    title: @Composable (() -> Unit)?,
+    message: @Composable () -> Unit,
+    positive: @Composable () -> Unit,
+    negative: @Composable (() -> Unit)?
+) {
+    Column(
+        modifier = Modifier
+            .clip(RoundedCornerShape(16.dp))
+            .background(colorResource(id = R.color.background_elevated_normal))
+    ) {
+        Column(
+            modifier = Modifier.padding(28.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            ProvideTextStyle(
+                value = WantedTextStyle(
+                    colorRes = R.color.label_normal,
+                    style = DesignSystemTheme.typography.heading2Bold
+                )
+            ) {
+                title?.invoke()
+            }
+
+            ProvideTextStyle(
+                value = WantedTextStyle(
+                    colorRes = R.color.label_alternative,
+                    style = DesignSystemTheme.typography.body2Regular
+                )
+            ) {
+                message()
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 28.dp, end = 28.dp, bottom = 20.dp, top = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(space = 24.dp, alignment = Alignment.End),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            negative?.invoke()
+
+            positive()
         }
     }
 }
