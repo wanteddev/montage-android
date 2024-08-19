@@ -148,7 +148,7 @@ fun WantedTooltip(
                 action = action?.let {
                     {
                         WantedButton(
-                            modifier = Modifier.padding(vertical = 4.dp),
+                            modifier = Modifier,
                             text = it,
                             buttonShape = ButtonShape.TEXT,
                             type = ButtonType.ASSISTIVE,
@@ -205,7 +205,7 @@ private fun WantedTooltipContentsLayout(
             .background(colorResource(id = R.color.inverse_background).copy(0.88f))
             .background(colorResource(id = R.color.primary_normal).copy(0.05f))
             .padding(horizontal = 10.dp)
-            .padding(top = 10.dp, bottom = 6.dp)
+            .padding(top = 10.dp, bottom = 10.dp)
     ) {
         Row(
             modifier = Modifier.wrapContentSize(),
@@ -229,7 +229,7 @@ private fun WantedTooltipContentsLayout(
 
         action?.let {
             Box(
-                modifier = Modifier.padding(start = 2.dp, top = 2.dp),
+                modifier = Modifier.padding(start = 2.dp, top = 6.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 action()
@@ -375,34 +375,11 @@ private fun WantedTooltipPreview() {
     DesignSystemTheme {
         Surface(Modifier.fillMaxSize()) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                WantedTooltip(
-                    text = "메시지에 마침표를 찍어요.",
-                    content = {
-                        WantedCommonIcon(
-                            modifier = Modifier.size(22.dp),
-                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                            tint = colorResource(id = R.color.status_negative)
-                        )
-                    },
-                    state = remember { TooltipState(true) }
-                )
-
-                WantedTooltip(
-                    text = "메시지에 마침표를 찍어요.",
-                    action = "더 알아보기",
-                    content = {
-                        WantedCommonIcon(
-                            modifier = Modifier.size(22.dp),
-                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                            tint = colorResource(id = R.color.status_negative)
-                        )
-                    },
-                    state = remember { TooltipState(true) }
-                )
 
                 WantedTooltip(
                     text = "메시지에 마침표를 찍어요.",

@@ -112,7 +112,7 @@ private fun WantedAlertDialogLayout(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 28.dp, end = 28.dp, bottom = 20.dp, top = 4.dp),
+                .padding(start = 28.dp, end = 28.dp, bottom = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(space = 24.dp, alignment = Alignment.End),
             verticalAlignment = Alignment.CenterVertically
         ) {

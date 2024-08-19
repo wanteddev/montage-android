@@ -1,7 +1,10 @@
 package com.wanted.android.wanted.design.dialog.view
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
@@ -19,6 +22,7 @@ internal fun WantedAlertDialogButton(
     when (type) {
         WantedAlertDialogButtonType.Positive -> {
             WantedButton(
+                modifier = Modifier.padding(vertical = 4.dp),
                 text = text,
                 buttonShape = ButtonShape.TEXT,
                 size = ButtonSize.MEDIUM,
@@ -28,6 +32,7 @@ internal fun WantedAlertDialogButton(
 
         WantedAlertDialogButtonType.Neutral -> {
             WantedButton(
+                modifier = Modifier.padding(vertical = 4.dp),
                 text = text,
                 buttonShape = ButtonShape.TEXT,
                 size = ButtonSize.MEDIUM,
@@ -38,6 +43,7 @@ internal fun WantedAlertDialogButton(
 
         else -> {
             WantedButton(
+                modifier = Modifier.padding(vertical = 4.dp),
                 text = text,
                 buttonShape = ButtonShape.TEXT,
                 buttonDefault = WantedButtonDefaults.getDefault(
