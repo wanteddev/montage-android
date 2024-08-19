@@ -2,14 +2,15 @@ package com.wanted.android.wanted.design.button
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,15 +19,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.button.view.WantedButtonLayout
@@ -34,7 +35,7 @@ import com.wanted.android.wanted.design.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
-import com.wanted.android.wanted.design.util.OPACITY_22
+import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getTextButtonSize
 
@@ -122,66 +123,62 @@ fun WantedTextButton(
 ) {
     val textColor = remember { mutableStateOf(buttonDefault.contentColor) }
 
-    WantedButtonLayout(
-        modifier = modifier
-            .pointerInteropFilter {
-                if (enabled) {
-                    when (it.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            textColor.value = buttonDefault.contentColor.copy(alpha = OPACITY_22)
-
-                        }
-
-                        MotionEvent.ACTION_UP -> {
-                            textColor.value = buttonDefault.contentColor
-                            onClick.clickOnceForDesignSystem()
-                        }
-
-                        MotionEvent.ACTION_CANCEL -> {
-                            textColor.value = buttonDefault.contentColor
-                        }
+    WantedTouchArea(
+        verticalPadding = 4.dp,
+        horizontalPadding = if (size == ButtonSize.SMALL) 6.dp else 7.dp,
+        shape = RoundedCornerShape(6.dp),
+        enabled = enabled,
+        rippleColor = if (type == ButtonType.PRIMARY) {
+            buttonDefault.contentColor.copy(alpha = OPACITY_12)
+        } else {
+            colorResource(id = R.color.label_normal_opacity12)
+        },
+        content = {
+            WantedButtonLayout(
+                modifier = modifier,
+                buttonShape = ButtonShape.TEXT,
+                buttonSize = size,
+                leftDrawable = leftDrawable?.let {
+                    {
+                        WantedButtonSideIcon(
+                            modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
+                            drawableRes = it,
+                            tint = textColor.value
+                        )
+                    }
+                },
+                text = {
+                    Text(
+                        text = text,
+                        modifier = Modifier.wrapContentHeight(),
+                        style = buttonDefault.textStyle,
+                        color = textColor.value,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center
+                    )
+                },
+                rightDrawable = rightDrawable?.let {
+                    {
+                        WantedButtonSideIcon(
+                            modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
+                            drawableRes = it,
+                            tint = textColor.value
+                        )
                     }
                 }
-
-                true
-            },
-        buttonShape = ButtonShape.TEXT,
-        buttonSize = size,
-        leftDrawable = leftDrawable?.let {
-            {
-                WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
-                    drawableRes = it,
-                    tint = textColor.value
-                )
-            }
-        },
-        text = {
-            Text(
-                text = text,
-                modifier = Modifier.wrapContentHeight(),
-                style = buttonDefault.textStyle,
-                color = textColor.value,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
             )
         },
-        rightDrawable = rightDrawable?.let {
-            {
-                WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
-                    drawableRes = it,
-                    tint = textColor.value
-                )
-            }
+        onClick = {
+            onClick.clickOnceForDesignSystem()
         }
     )
+
 }
 
 @Preview
 @Composable
-fun PreviewTextButtons() {
+private fun PreviewTextButtons() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -190,6 +187,16 @@ fun PreviewTextButtons() {
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Box(
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+                .background(Color.Yellow.copy(alpha = 0.5f))
+        ) {
+            PreviewWantedTextButtonSmallNoDrawableEnableNoBackground()
+        }
+
+
         PreviewWantedTextButtonSmallNoDrawableEnable()
 
         PreviewWantedTextButtonSmallLeftDrawableEnable()
@@ -222,7 +229,30 @@ fun PreviewTextButtons() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallNoDrawableEnable() {
+private fun PreviewWantedTextButtonSmallNoDrawableEnableNoBackground() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+
+        WantedTextButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            type = ButtonType.ASSISTIVE,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewWantedTextButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -248,7 +278,7 @@ fun PreviewWantedTextButtonSmallNoDrawableEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
+private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -267,7 +297,7 @@ fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallRightDrawableEnable() {
+private fun PreviewWantedTextButtonSmallRightDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -286,7 +316,7 @@ fun PreviewWantedTextButtonSmallRightDrawableEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
+private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -306,7 +336,7 @@ fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonMediumEnable() {
+private fun PreviewWantedTextButtonMediumEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -324,7 +354,7 @@ fun PreviewWantedTextButtonMediumEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonLargeEnable() {
+private fun PreviewWantedTextButtonLargeEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -342,7 +372,7 @@ fun PreviewWantedTextButtonLargeEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonLargeMaxWidthEnable() {
+private fun PreviewWantedTextButtonLargeMaxWidthEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -360,7 +390,7 @@ fun PreviewWantedTextButtonLargeMaxWidthEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallNoDrawableDisable() {
+private fun PreviewWantedTextButtonSmallNoDrawableDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -379,7 +409,7 @@ fun PreviewWantedTextButtonSmallNoDrawableDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
+private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -399,7 +429,7 @@ fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallRightDrawableDisable() {
+private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -419,7 +449,7 @@ fun PreviewWantedTextButtonSmallRightDrawableDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
+private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -440,7 +470,7 @@ fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonMediumDisable() {
+private fun PreviewWantedTextButtonMediumDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -459,7 +489,7 @@ fun PreviewWantedTextButtonMediumDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonLargeDisable() {
+private fun PreviewWantedTextButtonLargeDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -478,7 +508,7 @@ fun PreviewWantedTextButtonLargeDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedTextButtonLargeMaxWidthDisable() {
+private fun PreviewWantedTextButtonLargeMaxWidthDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
