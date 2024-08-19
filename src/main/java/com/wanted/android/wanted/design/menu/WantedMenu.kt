@@ -2,7 +2,6 @@ package com.wanted.android.wanted.design.menu
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,132 +21,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.element.WantedCheckBox
-import com.wanted.android.wanted.design.element.WantedRadioButton
 import com.wanted.android.wanted.design.list.WantedCell
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-/**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=16784-140148&m=dev
- */
 
 @Composable
 fun WantedMenu(
-    properties: DialogProperties = DialogProperties(),
-    items: List<String>,
-    onDismissRequest: () -> Unit,
-    onClick: (index: Int, value: String) -> Unit
-) {
-    WantedMenu(
-        properties = properties,
-        sectionCount = 2,
-        itemCount = { items.size },
-        onBindSectionTitle = null,
-        onBindSectionItem = { _, index ->
-            WantedCell(
-                text = items[index],
-                onClick = {
-                    onClick(index, items[index])
-                }
-            )
-        },
-        onDismissRequest = onDismissRequest
-    )
-}
-
-@Composable
-fun WantedMenu(
-    properties: DialogProperties = DialogProperties(),
-    items: List<String>,
-    type: WantedMenuContract.Type = WantedMenuContract.Type.Normal,
-    onDismissRequest: () -> Unit,
-    onClick: (index: Int, value: String) -> Unit
-) {
-    WantedMenu(
-        properties = properties,
-        sectionCount = 2,
-        itemCount = { items.size },
-        onBindSectionTitle = null,
-        onBindSectionItem = { _, index ->
-            when (type) {
-                WantedMenuContract.Type.Normal -> {
-                    WantedCell(
-                        text = items[index],
-                        onClick = {
-                            onClick(index, items[index])
-                        }
-                    )
-                }
-
-                WantedMenuContract.Type.Radio -> {
-                    WantedCell(
-                        text = items[index],
-                        leftContent = {
-                            WantedRadioButton(
-                                checked = false,
-                                onCheckedChange = {
-
-                                }
-                            )
-                        },
-                        onClick = {
-                            onClick(index, items[index])
-                        }
-                    )
-                }
-
-                WantedMenuContract.Type.Check -> {
-                    WantedCell(
-                        text = items[index],
-                        leftContent = {
-                            WantedCheckBox(
-                                checked = false,
-                                onCheckedChange = {
-
-                                }
-                            )
-                        },
-                        onClick = {
-                            onClick(index, items[index])
-                        }
-                    )
-                }
-            }
-
-        },
-        onDismissRequest = onDismissRequest
-    )
-}
-
-@Composable
-fun WantedMenu(
-    properties: DialogProperties = DialogProperties(),
-    sectionCount: Int,
-    itemCount: (section: Int) -> Int,
-    onBindSectionTitle: @Composable ((section: Int) -> Unit)? = null,
-    onBindSectionItem: @Composable (section: Int, index: Int) -> Unit,
-    onDismissRequest: () -> Unit
-) {
-    Dialog(
-        onDismissRequest = { onDismissRequest() },
-        properties = properties
-    ) {
-        WantedMenuImpl(
-            modifier = Modifier,
-            sectionCount = sectionCount,
-            itemCount = itemCount,
-            onBindSectionTitle = onBindSectionTitle,
-            onBindSectionItem = onBindSectionItem,
-        )
-    }
-}
-
-@Composable
-private fun WantedMenuImpl(
     modifier: Modifier = Modifier,
     sectionCount: Int,
     itemCount: (section: Int) -> Int,
@@ -159,12 +40,7 @@ private fun WantedMenuImpl(
             .defaultMinSize(minWidth = 140.dp)
             .sizeIn(maxHeight = 400.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(colorResource(id = R.color.background_elevated_normal))
-            .border(
-                width = 1.dp,
-                shape = RoundedCornerShape(16.dp),
-                color = colorResource(id = R.color.line_solid_neutral)
-            ),
+            .background(colorResource(id = R.color.background_elevated_normal)),
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
@@ -208,7 +84,7 @@ private fun WantedMenuPreview() {
                     .fillMaxSize()
                     .padding(20.dp)
             ) {
-                WantedMenuImpl(
+                WantedMenu(
                     sectionCount = 2,
                     itemCount = {
                         if (it == 0) {
