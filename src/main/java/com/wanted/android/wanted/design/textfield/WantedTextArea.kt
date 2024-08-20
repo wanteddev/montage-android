@@ -56,6 +56,7 @@ fun WantedTextArea(
     enabled: Boolean = true,
     error: Boolean = false,
     maxLines: Int = 8,
+    minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -85,6 +86,7 @@ fun WantedTextArea(
                 enabled = enabled,
                 focused = focused.value,
                 maxLines = maxLines,
+                minLines = minLines,
                 maxWordCount = maxWordCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -127,6 +129,7 @@ fun WantedTextArea(
     enabled: Boolean = true,
     error: Boolean = false,
     maxLines: Int = 8,
+    minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -155,6 +158,7 @@ fun WantedTextArea(
                 enabled = enabled,
                 focused = focused.value,
                 maxLines = maxLines,
+                minLines = minLines,
                 maxWordCount = maxWordCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -194,6 +198,7 @@ private fun WantedTextArea(
     enabled: Boolean = true,
     focused: Boolean = false,
     maxLines: Int = 8,
+    minLines: Int = 1,
     maxWordCount: Int = 2000,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -210,6 +215,7 @@ private fun WantedTextArea(
         enabled = enabled,
         focused = focused,
         maxLines = maxLines,
+        minLines = minLines,
         maxWordCount = maxWordCount,
         interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
@@ -254,6 +260,7 @@ private fun WantedTextArea(
     enabled: Boolean = true,
     focused: Boolean = false,
     maxLines: Int = 8,
+    minLines: Int = 1,
     maxWordCount: Int = 2000,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -300,10 +307,10 @@ private fun WantedTextArea(
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
                     .padding(vertical = 12.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
+                    .fillMaxWidth(),
                 value = value,
                 maxLines = maxLines,
+                minLines = minLines,
                 enabled = enabled,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -388,11 +395,13 @@ private fun WantedTextAreaPreview() {
             ) {
 
                 WantedTextArea(
+                    modifier = Modifier,
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요."
                 )
 
                 WantedTextArea(
+                    modifier = Modifier,
                     title = "주제",
                     requiredBadge = true,
                     value = "입력한 텍스트.",
