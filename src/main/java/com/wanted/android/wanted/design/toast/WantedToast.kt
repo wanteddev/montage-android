@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -71,9 +72,8 @@ fun WantedToast(
         text = stringResource(id = text),
         icon = icon?.let {
             {
-                Icon(
-                    contentDescription = "icon",
-                    painter = painterResource(id = icon),
+                WantedCommonIcon(
+                    resourceId = icon,
                     modifier = Modifier.fillMaxSize(),
                     tint = tintColor?.let {
                         colorResource(id = tintColor)
@@ -95,18 +95,19 @@ fun WantedToast(
         WantedToastVariant.NORMAL -> {
             icon?.let {
                 {
-                    Box(
-                        modifier = Modifier.size(22.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        icon()
-                    }
+                    icon()
                 }
             }
         }
 
         else -> {
-            { WantedToastIcon(variant = variant) }
+            {
+                WantedCommonIcon(
+                    modifier = Modifier.fillMaxSize(),
+                    resourceId = variant.resourceId,
+                    tint = colorResource(variant.tinColor)
+                )
+            }
         }
     }
 
@@ -121,30 +122,6 @@ fun WantedToast(
             )
         }
     )
-}
-
-@Composable
-private fun WantedToastIcon(
-    modifier: Modifier = Modifier,
-    variant: WantedToastVariant = WantedToastVariant.NORMAL,
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .size(11.dp)
-                .background(colorResource(id = R.color.static_white))
-        )
-
-        Icon(
-            contentDescription = "icon",
-            painter = painterResource(id = variant.resourceId),
-            modifier = Modifier.size(22.dp),
-            tint = colorResource(id = variant.tinColor)
-        )
-    }
 }
 
 @Composable
@@ -166,7 +143,11 @@ private fun WantedToastLayout(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        icon?.invoke()
+        icon?.let {
+            Box(modifier = Modifier.size(22.dp)) {
+                icon()
+            }
+        }
 
         Box(
             modifier = Modifier
@@ -196,7 +177,7 @@ private fun WantedToastLayout(
     device = Devices.FOLDABLE
 )
 @Composable
-fun ToastNormalPreview() {
+private fun ToastNormalPreview() {
     DesignSystemTheme {
         Surface(Modifier.fillMaxSize()) {
             Column(
@@ -228,8 +209,7 @@ fun ToastNormalPreview() {
                         Icon(
                             contentDescription = "icon",
                             painter = painterResource(id = R.drawable.ic_normal_eye_fill_svg),
-                            modifier = Modifier
-                                .size(22.dp),
+                            modifier = Modifier.size(22.dp),
                             tint = colorResource(id = R.color.design_default_color_error)
                         )
                     },
