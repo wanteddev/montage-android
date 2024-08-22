@@ -7,8 +7,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.chip.WantedActionContract
-import com.wanted.android.wanted.design.util.ButtonShape
-import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.OPACITY_5
 
 
@@ -18,8 +16,8 @@ interface WantedChipBackgroundLoader {
     @Composable
     fun getBackgroundColor(
         variant: WantedActionContract.ChipActionVariant,
-        size: WantedActionContract.ChipActionSize,
-        isActive: Boolean
+        isActive: Boolean,
+        isEnable: Boolean
     ): Color
 }
 
@@ -27,26 +25,25 @@ internal class WantedChipBackgroundLoaderImpl : WantedChipBackgroundLoader {
     @Composable
     override fun getBackgroundColor(
         variant: WantedActionContract.ChipActionVariant,
-        size: WantedActionContract.ChipActionSize,
-        isActive: Boolean
+        isActive: Boolean,
+        isEnable: Boolean
     ): Color = when (variant) {
         WantedActionContract.ChipActionVariant.FILLED -> {
-            if (isActive) {
-                colorResource(id = R.color.inverse_background)
-            } else {
-                colorResource(id = R.color.fill_alternative)
+            when {
+                !isEnable -> colorResource(id = R.color.interaction_disable)
+                isActive -> colorResource(id = R.color.inverse_background)
+                else -> colorResource(id = R.color.fill_alternative)
             }
         }
 
         WantedActionContract.ChipActionVariant.OUTLINED -> {
-            if (isActive) {
-                colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
-            } else {
-                colorResource(id = R.color.line_normal_neutral)
+            when {
+                !isEnable -> colorResource(id = R.color.line_normal_neutral)
+                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
+                else -> colorResource(id = R.color.line_normal_neutral)
             }
         }
     }
-
 }
 
 

@@ -18,8 +18,8 @@ interface WantedChipBorderLoader {
     @Composable
     fun getBorderColor(
         variant: WantedActionContract.ChipActionVariant,
-        size: WantedActionContract.ChipActionSize,
-        isActive: Boolean
+        isActive: Boolean,
+        isEnable: Boolean
     ): Color
 }
 
@@ -27,22 +27,22 @@ internal class WantedChipBorderLoaderImpl : WantedChipBorderLoader {
     @Composable
     override fun getBorderColor(
         variant: WantedActionContract.ChipActionVariant,
-        size: WantedActionContract.ChipActionSize,
-        isActive: Boolean
+        isActive: Boolean,
+        isEnable: Boolean
     ): Color = when (variant) {
         WantedActionContract.ChipActionVariant.FILLED -> {
-            if (isActive) {
-                colorResource(id = R.color.inverse_background)
-            } else {
-                colorResource(id = R.color.fill_alternative)
+            when {
+                !isEnable -> colorResource(id = R.color.interaction_disable)
+                isActive -> colorResource(id = R.color.inverse_background)
+                else -> colorResource(id = R.color.fill_alternative)
             }
         }
 
         WantedActionContract.ChipActionVariant.OUTLINED -> {
-            if (isActive) {
-                colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_43)
-            } else {
-                colorResource(id = R.color.line_normal_neutral)
+            when {
+                !isEnable -> colorResource(id = R.color.line_normal_neutral)
+                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
+                else -> colorResource(id = R.color.line_normal_neutral)
             }
         }
     }

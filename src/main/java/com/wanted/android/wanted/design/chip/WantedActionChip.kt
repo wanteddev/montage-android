@@ -38,12 +38,13 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.chip.config.WantedChipDefault
+import com.wanted.android.wanted.design.chip.config.WantedChipDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.getTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
-import java.io.NotActiveException
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40136&m=dev
@@ -59,6 +60,7 @@ fun WantedActionChip(
     variant: ChipActionVariant = ChipActionVariant.FILLED,
     isActive: Boolean = false,
     isEnable: Boolean = true,
+    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {
@@ -76,15 +78,7 @@ fun WantedActionChip(
                     painter = painterResource(id = leftIcon),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    colorFilter = ColorFilter.tint(
-                        color = colorResource(
-                            id = if (isEnable) {
-                                R.color.label_normal
-                            } else {
-                                R.color.label_disable
-                            }
-                        )
-                    )
+                    colorFilter = ColorFilter.tint(color = chipDefault.iconColor)
                 )
             }
         },
@@ -103,15 +97,7 @@ fun WantedActionChip(
                     painter = painterResource(id = rightIcon),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    colorFilter = ColorFilter.tint(
-                        color = colorResource(
-                            id = if (isEnable) {
-                                R.color.label_normal
-                            } else {
-                                R.color.label_disable
-                            }
-                        )
-                    )
+                    colorFilter = ColorFilter.tint(color = chipDefault.iconColor)
                 )
             }
         },
@@ -126,6 +112,7 @@ private fun WantedActionChip(
     variant: ChipActionVariant = ChipActionVariant.FILLED,
     isActive: Boolean = false,
     isEnable: Boolean = true,
+    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     leftIcon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
@@ -137,9 +124,15 @@ private fun WantedActionChip(
             .clickOnceForDesignSystem(
                 interactionSource = interactionSource,
                 indication = if (variant == ChipActionVariant.FILLED) {
-                    wantedRippleEffect(color = colorResource(id = R.color.label_normal).copy(OPACITY_12))
+                    wantedRippleEffect(
+                        color = colorResource(id = R.color.label_normal).copy(
+                            OPACITY_12
+                        )
+                    )
                 } else {
-                    wantedRippleEffect(color = colorResource(id = R.color.primary_normal).copy(OPACITY_12))
+                    wantedRippleEffect(
+                        color = chipDefault.backgroundColor.copy(OPACITY_12)
+                    )
                 },
                 enabled = isEnable
             ) {

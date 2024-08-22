@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
@@ -75,7 +76,7 @@ fun WantedTouchArea(
                     height = Dimension.fillToConstraints // Match height of text
                 }
                 .clip(shape)
-                .clickable(
+                .clickOnceForDesignSystem(
                     enabled = enabled,
                     indication = rememberRipple(
                         bounded = true, // 확장된 영역에 리플 효과를 적용
@@ -126,7 +127,6 @@ private fun WantedTouchAreaPreview() {
                         Text(text = "텍스트")
                     },
                     onClick = {
-
                     }
                 )
             }
