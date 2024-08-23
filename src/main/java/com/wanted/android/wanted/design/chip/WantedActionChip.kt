@@ -21,6 +21,7 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,10 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipActive
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipEnable
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipSize
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipVariant
 import com.wanted.android.wanted.design.chip.config.WantedChipDefault
 import com.wanted.android.wanted.design.chip.config.WantedChipDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -60,12 +65,34 @@ fun WantedActionChip(
     variant: ChipActionVariant = ChipActionVariant.FILLED,
     isActive: Boolean = false,
     isEnable: Boolean = true,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
-        size = size,
-        variant = variant,
-        isActive = isActive,
-        isEnable = isEnable
-    ),
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: (() -> Unit)? = null
+) {
+    CompositionLocalProvider(
+        LocalWantedChipEnable.provides(isEnable),
+        LocalWantedChipSize.provides(size),
+        LocalWantedChipVariant.provides(variant),
+        LocalWantedChipActive.provides(isActive)
+    ) {
+        WantedActionChip(
+            text = text,
+            modifier = modifier,
+            interactionSource = interactionSource,
+            chipDefault = WantedChipDefaults.getDefault(),
+            leftIcon = leftIcon,
+            rightIcon = rightIcon,
+            onClick = onClick
+        )
+    }
+}
+
+@Composable
+fun WantedActionChip(
+    text: String,
+    modifier: Modifier = Modifier,
+    leftIcon: Int? = null,
+    rightIcon: Int? = null,
+    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {
@@ -571,7 +598,6 @@ private fun ActionChipPreView() {
                                 text = "텍스트",
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                size = ChipActionSize.SMALL,
                                 chipDefault = WantedChipDefaults.getDefault(
                                     variant = ChipActionVariant.FILLED,
                                     isActive = false,
@@ -590,7 +616,6 @@ private fun ActionChipPreView() {
                                 text = "텍스트",
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                size = ChipActionSize.SMALL,
                                 chipDefault = WantedChipDefaults.getDefault(
                                     variant = ChipActionVariant.FILLED,
                                     isActive = false,
@@ -607,8 +632,6 @@ private fun ActionChipPreView() {
                             )
                             WantedActionChip(
                                 text = "텍스트",
-                                variant = ChipActionVariant.OUTLINED,
-                                size = ChipActionSize.SMALL,
                                 chipDefault = WantedChipDefaults.getDefault(
                                     variant = ChipActionVariant.OUTLINED,
                                     isActive = false,
@@ -629,7 +652,6 @@ private fun ActionChipPreView() {
                                 text = "텍스트",
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                size = ChipActionSize.SMALL,
                                 chipDefault = WantedChipDefaults.getDefault(
                                     variant = ChipActionVariant.OUTLINED,
                                     isActive = false,

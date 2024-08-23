@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,10 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipActive
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipEnable
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipSize
+import com.wanted.android.wanted.design.chip.config.LocalWantedChipVariant
 import com.wanted.android.wanted.design.chip.config.WantedChipDefault
 import com.wanted.android.wanted.design.chip.config.WantedChipDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -42,22 +47,45 @@ fun WantedFilterChip(
     isActive: Boolean = false,
     isEnable: Boolean = true,
     isExpend: Boolean = false,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
-        size = size,
-        variant = variant,
-        isActive = isActive,
-        isEnable = isEnable,
-    ),
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: (() -> Unit)? = null
+) {
+
+    CompositionLocalProvider(
+        LocalWantedChipEnable.provides(isEnable),
+        LocalWantedChipSize.provides(size),
+        LocalWantedChipVariant.provides(variant),
+        LocalWantedChipActive.provides(isActive)
+    ) {
+        WantedFilterChip(
+            text = text,
+            modifier = modifier,
+            chipDefault = WantedChipDefaults
+                .getDefault()
+                .copy(iconColor = colorResource(id = WantedChipDefaults.getFilterIconColor())),
+            isExpend = isExpend,
+            interactionSource = interactionSource,
+            onClick = onClick
+        )
+    }
+}
+
+@Composable
+fun WantedFilterChip(
+    text: String,
+    modifier: Modifier = Modifier,
+    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
+    isExpend: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {
     WantedActionChip(
         modifier = modifier,
         interactionSource = interactionSource,
-        size = size,
-        variant = variant,
-        isActive = isActive,
-        isEnable = isEnable,
+        size = chipDefault.size,
+        variant = chipDefault.variant,
+        isActive = chipDefault.isActive,
+        isEnable = chipDefault.isEnable,
         chipDefault = chipDefault,
         content = {
             Text(
@@ -83,6 +111,7 @@ fun WantedFilterChip(
         onClick = onClick
     )
 }
+
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
