@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.base
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,8 +32,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 fun WantedTouchArea(
     modifier: Modifier = Modifier,
-    verticalPadding: Dp = 4.dp,
-    horizontalPadding: Dp = 7.dp,
+    verticalPadding: Dp = 0.dp,
+    horizontalPadding: Dp = 0.dp,
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
     rippleColor: Color = Color.Unspecified,

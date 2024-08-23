@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
@@ -35,32 +36,39 @@ fun WantedCell(
     rightContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
 ) {
-    WantedCellLayout(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .clickOnceForDesignSystem(enabled = isEnable) {
-                onClick()
-            }
-            .padding(horizontal = 12.dp)
-            .padding(horizontal = if (paddingInset) 20.dp else 0.dp)
-            .padding(
-                vertical = when (padding) {
-                    WantedCellContract.Padding.Small -> 8.dp
-                    WantedCellContract.Padding.Normal -> 12.dp
-                    WantedCellContract.Padding.Medium -> 16.dp
+    WantedTouchArea(
+        horizontalPadding = 12.dp,
+        shape = RoundedCornerShape(12.dp),
+        content = {
+            WantedCellLayout(
+                modifier = modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickOnceForDesignSystem(enabled = isEnable) {
+                        onClick()
+                    }
+                    .padding(horizontal = if (paddingInset) 20.dp else 0.dp)
+                    .padding(
+                        vertical = when (padding) {
+                            WantedCellContract.Padding.Small -> 8.dp
+                            WantedCellContract.Padding.Normal -> 12.dp
+                            WantedCellContract.Padding.Medium -> 16.dp
+                        }
+                    ),
+                isDivider = divider,
+                contents = {
+                    WantedList(
+                        text = text,
+                        caption = caption,
+                        isEnable = isEnable,
+                        leftContent = leftContent,
+                        rightContent = rightContent
+                    )
                 }
-            ),
-        isDivider = divider,
-        contents = {
-            WantedList(
-                text = text,
-                caption = caption,
-                isEnable = isEnable,
-                leftContent = leftContent,
-                rightContent = rightContent
             )
         }
-    )
+    ) {
+        onClick()
+    }
 }
 
 @Composable
