@@ -7,8 +7,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.chip.WantedActionContract
-import com.wanted.android.wanted.design.util.ButtonType
-import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.OPACITY_5
 
 
@@ -32,9 +30,9 @@ internal class WantedChipBorderLoaderImpl : WantedChipBorderLoader {
     ): Color = when (variant) {
         WantedActionContract.ChipActionVariant.FILLED -> {
             when {
-                !isEnable -> colorResource(id = R.color.interaction_disable)
-                isActive -> colorResource(id = R.color.inverse_background)
-                else -> colorResource(id = R.color.fill_alternative)
+                !isEnable -> colorResource(id = R.color.transparent)
+                isActive -> colorResource(id = R.color.transparent)
+                else -> colorResource(id = R.color.transparent)
             }
         }
 

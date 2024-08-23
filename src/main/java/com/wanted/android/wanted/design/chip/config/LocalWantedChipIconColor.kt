@@ -47,6 +47,36 @@ internal class WantedChipIconColorLoaderImpl : WantedChipIconColorLoader {
 
 }
 
+internal class LocalWantedFilterChipIconColorLoaderImpl : WantedChipIconColorLoader {
+
+    @Composable
+    override fun getIconColor(
+        variant: WantedActionContract.ChipActionVariant,
+        isActive: Boolean,
+        isEnable: Boolean
+    ): Int {
+        return when (variant) {
+            WantedActionContract.ChipActionVariant.FILLED -> {
+                when {
+                    !isEnable -> R.color.label_disable
+                    isActive -> R.color.inverse_label
+                    else -> R.color.label_normal
+                }
+            }
+
+            WantedActionContract.ChipActionVariant.OUTLINED -> {
+                when {
+                    !isEnable -> R.color.label_disable
+                    isActive -> R.color.label_normal
+                    else -> R.color.label_normal
+                }
+            }
+        }
+    }
+
+}
+
+
 @JvmInline
 value class WantedChipIconColorCompositionLocal internal constructor(
     private val delegate: ProvidableCompositionLocal<WantedChipIconColorLoader> = staticCompositionLocalOf { WantedChipIconColorLoaderImpl() }

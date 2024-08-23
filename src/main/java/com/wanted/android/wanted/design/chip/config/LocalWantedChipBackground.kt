@@ -38,9 +38,9 @@ internal class WantedChipBackgroundLoaderImpl : WantedChipBackgroundLoader {
 
         WantedActionContract.ChipActionVariant.OUTLINED -> {
             when {
-                !isEnable -> colorResource(id = R.color.line_normal_neutral)
+                !isEnable -> colorResource(id = R.color.transparent)
                 isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
-                else -> colorResource(id = R.color.line_normal_neutral)
+                else -> colorResource(id = R.color.transparent)
             }
         }
     }

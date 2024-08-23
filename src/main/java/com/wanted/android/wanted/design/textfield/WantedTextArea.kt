@@ -395,7 +395,6 @@ private fun WantedTextAreaPreview() {
             ) {
 
                 WantedTextArea(
-                    modifier = Modifier,
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요."
                 )
@@ -410,6 +409,7 @@ private fun WantedTextAreaPreview() {
                 )
 
                 WantedTextArea(
+                    modifier = Modifier.height(200.dp),
                     value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"

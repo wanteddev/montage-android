@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,8 +41,9 @@ import com.wanted.android.wanted.design.chip.config.WantedChipDefault
 import com.wanted.android.wanted.design.chip.config.WantedChipDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
+import com.wanted.android.wanted.design.util.OPACITY_22
+import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
-import com.wanted.android.wanted.design.util.getTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
@@ -56,21 +56,27 @@ fun WantedActionChip(
     modifier: Modifier = Modifier,
     leftIcon: Int? = null,
     rightIcon: Int? = null,
-    size: ChipActionSize = ChipActionSize.SMALL,
+    size: ChipActionSize = ChipActionSize.NORMAL,
     variant: ChipActionVariant = ChipActionVariant.FILLED,
     isActive: Boolean = false,
     isEnable: Boolean = true,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
+    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
+        size = size,
+        variant = variant,
+        isActive = isActive,
+        isEnable = isEnable
+    ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {
     WantedActionChip(
         modifier = modifier,
         interactionSource = interactionSource,
-        size = size,
-        variant = variant,
-        isActive = isActive,
-        isEnable = isEnable,
+        size = chipDefault.size,
+        variant = chipDefault.variant,
+        isActive = chipDefault.isActive,
+        isEnable = chipDefault.isEnable,
+        chipDefault = chipDefault,
         leftIcon = leftIcon?.let {
             {
                 Image(
@@ -106,13 +112,18 @@ fun WantedActionChip(
 }
 
 @Composable
-private fun WantedActionChip(
+fun WantedActionChip(
     modifier: Modifier = Modifier,
     size: ChipActionSize = ChipActionSize.SMALL,
     variant: ChipActionVariant = ChipActionVariant.FILLED,
     isActive: Boolean = false,
     isEnable: Boolean = true,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
+    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
+        size = size,
+        variant = variant,
+        isActive = isActive,
+        isEnable = isEnable
+    ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     leftIcon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
@@ -123,7 +134,7 @@ private fun WantedActionChip(
         modifier = modifier
             .clickOnceForDesignSystem(
                 interactionSource = interactionSource,
-                indication = if (variant == ChipActionVariant.FILLED) {
+                indication = if (chipDefault.variant == ChipActionVariant.FILLED) {
                     wantedRippleEffect(
                         color = colorResource(id = R.color.label_normal).copy(
                             OPACITY_12
@@ -134,14 +145,11 @@ private fun WantedActionChip(
                         color = chipDefault.backgroundColor.copy(OPACITY_12)
                     )
                 },
-                enabled = isEnable
+                enabled = chipDefault.isEnable
             ) {
                 onClick?.invoke()
             },
-        size = size,
-        variant = variant,
-        isActive = isActive,
-        isEnable = isEnable,
+        chipDefault = chipDefault,
         leftIcon = leftIcon,
         content = content,
         rightIcon = rightIcon
@@ -151,29 +159,31 @@ private fun WantedActionChip(
 @Composable
 private fun WantedActionChipLayout(
     modifier: Modifier,
-    size: ChipActionSize,
-    variant: ChipActionVariant,
-    isActive: Boolean = false,
-    isEnable: Boolean,
+    chipDefault: WantedChipDefault,
     leftIcon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
-            .actionChipBackground(variant, isEnable, size)
-            .actionChipBorder(variant, size)
+            .clip(RoundedCornerShape(getCipRadius(chipDefault.size)))
+            .background(chipDefault.backgroundColor)
+            .border(
+                width = 1.dp,
+                shape = RoundedCornerShape(getCipRadius(chipDefault.size)),
+                color = chipDefault.borderColor
+            )
             .then(modifier)
-            .actionChipPadding(size = size),
+            .actionChipPadding(size = chipDefault.size),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-            if (size == ChipActionSize.LARGE) 6.dp else 4.dp
+            if (chipDefault.size == ChipActionSize.LARGE) 6.dp else 4.dp
         )
     ) {
 
         leftIcon?.let {
             Box(
-                modifier = Modifier.actionChipIconSize(size),
+                modifier = Modifier.actionChipIconSize(chipDefault.size),
                 contentAlignment = Alignment.Center
             ) {
                 leftIcon()
@@ -181,12 +191,7 @@ private fun WantedActionChipLayout(
         }
 
 
-        ProvideTextStyle(
-            value = WantedTextStyle(
-                colorRes = ChipActionTextColor(isEnable = isEnable, variant = variant),
-                style = ChipActionTextStyle(size = size)
-            )
-        ) {
+        ProvideTextStyle(value = chipDefault.textStyle) {
             Box(
                 modifier = Modifier.weight(1f, fill = false),
                 contentAlignment = Alignment.Center
@@ -197,74 +202,13 @@ private fun WantedActionChipLayout(
 
         rightIcon?.let {
             Box(
-                modifier = Modifier.actionChipIconSize(size),
+                modifier = Modifier.actionChipIconSize(chipDefault.size),
                 contentAlignment = Alignment.Center
             ) {
                 rightIcon()
             }
         }
     }
-}
-
-@Composable
-private fun ChipActionTextStyle(
-    size: ChipActionSize
-): TextStyle {
-    val textStyle = when (size) {
-        ChipActionSize.LARGE -> WantedTextStyle.CAPTION1_MEDIUM
-        ChipActionSize.NORMAL -> WantedTextStyle.BODY2_MEDIUM
-        ChipActionSize.SMALL -> WantedTextStyle.LABEL1_MEDIUM
-        ChipActionSize.XSMALL -> WantedTextStyle.CAPTION1_MEDIUM
-    }
-
-    return getTextStyle(textStyle = textStyle)
-}
-
-private fun Modifier.actionChipBackground(
-    variant: ChipActionVariant,
-    isEnable: Boolean,
-    size: ChipActionSize
-): Modifier = composed {
-    val modifier = when (variant) {
-        ChipActionVariant.FILLED -> {
-            if (isEnable) {
-                background(
-                    color = colorResource(id = R.color.fill_alternative),
-                    shape = RoundedCornerShape(getCipRadius(size))
-                ).then(clip(RoundedCornerShape(getCipRadius(size))))
-            } else {
-                background(
-                    color = colorResource(id = R.color.interaction_disable),
-                    shape = RoundedCornerShape(getCipRadius(size))
-                ).then(clip(RoundedCornerShape(getCipRadius(size))))
-            }
-        }
-
-        ChipActionVariant.OUTLINED -> {
-            clip(RoundedCornerShape(getCipRadius(size)))
-        }
-    }
-    this.then(modifier)
-}
-
-private fun Modifier.actionChipBorder(
-    variant: ChipActionVariant,
-    size: ChipActionSize
-): Modifier = composed {
-    val modifier = when (variant) {
-        ChipActionVariant.FILLED -> {
-            Modifier
-        }
-
-        ChipActionVariant.OUTLINED -> {
-            border(
-                1.dp,
-                color = colorResource(id = R.color.line_normal_neutral),
-                shape = RoundedCornerShape(getCipRadius(size))
-            )
-        }
-    }
-    this.then(modifier)
 }
 
 private fun Modifier.actionChipPadding(
@@ -289,7 +233,6 @@ private fun Modifier.actionChipPadding(
     }
 }
 
-
 private fun Modifier.actionChipIconSize(
     size: ChipActionSize
 ): Modifier = composed {
@@ -303,47 +246,26 @@ private fun Modifier.actionChipIconSize(
 }
 
 @Composable
-private fun ChipActionTextColor(
-    isEnable: Boolean,
-    variant: ChipActionVariant
-): Int {
-    return when (variant) {
-        ChipActionVariant.FILLED -> {
-            if (isEnable) {
-                R.color.label_normal
-            } else {
-                R.color.label_disable
-            }
-        }
-
-        ChipActionVariant.OUTLINED -> {
-            if (isEnable) {
-                R.color.label_normal
-            } else {
-                R.color.label_disable
-            }
-        }
-    }
-}
-
-@Composable
 private fun getCipRadius(size: ChipActionSize) = when (size) {
-    ChipActionSize.LARGE -> 6.dp
-    ChipActionSize.NORMAL -> 6.dp
-    ChipActionSize.SMALL -> 6.dp
     ChipActionSize.XSMALL -> 6.dp
+    ChipActionSize.SMALL -> 8.dp
+    ChipActionSize.NORMAL -> 10.dp
+    ChipActionSize.LARGE -> 10.dp
 }
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
 @Composable
-fun ActionChipPreView() {
+private fun ActionChipPreView() {
     DesignSystemTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = colorResource(id = R.color.background_normal_normal)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -598,6 +520,137 @@ fun ActionChipPreView() {
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            WantedActionChip(
+                                text = "텍스트",
+                                variant = ChipActionVariant.FILLED,
+                                isActive = true,
+                                leftIcon = R.drawable.ic_normal_bookmark_svg,
+                                rightIcon = R.drawable.ic_normal_bookmark_svg,
+                                size = ChipActionSize.SMALL
+                            )
+                            WantedActionChip(
+                                text = "텍스트",
+                                variant = ChipActionVariant.FILLED,
+                                isActive = true,
+                                isEnable = false,
+                                leftIcon = R.drawable.ic_normal_bookmark_svg,
+                                rightIcon = R.drawable.ic_normal_bookmark_svg,
+                                size = ChipActionSize.SMALL
+                            )
+                            WantedActionChip(
+                                text = "텍스트",
+                                variant = ChipActionVariant.OUTLINED,
+                                isActive = true,
+                                leftIcon = R.drawable.ic_normal_bookmark_svg,
+                                rightIcon = R.drawable.ic_normal_bookmark_svg,
+                                size = ChipActionSize.SMALL
+                            )
+                            WantedActionChip(
+                                text = "텍스트",
+                                variant = ChipActionVariant.OUTLINED,
+                                isActive = true,
+                                isEnable = false,
+                                leftIcon = R.drawable.ic_normal_bookmark_svg,
+                                rightIcon = R.drawable.ic_normal_bookmark_svg,
+                                size = ChipActionSize.SMALL
+                            )
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            WantedActionChip(
+                                text = "텍스트",
+                                leftIcon = R.drawable.ic_normal_bookmark_svg,
+                                rightIcon = R.drawable.ic_normal_bookmark_svg,
+                                size = ChipActionSize.SMALL,
+                                chipDefault = WantedChipDefaults.getDefault(
+                                    variant = ChipActionVariant.FILLED,
+                                    isActive = false,
+                                    size = ChipActionSize.SMALL,
+                                    isEnable = true,
+                                    textStyle = WantedTextStyle(
+                                        colorRes = R.color.status_negative,
+                                        style = DesignSystemTheme.typography.label1Medium
+                                    ),
+                                    iconColor = colorResource(id = R.color.status_negative),
+                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                        .copy(OPACITY_12)
+                                )
+                            )
+                            WantedActionChip(
+                                text = "텍스트",
+                                leftIcon = R.drawable.ic_normal_bookmark_svg,
+                                rightIcon = R.drawable.ic_normal_bookmark_svg,
+                                size = ChipActionSize.SMALL,
+                                chipDefault = WantedChipDefaults.getDefault(
+                                    variant = ChipActionVariant.FILLED,
+                                    isActive = false,
+                                    size = ChipActionSize.SMALL,
+                                    isEnable = true,
+                                    textStyle = WantedTextStyle(
+                                        colorRes = R.color.status_negative,
+                                        style = DesignSystemTheme.typography.label1Medium
+                                    ),
+                                    iconColor = colorResource(id = R.color.status_negative),
+                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                        .copy(OPACITY_12)
+                                )
+                            )
+                            WantedActionChip(
+                                text = "텍스트",
+                                variant = ChipActionVariant.OUTLINED,
+                                size = ChipActionSize.SMALL,
+                                chipDefault = WantedChipDefaults.getDefault(
+                                    variant = ChipActionVariant.OUTLINED,
+                                    isActive = false,
+                                    size = ChipActionSize.SMALL,
+                                    isEnable = true,
+                                    textStyle = WantedTextStyle(
+                                        colorRes = R.color.status_negative,
+                                        style = DesignSystemTheme.typography.label1Medium
+                                    ),
+                                    iconColor = colorResource(id = R.color.status_negative),
+                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                        .copy(OPACITY_12),
+                                    borderColor = colorResource(id = R.color.status_negative)
+                                        .copy(OPACITY_22)
+                                )
+                            )
+                            WantedActionChip(
+                                text = "텍스트",
+                                leftIcon = R.drawable.ic_normal_bookmark_svg,
+                                rightIcon = R.drawable.ic_normal_bookmark_svg,
+                                size = ChipActionSize.SMALL,
+                                chipDefault = WantedChipDefaults.getDefault(
+                                    variant = ChipActionVariant.OUTLINED,
+                                    isActive = false,
+                                    size = ChipActionSize.SMALL,
+                                    isEnable = false,
+                                    textStyle = WantedTextStyle(
+                                        colorRes = R.color.status_negative,
+                                        style = DesignSystemTheme.typography.label1Medium,
+                                        alpha = OPACITY_12
+                                    ),
+                                    iconColor = colorResource(id = R.color.status_negative)
+                                        .copy(OPACITY_12),
+                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                        .copy(OPACITY_5),
+                                    borderColor = colorResource(id = R.color.status_negative)
+                                        .copy(OPACITY_12)
+                                )
+                            )
+                        }
+                    }
+
                     Spacer(modifier = Modifier.height(10.dp))
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),

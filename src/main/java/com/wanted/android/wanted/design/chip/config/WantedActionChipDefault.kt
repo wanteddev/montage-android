@@ -8,7 +8,7 @@ import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionVariant
 
 data class WantedChipDefault(
-    val size: ChipActionSize = ChipActionSize.SMALL,
+    val size: ChipActionSize = ChipActionSize.NORMAL,
     val variant: ChipActionVariant = ChipActionVariant.FILLED,
     val isActive: Boolean = false,
     val isEnable: Boolean = true,
@@ -22,7 +22,7 @@ data class WantedChipDefault(
 object WantedChipDefaults {
     @Composable
     fun getDefault(
-        size: ChipActionSize = ChipActionSize.SMALL,
+        size: ChipActionSize = ChipActionSize.NORMAL,
         variant: ChipActionVariant = ChipActionVariant.FILLED,
         isActive: Boolean = false,
         isEnable: Boolean = true,
