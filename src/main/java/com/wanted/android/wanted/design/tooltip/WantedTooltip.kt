@@ -150,9 +150,6 @@ fun WantedTooltip(
                         WantedButton(
                             modifier = Modifier,
                             text = it,
-                            buttonShape = ButtonShape.TEXT,
-                            type = ButtonType.ASSISTIVE,
-                            size = ButtonSize.SMALL,
                             buttonDefault = WantedButtonDefaults.getDefault(
                                 shape = ButtonShape.TEXT,
                                 type = ButtonType.ASSISTIVE,
