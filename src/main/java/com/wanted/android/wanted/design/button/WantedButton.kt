@@ -1,7 +1,12 @@
 package com.wanted.android.wanted.design.button
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import com.wanted.android.wanted.design.button.config.LocalWantedButtonEnable
+import com.wanted.android.wanted.design.button.config.LocalWantedButtonShape
+import com.wanted.android.wanted.design.button.config.LocalWantedButtonSize
+import com.wanted.android.wanted.design.button.config.LocalWantedButtonType
 import com.wanted.android.wanted.design.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.util.ButtonShape
@@ -19,25 +24,80 @@ fun WantedButton(
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     enabled: Boolean = true,
-    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-        shape = buttonShape,
-        type = type,
-        size = size,
-        enabled = enabled
-    ),
+    leftDrawable: Int? = null,
+    rightDrawable: Int? = null,
+    onClick: () -> Unit = {}
+) {
+    CompositionLocalProvider(
+        LocalWantedButtonShape.provides(buttonShape),
+        LocalWantedButtonType.provides(type),
+        LocalWantedButtonEnable.provides(enabled),
+        LocalWantedButtonSize.provides(size)
+    ) {
+        when (buttonShape) {
+            ButtonShape.SOLID -> {
+                WantedSolidButton(
+                    modifier = modifier,
+                    text = text,
+                    type = type,
+                    size = size,
+                    enabled = enabled,
+                    buttonDefault = WantedButtonDefaults.getDefault(),
+                    leftDrawable = leftDrawable,
+                    rightDrawable = rightDrawable,
+                    clickListener = onClick,
+                )
+            }
+
+            ButtonShape.OUTLINED -> {
+                WantedOutlinedButton(
+                    modifier = modifier,
+                    text = text,
+                    size = size,
+                    type = type,
+                    enabled = enabled,
+                    buttonDefault = WantedButtonDefaults.getDefault(),
+                    leftDrawable = leftDrawable,
+                    rightDrawable = rightDrawable,
+                    clickListener = onClick,
+                )
+            }
+
+            ButtonShape.TEXT -> {
+                WantedTextButton(
+                    modifier = modifier,
+                    text = text,
+                    size = size,
+                    type = type,
+                    enabled = enabled,
+                    buttonDefault = WantedButtonDefaults.getDefault(),
+                    leftDrawable = leftDrawable,
+                    rightDrawable = rightDrawable,
+                    onClick = onClick,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun WantedButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(),
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
 
-    when (buttonShape) {
+    when (buttonDefault.shape) {
         ButtonShape.SOLID -> {
             WantedSolidButton(
                 modifier = modifier,
                 text = text,
-                type = type,
-                size = size,
-                enabled = enabled,
+                type = buttonDefault.type,
+                size = buttonDefault.size,
+                enabled = buttonDefault.enabled,
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
@@ -49,9 +109,9 @@ fun WantedButton(
             WantedOutlinedButton(
                 modifier = modifier,
                 text = text,
-                size = size,
-                type = type,
-                enabled = enabled,
+                size = buttonDefault.size,
+                type = buttonDefault.type,
+                enabled = buttonDefault.enabled,
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
@@ -63,9 +123,9 @@ fun WantedButton(
             WantedTextButton(
                 modifier = modifier,
                 text = text,
-                size = size,
-                type = type,
-                enabled = enabled,
+                size = buttonDefault.size,
+                type = buttonDefault.type,
+                enabled = buttonDefault.enabled,
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,

@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.base
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,13 +26,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
 fun WantedTouchArea(
     modifier: Modifier = Modifier,
-    verticalPadding: Dp = 4.dp,
-    horizontalPadding: Dp = 7.dp,
+    verticalPadding: Dp = 0.dp,
+    horizontalPadding: Dp = 0.dp,
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
     rippleColor: Color = Color.Unspecified,
@@ -75,7 +75,7 @@ fun WantedTouchArea(
                     height = Dimension.fillToConstraints // Match height of text
                 }
                 .clip(shape)
-                .clickable(
+                .clickOnceForDesignSystem(
                     enabled = enabled,
                     indication = rememberRipple(
                         bounded = true, // 확장된 영역에 리플 효과를 적용
@@ -126,7 +126,6 @@ private fun WantedTouchAreaPreview() {
                         Text(text = "텍스트")
                     },
                     onClick = {
-
                     }
                 )
             }
