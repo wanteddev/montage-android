@@ -154,41 +154,19 @@ private fun isLargeSizeButtonExist(shape: ButtonShape): Boolean =
     }
 
 @Composable
-internal fun getContentBadgeTypography(
-    size: ContentBadgeSize
-): TextStyle =
-    getTextStyle(
-        textStyle =
-        when (size) {
-            ContentBadgeSize.MEDIUM -> WantedTextStyle.LABEL1_BOLD
-            ContentBadgeSize.SMALL -> WantedTextStyle.CAPTION1_BOLD
-            ContentBadgeSize.XSMALL -> WantedTextStyle.CAPTION2_BOLD
-        }
-    )
-
-internal fun getContentBadgeSpaceBetweenTextAndIcon(
-    size: ContentBadgeSize
-): Dp =
-    when (size) {
-        ContentBadgeSize.MEDIUM -> 4.dp
-        ContentBadgeSize.SMALL -> 3.dp
-        ContentBadgeSize.XSMALL -> 2.dp
-    }
-
-@Composable
 internal fun getContentBadgeDrawableSize(
     size: ContentBadgeSize
 ): Modifier =
     when (size) {
-        ContentBadgeSize.MEDIUM -> Modifier
+        ContentBadgeSize.LARGE -> Modifier
             .height(16.dp)
             .wrapContentWidth()
 
-        ContentBadgeSize.SMALL -> Modifier
+        ContentBadgeSize.MEDIUM -> Modifier
             .height(14.dp)
             .wrapContentWidth()
 
-        ContentBadgeSize.XSMALL -> Modifier
+        ContentBadgeSize.NORMAL -> Modifier
             .size(12.dp)
             .wrapContentWidth()
     }
