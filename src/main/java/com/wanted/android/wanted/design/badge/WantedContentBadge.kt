@@ -52,6 +52,9 @@ import com.wanted.android.wanted.design.util.getContentBadgeDrawableSize
 import com.wanted.android.wanted.design.util.getTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
+/**
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45460&m=dev
+ */
 enum class ContentBadgeSize {
     NORMAL, MEDIUM, LARGE
 }
