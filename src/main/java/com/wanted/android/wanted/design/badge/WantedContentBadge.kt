@@ -7,21 +7,26 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,21 +37,31 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_12
+import com.wanted.android.wanted.design.util.OPACITY_16
+import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.getContentBadgeDrawableSize
-import com.wanted.android.wanted.design.util.getContentBadgeSpaceBetweenTextAndIcon
-import com.wanted.android.wanted.design.util.getContentBadgeTypography
+import com.wanted.android.wanted.design.util.getTextStyle
+import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 enum class ContentBadgeSize {
-    XSMALL, SMALL, MEDIUM
+    NORMAL, MEDIUM, LARGE
 }
 
 enum class ContentBadgeType {
     FILLED, OUTLINED
+}
+
+enum class ContentBadgeColor {
+    NEUTRAL, ACCENT
 }
 
 class WantedContentBadge @JvmOverloads constructor(
@@ -94,7 +109,7 @@ class WantedContentBadge @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        WantedContentBadge(
+        WantedContentBadgeOld(
             text = text,
             type = type,
             size = size,
@@ -111,9 +126,71 @@ class WantedContentBadge @JvmOverloads constructor(
 
 @Composable
 fun WantedContentBadge(
+    modifier: Modifier = Modifier,
     text: String,
     type: ContentBadgeType = ContentBadgeType.FILLED,
-    size: ContentBadgeSize = ContentBadgeSize.XSMALL,
+    size: ContentBadgeSize = ContentBadgeSize.NORMAL,
+    color: ContentBadgeColor = ContentBadgeColor.NEUTRAL,
+    accentDefault: WantedContentBadgeDefault = WantedContentBadgeDefaults.getAccentDefault(),
+    leftDrawable: Int? = null,
+    rightDrawable: Int? = null,
+    onClick: (() -> Unit)? = null
+) {
+    WantedContentBadgeLayout(
+        modifier = modifier
+            .clip(RoundedCornerShape(getRadius(size = size)))
+            .background(getBackground(type = type, color = color, default = accentDefault))
+            .border(
+                width = 1.dp,
+                shape = RoundedCornerShape(getRadius(size = size)),
+                color = getOutlineColor(type = type, color = color, default = accentDefault)
+            )
+            .clickOnceForDesignSystem(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = if (color == ContentBadgeColor.NEUTRAL) {
+                    wantedRippleEffect(colorResource(id = R.color.label_normal).copy(OPACITY_12))
+                } else {
+                    wantedRippleEffect(accentDefault.backgroundColor.copy(OPACITY_12))
+                },
+                enabled = onClick != null
+            ) { onClick?.invoke() },
+        size = size,
+        text = {
+            Text(
+                text = text,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = getContentColor(color = color, default = accentDefault)
+            )
+        },
+        leftContent = leftDrawable?.let {
+            {
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = painterResource(id = it),
+                    contentDescription = null,
+                    tint = getContentColor(color = color, default = accentDefault)
+                )
+            }
+        },
+        rightContent = rightDrawable?.let {
+            {
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = painterResource(id = it),
+                    contentDescription = null,
+                    tint = getContentColor(color = color, default = accentDefault)
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun WantedContentBadgeOld(
+    text: String,
+    type: ContentBadgeType = ContentBadgeType.FILLED,
+    size: ContentBadgeSize = ContentBadgeSize.NORMAL,
     textColor: Color,
     backgroundColor: Color? = null,
     lineColor: Color? = null,
@@ -121,43 +198,42 @@ fun WantedContentBadge(
     rightDrawable: Int? = null,
     leftContent: @Composable (BoxScope.() -> Unit)? = null,
     rightContent: @Composable (BoxScope.() -> Unit)? = null,
-    clickListener: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
 ) {
     val roundedCornerShape = RoundedCornerShape(getRadius(size))
 
-    Row(modifier = Modifier
-        .wrapContentSize()
-        .clip(roundedCornerShape)
-        .then(
-            if(clickListener != null) Modifier.clickable { clickListener() } else Modifier
-        )
-        .then(if (type == ContentBadgeType.FILLED) {
-            backgroundColor?.let {
-                Modifier.background(color = it, shape = roundedCornerShape)
-            } ?: Modifier
-        } else {
-            lineColor?.let {
-                Modifier.border(
-                    BorderStroke(1.dp, it), roundedCornerShape
-                )
-            } ?: Modifier
-        })
-        .padding(horizontal = getPadding(size).first, vertical = getPadding(size).second)
-
-        ,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier
+            .wrapContentSize()
+            .clip(roundedCornerShape)
+            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
+            .then(if (type == ContentBadgeType.FILLED) {
+                backgroundColor?.let {
+                    Modifier.background(color = it, shape = roundedCornerShape)
+                } ?: Modifier
+            } else {
+                lineColor?.let {
+                    Modifier.border(
+                        BorderStroke(1.dp, it), roundedCornerShape
+                    )
+                } ?: Modifier
+            })
+            .padding(horizontal = getPadding(size).first, vertical = getPadding(size).second),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = when (size) {
+                ContentBadgeSize.LARGE -> 4.dp
+                ContentBadgeSize.MEDIUM -> 3.dp
+                ContentBadgeSize.NORMAL -> 2.dp
+            }
+        ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         leftContent?.let {
             Box(
                 modifier = getContentBadgeDrawableSize(size),
-            ){
+            ) {
                 it()
             }
-            Spacer(
-                modifier = Modifier.width(
-                    getContentBadgeSpaceBetweenTextAndIcon(size)
-                )
-            )
         }
         leftDrawable?.let {
             Image(
@@ -165,11 +241,6 @@ fun WantedContentBadge(
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(textColor)
-            )
-            Spacer(
-                modifier = Modifier.width(
-                    getContentBadgeSpaceBetweenTextAndIcon(size)
-                )
             )
         }
         Text(
@@ -181,11 +252,6 @@ fun WantedContentBadge(
             overflow = TextOverflow.Ellipsis
         )
         rightDrawable?.let {
-            Spacer(
-                modifier = Modifier.width(
-                    getContentBadgeSpaceBetweenTextAndIcon(size)
-                )
-            )
             Image(
                 painter = painterResource(id = it),
                 modifier = getContentBadgeDrawableSize(size),
@@ -195,112 +261,390 @@ fun WantedContentBadge(
             )
         }
         rightContent?.let {
-            Spacer(
-                modifier = Modifier.width(
-                    getContentBadgeSpaceBetweenTextAndIcon(size)
-                )
-            )
             Box(
                 modifier = getContentBadgeDrawableSize(size),
-            ){
+            ) {
                 it()
             }
         }
     }
 }
 
+
+@Composable
+fun WantedContentBadgeLayout(
+    modifier: Modifier = Modifier,
+    size: ContentBadgeSize,
+    leftContent: @Composable (BoxScope.() -> Unit)? = null,
+    text: @Composable () -> Unit,
+    rightContent: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    Row(
+        modifier = modifier
+            .clip(RoundedCornerShape(getRadius(size)))
+            .padding(horizontal = getHorizontalPadding(size))
+            .padding(vertical = getVerticalPadding(size)),
+        horizontalArrangement = Arrangement.spacedBy(space = getHorizontalAlimentSpace(size)),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        leftContent?.let {
+            Box(modifier = Modifier.size(getIconSize(size))) {
+                leftContent()
+            }
+        }
+
+        ProvideTextStyle(value = getContentBadgeTypography(size = size)) {
+            text()
+        }
+
+        rightContent?.let {
+            Box(modifier = Modifier.size(getIconSize(size))) {
+                rightContent()
+            }
+        }
+    }
+}
+
+
 @Composable
 private fun getRadius(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.MEDIUM -> 8.dp
-    ContentBadgeSize.SMALL -> 6.dp
-    ContentBadgeSize.XSMALL -> 4.dp
+    ContentBadgeSize.LARGE -> 8.dp
+    ContentBadgeSize.MEDIUM -> 6.dp
+    ContentBadgeSize.NORMAL -> 6.dp
 }
+
+@Composable
+private fun getHorizontalPadding(size: ContentBadgeSize) = when (size) {
+    ContentBadgeSize.LARGE -> 8.dp
+    ContentBadgeSize.MEDIUM -> 6.dp
+    ContentBadgeSize.NORMAL -> 6.dp
+}
+
+@Composable
+private fun getVerticalPadding(size: ContentBadgeSize) = when (size) {
+    ContentBadgeSize.LARGE -> 7.dp
+    ContentBadgeSize.MEDIUM -> 4.dp
+    ContentBadgeSize.NORMAL -> 3.dp
+}
+
+@Composable
+private fun getHorizontalAlimentSpace(size: ContentBadgeSize) = when (size) {
+    ContentBadgeSize.LARGE -> 4.dp
+    ContentBadgeSize.MEDIUM -> 3.dp
+    ContentBadgeSize.NORMAL -> 1.dp
+}
+
+@Composable
+private fun getIconSize(size: ContentBadgeSize) = when (size) {
+    ContentBadgeSize.LARGE -> 16.dp
+    ContentBadgeSize.MEDIUM -> 13.dp
+    ContentBadgeSize.NORMAL -> 12.dp
+}
+
+@Composable
+private fun getBackground(
+    type: ContentBadgeType,
+    color: ContentBadgeColor,
+    default: WantedContentBadgeDefault
+): Color {
+    return if (type == ContentBadgeType.FILLED) {
+        if (color == ContentBadgeColor.NEUTRAL) {
+            colorResource(id = R.color.fill_normal)
+        } else {
+            default.backgroundColor
+        }
+    } else {
+        colorResource(id = R.color.transparent)
+    }
+}
+
+
+@Composable
+private fun getOutlineColor(
+    type: ContentBadgeType,
+    color: ContentBadgeColor,
+    default: WantedContentBadgeDefault
+): Color {
+    return if (type == ContentBadgeType.FILLED) {
+        colorResource(id = R.color.transparent)
+    } else {
+        if (color == ContentBadgeColor.NEUTRAL) {
+            colorResource(id = R.color.label_alternative).copy(OPACITY_16)
+        } else {
+            default.outLineColor
+        }
+    }
+}
+
+@Composable
+private fun getContentColor(
+    color: ContentBadgeColor,
+    default: WantedContentBadgeDefault
+): Color {
+    return if (color == ContentBadgeColor.NEUTRAL) {
+        colorResource(id = R.color.label_alternative)
+    } else {
+        default.contentColor
+    }
+}
+
 
 private fun getPadding(size: ContentBadgeSize): Pair<Dp, Dp> =
     when (size) {
-        ContentBadgeSize.XSMALL -> Pair(4.dp, 3.dp)
-        ContentBadgeSize.SMALL -> Pair(8.dp, 4.dp)
-        ContentBadgeSize.MEDIUM -> Pair(12.dp, 6.dp)
+        ContentBadgeSize.NORMAL -> Pair(4.dp, 3.dp)
+        ContentBadgeSize.MEDIUM -> Pair(8.dp, 4.dp)
+        ContentBadgeSize.LARGE -> Pair(12.dp, 6.dp)
     }
 
+@Composable
+private fun getContentBadgeTypography(
+    size: ContentBadgeSize
+): TextStyle =
+    getTextStyle(
+        textStyle = when (size) {
+            ContentBadgeSize.LARGE -> WantedTextStyle.LABEL2_MEDIUM
+            ContentBadgeSize.MEDIUM -> WantedTextStyle.CAPTION1_MEDIUM
+            ContentBadgeSize.NORMAL -> WantedTextStyle.CAPTION2_MEDIUM
+        }
+    )
+
 @Preview
 @Composable
-fun PreviewContentBadges() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .background(colorResource(id = R.color.background_normal_normal)),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        PreviewWantedContentBadgeXSmallNoDrawable()
+private fun PreviewContentBadges() {
+    DesignSystemTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = colorResource(id = R.color.background_normal_normal)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .background(colorResource(id = R.color.background_normal_normal)),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
 
-        PreviewWantedContentBadgeXSmallLeftDrawable()
 
-        PreviewWantedContentBadgeXSmallRightDrawable()
+                /**
+                 * NORMAL
+                 */
+                Text(text = "NORMAL")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.NORMAL,
+                        onClick = {}
+                    )
 
-        PreviewWantedContentBadgeSmallOutlined()
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.NORMAL,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
 
-        PreviewWantedContentBadgeMediumOutlined()
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.NORMAL,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.NORMAL,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.NORMAL,
+                        color = ContentBadgeColor.ACCENT,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.NORMAL,
+                        type = ContentBadgeType.OUTLINED,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.NORMAL,
+                        color = ContentBadgeColor.ACCENT,
+                        type = ContentBadgeType.OUTLINED,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+                }
+
+                /**
+                 * MEDIUM
+                 */
+                Text(text = "MEDIUM")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.MEDIUM,
+                        onClick = {}
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.MEDIUM,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.MEDIUM,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.MEDIUM,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.MEDIUM,
+                        color = ContentBadgeColor.ACCENT,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.MEDIUM,
+                        type = ContentBadgeType.OUTLINED,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.MEDIUM,
+                        color = ContentBadgeColor.ACCENT,
+                        type = ContentBadgeType.OUTLINED,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+                }
+
+                /**
+                 * LARGE
+                 */
+                Text(text = "LARGE")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.LARGE,
+                        onClick = {}
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.LARGE,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.LARGE,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.LARGE,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.LARGE,
+                        color = ContentBadgeColor.ACCENT,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.LARGE,
+                        type = ContentBadgeType.OUTLINED,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+
+                    WantedContentBadge(
+                        modifier = Modifier,
+                        text = "Badge",
+                        size = ContentBadgeSize.LARGE,
+                        color = ContentBadgeColor.ACCENT,
+                        type = ContentBadgeType.OUTLINED,
+                        leftDrawable = R.drawable.ic_normal_bookmark_svg,
+                        rightDrawable = R.drawable.ic_normal_bookmark_svg,
+                        onClick = {}
+                    )
+                }
+            }
+        }
     }
-}
-
-@Preview
-@Composable
-fun PreviewWantedContentBadgeXSmallNoDrawable() {
-    WantedContentBadge(
-        text = "Button",
-        size = ContentBadgeSize.XSMALL,
-        textColor = colorResource(id = R.color.label_alternative),
-        backgroundColor = colorResource(id = R.color.fill_normal),
-    )
-}
-
-@Preview
-@Composable
-fun PreviewWantedContentBadgeXSmallLeftDrawable() {
-    WantedContentBadge(
-        text = "Button",
-        size = ContentBadgeSize.XSMALL,
-        textColor = colorResource(id = R.color.label_alternative),
-        backgroundColor = colorResource(id = R.color.fill_normal),
-        leftDrawable = R.drawable.ic_normal_bookmark_svg
-    )
-}
-
-@Preview
-@Composable
-fun PreviewWantedContentBadgeXSmallRightDrawable() {
-    WantedContentBadge(
-        text = "Button",
-        size = ContentBadgeSize.XSMALL,
-        textColor = colorResource(id = R.color.label_alternative),
-        backgroundColor = colorResource(id = R.color.fill_normal),
-        rightDrawable = R.drawable.ic_normal_heart_svg
-    )
-}
-
-@Preview
-@Composable
-fun PreviewWantedContentBadgeSmallOutlined() {
-    WantedContentBadge(
-        text = "Button",
-        size = ContentBadgeSize.SMALL,
-        type = ContentBadgeType.OUTLINED,
-        textColor = colorResource(id = R.color.accent_cyan),
-        lineColor = colorResource(id = R.color.accent_cyan)
-    )
-}
-
-@Preview
-@Composable
-fun PreviewWantedContentBadgeMediumOutlined() {
-    WantedContentBadge(
-        text = "Button",
-        size = ContentBadgeSize.MEDIUM,
-        type = ContentBadgeType.OUTLINED,
-        textColor = colorResource(id = R.color.accent_cyan),
-        lineColor = colorResource(id = R.color.accent_cyan)
-    )
 }
