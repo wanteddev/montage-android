@@ -67,6 +67,7 @@
 
     <!-- Opacity Colors -->
     <color name="static_white_opacity5">#0DFFFFFF</color> <!-- Opacity 5% -->
+    <color name="static_white_opacity8">#14FFFFFF</color> <!-- Opacity 8% -->
     <color name="static_white_opacity12">#1FFFFFFF</color> <!-- Opacity 12% -->
     <color name="static_white_opacity22">#38FFFFFF</color> <!-- Opacity 22% -->
     <color name="static_white_opacity28">#47FFFFFF</color> <!-- Opacity 28% -->
