@@ -9,44 +9,76 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actionarea.WantedActionAreaContract.ActionAreaType
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.WantedTextStyle
 
+/**
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45079&m=dev
+ */
 @Composable
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
     type: ActionAreaType = ActionAreaType.Strong,
-    positiveShape: ButtonShape = LocalWantedActionAreaButtonStatus.current.getPositiveButtonShape(type),
-    negativeShape: ButtonShape = LocalWantedActionAreaButtonStatus.current.getNegativeButtonShape(type),
-    neutralShape: ButtonShape = LocalWantedActionAreaButtonStatus.current.getNeutralButtonShape(type),
     positive: String,
     negative: String? = null,
     neutral: String? = null,
     onClickPositive: () -> Unit,
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
+    caption: String? = null
+) {
+    CompositionLocalProvider(LocalWantedActionAreaType.provides(type)) {
+        WantedActionArea(
+            modifier = modifier,
+            safeArea = safeArea,
+            actionAreaDefault = WantedActionAreaDefaults.getDefault(),
+            positive = positive,
+            negative = negative,
+            neutral = neutral,
+            onClickPositive = onClickPositive,
+            onClickNegative = onClickNegative,
+            onClickNeutral = onClickNeutral,
+            caption = caption
+        )
+    }
+}
+
+@Composable
+fun WantedActionArea(
+    modifier: Modifier = Modifier,
+    safeArea: Boolean = true,
+    actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
+    positive: String,
+    negative: String? = null,
+    neutral: String? = null,
+    onClickPositive: () -> Unit,
+    onClickNegative: (() -> Unit)? = null,
+    onClickNeutral: (() -> Unit)? = null,
+    caption: String? = null
 ) {
     WantedActionAreaLayout(
         modifier = modifier,
-        type = type,
+        type = actionAreaDefault.type,
         safeArea = safeArea,
         positive = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = positive,
-                buttonShape = positiveShape,
-                type = LocalWantedActionAreaButtonStatus.current.getPositiveButtonType(type),
-                size = LocalWantedActionAreaButtonStatus.current.getPositiveButtonSize(type),
+                buttonDefault = actionAreaDefault.positiveButtonDefault,
                 onClick = onClickPositive
             )
         },
@@ -55,9 +87,7 @@ fun WantedActionArea(
                 WantedButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = negative.orEmpty(),
-                    buttonShape = negativeShape,
-                    type = LocalWantedActionAreaButtonStatus.current.getNegativeButtonType(type),
-                    size = LocalWantedActionAreaButtonStatus.current.getNegativeButtonSize(type),
+                    buttonDefault = actionAreaDefault.negativeButtonDefault,
                     onClick = onClickNegative
                 )
             }
@@ -65,17 +95,20 @@ fun WantedActionArea(
         neutral = onClickNeutral?.let {
             {
                 WantedButton(
-                    modifier = if (type == ActionAreaType.Strong) {
+                    modifier = if (actionAreaDefault.type == ActionAreaType.Strong) {
                         Modifier
                     } else {
                         Modifier.fillMaxWidth()
                     },
                     text = neutral.orEmpty(),
-                    buttonShape = neutralShape,
-                    type = LocalWantedActionAreaButtonStatus.current.getNeutralButtonType(type),
-                    size = LocalWantedActionAreaButtonStatus.current.getNeutralButtonSize(type),
+                    buttonDefault = actionAreaDefault.neutralButtonDefault,
                     onClick = onClickNeutral
                 )
+            }
+        },
+        caption = caption?.let {
+            {
+                Text(text = caption)
             }
         }
     )
@@ -87,6 +120,7 @@ private fun WantedActionAreaLayout(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
     type: ActionAreaType = ActionAreaType.Strong,
+    caption: @Composable (() -> Unit)? = null,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)? = null,
     neutral: @Composable (() -> Unit)? = null
@@ -102,6 +136,7 @@ private fun WantedActionAreaLayout(
         ActionAreaType.Strong -> {
             WantedActionStrongAreaLayout(
                 modifier = modifier.then(safeAreaModifier),
+                caption = caption,
                 positive = positive,
                 negative = negative,
                 neutral = neutral
@@ -111,6 +146,7 @@ private fun WantedActionAreaLayout(
         ActionAreaType.Neutral -> {
             WantedActionNeutralAreaLayout(
                 modifier = modifier.then(safeAreaModifier),
+                caption = caption,
                 positive = positive,
                 negative = negative,
                 neutral = neutral
@@ -120,14 +156,17 @@ private fun WantedActionAreaLayout(
         ActionAreaType.Compact -> {
             WantedActionCompactAreaLayout(
                 modifier = modifier.then(safeAreaModifier),
+                caption = caption,
                 positive = positive,
+                negative = negative,
                 neutral = neutral
             )
         }
 
-        ActionAreaType.Single -> {
+        ActionAreaType.Cancel -> {
             WantedActionStrongAreaLayout(
                 modifier = modifier.then(safeAreaModifier),
+                caption = caption,
                 positive = positive,
                 negative = null,
                 neutral = null
@@ -139,15 +178,25 @@ private fun WantedActionAreaLayout(
 @Composable
 private fun WantedActionStrongAreaLayout(
     modifier: Modifier = Modifier,
+    caption: @Composable (() -> Unit)? = null,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)? = null,
     neutral: @Composable (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(
+            space = 8.dp,
+            alignment = Alignment.CenterVertically
+        ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        caption?.let {
+            CaptionLayout(
+                modifier = Modifier.padding(bottom = 8.dp),
+                caption = caption
+            )
+        }
 
         positive()
 
@@ -160,38 +209,49 @@ private fun WantedActionStrongAreaLayout(
 @Composable
 private fun WantedActionNeutralAreaLayout(
     modifier: Modifier = Modifier,
+    caption: @Composable (() -> Unit)? = null,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)? = null,
     neutral: @Composable (() -> Unit)? = null
 ) {
-    Row(
+    Column(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(space = 12.dp, alignment = Alignment.End),
-        verticalAlignment = Alignment.CenterVertically
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Box(
-            modifier = Modifier
-                .weight(119f)
-                .wrapContentHeight()
-        ) {
-            neutral?.invoke()
+        caption?.let {
+            CaptionLayout(caption = caption)
         }
 
-        Box(
-            modifier = Modifier
-                .weight(90f)
-                .wrapContentHeight()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 12.dp, alignment = Alignment.End),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            negative?.invoke()
-        }
 
-        Box(
-            modifier = Modifier
-                .weight(90f)
-                .wrapContentHeight()
-        ) {
-            positive()
+            Box(
+                modifier = Modifier
+                    .weight(84f)
+                    .wrapContentHeight()
+            ) {
+                neutral?.invoke()
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(106f)
+                    .wrapContentHeight()
+            ) {
+                negative?.invoke()
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(106f)
+                    .wrapContentHeight()
+            ) {
+                positive()
+            }
         }
     }
 }
@@ -199,31 +259,72 @@ private fun WantedActionNeutralAreaLayout(
 @Composable
 private fun WantedActionCompactAreaLayout(
     modifier: Modifier = Modifier,
+    caption: @Composable (() -> Unit)? = null,
     positive: @Composable () -> Unit,
+    negative: @Composable (() -> Unit)? = null,
     neutral: @Composable (() -> Unit)? = null
 ) {
-    Row(
+    Column(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(space = 12.dp, alignment = Alignment.End),
-        verticalAlignment = Alignment.CenterVertically
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Spacer(modifier = Modifier.weight(64f))
-
-        Box(
-            modifier = Modifier
-                .weight(119f)
-                .wrapContentHeight()
-        ) {
-            neutral?.invoke()
+        caption?.let {
+            CaptionLayout(caption = caption)
         }
 
-        Box(
-            modifier = Modifier
-                .weight(119f)
-                .wrapContentHeight()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 12.dp, alignment = Alignment.End),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            positive()
+
+            Spacer(modifier = Modifier.weight(32f))
+
+            Box(
+                modifier = Modifier
+                    .weight(84f)
+                    .wrapContentHeight()
+            ) {
+                neutral?.invoke()
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(84f)
+                    .wrapContentHeight()
+            ) {
+                negative?.invoke()
+            }
+
+
+            Box(
+                modifier = Modifier
+                    .weight(84f)
+                    .wrapContentHeight()
+            ) {
+                positive()
+            }
+        }
+    }
+}
+
+@Composable
+private fun CaptionLayout(
+    modifier: Modifier = Modifier,
+    caption: @Composable () -> Unit
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        ProvideTextStyle(
+            value = WantedTextStyle(
+                colorRes = R.color.label_alternative,
+                style = DesignSystemTheme.typography.label2Regular
+            )
+        ) {
+            caption()
         }
     }
 }
@@ -247,6 +348,7 @@ private fun WantedActionAreaPreview() {
             ) {
                 WantedActionArea(
                     type = ActionAreaType.Strong,
+                    caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",
                     neutral = "보조 액션",
@@ -257,6 +359,7 @@ private fun WantedActionAreaPreview() {
 
                 WantedActionArea(
                     type = ActionAreaType.Neutral,
+                    caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",
                     neutral = "보조 액션",
@@ -264,8 +367,21 @@ private fun WantedActionAreaPreview() {
                     onClickNegative = {},
                     onClickNeutral = {}
                 )
+
                 WantedActionArea(
                     type = ActionAreaType.Compact,
+                    caption = "캡션",
+                    positive = "메인 액션",
+                    negative = "대체 액션",
+                    neutral = "보조 액션",
+                    onClickPositive = {},
+                    onClickNegative = {},
+                    onClickNeutral = {}
+                )
+
+                WantedActionArea(
+                    type = ActionAreaType.Cancel,
+                    caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",
                     neutral = "보조 액션",
