@@ -13,14 +13,12 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actionarea.WantedActionAreaContract.ActionAreaType
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -41,20 +39,18 @@ fun WantedActionArea(
     onClickNeutral: (() -> Unit)? = null,
     caption: String? = null
 ) {
-    CompositionLocalProvider(LocalWantedActionAreaType.provides(type)) {
-        WantedActionArea(
-            modifier = modifier,
-            safeArea = safeArea,
-            actionAreaDefault = WantedActionAreaDefaults.getDefault(),
-            positive = positive,
-            negative = negative,
-            neutral = neutral,
-            onClickPositive = onClickPositive,
-            onClickNegative = onClickNegative,
-            onClickNeutral = onClickNeutral,
-            caption = caption
-        )
-    }
+    WantedActionArea(
+        modifier = modifier,
+        safeArea = safeArea,
+        actionAreaDefault = WantedActionAreaDefaults.getDefault(type = type),
+        positive = positive,
+        negative = negative,
+        neutral = neutral,
+        onClickPositive = onClickPositive,
+        onClickNegative = onClickNegative,
+        onClickNeutral = onClickNeutral,
+        caption = caption
+    )
 }
 
 @Composable

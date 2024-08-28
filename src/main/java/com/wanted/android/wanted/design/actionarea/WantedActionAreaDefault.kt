@@ -1,13 +1,19 @@
 package com.wanted.android.wanted.design.actionarea
 
 import androidx.compose.runtime.Composable
-import com.wanted.android.wanted.design.actionarea.WantedActionAreaContract.ActionAreaType
 import com.wanted.android.wanted.design.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 
+
+enum class ActionAreaType {
+    Strong,
+    Neutral,
+    Compact,
+    Cancel
+}
 
 data class WantedActionAreaDefault(
     val type: ActionAreaType = ActionAreaType.Strong,
@@ -19,7 +25,7 @@ data class WantedActionAreaDefault(
 object WantedActionAreaDefaults {
     @Composable
     fun getDefault(
-        type: ActionAreaType = LocalWantedActionAreaType.current,
+        type: ActionAreaType = ActionAreaType.Strong,
         positiveButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
             shape = getPositiveButtonShape(type),
             type = getPositiveButtonType(type),
