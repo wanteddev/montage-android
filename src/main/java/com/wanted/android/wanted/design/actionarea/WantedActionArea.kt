@@ -1,12 +1,15 @@
 package com.wanted.android.wanted.design.actionarea
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ProvideTextStyle
@@ -15,9 +18,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -122,50 +129,102 @@ private fun WantedActionAreaLayout(
     neutral: @Composable (() -> Unit)? = null
 ) {
 
-    val safeAreaModifier = if (safeArea) {
-        Modifier.padding(20.dp)
-    } else {
-        Modifier
+    ConstraintLayout(
+        modifier = modifier
+    ) {
+        val (box, gradation) = createRefs()
+        val safeAreaModifier = if (safeArea) {
+            Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+                .constrainAs(box) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+
+        } else {
+            Modifier
+        }
+
+        WantedActionSticky(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(0.dp)
+                .constrainAs(gradation) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(box.top)
+                    top.linkTo(box.top)
+                },
+            40.dp
+        )
+
+        when (type) {
+            ActionAreaType.Strong -> {
+                WantedActionStrongAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = negative,
+                    neutral = neutral
+                )
+            }
+
+            ActionAreaType.Neutral -> {
+                WantedActionNeutralAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = negative,
+                    neutral = neutral
+                )
+            }
+
+            ActionAreaType.Compact -> {
+                WantedActionCompactAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = negative,
+                    neutral = neutral
+                )
+            }
+
+            ActionAreaType.Cancel -> {
+                WantedActionStrongAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = null,
+                    neutral = null
+                )
+            }
+        }
     }
+}
 
-    when (type) {
-        ActionAreaType.Strong -> {
-            WantedActionStrongAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = negative,
-                neutral = neutral
+@Composable
+fun WantedActionSticky(modifier: Modifier = Modifier, gradationSize: Dp) {
+    Layout(
+        modifier = modifier.background(Color.Gray),
+        content = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
             )
         }
+    ) { measurables, constraints ->
+        val textPlaceable = measurables[0].measure(constraints)
 
-        ActionAreaType.Neutral -> {
-            WantedActionNeutralAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = negative,
-                neutral = neutral
-            )
-        }
+        // Calculate the expanded dimensions
+        val expandedHeight = (gradationSize.toPx()).toInt()
 
-        ActionAreaType.Compact -> {
-            WantedActionCompactAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = negative,
-                neutral = neutral
-            )
-        }
-
-        ActionAreaType.Cancel -> {
-            WantedActionStrongAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = null,
-                neutral = null
+        layout(textPlaceable.width, expandedHeight) {
+            textPlaceable.placeRelative(
+                x = 0,
+                y = (expandedHeight - textPlaceable.height)
             )
         }
     }
@@ -344,7 +403,6 @@ private fun WantedActionAreaPreview() {
             ) {
                 WantedActionArea(
                     type = ActionAreaType.Strong,
-                    caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",
                     neutral = "보조 액션",
