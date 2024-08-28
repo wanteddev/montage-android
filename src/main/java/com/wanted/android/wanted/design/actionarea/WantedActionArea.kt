@@ -18,11 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
@@ -37,6 +37,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
+    sticky: Boolean = false,
     type: ActionAreaType = ActionAreaType.Strong,
     positive: String,
     negative: String? = null,
@@ -49,6 +50,7 @@ fun WantedActionArea(
     WantedActionArea(
         modifier = modifier,
         safeArea = safeArea,
+        sticky = sticky,
         actionAreaDefault = WantedActionAreaDefaults.getDefault(type = type),
         positive = positive,
         negative = negative,
@@ -64,6 +66,7 @@ fun WantedActionArea(
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
+    sticky: Boolean = false,
     actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
     positive: String,
     negative: String? = null,
@@ -77,6 +80,7 @@ fun WantedActionArea(
         modifier = modifier,
         type = actionAreaDefault.type,
         safeArea = safeArea,
+        sticky = sticky,
         positive = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -122,6 +126,7 @@ fun WantedActionArea(
 private fun WantedActionAreaLayout(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
+    sticky: Boolean = false,
     type: ActionAreaType = ActionAreaType.Strong,
     caption: @Composable (() -> Unit)? = null,
     positive: @Composable () -> Unit,
@@ -135,7 +140,9 @@ private fun WantedActionAreaLayout(
         val (box, gradation) = createRefs()
         val safeAreaModifier = if (safeArea) {
             Modifier
-                .padding(20.dp)
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 20.dp)
+                .padding(top = if (sticky) 0.dp else 20.dp)
                 .fillMaxWidth()
                 .constrainAs(box) {
                     top.linkTo(parent.top)
@@ -148,18 +155,18 @@ private fun WantedActionAreaLayout(
             Modifier
         }
 
-        WantedActionSticky(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(0.dp)
-                .constrainAs(gradation) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(box.top)
-                    top.linkTo(box.top)
-                },
-            40.dp
-        )
+        if (sticky) {
+            WantedActionSticky(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .constrainAs(gradation) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(box.top)
+                    }
+            )
+        }
 
         when (type) {
             ActionAreaType.Strong -> {
@@ -206,25 +213,33 @@ private fun WantedActionAreaLayout(
 }
 
 @Composable
-fun WantedActionSticky(modifier: Modifier = Modifier, gradationSize: Dp) {
+fun WantedActionSticky(modifier: Modifier = Modifier) {
     Layout(
-        modifier = modifier.background(Color.Gray),
+        modifier = modifier,
         content = {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                colorResource(id = R.color.transparent),
+                                colorResource(id = R.color.background_normal_normal)
+                            )
+                        )
+                    )
             )
         }
     ) { measurables, constraints ->
         val textPlaceable = measurables[0].measure(constraints)
 
         // Calculate the expanded dimensions
-        val expandedHeight = (gradationSize.toPx()).toInt()
+        val expandedHeight = textPlaceable.height
 
         layout(textPlaceable.width, expandedHeight) {
             textPlaceable.placeRelative(
                 x = 0,
-                y = (expandedHeight - textPlaceable.height)
+                y = -textPlaceable.height
             )
         }
     }
@@ -435,6 +450,18 @@ private fun WantedActionAreaPreview() {
 
                 WantedActionArea(
                     type = ActionAreaType.Cancel,
+                    caption = "캡션",
+                    positive = "메인 액션",
+                    negative = "대체 액션",
+                    neutral = "보조 액션",
+                    onClickPositive = {},
+                    onClickNegative = {},
+                    onClickNeutral = {}
+                )
+
+                WantedActionArea(
+                    type = ActionAreaType.Cancel,
+                    sticky = true,
                     caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",
