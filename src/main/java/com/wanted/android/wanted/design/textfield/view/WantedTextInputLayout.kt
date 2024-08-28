@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-internal fun WantedTextFieldLayout(
+internal fun WantedTextInputLayout(
     modifier: Modifier,
     title: @Composable (() -> Unit)? = null,
     textField: @Composable () -> Unit,
