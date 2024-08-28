@@ -39,7 +39,7 @@ import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.chip.WantedActionChip
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaCharacterCount
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaLayout
-import com.wanted.android.wanted.design.textfield.view.WantedTextFieldLayout
+import com.wanted.android.wanted.design.textfield.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.OPACITY_43
@@ -66,7 +66,7 @@ fun WantedTextArea(
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedTextFieldLayout(
+    WantedTextInputLayout(
         modifier = modifier,
         title = if (title.isNotEmpty()) {
             {
@@ -138,7 +138,7 @@ fun WantedTextArea(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedTextFieldLayout(
+    WantedTextInputLayout(
         modifier = modifier,
         title = if (title.isNotEmpty()) {
             {
@@ -335,7 +335,7 @@ private fun WantedTextArea(
                                 Text(
                                     text = placeholder,
                                     style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
+                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_alternative,
                                         style = DesignSystemTheme.typography.body1Regular
                                     )
                                 )

@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedComponentTitle
 import com.wanted.android.wanted.design.textfield.view.WantedCustomTextField
-import com.wanted.android.wanted.design.textfield.view.WantedTextFieldLayout
+import com.wanted.android.wanted.design.textfield.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -22,7 +22,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1915-22967&t=33KjAy2RlyzyhLH6-4
  */
 @Composable
-fun WantedTextField(
+fun WantedTextInput(
     modifier: Modifier = Modifier,
     value: String,
     placeholder: String = "",
@@ -45,7 +45,7 @@ fun WantedTextField(
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedTextFieldLayout(
+    WantedTextInputLayout(
         modifier = modifier,
         title = if (title.isNotEmpty()) {
             {

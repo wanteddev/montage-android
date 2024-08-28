@@ -126,7 +126,7 @@ private fun WantedMultiSelectText(
             colorRes = if (enabled) {
                 R.color.label_normal
             } else {
-                R.color.label_disable
+                R.color.label_alternative
             },
             style = DesignSystemTheme.typography.body1Regular
         )

@@ -64,7 +64,7 @@ internal fun WantedSelectChip(
                 maxLines = 1,
                 style = WantedTextStyle(
                     colorRes = when {
-                        !enable -> R.color.label_disable
+                        !enable -> R.color.label_alternative
                         error -> R.color.status_negative
                         else -> R.color.label_normal
                     },
@@ -78,7 +78,7 @@ internal fun WantedSelectChip(
                 painter = painterResource(id = R.drawable.ic_normal_close_svg),
                 tint = colorResource(
                     id = when {
-                        !enable -> R.color.label_disable
+                        !enable -> R.color.label_alternative
                         error -> R.color.status_negative
                         else -> R.color.label_alternative
                     }
