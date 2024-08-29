@@ -1,12 +1,7 @@
 package com.wanted.android.wanted.design.button
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import com.wanted.android.wanted.design.button.config.LocalWantedButtonEnable
-import com.wanted.android.wanted.design.button.config.LocalWantedButtonShape
-import com.wanted.android.wanted.design.button.config.LocalWantedButtonSize
-import com.wanted.android.wanted.design.button.config.LocalWantedButtonType
 import com.wanted.android.wanted.design.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.util.ButtonShape
@@ -28,54 +23,62 @@ fun WantedButton(
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
-    CompositionLocalProvider(
-        LocalWantedButtonShape.provides(buttonShape),
-        LocalWantedButtonType.provides(type),
-        LocalWantedButtonEnable.provides(enabled),
-        LocalWantedButtonSize.provides(size)
-    ) {
-        when (buttonShape) {
-            ButtonShape.SOLID -> {
-                WantedSolidButton(
-                    modifier = modifier,
-                    text = text,
+    when (buttonShape) {
+        ButtonShape.SOLID -> {
+            WantedSolidButton(
+                modifier = modifier,
+                text = text,
+                type = type,
+                size = size,
+                enabled = enabled,
+                buttonDefault = WantedButtonDefaults.getDefault(
+                    shape = buttonShape,
                     type = type,
-                    size = size,
                     enabled = enabled,
-                    buttonDefault = WantedButtonDefaults.getDefault(),
-                    leftDrawable = leftDrawable,
-                    rightDrawable = rightDrawable,
-                    clickListener = onClick,
-                )
-            }
+                    size = size
+                ),
+                leftDrawable = leftDrawable,
+                rightDrawable = rightDrawable,
+                clickListener = onClick,
+            )
+        }
 
-            ButtonShape.OUTLINED -> {
-                WantedOutlinedButton(
-                    modifier = modifier,
-                    text = text,
-                    size = size,
+        ButtonShape.OUTLINED -> {
+            WantedOutlinedButton(
+                modifier = modifier,
+                text = text,
+                size = size,
+                type = type,
+                enabled = enabled,
+                buttonDefault = WantedButtonDefaults.getDefault(
+                    shape = buttonShape,
                     type = type,
                     enabled = enabled,
-                    buttonDefault = WantedButtonDefaults.getDefault(),
-                    leftDrawable = leftDrawable,
-                    rightDrawable = rightDrawable,
-                    clickListener = onClick,
-                )
-            }
+                    size = size
+                ),
+                leftDrawable = leftDrawable,
+                rightDrawable = rightDrawable,
+                clickListener = onClick,
+            )
+        }
 
-            ButtonShape.TEXT -> {
-                WantedTextButton(
-                    modifier = modifier,
-                    text = text,
-                    size = size,
+        ButtonShape.TEXT -> {
+            WantedTextButton(
+                modifier = modifier,
+                text = text,
+                size = size,
+                type = type,
+                enabled = enabled,
+                buttonDefault = WantedButtonDefaults.getDefault(
+                    shape = buttonShape,
                     type = type,
                     enabled = enabled,
-                    buttonDefault = WantedButtonDefaults.getDefault(),
-                    leftDrawable = leftDrawable,
-                    rightDrawable = rightDrawable,
-                    onClick = onClick,
-                )
-            }
+                    size = size
+                ),
+                leftDrawable = leftDrawable,
+                rightDrawable = rightDrawable,
+                onClick = onClick,
+            )
         }
     }
 }
