@@ -1,12 +1,15 @@
 package com.wanted.android.wanted.design.actionarea
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ProvideTextStyle
@@ -15,9 +18,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -30,6 +38,8 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
+    sticky: Boolean = false,
+    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     type: ActionAreaType = ActionAreaType.Strong,
     positive: String,
     negative: String? = null,
@@ -42,6 +52,8 @@ fun WantedActionArea(
     WantedActionArea(
         modifier = modifier,
         safeArea = safeArea,
+        sticky = sticky,
+        gradationColor = gradationColor,
         actionAreaDefault = WantedActionAreaDefaults.getDefault(type = type),
         positive = positive,
         negative = negative,
@@ -57,6 +69,8 @@ fun WantedActionArea(
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
+    sticky: Boolean = false,
+    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
     positive: String,
     negative: String? = null,
@@ -70,6 +84,8 @@ fun WantedActionArea(
         modifier = modifier,
         type = actionAreaDefault.type,
         safeArea = safeArea,
+        sticky = sticky,
+        gradationColor = gradationColor,
         positive = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -114,58 +130,129 @@ fun WantedActionArea(
 @Composable
 private fun WantedActionAreaLayout(
     modifier: Modifier = Modifier,
-    safeArea: Boolean = true,
-    type: ActionAreaType = ActionAreaType.Strong,
-    caption: @Composable (() -> Unit)? = null,
+    safeArea: Boolean,
+    sticky: Boolean,
+    gradationColor: Color,
+    type: ActionAreaType,
+    caption: @Composable (() -> Unit)?,
     positive: @Composable () -> Unit,
-    negative: @Composable (() -> Unit)? = null,
-    neutral: @Composable (() -> Unit)? = null
+    negative: @Composable (() -> Unit)?,
+    neutral: @Composable (() -> Unit)?
 ) {
 
-    val safeAreaModifier = if (safeArea) {
-        Modifier.padding(20.dp)
-    } else {
-        Modifier
+    ConstraintLayout(
+        modifier = modifier
+    ) {
+        val (box, gradation) = createRefs()
+        val safeAreaModifier = if (safeArea) {
+            Modifier
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 20.dp)
+                .padding(top = if (sticky) 0.dp else 20.dp)
+                .fillMaxWidth()
+                .constrainAs(box) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+
+        } else {
+            Modifier
+        }
+
+        if (sticky) {
+            WantedActionAreaGradation(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .constrainAs(gradation) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(box.top)
+                    },
+                color = gradationColor
+            )
+        }
+
+        when (type) {
+            ActionAreaType.Strong -> {
+                WantedActionStrongAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = negative,
+                    neutral = neutral
+                )
+            }
+
+            ActionAreaType.Neutral -> {
+                WantedActionNeutralAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = negative,
+                    neutral = neutral
+                )
+            }
+
+            ActionAreaType.Compact -> {
+                WantedActionCompactAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = negative,
+                    neutral = neutral
+                )
+            }
+
+            ActionAreaType.Cancel -> {
+                WantedActionStrongAreaLayout(
+                    modifier = modifier.then(safeAreaModifier),
+                    caption = caption,
+                    positive = positive,
+                    negative = null,
+                    neutral = null
+                )
+            }
+        }
     }
+}
 
-    when (type) {
-        ActionAreaType.Strong -> {
-            WantedActionStrongAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = negative,
-                neutral = neutral
+@Composable
+fun WantedActionAreaGradation(
+    modifier: Modifier = Modifier,
+    color: Color
+) {
+    Layout(
+        modifier = modifier,
+        content = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                color.copy(0.3f),
+                                color.copy(0.7f),
+                                color.copy(0.8f),
+                                color.copy(0.9f),
+                                color,
+                            )
+                        )
+                    )
             )
         }
+    ) { measurables, constraints ->
+        val textPlaceable = measurables[0].measure(constraints)
 
-        ActionAreaType.Neutral -> {
-            WantedActionNeutralAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = negative,
-                neutral = neutral
-            )
-        }
+        // Calculate the expanded dimensions
+        val expandedHeight = textPlaceable.height
 
-        ActionAreaType.Compact -> {
-            WantedActionCompactAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = negative,
-                neutral = neutral
-            )
-        }
-
-        ActionAreaType.Cancel -> {
-            WantedActionStrongAreaLayout(
-                modifier = modifier.then(safeAreaModifier),
-                caption = caption,
-                positive = positive,
-                negative = null,
-                neutral = null
+        layout(textPlaceable.width, expandedHeight) {
+            textPlaceable.placeRelative(
+                x = 0,
+                y = -textPlaceable.height
             )
         }
     }
@@ -344,7 +431,6 @@ private fun WantedActionAreaPreview() {
             ) {
                 WantedActionArea(
                     type = ActionAreaType.Strong,
-                    caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",
                     neutral = "보조 액션",
@@ -377,6 +463,18 @@ private fun WantedActionAreaPreview() {
 
                 WantedActionArea(
                     type = ActionAreaType.Cancel,
+                    caption = "캡션",
+                    positive = "메인 액션",
+                    negative = "대체 액션",
+                    neutral = "보조 액션",
+                    onClickPositive = {},
+                    onClickNegative = {},
+                    onClickNeutral = {}
+                )
+
+                WantedActionArea(
+                    type = ActionAreaType.Cancel,
+                    sticky = true,
                     caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",
