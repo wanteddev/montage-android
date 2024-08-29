@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -38,6 +39,7 @@ fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
     sticky: Boolean = false,
+    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     type: ActionAreaType = ActionAreaType.Strong,
     positive: String,
     negative: String? = null,
@@ -51,6 +53,7 @@ fun WantedActionArea(
         modifier = modifier,
         safeArea = safeArea,
         sticky = sticky,
+        gradationColor = gradationColor,
         actionAreaDefault = WantedActionAreaDefaults.getDefault(type = type),
         positive = positive,
         negative = negative,
@@ -67,6 +70,7 @@ fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
     sticky: Boolean = false,
+    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
     positive: String,
     negative: String? = null,
@@ -81,6 +85,7 @@ fun WantedActionArea(
         type = actionAreaDefault.type,
         safeArea = safeArea,
         sticky = sticky,
+        gradationColor = gradationColor,
         positive = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -125,13 +130,14 @@ fun WantedActionArea(
 @Composable
 private fun WantedActionAreaLayout(
     modifier: Modifier = Modifier,
-    safeArea: Boolean = true,
-    sticky: Boolean = false,
-    type: ActionAreaType = ActionAreaType.Strong,
-    caption: @Composable (() -> Unit)? = null,
+    safeArea: Boolean,
+    sticky: Boolean,
+    gradationColor: Color,
+    type: ActionAreaType,
+    caption: @Composable (() -> Unit)?,
     positive: @Composable () -> Unit,
-    negative: @Composable (() -> Unit)? = null,
-    neutral: @Composable (() -> Unit)? = null
+    negative: @Composable (() -> Unit)?,
+    neutral: @Composable (() -> Unit)?
 ) {
 
     ConstraintLayout(
@@ -156,7 +162,7 @@ private fun WantedActionAreaLayout(
         }
 
         if (sticky) {
-            WantedActionSticky(
+            WantedActionAreaGradation(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp)
@@ -164,7 +170,8 @@ private fun WantedActionAreaLayout(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         top.linkTo(box.top)
-                    }
+                    },
+                color = gradationColor
             )
         }
 
@@ -213,7 +220,10 @@ private fun WantedActionAreaLayout(
 }
 
 @Composable
-fun WantedActionSticky(modifier: Modifier = Modifier) {
+fun WantedActionAreaGradation(
+    modifier: Modifier = Modifier,
+    color: Color
+) {
     Layout(
         modifier = modifier,
         content = {
@@ -223,8 +233,11 @@ fun WantedActionSticky(modifier: Modifier = Modifier) {
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                colorResource(id = R.color.transparent),
-                                colorResource(id = R.color.background_normal_normal)
+                                color.copy(0.3f),
+                                color.copy(0.7f),
+                                color.copy(0.8f),
+                                color.copy(0.9f),
+                                color,
                             )
                         )
                     )
