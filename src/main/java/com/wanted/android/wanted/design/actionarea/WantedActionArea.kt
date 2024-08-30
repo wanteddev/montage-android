@@ -6,12 +6,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -47,7 +48,8 @@ fun WantedActionArea(
     onClickPositive: () -> Unit,
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
-    caption: String? = null
+    caption: String? = null,
+    variant: @Composable (() -> Unit)? = null
 ) {
     WantedActionArea(
         modifier = modifier,
@@ -61,7 +63,8 @@ fun WantedActionArea(
         onClickPositive = onClickPositive,
         onClickNegative = onClickNegative,
         onClickNeutral = onClickNeutral,
-        caption = caption
+        caption = caption,
+        variant = variant
     )
 }
 
@@ -78,7 +81,8 @@ fun WantedActionArea(
     onClickPositive: () -> Unit,
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
-    caption: String? = null
+    caption: String? = null,
+    variant: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
         modifier = modifier,
@@ -122,7 +126,8 @@ fun WantedActionArea(
             {
                 Text(text = caption)
             }
-        }
+        },
+        variant = variant
     )
 }
 
@@ -134,86 +139,106 @@ private fun WantedActionAreaLayout(
     sticky: Boolean,
     gradationColor: Color,
     type: ActionAreaType,
+    variant: @Composable (() -> Unit)?,
     caption: @Composable (() -> Unit)?,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)?,
     neutral: @Composable (() -> Unit)?
 ) {
-
-    ConstraintLayout(
-        modifier = modifier
+    Column(
+        modifier = modifier,
     ) {
-        val (box, gradation) = createRefs()
-        val safeAreaModifier = if (safeArea) {
-            Modifier
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 20.dp)
-                .padding(top = if (sticky) 0.dp else 20.dp)
-                .fillMaxWidth()
-                .constrainAs(box) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
+
+        variant?.let {
+            HorizontalDivider(color = colorResource(id = R.color.line_normal_neutral))
+
+            Box(
+                modifier = if (safeArea) {
+                    Modifier
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 20.dp, bottom = 4.dp)
+                        .fillMaxWidth()
+                } else {
+                    Modifier
+                }
+            ) {
+                variant()
+            }
+        }
+
+        ConstraintLayout(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            val (box, gradation) = createRefs()
+            val contentModifier = if (safeArea) {
+                Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 20.dp)
+                    .padding(top = if (sticky && variant == null) 0.dp else 20.dp)
+                    .fillMaxWidth()
+            } else {
+                Modifier.padding(top = if (variant == null) 0.dp else 20.dp)
+            }.constrainAs(box) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
+            }
+
+            if (sticky && variant == null) {
+                WantedActionAreaGradation(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp)
+                        .constrainAs(gradation) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            top.linkTo(box.top)
+                        },
+                    color = gradationColor
+                )
+            }
+
+            when (type) {
+                ActionAreaType.Strong -> {
+                    WantedActionStrongAreaLayout(
+                        modifier = modifier.then(contentModifier),
+                        caption = caption,
+                        positive = positive,
+                        negative = negative,
+                        neutral = neutral
+                    )
                 }
 
-        } else {
-            Modifier
-        }
+                ActionAreaType.Neutral -> {
+                    WantedActionNeutralAreaLayout(
+                        modifier = modifier.then(contentModifier),
+                        caption = caption,
+                        positive = positive,
+                        negative = negative,
+                        neutral = neutral
+                    )
+                }
 
-        if (sticky) {
-            WantedActionAreaGradation(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                    .constrainAs(gradation) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(box.top)
-                    },
-                color = gradationColor
-            )
-        }
+                ActionAreaType.Compact -> {
+                    WantedActionCompactAreaLayout(
+                        modifier = modifier.then(contentModifier),
+                        caption = caption,
+                        positive = positive,
+                        negative = negative,
+                        neutral = neutral
+                    )
+                }
 
-        when (type) {
-            ActionAreaType.Strong -> {
-                WantedActionStrongAreaLayout(
-                    modifier = modifier.then(safeAreaModifier),
-                    caption = caption,
-                    positive = positive,
-                    negative = negative,
-                    neutral = neutral
-                )
-            }
-
-            ActionAreaType.Neutral -> {
-                WantedActionNeutralAreaLayout(
-                    modifier = modifier.then(safeAreaModifier),
-                    caption = caption,
-                    positive = positive,
-                    negative = negative,
-                    neutral = neutral
-                )
-            }
-
-            ActionAreaType.Compact -> {
-                WantedActionCompactAreaLayout(
-                    modifier = modifier.then(safeAreaModifier),
-                    caption = caption,
-                    positive = positive,
-                    negative = negative,
-                    neutral = neutral
-                )
-            }
-
-            ActionAreaType.Cancel -> {
-                WantedActionStrongAreaLayout(
-                    modifier = modifier.then(safeAreaModifier),
-                    caption = caption,
-                    positive = positive,
-                    negative = null,
-                    neutral = null
-                )
+                ActionAreaType.Cancel -> {
+                    WantedActionStrongAreaLayout(
+                        modifier = modifier.then(contentModifier),
+                        caption = caption,
+                        positive = positive,
+                        negative = null,
+                        neutral = null
+                    )
+                }
             }
         }
     }
@@ -312,25 +337,30 @@ private fun WantedActionNeutralAreaLayout(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Box(
-                modifier = Modifier
-                    .weight(84f)
-                    .wrapContentHeight()
-            ) {
-                neutral?.invoke()
+            neutral?.let {
+                Box(
+                    modifier = Modifier
+                        .width(84.dp)
+                        .wrapContentHeight()
+                ) {
+                    neutral()
+                }
+            }
+
+
+            negative?.let {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentHeight()
+                ) {
+                    negative()
+                }
             }
 
             Box(
                 modifier = Modifier
-                    .weight(106f)
-                    .wrapContentHeight()
-            ) {
-                negative?.invoke()
-            }
-
-            Box(
-                modifier = Modifier
-                    .weight(106f)
+                    .weight(1f)
                     .wrapContentHeight()
             ) {
                 positive()
@@ -362,28 +392,31 @@ private fun WantedActionCompactAreaLayout(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Spacer(modifier = Modifier.weight(32f))
-
-            Box(
-                modifier = Modifier
-                    .weight(84f)
-                    .wrapContentHeight()
-            ) {
-                neutral?.invoke()
-            }
-
-            Box(
-                modifier = Modifier
-                    .weight(84f)
-                    .wrapContentHeight()
-            ) {
-                negative?.invoke()
+            neutral?.let {
+                Box(
+                    modifier = Modifier
+                        .width(84.dp)
+                        .wrapContentHeight()
+                ) {
+                    neutral?.invoke()
+                }
             }
 
 
+            negative?.let {
+                Box(
+                    modifier = Modifier
+                        .width(84.dp)
+                        .wrapContentHeight()
+                ) {
+                    negative()
+                }
+            }
+
+
             Box(
                 modifier = Modifier
-                    .weight(84f)
+                    .width(84.dp)
                     .wrapContentHeight()
             ) {
                 positive()
@@ -436,7 +469,17 @@ private fun WantedActionAreaPreview() {
                     neutral = "보조 액션",
                     onClickPositive = {},
                     onClickNegative = {},
-                    onClickNeutral = {}
+                    onClickNeutral = {},
+                    variant = {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(30.dp)
+                                .background(Color.Gray)
+                        ) {
+                            Text(text = "variant")
+                        }
+                    }
                 )
 
                 WantedActionArea(
