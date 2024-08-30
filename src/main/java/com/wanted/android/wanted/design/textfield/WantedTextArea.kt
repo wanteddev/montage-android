@@ -364,7 +364,7 @@ private fun DecorationBox(
             .fillMaxWidth(1f)
             .padding(horizontal = 4.dp)
             .wrapContentHeight(),
-        contentAlignment = Alignment.CenterStart
+        contentAlignment = Alignment.TopStart
     ) {
         placeholder?.let {
             placeholder()
@@ -395,6 +395,7 @@ private fun WantedTextAreaPreview() {
             ) {
 
                 WantedTextArea(
+                    modifier = Modifier,
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요."
                 )
@@ -428,8 +429,9 @@ private fun WantedTextAreaPreview() {
                 )
 
                 WantedTextArea(
-                    value = "입력한 텍스트",
+                    value = "",
                     placeholder = "텍스트를 입력해 주세요.",
+                    minLines = 4,
                     rightContent = {
                         WantedActionChip(text = "WantedActionChip")
                     }
