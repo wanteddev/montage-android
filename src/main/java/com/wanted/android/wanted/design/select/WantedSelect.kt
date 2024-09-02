@@ -45,6 +45,7 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     valueList: List<WantedSelectData>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
@@ -59,6 +60,7 @@ fun WantedSelect(
     WantedSelectImpl(
         modifier = modifier,
         title = title,
+        description = description,
         isRequiredBadge = isRequiredBadge,
         error = errorList.isNotEmpty(),
         focused = focused,
@@ -83,6 +85,7 @@ fun WantedSelect(
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     value: WantedSelectData,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
@@ -96,6 +99,7 @@ fun WantedSelect(
     WantedSelect(
         modifier = modifier,
         title = title,
+        description = description,
         value = value.text,
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
@@ -112,6 +116,7 @@ fun WantedSelect(
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     value: String,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
@@ -125,6 +130,7 @@ fun WantedSelect(
     WantedSelectImpl(
         modifier = modifier,
         title = title,
+        description = description,
         isRequiredBadge = isRequiredBadge,
         error = error,
         focused = focused,
@@ -162,6 +168,7 @@ fun WantedSelect(
 private fun WantedSelectImpl(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     isRequiredBadge: Boolean = false,
     error: Boolean = false,
     focused: Boolean = false,
@@ -266,6 +273,22 @@ private fun WantedSelectImpl(
                     null
                 }
             )
+        },
+        description = description?.let {
+            {
+                Text(
+                    text = description,
+                    style = WantedTextStyle(
+                        colorRes = when {
+                            enabled && error -> R.color.status_negative
+                            else -> R.color.label_alternative
+                        },
+                        style = DesignSystemTheme.typography.caption1Regular
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     )
 }
@@ -304,6 +327,7 @@ private fun WantedSelectPreview() {
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
                     value = "",
+                    description = "메시지에 마침표를 찍어요.",
                     placeHolder = "선택해 주세요",
                     onDelete = { },
                     onClick = {}
@@ -321,6 +345,7 @@ private fun WantedSelectPreview() {
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
                     value = "선택값",
+                    description = "메시지에 마침표를 찍어요.",
                     error = true,
                     onDelete = { },
                     onClick = {}
