@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -53,13 +54,16 @@ fun WantedTouchArea(
                 .wrapContentSize()
                 .constrainAs(box) {
                     top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 }
                 .onGloballyPositioned { coordinates ->
                     // Set column height using the LayoutCoordinates
                     contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
                     contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
-                }
+                },
+            contentAlignment = Alignment.Center
         ) {
             content()
         }

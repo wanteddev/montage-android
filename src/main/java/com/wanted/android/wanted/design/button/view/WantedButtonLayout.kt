@@ -28,9 +28,7 @@ fun WantedButtonLayout(
     rightDrawable: @Composable (() -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(size = getButtonRadius(buttonShape, buttonSize)))
-            .then(modifier)
+        modifier = modifier
             .buttonHeight(buttonShape, buttonSize)
             .buttonWidth(buttonSize, text == null)
             .buttonVerticalPadding(buttonShape != ButtonShape.TEXT && text != null)
