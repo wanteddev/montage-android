@@ -124,6 +124,7 @@ fun WantedTextButton(
     val textColor = remember { mutableStateOf(buttonDefault.contentColor) }
 
     WantedTouchArea(
+        modifier = modifier,
         verticalPadding = 4.dp,
         horizontalPadding = if (size == ButtonSize.SMALL) 6.dp else 7.dp,
         shape = RoundedCornerShape(6.dp),
@@ -135,7 +136,7 @@ fun WantedTextButton(
         },
         content = {
             WantedButtonLayout(
-                modifier = modifier,
+                modifier = Modifier,
                 buttonShape = ButtonShape.TEXT,
                 buttonSize = size,
                 leftDrawable = leftDrawable?.let {
@@ -237,7 +238,7 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnableNoBackground() {
         WantedTextButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            modifier = Modifier.wrapContentSize()
+            modifier = Modifier.padding(top = 20.dp).wrapContentSize()
         )
 
 
