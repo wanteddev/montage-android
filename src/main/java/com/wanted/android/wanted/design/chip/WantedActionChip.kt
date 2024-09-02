@@ -159,6 +159,13 @@ fun WantedActionChip(
 ) {
     WantedActionChipLayout(
         modifier = modifier
+            .clip(RoundedCornerShape(getCipRadius(chipDefault.size)))
+            .background(chipDefault.backgroundColor)
+            .border(
+                width = 1.dp,
+                shape = RoundedCornerShape(getCipRadius(chipDefault.size)),
+                color = chipDefault.borderColor
+            )
             .clickOnceForDesignSystem(
                 interactionSource = interactionSource,
                 indication = if (chipDefault.variant == ChipActionVariant.FILLED) {
@@ -192,15 +199,7 @@ private fun WantedActionChipLayout(
     rightIcon: @Composable (() -> Unit)? = null
 ) {
     Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(getCipRadius(chipDefault.size)))
-            .background(chipDefault.backgroundColor)
-            .border(
-                width = 1.dp,
-                shape = RoundedCornerShape(getCipRadius(chipDefault.size)),
-                color = chipDefault.borderColor
-            )
-            .then(modifier)
+        modifier = modifier
             .actionChipPadding(size = chipDefault.size),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
