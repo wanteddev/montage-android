@@ -258,10 +258,21 @@ fun WantedActionAreaGradation(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                color.copy(0.3f),
-                                color.copy(0.7f),
-                                color.copy(0.8f),
-                                color.copy(0.9f),
+                                color.copy(0.0f),
+                                color.copy(0.14f),
+                                color.copy(0.27f),
+                                color.copy(0.38f),
+                                color.copy(0.48f),
+                                color.copy(0.57f),
+                                color.copy(0.65f),
+                                color.copy(0.71f),
+                                color.copy(0.77f),
+                                color.copy(0.82f),
+                                color.copy(0.86f),
+                                color.copy(0.90f),
+                                color.copy(0.93f),
+                                color.copy(0.96f),
+                                color.copy(0.98f),
                                 color,
                             )
                         )
