@@ -229,9 +229,8 @@ private fun WantedTextArea(
         rightContent = {
             if (error) {
                 WantedCommonIcon(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(end = 6.dp),
+                    modifier = Modifier.padding(end = 6.dp),
+                    size = 24.dp,
                     resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
                     tint = colorResource(id = R.color.status_negative)
                 )
@@ -316,7 +315,7 @@ private fun WantedTextArea(
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 textStyle = WantedTextStyle(
-                    colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
+                    colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
                     style = DesignSystemTheme.typography.body1Regular
                 ),
                 onValueChange = {
@@ -335,7 +334,7 @@ private fun WantedTextArea(
                                 Text(
                                     text = placeholder,
                                     style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_alternative,
+                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
                                         style = DesignSystemTheme.typography.body1Regular
                                     )
                                 )
@@ -397,12 +396,14 @@ private fun WantedTextAreaPreview() {
                 WantedTextArea(
                     modifier = Modifier,
                     value = "입력한 텍스트",
+                    error = true,
                     placeholder = "텍스트를 입력해 주세요."
                 )
 
                 WantedTextArea(
                     modifier = Modifier,
                     title = "주제",
+                    error = true,
                     requiredBadge = true,
                     value = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
@@ -410,7 +411,7 @@ private fun WantedTextAreaPreview() {
                 )
 
                 WantedTextArea(
-                    modifier = Modifier.height(200.dp),
+                    modifier = Modifier,
                     value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"

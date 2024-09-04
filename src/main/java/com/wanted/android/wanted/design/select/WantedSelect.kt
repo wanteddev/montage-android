@@ -146,7 +146,9 @@ fun WantedSelect(
                 )
             } else {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
                     text = value,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -154,7 +156,7 @@ fun WantedSelect(
                         colorRes = if (enabled) {
                             R.color.label_normal
                         } else {
-                            R.color.label_disable
+                            R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.body1Regular
                     )
@@ -246,9 +248,9 @@ private fun WantedSelectImpl(
                         modifier = Modifier.fillMaxSize(),
                         painter = painterResource(
                             id = if (focused) {
-                                R.drawable.ic_normal_chevron_up_svg
+                                R.drawable.ic_normal_chevron_up_thick_small_svg
                             } else {
-                                R.drawable.ic_normal_chevron_down_svg
+                                R.drawable.ic_normal_chevron_down_thick_small_svg
                             }
                         ),
                         tint = colorResource(
@@ -326,7 +328,8 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
+                    value = "asdf",
+                    enabled = false,
                     description = "메시지에 마침표를 찍어요.",
                     placeHolder = "선택해 주세요",
                     onDelete = { },

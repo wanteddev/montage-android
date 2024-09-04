@@ -264,8 +264,8 @@ private fun Modifier.actionChipIconSize(
 ): Modifier = composed {
     val modifier = when (size) {
         ChipActionSize.LARGE -> Modifier.size(16.dp)
-        ChipActionSize.NORMAL -> Modifier.size(14.dp)
-        ChipActionSize.SMALL -> Modifier.size(14.dp)
+        ChipActionSize.NORMAL -> Modifier.size(16.dp)
+        ChipActionSize.SMALL -> Modifier.size(16.dp)
         ChipActionSize.XSMALL -> Modifier.size(12.dp)
     }
     this.then(modifier)

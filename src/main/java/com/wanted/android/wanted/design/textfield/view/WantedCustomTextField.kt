@@ -132,7 +132,7 @@ internal fun WantedCustomTextField(
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 textStyle = WantedTextStyle(
-                    colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
+                    colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
                     style = DesignSystemTheme.typography.body1Regular
                 ),
                 onValueChange = {
@@ -151,7 +151,7 @@ internal fun WantedCustomTextField(
                                 Text(
                                     text = placeholder,
                                     style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_alternative,
+                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
                                         style = DesignSystemTheme.typography.body1Regular
                                     )
                                 )
@@ -189,7 +189,7 @@ internal fun WantedCustomTextField(
                                             .clip(CircleShape)
                                             .clickOnceForDesignSystem { onValueChange("") },
                                         resourceId = R.drawable.ic_normal_circle_close_svg,
-                                        tint = colorResource(id = R.color.label_alternative)
+                                        tint = colorResource(id = R.color.label_assistive)
                                     )
                                 }
                             }
@@ -358,13 +358,15 @@ private fun WantedTextFieldPreview() {
             ) {
                 WantedTextInput(
                     value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요."
+                    placeholder = "텍스트를 입력해 주세요.",
+                    enabled = false
                 )
 
                 WantedTextInput(
-                    title = "주제",
+                    title = "",
                     value = "",
-                    placeholder = "텍스트를 입력해 주세요."
+                    placeholder = "텍스트를 입력해 주세요.",
+                    enabled = false
                 )
 
                 WantedTextInput(

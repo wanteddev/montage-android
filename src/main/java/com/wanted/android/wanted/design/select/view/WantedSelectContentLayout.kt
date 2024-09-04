@@ -39,7 +39,6 @@ internal fun WantedSelectContentLayout(
 
         Box(
             modifier = Modifier
-                .padding(horizontal = 4.dp)
                 .weight(weight = 1f, fill = false),
             contentAlignment = Alignment.CenterStart
         ) {
