@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -129,6 +130,7 @@ fun WantedSolidButton(
                 buttonDefault.backgroundColor,
                 RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size))
             )
+            .clip(RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size)))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12)),
@@ -263,7 +265,7 @@ fun PreviewWantedSolidButtonSmallNoDrawableEnable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            modifier = Modifier.wrapContentSize()
+            modifier = Modifier.padding(top = 20.dp).wrapContentSize()
         )
 
 
