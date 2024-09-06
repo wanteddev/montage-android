@@ -90,8 +90,8 @@ internal fun WantedCustomTextField(
                         shape = RoundedCornerShape(
                             topStart = 12.dp,
                             bottomStart = 12.dp,
-                            topEnd = 0.dp,
-                            bottomEnd = 0.dp
+                            topEnd = rightButton?.let { 0.dp } ?: 12.dp,
+                            bottomEnd = rightButton?.let { 0.dp } ?: 12.dp
                         ),
                         color = when {
                             error || focused -> {
@@ -359,7 +359,7 @@ private fun WantedTextFieldPreview() {
                 WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
-                    enabled = false
+                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextInput(
