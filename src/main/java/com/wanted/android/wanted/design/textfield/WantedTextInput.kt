@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedComponentTitle
@@ -42,6 +44,7 @@ fun WantedTextInput(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
@@ -70,6 +73,7 @@ fun WantedTextInput(
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
+                background = background,
                 rightButton = rightButton,
                 placeholder = placeholder,
                 leadingIcon = leadingIcon,

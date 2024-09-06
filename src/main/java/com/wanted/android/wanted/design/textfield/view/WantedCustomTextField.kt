@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -37,8 +38,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
+import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.textfield.WantedTextInput
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -60,6 +64,7 @@ internal fun WantedCustomTextField(
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     rightContent: @Composable (() -> Unit)? = null,
     rightButton: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -67,165 +72,189 @@ internal fun WantedCustomTextField(
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedCustomTextFieldLayout(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .border(
-                shape = RoundedCornerShape(12.dp),
-                color = colorResource(
-                    if (enabled) R.color.line_normal_neutral else R.color.line_normal_alternative
-                ),
-                width = 1.dp
-            )
-            .background(
-                colorResource(
-                    if (enabled) R.color.background_normal_normal else R.color.interaction_disable
+    ConstraintLayout {
+        val (shadow, textField) = createRefs()
+        WantedDropShadow(
+            Modifier
+                .constrainAs(shadow) {
+                    top.linkTo(textField.top)
+                    bottom.linkTo(textField.bottom)
+                    start.linkTo(textField.start)
+                    end.linkTo(textField.end)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                },
+            background = background,
+            shape = RoundedCornerShape(12.dp)
+        )
+        WantedCustomTextFieldLayout(
+            modifier = modifier
+                .constrainAs(textField) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    shape = RoundedCornerShape(12.dp),
+                    color = colorResource(
+                        if (enabled) R.color.line_normal_neutral else R.color.line_normal_alternative
+                    ),
+                    width = 1.dp
                 )
-            )
-            .height(IntrinsicSize.Min),
-        textField = {
-            BasicTextField(
-                modifier = Modifier
-                    .border(
-                        shape = RoundedCornerShape(
-                            topStart = 12.dp,
-                            bottomStart = 12.dp,
-                            topEnd = rightButton?.let { 0.dp } ?: 12.dp,
-                            bottomEnd = rightButton?.let { 0.dp } ?: 12.dp
-                        ),
-                        color = when {
-                            error || focused -> {
-                                colorResource(id = R.color.background_normal_normal)
-                                    .copy(alpha = OPACITY_43)
-                            }
-
-                            else -> colorResource(R.color.transparent)
-                        },
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .border(
-                        shape = rightButton?.let {
-                            RoundedCornerShape(
+                .background(
+                    if (enabled) {
+                        background
+                    } else {
+                        colorResource(R.color.interaction_disable)
+                    }
+                )
+                .height(IntrinsicSize.Min),
+            textField = {
+                BasicTextField(
+                    modifier = Modifier
+                        .border(
+                            shape = RoundedCornerShape(
                                 topStart = 12.dp,
                                 bottomStart = 12.dp,
-                                topEnd = 0.dp,
-                                bottomEnd = 0.dp
-                            )
-                        } ?: run { RoundedCornerShape(12.dp) },
-                        color = colorResource(
-                            id = when {
-                                !enabled -> R.color.transparent
-                                error -> R.color.status_negative
-                                focused -> R.color.primary_normal
-                                else -> R.color.transparent
-                            }
-                        ),
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .padding(horizontal = 12.dp)
-                    .padding(vertical = 12.dp)
-                    .fillMaxSize(),
-                value = value,
-                maxLines = maxLines,
-                enabled = enabled,
-                interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                textStyle = WantedTextStyle(
-                    colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-                    style = DesignSystemTheme.typography.body1Regular
-                ),
-                onValueChange = {
-                    if (it.length <= maxWordCount) {
-                        onValueChange(it)
-                    } else {
-                        onValueChange(value)
-                    }
-                },
-                decorationBox = { innerTextField ->
-                    DecorationBox(
-                        modifier = Modifier,
-                        innerTextField = innerTextField,
-                        placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
-                            {
-                                Text(
-                                    text = placeholder,
-                                    style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
-                                        style = DesignSystemTheme.typography.body1Regular
-                                    )
+                                topEnd = rightButton?.let { 0.dp } ?: 12.dp,
+                                bottomEnd = rightButton?.let { 0.dp } ?: 12.dp
+                            ),
+                            color = when {
+                                error || focused -> {
+                                    colorResource(id = R.color.background_normal_normal)
+                                        .copy(alpha = OPACITY_43)
+                                }
+
+                                else -> colorResource(R.color.transparent)
+                            },
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .border(
+                            shape = rightButton?.let {
+                                RoundedCornerShape(
+                                    topStart = 12.dp,
+                                    bottomStart = 12.dp,
+                                    topEnd = 0.dp,
+                                    bottomEnd = 0.dp
                                 )
-                            }
+                            } ?: run { RoundedCornerShape(12.dp) },
+                            color = colorResource(
+                                id = when {
+                                    !enabled -> R.color.transparent
+                                    error -> R.color.status_negative
+                                    focused -> R.color.primary_normal
+                                    else -> R.color.transparent
+                                }
+                            ),
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .padding(horizontal = 12.dp)
+                        .padding(vertical = 12.dp)
+                        .fillMaxSize(),
+                    value = value,
+                    maxLines = maxLines,
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                    textStyle = WantedTextStyle(
+                        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
+                        style = DesignSystemTheme.typography.body1Regular
+                    ),
+                    onValueChange = {
+                        if (it.length <= maxWordCount) {
+                            onValueChange(it)
                         } else {
-                            null
-                        },
-                        leadingIcon = leadingIcon,
-                        trailingIcon = when {
-                            !focused && enabled && error -> {
+                            onValueChange(value)
+                        }
+                    },
+                    decorationBox = { innerTextField ->
+                        DecorationBox(
+                            modifier = Modifier,
+                            innerTextField = innerTextField,
+                            placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
                                 {
-                                    WantedCommonIcon(
-                                        modifier = Modifier.fillMaxSize(),
-                                        resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                                        tint = colorResource(id = R.color.status_negative)
+                                    Text(
+                                        text = placeholder,
+                                        style = WantedTextStyle(
+                                            colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
+                                            style = DesignSystemTheme.typography.body1Regular
+                                        )
                                     )
                                 }
-                            }
-
-                            !focused && complete -> {
-                                {
-                                    WantedCommonIcon(
-                                        modifier = Modifier.fillMaxSize(),
-                                        resourceId = R.drawable.ic_normal_circle_check_fill_svg,
-                                        tint = colorResource(id = R.color.primary_normal)
-                                    )
+                            } else {
+                                null
+                            },
+                            leadingIcon = leadingIcon,
+                            trailingIcon = when {
+                                !focused && enabled && error -> {
+                                    {
+                                        WantedCommonIcon(
+                                            modifier = Modifier.fillMaxSize(),
+                                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                                            tint = colorResource(id = R.color.status_negative)
+                                        )
+                                    }
                                 }
-                            }
 
-                            trailingIcon == null && value.isNotEmpty() && enabled -> {
-                                {
-                                    WantedCommonIcon(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .clip(CircleShape)
-                                            .clickOnceForDesignSystem { onValueChange("") },
-                                        resourceId = R.drawable.ic_normal_circle_close_svg,
-                                        tint = colorResource(id = R.color.label_assistive)
-                                    )
+                                !focused && complete -> {
+                                    {
+                                        WantedCommonIcon(
+                                            modifier = Modifier.fillMaxSize(),
+                                            resourceId = R.drawable.ic_normal_circle_check_fill_svg,
+                                            tint = colorResource(id = R.color.primary_normal)
+                                        )
+                                    }
                                 }
-                            }
 
-                            else -> trailingIcon
-                        },
-                        rightContent = rightContent
-                    )
-                }
-            )
-        },
-        rightButton = if (rightButton.isNullOrEmpty()) {
-            null
-        } else {
-            {
-                Row(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .clickOnceForDesignSystem(enabled) { onClickRightButton() },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (!enabled || !error && !focused) {
-                        VerticalDivider(
-                            color = colorResource(id = R.color.line_normal_neutral),
-                            thickness = 1.dp
+                                trailingIcon == null && value.isNotEmpty() && enabled -> {
+                                    {
+                                        WantedCommonIcon(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .clip(CircleShape)
+                                                .clickOnceForDesignSystem { onValueChange("") },
+                                            resourceId = R.drawable.ic_normal_circle_close_svg,
+                                            tint = colorResource(id = R.color.label_assistive)
+                                        )
+                                    }
+                                }
+
+                                else -> trailingIcon
+                            },
+                            rightContent = rightContent
                         )
                     }
+                )
+            },
+            rightButton = if (rightButton.isNullOrEmpty()) {
+                null
+            } else {
+                {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .clickOnceForDesignSystem(enabled) { onClickRightButton() },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (!enabled || !error && !focused) {
+                            VerticalDivider(
+                                color = colorResource(id = R.color.line_normal_neutral),
+                                thickness = 1.dp
+                            )
+                        }
 
-                    WantedTextFieldButton(
-                        title = rightButton,
-                        enable = enabled
-                    )
+                        WantedTextFieldButton(
+                            title = rightButton,
+                            enable = enabled
+                        )
+                    }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
