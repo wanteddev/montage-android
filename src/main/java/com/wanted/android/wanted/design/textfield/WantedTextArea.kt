@@ -26,14 +26,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedComponentTitle
+import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.chip.WantedActionChip
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaCharacterCount
@@ -62,6 +66,7 @@ fun WantedTextArea(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
@@ -92,6 +97,7 @@ fun WantedTextArea(
                 keyboardActions = keyboardActions,
                 rightButton = rightButton,
                 placeholder = placeholder,
+                background = background,
                 onClickRightButton = onClickRightButton,
                 onValueChange = onValueChange
             )
@@ -135,6 +141,7 @@ fun WantedTextArea(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onValueChange: (String) -> Unit = {}
 ) {
     WantedTextInputLayout(
@@ -165,6 +172,7 @@ fun WantedTextArea(
                 rightContent = rightContent,
                 leftContent = leftContent,
                 placeholder = placeholder,
+                background = background,
                 onValueChange = onValueChange
             )
         },
@@ -202,6 +210,7 @@ private fun WantedTextArea(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     rightButton: String?,
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
@@ -219,6 +228,7 @@ private fun WantedTextArea(
         interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
+        background = background,
         leftContent = {
             WantedTextAreaCharacterCount(
                 current = value.length,
@@ -264,91 +274,118 @@ private fun WantedTextArea(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedTextAreaLayout(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .border(
-                shape = RoundedCornerShape(12.dp),
-                color = when {
-                    error || focused -> {
-                        colorResource(id = R.color.background_normal_normal)
-                            .copy(alpha = OPACITY_43)
-                    }
+    ConstraintLayout {
+        val (shadow, textField) = createRefs()
+        WantedDropShadow(
+            Modifier
+                .constrainAs(shadow) {
+                    top.linkTo(textField.top)
+                    bottom.linkTo(textField.bottom)
+                    start.linkTo(textField.start)
+                    end.linkTo(textField.end)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                },
+            background = background,
+            shape = RoundedCornerShape(12.dp)
+        )
 
-                    else -> colorResource(R.color.transparent)
-                },
-                width = if (focused) 2.dp else 1.dp
-            )
-            .border(
-                shape = RoundedCornerShape(12.dp),
-                color = colorResource(
-                    id = when {
-                        !enabled -> R.color.line_normal_neutral
-                        error -> R.color.status_negative
-                        focused -> R.color.primary_normal
-                        else -> R.color.line_normal_neutral
-                    }
-                ),
-                width = if (focused) 2.dp else 1.dp
-            )
-            .background(
-                colorResource(
-                    if (enabled) R.color.background_normal_normal else R.color.interaction_disable
-                )
-            )
-            .height(IntrinsicSize.Min),
-        textField = {
-            BasicTextField(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth(),
-                value = value,
-                maxLines = maxLines,
-                minLines = minLines,
-                enabled = enabled,
-                interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                textStyle = WantedTextStyle(
-                    colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-                    style = DesignSystemTheme.typography.body1Regular
-                ),
-                onValueChange = {
-                    if (it.length <= maxWordCount) {
-                        onValueChange(it)
-                    } else {
-                        onValueChange(value)
-                    }
-                },
-                decorationBox = { innerTextField ->
-                    DecorationBox(
-                        modifier = Modifier,
-                        innerTextField = innerTextField,
-                        placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
-                            {
-                                Text(
-                                    text = placeholder,
-                                    style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
-                                        style = DesignSystemTheme.typography.body1Regular
-                                    )
-                                )
-                            }
-                        } else {
-                            null
-                        }
-                    )
+        WantedTextAreaLayout(
+            modifier = modifier
+                .constrainAs(textField) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 }
-            )
-        },
-        leftContent = leftContent,
-        rightContent = rightContent
-    )
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    shape = RoundedCornerShape(12.dp),
+                    color = when {
+                        error || focused -> {
+                            colorResource(id = R.color.background_normal_normal)
+                                .copy(alpha = OPACITY_43)
+                        }
+
+                        else -> colorResource(R.color.transparent)
+                    },
+                    width = if (focused) 2.dp else 1.dp
+                )
+                .border(
+                    shape = RoundedCornerShape(12.dp),
+                    color = colorResource(
+                        id = when {
+                            !enabled -> R.color.line_normal_neutral
+                            error -> R.color.status_negative
+                            focused -> R.color.primary_normal
+                            else -> R.color.line_normal_neutral
+                        }
+                    ),
+                    width = if (focused) 2.dp else 1.dp
+                )
+                .background(
+                    if (enabled) {
+                        background
+                    } else {
+                        colorResource(R.color.interaction_disable)
+                    }
+                )
+                .height(IntrinsicSize.Min),
+            textField = {
+                BasicTextField(
+                    modifier = Modifier
+
+                        .padding(horizontal = 12.dp)
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth(),
+                    value = value,
+                    maxLines = maxLines,
+                    minLines = minLines,
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                    textStyle = WantedTextStyle(
+                        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
+                        style = DesignSystemTheme.typography.body1Regular
+                    ),
+                    onValueChange = {
+                        if (it.length <= maxWordCount) {
+                            onValueChange(it)
+                        } else {
+                            onValueChange(value)
+                        }
+                    },
+                    decorationBox = { innerTextField ->
+                        DecorationBox(
+                            modifier = Modifier,
+                            innerTextField = innerTextField,
+                            placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
+                                {
+                                    Text(
+                                        text = placeholder,
+                                        style = WantedTextStyle(
+                                            colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
+                                            style = DesignSystemTheme.typography.body1Regular
+                                        )
+                                    )
+                                }
+                            } else {
+                                null
+                            }
+                        )
+                    }
+                )
+            },
+            leftContent = leftContent,
+            rightContent = rightContent
+        )
+    }
 }
 
 
