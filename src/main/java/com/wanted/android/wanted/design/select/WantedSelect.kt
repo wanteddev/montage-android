@@ -17,15 +17,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedComponentTitle
+import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectPlaceHolder
@@ -53,6 +57,7 @@ fun WantedSelect(
     focused: Boolean = false,
     enabled: Boolean = true,
     isChip: Boolean = false,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onDelete: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
@@ -65,6 +70,7 @@ fun WantedSelect(
         error = errorList.isNotEmpty(),
         focused = focused,
         enabled = enabled,
+        background = background,
         onClick = onClick,
         leadingIcon = leadingIcon,
         contents = {
@@ -92,7 +98,7 @@ fun WantedSelect(
     error: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
-    onDelete: (WantedSelectData) -> Unit,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
@@ -106,7 +112,7 @@ fun WantedSelect(
         error = error,
         focused = focused,
         enabled = enabled,
-        onDelete = { onDelete(value) },
+        background = background,
         onClick = onClick,
         leadingIcon = leadingIcon
     )
@@ -123,7 +129,7 @@ fun WantedSelect(
     error: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
-    onDelete: (String) -> Unit,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
@@ -135,6 +141,7 @@ fun WantedSelect(
         error = error,
         focused = focused,
         enabled = enabled,
+        background = background,
         onClick = onClick,
         leadingIcon = leadingIcon,
         contents = {
@@ -175,6 +182,7 @@ private fun WantedSelectImpl(
     error: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
+    background: Color,
     onClick: () -> Unit = {},
     contents: @Composable () -> Unit,
     leadingIcon: @Composable (() -> Unit)? = null
@@ -191,90 +199,113 @@ private fun WantedSelectImpl(
             }
         },
         select = {
-            WantedSelectContentLayout(
-                modifier = Modifier
-                    .border(
-                        shape = RoundedCornerShape(12.dp),
-                        color = when {
-                            error || focused -> {
-                                colorResource(id = R.color.background_normal_normal)
-                                    .copy(alpha = OPACITY_43)
-                            }
-
-                            else -> colorResource(R.color.transparent)
+            ConstraintLayout {
+                val (shadow, select) = createRefs()
+                WantedDropShadow(
+                    Modifier
+                        .constrainAs(shadow) {
+                            top.linkTo(select.top)
+                            bottom.linkTo(select.bottom)
+                            start.linkTo(select.start)
+                            end.linkTo(select.end)
+                            width = Dimension.fillToConstraints
+                            height = Dimension.fillToConstraints
                         },
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .border(
-                        shape = RoundedCornerShape(12.dp),
-                        color = colorResource(
-                            id = when {
-                                !enabled -> R.color.line_normal_alternative
-                                error -> R.color.status_negative
-                                focused -> R.color.primary_normal
-                                else -> R.color.line_normal_neutral
-                            }
-                        ),
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(
-                        colorResource(
-                            id = if (enabled) {
-                                R.color.background_normal_normal
+                    background = background,
+                    shape = RoundedCornerShape(12.dp)
+                )
+
+                WantedSelectContentLayout(
+                    modifier = Modifier
+                        .constrainAs(select) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .border(
+                            shape = RoundedCornerShape(12.dp),
+                            color = when {
+                                error || focused -> {
+                                    colorResource(id = R.color.background_normal_normal)
+                                        .copy(alpha = OPACITY_43)
+                                }
+
+                                else -> colorResource(R.color.transparent)
+                            },
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .border(
+                            shape = RoundedCornerShape(12.dp),
+                            color = colorResource(
+                                id = when {
+                                    !enabled -> R.color.line_normal_alternative
+                                    error -> R.color.status_negative
+                                    focused -> R.color.primary_normal
+                                    else -> R.color.line_normal_neutral
+                                }
+                            ),
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(
+                            if (enabled) {
+                                background
                             } else {
-                                R.color.line_normal_alternative
+                                colorResource(R.color.line_normal_alternative)
                             }
                         )
-                    )
-                    .clickOnceForDesignSystem(
-                        enabled = enabled,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = getSelectRippleEffect(
+                        .clickOnceForDesignSystem(
                             enabled = enabled,
-                            focused = focused,
-                            error = error
-                        )
-                    ) {
-                        onClick()
-                    }
-                    .padding(12.dp),
-                leadingIcon = leadingIcon,
-                contents = {
-                    contents()
-                },
-                rightButton = {
-                    Icon(
-                        modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(
-                            id = if (focused) {
-                                R.drawable.ic_normal_chevron_up_thick_small_svg
-                            } else {
-                                R.drawable.ic_normal_chevron_down_thick_small_svg
-                            }
-                        ),
-                        tint = colorResource(
-                            id = if (enabled) {
-                                R.color.label_alternative
-                            } else {
-                                R.color.label_disable
-                            }
-                        ),
-                        contentDescription = ""
-                    )
-                },
-                trailingIcon = if (error && !focused && enabled) {
-                    {
-                        WantedCommonIcon(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = getSelectRippleEffect(
+                                enabled = enabled,
+                                focused = focused,
+                                error = error
+                            )
+                        ) {
+                            onClick()
+                        }
+                        .padding(12.dp),
+                    leadingIcon = leadingIcon,
+                    contents = {
+                        contents()
+                    },
+                    rightButton = {
+                        Icon(
                             modifier = Modifier.fillMaxSize(),
-                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                            tint = colorResource(id = R.color.status_negative)
+                            painter = painterResource(
+                                id = if (focused) {
+                                    R.drawable.ic_normal_chevron_up_thick_small_svg
+                                } else {
+                                    R.drawable.ic_normal_chevron_down_thick_small_svg
+                                }
+                            ),
+                            tint = colorResource(
+                                id = if (enabled) {
+                                    R.color.label_alternative
+                                } else {
+                                    R.color.label_disable
+                                }
+                            ),
+                            contentDescription = ""
                         )
+                    },
+                    trailingIcon = if (error && !focused && enabled) {
+                        {
+                            WantedCommonIcon(
+                                modifier = Modifier.fillMaxSize(),
+                                resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                                tint = colorResource(id = R.color.status_negative)
+                            )
+                        }
+                    } else {
+                        null
                     }
-                } else {
-                    null
-                }
-            )
+                )
+
+            }
+
         },
         description = description?.let {
             {
@@ -291,6 +322,7 @@ private fun WantedSelectImpl(
                     overflow = TextOverflow.Ellipsis
                 )
             }
+
         }
     )
 }
@@ -332,7 +364,6 @@ private fun WantedSelectPreview() {
                     enabled = false,
                     description = "메시지에 마침표를 찍어요.",
                     placeHolder = "선택해 주세요",
-                    onDelete = { },
                     onClick = {}
                 )
 
@@ -341,7 +372,6 @@ private fun WantedSelectPreview() {
                     value = "선택값",
                     focused = true,
                     placeHolder = "선택해 주세요",
-                    onDelete = { },
                     onClick = {}
                 )
 
@@ -350,7 +380,6 @@ private fun WantedSelectPreview() {
                     value = "선택값",
                     description = "메시지에 마침표를 찍어요.",
                     error = true,
-                    onDelete = { },
                     onClick = {}
                 )
 
@@ -360,7 +389,6 @@ private fun WantedSelectPreview() {
                     focused = true,
                     error = true,
                     value = "선택값",
-                    onDelete = { },
                     onClick = {}
                 )
 
@@ -370,7 +398,6 @@ private fun WantedSelectPreview() {
                     isRequiredBadge = true,
                     enabled = false,
                     value = "선택값",
-                    onDelete = { },
                     onClick = {}
                 )
 
