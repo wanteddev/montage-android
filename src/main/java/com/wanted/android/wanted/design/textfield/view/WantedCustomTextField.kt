@@ -242,7 +242,8 @@ internal fun WantedCustomTextField(
                             .clickOnceForDesignSystem(enabled) { onClickRightButton() },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if ((!rightButtonEnabled && !enabled) || !error && !focused) {
+
+                        if (isVisibleVerticalDivider(rightButtonEnabled, enabled, error, focused)) {
                             VerticalDivider(
                                 color = colorResource(id = R.color.line_normal_neutral),
                                 thickness = 1.dp
@@ -252,12 +253,31 @@ internal fun WantedCustomTextField(
                         WantedTextFieldButton(
                             title = rightButton,
                             rightButtonVariant = rightButtonVariant,
-                            enable = enabled && rightButtonEnabled
+                            enable = when {
+                                !rightButtonEnabled -> false
+                                else -> enabled
+                            }
                         )
                     }
                 }
             }
         )
+    }
+}
+
+@Composable
+private fun isVisibleVerticalDivider(
+    rightButtonEnabled: Boolean,
+    enabled : Boolean,
+    error: Boolean,
+    focused: Boolean
+): Boolean {
+    return when {
+        !rightButtonEnabled -> true
+        !enabled -> true
+        !error -> true
+        !focused -> true
+        else -> false
     }
 }
 
@@ -392,7 +412,7 @@ private fun WantedTextFieldPreview() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 WantedTextInput(
                     value = "입력한 텍스트",
@@ -401,18 +421,35 @@ private fun WantedTextFieldPreview() {
                 )
 
                 WantedTextInput(
-                    title = "",
-                    value = "",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    enabled = false
-                )
-
-                WantedTextInput(
                     title = "주제",
                     requiredBadge = true,
                     value = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
+                )
+
+                WantedTextInput(
+                    title = "",
+                    value = "",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    enabled = false,
+                    error = true
+                )
+
+                WantedTextInput(
+                    value = "입력한 텍스트",
+                    enabled = false,
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    error = true
+                )
+
+                WantedTextInput(
+                    requiredBadge = true,
+                    value = "입력한 텍스트.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    enabled = false
                 )
 
                 WantedTextInput(
