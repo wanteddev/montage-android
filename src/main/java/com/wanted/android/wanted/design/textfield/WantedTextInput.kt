@@ -34,7 +34,9 @@ fun WantedTextInput(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
+    rightButtonVariant: WantedTextInputRightVariant = WantedTextInputRightVariant.Normal,
     enabled: Boolean = true,
+    rightButtonEnabled: Boolean = true,
     error: Boolean = false,
     complete: Boolean = false,
     maxLines: Int = 1,
@@ -66,6 +68,7 @@ fun WantedTextInput(
                 value = value,
                 error = error,
                 enabled = enabled,
+                rightButtonEnabled = rightButtonEnabled,
                 focused = focused.value,
                 complete = complete,
                 maxLines = maxLines,
@@ -75,6 +78,7 @@ fun WantedTextInput(
                 keyboardActions = keyboardActions,
                 background = background,
                 rightButton = rightButton,
+                rightButtonVariant = rightButtonVariant,
                 placeholder = placeholder,
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
@@ -100,5 +104,10 @@ fun WantedTextInput(
             }
         }
     )
+}
+
+
+enum class WantedTextInputRightVariant {
+    Normal, Assistive
 }
 

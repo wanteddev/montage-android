@@ -45,6 +45,7 @@ import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.textfield.WantedTextInput
+import com.wanted.android.wanted.design.textfield.WantedTextInputRightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -57,6 +58,7 @@ internal fun WantedCustomTextField(
     placeholder: String,
     error: Boolean,
     enabled: Boolean,
+    rightButtonEnabled: Boolean,
     focused: Boolean,
     complete: Boolean,
     maxLines: Int,
@@ -67,6 +69,7 @@ internal fun WantedCustomTextField(
     background: Color = colorResource(id = R.color.background_normal_normal),
     rightContent: @Composable (() -> Unit)? = null,
     rightButton: String? = null,
+    rightButtonVariant: WantedTextInputRightVariant,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
@@ -239,7 +242,8 @@ internal fun WantedCustomTextField(
                             .clickOnceForDesignSystem(enabled) { onClickRightButton() },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (!enabled || !error && !focused) {
+
+                        if (isVisibleVerticalDivider(rightButtonEnabled, enabled, error, focused)) {
                             VerticalDivider(
                                 color = colorResource(id = R.color.line_normal_neutral),
                                 thickness = 1.dp
@@ -248,12 +252,32 @@ internal fun WantedCustomTextField(
 
                         WantedTextFieldButton(
                             title = rightButton,
-                            enable = enabled
+                            rightButtonVariant = rightButtonVariant,
+                            enable = when {
+                                !rightButtonEnabled -> false
+                                else -> enabled
+                            }
                         )
                     }
                 }
             }
         )
+    }
+}
+
+@Composable
+private fun isVisibleVerticalDivider(
+    rightButtonEnabled: Boolean,
+    enabled: Boolean,
+    error: Boolean,
+    focused: Boolean
+): Boolean {
+    return when {
+        !rightButtonEnabled -> true
+        !enabled -> true
+        !error -> true
+        !focused -> true
+        else -> false
     }
 }
 
@@ -323,6 +347,7 @@ private fun DecorationBox(
 @Composable
 private fun WantedTextFieldButton(
     modifier: Modifier = Modifier,
+    rightButtonVariant: WantedTextInputRightVariant,
     title: String,
     enable: Boolean
 ) {
@@ -335,7 +360,11 @@ private fun WantedTextFieldButton(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         style = WantedTextStyle(
-            colorRes = if (enable) R.color.primary_normal else R.color.label_assistive,
+            colorRes = when {
+                !enable -> R.color.label_assistive
+                rightButtonVariant == WantedTextInputRightVariant.Assistive -> R.color.label_normal
+                else -> R.color.primary_normal
+            },
             style = DesignSystemTheme.typography.body1Bold
         )
     )
@@ -383,19 +412,12 @@ private fun WantedTextFieldPreview() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     focused = remember { mutableStateOf(true) }
-                )
-
-                WantedTextInput(
-                    title = "",
-                    value = "",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    enabled = false
                 )
 
                 WantedTextInput(
@@ -407,9 +429,49 @@ private fun WantedTextFieldPreview() {
                 )
 
                 WantedTextInput(
+                    title = "",
+                    value = "",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    enabled = false,
+                    error = true
+                )
+
+                WantedTextInput(
+                    value = "입력한 텍스트",
+                    enabled = false,
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    error = true
+                )
+
+                WantedTextInput(
+                    requiredBadge = true,
+                    value = "입력한 텍스트.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    enabled = false
+                )
+
+                WantedTextInput(
                     value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트"
+                    rightButton = "텍스트",
+                    rightButtonVariant = WantedTextInputRightVariant.Assistive
+                )
+
+                WantedTextInput(
+                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    rightButtonVariant = WantedTextInputRightVariant.Assistive,
+                    rightButtonEnabled = false
+                )
+
+                WantedTextInput(
+                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    rightButtonEnabled = false
                 )
 
                 WantedTextInput(
