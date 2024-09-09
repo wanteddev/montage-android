@@ -268,7 +268,7 @@ internal fun WantedCustomTextField(
 @Composable
 private fun isVisibleVerticalDivider(
     rightButtonEnabled: Boolean,
-    enabled : Boolean,
+    enabled: Boolean,
     error: Boolean,
     focused: Boolean
 ): Boolean {
