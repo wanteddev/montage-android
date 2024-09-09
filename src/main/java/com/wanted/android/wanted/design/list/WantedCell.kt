@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,15 +20,17 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.toAnnotatedString
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45065&m=dev
  */
+
 @Composable
 fun WantedCell(
     modifier: Modifier = Modifier,
-    text: String,
-    caption: String = "",
+    annotatedString: AnnotatedString,
+    annotatedCaption: AnnotatedString = AnnotatedString(""),
     padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
     paddingInset: Boolean = false,
     divider: Boolean = false,
@@ -57,8 +60,8 @@ fun WantedCell(
                 isDivider = divider,
                 contents = {
                     WantedList(
-                        text = text,
-                        caption = caption,
+                        text = annotatedString,
+                        caption = annotatedCaption,
                         isEnable = isEnable,
                         leftContent = leftContent,
                         rightContent = rightContent
@@ -69,6 +72,61 @@ fun WantedCell(
     ) {
         onClick()
     }
+}
+
+@Composable
+fun WantedCell(
+    modifier: Modifier = Modifier,
+    text: String,
+    caption: String = "",
+    padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
+    paddingInset: Boolean = false,
+    divider: Boolean = false,
+    isEnable: Boolean = true,
+    leftContent: (@Composable () -> Unit)? = null,
+    rightContent: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit
+) {
+    WantedCell(
+        modifier,
+        annotatedString = text.toAnnotatedString(),
+        annotatedCaption = caption.toAnnotatedString(),
+        padding = padding,
+        paddingInset = paddingInset,
+        divider = divider,
+        isEnable = isEnable,
+        leftContent = leftContent,
+        rightContent = rightContent,
+        onClick = onClick
+    )
+}
+
+
+@Composable
+fun WantedCell(
+    modifier: Modifier = Modifier,
+    text: AnnotatedString,
+    caption: String = "",
+    padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
+    paddingInset: Boolean = false,
+    divider: Boolean = false,
+    isEnable: Boolean = true,
+    leftContent: (@Composable () -> Unit)? = null,
+    rightContent: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit
+) {
+    WantedCell(
+        modifier = modifier,
+        annotatedString = text,
+        annotatedCaption = caption.toAnnotatedString(),
+        padding = padding,
+        paddingInset = paddingInset,
+        divider = divider,
+        isEnable = isEnable,
+        leftContent = leftContent,
+        rightContent = rightContent,
+        onClick = onClick
+    )
 }
 
 @Composable
