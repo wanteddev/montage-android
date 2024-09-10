@@ -38,7 +38,6 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.textfield.WantedTextField
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -90,8 +89,8 @@ internal fun WantedCustomTextField(
                         shape = RoundedCornerShape(
                             topStart = 12.dp,
                             bottomStart = 12.dp,
-                            topEnd = 0.dp,
-                            bottomEnd = 0.dp
+                            topEnd = rightButton?.let { 0.dp } ?: 12.dp,
+                            bottomEnd = rightButton?.let { 0.dp } ?: 12.dp
                         ),
                         color = when {
                             error || focused -> {
@@ -163,33 +162,36 @@ internal fun WantedCustomTextField(
                         trailingIcon = when {
                             !focused && enabled && error -> {
                                 {
-                                    WantedCommonIcon(
+                                    Icon(
                                         modifier = Modifier.fillMaxSize(),
-                                        resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                                        tint = colorResource(id = R.color.status_negative)
+                                        painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                        tint = colorResource(id = R.color.status_negative),
+                                        contentDescription = ""
                                     )
                                 }
                             }
 
                             !focused && complete -> {
                                 {
-                                    WantedCommonIcon(
+                                    Icon(
                                         modifier = Modifier.fillMaxSize(),
-                                        resourceId = R.drawable.ic_normal_circle_check_fill_svg,
-                                        tint = colorResource(id = R.color.primary_normal)
+                                        painter = painterResource(R.drawable.ic_normal_circle_check_fill_svg),
+                                        tint = colorResource(id = R.color.primary_normal),
+                                        contentDescription = ""
                                     )
                                 }
                             }
 
                             trailingIcon == null && value.isNotEmpty() && enabled -> {
                                 {
-                                    WantedCommonIcon(
+                                    Icon(
                                         modifier = Modifier
                                             .fillMaxSize()
                                             .clip(CircleShape)
                                             .clickOnceForDesignSystem { onValueChange("") },
-                                        resourceId = R.drawable.ic_normal_circle_close_svg,
-                                        tint = colorResource(id = R.color.label_alternative)
+                                        painter = painterResource(R.drawable.ic_normal_circle_close_svg),
+                                        tint = colorResource(id = R.color.label_alternative),
+                                        contentDescription = ""
                                     )
                                 }
                             }
@@ -358,7 +360,8 @@ private fun WantedTextFieldPreview() {
             ) {
                 WantedTextField(
                     value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요."
+                    placeholder = "텍스트를 입력해 주세요."       ,
+                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextField(
