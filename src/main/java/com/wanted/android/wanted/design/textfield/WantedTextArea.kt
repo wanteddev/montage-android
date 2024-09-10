@@ -238,7 +238,7 @@ private fun WantedTextArea(
         rightContent = {
             if (error) {
                 WantedCommonIcon(
-                    modifier = Modifier.padding(end = 6.dp),
+                    modifier = Modifier,
                     size = 24.dp,
                     resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
                     tint = colorResource(id = R.color.status_negative)
@@ -433,7 +433,7 @@ private fun WantedTextAreaPreview() {
                 WantedTextArea(
                     modifier = Modifier,
                     value = "입력한 텍스트",
-                    error = true,
+                    enabled = true,
                     placeholder = "텍스트를 입력해 주세요."
                 )
 

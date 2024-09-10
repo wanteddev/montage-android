@@ -106,7 +106,7 @@ private fun WantedSelectChipLayout(
     ) {
         leadingIcon?.let {
             Box(
-                modifier = Modifier.size(11.dp),
+                modifier = Modifier.size(12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 leadingIcon()
@@ -116,7 +116,7 @@ private fun WantedSelectChipLayout(
         text()
 
         Box(
-            modifier = Modifier.size(11.dp),
+            modifier = Modifier.size(12.dp),
             contentAlignment = Alignment.Center
         ) {
             trailingIcon()
