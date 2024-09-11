@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.beta.loading
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -38,9 +39,9 @@ fun LogoLoading(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 200.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
 
             message?.let {
