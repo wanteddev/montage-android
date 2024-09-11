@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
+import com.wanted.android.wanted.design.base.WantedToastIcon
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
@@ -383,7 +383,7 @@ private fun WantedTooltipPreview() {
                     action = "더 알아보기",
                     isShowCloseButton = true,
                     content = {
-                        WantedCommonIcon(
+                        WantedToastIcon(
                             modifier = Modifier.size(22.dp),
                             resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
                             tint = colorResource(id = R.color.status_negative)

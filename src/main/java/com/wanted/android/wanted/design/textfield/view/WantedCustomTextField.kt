@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.textfield.WantedTextInput
@@ -143,14 +142,12 @@ internal fun WantedCustomTextField(
                                     bottomEnd = 0.dp
                                 )
                             } ?: run { RoundedCornerShape(12.dp) },
-                            color = colorResource(
-                                id = when {
-                                    !enabled -> R.color.transparent
-                                    error -> R.color.status_negative
-                                    focused -> R.color.primary_normal
-                                    else -> R.color.transparent
-                                }
-                            ),
+                            color = when {
+                                !enabled -> colorResource(R.color.transparent)
+                                error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                                focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                                else -> colorResource(R.color.transparent)
+                            },
                             width = if (focused) 2.dp else 1.dp
                         )
                         .padding(horizontal = 12.dp)
@@ -194,33 +191,36 @@ internal fun WantedCustomTextField(
                             trailingIcon = when {
                                 !focused && enabled && error -> {
                                     {
-                                        WantedCommonIcon(
+                                        Icon(
                                             modifier = Modifier.fillMaxSize(),
-                                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                                            tint = colorResource(id = R.color.status_negative)
+                                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                            tint = colorResource(id = R.color.status_negative),
+                                            contentDescription = ""
                                         )
                                     }
                                 }
 
                                 !focused && complete -> {
                                     {
-                                        WantedCommonIcon(
+                                        Icon(
                                             modifier = Modifier.fillMaxSize(),
-                                            resourceId = R.drawable.ic_normal_circle_check_fill_svg,
-                                            tint = colorResource(id = R.color.primary_normal)
+                                            painter = painterResource(R.drawable.ic_normal_circle_check_fill_svg),
+                                            tint = colorResource(id = R.color.primary_normal),
+                                            contentDescription = ""
                                         )
                                     }
                                 }
 
                                 trailingIcon == null && value.isNotEmpty() && enabled -> {
                                     {
-                                        WantedCommonIcon(
+                                        Icon(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .clip(CircleShape)
                                                 .clickOnceForDesignSystem { onValueChange("") },
-                                            resourceId = R.drawable.ic_normal_circle_close_svg,
-                                            tint = colorResource(id = R.color.label_assistive)
+                                            painter = painterResource(R.drawable.ic_normal_circle_close_svg),
+                                            tint = colorResource(id = R.color.label_alternative),
+                                            contentDescription = ""
                                         )
                                     }
                                 }
@@ -239,7 +239,12 @@ internal fun WantedCustomTextField(
                     Row(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .clickOnceForDesignSystem(enabled) { onClickRightButton() },
+                            .clickOnceForDesignSystem(
+                                isEnableRightButton(
+                                    rightButtonEnabled,
+                                    enabled
+                                )
+                            ) { onClickRightButton() },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
@@ -251,18 +256,31 @@ internal fun WantedCustomTextField(
                         }
 
                         WantedTextFieldButton(
+                            modifier = Modifier.background(
+                                if (rightButtonEnabled) {
+                                    colorResource(id = R.color.transparent)
+                                } else {
+                                    colorResource(id = R.color.interaction_disable)
+                                }
+                            ),
                             title = rightButton,
                             rightButtonVariant = rightButtonVariant,
-                            enable = when {
-                                !rightButtonEnabled -> false
-                                else -> enabled
-                            }
+                            enable = isEnableRightButton(rightButtonEnabled, enabled)
                         )
                     }
                 }
             }
         )
     }
+}
+
+@Composable
+private fun isEnableRightButton(
+    rightButtonEnabled: Boolean,
+    enabled: Boolean
+) = when {
+    !rightButtonEnabled -> false
+    else -> enabled
 }
 
 @Composable

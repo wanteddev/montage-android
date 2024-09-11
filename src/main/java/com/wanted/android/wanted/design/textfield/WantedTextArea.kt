@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.WantedButton
@@ -237,11 +239,13 @@ private fun WantedTextArea(
         },
         rightContent = {
             if (error) {
-                WantedCommonIcon(
-                    modifier = Modifier,
-                    size = 24.dp,
-                    resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                    tint = colorResource(id = R.color.status_negative)
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(1.dp),
+                    painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                    tint = colorResource(id = R.color.status_negative),
+                    contentDescription = ""
                 )
             } else {
                 rightButton?.let {
@@ -318,14 +322,12 @@ private fun WantedTextArea(
                 )
                 .border(
                     shape = RoundedCornerShape(12.dp),
-                    color = colorResource(
-                        id = when {
-                            !enabled -> R.color.line_normal_neutral
-                            error -> R.color.status_negative
-                            focused -> R.color.primary_normal
-                            else -> R.color.line_normal_neutral
-                        }
-                    ),
+                    color = when {
+                        !enabled -> colorResource(R.color.line_normal_neutral)
+                        error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                        focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                        else -> colorResource(R.color.line_normal_neutral)
+                    },
                     width = if (focused) 2.dp else 1.dp
                 )
                 .background(
@@ -434,6 +436,7 @@ private fun WantedTextAreaPreview() {
                     modifier = Modifier,
                     value = "입력한 텍스트",
                     enabled = true,
+                    focused = true,
                     placeholder = "텍스트를 입력해 주세요."
                 )
 

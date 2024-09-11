@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -27,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
@@ -237,14 +237,12 @@ private fun WantedSelectImpl(
                         )
                         .border(
                             shape = RoundedCornerShape(12.dp),
-                            color = colorResource(
-                                id = when {
-                                    !enabled -> R.color.line_normal_alternative
-                                    error -> R.color.status_negative
-                                    focused -> R.color.primary_normal
-                                    else -> R.color.line_normal_neutral
-                                }
-                            ),
+                            color = when {
+                                !enabled -> colorResource(R.color.line_normal_alternative)
+                                error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                                focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                                else -> colorResource(R.color.line_normal_neutral)
+                            },
                             width = if (focused) 2.dp else 1.dp
                         )
                         .clip(RoundedCornerShape(12.dp))
@@ -293,10 +291,13 @@ private fun WantedSelectImpl(
                     },
                     trailingIcon = if (error && !focused && enabled) {
                         {
-                            WantedCommonIcon(
-                                modifier = Modifier.fillMaxSize(),
-                                resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                                tint = colorResource(id = R.color.status_negative)
+                            Icon(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .padding(1.dp),
+                                painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                tint = colorResource(id = R.color.status_negative),
+                                contentDescription = ""
                             )
                         }
                     } else {
