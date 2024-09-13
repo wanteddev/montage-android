@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 fun WantedFilterChip(
     text: String,
     modifier: Modifier = Modifier,
+    activeLabel: String = "",
     size: ChipActionSize = ChipActionSize.SMALL,
     variant: ChipActionVariant = ChipActionVariant.FILLED,
     isActive: Boolean = false,
@@ -58,8 +60,9 @@ fun WantedFilterChip(
         LocalWantedChipActive.provides(isActive)
     ) {
         WantedFilterChip(
-            text = text,
             modifier = modifier,
+            text = text,
+            activeLabel = activeLabel,
             chipDefault = WantedChipDefaults
                 .getDefault()
                 .copy(iconColor = colorResource(id = WantedChipDefaults.getFilterIconColor())),
@@ -74,6 +77,7 @@ fun WantedFilterChip(
 fun WantedFilterChip(
     text: String,
     modifier: Modifier = Modifier,
+    activeLabel: String = "",
     chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
     isExpend: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -88,12 +92,27 @@ fun WantedFilterChip(
         isEnable = chipDefault.isEnable,
         chipDefault = chipDefault,
         content = {
-            Text(
+            Row(
                 modifier = Modifier.wrapContentSize(),
-                text = text,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f, fill = false),
+                    text = text,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                if (activeLabel.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.wrapContentSize(),
+                        text = activeLabel,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = chipDefault.textStyle.merge(fontWeight = FontWeight.SemiBold)
+                    )
+                }
+            }
         },
         rightIcon = {
             Image(
@@ -222,6 +241,44 @@ private fun ActionChipPreView() {
                         isExpend = true,
                         isActive = true,
                         size = ChipActionSize.NORMAL
+                    )
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    WantedFilterChip(
+                        text = "텍스트",
+                        activeLabel = "1",
+                        variant = ChipActionVariant.FILLED,
+                        isExpend = true,
+                        size = ChipActionSize.NORMAL
+                    )
+                    WantedFilterChip(
+                        text = "텍스트",
+                        activeLabel = "2",
+                        variant = ChipActionVariant.OUTLINED,
+                        isEnable = false,
+                        isActive = true,
+                        size = ChipActionSize.NORMAL
+                    )
+                    WantedFilterChip(
+                        text = "텍스트",
+                        activeLabel = "일",
+                        variant = ChipActionVariant.FILLED,
+                        isExpend = true,
+                        isActive = true,
+                        size = ChipActionSize.SMALL
+                    )
+                    WantedFilterChip(
+                        text = "텍스트",
+                        activeLabel = "이",
+                        variant = ChipActionVariant.OUTLINED,
+                        isEnable = false,
+                        isExpend = true,
+                        isActive = true,
+                        size = ChipActionSize.SMALL
                     )
                 }
             }
