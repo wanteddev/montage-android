@@ -40,7 +40,7 @@ fun WantedCell(
     onClick: () -> Unit
 ) {
     WantedTouchArea(
-        horizontalPadding = 12.dp,
+        horizontalPadding = if (paddingInset) 0.dp else 12.dp,
         shape = RoundedCornerShape(12.dp),
         content = {
             WantedCellLayout(
