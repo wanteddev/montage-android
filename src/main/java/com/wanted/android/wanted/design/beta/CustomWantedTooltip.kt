@@ -70,7 +70,6 @@ fun CustomWantedTooltip(
     action: String? = null,
     isShowCloseButton: Boolean = false,
     isShowArrow: Boolean = true,
-    arrowPosition: TooltipArrowPosition = TooltipArrowPosition.TOP_CENTER,
     state: TooltipState = remember { TooltipState(false) },
     content: @Composable () -> Unit,
     onClickAction: (() -> Unit)? = null,
@@ -105,7 +104,7 @@ fun CustomWantedTooltip(
                         drawCaretWithPath(
                             density = density,
                             configuration = configuration,
-                            spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
+                            spacingBetweenTooltipAndAnchor = 0.dp,
                             backgroundColor = backgroundColor,
                             containerColor = color,
                             containerColor1 = color1,
@@ -114,7 +113,6 @@ fun CustomWantedTooltip(
                                 caretHeight = 6.dp
                             ),
                             anchorLayoutCoordinates = anchorLayoutCoordinates,
-                            arrowPosition = arrowPosition
                         )
                     }
                     .then(modifier)
@@ -125,11 +123,7 @@ fun CustomWantedTooltip(
 
             WantedTooltipContentsLayout(
                 modifier = customModifier,
-                spacingBetweenTooltipAndAnchor = if (isShowArrow) {
-                    SpacingBetweenTooltipAndAnchor.dp
-                } else {
-                    SpacingBetweenTooltipAndAnchorNotArrow.dp
-                },
+                spacingBetweenTooltipAndAnchor = 2.dp,
                 text = {
                     Text(
                         modifier = Modifier.padding(horizontal = 2.dp),
@@ -264,7 +258,6 @@ private fun CacheDrawScope.drawCaretWithPath(
     containerColor1: Color,
     caretProperties: CaretProperties,
     anchorLayoutCoordinates: LayoutCoordinates?,
-    arrowPosition: TooltipArrowPosition
 ): DrawResult {
     val path = Path()
 
@@ -274,8 +267,6 @@ private fun CacheDrawScope.drawCaretWithPath(
         val screenWidthPx: Int
         val tooltipAnchorSpacing: Int
         val anchorSize: Float
-        val paddingStartEndPx: Int = 10.dp.roundToPx()
-
         with(density) {
             caretHeightPx = caretProperties.caretHeight.roundToPx()
             caretWidthPx = caretProperties.caretWidth.roundToPx()
@@ -298,47 +289,19 @@ private fun CacheDrawScope.drawCaretWithPath(
             tooltipHeight - tooltipAnchorSpacing
         }
 
-        // 위치에 따른 caretX 좌표 계산
-        val caretX = when (arrowPosition) {
-            TooltipArrowPosition.TOP_START, TooltipArrowPosition.BOTTOM_START -> {
-                // Anchor의 시작 부분에서 paddingStart만큼 떨어진 위치에 beak 위치
-                anchorLeft + paddingStartEndPx
+        val position =
+            if (anchorMid + tooltipWidth / 2 > screenWidthPx) {
+                val anchorMidFromRightScreenEdge =
+                    screenWidthPx - anchorMid
+                val caretX = tooltipWidth - anchorMidFromRightScreenEdge
+                Offset(caretX, caretY)
+            } else {
+                val tooltipLeft =
+                    anchorLeft - (this.size.width / 2 - anchorWidth / 2)
+                val caretX = anchorMid - maxOf(tooltipLeft, 0f)
+                Offset(caretX, caretY)
             }
-            TooltipArrowPosition.TOP_CENTER, TooltipArrowPosition.BOTTOM_CENTER -> {
-                // Anchor의 중앙에 beak 위치
-                anchorMid - (caretWidthPx / 2)
-            }
-            TooltipArrowPosition.TOP_END, TooltipArrowPosition.BOTTOM_END -> {
-                // Anchor의 끝 부분에서 paddingEnd만큼 떨어진 위치에 beak 위치
-                anchorRight - paddingStartEndPx - caretWidthPx
-            }
-        }
 
-        val position = Offset(caretX, caretY)
-
-        if (isCaretTop) {
-            path.apply {
-                moveTo(x = position.x, y = position.y)
-                lineTo(x = position.x + caretWidthPx / 2, y = position.y)
-                lineTo(x = position.x + anchorSize, y = position.y - caretHeightPx + anchorSize)
-
-                arcTo(
-                    rect = Rect(
-                        left = position.x - anchorSize / 2,
-                        top = position.y - caretHeightPx + anchorSize / 2,
-                        right = position.x + anchorSize / 2,
-                        bottom = position.y - caretHeightPx + anchorSize
-                    ),
-                    startAngleDegrees = -45f,
-                    sweepAngleDegrees = -135f,
-                    forceMoveTo = false
-                )
-
-                lineTo(x = position.x - anchorSize, y = position.y - caretHeightPx + anchorSize)
-                lineTo(x = position.x - caretWidthPx / 2, y = position.y)
-                close()
-            }
-        } else {
             path.apply {
                 moveTo(x = position.x, y = position.y)
                 lineTo(x = position.x + caretWidthPx / 2, y = position.y)
@@ -362,7 +325,6 @@ private fun CacheDrawScope.drawCaretWithPath(
 
                 close()
             }
-        }
     }
 
     return onDrawWithContent {
