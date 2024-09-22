@@ -58,6 +58,7 @@ internal fun WantedSelectContentLayout(
 
         Box(
             modifier = Modifier
+                .align(alignment = Alignment.Top)
                 .size(24.dp)
                 .padding(4.dp),
             contentAlignment = Alignment.Center

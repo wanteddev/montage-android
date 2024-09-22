@@ -40,34 +40,39 @@ fun WantedCell(
     onClick: () -> Unit
 ) {
     WantedTouchArea(
-        horizontalPadding = 12.dp,
+        horizontalPadding = if (paddingInset) 0.dp else 12.dp,
         shape = RoundedCornerShape(12.dp),
         content = {
-            WantedCellLayout(
-                modifier = modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .clickOnceForDesignSystem(enabled = isEnable) {
-                        onClick()
-                    }
-                    .padding(horizontal = if (paddingInset) 20.dp else 0.dp)
-                    .padding(
-                        vertical = when (padding) {
-                            WantedCellContract.Padding.Small -> 8.dp
-                            WantedCellContract.Padding.Normal -> 12.dp
-                            WantedCellContract.Padding.Medium -> 16.dp
+            Column {
+                WantedList(
+                    modifier = modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .clickOnceForDesignSystem(enabled = isEnable) {
+                            onClick()
                         }
-                    ),
-                isDivider = divider,
-                contents = {
-                    WantedList(
-                        text = annotatedString,
-                        caption = annotatedCaption,
-                        isEnable = isEnable,
-                        leftContent = leftContent,
-                        rightContent = rightContent
+                        .padding(horizontal = if (paddingInset) 20.dp else 0.dp)
+                        .padding(
+                            vertical = when (padding) {
+                                WantedCellContract.Padding.Small -> 8.dp
+                                WantedCellContract.Padding.Normal -> 12.dp
+                                WantedCellContract.Padding.Medium -> 16.dp
+                            }
+                        ),
+                    text = annotatedString,
+                    caption = annotatedCaption,
+                    isEnable = isEnable,
+                    leftContent = leftContent,
+                    rightContent = rightContent
+                )
+
+                if (divider) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = if (paddingInset) 20.dp else 0.dp),
+                        color = colorResource(id = R.color.line_normal_alternative)
                     )
                 }
-            )
+            }
+
         }
     ) {
         onClick()
@@ -129,23 +134,6 @@ fun WantedCell(
     )
 }
 
-@Composable
-private fun WantedCellLayout(
-    modifier: Modifier = Modifier,
-    isDivider: Boolean,
-    contents: @Composable () -> Unit,
-) {
-    Column(modifier = modifier) {
-        contents()
-
-        if (isDivider) {
-            HorizontalDivider(
-                color = colorResource(id = R.color.line_normal_alternative)
-            )
-        }
-    }
-}
-
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
 @Preview(
@@ -171,8 +159,22 @@ private fun WantedCellPreview() {
 
                 WantedCell(
                     text = "텍스트",
+                    onClick = {},
+                    divider = true
+                )
+
+                WantedCell(
+                    text = "텍스트",
                     caption = "캡션",
                     onClick = {}
+                )
+
+
+                WantedCell(
+                    text = "텍스트",
+                    caption = "캡션",
+                    onClick = {},
+                    divider = true
                 )
 
                 WantedCell(
@@ -207,9 +209,11 @@ private fun WantedCellPreview() {
                     text = "텍스트 padding Medium paddingInset asdf asdf",
                     caption = "캡션",
                     paddingInset = true,
+                    divider = true,
                     padding = WantedCellContract.Padding.Medium,
                     onClick = {}
                 )
+
             }
         }
     }

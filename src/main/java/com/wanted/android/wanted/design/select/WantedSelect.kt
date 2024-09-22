@@ -15,7 +15,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -56,35 +59,39 @@ fun WantedSelect(
     errorList: List<WantedSelectData> = emptyList(),
     focused: Boolean = false,
     enabled: Boolean = true,
+    overflow: Boolean = false,
     isChip: Boolean = false,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onDelete: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
-    WantedSelectImpl(
-        modifier = modifier,
-        title = title,
-        description = description,
-        isRequiredBadge = isRequiredBadge,
-        error = errorList.isNotEmpty(),
-        focused = focused,
-        enabled = enabled,
-        background = background,
-        onClick = onClick,
-        leadingIcon = leadingIcon,
-        contents = {
-            WantedMultiSelectContents(
-                modifier = Modifier.fillMaxWidth(),
-                valueList = valueList,
-                placeHolder = placeHolder,
-                errorList = errorList,
-                enabled = enabled,
-                isChip = isChip,
-                onDelete = onDelete
-            )
-        }
-    )
+    CompositionLocalProvider(LocalWantedSelectBackground.provides(background)) {
+        WantedSelectImpl(
+            modifier = modifier,
+            title = title,
+            description = description,
+            isRequiredBadge = isRequiredBadge,
+            error = errorList.isNotEmpty(),
+            focused = focused,
+            enabled = enabled,
+            background = background,
+            onClick = onClick,
+            leadingIcon = leadingIcon,
+            contents = {
+                WantedMultiSelectContents(
+                    modifier = Modifier.fillMaxWidth(),
+                    valueList = valueList,
+                    placeHolder = placeHolder,
+                    errorList = errorList,
+                    overflow = overflow,
+                    enabled = enabled,
+                    isChip = isChip,
+                    onDelete = onDelete
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -339,6 +346,20 @@ private fun getSelectRippleEffect(
     focused -> wantedRippleEffect(colorResource(id = R.color.primary_normal))
     else -> wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12))
 }
+
+val LocalWantedSelectBackground = WantedWantedSelectBackgroundCompositionLocal()
+
+
+@JvmInline
+value class WantedWantedSelectBackgroundCompositionLocal internal constructor(
+    private val delegate: ProvidableCompositionLocal<Color> = staticCompositionLocalOf { Color.Transparent }
+) {
+    val current: Color
+        @Composable get() = delegate.current
+
+    infix fun provides(value: Color) = delegate provides value
+}
+
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
