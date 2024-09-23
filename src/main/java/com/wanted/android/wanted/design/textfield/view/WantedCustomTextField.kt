@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -37,10 +38,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
+import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
-import com.wanted.android.wanted.design.textfield.WantedTextField
+import com.wanted.android.wanted.design.textfield.WantedTextInput
+import com.wanted.android.wanted.design.textfield.WantedTextInputRightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -53,6 +57,7 @@ internal fun WantedCustomTextField(
     placeholder: String,
     error: Boolean,
     enabled: Boolean,
+    rightButtonEnabled: Boolean,
     focused: Boolean,
     complete: Boolean,
     maxLines: Int,
@@ -60,172 +65,238 @@ internal fun WantedCustomTextField(
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     rightContent: @Composable (() -> Unit)? = null,
     rightButton: String? = null,
+    rightButtonVariant: WantedTextInputRightVariant,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedCustomTextFieldLayout(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .border(
-                shape = RoundedCornerShape(12.dp),
-                color = colorResource(
-                    if (enabled) R.color.line_normal_neutral else R.color.line_normal_alternative
-                ),
-                width = 1.dp
-            )
-            .background(
-                colorResource(
-                    if (enabled) R.color.background_normal_normal else R.color.interaction_disable
+    ConstraintLayout {
+        val (shadow, textField) = createRefs()
+        WantedDropShadow(
+            Modifier
+                .constrainAs(shadow) {
+                    top.linkTo(textField.top)
+                    bottom.linkTo(textField.bottom)
+                    start.linkTo(textField.start)
+                    end.linkTo(textField.end)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                },
+            background = background,
+            shape = RoundedCornerShape(12.dp)
+        )
+        WantedCustomTextFieldLayout(
+            modifier = modifier
+                .constrainAs(textField) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    shape = RoundedCornerShape(12.dp),
+                    color = colorResource(
+                        if (enabled) R.color.line_normal_neutral else R.color.line_normal_alternative
+                    ),
+                    width = 1.dp
                 )
-            )
-            .height(IntrinsicSize.Min),
-        textField = {
-            BasicTextField(
-                modifier = Modifier
-                    .border(
-                        shape = RoundedCornerShape(
-                            topStart = 12.dp,
-                            bottomStart = 12.dp,
-                            topEnd = 0.dp,
-                            bottomEnd = 0.dp
-                        ),
-                        color = when {
-                            error || focused -> {
-                                colorResource(id = R.color.background_normal_normal)
-                                    .copy(alpha = OPACITY_43)
-                            }
-
-                            else -> colorResource(R.color.transparent)
-                        },
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .border(
-                        shape = rightButton?.let {
-                            RoundedCornerShape(
+                .background(
+                    if (enabled) {
+                        background
+                    } else {
+                        colorResource(R.color.interaction_disable)
+                    }
+                )
+                .height(IntrinsicSize.Min),
+            textField = {
+                BasicTextField(
+                    modifier = Modifier
+                        .border(
+                            shape = RoundedCornerShape(
                                 topStart = 12.dp,
                                 bottomStart = 12.dp,
-                                topEnd = 0.dp,
-                                bottomEnd = 0.dp
-                            )
-                        } ?: run { RoundedCornerShape(12.dp) },
-                        color = colorResource(
-                            id = when {
-                                !enabled -> R.color.transparent
-                                error -> R.color.status_negative
-                                focused -> R.color.primary_normal
-                                else -> R.color.transparent
-                            }
-                        ),
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .padding(horizontal = 12.dp)
-                    .padding(vertical = 12.dp)
-                    .fillMaxSize(),
-                value = value,
-                maxLines = maxLines,
-                enabled = enabled,
-                interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                textStyle = WantedTextStyle(
-                    colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
-                    style = DesignSystemTheme.typography.body1Regular
-                ),
-                onValueChange = {
-                    if (it.length <= maxWordCount) {
-                        onValueChange(it)
-                    } else {
-                        onValueChange(value)
-                    }
-                },
-                decorationBox = { innerTextField ->
-                    DecorationBox(
-                        modifier = Modifier,
-                        innerTextField = innerTextField,
-                        placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
-                            {
-                                Text(
-                                    text = placeholder,
-                                    style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
-                                        style = DesignSystemTheme.typography.body1Regular
-                                    )
+                                topEnd = rightButton?.let { 0.dp } ?: 12.dp,
+                                bottomEnd = rightButton?.let { 0.dp } ?: 12.dp
+                            ),
+                            color = when {
+                                error || focused -> {
+                                    colorResource(id = R.color.background_normal_normal)
+                                        .copy(alpha = OPACITY_43)
+                                }
+
+                                else -> colorResource(R.color.transparent)
+                            },
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .border(
+                            shape = rightButton?.let {
+                                RoundedCornerShape(
+                                    topStart = 12.dp,
+                                    bottomStart = 12.dp,
+                                    topEnd = 0.dp,
+                                    bottomEnd = 0.dp
                                 )
-                            }
+                            } ?: run { RoundedCornerShape(12.dp) },
+                            color = when {
+                                !enabled -> colorResource(R.color.transparent)
+                                error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                                focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                                else -> colorResource(R.color.transparent)
+                            },
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .padding(horizontal = 12.dp)
+                        .padding(vertical = 12.dp)
+                        .fillMaxSize(),
+                    value = value,
+                    maxLines = maxLines,
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                    textStyle = WantedTextStyle(
+                        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
+                        style = DesignSystemTheme.typography.body1Regular
+                    ),
+                    onValueChange = {
+                        if (it.length <= maxWordCount) {
+                            onValueChange(it)
                         } else {
-                            null
-                        },
-                        leadingIcon = leadingIcon,
-                        trailingIcon = when {
-                            !focused && enabled && error -> {
+                            onValueChange(value)
+                        }
+                    },
+                    decorationBox = { innerTextField ->
+                        DecorationBox(
+                            modifier = Modifier,
+                            innerTextField = innerTextField,
+                            placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
                                 {
-                                    WantedCommonIcon(
-                                        modifier = Modifier.fillMaxSize(),
-                                        resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                                        tint = colorResource(id = R.color.status_negative)
+                                    Text(
+                                        text = placeholder,
+                                        style = WantedTextStyle(
+                                            colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
+                                            style = DesignSystemTheme.typography.body1Regular
+                                        )
                                     )
                                 }
-                            }
-
-                            !focused && complete -> {
-                                {
-                                    WantedCommonIcon(
-                                        modifier = Modifier.fillMaxSize(),
-                                        resourceId = R.drawable.ic_normal_circle_check_fill_svg,
-                                        tint = colorResource(id = R.color.primary_normal)
-                                    )
+                            } else {
+                                null
+                            },
+                            leadingIcon = leadingIcon,
+                            trailingIcon = when {
+                                !focused && enabled && error -> {
+                                    {
+                                        Icon(
+                                            modifier = Modifier.fillMaxSize(),
+                                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                            tint = colorResource(id = R.color.status_negative),
+                                            contentDescription = ""
+                                        )
+                                    }
                                 }
-                            }
 
-                            trailingIcon == null && value.isNotEmpty() && enabled -> {
-                                {
-                                    WantedCommonIcon(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .clip(CircleShape)
-                                            .clickOnceForDesignSystem { onValueChange("") },
-                                        resourceId = R.drawable.ic_normal_circle_close_svg,
-                                        tint = colorResource(id = R.color.label_alternative)
-                                    )
+                                !focused && complete -> {
+                                    {
+                                        Icon(
+                                            modifier = Modifier.fillMaxSize(),
+                                            painter = painterResource(R.drawable.ic_normal_circle_check_fill_svg),
+                                            tint = colorResource(id = R.color.primary_normal),
+                                            contentDescription = ""
+                                        )
+                                    }
                                 }
-                            }
 
-                            else -> trailingIcon
-                        },
-                        rightContent = rightContent
-                    )
-                }
-            )
-        },
-        rightButton = if (rightButton.isNullOrEmpty()) {
-            null
-        } else {
-            {
-                Row(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .clickOnceForDesignSystem(enabled) { onClickRightButton() },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (!enabled || !error && !focused) {
-                        VerticalDivider(
-                            color = colorResource(id = R.color.line_normal_neutral),
-                            thickness = 1.dp
+                                trailingIcon == null && value.isNotEmpty() && enabled -> {
+                                    {
+                                        Icon(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .clip(CircleShape)
+                                                .clickOnceForDesignSystem { onValueChange("") },
+                                            painter = painterResource(R.drawable.ic_normal_circle_close_svg),
+                                            tint = colorResource(id = R.color.label_alternative),
+                                            contentDescription = ""
+                                        )
+                                    }
+                                }
+
+                                else -> trailingIcon
+                            },
+                            rightContent = rightContent
                         )
                     }
+                )
+            },
+            rightButton = if (rightButton.isNullOrEmpty()) {
+                null
+            } else {
+                {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .clickOnceForDesignSystem(
+                                isEnableRightButton(
+                                    rightButtonEnabled,
+                                    enabled
+                                )
+                            ) { onClickRightButton() },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
-                    WantedTextFieldButton(
-                        title = rightButton,
-                        enable = enabled
-                    )
+                        if (isVisibleVerticalDivider(rightButtonEnabled, enabled, error, focused)) {
+                            VerticalDivider(
+                                color = colorResource(id = R.color.line_normal_neutral),
+                                thickness = 1.dp
+                            )
+                        }
+
+                        WantedTextFieldButton(
+                            modifier = Modifier.background(
+                                if (rightButtonEnabled) {
+                                    colorResource(id = R.color.transparent)
+                                } else {
+                                    colorResource(id = R.color.interaction_disable)
+                                }
+                            ),
+                            title = rightButton,
+                            rightButtonVariant = rightButtonVariant,
+                            enable = isEnableRightButton(rightButtonEnabled, enabled)
+                        )
+                    }
                 }
             }
-        }
-    )
+        )
+    }
+}
+
+@Composable
+private fun isEnableRightButton(
+    rightButtonEnabled: Boolean,
+    enabled: Boolean
+) = when {
+    !rightButtonEnabled -> false
+    else -> enabled
+}
+
+@Composable
+private fun isVisibleVerticalDivider(
+    rightButtonEnabled: Boolean,
+    enabled: Boolean,
+    error: Boolean,
+    focused: Boolean
+): Boolean {
+    return when {
+        !rightButtonEnabled -> true
+        !enabled -> true
+        !error -> true
+        !focused -> true
+        else -> false
+    }
 }
 
 @Composable
@@ -294,6 +365,7 @@ private fun DecorationBox(
 @Composable
 private fun WantedTextFieldButton(
     modifier: Modifier = Modifier,
+    rightButtonVariant: WantedTextInputRightVariant,
     title: String,
     enable: Boolean
 ) {
@@ -306,7 +378,11 @@ private fun WantedTextFieldButton(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         style = WantedTextStyle(
-            colorRes = if (enable) R.color.primary_normal else R.color.label_assistive,
+            colorRes = when {
+                !enable -> R.color.label_assistive
+                rightButtonVariant == WantedTextInputRightVariant.Assistive -> R.color.label_normal
+                else -> R.color.primary_normal
+            },
             style = DesignSystemTheme.typography.body1Bold
         )
     )
@@ -354,20 +430,15 @@ private fun WantedTextFieldPreview() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요."
+                    placeholder = "텍스트를 입력해 주세요.",
+                    focused = remember { mutableStateOf(true) }
                 )
 
-                WantedTextField(
-                    title = "주제",
-                    value = "",
-                    placeholder = "텍스트를 입력해 주세요."
-                )
-
-                WantedTextField(
+                WantedTextInput(
                     title = "주제",
                     requiredBadge = true,
                     value = "입력한 텍스트.",
@@ -375,13 +446,53 @@ private fun WantedTextFieldPreview() {
                     rightButton = "텍스트"
                 )
 
-                WantedTextField(
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                WantedTextInput(
+                    title = "",
+                    value = "",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트"
+                    enabled = false,
+                    error = true
                 )
 
-                WantedTextField(
+                WantedTextInput(
+                    value = "입력한 텍스트",
+                    enabled = false,
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    error = true
+                )
+
+                WantedTextInput(
+                    requiredBadge = true,
+                    value = "입력한 텍스트.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    enabled = false
+                )
+
+                WantedTextInput(
+                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    rightButtonVariant = WantedTextInputRightVariant.Assistive
+                )
+
+                WantedTextInput(
+                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    rightButtonVariant = WantedTextInputRightVariant.Assistive,
+                    rightButtonEnabled = false
+                )
+
+                WantedTextInput(
+                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트",
+                    rightButtonEnabled = false
+                )
+
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -389,7 +500,7 @@ private fun WantedTextFieldPreview() {
                     focused = remember { mutableStateOf(false) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -397,7 +508,7 @@ private fun WantedTextFieldPreview() {
                     focused = remember { mutableStateOf(true) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -405,7 +516,7 @@ private fun WantedTextFieldPreview() {
                     focused = remember { mutableStateOf(false) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -438,7 +549,7 @@ private fun WantedTextField1Preview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedTextField(
+                WantedTextInput(
                     value = "텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -451,7 +562,7 @@ private fun WantedTextField1Preview() {
                     }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요. ",
                     rightButton = "텍스트",
@@ -479,7 +590,7 @@ private fun WantedTextField1Preview() {
                 )
 
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -487,7 +598,7 @@ private fun WantedTextField1Preview() {
                     focused = remember { mutableStateOf(true) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -497,7 +608,7 @@ private fun WantedTextField1Preview() {
                 )
 
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
@@ -505,7 +616,7 @@ private fun WantedTextField1Preview() {
                     focused = remember { mutableStateOf(true) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "",
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
@@ -513,7 +624,7 @@ private fun WantedTextField1Preview() {
                     focused = remember { mutableStateOf(true) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -522,7 +633,7 @@ private fun WantedTextField1Preview() {
                     focused = remember { mutableStateOf(true) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -532,7 +643,7 @@ private fun WantedTextField1Preview() {
                     focused = remember { mutableStateOf(false) }
                 )
 
-                WantedTextField(
+                WantedTextInput(
                     value = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",

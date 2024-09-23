@@ -13,7 +13,6 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
@@ -34,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
@@ -58,7 +58,8 @@ fun WantedBottomSheetDialog(
 ) {
     val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
     val dialogVisibility: MutableState<Boolean> = remember { mutableStateOf(false) }
-
+    val configuration = LocalConfiguration.current
+    val height = remember(configuration) { (configuration.screenHeightDp).dp }
     LaunchedEffect(key1 = isVisible) {
         if (isVisible) {
             dialogVisibility.value = true
@@ -100,9 +101,7 @@ fun WantedBottomSheetDialog(
                 ) + fadeIn(
                     initialAlpha = 0.3f
                 ),
-                exit = slideOutVertically { 0 } + shrinkVertically(
-                    shrinkTowards = Alignment.Top
-                ) + fadeOut()
+                exit = slideOutVertically { it } + fadeOut()
             ) {
                 WantedBottomSheetLayout(
                     modalSize = modalSize,

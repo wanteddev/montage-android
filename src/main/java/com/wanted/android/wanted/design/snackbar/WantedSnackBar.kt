@@ -99,7 +99,7 @@ private fun WantedSnackBarLayout(
         modifier = modifier
             .padding(20.dp)
             .wrapContentHeight()
-            .widthIn(max = 360.dp)
+            .widthIn(max = 420.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(colorResource(id = R.color.background_normal_normal))
             .background(colorResource(id = R.color.inverse_background).copy(0.52f))

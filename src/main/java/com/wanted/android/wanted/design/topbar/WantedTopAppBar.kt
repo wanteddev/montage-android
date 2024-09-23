@@ -110,31 +110,6 @@ fun WantedBackTopAppBar(
 }
 
 @Composable
-fun WantedCloseTopAppBar(
-    modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
-    type: TopAppBarType = TopAppBarType.Normal,
-    scrollableState: ScrollableState? = null,
-    title: String = "",
-    onClickBack: () -> Unit
-) {
-    WantedTopAppBar(
-        modifier = modifier,
-        isFullScreen = isFullScreen,
-        type = type,
-        scrollableState = scrollableState,
-        title = title,
-        actions = {
-            WantedTopAppBarIconButton(
-                type = type,
-                painter = painterResource(id = R.drawable.ic_normal_close_svg),
-                onClick = { onClickBack() }
-            )
-        }
-    )
-}
-
-@Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     isFullScreen: Boolean = false,

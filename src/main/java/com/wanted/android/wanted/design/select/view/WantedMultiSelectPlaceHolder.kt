@@ -1,9 +1,11 @@
 package com.wanted.android.wanted.design.select.view
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -15,7 +17,7 @@ internal fun WantedMultiSelectPlaceHolder(
     enabled: Boolean,
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 4.dp),
         text = placeHolder,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,

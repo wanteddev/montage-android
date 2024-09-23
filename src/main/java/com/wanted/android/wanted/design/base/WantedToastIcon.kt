@@ -28,7 +28,7 @@ import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
-internal fun WantedCommonIcon(
+internal fun WantedToastIcon(
     modifier: Modifier = Modifier,
     @DrawableRes resourceId: Int,
     tint: Color,
@@ -75,19 +75,19 @@ private fun WantedCommonIconPreview() {
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
 
-                WantedCommonIcon(
+                WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
                     tint = colorResource(id = R.color.status_negative)
                 )
 
-                WantedCommonIcon(
+                WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.ic_normal_circle_check_fill_svg,
                     tint = colorResource(id = R.color.primary_normal)
                 )
 
-                WantedCommonIcon(
+                WantedToastIcon(
                     modifier = Modifier
                         .size(22.dp)
                         .clip(CircleShape)
@@ -96,13 +96,13 @@ private fun WantedCommonIconPreview() {
                     tint = colorResource(id = R.color.label_alternative)
                 )
 
-                WantedCommonIcon(
+                WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
                     tint = colorResource(id = R.color.status_cautionary)
                 )
 
-                WantedCommonIcon(
+                WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.ic_normal_circle_check_fill_svg,
                     tint = colorResource(id = R.color.status_positive)

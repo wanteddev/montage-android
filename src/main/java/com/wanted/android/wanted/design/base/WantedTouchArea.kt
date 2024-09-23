@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.base
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,13 +27,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
 fun WantedTouchArea(
     modifier: Modifier = Modifier,
-    verticalPadding: Dp = 4.dp,
-    horizontalPadding: Dp = 7.dp,
+    verticalPadding: Dp = 0.dp,
+    horizontalPadding: Dp = 0.dp,
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
     rippleColor: Color = Color.Unspecified,
@@ -53,13 +54,16 @@ fun WantedTouchArea(
                 .wrapContentSize()
                 .constrainAs(box) {
                     top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 }
                 .onGloballyPositioned { coordinates ->
                     // Set column height using the LayoutCoordinates
                     contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
                     contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
-                }
+                },
+            contentAlignment = Alignment.Center
         ) {
             content()
         }
@@ -75,7 +79,7 @@ fun WantedTouchArea(
                     height = Dimension.fillToConstraints // Match height of text
                 }
                 .clip(shape)
-                .clickable(
+                .clickOnceForDesignSystem(
                     enabled = enabled,
                     indication = rememberRipple(
                         bounded = true, // 확장된 영역에 리플 효과를 적용
@@ -126,7 +130,6 @@ private fun WantedTouchAreaPreview() {
                         Text(text = "텍스트")
                     },
                     onClick = {
-
                     }
                 )
             }
