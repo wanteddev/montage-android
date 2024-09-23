@@ -84,6 +84,7 @@ fun WantedCheckBox(
     style: CheckBoxStyle = CheckBoxStyle.CheckBox,
     checkState: CheckBoxState = CheckBoxState.Unchecked,
     enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onCheckedChange: ((Boolean) -> Unit)
 ) {
     when (style) {
@@ -94,6 +95,7 @@ fun WantedCheckBox(
                 shape = RoundedCornerShape(3.dp),
                 checkState = checkState,
                 enabled = enabled,
+                interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
             )
         }
@@ -105,6 +107,7 @@ fun WantedCheckBox(
                 shape = CircleShape,
                 checkState = checkState,
                 enabled = enabled,
+                interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
             )
         }
@@ -115,6 +118,7 @@ fun WantedCheckBox(
                 size = size,
                 checked = checkState != CheckBoxState.Unchecked,
                 enabled = enabled,
+                interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
             )
         }
@@ -125,6 +129,7 @@ fun WantedCheckBox(
                 size = size,
                 checked = checkState != CheckBoxState.Unchecked,
                 enabled = enabled,
+                interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
             )
         }
@@ -135,6 +140,7 @@ fun WantedCheckBox(
                 size = size,
                 checked = checkState != CheckBoxState.Unchecked,
                 enabled = enabled,
+                interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
             )
         }
@@ -148,6 +154,7 @@ private fun WantedCheckBoxImpl(
     shape: Shape,
     checkState: CheckBoxState,
     enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onCheckedChange: ((Boolean) -> Unit)
 ) {
     WantedTouchArea(
@@ -156,6 +163,7 @@ private fun WantedCheckBoxImpl(
         shape = CircleShape,
         horizontalPadding = 4.dp,
         verticalPadding = 4.dp,
+        interactionSource = interactionSource,
         content = {
             Box(
                 modifier = Modifier

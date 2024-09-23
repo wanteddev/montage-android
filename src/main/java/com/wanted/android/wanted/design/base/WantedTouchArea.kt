@@ -38,6 +38,7 @@ fun WantedTouchArea(
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
     rippleColor: Color = Color.Unspecified,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit,
     onClick: () -> Unit
 ) {
@@ -90,7 +91,7 @@ fun WantedTouchArea(
                         }, // 리플의 크기를 확장된 터치 영역에 맞춤
                         color = rippleColor
                     ),
-                    interactionSource = remember { MutableInteractionSource() }
+                    interactionSource = interactionSource
                 ) {
                     onClick()
                 },

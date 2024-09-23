@@ -2,6 +2,7 @@ package com.wanted.android.wanted.design.element
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
@@ -29,6 +31,7 @@ internal fun WantedCheck(
     size: CheckBoxSize,
     checked: Boolean,
     enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onCheckedChange: ((Boolean) -> Unit)
 ) {
     WantedTouchArea(
@@ -37,6 +40,7 @@ internal fun WantedCheck(
         shape = CircleShape,
         horizontalPadding = 4.dp,
         verticalPadding = 4.dp,
+        interactionSource = interactionSource,
         content = {
             Image(
                 modifier = Modifier
@@ -47,15 +51,15 @@ internal fun WantedCheck(
                 colorFilter = ColorFilter.tint(
                     color = if (checked) {
                         if (enabled) {
-                            colorResource(id = R.color.label_assistive)
-                        } else {
-                            colorResource(id = R.color.label_assistive).copy(0.13f)
-                        }
-                    } else {
-                        if (enabled) {
                             colorResource(id = R.color.primary_normal)
                         } else {
                             colorResource(id = R.color.primary_normal).copy(OPACITY_43)
+                        }
+                    } else {
+                        if (enabled) {
+                            colorResource(id = R.color.label_assistive)
+                        } else {
+                            colorResource(id = R.color.label_assistive).copy(0.13f)
                         }
                     }
                 )
