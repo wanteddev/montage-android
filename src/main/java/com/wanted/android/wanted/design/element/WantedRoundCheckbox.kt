@@ -29,10 +29,6 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
-enum class CheckBoxSize {
-    NORMAL, SMALL
-}
-
 class WantedRoundCheckBox : MaterialCheckBox {
 
     constructor(context: Context) : super(context)
@@ -58,7 +54,7 @@ fun WantedRoundCheckBox(
         uncheckedColor = colorResource(id = R.color.line_normal_neutral),
         checkedColor = colorResource(id = R.color.primary_normal)
     ),
-    size: CheckBoxSize = CheckBoxSize.NORMAL
+    size: CheckBoxSize = CheckBoxSize.Normal
 ) {
     val toggleState = when {
         !checked -> ToggleableState.Off
@@ -94,7 +90,7 @@ private fun RoundCheckboxImpl(
 ) {
     Box(
         modifier = modifier
-            .size(size = if (size == CheckBoxSize.NORMAL) 24.dp else 20.dp),
+            .size(size = if (size == CheckBoxSize.Normal) 24.dp else 20.dp),
         contentAlignment = Alignment.Center
     ) {
         Image(

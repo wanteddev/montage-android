@@ -1,12 +1,9 @@
 package com.wanted.android.wanted.design.element
 
-import android.content.Context
 import android.content.res.Configuration
-import android.util.AttributeSet
-import androidx.compose.foundation.border
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,42 +12,28 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.android.material.radiobutton.MaterialRadioButton
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 
-class WantedRadioButton : MaterialRadioButton {
-
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
-        context,
-        attrs,
-        defStyle
-    )
-}
 
 @Composable
-fun WantedRadioButton(
-    modifier: Modifier = Modifier,
+internal fun WantedCheck(
+    modifier: Modifier,
+    size: CheckBoxSize,
     checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    size: CheckBoxSize = CheckBoxSize.Normal
+    onCheckedChange: ((Boolean) -> Unit)
 ) {
-
     WantedTouchArea(
         modifier = modifier,
         enabled = enabled,
@@ -59,41 +42,33 @@ fun WantedRadioButton(
         verticalPadding = 4.dp,
         interactionSource = interactionSource,
         content = {
-            Box(
+            Image(
                 modifier = Modifier
                     .size(if (size == CheckBoxSize.Small) 20.dp else 24.dp)
-                    .padding(2.dp)
-                    .clip(CircleShape)
-                    .border(
-                        width = when {
-                            checked && size == CheckBoxSize.Small -> 4.dp
-                            checked && size == CheckBoxSize.Normal -> 5.dp
-                            else -> 1.5.dp
-                        },
-                        color = if (checked) {
-                            if (enabled) {
-                                colorResource(id = R.color.primary_normal)
-                            } else {
-                                colorResource(id = R.color.primary_normal).copy(OPACITY_43)
-                            }
+                    .padding(3.dp),
+                painter = painterResource(R.drawable.icon_checkbox_checked),
+                contentDescription = "checkBox_check",
+                colorFilter = ColorFilter.tint(
+                    color = if (checked) {
+                        if (enabled) {
+                            colorResource(id = R.color.primary_normal)
                         } else {
-                            if (enabled) {
-                                colorResource(id = R.color.line_normal_normal)
-                            } else {
-                                colorResource(id = R.color.line_normal_normal).copy(0.1f)
-                            }
-                        },
-                        shape = CircleShape
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-            }
+                            colorResource(id = R.color.primary_normal).copy(OPACITY_43)
+                        }
+                    } else {
+                        if (enabled) {
+                            colorResource(id = R.color.label_assistive)
+                        } else {
+                            colorResource(id = R.color.label_assistive).copy(0.13f)
+                        }
+                    }
+                )
+            )
         }
     ) {
         onCheckedChange(!checked)
     }
 }
-
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
@@ -104,7 +79,7 @@ fun WantedRadioButton(
     device = Devices.FOLDABLE
 )
 @Composable
-private fun WantedRadioButtonPreview() {
+private fun WantedCheckPreview() {
     DesignSystemTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -113,14 +88,14 @@ private fun WantedRadioButtonPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedRadioButton(
+                WantedCheck(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
                     checked = false,
                     onCheckedChange = {}
                 )
 
-                WantedRadioButton(
+                WantedCheck(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
                     checked = false,
@@ -128,46 +103,16 @@ private fun WantedRadioButtonPreview() {
                     onCheckedChange = {}
                 )
 
-                WantedRadioButton(
+                WantedCheck(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
                     checked = true,
                     onCheckedChange = {}
                 )
 
-                WantedRadioButton(
+                WantedCheck(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
-                    checked = true,
-                    enabled = false,
-                    onCheckedChange = {}
-                )
-
-                WantedRadioButton(
-                    modifier = Modifier,
-                    size = CheckBoxSize.Small,
-                    checked = false,
-                    onCheckedChange = {}
-                )
-
-                WantedRadioButton(
-                    modifier = Modifier,
-                    size = CheckBoxSize.Small,
-                    checked = false,
-                    enabled = false,
-                    onCheckedChange = {}
-                )
-
-                WantedRadioButton(
-                    modifier = Modifier,
-                    size = CheckBoxSize.Small,
-                    checked = true,
-                    onCheckedChange = {}
-                )
-
-                WantedRadioButton(
-                    modifier = Modifier,
-                    size = CheckBoxSize.Small,
                     checked = true,
                     enabled = false,
                     onCheckedChange = {}

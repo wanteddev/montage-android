@@ -7,10 +7,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -18,20 +19,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.triStateToggleable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -41,7 +41,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_43
+
+enum class CheckBoxSize {
+    Normal, Small
+}
+
+enum class CheckBoxStyle {
+    CheckBox,
+    RoundCheckBox,
+    Check,
+    Radio,
+    Switch
+}
+
+enum class CheckBoxState {
+    Unchecked,
+    Checked,
+    Partial
+}
+
 
 class WantedCheckBox : MaterialCheckBox {
 
@@ -58,6 +79,148 @@ class WantedCheckBox : MaterialCheckBox {
 
 @Composable
 fun WantedCheckBox(
+    modifier: Modifier,
+    size: CheckBoxSize,
+    style: CheckBoxStyle = CheckBoxStyle.CheckBox,
+    checkState: CheckBoxState = CheckBoxState.Unchecked,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onCheckedChange: ((Boolean) -> Unit)
+) {
+    when (style) {
+        CheckBoxStyle.CheckBox -> {
+            WantedCheckBoxImpl(
+                modifier = modifier,
+                size = size,
+                shape = RoundedCornerShape(3.dp),
+                checkState = checkState,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onCheckedChange = onCheckedChange
+            )
+        }
+
+        CheckBoxStyle.RoundCheckBox -> {
+            WantedCheckBoxImpl(
+                modifier = modifier,
+                size = size,
+                shape = CircleShape,
+                checkState = checkState,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onCheckedChange = onCheckedChange
+            )
+        }
+
+        CheckBoxStyle.Check -> {
+            WantedCheck(
+                modifier = modifier,
+                size = size,
+                checked = checkState != CheckBoxState.Unchecked,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onCheckedChange = onCheckedChange
+            )
+        }
+
+        CheckBoxStyle.Radio -> {
+            WantedRadioButton(
+                modifier = modifier,
+                size = size,
+                checked = checkState != CheckBoxState.Unchecked,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onCheckedChange = onCheckedChange
+            )
+        }
+
+        CheckBoxStyle.Switch -> {
+            WantedSwitch(
+                modifier = modifier,
+                size = size,
+                checked = checkState != CheckBoxState.Unchecked,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onCheckedChange = onCheckedChange
+            )
+        }
+    }
+}
+
+@Composable
+private fun WantedCheckBoxImpl(
+    modifier: Modifier,
+    size: CheckBoxSize,
+    shape: Shape,
+    checkState: CheckBoxState,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onCheckedChange: ((Boolean) -> Unit)
+) {
+    WantedTouchArea(
+        modifier = modifier,
+        enabled = enabled,
+        shape = CircleShape,
+        horizontalPadding = 4.dp,
+        verticalPadding = 4.dp,
+        interactionSource = interactionSource,
+        content = {
+            Box(
+                modifier = Modifier
+                    .size(if (size == CheckBoxSize.Small) 20.dp else 24.dp)
+                    .padding(if (size == CheckBoxSize.Small) 2.dp else 3.dp)
+                    .clip(shape)
+                    .border(
+                        width = 1.5.dp,
+                        color = when {
+                            enabled && checkState == CheckBoxState.Unchecked -> {
+                                colorResource(id = R.color.line_normal_normal)
+                            }
+
+                            !enabled && checkState == CheckBoxState.Unchecked -> {
+                                colorResource(id = R.color.line_normal_normal).copy(0.1f)
+                            }
+
+                            else -> colorResource(id = R.color.transparent)
+                        },
+                        shape = shape
+                    )
+                    .background(
+                        color = when {
+                            checkState == CheckBoxState.Unchecked -> colorResource(id = R.color.transparent)
+                            enabled -> colorResource(id = R.color.primary_normal)
+                            else -> colorResource(id = R.color.primary_normal).copy(OPACITY_43)
+                        }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                if (checkState != CheckBoxState.Unchecked) {
+                    Image(
+                        modifier = Modifier
+                            .size(if (size == CheckBoxSize.Small) 16.dp else 18.dp)
+                            .padding(2.dp),
+                        painter = painterResource(
+                            if (checkState == CheckBoxState.Partial) {
+                                R.drawable.icon_checkbox_indeterminate
+                            } else {
+                                R.drawable.icon_checkbox_checked
+                            }
+                        ),
+                        contentDescription = "checkBox_check",
+                        colorFilter = ColorFilter.tint(
+                            color = colorResource(id = R.color.static_white)
+                        )
+                    )
+                }
+            }
+        }
+    ) {
+        onCheckedChange(checkState == CheckBoxState.Unchecked)
+    }
+}
+
+@Composable
+fun WantedCheckBox(
     modifier: Modifier = Modifier,
     checked: Boolean,
     isIndeterminate: Boolean = false,
@@ -66,7 +229,8 @@ fun WantedCheckBox(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: CheckboxColors = CheckboxDefaults.colors(
         uncheckedColor = colorResource(id = R.color.line_normal_neutral),
-        checkedColor = colorResource(id = R.color.primary_normal)
+        checkedColor = colorResource(id = R.color.primary_normal),
+        checkmarkColor = colorResource(id = R.color.static_white)
     )
 ) {
     val toggleState = when {
@@ -104,11 +268,6 @@ private fun CheckboxImpl(
     val boxColor = colors.boxColor(enabled = enabled, state = value).value
     val checkmarkColor = colors.checkmarkColor(state = value).value
 
-    val height = remember { mutableStateOf(0.dp) }
-    val width = remember { mutableStateOf(0.dp) }
-    val localDensity = LocalDensity.current
-
-
     Box(
         modifier = Modifier
             .padding(3.dp)
@@ -116,21 +275,15 @@ private fun CheckboxImpl(
             .width(intrinsicSize = IntrinsicSize.Min)
             .height(intrinsicSize = IntrinsicSize.Min)
             .clip(RoundedCornerShape(3.dp))
+            .then(modifier)
             .border(
                 width = 2.dp,
                 color = borderColor,
                 RoundedCornerShape(3.dp)
             )
-            .background(boxColor)
-            .then(modifier)
-            .onGloballyPositioned { coordinates ->
-                // Set column height using the LayoutCoordinates
-                height.value = with(localDensity) { coordinates.size.height.toDp() }
-                width.value = with(localDensity) { coordinates.size.width.toDp() }
-            },
+            .background(boxColor),
         contentAlignment = Alignment.Center
     ) {
-
         Image(
             modifier = Modifier
                 .fillMaxSize()
@@ -162,29 +315,158 @@ private fun CheckboxImpl(
 private fun CertificationAuthInputScreenPreview() {
     DesignSystemTheme {
         Surface {
-            Column {
-                WantedCheckBox(
-                    modifier = Modifier,
-                    checked = true,
-                    onCheckedChange = {}
-                )
-
-                Spacer(modifier = Modifier.size(10.dp))
-
-                WantedCheckBox(
-                    modifier = Modifier,
-                    isIndeterminate = true,
-                    checked = true,
-                    onCheckedChange = {}
-                )
-                Spacer(modifier = Modifier.size(10.dp))
-
-                WantedCheckBox(
-                    modifier = Modifier,
-                    checked = false,
-                    onCheckedChange = {}
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                CheckBox(CheckBoxStyle.CheckBox)
+                CheckBox(CheckBoxStyle.RoundCheckBox)
+                CheckBox(CheckBoxStyle.Check)
+                CheckBox(CheckBoxStyle.Radio)
+                CheckBox(CheckBoxStyle.Switch)
             }
+        }
+    }
+}
+
+@Composable
+private fun CheckBox(
+    style: CheckBoxStyle = CheckBoxStyle.CheckBox,
+) {
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
+
+                }
+            )
+
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
+
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
+
+                }
+            )
+
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
+
+                }
+            )
+
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
+
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
+
+                }
+            )
+
+        }
+
+        // ------- enable
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
+
+                }
+            )
+
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
+
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
+
+                }
+            )
+
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
+
+                }
+            )
+
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
+
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
+
+                }
+            )
+
         }
     }
 }
