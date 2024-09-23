@@ -130,7 +130,13 @@ fun WantedCheckBox(
         }
 
         CheckBoxStyle.Switch -> {
-
+            WantedSwitch(
+                modifier = modifier,
+                size = size,
+                checked = checkState != CheckBoxState.Unchecked,
+                enabled = enabled,
+                onCheckedChange = onCheckedChange
+            )
         }
     }
 }
@@ -183,8 +189,8 @@ private fun WantedCheckBoxImpl(
                 if (checkState != CheckBoxState.Unchecked) {
                     Image(
                         modifier = Modifier
-                            .size(18.dp)
-                            .padding(3.dp),
+                            .size(if (size == CheckBoxSize.Small) 16.dp else 18.dp)
+                            .padding(2.dp),
                         painter = painterResource(
                             if (checkState == CheckBoxState.Partial) {
                                 R.drawable.icon_checkbox_indeterminate
@@ -311,6 +317,7 @@ private fun CertificationAuthInputScreenPreview() {
                 CheckBox(CheckBoxStyle.RoundCheckBox)
                 CheckBox(CheckBoxStyle.Check)
                 CheckBox(CheckBoxStyle.Radio)
+                CheckBox(CheckBoxStyle.Switch)
             }
         }
     }
@@ -320,132 +327,138 @@ private fun CertificationAuthInputScreenPreview() {
 private fun CheckBox(
     style: CheckBoxStyle = CheckBoxStyle.CheckBox,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Small,
-            style = style,
-            checkState = CheckBoxState.Unchecked,
-            onCheckedChange = {
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
 
-            }
-        )
+                }
+            )
 
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Small,
-            style = style,
-            checkState = CheckBoxState.Checked,
-            onCheckedChange = {
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
 
-            }
-        )
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Small,
-            style = style,
-            checkState = CheckBoxState.Partial,
-            onCheckedChange = {
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
 
-            }
-        )
+                }
+            )
 
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Normal,
-            style = style,
-            checkState = CheckBoxState.Unchecked,
-            onCheckedChange = {
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
 
-            }
-        )
+                }
+            )
 
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Normal,
-            style = style,
-            checkState = CheckBoxState.Checked,
-            onCheckedChange = {
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
 
-            }
-        )
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Normal,
-            style = style,
-            checkState = CheckBoxState.Partial,
-            onCheckedChange = {
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
 
-            }
-        )
+                }
+            )
+
+        }
 
         // ------- enable
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
 
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Small,
-            style = style,
-            enabled = false,
-            checkState = CheckBoxState.Unchecked,
-            onCheckedChange = {
+                }
+            )
 
-            }
-        )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
 
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Small,
-            style = style,
-            enabled = false,
-            checkState = CheckBoxState.Checked,
-            onCheckedChange = {
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Small,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
 
-            }
-        )
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Small,
-            style = style,
-            enabled = false,
-            checkState = CheckBoxState.Partial,
-            onCheckedChange = {
+                }
+            )
 
-            }
-        )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Unchecked,
+                onCheckedChange = {
 
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Normal,
-            style = style,
-            enabled = false,
-            checkState = CheckBoxState.Unchecked,
-            onCheckedChange = {
+                }
+            )
 
-            }
-        )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Checked,
+                onCheckedChange = {
 
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Normal,
-            style = style,
-            enabled = false,
-            checkState = CheckBoxState.Checked,
-            onCheckedChange = {
+                }
+            )
+            WantedCheckBox(
+                modifier = Modifier,
+                size = CheckBoxSize.Normal,
+                style = style,
+                enabled = false,
+                checkState = CheckBoxState.Partial,
+                onCheckedChange = {
 
-            }
-        )
-        WantedCheckBox(
-            modifier = Modifier,
-            size = CheckBoxSize.Normal,
-            style = style,
-            enabled = false,
-            checkState = CheckBoxState.Partial,
-            onCheckedChange = {
+                }
+            )
 
-            }
-        )
-
+        }
     }
 }
