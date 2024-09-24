@@ -1,14 +1,17 @@
 package com.wanted.android.wanted.design.input
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +27,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.element.CheckBoxSize
 import com.wanted.android.wanted.design.element.CheckBoxState
@@ -32,6 +36,7 @@ import com.wanted.android.wanted.design.element.WantedCheckBox
 import com.wanted.android.wanted.design.input.WantedInputContract.WantedInputSize
 import com.wanted.android.wanted.design.input.WantedInputContract.WantedInputType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
@@ -69,13 +74,11 @@ fun WantedInput(
                 val press = PressInteraction.Press(Offset(offset, offset))
                 checkBoxInteractionSource.tryEmit(press)
                 checkBoxInteractionSource.tryEmit(PressInteraction.Release(press))
-            }
-            .semantics { contentDescription = "WantedInput" },
+            },
         size = size,
-        bold = bold,
         leadingIcon = {
             WantedCheckBox(
-                modifier = Modifier.semantics {},
+                modifier = Modifier,
                 size = if (size == WantedInputSize.Normal) {
                     CheckBoxSize.Normal
                 } else {
@@ -93,7 +96,32 @@ fun WantedInput(
 
             )
         },
-        text = { Text(text = text) }
+        text = {
+            ProvideTextStyle(
+                value = WantedTextStyle(
+                    colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
+                    style = if (size == WantedInputSize.Normal) {
+                        if (bold) {
+                            DesignSystemTheme.typography.body2Bold
+                        } else {
+                            DesignSystemTheme.typography.body2Regular
+                        }
+
+                    } else {
+                        if (bold) {
+                            DesignSystemTheme.typography.label1Bold
+                        } else {
+                            DesignSystemTheme.typography.label1Regular
+                        }
+                    }
+                )
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = text
+                )
+            }
+        }
     )
 }
 
