@@ -46,7 +46,7 @@ internal fun WantedCheck(
                 modifier = Modifier
                     .size(if (size == CheckBoxSize.Small) 20.dp else 24.dp)
                     .padding(3.dp),
-                painter = painterResource(R.drawable.icon_checkbox_checked),
+                painter = painterResource(R.drawable.icon_normal_check_thick),
                 contentDescription = "checkBox_check",
                 colorFilter = ColorFilter.tint(
                     color = if (checked) {
