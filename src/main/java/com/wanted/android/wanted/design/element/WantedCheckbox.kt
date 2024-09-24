@@ -201,9 +201,9 @@ private fun WantedCheckBoxImpl(
                             .padding(2.dp),
                         painter = painterResource(
                             if (checkState == CheckBoxState.Partial) {
-                                R.drawable.icon_checkbox_indeterminate
+                                R.drawable.icon_normal_line_horizontal
                             } else {
-                                R.drawable.icon_checkbox_checked
+                                R.drawable.icon_normal_check_thick
                             }
                         ),
                         contentDescription = "checkBox_check",
