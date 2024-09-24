@@ -147,7 +147,13 @@ fun WantedSwitch(
                         radius = thumbSize / 2
                     )
                 )
-                .background(colorResource(id = R.color.static_white), CircleShape),
+                .background(
+                    if (enabled) {
+                        colorResource(id = R.color.static_white)
+                    } else {
+                        colorResource(id = R.color.static_white).copy(OPACITY_43)
+                    }, CircleShape),
+
             contentAlignment = Alignment.Center
         ) {
         }
@@ -169,6 +175,7 @@ private fun WantedSwitchPreview() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(colorResource(id = R.color.background_normal_normal))
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {

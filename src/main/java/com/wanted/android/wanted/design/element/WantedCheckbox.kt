@@ -92,7 +92,7 @@ fun WantedCheckBox(
             WantedCheckBoxImpl(
                 modifier = modifier,
                 size = size,
-                shape = RoundedCornerShape(3.dp),
+                shape = RoundedCornerShape(5.dp),
                 checkState = checkState,
                 enabled = enabled,
                 interactionSource = interactionSource,

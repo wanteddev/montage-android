@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,11 +29,11 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedPushBadge(
     modifier: Modifier = Modifier,
     variant: PushBadgeVariant = PushBadgeVariant.Dot,
-    count: Int = 0,
+    count: String = "",
 ) {
     when (variant) {
         PushBadgeVariant.Dot -> PushBadgeDot(modifier)
-        PushBadgeVariant.Number -> PushBadgeImpl(modifier, "$count")
+        PushBadgeVariant.Number -> PushBadgeImpl(modifier, count)
         PushBadgeVariant.New -> PushBadgeImpl(modifier, "N")
     }
 }
@@ -60,8 +61,9 @@ private fun PushBadgeImpl(
 ) {
     Box(
         modifier = modifier
-            .size(20.dp)
-            .background(colorResource(id = R.color.primary_normal), shape = CircleShape),
+            .defaultMinSize(20.dp)
+            .background(colorResource(id = R.color.primary_normal), shape = CircleShape)
+            .padding(vertical = 3.dp, horizontal = 6.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -107,7 +109,7 @@ private fun WantedPushBadgePreview() {
                 WantedPushBadge(
                     modifier = Modifier,
                     variant = PushBadgeVariant.Number,
-                    count = 1
+                    count = "1"
                 )
 
                 WantedPushBadge(

@@ -66,8 +66,8 @@ fun WantedRadioButton(
                     .clip(CircleShape)
                     .border(
                         width = when {
-                            checked && size == CheckBoxSize.Small -> 4.dp
-                            checked && size == CheckBoxSize.Normal -> 5.dp
+                            checked && size == CheckBoxSize.Small -> 4.5.dp
+                            checked && size == CheckBoxSize.Normal -> 6.dp
                             else -> 1.5.dp
                         },
                         color = if (checked) {
