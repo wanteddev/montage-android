@@ -1,7 +1,6 @@
 package com.wanted.android.wanted.design.input
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
@@ -22,8 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,75 +51,73 @@ fun WantedInput(
     val density = LocalDensity.current
     val checkBoxInteractionSource: MutableInteractionSource =
         remember { MutableInteractionSource() }
-    WantedInputLayout(
-        modifier = modifier
-            .clickOnceForDesignSystem(
-                enabled = enabled,
-                interactionSource = interactionSource,
-                indication = null
-            ) {
-                if (checkBoxState == CheckBoxState.Unchecked) {
-                    onCheckedChange(true)
+
+    ProvideTextStyle(
+        value = WantedTextStyle(
+            colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
+            style = if (size == WantedInputSize.Normal) {
+                if (bold) {
+                    DesignSystemTheme.typography.body2Bold
                 } else {
-                    onCheckedChange(false)
+                    DesignSystemTheme.typography.body2Regular
                 }
 
-                val offset = with(density) {
-                    (if (size == WantedInputSize.Normal) 16.dp else 12.dp).toPx()
-                }
-
-                val press = PressInteraction.Press(Offset(offset, offset))
-                checkBoxInteractionSource.tryEmit(press)
-                checkBoxInteractionSource.tryEmit(PressInteraction.Release(press))
-            },
-        size = size,
-        leadingIcon = {
-            WantedCheckBox(
-                modifier = Modifier,
-                size = if (size == WantedInputSize.Normal) {
-                    CheckBoxSize.Normal
+            } else {
+                if (bold) {
+                    DesignSystemTheme.typography.label1Bold
                 } else {
-                    CheckBoxSize.Small
-                },
-                style = when (type) {
-                    WantedInputType.CheckBox -> CheckBoxStyle.CheckBox
-                    WantedInputType.Radio -> CheckBoxStyle.Radio
-                    WantedInputType.NestedCheckBox -> CheckBoxStyle.Check
-                },
-                checkState = checkBoxState,
-                enabled = enabled,
-                interactionSource = checkBoxInteractionSource,
-                onCheckedChange = onCheckedChange
-
-            )
-        },
-        text = {
-            ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
-                    style = if (size == WantedInputSize.Normal) {
-                        if (bold) {
-                            DesignSystemTheme.typography.body2Bold
-                        } else {
-                            DesignSystemTheme.typography.body2Regular
-                        }
-
-                    } else {
-                        if (bold) {
-                            DesignSystemTheme.typography.label1Bold
-                        } else {
-                            DesignSystemTheme.typography.label1Regular
-                        }
-                    }
-                )
-            ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = text
-                )
+                    DesignSystemTheme.typography.label1Regular
+                }
             }
-        }
-    )
+        )
+    ) {
+        WantedInputLayout(
+            modifier = modifier
+                .clickOnceForDesignSystem(
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                    indication = null
+                ) {
+                    if (checkBoxState == CheckBoxState.Unchecked) {
+                        onCheckedChange(true)
+                    } else {
+                        onCheckedChange(false)
+                    }
+
+                    val offset = with(density) {
+                        (if (size == WantedInputSize.Normal) 16.dp else 12.dp).toPx()
+                    }
+
+                    val press = PressInteraction.Press(Offset(offset, offset))
+                    checkBoxInteractionSource.tryEmit(press)
+                    checkBoxInteractionSource.tryEmit(PressInteraction.Release(press))
+                },
+            size = size,
+            leadingIcon = {
+                WantedCheckBox(
+                    modifier = Modifier,
+                    size = if (size == WantedInputSize.Normal) {
+                        CheckBoxSize.Normal
+                    } else {
+                        CheckBoxSize.Small
+                    },
+                    style = when (type) {
+                        WantedInputType.CheckBox -> CheckBoxStyle.CheckBox
+                        WantedInputType.Radio -> CheckBoxStyle.Radio
+                        WantedInputType.NestedCheckBox -> CheckBoxStyle.Check
+                    },
+                    checkState = checkBoxState,
+                    enabled = enabled,
+                    interactionSource = checkBoxInteractionSource,
+                    onCheckedChange = onCheckedChange
+
+                )
+            },
+            text = {
+                Text(text = text)
+            }
+        )
+    }
 }
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
@@ -176,7 +171,7 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = size.name,
+        text = "${size.name}\n${size.name}",
         size = size,
         checkBoxState = checked,
         bold = false,
