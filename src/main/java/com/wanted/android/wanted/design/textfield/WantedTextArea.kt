@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,19 +28,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedComponentTitle
+import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.chip.WantedActionChip
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaCharacterCount
 import com.wanted.android.wanted.design.textfield.view.WantedTextAreaLayout
-import com.wanted.android.wanted.design.textfield.view.WantedTextFieldLayout
+import com.wanted.android.wanted.design.textfield.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.OPACITY_43
@@ -63,10 +68,11 @@ fun WantedTextArea(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedTextFieldLayout(
+    WantedTextInputLayout(
         modifier = modifier,
         title = if (title.isNotEmpty()) {
             {
@@ -93,6 +99,7 @@ fun WantedTextArea(
                 keyboardActions = keyboardActions,
                 rightButton = rightButton,
                 placeholder = placeholder,
+                background = background,
                 onClickRightButton = onClickRightButton,
                 onValueChange = onValueChange
             )
@@ -136,9 +143,10 @@ fun WantedTextArea(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedTextFieldLayout(
+    WantedTextInputLayout(
         modifier = modifier,
         title = if (title.isNotEmpty()) {
             {
@@ -166,6 +174,7 @@ fun WantedTextArea(
                 rightContent = rightContent,
                 leftContent = leftContent,
                 placeholder = placeholder,
+                background = background,
                 onValueChange = onValueChange
             )
         },
@@ -203,6 +212,7 @@ private fun WantedTextArea(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     rightButton: String?,
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
@@ -220,6 +230,7 @@ private fun WantedTextArea(
         interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
+        background = background,
         leftContent = {
             WantedTextAreaCharacterCount(
                 current = value.length,
@@ -228,16 +239,18 @@ private fun WantedTextArea(
         },
         rightContent = {
             if (error) {
-                WantedCommonIcon(
+                Icon(
                     modifier = Modifier
                         .size(24.dp)
-                        .padding(end = 6.dp),
-                    resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                    tint = colorResource(id = R.color.status_negative)
+                        .padding(1.dp),
+                    painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                    tint = colorResource(id = R.color.status_negative),
+                    contentDescription = ""
                 )
             } else {
                 rightButton?.let {
                     WantedButton(
+                        modifier = Modifier.padding(horizontal = 4.dp),
                         text = rightButton,
                         buttonShape = ButtonShape.TEXT,
                         enabled = enabled,
@@ -265,91 +278,116 @@ private fun WantedTextArea(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {}
 ) {
-    WantedTextAreaLayout(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .border(
-                shape = RoundedCornerShape(12.dp),
-                color = when {
-                    error || focused -> {
-                        colorResource(id = R.color.background_normal_normal)
-                            .copy(alpha = OPACITY_43)
-                    }
+    ConstraintLayout {
+        val (shadow, textField) = createRefs()
+        WantedDropShadow(
+            Modifier
+                .constrainAs(shadow) {
+                    top.linkTo(textField.top)
+                    bottom.linkTo(textField.bottom)
+                    start.linkTo(textField.start)
+                    end.linkTo(textField.end)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                },
+            background = background,
+            shape = RoundedCornerShape(12.dp)
+        )
 
-                    else -> colorResource(R.color.transparent)
-                },
-                width = if (focused) 2.dp else 1.dp
-            )
-            .border(
-                shape = RoundedCornerShape(12.dp),
-                color = colorResource(
-                    id = when {
-                        !enabled -> R.color.line_normal_neutral
-                        error -> R.color.status_negative
-                        focused -> R.color.primary_normal
-                        else -> R.color.line_normal_neutral
-                    }
-                ),
-                width = if (focused) 2.dp else 1.dp
-            )
-            .background(
-                colorResource(
-                    if (enabled) R.color.background_normal_normal else R.color.interaction_disable
-                )
-            )
-            .height(IntrinsicSize.Min),
-        textField = {
-            BasicTextField(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth(),
-                value = value,
-                maxLines = maxLines,
-                minLines = minLines,
-                enabled = enabled,
-                interactionSource = interactionSource,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                textStyle = WantedTextStyle(
-                    colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
-                    style = DesignSystemTheme.typography.body1Regular
-                ),
-                onValueChange = {
-                    if (it.length <= maxWordCount) {
-                        onValueChange(it)
-                    } else {
-                        onValueChange(value)
-                    }
-                },
-                decorationBox = { innerTextField ->
-                    DecorationBox(
-                        modifier = Modifier,
-                        innerTextField = innerTextField,
-                        placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
-                            {
-                                Text(
-                                    text = placeholder,
-                                    style = WantedTextStyle(
-                                        colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
-                                        style = DesignSystemTheme.typography.body1Regular
-                                    )
-                                )
-                            }
-                        } else {
-                            null
-                        }
-                    )
+        WantedTextAreaLayout(
+            modifier = modifier
+                .constrainAs(textField) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 }
-            )
-        },
-        leftContent = leftContent,
-        rightContent = rightContent
-    )
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    shape = RoundedCornerShape(12.dp),
+                    color = when {
+                        error || focused -> {
+                            colorResource(id = R.color.background_normal_normal)
+                                .copy(alpha = OPACITY_43)
+                        }
+
+                        else -> colorResource(R.color.transparent)
+                    },
+                    width = if (focused) 2.dp else 1.dp
+                )
+                .border(
+                    shape = RoundedCornerShape(12.dp),
+                    color = when {
+                        !enabled -> colorResource(R.color.line_normal_neutral)
+                        error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                        focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                        else -> colorResource(R.color.line_normal_neutral)
+                    },
+                    width = if (focused) 2.dp else 1.dp
+                )
+                .background(
+                    if (enabled) {
+                        background
+                    } else {
+                        colorResource(R.color.interaction_disable)
+                    }
+                )
+                .height(IntrinsicSize.Min),
+            textField = {
+                BasicTextField(
+                    modifier = Modifier
+
+                        .padding(horizontal = 12.dp)
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth(),
+                    value = value,
+                    maxLines = maxLines,
+                    minLines = minLines,
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                    textStyle = WantedTextStyle(
+                        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
+                        style = DesignSystemTheme.typography.body1Regular
+                    ),
+                    onValueChange = {
+                        if (it.length <= maxWordCount) {
+                            onValueChange(it)
+                        } else {
+                            onValueChange(value)
+                        }
+                    },
+                    decorationBox = { innerTextField ->
+                        DecorationBox(
+                            modifier = Modifier,
+                            innerTextField = innerTextField,
+                            placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
+                                {
+                                    Text(
+                                        text = placeholder,
+                                        style = WantedTextStyle(
+                                            colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
+                                            style = DesignSystemTheme.typography.body1Regular
+                                        )
+                                    )
+                                }
+                            } else {
+                                null
+                            }
+                        )
+                    }
+                )
+            },
+            leftContent = leftContent,
+            rightContent = rightContent
+        )
+    }
 }
 
 
@@ -397,12 +435,15 @@ private fun WantedTextAreaPreview() {
                 WantedTextArea(
                     modifier = Modifier,
                     value = "입력한 텍스트",
+                    enabled = true,
+                    focused = true,
                     placeholder = "텍스트를 입력해 주세요."
                 )
 
                 WantedTextArea(
                     modifier = Modifier,
                     title = "주제",
+                    error = true,
                     requiredBadge = true,
                     value = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
@@ -410,6 +451,7 @@ private fun WantedTextAreaPreview() {
                 )
 
                 WantedTextArea(
+                    modifier = Modifier,
                     value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"

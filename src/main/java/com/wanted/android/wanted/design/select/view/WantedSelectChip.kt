@@ -75,7 +75,7 @@ internal fun WantedSelectChip(
         trailingIcon = {
             Icon(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.ic_normal_close_svg),
+                painter = painterResource(id = R.drawable.ic_normal_close_thick_svg),
                 tint = colorResource(
                     id = when {
                         !enable -> R.color.label_disable
@@ -106,7 +106,7 @@ private fun WantedSelectChipLayout(
     ) {
         leadingIcon?.let {
             Box(
-                modifier = Modifier.size(11.dp),
+                modifier = Modifier.size(12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 leadingIcon()
@@ -116,7 +116,7 @@ private fun WantedSelectChipLayout(
         text()
 
         Box(
-            modifier = Modifier.size(11.dp),
+            modifier = Modifier.size(12.dp),
             contentAlignment = Alignment.Center
         ) {
             trailingIcon()

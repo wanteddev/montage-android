@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,15 +25,17 @@ import com.wanted.android.wanted.design.chip.WantedActionChip
 import com.wanted.android.wanted.design.element.WantedRadioButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.toAnnotatedString
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45066&m=dev
  */
+
 @Composable
 fun WantedList(
     modifier: Modifier = Modifier,
-    text: String,
-    caption: String = "",
+    text: AnnotatedString,
+    caption: AnnotatedString = AnnotatedString(""),
     isEnable: Boolean = true,
     bold: Boolean = false,
     leftContent: (@Composable () -> Unit)? = null,
@@ -78,7 +82,27 @@ fun WantedList(
         leftContent = leftContent,
         rightContent = rightContent
     )
+}
 
+@Composable
+fun WantedList(
+    modifier: Modifier = Modifier,
+    text: String,
+    caption: String = "",
+    isEnable: Boolean = true,
+    bold: Boolean = false,
+    leftContent: (@Composable () -> Unit)? = null,
+    rightContent: (@Composable () -> Unit)? = null
+) {
+    WantedList(
+        modifier = modifier,
+        text = text.toAnnotatedString(),
+        caption = caption.toAnnotatedString(),
+        isEnable = isEnable,
+        bold = bold,
+        leftContent = leftContent,
+        rightContent = rightContent
+    )
 }
 
 @Composable
@@ -111,7 +135,14 @@ private fun WantedListLayout(
             caption?.invoke()
         }
 
-        rightContent?.invoke()
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.CenterVertically),
+            contentAlignment = Alignment.Center
+        ) {
+            rightContent?.invoke()
+        }
     }
 }
 

@@ -11,7 +11,8 @@ import androidx.compose.ui.unit.dp
 internal fun WantedSelectLayout(
     modifier: Modifier = Modifier,
     title: (@Composable () -> Unit)? = null,
-    select: @Composable () -> Unit
+    select: @Composable () -> Unit,
+    description: (@Composable () -> Unit)? = null
 ) {
 
     Column(
@@ -25,6 +26,8 @@ internal fun WantedSelectLayout(
         title?.invoke()
 
         select()
+
+        description?.invoke()
     }
 }
 

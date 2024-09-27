@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
+import com.wanted.android.wanted.design.base.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -72,7 +72,7 @@ fun WantedToast(
         text = stringResource(id = text),
         icon = icon?.let {
             {
-                WantedCommonIcon(
+                WantedToastIcon(
                     resourceId = icon,
                     modifier = Modifier.fillMaxSize(),
                     tint = tintColor?.let {
@@ -102,7 +102,7 @@ fun WantedToast(
 
         else -> {
             {
-                WantedCommonIcon(
+                WantedToastIcon(
                     modifier = Modifier.fillMaxSize(),
                     resourceId = variant.resourceId,
                     tint = colorResource(variant.tinColor)
@@ -134,7 +134,7 @@ private fun WantedToastLayout(
         modifier = modifier
             .padding(20.dp)
             .wrapContentHeight()
-            .widthIn(max = 360.dp)
+            .widthIn(max = 420.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(colorResource(id = R.color.background_normal_normal))
             .background(colorResource(id = R.color.inverse_background).copy(0.52f))

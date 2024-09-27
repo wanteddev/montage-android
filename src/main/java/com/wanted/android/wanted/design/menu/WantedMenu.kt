@@ -41,7 +41,7 @@ fun WantedMenu(
             .sizeIn(maxHeight = 400.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(colorResource(id = R.color.background_elevated_normal)),
-        contentPadding = PaddingValues(8.dp),
+        contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         for (section in 0..sectionCount) {
@@ -53,9 +53,7 @@ fun WantedMenu(
                             style = DesignSystemTheme.typography.caption1Bold
                         )
                     ) {
-                        Box(modifier = Modifier.padding(horizontal = 12.dp)) {
-                            onBindSectionTitle(section)
-                        }
+                        onBindSectionTitle(section)
                     }
                 }
             }

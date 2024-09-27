@@ -19,17 +19,10 @@ fun WantedButton(
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     enabled: Boolean = true,
-    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-        shape = buttonShape,
-        type = type,
-        size = size,
-        enabled = enabled
-    ),
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
-
     when (buttonShape) {
         ButtonShape.SOLID -> {
             WantedSolidButton(
@@ -38,7 +31,12 @@ fun WantedButton(
                 type = type,
                 size = size,
                 enabled = enabled,
-                buttonDefault = buttonDefault,
+                buttonDefault = WantedButtonDefaults.getDefault(
+                    shape = buttonShape,
+                    type = type,
+                    enabled = enabled,
+                    size = size
+                ),
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
                 clickListener = onClick,
@@ -52,7 +50,12 @@ fun WantedButton(
                 size = size,
                 type = type,
                 enabled = enabled,
-                buttonDefault = buttonDefault,
+                buttonDefault = WantedButtonDefaults.getDefault(
+                    shape = buttonShape,
+                    type = type,
+                    enabled = enabled,
+                    size = size
+                ),
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
                 clickListener = onClick,
@@ -66,6 +69,66 @@ fun WantedButton(
                 size = size,
                 type = type,
                 enabled = enabled,
+                buttonDefault = WantedButtonDefaults.getDefault(
+                    shape = buttonShape,
+                    type = type,
+                    enabled = enabled,
+                    size = size
+                ),
+                leftDrawable = leftDrawable,
+                rightDrawable = rightDrawable,
+                onClick = onClick,
+            )
+        }
+    }
+}
+
+@Composable
+fun WantedButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(),
+    leftDrawable: Int? = null,
+    rightDrawable: Int? = null,
+    onClick: () -> Unit = {}
+) {
+
+    when (buttonDefault.shape) {
+        ButtonShape.SOLID -> {
+            WantedSolidButton(
+                modifier = modifier,
+                text = text,
+                type = buttonDefault.type,
+                size = buttonDefault.size,
+                enabled = buttonDefault.enabled,
+                buttonDefault = buttonDefault,
+                leftDrawable = leftDrawable,
+                rightDrawable = rightDrawable,
+                clickListener = onClick,
+            )
+        }
+
+        ButtonShape.OUTLINED -> {
+            WantedOutlinedButton(
+                modifier = modifier,
+                text = text,
+                size = buttonDefault.size,
+                type = buttonDefault.type,
+                enabled = buttonDefault.enabled,
+                buttonDefault = buttonDefault,
+                leftDrawable = leftDrawable,
+                rightDrawable = rightDrawable,
+                clickListener = onClick,
+            )
+        }
+
+        ButtonShape.TEXT -> {
+            WantedTextButton(
+                modifier = modifier,
+                text = text,
+                size = buttonDefault.size,
+                type = buttonDefault.type,
+                enabled = buttonDefault.enabled,
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
