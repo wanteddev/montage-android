@@ -9,23 +9,30 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedCommonIcon
 import com.wanted.android.wanted.design.base.WantedComponentTitle
+import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectPlaceHolder
@@ -45,64 +52,74 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     valueList: List<WantedSelectData>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     errorList: List<WantedSelectData> = emptyList(),
     focused: Boolean = false,
     enabled: Boolean = true,
+    overflow: Boolean = false,
     isChip: Boolean = false,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onDelete: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
-    WantedSelectImpl(
-        modifier = modifier,
-        title = title,
-        isRequiredBadge = isRequiredBadge,
-        error = errorList.isNotEmpty(),
-        focused = focused,
-        enabled = enabled,
-        onClick = onClick,
-        leadingIcon = leadingIcon,
-        contents = {
-            WantedMultiSelectContents(
-                modifier = Modifier.fillMaxWidth(),
-                valueList = valueList,
-                placeHolder = placeHolder,
-                errorList = errorList,
-                enabled = enabled,
-                isChip = isChip,
-                onDelete = onDelete
-            )
-        }
-    )
+    CompositionLocalProvider(LocalWantedSelectBackground.provides(background)) {
+        WantedSelectImpl(
+            modifier = modifier,
+            title = title,
+            description = description,
+            isRequiredBadge = isRequiredBadge,
+            error = errorList.isNotEmpty(),
+            focused = focused,
+            enabled = enabled,
+            background = background,
+            onClick = onClick,
+            leadingIcon = leadingIcon,
+            contents = {
+                WantedMultiSelectContents(
+                    modifier = Modifier.fillMaxWidth(),
+                    valueList = valueList,
+                    placeHolder = placeHolder,
+                    errorList = errorList,
+                    overflow = overflow,
+                    enabled = enabled,
+                    isChip = isChip,
+                    onDelete = onDelete
+                )
+            }
+        )
+    }
 }
 
 @Composable
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     value: WantedSelectData,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     error: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
-    onDelete: (WantedSelectData) -> Unit,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
     WantedSelect(
         modifier = modifier,
         title = title,
+        description = description,
         value = value.text,
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
         error = error,
         focused = focused,
         enabled = enabled,
-        onDelete = { onDelete(value) },
+        background = background,
         onClick = onClick,
         leadingIcon = leadingIcon
     )
@@ -112,23 +129,26 @@ fun WantedSelect(
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     value: String,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     error: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
-    onDelete: (String) -> Unit,
+    background: Color = colorResource(id = R.color.background_normal_normal),
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
     WantedSelectImpl(
         modifier = modifier,
         title = title,
+        description = description,
         isRequiredBadge = isRequiredBadge,
         error = error,
         focused = focused,
         enabled = enabled,
+        background = background,
         onClick = onClick,
         leadingIcon = leadingIcon,
         contents = {
@@ -140,7 +160,9 @@ fun WantedSelect(
                 )
             } else {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
                     text = value,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -148,7 +170,7 @@ fun WantedSelect(
                         colorRes = if (enabled) {
                             R.color.label_normal
                         } else {
-                            R.color.label_disable
+                            R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.body1Regular
                     )
@@ -162,10 +184,12 @@ fun WantedSelect(
 private fun WantedSelectImpl(
     modifier: Modifier = Modifier,
     title: String? = null,
+    description: String? = null,
     isRequiredBadge: Boolean = false,
     error: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
+    background: Color,
     onClick: () -> Unit = {},
     contents: @Composable () -> Unit,
     leadingIcon: @Composable (() -> Unit)? = null
@@ -182,90 +206,131 @@ private fun WantedSelectImpl(
             }
         },
         select = {
-            WantedSelectContentLayout(
-                modifier = Modifier
-                    .border(
-                        shape = RoundedCornerShape(12.dp),
-                        color = when {
-                            error || focused -> {
-                                colorResource(id = R.color.background_normal_normal)
-                                    .copy(alpha = OPACITY_43)
-                            }
-
-                            else -> colorResource(R.color.transparent)
+            ConstraintLayout {
+                val (shadow, select) = createRefs()
+                WantedDropShadow(
+                    Modifier
+                        .constrainAs(shadow) {
+                            top.linkTo(select.top)
+                            bottom.linkTo(select.bottom)
+                            start.linkTo(select.start)
+                            end.linkTo(select.end)
+                            width = Dimension.fillToConstraints
+                            height = Dimension.fillToConstraints
                         },
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .border(
-                        shape = RoundedCornerShape(12.dp),
-                        color = colorResource(
-                            id = when {
-                                !enabled -> R.color.line_normal_alternative
-                                error -> R.color.status_negative
-                                focused -> R.color.primary_normal
-                                else -> R.color.line_normal_neutral
-                            }
-                        ),
-                        width = if (focused) 2.dp else 1.dp
-                    )
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(
-                        colorResource(
-                            id = if (enabled) {
-                                R.color.background_normal_normal
+                    background = background,
+                    shape = RoundedCornerShape(12.dp)
+                )
+
+                WantedSelectContentLayout(
+                    modifier = Modifier
+                        .constrainAs(select) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .border(
+                            shape = RoundedCornerShape(12.dp),
+                            color = when {
+                                error || focused -> {
+                                    colorResource(id = R.color.background_normal_normal)
+                                        .copy(alpha = OPACITY_43)
+                                }
+
+                                else -> colorResource(R.color.transparent)
+                            },
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .border(
+                            shape = RoundedCornerShape(12.dp),
+                            color = when {
+                                !enabled -> colorResource(R.color.line_normal_alternative)
+                                error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                                focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                                else -> colorResource(R.color.line_normal_neutral)
+                            },
+                            width = if (focused) 2.dp else 1.dp
+                        )
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(
+                            if (enabled) {
+                                background
                             } else {
-                                R.color.line_normal_alternative
+                                colorResource(R.color.line_normal_alternative)
                             }
                         )
-                    )
-                    .clickOnceForDesignSystem(
-                        enabled = enabled,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = getSelectRippleEffect(
+                        .clickOnceForDesignSystem(
                             enabled = enabled,
-                            focused = focused,
-                            error = error
-                        )
-                    ) {
-                        onClick()
-                    }
-                    .padding(12.dp),
-                leadingIcon = leadingIcon,
-                contents = {
-                    contents()
-                },
-                rightButton = {
-                    Icon(
-                        modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(
-                            id = if (focused) {
-                                R.drawable.ic_normal_chevron_up_svg
-                            } else {
-                                R.drawable.ic_normal_chevron_down_svg
-                            }
-                        ),
-                        tint = colorResource(
-                            id = if (enabled) {
-                                R.color.label_alternative
-                            } else {
-                                R.color.label_disable
-                            }
-                        ),
-                        contentDescription = ""
-                    )
-                },
-                trailingIcon = if (error && !focused && enabled) {
-                    {
-                        WantedCommonIcon(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = getSelectRippleEffect(
+                                enabled = enabled,
+                                focused = focused,
+                                error = error
+                            )
+                        ) {
+                            onClick()
+                        }
+                        .padding(12.dp),
+                    leadingIcon = leadingIcon,
+                    contents = {
+                        contents()
+                    },
+                    rightButton = {
+                        Icon(
                             modifier = Modifier.fillMaxSize(),
-                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
-                            tint = colorResource(id = R.color.status_negative)
+                            painter = painterResource(
+                                id = if (focused) {
+                                    R.drawable.ic_normal_chevron_up_thick_small_svg
+                                } else {
+                                    R.drawable.ic_normal_chevron_down_thick_small_svg
+                                }
+                            ),
+                            tint = colorResource(
+                                id = if (enabled) {
+                                    R.color.label_alternative
+                                } else {
+                                    R.color.label_disable
+                                }
+                            ),
+                            contentDescription = ""
                         )
+                    },
+                    trailingIcon = if (error && !focused && enabled) {
+                        {
+                            Icon(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .padding(1.dp),
+                                painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                tint = colorResource(id = R.color.status_negative),
+                                contentDescription = ""
+                            )
+                        }
+                    } else {
+                        null
                     }
-                } else {
-                    null
-                }
-            )
+                )
+
+            }
+
+        },
+        description = description?.let {
+            {
+                Text(
+                    text = description,
+                    style = WantedTextStyle(
+                        colorRes = when {
+                            enabled && error -> R.color.status_negative
+                            else -> R.color.label_alternative
+                        },
+                        style = DesignSystemTheme.typography.caption1Regular
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
         }
     )
 }
@@ -281,6 +346,20 @@ private fun getSelectRippleEffect(
     focused -> wantedRippleEffect(colorResource(id = R.color.primary_normal))
     else -> wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12))
 }
+
+val LocalWantedSelectBackground = WantedWantedSelectBackgroundCompositionLocal()
+
+
+@JvmInline
+value class WantedWantedSelectBackgroundCompositionLocal internal constructor(
+    private val delegate: ProvidableCompositionLocal<Color> = staticCompositionLocalOf { Color.Transparent }
+) {
+    val current: Color
+        @Composable get() = delegate.current
+
+    infix fun provides(value: Color) = delegate provides value
+}
+
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
@@ -303,9 +382,10 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
+                    value = "asdf",
+                    enabled = false,
+                    description = "메시지에 마침표를 찍어요.",
                     placeHolder = "선택해 주세요",
-                    onDelete = { },
                     onClick = {}
                 )
 
@@ -314,15 +394,14 @@ private fun WantedSelectPreview() {
                     value = "선택값",
                     focused = true,
                     placeHolder = "선택해 주세요",
-                    onDelete = { },
                     onClick = {}
                 )
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
                     value = "선택값",
+                    description = "메시지에 마침표를 찍어요.",
                     error = true,
-                    onDelete = { },
                     onClick = {}
                 )
 
@@ -332,7 +411,6 @@ private fun WantedSelectPreview() {
                     focused = true,
                     error = true,
                     value = "선택값",
-                    onDelete = { },
                     onClick = {}
                 )
 
@@ -342,7 +420,6 @@ private fun WantedSelectPreview() {
                     isRequiredBadge = true,
                     enabled = false,
                     value = "선택값",
-                    onDelete = { },
                     onClick = {}
                 )
 

@@ -45,7 +45,6 @@ internal fun WantedAlertDialogButton(
             WantedButton(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = text,
-                buttonShape = ButtonShape.TEXT,
                 buttonDefault = WantedButtonDefaults.getDefault(
                     shape = ButtonShape.TEXT,
                     type = ButtonType.ASSISTIVE,
@@ -53,8 +52,6 @@ internal fun WantedAlertDialogButton(
                 ).copy(
                     contentColor = colorResource(id = R.color.status_negative)
                 ),
-                size = ButtonSize.MEDIUM,
-                type = ButtonType.ASSISTIVE,
                 onClick = { onClick() }
             )
         }

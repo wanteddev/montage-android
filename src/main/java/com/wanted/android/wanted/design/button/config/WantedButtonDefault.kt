@@ -23,8 +23,8 @@ data class WantedButtonDefault(
 object WantedButtonDefaults {
     @Composable
     fun getDefault(
-        shape: ButtonShape,
-        type: ButtonType = ButtonType.PRIMARY,
+        shape: ButtonShape = ButtonShape.SOLID,
+        type: ButtonType = ButtonType.PRIMARY ,
         enabled: Boolean = true,
         size: ButtonSize = ButtonSize.LARGE,
         contentColor: Color = getContentColor(shape, type, enabled),
