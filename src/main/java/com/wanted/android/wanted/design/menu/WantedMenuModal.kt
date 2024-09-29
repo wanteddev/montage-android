@@ -63,7 +63,7 @@ fun WantedMenuModal(
                 WantedMenuContract.ListType.Radio -> {
                     WantedCell(
                         text = items[index],
-                        leftContent = {
+                        rightContent = {
                             WantedRadioButton(
                                 checked = false,
                                 onCheckedChange = {
