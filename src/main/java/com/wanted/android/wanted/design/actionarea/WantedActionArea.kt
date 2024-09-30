@@ -41,7 +41,7 @@ fun WantedActionArea(
     safeArea: Boolean = true,
     sticky: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
-    type: ActionAreaType = ActionAreaType.Strong,
+    type: ActionAreaType,
     positive: String,
     negative: String? = null,
     neutral: String? = null,
@@ -160,6 +160,8 @@ private fun WantedActionAreaLayout(
                         .fillMaxWidth()
                 } else {
                     Modifier
+                        .padding(top = 20.dp, bottom = 4.dp)
+                        .fillMaxWidth()
                 }
             ) {
                 variant()
