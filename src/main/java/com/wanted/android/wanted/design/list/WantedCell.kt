@@ -35,6 +35,7 @@ fun WantedCell(
     paddingInset: Boolean = false,
     divider: Boolean = false,
     isEnable: Boolean = true,
+    isActive: Boolean = false,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
@@ -44,7 +45,7 @@ fun WantedCell(
         shape = RoundedCornerShape(12.dp),
         content = {
             Column {
-                WantedList(
+                WantedCellImpl(
                     modifier = modifier
                         .clip(RoundedCornerShape(12.dp))
                         .clickOnceForDesignSystem(enabled = isEnable) {
@@ -61,6 +62,7 @@ fun WantedCell(
                     text = annotatedString,
                     caption = annotatedCaption,
                     isEnable = isEnable,
+                    isActive = isActive,
                     leftContent = leftContent,
                     rightContent = rightContent
                 )
@@ -88,6 +90,7 @@ fun WantedCell(
     paddingInset: Boolean = false,
     divider: Boolean = false,
     isEnable: Boolean = true,
+    isActive: Boolean = false,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
@@ -100,6 +103,7 @@ fun WantedCell(
         paddingInset = paddingInset,
         divider = divider,
         isEnable = isEnable,
+        isActive = isActive,
         leftContent = leftContent,
         rightContent = rightContent,
         onClick = onClick
@@ -116,6 +120,7 @@ fun WantedCell(
     paddingInset: Boolean = false,
     divider: Boolean = false,
     isEnable: Boolean = true,
+    isActive: Boolean = false,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
@@ -128,6 +133,7 @@ fun WantedCell(
         paddingInset = paddingInset,
         divider = divider,
         isEnable = isEnable,
+        isActive = isActive,
         leftContent = leftContent,
         rightContent = rightContent,
         onClick = onClick
@@ -169,6 +175,20 @@ private fun WantedCellPreview() {
                     onClick = {}
                 )
 
+                WantedCell(
+                    text = "텍스트",
+                    caption = "캡션",
+                    isActive = true,
+                    onClick = {}
+                )
+
+                WantedCell(
+                    text = "텍스트",
+                    caption = "캡션",
+                    isActive = true,
+                    isEnable = false,
+                    onClick = {}
+                )
 
                 WantedCell(
                     text = "텍스트",
