@@ -32,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -117,24 +118,20 @@ fun WantedSwitch(
 
     Box(
         modifier = modifier
+            .alpha(if (enabled) 1f else 0.43f)
             .clip(RoundedCornerShape(32.dp))
             .background(
-                when {
-                    !enabled && isChecked -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_43)
-                    !enabled && !isChecked -> if (isSystemInDarkTheme()) {
-                        colorResource(id = R.color.fill_strong).copy(alpha = OPACITY_12)
-                    } else {
-                        colorResource(id = R.color.fill_strong).copy(alpha = OPACITY_8)
-                    }
-
-                    isChecked -> colorResource(id = R.color.primary_normal)
-                    else -> colorResource(id = R.color.fill_strong)
+                if (isChecked) {
+                    colorResource(id = R.color.primary_normal)
+                } else {
+                    colorResource(id = R.color.fill_strong)
                 }
             )
             .width(width)
             .height(if (size == CheckBoxSize.Normal) 32.dp else 24.dp)
             .then(toggleableModifier)
-            .padding(if (size == CheckBoxSize.Normal) 4.dp else 3.dp),
+            .padding(if (size == CheckBoxSize.Normal) 4.dp else 3.dp)
+            ,
     ) {
         Box(
             modifier = Modifier
@@ -147,12 +144,7 @@ fun WantedSwitch(
                         radius = thumbSize / 2
                     )
                 )
-                .background(
-                    if (enabled) {
-                        colorResource(id = R.color.static_white)
-                    } else {
-                        colorResource(id = R.color.static_white).copy(OPACITY_43)
-                    }, CircleShape),
+                .background(colorResource(id = R.color.static_white), CircleShape),
 
             contentAlignment = Alignment.Center
         ) {
