@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,24 +36,167 @@ import kotlin.math.roundToInt
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=23088-74063&m=dev
- * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3249-11005&t=nhmJmOWJUXIp8HXo-4
+ * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3249-11005&t=NBcGxPA8xDj0pTCY-4
  */
 
 @Composable
 fun WantedSlider(
     modifier: Modifier = Modifier,
-    heading: Boolean,
+    header: String = "",
+    label: String = "",
+    value: Float,
+    onValueChange: (Float) -> Unit
 ) {
+    WantedRangeSlider(
+        modifier = modifier,
+        header = header,
+        labelMax = label,
+        isRange = false,
+        annalRange = 0f..value,
+        onValueChange = { range ->
+            onValueChange(range.endInclusive)
+        }
+    )
+}
+
+@Composable
+fun WantedSlider(
+    modifier: Modifier = Modifier,
+    header: String = "",
+    labelMin: String = "",
+    labelMax: String = "",
+    annalRange: ClosedFloatingPointRange<Float>,
+    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
+) {
+    WantedRangeSlider(
+        modifier = modifier,
+        header = header,
+        labelMin = labelMin,
+        labelMax = labelMax,
+        isRange = true,
+        annalRange = annalRange,
+        onValueChange = onValueChange
+    )
+}
+
+@Composable
+private fun WantedRangeSlider(
+    modifier: Modifier = Modifier,
+    header: String = "",
+    labelMin: String = "",
+    labelMax: String = "",
+    isRange: Boolean = false,
+    annalRange: ClosedFloatingPointRange<Float>,
+    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
+) {
+    val density = LocalDensity.current
+
+    val minOffsetX = remember { mutableFloatStateOf(0f) }
+    val minTextWidth = remember { mutableFloatStateOf(0f) }
+
+    val maxOffsetX = remember { mutableFloatStateOf(0f) }
+    val maxTextWidth = remember { mutableFloatStateOf(0f) }
+
     SliderLayout(
         modifier = modifier,
-        header = if (heading) {
+        header = if (header.isNotEmpty()) {
             {
-
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    textAlign = TextAlign.Center,
+                    text = header,
+                    style = WantedTextStyle(
+                        colorRes = R.color.label_normal,
+                        style = DesignSystemTheme.typography.heading2Bold
+                    )
+                )
             }
         } else null,
-        slider = {
+        slider = { sliderWidth ->
+            WantedRangeSlider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                value = annalRange,
+                valueRange = 0f..10f,
+                colors = SliderDefaults.colors(
+                    thumbColor = colorResource(id = R.color.primary_normal),
+                    activeTrackColor = colorResource(id = R.color.primary_normal),
+                    activeTickColor = colorResource(id = R.color.fill_strong)
+                ),
+                thumbSize = ThumbRadius * 2,
+                isRange = isRange,
+                trackHeight = 6.dp,
+                onValueChange = { range ->
+                    minOffsetX.floatValue =
+                        getTextOffset(range.start, sliderWidth, minTextWidth.floatValue)
+                    maxOffsetX.floatValue = getTextOffset(
+                        range.endInclusive,
+                        sliderWidth,
+                        maxTextWidth.floatValue
+                    )
+                    onValueChange(range)
 
-        }
+                },
+                onValueChangeFinished = { range ->
+                    onValueChange(
+                        range.start.roundToInt().toFloat()..range.endInclusive.roundToInt()
+                            .toFloat()
+                    )
+                }
+            )
+        },
+        minLabel = if (labelMin.isNotEmpty()) {
+            { sliderWidth ->
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .wrapContentSize()
+                        .offset(x = minOffsetX.floatValue.dp)
+                        .onGloballyPositioned { layoutCoordinates ->
+                            minTextWidth.floatValue =
+                                with(density) { layoutCoordinates.size.width.toDp() }.value
+                            minOffsetX.floatValue = getTextOffset(
+                                annalRange.start,
+                                sliderWidth,
+                                minTextWidth.floatValue
+                            )
+                        },
+                    text = labelMin,
+                    style = WantedTextStyle(
+                        colorRes = R.color.label_normal,
+                        style = DesignSystemTheme.typography.label1Medium
+                    )
+                )
+            }
+        } else null,
+        maxLabel = if (labelMax.isNotEmpty()) {
+            { sliderWidth ->
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .wrapContentSize()
+                        .offset(x = maxOffsetX.floatValue.dp)
+                        .onGloballyPositioned { layoutCoordinates ->
+                            maxTextWidth.floatValue =
+                                with(density) { layoutCoordinates.size.width.toDp() }.value
+
+                            maxOffsetX.floatValue = getTextOffset(
+                                annalRange.endInclusive,
+                                sliderWidth,
+                                maxTextWidth.floatValue
+                            )
+                        },
+                    text = labelMax,
+                    style = WantedTextStyle(
+                        colorRes = R.color.label_normal,
+                        style = DesignSystemTheme.typography.label1Medium
+                    )
+                )
+            }
+        } else null
     )
 }
 
@@ -60,9 +204,9 @@ fun WantedSlider(
 private fun SliderLayout(
     modifier: Modifier = Modifier,
     header: @Composable (() -> Unit)? = null,
-    slider: @Composable (maxWidth: Float) -> Unit,
-    minLabel: @Composable (BoxWithConstraintsScope.(maxWidth: Float) -> Unit)? = null,
-    maxLabel: @Composable (BoxWithConstraintsScope.(maxWidth: Float) -> Unit)? = null,
+    slider: @Composable (sliderWidth: Float) -> Unit,
+    minLabel: @Composable (BoxWithConstraintsScope.(sliderWidth: Float) -> Unit)? = null,
+    maxLabel: @Composable (BoxWithConstraintsScope.(sliderWidth: Float) -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
@@ -90,115 +234,6 @@ private fun SliderLayout(
         }
     }
 }
-
-
-@Composable
-fun WantedSlideImpl(
-    modifier: Modifier,
-    labelMin: String,
-    labelMax: String,
-    annalRange: ClosedFloatingPointRange<Float>,
-    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
-) {
-    val density = LocalDensity.current
-    val minOffsetX = remember { mutableFloatStateOf(0f) }
-    val minTextWidth = remember { mutableFloatStateOf(0f) }
-
-    val maxOffsetX = remember { mutableFloatStateOf(0f) }
-    val maxTextWidth = remember { mutableFloatStateOf(0f) }
-
-    val sliderWidth = remember { mutableFloatStateOf(0f) }
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-        WantedRangeSlider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            value = annalRange,
-            valueRange = 0f..10f,
-            colors = SliderDefaults.colors(
-                thumbColor = colorResource(id = R.color.primary_normal),
-                activeTrackColor = colorResource(id = R.color.primary_normal),
-                activeTickColor = colorResource(id = R.color.fill_strong)
-            ),
-            thumbSize = ThumbRadius * 2,
-            trackHeight = 6.dp,
-            onValueChange = { range ->
-                minOffsetX.floatValue =
-                    getTextOffset(range.start, sliderWidth.floatValue, minTextWidth.floatValue)
-                maxOffsetX.floatValue = getTextOffset(
-                    range.endInclusive,
-                    sliderWidth.floatValue,
-                    maxTextWidth.floatValue
-                )
-                onValueChange(range)
-
-            },
-            onValueChangeFinished = { range ->
-                onValueChange(
-                    range.start.roundToInt().toFloat()..range.endInclusive.roundToInt().toFloat()
-                )
-            }
-        )
-
-        Spacer(modifier = Modifier.size(12.dp))
-
-        BoxWithConstraints(Modifier.fillMaxWidth()) {
-            sliderWidth.floatValue = maxWidth.value
-
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .wrapContentSize()
-                    .offset(x = minOffsetX.floatValue.dp)
-                    .onGloballyPositioned { layoutCoordinates ->
-                        minTextWidth.floatValue =
-                            with(density) { layoutCoordinates.size.width.toDp() }.value
-                        minOffsetX.floatValue = getTextOffset(
-                            annalRange.start,
-                            sliderWidth.floatValue,
-                            minTextWidth.floatValue
-                        )
-                    },
-                text = labelMin,
-                style = WantedTextStyle(
-                    colorRes = R.color.label_normal,
-                    style = DesignSystemTheme.typography.label1Medium
-                )
-            )
-
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .wrapContentSize()
-                    .offset(x = maxOffsetX.floatValue.dp)
-                    .onGloballyPositioned { layoutCoordinates ->
-                        maxTextWidth.floatValue =
-                            with(density) { layoutCoordinates.size.width.toDp() }.value
-
-                        maxOffsetX.floatValue = getTextOffset(
-                            annalRange.endInclusive,
-                            sliderWidth.floatValue,
-                            maxTextWidth.floatValue
-                        )
-                    },
-                text = labelMax,
-                style = WantedTextStyle(
-                    colorRes = R.color.label_normal,
-                    style = DesignSystemTheme.typography.label1Medium
-                )
-            )
-        }
-    }
-}
-
 
 private fun getTextOffset(
     range: Float,
