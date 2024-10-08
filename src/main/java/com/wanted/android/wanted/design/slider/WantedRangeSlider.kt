@@ -156,9 +156,9 @@ internal fun WantedRangeSlider(
         )
 
         if (isRange) {
-            Box(
+
+            WantedSliderThumb(
                 modifier = Modifier
-                    .size(thumbSize)
                     .align(Alignment.CenterStart)
                     .offset(x = leftOffsetX.floatValue.dp)
                     .clip(CircleShape)
@@ -197,16 +197,60 @@ internal fun WantedRangeSlider(
                                 }
                             }
                         )
-                    }
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(3.dp)
-                        .clip(CircleShape)
-                        .background(colors.thumbColor(enabled = enable))
-                )
-            }
+                    },
+                thumbSize = 20.dp
+            )
+//            Box(
+//                modifier = Modifier
+//                    .size(thumbSize)
+//                    .align(Alignment.CenterStart)
+//                    .offset(x = leftOffsetX.floatValue.dp)
+//                    .clip(CircleShape)
+//                    .background(colorResource(id = R.color.background_normal_normal))
+//                    .pointerInput(Unit) {
+//                        detectDragGestures(
+//                            onDragStart = {
+//                                isDragging.value = true
+//                            },
+//                            onDrag = { change: PointerInputChange, dragAmount: Offset ->
+//                                change.consume()
+//                                leftOffsetX.floatValue = getThumbPositionXWithPosition(
+//                                    positionX = leftOffsetX.floatValue,
+//                                    dragAmountX = with(density) { dragAmount.x.toDp() }.value,
+//                                    maxSliderWidth = maxWidth.value,
+//                                    thumbSize = thumbSize.value
+//                                )
+//                            },
+//                            onDragEnd = {
+//                                val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
+//                                val rightStep =
+//                                    getStep(rightOffsetX.floatValue, stepSize.floatValue)
+//
+//                                leftOffsetX.floatValue = getThumbPositionX(
+//                                    step = leftStep,
+//                                    totalStep = totalStep.floatValue,
+//                                    maxSliderWidth = maxWidth.value,
+//                                    thumbSize = thumbSize.value
+//                                )
+//
+//                                isDragging.value = false
+//                                if (leftStep <= rightStep) {
+//                                    onValueChangeFinished(leftStep..rightStep)
+//                                } else {
+//                                    onValueChangeFinished(rightStep..leftStep)
+//                                }
+//                            }
+//                        )
+//                    }
+//            ) {
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .padding(3.dp)
+//                        .clip(CircleShape)
+//                        .background(colors.thumbColor(enabled = enable))
+//                )
+//            }
         }
 
         Box(
