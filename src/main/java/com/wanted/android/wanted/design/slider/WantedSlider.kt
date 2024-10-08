@@ -44,7 +44,9 @@ fun WantedSlider(
     modifier: Modifier = Modifier,
     header: String = "",
     label: String = "",
+    isEnable: Boolean = true,
     value: Float,
+    valueRange: ClosedFloatingPointRange<Float>,
     onValueChange: (Float) -> Unit
 ) {
     WantedRangeSlider(
@@ -52,7 +54,9 @@ fun WantedSlider(
         header = header,
         labelMax = label,
         isRange = false,
-        annalRange = 0f..value,
+        isEnable = isEnable,
+        value = 0f..value,
+        valueRange = valueRange,
         onValueChange = { range ->
             onValueChange(range.endInclusive)
         }
@@ -65,7 +69,9 @@ fun WantedSlider(
     header: String = "",
     labelMin: String = "",
     labelMax: String = "",
-    annalRange: ClosedFloatingPointRange<Float>,
+    isEnable: Boolean = true,
+    value: ClosedFloatingPointRange<Float>,
+    valueRange: ClosedFloatingPointRange<Float>,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
 ) {
     WantedRangeSlider(
@@ -74,7 +80,9 @@ fun WantedSlider(
         labelMin = labelMin,
         labelMax = labelMax,
         isRange = true,
-        annalRange = annalRange,
+        isEnable = isEnable,
+        value = value,
+        valueRange = valueRange,
         onValueChange = onValueChange
     )
 }
@@ -86,7 +94,9 @@ private fun WantedRangeSlider(
     labelMin: String = "",
     labelMax: String = "",
     isRange: Boolean = false,
-    annalRange: ClosedFloatingPointRange<Float>,
+    value: ClosedFloatingPointRange<Float>,
+    valueRange: ClosedFloatingPointRange<Float>,
+    isEnable: Boolean = true,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -119,8 +129,8 @@ private fun WantedRangeSlider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                value = annalRange,
-                valueRange = 0f..10f,
+                value = value,
+                valueRange = valueRange,
                 colors = SliderDefaults.colors(
                     thumbColor = colorResource(id = R.color.primary_normal),
                     activeTrackColor = colorResource(id = R.color.primary_normal),
@@ -159,7 +169,7 @@ private fun WantedRangeSlider(
                             minTextWidth.floatValue =
                                 with(density) { layoutCoordinates.size.width.toDp() }.value
                             minOffsetX.floatValue = getTextOffset(
-                                annalRange.start,
+                                value.start,
                                 sliderWidth,
                                 minTextWidth.floatValue
                             )
@@ -184,7 +194,7 @@ private fun WantedRangeSlider(
                                 with(density) { layoutCoordinates.size.width.toDp() }.value
 
                             maxOffsetX.floatValue = getTextOffset(
-                                annalRange.endInclusive,
+                                value.endInclusive,
                                 sliderWidth,
                                 maxTextWidth.floatValue
                             )
