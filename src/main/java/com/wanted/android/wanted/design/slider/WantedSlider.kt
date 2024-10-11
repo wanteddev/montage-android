@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -116,11 +117,7 @@ private fun WantedRangeSlider(
                         .fillMaxWidth()
                         .wrapContentHeight(),
                     textAlign = TextAlign.Center,
-                    text = header,
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_normal,
-                        style = DesignSystemTheme.typography.heading2Bold
-                    )
+                    text = header
                 )
             }
         } else null,
@@ -138,7 +135,7 @@ private fun WantedRangeSlider(
                 ),
                 thumbSize = ThumbRadius * 2,
                 isRange = isRange,
-                trackHeight = 6.dp,
+                trackHeight = TrackHeight,
                 onValueChange = { range ->
                     minOffsetX.floatValue =
                         getTextOffset(range.start, sliderWidth, minTextWidth.floatValue)
@@ -174,11 +171,7 @@ private fun WantedRangeSlider(
                                 minTextWidth.floatValue
                             )
                         },
-                    text = labelMin,
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_normal,
-                        style = DesignSystemTheme.typography.label1Medium
-                    )
+                    text = labelMin
                 )
             }
         } else null,
@@ -199,11 +192,7 @@ private fun WantedRangeSlider(
                                 maxTextWidth.floatValue
                             )
                         },
-                    text = labelMax,
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_normal,
-                        style = DesignSystemTheme.typography.label1Medium
-                    )
+                    text = labelMax
                 )
             }
         } else null
@@ -226,7 +215,15 @@ private fun SliderLayout(
         verticalArrangement = Arrangement.Center,
     ) {
         header?.let {
-            header.invoke()
+            ProvideTextStyle(
+                value = WantedTextStyle(
+                    colorRes = R.color.label_normal,
+                    style = DesignSystemTheme.typography.headline2Bold
+                )
+            ) {
+                header.invoke()
+            }
+
             Spacer(modifier = Modifier.size(32.dp))
         }
 
@@ -238,8 +235,15 @@ private fun SliderLayout(
             Spacer(modifier = Modifier.size(12.dp))
 
             BoxWithConstraints(Modifier.fillMaxWidth()) {
-                minLabel?.invoke(this, maxWidth.value)
-                maxLabel?.invoke(this, maxWidth.value)
+                ProvideTextStyle(
+                    value = WantedTextStyle(
+                        colorRes = R.color.label_normal,
+                        style = DesignSystemTheme.typography.label1Medium
+                    )
+                ) {
+                    minLabel?.invoke(this, maxWidth.value)
+                    maxLabel?.invoke(this, maxWidth.value)
+                }
             }
         }
     }
@@ -273,7 +277,8 @@ private fun getTextOffset(
 }
 
 
-private val ThumbRadius = 14.dp
+private val ThumbRadius = 20.dp
+private val TrackHeight = 4.dp
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
