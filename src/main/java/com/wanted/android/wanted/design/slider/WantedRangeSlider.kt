@@ -1,16 +1,13 @@
 package com.wanted.android.wanted.design.slider
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
@@ -26,14 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -156,153 +149,80 @@ internal fun WantedRangeSlider(
         )
 
         if (isRange) {
-
             WantedSliderThumb(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
-                    .offset(x = leftOffsetX.floatValue.dp)
-                    .clip(CircleShape)
-                    .background(colorResource(id = R.color.background_normal_normal))
-                    .pointerInput(Unit) {
-                        detectDragGestures(
-                            onDragStart = {
-                                isDragging.value = true
-                            },
-                            onDrag = { change: PointerInputChange, dragAmount: Offset ->
-                                change.consume()
-                                leftOffsetX.floatValue = getThumbPositionXWithPosition(
-                                    positionX = leftOffsetX.floatValue,
-                                    dragAmountX = with(density) { dragAmount.x.toDp() }.value,
-                                    maxSliderWidth = maxWidth.value,
-                                    thumbSize = thumbSize.value
-                                )
-                            },
-                            onDragEnd = {
-                                val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
-                                val rightStep =
-                                    getStep(rightOffsetX.floatValue, stepSize.floatValue)
+                    .offset(x = leftOffsetX.floatValue.dp),
+                thumbSize = 20.dp,
+                onDragStart = {
+                    isDragging.value = true
+                },
+                onDrag = { dragAmount: Offset ->
+                    leftOffsetX.floatValue = getThumbPositionXWithPosition(
+                        positionX = leftOffsetX.floatValue,
+                        dragAmountX = with(density) { dragAmount.x.toDp() }.value,
+                        maxSliderWidth = maxWidth.value,
+                        thumbSize = thumbSize.value
+                    )
+                },
+                onDragEnd = {
+                    val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
+                    val rightStep =
+                        getStep(rightOffsetX.floatValue, stepSize.floatValue)
 
-                                leftOffsetX.floatValue = getThumbPositionX(
-                                    step = leftStep,
-                                    totalStep = totalStep.floatValue,
-                                    maxSliderWidth = maxWidth.value,
-                                    thumbSize = thumbSize.value
-                                )
+                    leftOffsetX.floatValue = getThumbPositionX(
+                        step = leftStep,
+                        totalStep = totalStep.floatValue,
+                        maxSliderWidth = maxWidth.value,
+                        thumbSize = thumbSize.value
+                    )
 
-                                isDragging.value = false
-                                if (leftStep <= rightStep) {
-                                    onValueChangeFinished(leftStep..rightStep)
-                                } else {
-                                    onValueChangeFinished(rightStep..leftStep)
-                                }
-                            }
-                        )
-                    },
-                thumbSize = 20.dp
+                    isDragging.value = false
+                    if (leftStep <= rightStep) {
+                        onValueChangeFinished(leftStep..rightStep)
+                    } else {
+                        onValueChangeFinished(rightStep..leftStep)
+                    }
+                }
             )
-//            Box(
-//                modifier = Modifier
-//                    .size(thumbSize)
-//                    .align(Alignment.CenterStart)
-//                    .offset(x = leftOffsetX.floatValue.dp)
-//                    .clip(CircleShape)
-//                    .background(colorResource(id = R.color.background_normal_normal))
-//                    .pointerInput(Unit) {
-//                        detectDragGestures(
-//                            onDragStart = {
-//                                isDragging.value = true
-//                            },
-//                            onDrag = { change: PointerInputChange, dragAmount: Offset ->
-//                                change.consume()
-//                                leftOffsetX.floatValue = getThumbPositionXWithPosition(
-//                                    positionX = leftOffsetX.floatValue,
-//                                    dragAmountX = with(density) { dragAmount.x.toDp() }.value,
-//                                    maxSliderWidth = maxWidth.value,
-//                                    thumbSize = thumbSize.value
-//                                )
-//                            },
-//                            onDragEnd = {
-//                                val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
-//                                val rightStep =
-//                                    getStep(rightOffsetX.floatValue, stepSize.floatValue)
-//
-//                                leftOffsetX.floatValue = getThumbPositionX(
-//                                    step = leftStep,
-//                                    totalStep = totalStep.floatValue,
-//                                    maxSliderWidth = maxWidth.value,
-//                                    thumbSize = thumbSize.value
-//                                )
-//
-//                                isDragging.value = false
-//                                if (leftStep <= rightStep) {
-//                                    onValueChangeFinished(leftStep..rightStep)
-//                                } else {
-//                                    onValueChangeFinished(rightStep..leftStep)
-//                                }
-//                            }
-//                        )
-//                    }
-//            ) {
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .padding(3.dp)
-//                        .clip(CircleShape)
-//                        .background(colors.thumbColor(enabled = enable))
-//                )
-//            }
         }
 
-        Box(
+        WantedSliderThumb(
             modifier = Modifier
                 .size(thumbSize)
                 .align(Alignment.CenterStart)
-                .offset(x = rightOffsetX.floatValue.dp)
-                .clip(CircleShape)
-                .background(colorResource(id = R.color.background_normal_normal))
-                .pointerInput(Unit) {
-                    detectDragGestures(
-                        onDragStart = {
-                            isDragging.value = true
-                        },
-                        onDrag = { change: PointerInputChange, dragAmount: Offset ->
-                            change.consume()
-                            rightOffsetX.floatValue = getThumbPositionXWithPosition(
-                                positionX = rightOffsetX.floatValue,
-                                dragAmountX = with(density) { dragAmount.x.toDp() }.value,
-                                maxSliderWidth = maxWidth.value,
-                                thumbSize = thumbSize.value
-                            )
-                        },
-                        onDragEnd = {
-                            val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
-                            val rightStep =
-                                getStep(rightOffsetX.floatValue, stepSize.floatValue)
+                .offset(x = rightOffsetX.floatValue.dp),
+            thumbSize = 20.dp,
+            onDragStart = {
+                isDragging.value = true
+            },
+            onDrag = { dragAmount: Offset ->
+                rightOffsetX.floatValue = getThumbPositionXWithPosition(
+                    positionX = rightOffsetX.floatValue,
+                    dragAmountX = with(density) { dragAmount.x.toDp() }.value,
+                    maxSliderWidth = maxWidth.value,
+                    thumbSize = thumbSize.value
+                )
+            },
+            onDragEnd = {
+                val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
+                val rightStep =
+                    getStep(rightOffsetX.floatValue, stepSize.floatValue)
 
-                            rightOffsetX.floatValue = getThumbPositionX(
-                                step = rightStep,
-                                totalStep = totalStep.floatValue,
-                                maxSliderWidth = maxWidth.value,
-                                thumbSize = thumbSize.value
-                            )
-                            isDragging.value = false
-                            if (leftStep <= rightStep) {
-                                onValueChangeFinished(leftStep..rightStep)
-                            } else {
-                                onValueChangeFinished(rightStep..leftStep)
-                            }
-                        }
-                    )
+                rightOffsetX.floatValue = getThumbPositionX(
+                    step = rightStep,
+                    totalStep = totalStep.floatValue,
+                    maxSliderWidth = maxWidth.value,
+                    thumbSize = thumbSize.value
+                )
+                isDragging.value = false
+                if (leftStep <= rightStep) {
+                    onValueChangeFinished(leftStep..rightStep)
+                } else {
+                    onValueChangeFinished(rightStep..leftStep)
                 }
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(3.dp)
-                    .clip(CircleShape)
-                    .background(colors.thumbColor(enabled = enable))
-            )
-        }
+            }
+        )
     }
 }
 
