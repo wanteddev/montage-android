@@ -3,6 +3,7 @@ package com.wanted.android.wanted.design.dialog
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -19,8 +20,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -144,7 +147,15 @@ fun WantedBottomSheetLayout(
                 bottomBar = bottomBar
             )
 
-            Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                if (WindowInsets.systemBars.asPaddingValues().calculateBottomPadding() > 0.dp) {
+                    Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+                } else {
+                    Spacer(Modifier.size(48.dp))
+                }
+            } else {
+                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+            }
         }
     }
 }
