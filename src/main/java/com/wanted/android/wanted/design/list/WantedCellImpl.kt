@@ -32,16 +32,16 @@ import com.wanted.android.wanted.design.util.toAnnotatedString
  */
 
 @Composable
-fun WantedList(
+fun WantedCellImpl(
     modifier: Modifier = Modifier,
     text: AnnotatedString,
     caption: AnnotatedString = AnnotatedString(""),
     isEnable: Boolean = true,
-    bold: Boolean = false,
+    isActive: Boolean = false,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null
 ) {
-    WantedListLayout(
+    WantedCellLayout(
         modifier = modifier.fillMaxWidth(),
         text = {
             Text(
@@ -49,12 +49,12 @@ fun WantedList(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = WantedTextStyle(
-                    colorRes = if (isEnable) {
-                        R.color.label_normal
-                    } else {
-                        R.color.label_disable
+                    colorRes = when {
+                        !isEnable -> R.color.label_disable
+                        isActive -> R.color.primary_normal
+                        else -> R.color.label_normal
                     },
-                    style = if (bold) {
+                    style = if (isActive) {
                         DesignSystemTheme.typography.body1Medium
                     } else {
                         DesignSystemTheme.typography.body1Regular
@@ -85,28 +85,28 @@ fun WantedList(
 }
 
 @Composable
-fun WantedList(
+fun WantedCellImpl(
     modifier: Modifier = Modifier,
     text: String,
     caption: String = "",
     isEnable: Boolean = true,
-    bold: Boolean = false,
+    isActive: Boolean = false,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null
 ) {
-    WantedList(
+    WantedCellImpl(
         modifier = modifier,
         text = text.toAnnotatedString(),
         caption = caption.toAnnotatedString(),
         isEnable = isEnable,
-        bold = bold,
+        isActive = isActive,
         leftContent = leftContent,
         rightContent = rightContent
     )
 }
 
 @Composable
-private fun WantedListLayout(
+private fun WantedCellLayout(
     modifier: Modifier = Modifier,
     text: @Composable () -> Unit,
     caption: @Composable (() -> Unit)?,
@@ -164,29 +164,29 @@ private fun WantedListPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedList(
+                WantedCellImpl(
                     text = "텍스트"
                 )
 
-                WantedList(
+                WantedCellImpl(
                     text = "텍스트",
                     caption = "캡션"
                 )
 
-                WantedList(
+                WantedCellImpl(
                     text = "텍스트",
                     caption = "캡션",
                     isEnable = false,
                 )
 
-                WantedList(
+                WantedCellImpl(
                     text = "텍스트",
                     leftContent = {
                         WantedRadioButton(checked = true, onCheckedChange = {})
                     }
                 )
 
-                WantedList(
+                WantedCellImpl(
                     text = "텍스트",
                     caption = "캡션",
                     leftContent = {
@@ -194,14 +194,14 @@ private fun WantedListPreview() {
                     }
                 )
 
-                WantedList(
+                WantedCellImpl(
                     text = "텍스트",
                     rightContent = {
                         WantedActionChip(text = "Chip")
                     }
                 )
 
-                WantedList(
+                WantedCellImpl(
                     text = "텍스트",
                     caption = "캡션",
                     rightContent = {
