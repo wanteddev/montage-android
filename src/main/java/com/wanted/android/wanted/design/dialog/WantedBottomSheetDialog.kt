@@ -123,7 +123,7 @@ fun WantedBottomSheetLayout(
     modifier: Modifier = Modifier,
     modalSize: ModalSize,
     shadowElevation: Dp = 4.dp,
-    topBar: @Composable () -> Unit,
+    topBar: @Composable (() -> Unit)?,
     bottomBar: @Composable (() -> Unit)?,
     content: @Composable () -> Unit
 ) {
