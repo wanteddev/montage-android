@@ -48,7 +48,7 @@ fun WantedDialogLayout(
             }
 
         } ?: run {
-            Spacer(modifier = androidx.compose.ui.Modifier.size(modalSize.bottomBarPadding))
+            Spacer(modifier = Modifier.size(modalSize.bottomBarPadding))
         }
 
         /**
@@ -62,7 +62,7 @@ fun WantedDialogLayout(
         bottomBar?.let {
             // bottomBar
             Box(
-                modifier = androidx.compose.ui.Modifier
+                modifier = Modifier
                     .padding(modalSize.bottomBarPadding)
                     .fillMaxWidth()
                     .wrapContentHeight(),
@@ -71,7 +71,7 @@ fun WantedDialogLayout(
                 bottomBar()
             }
         } ?: run {
-            Spacer(modifier = androidx.compose.ui.Modifier.size(modalSize.bottomBarPadding))
+            Spacer(modifier = Modifier.size(modalSize.bottomBarPadding))
         }
     }
 }
