@@ -46,6 +46,7 @@ import com.wanted.android.wanted.design.util.OPACITY_12
 @Composable
 fun WantedSliderThumb(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     thumbSize: Dp,
     contentColor: Color = colorResource(id = R.color.primary_normal),
     boarderColor: Color = colorResource(id = R.color.background_normal_normal),
@@ -64,6 +65,7 @@ fun WantedSliderThumb(
             )
             .then(modifier),
         boarderColor = boarderColor,
+        enabled = enabled,
         onDragStart = onDragStart,
         onDragEnd = onDragEnd,
         onDragCancel = onDragCancel,
@@ -83,6 +85,7 @@ fun WantedSliderThumb(
 fun WantedSliderThumbArea(
     modifier: Modifier = Modifier,
     boarderColor: Color,
+    enabled: Boolean = true,
     onDragStart: (Offset) -> Unit = { },
     onDragEnd: () -> Unit = { },
     onDragCancel: () -> Unit = { },
@@ -137,6 +140,10 @@ fun WantedSliderThumbArea(
                 }
                 .clip(CircleShape)
                 .pointerInput(Unit) {
+                    if (!enabled) {
+                        return@pointerInput
+                    }
+
                     detectTapGestures(
                         onPress = {
                             offset.value = it
@@ -150,6 +157,10 @@ fun WantedSliderThumbArea(
                     )
                 }
                 .pointerInput(Unit) {
+                    if (!enabled) {
+                        return@pointerInput
+                    }
+
                     detectDragGestures(
                         onDragStart = {
                             interactionSource.tryEmit(PressInteraction.Press(offset.value))

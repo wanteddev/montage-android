@@ -39,7 +39,7 @@ internal fun WantedRangeSlider(
     scope: CoroutineScope = rememberCoroutineScope(),
     value: ClosedFloatingPointRange<Float>,
     valueRange: ClosedFloatingPointRange<Float>,
-    enable: Boolean = true,
+    enabled: Boolean = true,
     active: Boolean = true,
     colors: SliderColors = SliderDefaults.colors(),
     isRange: Boolean = false,
@@ -103,7 +103,7 @@ internal fun WantedRangeSlider(
                 .width(maxWidth - thumbSize)
                 .height(trackHeight)
                 .clip(RoundedCornerShape(trackHeight))
-                .background(colors.tickColor(enabled = enable, active = active))
+                .background(colors.tickColor(enabled = enabled, active = active))
         )
 
         Box(
@@ -119,7 +119,7 @@ internal fun WantedRangeSlider(
                 )
                 .height(trackHeight)
                 .clip(RoundedCornerShape(trackHeight))
-                .background(colors.trackColor(enabled = enable, active = active))
+                .background(colors.trackColor(enabled = enabled, active = active))
                 .onGloballyPositioned { layoutCoordinates ->
                     scope.launch {
                         if (isDragging.value) {
@@ -153,7 +153,9 @@ internal fun WantedRangeSlider(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .offset(x = leftOffsetX.floatValue.dp),
-                thumbSize = 20.dp,
+                enabled = enabled,
+                thumbSize = thumbSize.value.dp,
+                contentColor = colors.thumbColor(enabled),
                 onDragStart = {
                     isDragging.value = true
                 },
@@ -192,7 +194,9 @@ internal fun WantedRangeSlider(
                 .size(thumbSize)
                 .align(Alignment.CenterStart)
                 .offset(x = rightOffsetX.floatValue.dp),
-            thumbSize = 20.dp,
+            enabled = enabled,
+            thumbSize = thumbSize.value.dp,
+            contentColor = colors.thumbColor(enabled),
             onDragStart = {
                 isDragging.value = true
             },

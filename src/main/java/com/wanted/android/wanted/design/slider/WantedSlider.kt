@@ -45,7 +45,7 @@ fun WantedSlider(
     modifier: Modifier = Modifier,
     header: String = "",
     label: String = "",
-    isEnable: Boolean = true,
+    enabled: Boolean = true,
     value: Float,
     valueRange: ClosedFloatingPointRange<Float>,
     onValueChange: (Float) -> Unit
@@ -55,7 +55,7 @@ fun WantedSlider(
         header = header,
         labelMax = label,
         isRange = false,
-        isEnable = isEnable,
+        enabled = enabled,
         value = 0f..value,
         valueRange = valueRange,
         onValueChange = { range ->
@@ -70,7 +70,7 @@ fun WantedSlider(
     header: String = "",
     labelMin: String = "",
     labelMax: String = "",
-    isEnable: Boolean = true,
+    enabled: Boolean = true,
     value: ClosedFloatingPointRange<Float>,
     valueRange: ClosedFloatingPointRange<Float>,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
@@ -81,7 +81,7 @@ fun WantedSlider(
         labelMin = labelMin,
         labelMax = labelMax,
         isRange = true,
-        isEnable = isEnable,
+        enabled = enabled,
         value = value,
         valueRange = valueRange,
         onValueChange = onValueChange
@@ -97,7 +97,7 @@ private fun WantedRangeSlider(
     isRange: Boolean = false,
     value: ClosedFloatingPointRange<Float>,
     valueRange: ClosedFloatingPointRange<Float>,
-    isEnable: Boolean = true,
+    enabled: Boolean = true,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -110,6 +110,7 @@ private fun WantedRangeSlider(
 
     SliderLayout(
         modifier = modifier,
+        isEnable = enabled,
         header = if (header.isNotEmpty()) {
             {
                 Text(
@@ -117,7 +118,11 @@ private fun WantedRangeSlider(
                         .fillMaxWidth()
                         .wrapContentHeight(),
                     textAlign = TextAlign.Center,
-                    text = header
+                    text = header,
+                    style = WantedTextStyle(
+                        colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
+                        style = DesignSystemTheme.typography.headline2Bold
+                    )
                 )
             }
         } else null,
@@ -128,10 +133,14 @@ private fun WantedRangeSlider(
                     .wrapContentHeight(),
                 value = value,
                 valueRange = valueRange,
+                enabled = enabled,
                 colors = SliderDefaults.colors(
                     thumbColor = colorResource(id = R.color.primary_normal),
+                    disabledThumbColor = colorResource(id = R.color.interaction_disable),
                     activeTrackColor = colorResource(id = R.color.primary_normal),
-                    activeTickColor = colorResource(id = R.color.fill_strong)
+                    disabledActiveTrackColor = colorResource(id = R.color.interaction_disable),
+                    activeTickColor = colorResource(id = R.color.fill_strong),
+                    disabledActiveTickColor = colorResource(id = R.color.interaction_disable)
                 ),
                 thumbSize = ThumbRadius * 2,
                 isRange = isRange,
@@ -202,6 +211,7 @@ private fun WantedRangeSlider(
 @Composable
 private fun SliderLayout(
     modifier: Modifier = Modifier,
+    isEnable: Boolean,
     header: @Composable (() -> Unit)? = null,
     slider: @Composable (sliderWidth: Float) -> Unit,
     minLabel: @Composable (BoxWithConstraintsScope.(sliderWidth: Float) -> Unit)? = null,
@@ -217,7 +227,7 @@ private fun SliderLayout(
         header?.let {
             ProvideTextStyle(
                 value = WantedTextStyle(
-                    colorRes = R.color.label_normal,
+                    colorRes = if (isEnable) R.color.label_normal else R.color.label_disable,
                     style = DesignSystemTheme.typography.headline2Bold
                 )
             ) {
@@ -232,12 +242,12 @@ private fun SliderLayout(
         }
 
         if (minLabel != null || maxLabel != null) {
-            Spacer(modifier = Modifier.size(12.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 ProvideTextStyle(
                     value = WantedTextStyle(
-                        colorRes = R.color.label_normal,
+                        colorRes = if (isEnable) R.color.label_normal else R.color.label_disable,
                         style = DesignSystemTheme.typography.label1Medium
                     )
                 ) {
@@ -277,7 +287,7 @@ private fun getTextOffset(
 }
 
 
-private val ThumbRadius = 20.dp
+private val ThumbRadius = 10.dp
 private val TrackHeight = 4.dp
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
