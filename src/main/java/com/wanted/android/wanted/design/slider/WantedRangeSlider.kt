@@ -160,12 +160,14 @@ internal fun WantedRangeSlider(
                     isDragging.value = true
                 },
                 onDrag = { dragAmount: Offset ->
-                    leftOffsetX.floatValue = getThumbPositionXWithPosition(
-                        positionX = leftOffsetX.floatValue,
-                        dragAmountX = with(density) { dragAmount.x.toDp() }.value,
-                        maxSliderWidth = maxWidth.value,
-                        thumbSize = thumbSize.value
-                    )
+                    scope.launch {
+                        leftOffsetX.floatValue = getThumbPositionXWithPosition(
+                            positionX = leftOffsetX.floatValue,
+                            dragAmountX = with(density) { dragAmount.x.toDp() }.value,
+                            maxSliderWidth = maxWidth.value,
+                            thumbSize = thumbSize.value
+                        )
+                    }
                 },
                 onDragEnd = {
                     val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
@@ -201,12 +203,14 @@ internal fun WantedRangeSlider(
                 isDragging.value = true
             },
             onDrag = { dragAmount: Offset ->
-                rightOffsetX.floatValue = getThumbPositionXWithPosition(
-                    positionX = rightOffsetX.floatValue,
-                    dragAmountX = with(density) { dragAmount.x.toDp() }.value,
-                    maxSliderWidth = maxWidth.value,
-                    thumbSize = thumbSize.value
-                )
+                scope.launch {
+                    rightOffsetX.floatValue = getThumbPositionXWithPosition(
+                        positionX = rightOffsetX.floatValue,
+                        dragAmountX = with(density) { dragAmount.x.toDp() }.value,
+                        maxSliderWidth = maxWidth.value,
+                        thumbSize = thumbSize.value
+                    )
+                }
             },
             onDragEnd = {
                 val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
