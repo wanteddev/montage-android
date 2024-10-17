@@ -27,6 +27,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -55,6 +56,8 @@ internal fun WantedRangeSlider(
 
     val rawOffsetLeft = remember { mutableFloatStateOf(0f) }
     val rawOffsetRight = remember { mutableFloatStateOf(0f) }
+    val rightThumbZIndex = remember { mutableFloatStateOf(1f) }
+    val leftThumbZIndex = remember { mutableFloatStateOf(1f) }
 
     LaunchedEffect(key1 = value, isDragging) {
         if (!isDragging.value && rawOffsetLeft.floatValue != value.start) {
@@ -152,11 +155,13 @@ internal fun WantedRangeSlider(
             WantedSliderThumb(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
-                    .offset(x = leftOffsetX.floatValue.dp),
+                    .offset(x = leftOffsetX.floatValue.dp).
+                    zIndex(leftThumbZIndex.floatValue),
                 enabled = enabled,
                 thumbSize = thumbSize.value.dp,
                 contentColor = colors.thumbColor(enabled),
                 onDragStart = {
+                    leftThumbZIndex.floatValue = 10f
                     isDragging.value = true
                 },
                 onDrag = { dragAmount: Offset ->
@@ -170,6 +175,7 @@ internal fun WantedRangeSlider(
                     }
                 },
                 onDragEnd = {
+                    leftThumbZIndex.floatValue = 1f
                     val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
                     val rightStep =
                         getStep(rightOffsetX.floatValue, stepSize.floatValue)
@@ -195,12 +201,14 @@ internal fun WantedRangeSlider(
             modifier = Modifier
                 .size(thumbSize)
                 .align(Alignment.CenterStart)
-                .offset(x = rightOffsetX.floatValue.dp),
+                .offset(x = rightOffsetX.floatValue.dp)
+                .zIndex(rightThumbZIndex.floatValue),
             enabled = enabled,
             thumbSize = thumbSize.value.dp,
             contentColor = colors.thumbColor(enabled),
             onDragStart = {
                 isDragging.value = true
+                rightThumbZIndex.floatValue = 10f
             },
             onDrag = { dragAmount: Offset ->
                 scope.launch {
@@ -213,6 +221,7 @@ internal fun WantedRangeSlider(
                 }
             },
             onDragEnd = {
+                rightThumbZIndex.floatValue = 1f
                 val leftStep = getStep(leftOffsetX.floatValue, stepSize.floatValue)
                 val rightStep =
                     getStep(rightOffsetX.floatValue, stepSize.floatValue)
