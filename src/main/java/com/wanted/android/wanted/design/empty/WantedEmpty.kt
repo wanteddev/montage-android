@@ -28,7 +28,10 @@ import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-
+/**
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=22838-255809&m=dev
+ * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3263-262&m=dev
+ */
 @Composable
 fun WantedEmpty(
     modifier: Modifier,
