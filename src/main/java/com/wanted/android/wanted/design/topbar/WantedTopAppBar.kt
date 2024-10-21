@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
@@ -81,6 +80,27 @@ fun WantedTopAppBar(
         )
     }
 }
+
+@Composable
+fun WantedTopAppBarCustomTitle(
+    modifier: Modifier = Modifier,
+    isFullScreen: Boolean = false,
+    type: TopAppBarType = TopAppBarType.Normal,
+    scrollableState: ScrollableState? = null,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    title: @Composable (() -> Unit)? = null,
+    actions: @Composable (RowScope.() -> Unit)? = null
+) {
+    WantedTopAppBar(
+        modifier = modifier,
+        isFullScreen = isFullScreen, type = type,
+        scrollableState = scrollableState,
+        navigationIcon = navigationIcon,
+        title = title,
+        actions = actions
+    )
+}
+
 
 @Composable
 fun WantedBackTopAppBar(
@@ -183,7 +203,7 @@ fun WantedTopAppBar(
     "foldableLight",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     locale = "ko",
-    device = Devices.FOLDABLE
+    device = "spec:width=673dp,height=841dp"
 )
 @Composable
 private fun CustomTopAppBarPreview() {
