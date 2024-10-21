@@ -3,6 +3,7 @@ package com.wanted.android.wanted.design.avatar
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,16 +39,18 @@ fun WantedAvatarGroup(
         verticalAlignment = Alignment.CenterVertically
     ) {
         modelList.forEachIndexed { index, any ->
-            WantedAvatar(
-                modifier = Modifier.zIndex(modelList.size - index.toFloat()),
-                model = any,
-                placeHolder = placeHolder,
-                size = size,
-                type = type,
-                isGroup = true,
-                isIcon = isIcon,
-                isDrawableRes = isDrawableRes
-            )
+            Box(modifier = Modifier.zIndex(modelList.size - index.toFloat())) {
+                WantedAvatar(
+                    modifier = Modifier,
+                    model = any,
+                    placeHolder = placeHolder,
+                    size = size,
+                    type = type,
+                    isGroup = true,
+                    isIcon = isIcon,
+                    isDrawableRes = isDrawableRes
+                )
+            }
         }
     }
 }
