@@ -12,7 +12,9 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
-
+/**
+ * 피그마 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3297-9864&t=GbyYpYYnAOI0hwwu-4
+ */
 @Composable
 fun WantedCircularLoading(
     modifier: Modifier = Modifier,
