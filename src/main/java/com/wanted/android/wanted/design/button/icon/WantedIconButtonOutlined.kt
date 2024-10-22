@@ -27,29 +27,31 @@ import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
-
-
 @Composable
 fun WantedIconButtonOutlined(
     modifier: Modifier,
     @DrawableRes icon: Int,
     size: WantedIconButtonSize,
+    enabled: Boolean = true,
     outlineColor: Color = colorResource(id = R.color.line_normal_neutral),
     disableOutlineColor: Color = colorResource(id = R.color.line_normal_neutral),
-    enabled: Boolean = true,
     tint: Color = colorResource(id = R.color.label_normal),
+    disableTint: Color = colorResource(id = R.color.label_disable),
     background: Color = colorResource(id = R.color.transparent),
+    disableBackground: Color = colorResource(id = R.color.transparent),
     onClick: () -> Unit = {}
 ) {
     WantedIconButtonOutlined(
         modifier = modifier.size(size.size),
         icon = icon,
+        enabled = enabled,
+        padding = size.padding,
         outlineColor = outlineColor,
         disableOutlineColor = disableOutlineColor,
-        padding = size.padding,
-        enabled = enabled,
         tint = tint,
+        disableTint = disableTint,
         background = background,
+        disableBackground = disableBackground,
         onClick = onClick
     )
 }
@@ -58,18 +60,20 @@ fun WantedIconButtonOutlined(
 fun WantedIconButtonOutlined(
     modifier: Modifier,
     @DrawableRes icon: Int,
-    outlineColor: Color = colorResource(id = R.color.line_normal_neutral),
-    disableOutlineColor: Color = colorResource(id = R.color.line_normal_neutral),
     padding: Dp = 10.dp,
     enabled: Boolean = true,
+    outlineColor: Color = colorResource(id = R.color.line_normal_neutral),
+    disableOutlineColor: Color = colorResource(id = R.color.line_normal_neutral),
     tint: Color = colorResource(id = R.color.label_normal),
+    disableTint: Color = colorResource(id = R.color.label_disable),
     background: Color = colorResource(id = R.color.transparent),
+    disableBackground: Color = colorResource(id = R.color.transparent),
     onClick: () -> Unit = {}
 ) {
     Icon(
         modifier = modifier
             .clip(CircleShape)
-            .background(background)
+            .background(if (enabled) background else disableBackground)
             .border(
                 width = 1.dp,
                 color = if (enabled) outlineColor else disableOutlineColor,
@@ -79,7 +83,7 @@ fun WantedIconButtonOutlined(
             .padding(padding),
         painter = painterResource(id = icon),
         contentDescription = "",
-        tint = if (enabled) tint else colorResource(id = R.color.label_disable)
+        tint = if (enabled) tint else disableTint
     )
 }
 

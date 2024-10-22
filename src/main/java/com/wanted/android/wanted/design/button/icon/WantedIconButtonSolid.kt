@@ -59,7 +59,7 @@ fun WantedIconButtonSolid(
     Icon(
         modifier = modifier
             .clip(CircleShape)
-            .background(background)
+            .background(if (enabled) background else colorResource(id = R.color.fill_normal))
             .clickOnceForDesignSystem(enabled) { onClick() }
             .padding(padding),
         painter = painterResource(id = icon),

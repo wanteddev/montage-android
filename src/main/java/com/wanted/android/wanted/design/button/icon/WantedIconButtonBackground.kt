@@ -2,7 +2,6 @@ package com.wanted.android.wanted.design.button.icon
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +11,20 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
@@ -40,41 +46,25 @@ fun WantedIconButtonBackground(
         .copy(alpha = if (alternative) OPACITY_88 else OPACITY_61),
     onClick: () -> Unit = {}
 ) {
-    val backgroundModifier = when {
-        !enabled -> {
-            Modifier.background(
-                colorResource(id = R.color.fill_alternative),
-                shape = CircleShape
-            )
-        }
+    val contentSize = remember { mutableStateOf(0.dp) }
+    val localDensity = LocalDensity.current
 
-        alternative -> {
-            Modifier.background(
-                colorResource(id = R.color.cool_neutral_30),
-                shape = CircleShape
-            )
-        }
-
-        else -> {
-            Modifier
-                .background(
-                    colorResource(id = R.color.static_white).copy(OPACITY_35),
-                    shape = CircleShape
-                )
-                .background(
-                    colorResource(id = R.color.static_black).copy(OPACITY_5),
-                    shape = CircleShape
-                )
-        }
-    }
     WantedTouchArea(
         content = {
             Icon(
                 modifier = Modifier
-                    .then(backgroundModifier)
+                    .background(
+                        enabled = enabled,
+                        alternative = alternative,
+                        padding = 4.dp,
+                        size = contentSize.value
+                    )
                     .clip(CircleShape)
                     .then(modifier)
-                    .padding(2.dp),
+                    .onGloballyPositioned { coordinates ->
+                        // Set column height using the LayoutCoordinates
+                        contentSize.value = with(localDensity) { coordinates.size.width.toDp() }
+                    }.padding(2.dp),
                 painter = painterResource(id = icon),
                 contentDescription = "",
                 tint = if (enabled) tint else colorResource(id = R.color.cool_neutral_50).copy(alpha = OPACITY_22)
@@ -87,6 +77,65 @@ fun WantedIconButtonBackground(
         onClick = onClick
     )
 }
+
+@Composable
+fun Modifier.background(
+    alternative: Boolean = false,
+    enabled: Boolean = true,
+    padding: Dp,
+    size: Dp
+): Modifier {
+    val localDensity = LocalDensity.current
+    val modifier = when {
+        !enabled -> {
+            val color = colorResource(id = R.color.fill_alternative)
+            Modifier.drawBehind {
+                drawCircle(
+                    color = color,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+            }
+        }
+
+        alternative -> {
+            val color = colorResource(id = R.color.cool_neutral_30)
+
+            Modifier.drawBehind {
+                drawCircle(
+                    color = color,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+            }
+        }
+
+        else -> {
+            val color = colorResource(id = R.color.static_white).copy(OPACITY_35)
+            val color1 = colorResource(id = R.color.static_black).copy(OPACITY_5)
+            Modifier.drawBehind {
+                drawCircle(
+                    color = color,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+
+                drawCircle(
+                    color = color1,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+            }
+        }
+    }
+
+    return this.then(modifier)
+}
+
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
