@@ -1,0 +1,188 @@
+package com.wanted.android.wanted.design.button.icon
+
+import android.content.res.Configuration
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_22
+import com.wanted.android.wanted.design.util.OPACITY_35
+import com.wanted.android.wanted.design.util.OPACITY_5
+import com.wanted.android.wanted.design.util.OPACITY_61
+import com.wanted.android.wanted.design.util.OPACITY_88
+
+
+@Composable
+fun WantedIconButtonBackground(
+    modifier: Modifier,
+    @DrawableRes icon: Int,
+    alternative: Boolean = false,
+    enabled: Boolean = true,
+    tint: Color = colorResource(id = R.color.cool_neutral_50)
+        .copy(alpha = if (alternative) OPACITY_88 else OPACITY_61),
+    onClick: () -> Unit = {}
+) {
+    val contentSize = remember { mutableStateOf(0.dp) }
+    val localDensity = LocalDensity.current
+
+    WantedTouchArea(
+        content = {
+            Icon(
+                modifier = Modifier
+                    .background(
+                        enabled = enabled,
+                        alternative = alternative,
+                        padding = 4.dp,
+                        size = contentSize.value
+                    )
+                    .clip(CircleShape)
+                    .then(modifier)
+                    .onGloballyPositioned { coordinates ->
+                        // Set column height using the LayoutCoordinates
+                        contentSize.value = with(localDensity) { coordinates.size.width.toDp() }
+                    }.padding(2.dp),
+                painter = painterResource(id = icon),
+                contentDescription = "",
+                tint = if (enabled) tint else colorResource(id = R.color.cool_neutral_50).copy(alpha = OPACITY_22)
+            )
+        },
+        enabled = enabled,
+        shape = CircleShape,
+        horizontalPadding = 4.dp,
+        verticalPadding = 4.dp,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun Modifier.background(
+    alternative: Boolean = false,
+    enabled: Boolean = true,
+    padding: Dp,
+    size: Dp
+): Modifier {
+    val localDensity = LocalDensity.current
+    val modifier = when {
+        !enabled -> {
+            val color = colorResource(id = R.color.fill_alternative)
+            Modifier.drawBehind {
+                drawCircle(
+                    color = color,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+            }
+        }
+
+        alternative -> {
+            val color = colorResource(id = R.color.cool_neutral_30)
+
+            Modifier.drawBehind {
+                drawCircle(
+                    color = color,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+            }
+        }
+
+        else -> {
+            val color = colorResource(id = R.color.static_white).copy(OPACITY_35)
+            val color1 = colorResource(id = R.color.static_black).copy(OPACITY_5)
+            Modifier.drawBehind {
+                drawCircle(
+                    color = color,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+
+                drawCircle(
+                    color = color1,
+                    radius = with(localDensity) { (size + padding * 2).toPx() } / 2,
+                    center = center,
+                    style = Fill
+                )
+            }
+        }
+    }
+
+    return this.then(modifier)
+}
+
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun WantedIconButtonBackgroundPreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                WantedIconButtonBackground(
+                    modifier = Modifier.size(24.dp),
+                    icon = R.drawable.graphic_company_12dp_svg,
+                    onClick = {}
+                )
+
+                WantedIconButtonBackground(
+                    modifier = Modifier.size(24.dp),
+                    icon = R.drawable.graphic_company_12dp_svg,
+                    alternative = true,
+                    onClick = {}
+                )
+
+                WantedIconButtonBackground(
+                    modifier = Modifier.size(24.dp),
+                    icon = R.drawable.graphic_company_12dp_svg,
+                    enabled = false,
+                    onClick = {}
+                )
+
+                WantedIconButtonBackground(
+                    modifier = Modifier.size(24.dp),
+                    icon = R.drawable.graphic_company_12dp_svg,
+                    alternative = true,
+                    enabled = false,
+                    onClick = {}
+                )
+            }
+        }
+    }
+}
