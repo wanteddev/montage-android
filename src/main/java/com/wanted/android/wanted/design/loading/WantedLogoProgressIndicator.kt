@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.beta.loading
+package com.wanted.android.wanted.design.loading
 
 import android.content.Context
 import android.util.AttributeSet
@@ -15,7 +15,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 
 
-class ProgressIndicatorWanted @JvmOverloads constructor(
+class WantedLogoProgressIndicator @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -23,21 +23,20 @@ class ProgressIndicatorWanted @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        ProgressIndicatorWanted()
+        WantedLogoProgressIndicator()
     }
-
 }
 
 @Composable
-fun ProgressIndicatorWanted(modifier: Modifier = Modifier) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.Asset(assetName = "progress_indicator_wanted.json"))
+fun WantedLogoProgressIndicator(modifier: Modifier = Modifier) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.Asset(assetName = "circular-wanted.json"))
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
 
     LottieAnimation(
-        modifier = modifier.size(80.dp),
+        modifier = modifier.size(32.dp),
         composition = composition,
         progress = { progress },
     )

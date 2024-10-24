@@ -26,7 +26,9 @@ import com.wanted.android.wanted.design.list.WantedCell
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-
+/**
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=16784-140137&m=dev
+ */
 @Composable
 fun WantedMenu(
     modifier: Modifier = Modifier,
