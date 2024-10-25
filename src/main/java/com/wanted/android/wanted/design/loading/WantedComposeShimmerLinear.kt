@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.shimmer
+package com.wanted.android.wanted.design.loading
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -17,7 +17,7 @@ import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.OPACITY_16
 
-fun Modifier.shimmer(
+fun Modifier.shimmerLinear(
     colorRes: Int = R.color.fill_alternative,
     alpha: Float = OPACITY_16
 ): Modifier = composed {
