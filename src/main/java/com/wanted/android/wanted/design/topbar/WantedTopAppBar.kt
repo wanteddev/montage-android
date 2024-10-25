@@ -82,27 +82,6 @@ fun WantedTopAppBar(
 }
 
 @Composable
-fun WantedTopAppBarCustomTitle(
-    modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
-    type: TopAppBarType = TopAppBarType.Normal,
-    scrollableState: ScrollableState? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
-    title: @Composable (() -> Unit)? = null,
-    actions: @Composable (RowScope.() -> Unit)? = null
-) {
-    WantedTopAppBar(
-        modifier = modifier,
-        isFullScreen = isFullScreen, type = type,
-        scrollableState = scrollableState,
-        navigationIcon = navigationIcon,
-        title = title,
-        actions = actions
-    )
-}
-
-
-@Composable
 fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
     isFullScreen: Boolean = false,
