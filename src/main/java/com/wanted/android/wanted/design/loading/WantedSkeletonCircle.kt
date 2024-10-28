@@ -1,19 +1,15 @@
 package com.wanted.android.wanted.design.loading
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -23,11 +19,12 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
-fun WantedSkeletonEllipse(
+fun WantedSkeletonCircle(
     modifier: Modifier = Modifier,
     color: Color = colorResource(id = R.color.fill_normal)
 ) {
     WantedSkeletonRectangle(
+        modifier = modifier,
         shape = CircleShape,
         color = color
     )
@@ -42,7 +39,7 @@ fun WantedSkeletonEllipse(
     device = Devices.FOLDABLE
 )
 @Composable
-private fun WantedSkeletonRectanglePreview() {
+private fun WantedSkeletonCirclePreview() {
     DesignSystemTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -51,7 +48,7 @@ private fun WantedSkeletonRectanglePreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedSkeletonRectangle(
+                WantedSkeletonCircle(
                     modifier = Modifier.size(200.dp)
                 )
             }
