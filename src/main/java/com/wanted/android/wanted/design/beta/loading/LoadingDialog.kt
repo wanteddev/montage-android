@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
+import com.wanted.android.wanted.design.loading.WantedLogoProgressIndicator
 
 @Composable
 fun LoadingDialog(
@@ -28,7 +29,7 @@ fun LoadingDialog(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            ProgressIndicatorWanted()
+            WantedLogoProgressIndicator()
         }
     }
 }
