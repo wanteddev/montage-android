@@ -265,7 +265,9 @@ fun PreviewWantedSolidButtonSmallNoDrawableEnable() {
         WantedSolidButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            modifier = Modifier.padding(top = 20.dp).wrapContentSize()
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .wrapContentSize()
         )
 
 
