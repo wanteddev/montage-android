@@ -219,6 +219,16 @@ private fun WantedCheckBoxImpl(
     }
 }
 
+@Deprecated(
+    "Use \n" +
+            "WantedCheckBox(modifier: Modifier,\n" +
+            "    size: CheckBoxSize,\n" +
+            "    style: CheckBoxStyle = CheckBoxStyle.CheckBox,\n" +
+            "    checkState: CheckBoxState = CheckBoxState.Unchecked,\n" +
+            "    enabled: Boolean = true,\n" +
+            "    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },\n" +
+            "    onCheckedChange: ((Boolean) -> Unit))"
+)
 @Composable
 fun WantedCheckBox(
     modifier: Modifier = Modifier,
