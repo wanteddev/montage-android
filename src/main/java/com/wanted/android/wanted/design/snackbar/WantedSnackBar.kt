@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +41,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 fun WantedSnackBar(
     modifier: Modifier = Modifier,
+    snackbarData: SnackbarData? = null,
     text: String = "",
     description: String = "",
     buttonText: String,
@@ -73,7 +75,10 @@ fun WantedSnackBar(
                     modifier = Modifier
                         .defaultMinSize(minWidth = 54.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .clickOnceForDesignSystem { onClick() }
+                        .clickOnceForDesignSystem {
+                            onClick()
+                            snackbarData?.performAction()
+                        }
                         .padding(vertical = 4.dp, horizontal = 7.dp),
 
                     text = buttonText,

@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.topbar
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
@@ -16,12 +17,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.topbar.WantedTopAppBarContract.TopAppBarType
@@ -114,8 +117,9 @@ fun WantedCenterTopAppBar(
     }
 
     Surface(
-        modifier = modifier,
-        shadowElevation = elevation.intValue.dp
+        modifier = modifier
+            .shadow(elevation.intValue.dp)
+            .zIndex(1f),
     ) {
         CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
             when (type) {
