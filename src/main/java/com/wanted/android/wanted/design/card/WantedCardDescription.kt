@@ -24,7 +24,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 fun WantedCardDescription(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
     maxLines: Int = 2,
     caption: String = "",
