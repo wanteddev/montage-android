@@ -3,7 +3,7 @@ package com.wanted.android.wanted.design.loading
 import android.content.Context
 import android.util.AttributeSet
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -46,7 +46,7 @@ fun WantedLogoProgressIndicator(modifier: Modifier = Modifier) {
     )
 
     LottieAnimation(
-        modifier = modifier.size(32.dp),
+        modifier = modifier.defaultMinSize(32.dp),
         composition = composition,
         progress = { progress },
     )

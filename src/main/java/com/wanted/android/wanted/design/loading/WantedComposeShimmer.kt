@@ -1,6 +1,6 @@
 package com.wanted.android.wanted.design.loading
 
-import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -14,7 +14,7 @@ import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 
 fun Modifier.shimmer(
-    colorRes: Int = R.color.static_white // 기본 색상 리소스
+    colorRes: Int = R.color.background_normal_normal // 기본 색상 리소스
 ): Modifier = composed {
     val transition = rememberInfiniteTransition(label = "")
     val alphaAnimation by transition.animateFloat(
@@ -23,7 +23,7 @@ fun Modifier.shimmer(
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = ANIMATION_DURATION,
-                easing = LinearEasing
+                easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
             ),
             repeatMode = RepeatMode.Reverse // Reverse로 깜박이는 효과 추가
         ), label = ""
@@ -43,4 +43,4 @@ fun Modifier.shimmer(
     )
 }
 
-private const val ANIMATION_DURATION = 1500
+private const val ANIMATION_DURATION = 1000

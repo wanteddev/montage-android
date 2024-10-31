@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wanted.android.designsystem.R
@@ -31,6 +32,7 @@ import com.wanted.android.wanted.design.util.FontFixTextStyle
 fun LogoLoading(
     modifier: Modifier = Modifier,
     message: String? = null,
+    size: Dp = 32.dp,
     dimColor: Color = Color.Transparent
 ) {
     Surface(
@@ -63,7 +65,7 @@ fun LogoLoading(
                 modifier = Modifier.wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
-                WantedLogoProgressIndicator()
+                WantedLogoProgressIndicator(modifier = Modifier.size(size))
             }
         }
     }
@@ -103,4 +105,22 @@ private fun LogoLoadingMessagePreview() {
         }
     }
 }
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun LogoLoadingMessageSizePreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            LogoLoading(message = "loading...", size = 100.dp)
+        }
+    }
+}
+
 
