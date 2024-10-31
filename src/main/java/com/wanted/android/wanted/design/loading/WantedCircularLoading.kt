@@ -3,6 +3,7 @@ package com.wanted.android.wanted.design.loading
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -10,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
@@ -18,8 +21,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 fun WantedCircularLoading(
     modifier: Modifier = Modifier,
-    size: WantedCircularProgressSize = WantedCircularProgressSize.Normal,
     dimColor: Color = Color.Transparent,
+    size: Dp = 24.dp
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -29,7 +32,7 @@ fun WantedCircularLoading(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            WantedCircularProgressIndicator(size = size)
+            WantedCircularProgressIndicator(modifier = Modifier.size(size))
         }
     }
 }

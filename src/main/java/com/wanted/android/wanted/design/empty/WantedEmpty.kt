@@ -131,7 +131,7 @@ private fun WantedEmptyLayout(
         }
 
         illustration?.let {
-            Spacer(modifier = Modifier.padding(20.dp))
+            Spacer(modifier = Modifier.size(20.dp))
         }
     }
 }
