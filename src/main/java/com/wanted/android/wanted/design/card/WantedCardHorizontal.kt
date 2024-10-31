@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.card
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -97,6 +98,7 @@ private fun WantedCardHorizontalLayout(
                 .height(64.dp)
                 .aspectRatio(4 / 3f)
                 .clip(RoundedCornerShape(12.dp))
+                .background(color = colorResource(id = R.color.fill_alternative))
                 .border(
                     width = 1.dp,
                     color = colorResource(id = R.color.line_solid_alternative),

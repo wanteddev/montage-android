@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -44,7 +45,8 @@ internal fun WantedThumbnailOverly(
                         colorResource(id = R.color.static_black).copy(alpha = OPACITY_35),
                         colorResource(id = android.R.color.transparent)
                     )
-                )
+                ),
+                shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
             )
             .padding(10.dp),
         verticalAlignment = Alignment.Top,
