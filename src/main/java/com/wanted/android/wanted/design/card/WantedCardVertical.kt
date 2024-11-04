@@ -29,6 +29,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.badge.WantedContentBadge
 import com.wanted.android.wanted.design.base.WantedTouchArea
+import com.wanted.android.wanted.design.loading.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
@@ -44,44 +45,83 @@ fun WantedCardVertical(
     title: String = "",
     caption: String = "",
     extraCaption: String = "",
+    isLoading: Boolean = false,
+    cardDefault: WantedCardDefault = WantedCardDefaults.getDefault(),
     @DrawableRes overlayToggleIcon: Int? = null,
     topContent: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null
 ) {
+    if (isLoading) {
+        WantedCardVerticalSkeleton(
+            modifier = modifier,
+            topContent = cardDefault.topContentSkeleton,
+            caption = cardDefault.captionSkeleton,
+            extraCaption = cardDefault.extraCaptionSkeleton,
+            bottomContent = cardDefault.bottomContentSkeleton,
+        )
+    } else {
+
+        WantedCardVerticalLayout(
+            modifier = modifier,
+            thumbnail = { width: Dp, height: Dp ->
+                GlideImage(
+                    modifier = Modifier.size(width, height),
+                    model = thumbnail,
+                    contentDescription = ""
+                )
+            },
+            thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
+                {
+                    WantedThumbnailOverly(
+                        modifier = Modifier,
+                        title = overlayCaption,
+                        toggleIcon = overlayToggleIcon?.let {
+                            {
+                                WantedTouchArea(
+                                    content = {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.button_bookmark_line_svg),
+                                            contentDescription = ""
+                                        )
+                                    },
+                                    onClick = {}
+                                )
+                            }
+                        }
+                    )
+                }
+            } else null,
+            description = {
+                WantedCardDescription(
+                    modifier = Modifier,
+                    title = title,
+                    caption = caption,
+                    extraCaption = extraCaption,
+                    bottomContent = bottomContent,
+                    topContent = topContent
+                )
+            }
+        )
+    }
+}
+
+@Composable
+private fun WantedCardVerticalSkeleton(
+    modifier: Modifier = Modifier,
+    topContent: Boolean = false,
+    caption: Boolean = true,
+    extraCaption: Boolean = true,
+    bottomContent: Boolean = false
+) {
     WantedCardVerticalLayout(
         modifier = modifier,
         thumbnail = { width: Dp, height: Dp ->
-            GlideImage(
-                modifier = Modifier.size(width, height),
-                model = thumbnail,
-                contentDescription = ""
-            )
+            WantedSkeletonRectangle(Modifier.size(width, height))
         },
-        thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
-            {
-                WantedThumbnailOverly(
-                    modifier = Modifier,
-                    title = overlayCaption,
-                    toggleIcon = overlayToggleIcon?.let {
-                        {
-                            WantedTouchArea(
-                                content = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.button_bookmark_line_svg),
-                                        contentDescription = ""
-                                    )
-                                },
-                                onClick = {}
-                            )
-                        }
-                    }
-                )
-            }
-        } else null,
+        thumbnailOverlay = null,
         description = {
-            WantedCardDescription(
+            WantedCardDescriptionSkeleton(
                 modifier = Modifier,
-                title = title,
                 caption = caption,
                 extraCaption = extraCaption,
                 bottomContent = bottomContent,
@@ -187,6 +227,65 @@ private fun WantedCardPreview() {
                     },
                 )
 
+            }
+        }
+    }
+}
+
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun WantedCardSkeletonPreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                WantedCardVertical(
+                    modifier = Modifier.width(152.dp),
+                    isLoading = true,
+                    title = "제목",
+                    caption = "캡션",
+                    overlayCaption = "overlayCaption"
+                )
+
+                WantedCardVertical(
+                    modifier = Modifier.width(152.dp),
+                    isLoading = true,
+                    title = "제목",
+                    caption = "캡션",
+                    extraCaption = "추가 캡션",
+                    overlayCaption = "overlayCaption",
+                    cardDefault = WantedCardDefault(
+                        topContentSkeleton = true
+                    ),
+                    overlayToggleIcon = R.drawable.button_bookmark_line_svg
+                )
+
+                WantedCardVertical(
+                    modifier = Modifier.width(152.dp),
+                    isLoading = true,
+                    title = "제목",
+                    caption = "캡션",
+                    extraCaption = "추가 캡션",
+                    cardDefault = WantedCardDefault(
+                        topContentSkeleton = true,
+                        bottomContentSkeleton = true
+                    ),
+                    topContent = {
+                        WantedContentBadge(text = "텍스트")
+                    }
+                )
             }
         }
     }

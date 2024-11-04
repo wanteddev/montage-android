@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,7 @@ import com.wanted.android.wanted.design.badge.WantedContentBadge
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.element.CheckBoxSize
 import com.wanted.android.wanted.design.element.WantedCheckBox
+import com.wanted.android.wanted.design.loading.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
@@ -48,35 +50,87 @@ fun WantedCardHorizontal(
     title: String = "",
     caption: String = "",
     extraCaption: String = "",
+    isLoading: Boolean = false,
+    cardDefault: WantedCardDefault = WantedCardDefaults.getDefault(),
     topContent: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null,
+    leftContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable (() -> Unit)? = null,
+) {
+    if (isLoading) {
+        WantedCardHorizontalSkeleton(
+            modifier = modifier,
+            topContent = cardDefault.topContentSkeleton,
+            caption = cardDefault.captionSkeleton,
+            extraCaption = cardDefault.extraCaptionSkeleton,
+            bottomContent = cardDefault.bottomContentSkeleton,
+            leftContent = leftContent,
+            rightContent = rightContent
+        )
+    } else {
+
+        WantedCardHorizontalLayout(
+            modifier = modifier,
+            thumbnail = { width: Dp, height: Dp ->
+                GlideImage(
+                    modifier = Modifier.size(width, height),
+                    model = thumbnail,
+                    contentDescription = ""
+                )
+            },
+            description = {
+                WantedCardDescription(
+                    modifier = Modifier,
+                    title = title,
+                    caption = caption,
+                    extraCaption = extraCaption,
+                    bottomContent = bottomContent,
+                    topContent = topContent
+                )
+            },
+            leftContent = leftContent,
+            rightContent = rightContent
+        )
+    }
+}
+
+
+@Composable
+private fun WantedCardHorizontalSkeleton(
+    modifier: Modifier = Modifier,
+    topContent: Boolean = false,
+    caption: Boolean = true,
+    extraCaption: Boolean = true,
+    bottomContent: Boolean = false,
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
 ) {
     WantedCardHorizontalLayout(
         modifier = modifier,
         thumbnail = { width: Dp, height: Dp ->
-            GlideImage(
-                modifier = Modifier.size(width, height),
-                model = thumbnail,
-                contentDescription = ""
-            )
+            WantedSkeletonRectangle(Modifier.size(width, height))
         },
         description = {
-            WantedCardDescription(
+            WantedCardDescriptionSkeleton(
                 modifier = Modifier,
-                title = title,
                 caption = caption,
                 extraCaption = extraCaption,
                 bottomContent = bottomContent,
                 topContent = topContent
             )
         },
-        leftContent = leftContent,
-        rightContent = rightContent
+        leftContent = if (leftContent != null) {
+            {
+                Spacer(modifier = Modifier.size(24.dp))
+            }
+        } else null,
+        rightContent = if (rightContent != null) {
+            {
+                Spacer(modifier = Modifier.size(24.dp))
+            }
+        } else null,
     )
 }
-
 
 @Composable
 private fun WantedCardHorizontalLayout(
@@ -229,3 +283,122 @@ private fun WantedCardPreview() {
         }
     }
 }
+
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun WantedCardSkeletonPreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                WantedCardHorizontal(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 64.dp)
+                        .fillMaxWidth(),
+                    isLoading = true,
+                    title = "제목",
+                    caption = "캡션",
+                )
+
+                WantedCardHorizontal(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 64.dp)
+                        .fillMaxWidth(),
+                    title = "제목",
+                    caption = "캡션",
+                    isLoading = true,
+                    cardDefault = WantedCardDefault(
+                        bottomContentSkeleton = true
+                    ),
+                    extraCaption = "추가 캡션"
+                )
+
+                WantedCardHorizontal(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 64.dp)
+                        .fillMaxWidth(),
+                    title = "제목",
+                    caption = "캡션",
+                    extraCaption = "추가 캡션",
+                    isLoading = true,
+                    cardDefault = WantedCardDefault(
+                        topContentSkeleton = true,
+                        bottomContentSkeleton = true
+                    ),
+                    topContent = {
+                        WantedContentBadge(text = "텍스트")
+                    }
+                )
+
+                WantedCardHorizontal(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 64.dp)
+                        .fillMaxWidth(),
+                    title = "제목",
+                    caption = "캡션",
+                    extraCaption = "추가 캡션",
+                    isLoading = true,
+                    cardDefault = WantedCardDefault(
+                        topContentSkeleton = true,
+                        bottomContentSkeleton = true
+                    ),
+                    topContent = {
+                        WantedContentBadge(text = "텍스트")
+                    },
+                    leftContent = {}
+                )
+
+                WantedCardHorizontal(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 64.dp)
+                        .fillMaxWidth(),
+                    title = "제목",
+                    caption = "캡션",
+                    extraCaption = "추가 캡션",
+                    isLoading = true,
+                    cardDefault = WantedCardDefault(
+                        topContentSkeleton = true,
+                        bottomContentSkeleton = true
+                    ),
+                    topContent = {
+                        WantedContentBadge(text = "텍스트")
+                    },
+                    rightContent = {}
+                )
+
+                WantedCardHorizontal(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 64.dp)
+                        .fillMaxWidth(),
+                    title = "제목",
+                    caption = "캡션",
+                    extraCaption = "추가 캡션",
+                    isLoading = true,
+                    cardDefault = WantedCardDefault(
+                        topContentSkeleton = true,
+                        bottomContentSkeleton = true
+                    ),
+                    topContent = {
+                        WantedContentBadge(text = "텍스트")
+                    },
+                    leftContent = {},
+                    rightContent = {}
+                )
+
+            }
+        }
+    }
+}
+

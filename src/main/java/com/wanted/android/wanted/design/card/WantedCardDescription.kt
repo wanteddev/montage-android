@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,6 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.badge.WantedContentBadge
+import com.wanted.android.wanted.design.loading.WantedSkeletonLength
+import com.wanted.android.wanted.design.loading.WantedSkeletonRectangle
+import com.wanted.android.wanted.design.loading.WantedSkeletonText
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -64,8 +69,51 @@ fun WantedCardDescription(
     )
 }
 
+
 @Composable
-private fun WantedCardDescriptionLayout(
+internal fun WantedCardDescriptionSkeleton(
+    modifier: Modifier = Modifier,
+    topContent: Boolean = false,
+    caption: Boolean = true,
+    extraCaption: Boolean = true,
+    bottomContent: Boolean = false
+) {
+    WantedCardDescriptionLayout(
+        modifier = modifier,
+        topContent = if (topContent) {
+            { WantedSkeletonRectangle(modifier = Modifier.size(48.dp, 20.dp)) }
+        } else null,
+        title = {
+            WantedSkeletonText(
+                modifier = Modifier.height(22.dp),
+                length = WantedSkeletonLength.Ratio100
+            )
+        },
+        cation = if (caption) {
+            {
+                WantedSkeletonText(
+                    modifier = Modifier.height(18.dp),
+                    length = WantedSkeletonLength.Ratio50
+                )
+            }
+        } else null,
+        extraCaption = if (extraCaption) {
+            {
+                WantedSkeletonText(
+                    modifier = Modifier.height(18.dp),
+                    length = WantedSkeletonLength.Ratio25
+                )
+            }
+        } else null,
+        bottomContent = if (bottomContent) {
+            { WantedSkeletonRectangle(modifier = Modifier.size(48.dp, 20.dp)) }
+        } else null
+    )
+}
+
+
+@Composable
+internal fun WantedCardDescriptionLayout(
     modifier: Modifier = Modifier,
     topContent: @Composable (() -> Unit)? = null,
     title: @Composable () -> Unit,
@@ -170,6 +218,10 @@ private fun WantedCardDescriptionPreview() {
                         }
                     }
                 )
+
+                WantedCardDescriptionSkeleton()
+
+                WantedCardDescriptionSkeleton(topContent = true, bottomContent = true)
             }
         }
     }
