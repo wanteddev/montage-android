@@ -49,6 +49,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import java.text.BreakIterator
 
 @Composable
 fun WantedTextArea(
@@ -64,6 +65,7 @@ fun WantedTextArea(
     minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
+    isGraphemeClusterCount: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -94,6 +96,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                isGraphemeClusterCount = isGraphemeClusterCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -206,6 +209,7 @@ private fun WantedTextArea(
     error: Boolean = false,
     enabled: Boolean = true,
     focused: Boolean = false,
+    isGraphemeClusterCount: Boolean = false,
     maxLines: Int = 8,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -233,7 +237,11 @@ private fun WantedTextArea(
         background = background,
         leftContent = {
             WantedTextAreaCharacterCount(
-                current = value.length,
+                current = if (isGraphemeClusterCount) {
+                    graphemeClusterCount(value)
+                } else {
+                    value.length
+                },
                 maxWordCount = maxWordCount
             )
         },
@@ -412,6 +420,17 @@ private fun DecorationBox(
     }
 }
 
+@Composable
+private fun graphemeClusterCount(text: String): Int {
+    val iterator = BreakIterator.getCharacterInstance()
+    iterator.setText(text)
+    var count = 0
+    while (iterator.next() != BreakIterator.DONE) {
+        count++
+    }
+    return count
+}
+
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
@@ -438,6 +457,17 @@ private fun WantedTextAreaPreview() {
                     enabled = true,
                     focused = true,
                     placeholder = "텍스트를 입력해 주세요."
+                )
+
+                WantedTextArea(
+                    modifier = Modifier,
+                    title = "주제",
+                    error = true,
+                    requiredBadge = true,
+                    value = "입력한 텍스트.",
+                    isGraphemeClusterCount = true,
+                    placeholder = "텍스트를 입력해 주세요.",
+                    rightButton = "텍스트"
                 )
 
                 WantedTextArea(
