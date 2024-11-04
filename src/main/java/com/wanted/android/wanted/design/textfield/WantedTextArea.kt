@@ -65,7 +65,7 @@ fun WantedTextArea(
     minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
-    isGraphemeClusterCount: Boolean = false,
+    isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
