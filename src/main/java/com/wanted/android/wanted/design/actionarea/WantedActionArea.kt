@@ -51,23 +51,84 @@ fun WantedActionArea(
     caption: String? = null,
     variant: @Composable (() -> Unit)? = null
 ) {
-    WantedActionArea(
+    WantedActionAreaLayout(
         modifier = modifier,
+        type = type,
         safeArea = safeArea,
         sticky = sticky,
         gradationColor = gradationColor,
-        actionAreaDefault = WantedActionAreaDefaults.getDefault(type = type),
-        positive = positive,
-        negative = negative,
-        neutral = neutral,
-        onClickPositive = onClickPositive,
-        onClickNegative = onClickNegative,
-        onClickNeutral = onClickNeutral,
-        caption = caption,
+        positive = {
+            WantedButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = positive,
+                onClick = onClickPositive
+            )
+        },
+        negative = onClickNegative?.let {
+            {
+                WantedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = negative.orEmpty(),
+                    onClick = onClickNegative
+                )
+            }
+        },
+        neutral = onClickNeutral?.let {
+            {
+                WantedButton(
+                    modifier = if (type == ActionAreaType.Strong) {
+                        Modifier
+                    } else {
+                        Modifier.fillMaxWidth()
+                    },
+                    text = neutral.orEmpty(),
+                    onClick = onClickNeutral
+                )
+            }
+        },
+        caption = caption?.let {
+            {
+                Text(text = caption)
+            }
+        },
         variant = variant
     )
 }
 
+
+@Composable
+fun WantedActionArea(
+    modifier: Modifier = Modifier,
+    safeArea: Boolean = true,
+    sticky: Boolean = false,
+    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
+    type: ActionAreaType = ActionAreaType.Strong,
+    positive: @Composable () -> Unit,
+    negative: @Composable (() -> Unit)? = null,
+    neutral: @Composable (() -> Unit)? = null,
+    caption: String? = null,
+    variant: @Composable (() -> Unit)? = null
+) {
+    WantedActionAreaLayout(
+        modifier = modifier,
+        type = type,
+        safeArea = safeArea,
+        sticky = sticky,
+        gradationColor = gradationColor,
+        positive = positive,
+        negative = negative,
+        neutral = neutral,
+        caption = caption?.let {
+            {
+                Text(text = caption)
+            }
+        },
+        variant = variant
+    )
+}
+
+
+@Deprecated("", level = DeprecationLevel.ERROR)
 @Composable
 fun WantedActionArea(
     modifier: Modifier = Modifier,

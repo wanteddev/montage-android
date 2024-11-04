@@ -98,9 +98,7 @@ fun WantedButton(
             WantedSolidButton(
                 modifier = modifier,
                 text = text,
-                type = buttonDefault.type,
-                size = buttonDefault.size,
-                enabled = buttonDefault.enabled,
+                buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
                 clickListener = onClick,
@@ -111,9 +109,7 @@ fun WantedButton(
             WantedOutlinedButton(
                 modifier = modifier,
                 text = text,
-                size = buttonDefault.size,
-                type = buttonDefault.type,
-                enabled = buttonDefault.enabled,
+                buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
                 clickListener = onClick,
@@ -124,9 +120,7 @@ fun WantedButton(
             WantedTextButton(
                 modifier = modifier,
                 text = text,
-                size = buttonDefault.size,
-                type = buttonDefault.type,
-                enabled = buttonDefault.enabled,
+                buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
                 onClick = onClick,
