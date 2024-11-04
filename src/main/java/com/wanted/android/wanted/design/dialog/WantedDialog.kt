@@ -132,15 +132,6 @@ private fun WantedDialogPreview() {
         Surface {
             Column {
                 WantedDialog(
-                    title = "다이얼로그 타이틀",
-                    message = "다이얼로그 메시지",
-                    confirm = "확인",
-                    cancel = "취소",
-                    onClickConfirm = {},
-                    onClickCancel = {}
-                )
-
-                WantedDialog(
                     title = "다이얼로그 타이틀이 두줄이 되는 경우에는 어떻게 될까요?",
                     message = "다이얼로그 메시지",
                     confirm = "확인",
