@@ -1,20 +1,27 @@
 package com.wanted.android.wanted.design.empty
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
@@ -35,7 +42,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 fun WantedEmpty(
     modifier: Modifier,
-    illustration: @Composable (() -> Unit)? = null,
+    image: @Composable (() -> Unit)? = null,
     heading: String? = null,
     description: String? = null,
     button: String? = null,
@@ -43,7 +50,7 @@ fun WantedEmpty(
 ) {
     WantedEmptyLayout(
         modifier = modifier.fillMaxWidth(),
-        illustration = illustration,
+        image = image,
         heading = heading?.let {
             {
                 Text(
@@ -79,29 +86,48 @@ fun WantedEmpty(
 @Composable
 private fun WantedEmptyLayout(
     modifier: Modifier,
-    illustration: @Composable (() -> Unit)? = null,
+    image: @Composable (() -> Unit)? = null,
     heading: @Composable (() -> Unit)? = null,
     description: @Composable (() -> Unit)? = null,
     button: @Composable (() -> Unit)? = null,
 ) {
-
     Column(
-        modifier = modifier
-            .padding(horizontal = 20.dp)
-            .padding(bottom = 12.dp)
-            .padding(top = illustration?.let { 0.dp } ?: 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier.padding(bottom = image?.let { 20.dp } ?: 0.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        illustration?.let {
+        image?.let {
             Box(
                 modifier = Modifier.size(160.dp),
                 contentAlignment = Alignment.Center
             ) {
-                illustration()
+                image()
             }
         }
 
+        WantedEmptyLayout(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = image?.let { 0.dp } ?: 4.dp)
+                .wrapContentHeight(),
+            heading = heading,
+            description = description,
+            button = button
+        )
+    }
+}
+
+@Composable
+private fun WantedEmptyLayout(
+    modifier: Modifier,
+    heading: @Composable (() -> Unit)? = null,
+    description: @Composable (() -> Unit)? = null,
+    button: @Composable (() -> Unit)? = null
+) {
+    Column(
+        modifier = modifier.padding(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         heading?.let {
             ProvideTextStyle(
                 value = WantedTextStyle(
@@ -129,10 +155,6 @@ private fun WantedEmptyLayout(
                 button()
             }
         }
-
-        illustration?.let {
-            Spacer(modifier = Modifier.padding(20.dp))
-        }
     }
 }
 
@@ -156,6 +178,28 @@ private fun WantedEmptyPreview() {
             ) {
                 WantedEmpty(
                     modifier = Modifier,
+                    heading = "타이틀이 들어가요.",
+                    description = "상황에 대한 설명이 들어가요.\n" +
+                        "설명은 최대 두 줄로 작성해요.",
+                    button = "텍스트",
+                    onClick = {}
+
+                )
+
+                WantedEmpty(
+                    modifier = Modifier,
+                    image = {
+                        Image(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                                .background(colorResource(id = R.color.label_disable))
+                                .padding(10.dp),
+                            painter = painterResource(id = R.drawable.ic_normal_camera_fill_svg),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
+                    },
                     heading = "타이틀이 들어가요.",
                     description = "상황에 대한 설명이 들어가요.\n" +
                         "설명은 최대 두 줄로 작성해요.",

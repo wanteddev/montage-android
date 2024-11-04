@@ -2,7 +2,8 @@ package com.wanted.android.wanted.design.loading
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -29,14 +30,23 @@ class WantedLogoProgressIndicator @JvmOverloads constructor(
 
 @Composable
 fun WantedLogoProgressIndicator(modifier: Modifier = Modifier) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.Asset(assetName = "circular-wanted.json"))
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.Asset(
+            assetName = if (isSystemInDarkTheme()) {
+                "loading-wanted-dark.json"
+            } else {
+                "loading-wanted-light.json"
+            }
+        )
+    )
+
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
 
     LottieAnimation(
-        modifier = modifier.size(32.dp),
+        modifier = modifier.defaultMinSize(32.dp),
         composition = composition,
         progress = { progress },
     )
