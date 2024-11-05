@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
@@ -18,11 +20,22 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 fun WantedLogoLoading(
     modifier: Modifier = Modifier,
-    dimColor: Color = Color.Transparent
+    isUseDim: Boolean = false
+) {
+    if (isUseDim) {
+        WantedLogoLoading()
+    } else {
+        WantedLogoLoadingDialog()
+    }
+}
+
+@Composable
+private fun WantedLogoLoading(
+    modifier: Modifier = Modifier
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = dimColor
+        color = Color.Transparent
     ) {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -30,6 +43,24 @@ fun WantedLogoLoading(
         ) {
             WantedLogoProgressIndicator()
         }
+    }
+}
+
+@Composable
+fun WantedLogoLoadingDialog(
+    onDismissRequest: () -> Unit = {},
+    properties: DialogProperties = DialogProperties(
+        dismissOnBackPress = false,
+        dismissOnClickOutside = false,
+        usePlatformDefaultWidth = false,
+        decorFitsSystemWindows = false
+    )
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = properties,
+    ) {
+        WantedLogoProgressIndicator()
     }
 }
 
