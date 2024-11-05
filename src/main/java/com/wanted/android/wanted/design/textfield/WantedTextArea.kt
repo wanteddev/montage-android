@@ -228,6 +228,7 @@ private fun WantedTextArea(
         error = error,
         enabled = enabled,
         focused = focused,
+        isGraphemeClusterCount = isGraphemeClusterCount,
         maxLines = maxLines,
         minLines = minLines,
         maxWordCount = maxWordCount,
@@ -280,6 +281,7 @@ private fun WantedTextArea(
     error: Boolean = false,
     enabled: Boolean = true,
     focused: Boolean = false,
+    isGraphemeClusterCount: Boolean = false,
     maxLines: Int = 8,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -364,7 +366,9 @@ private fun WantedTextArea(
                         style = DesignSystemTheme.typography.body1Regular
                     ),
                     onValueChange = {
-                        if (it.length <= maxWordCount) {
+                        val langth = if (isGraphemeClusterCount) graphemeClusterCount(it)
+                                    else it.length
+                        if (langth <= maxWordCount) {
                             onValueChange(it)
                         } else {
                             onValueChange(value)
@@ -419,7 +423,6 @@ private fun DecorationBox(
     }
 }
 
-@Composable
 private fun graphemeClusterCount(text: String): Int {
     val iterator = BreakIterator.getCharacterInstance()
     iterator.setText(text)
