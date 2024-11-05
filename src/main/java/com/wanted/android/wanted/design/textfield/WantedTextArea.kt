@@ -283,6 +283,7 @@ private fun WantedTextArea(
     maxLines: Int = 8,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
+    isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -365,7 +366,9 @@ private fun WantedTextArea(
                         style = DesignSystemTheme.typography.body1Regular
                     ),
                     onValueChange = {
-                        if (it.length <= maxWordCount) {
+                        if (isGraphemeClusterCount && graphemeClusterCount(text = it) <= maxWordCount) {
+                            onValueChange(it)
+                        } else if (it.length <= maxWordCount) {
                             onValueChange(it)
                         } else {
                             onValueChange(value)
@@ -420,7 +423,6 @@ private fun DecorationBox(
     }
 }
 
-@Composable
 private fun graphemeClusterCount(text: String): Int {
     val iterator = BreakIterator.getCharacterInstance()
     iterator.setText(text)
