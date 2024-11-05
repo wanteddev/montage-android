@@ -49,7 +49,8 @@ fun WantedCardVertical(
     cardDefault: WantedCardDefault = WantedCardDefaults.getDefault(),
     @DrawableRes overlayToggleIcon: Int? = null,
     topContent: @Composable (() -> Unit)? = null,
-    bottomContent: @Composable (() -> Unit)? = null
+    bottomContent: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = {}
 ) {
     if (isLoading) {
         WantedCardVerticalSkeleton(
@@ -60,47 +61,59 @@ fun WantedCardVertical(
             bottomContent = cardDefault.bottomContentSkeleton,
         )
     } else {
-
-        WantedCardVerticalLayout(
-            modifier = modifier,
-            thumbnail = { width: Dp, height: Dp ->
-                GlideImage(
-                    modifier = Modifier.size(width, height),
-                    model = thumbnail,
-                    contentDescription = ""
+        WantedTouchArea(
+            content = {
+                WantedCardVerticalLayout(
+                    modifier = modifier,
+                    thumbnail = { width: Dp, height: Dp ->
+                        GlideImage(
+                            modifier = Modifier.size(width, height),
+                            model = thumbnail,
+                            contentDescription = ""
+                        )
+                    },
+                    thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
+                        {
+                            WantedThumbnailOverly(
+                                modifier = Modifier,
+                                title = overlayCaption,
+                                toggleIcon = overlayToggleIcon?.let {
+                                    {
+                                        WantedTouchArea(
+                                            content = {
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.button_bookmark_line_svg),
+                                                    contentDescription = ""
+                                                )
+                                            },
+                                            onClick = {}
+                                        )
+                                    }
+                                }
+                            )
+                        }
+                    } else null,
+                    description = {
+                        WantedCardDescription(
+                            modifier = Modifier,
+                            title = title,
+                            caption = caption,
+                            extraCaption = extraCaption,
+                            bottomContent = bottomContent,
+                            topContent = topContent
+                        )
+                    }
                 )
             },
-            thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
-                {
-                    WantedThumbnailOverly(
-                        modifier = Modifier,
-                        title = overlayCaption,
-                        toggleIcon = overlayToggleIcon?.let {
-                            {
-                                WantedTouchArea(
-                                    content = {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.button_bookmark_line_svg),
-                                            contentDescription = ""
-                                        )
-                                    },
-                                    onClick = {}
-                                )
-                            }
-                        }
-                    )
-                }
-            } else null,
-            description = {
-                WantedCardDescription(
-                    modifier = Modifier,
-                    title = title,
-                    caption = caption,
-                    extraCaption = extraCaption,
-                    bottomContent = bottomContent,
-                    topContent = topContent
-                )
-            }
+            verticalPadding = 8.dp,
+            horizontalPadding = 8.dp,
+            shape = RoundedCornerShape(
+                topStart = 20.dp,
+                topEnd = 20.dp,
+                bottomStart = 12.dp,
+                bottomEnd = 12.dp
+            ),
+            onClick = onClick
         )
     }
 }

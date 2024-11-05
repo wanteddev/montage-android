@@ -56,6 +56,7 @@ fun WantedCardHorizontal(
     bottomContent: @Composable (() -> Unit)? = null,
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = {}
 ) {
     if (isLoading) {
         WantedCardHorizontalSkeleton(
@@ -68,28 +69,40 @@ fun WantedCardHorizontal(
             rightContent = rightContent
         )
     } else {
-
-        WantedCardHorizontalLayout(
-            modifier = modifier,
-            thumbnail = { width: Dp, height: Dp ->
-                GlideImage(
-                    modifier = Modifier.size(width, height),
-                    model = thumbnail,
-                    contentDescription = ""
+        WantedTouchArea(
+            content = {
+                WantedCardHorizontalLayout(
+                    modifier = modifier,
+                    thumbnail = { width: Dp, height: Dp ->
+                        GlideImage(
+                            modifier = Modifier.size(width, height),
+                            model = thumbnail,
+                            contentDescription = ""
+                        )
+                    },
+                    description = {
+                        WantedCardDescription(
+                            modifier = Modifier,
+                            title = title,
+                            caption = caption,
+                            extraCaption = extraCaption,
+                            bottomContent = bottomContent,
+                            topContent = topContent
+                        )
+                    },
+                    leftContent = leftContent,
+                    rightContent = rightContent
                 )
             },
-            description = {
-                WantedCardDescription(
-                    modifier = Modifier,
-                    title = title,
-                    caption = caption,
-                    extraCaption = extraCaption,
-                    bottomContent = bottomContent,
-                    topContent = topContent
-                )
-            },
-            leftContent = leftContent,
-            rightContent = rightContent
+            verticalPadding = 8.dp,
+            horizontalPadding = 8.dp,
+            shape = RoundedCornerShape(
+                topStart = 20.dp,
+                topEnd = 12.dp,
+                bottomStart = 20.dp,
+                bottomEnd = 12.dp
+            ),
+            onClick = onClick
         )
     }
 }
