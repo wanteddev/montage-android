@@ -23,9 +23,9 @@ fun WantedLogoLoading(
     isUseDim: Boolean = false
 ) {
     if (isUseDim) {
-        WantedLogoLoading()
-    } else {
         WantedLogoLoadingDialog()
+    } else {
+        WantedLogoLoading(modifier)
     }
 }
 
