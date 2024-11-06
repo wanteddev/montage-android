@@ -77,7 +77,7 @@ fun WantedLogoLoadingDialog(
 private fun LogoLoadingPreview() {
     DesignSystemTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            WantedLogoLoading()
+            WantedLogoLoading(isUseDim = true)
         }
     }
 }
