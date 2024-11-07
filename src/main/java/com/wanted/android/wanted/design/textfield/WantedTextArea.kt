@@ -231,6 +231,7 @@ private fun WantedTextArea(
         maxLines = maxLines,
         minLines = minLines,
         maxWordCount = maxWordCount,
+        isGraphemeClusterCount = isGraphemeClusterCount,
         interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
