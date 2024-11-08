@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
@@ -183,7 +182,7 @@ fun WantedTopAppBar(
     "foldableLight",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     locale = "ko",
-    device = Devices.FOLDABLE
+    device = "spec:width=673dp,height=841dp"
 )
 @Composable
 private fun CustomTopAppBarPreview() {

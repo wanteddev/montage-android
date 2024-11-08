@@ -36,7 +36,7 @@ internal class WantedButtonTextStyleLoaderImpl : WantedButtonTextStyleLoader {
                 else -> WantedTextStyle.BODY1_BOLD
             }
 
-            else -> if (type == ButtonType.ASSISTIVE) {
+            else -> if (type == ButtonType.PRIMARY) {
                 when (size) {
                     ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
                     ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD

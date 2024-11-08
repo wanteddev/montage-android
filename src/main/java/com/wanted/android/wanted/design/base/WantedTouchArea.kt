@@ -3,6 +3,7 @@ package com.wanted.android.wanted.design.base
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -39,7 +40,7 @@ fun WantedTouchArea(
     enabled: Boolean = true,
     rippleColor: Color = Color.Unspecified,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit,
+    content: @Composable BoxScope.() -> Unit,
     onClick: () -> Unit
 ) {
     val contentHeight = remember { mutableStateOf(0.dp) }
