@@ -50,6 +50,7 @@ fun ScrollableFlexTabRow(
     containerColor: Color = primaryContainerColor,
     contentColor: Color = primaryContentColor,
     edgePadding: Dp = ScrollableTabRowPadding,
+    horizontalArrange: Dp = 0.dp,
     indicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
         SecondaryIndicator(
             modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabProvider()])
@@ -64,9 +65,7 @@ fun ScrollableFlexTabRow(
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     Surface(
-        modifier = modifier.onSizeChanged {
-            size = it
-        },
+        modifier = modifier.onSizeChanged { size = it },
         color = containerColor,
         contentColor = contentColor
     ) {
@@ -88,6 +87,7 @@ fun ScrollableFlexTabRow(
         ) { constraints ->
             val minTabWidth = minItemWidth.roundToPx()
             val padding = edgePadding.roundToPx()
+            val arrange = horizontalArrange.roundToPx()
 
             val tabMeasurables = subcompose(TabSlots.Tabs, tabs)
 
@@ -103,9 +103,10 @@ fun ScrollableFlexTabRow(
             val tabPlaceables = tabMeasurables
                 .map { it.measure(tabConstraints) }
 
-            val tabTotalWidth = tabPlaceables.fold(initial = padding * 2) { curr, measurable ->
-                curr + measurable.width
-            }
+            val tabTotalWidth =
+                tabPlaceables.foldIndexed(initial = padding * 2) { index, curr, measurable ->
+                    curr + measurable.width + if (tabPlaceables.lastIndex != index) arrange else 0
+                }
 
             val layoutWidth = when (dividerFitTab) {
                 true -> tabTotalWidth
@@ -117,10 +118,15 @@ fun ScrollableFlexTabRow(
                 // Place the tabs
                 val tabPositions = mutableListOf<TabPosition>()
                 var left = padding
-                tabPlaceables.forEach {
-                    it.placeRelative(left, 0)
-                    tabPositions.add(TabPosition(left = left.toDp(), width = it.width.toDp()))
-                    left += it.width
+                tabPlaceables.forEachIndexed { index, placeable ->
+                    placeable.placeRelative(left, 0)
+                    tabPositions.add(
+                        TabPosition(
+                            left = left.toDp(),
+                            width = placeable.width.toDp()
+                        )
+                    )
+                    left += placeable.width + arrange
                 }
 
                 // The divider is measured with its own height, and width equal to the total width
