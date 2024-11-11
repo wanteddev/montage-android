@@ -31,7 +31,7 @@ fun WantedCell(
     modifier: Modifier = Modifier,
     annotatedString: AnnotatedString,
     annotatedCaption: AnnotatedString = AnnotatedString(""),
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
+    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
     fillWidth: Boolean = false,
     divider: Boolean = false,
     isEnable: Boolean = true,
@@ -54,10 +54,10 @@ fun WantedCell(
                         .padding(horizontal = if (fillWidth) 20.dp else 0.dp)
                         .padding(
                             vertical = when (padding) {
-                                WantedCellContract.Padding.Small -> 8.dp
-                                WantedCellContract.Padding.Normal -> 12.dp
-                                WantedCellContract.Padding.Medium -> 16.dp
-                                WantedCellContract.Padding.False -> 0.dp
+                                WantedCellContract.Padding.Padding8 -> 8.dp
+                                WantedCellContract.Padding.Padding12 -> 12.dp
+                                WantedCellContract.Padding.Padding16 -> 16.dp
+                                WantedCellContract.Padding.Padding0 -> 0.dp
                             }
                         ),
                     text = annotatedString,
@@ -87,7 +87,7 @@ fun WantedCell(
     modifier: Modifier = Modifier,
     text: String,
     caption: String = "",
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
+    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
     fillWidth: Boolean = false,
     divider: Boolean = false,
     isEnable: Boolean = true,
@@ -117,7 +117,7 @@ fun WantedCell(
     modifier: Modifier = Modifier,
     text: AnnotatedString,
     caption: String = "",
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
+    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
     fillWidth: Boolean = false,
     divider: Boolean = false,
     isEnable: Boolean = true,
@@ -208,21 +208,21 @@ private fun WantedCellPreview() {
                 WantedCell(
                     text = "텍스트 padding Small",
                     caption = "캡션",
-                    padding = WantedCellContract.Padding.Small,
+                    padding = WantedCellContract.Padding.Padding8,
                     onClick = {}
                 )
 
                 WantedCell(
                     text = "텍스트 padding Normal",
                     caption = "캡션",
-                    padding = WantedCellContract.Padding.Normal,
+                    padding = WantedCellContract.Padding.Padding12,
                     onClick = {}
                 )
 
                 WantedCell(
                     text = "텍스트 padding Medium",
                     caption = "캡션",
-                    padding = WantedCellContract.Padding.Medium,
+                    padding = WantedCellContract.Padding.Padding16,
                     onClick = {}
                 )
 
@@ -231,7 +231,7 @@ private fun WantedCellPreview() {
                     caption = "캡션",
                     fillWidth = true,
                     divider = true,
-                    padding = WantedCellContract.Padding.Medium,
+                    padding = WantedCellContract.Padding.Padding16,
                     onClick = {}
                 )
 
