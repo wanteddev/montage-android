@@ -21,7 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -35,9 +34,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -45,18 +41,17 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.element.CheckBoxSize
 import com.wanted.android.wanted.design.element.WantedCheckBox
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 fun WantedScrollableTabRow(
     modifier: Modifier,
+    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Normal,
     itemSize: Int,
     selectedTabIndex: Int,
-    padding: Boolean,
+    padding: Boolean = false,
     isLeftGradation: Boolean = false,
     isRightGradation: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
@@ -73,6 +68,7 @@ fun WantedScrollableTabRow(
             tab = {
                 WantedScrollableFlexTabRow(
                     modifier = Modifier,
+                    tabSize = tabSize,
                     scrollState = scrollState,
                     itemSize = itemSize,
                     selectedTabIndex = selectedTabIndex,
@@ -89,6 +85,7 @@ fun WantedScrollableTabRow(
 @Composable
 private fun WantedScrollableFlexTabRow(
     modifier: Modifier = Modifier,
+    tabSize: WantedTabContract.TabSize,
     itemSize: Int,
     selectedTabIndex: Int,
     padding: Boolean,
@@ -124,7 +121,7 @@ private fun WantedScrollableFlexTabRow(
                         tabWidth = tabWidths[selectedTabIndex],
                     ),
                     height = 2.dp,
-                    color = colorResource(id = R.color.label_normal)
+                    color = colorResource(id = R.color.label_strong)
                 )
             }
         },
@@ -135,6 +132,7 @@ private fun WantedScrollableFlexTabRow(
                 modifier = Modifier
                     .padding(vertical = 12.dp)
                     .wrapContentSize(),
+                tabSize = tabSize,
                 title = content(index),
                 isSelect = selectedTabIndex == index,
                 onTextLayout = { layoutCoordinates ->
@@ -160,7 +158,8 @@ private fun WantedTabLayout(
         modifier = modifier
     ) {
         HorizontalDivider(
-            modifier = Modifier.align(Alignment.BottomStart)
+            modifier = Modifier.align(Alignment.BottomStart),
+            color = colorResource(R.color.line_normal_alternative)
         )
 
         Row(
@@ -244,46 +243,6 @@ private fun WantedTabLayout(
 }
 
 
-@Composable
-fun WantedTabItem(
-    modifier: Modifier = Modifier,
-    title: String,
-    isSelect: Boolean,
-    onTextLayout: ((TextLayoutResult) -> Unit),
-    onClick: () -> Unit
-) {
-    WantedTouchArea(
-        modifier = modifier,
-        content = {
-            Text(
-                modifier = Modifier,
-                text = title,
-                style = WantedTextStyle(
-                    colorRes = if (isSelect) {
-                        R.color.label_normal
-                    } else {
-                        R.color.interaction_inactive
-                    },
-                    style = DesignSystemTheme.typography.body1Bold
-                ),
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                onTextLayout = { textLayoutResult ->
-                    onTextLayout(textLayoutResult)
-                }
-            )
-        },
-        horizontalPadding = 12.dp,
-        verticalPadding = 12.dp,
-        isUseRipple = false,
-        rippleColor = colorResource(R.color.transparent),
-        onClick = onClick
-    )
-
-}
-
-
 private fun Modifier.customTabIndicatorOffset(
     currentTabPosition: TabPosition,
     tabWidth: Dp
@@ -318,7 +277,7 @@ private fun Modifier.customTabIndicatorOffset(
     device = Devices.FOLDABLE
 )
 @Composable
-private fun WantedTabPreview() {
+private fun WantedScrollableTabRowPreview() {
     DesignSystemTheme {
         val itemList = remember {
             val items = mutableListOf<String>()
@@ -345,6 +304,19 @@ private fun WantedTabPreview() {
                     padding = false,
                     onClickItem = {}
                 )
+
+                WantedScrollableTabRow(
+                    modifier = Modifier,
+                    tabSize = WantedTabContract.TabSize.Small,
+                    selectedTabIndex = 1,
+                    itemSize = itemList.size,
+                    content = { index ->
+                        itemList[index]
+                    },
+                    padding = false,
+                    onClickItem = {}
+                )
+
 
                 WantedScrollableTabRow(
                     modifier = Modifier,
