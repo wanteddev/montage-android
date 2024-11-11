@@ -4,6 +4,7 @@ object WantedCellContract {
     enum class Padding {
         Normal,
         Small,
-        Medium
+        Medium,
+        False
     }
 }
