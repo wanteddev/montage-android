@@ -2,13 +2,23 @@ package com.wanted.android.wanted.design.segmentcontrol
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,22 +32,50 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedSegmentControlItem(
     modifier: Modifier = Modifier,
     title: String,
-    isSelected: Boolean
+    isSelected: Boolean,
+    icon: @Composable (() -> Unit)? = null
 ) {
-    Text(
-        modifier = modifier
-            .padding(vertical = 9.dp, horizontal = 8.dp),
-        text = title,
-        textAlign = TextAlign.Center,
-        style = WantedTextStyle(
-            colorRes = if (isSelected) {
+    CompositionLocalProvider(
+        value = LocalContentColor provides colorResource(
+            id = if (isSelected) {
                 R.color.label_normal
             } else {
                 R.color.label_alternative
-            },
-            style = DesignSystemTheme.typography.headline2Medium
+            }
         )
-    )
+    ) {
+        Box(
+            modifier = modifier
+                .padding(vertical = 9.dp, horizontal = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                modifier = Modifier.wrapContentSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                icon?.let {
+                    Box(modifier = Modifier.size(20.dp)) {
+                        icon()
+                    }
+                }
+
+                Text(
+                    modifier = Modifier.wrapContentSize(),
+                    text = title,
+                    textAlign = TextAlign.Center,
+                    style = WantedTextStyle(
+                        colorRes = if (isSelected) {
+                            R.color.label_normal
+                        } else {
+                            R.color.label_alternative
+                        },
+                        style = DesignSystemTheme.typography.headline2Medium
+                    )
+                )
+            }
+        }
+    }
 }
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
@@ -68,6 +106,46 @@ private fun WantedSegmentControlItemPreview() {
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = true
+                )
+
+                WantedSegmentControlItem(
+                    modifier = Modifier,
+                    title = "타이틀",
+                    isSelected = false,
+                    icon = {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            contentDescription = ""
+                        )
+                    }
+                )
+
+                WantedSegmentControlItem(
+                    modifier = Modifier,
+                    title = "타이틀",
+                    isSelected = true,
+                    icon = {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            contentDescription = ""
+                        )
+                    }
+                )
+
+                WantedSegmentControlItem(
+                    modifier = Modifier,
+                    title = "타이틀",
+                    isSelected = true,
+                    icon = {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            tint = colorResource(id = R.color.primary_normal),
+                            contentDescription = ""
+                        )
+                    }
                 )
             }
         }

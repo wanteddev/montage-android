@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -47,6 +49,12 @@ import com.wanted.android.wanted.design.util.OPACITY_28
 import kotlinx.coroutines.launch
 
 
+/**
+ * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=22610-72534&m=dev
+ *
+ * icon의 색상은 text color와 동일하게 적용된다.
+ * tint를 적용하면 tint color가 적용된다.
+ */
 @Composable
 fun WantedSegmentControl(
     modifier: Modifier,
@@ -171,7 +179,7 @@ fun WantedSegmentControlLayout(
 @Composable
 private fun WantedSegmentControlPreview() {
     DesignSystemTheme {
-        val itemList = remember {
+        val items = remember {
             val items = mutableListOf<String>()
             for (index in 0..<3) {
                 items.add("텍스트${index + 1}")
@@ -190,10 +198,33 @@ private fun WantedSegmentControlPreview() {
             ) {
                 WantedSegmentControl(
                     modifier = Modifier,
-                    items = itemList,
+                    items = items,
                     selectedIndex = selectedIndex,
                     onClick = {
                         selectedIndex = it
+                    }
+                )
+
+                WantedSegmentControl(
+                    modifier = Modifier,
+                    itemCount = items.size,
+                    selectedIndex = selectedIndex,
+                    onClick = {
+                        selectedIndex = it
+                    },
+                    item = { index ->
+                        WantedSegmentControlItem(
+                            modifier = Modifier.fillMaxWidth(),
+                            title = items[index],
+                            isSelected = index == selectedIndex,
+                            icon = {
+                                Icon(
+                                    modifier = Modifier.fillMaxSize(),
+                                    painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                    contentDescription = ""
+                                )
+                            }
+                        )
                     }
                 )
             }
