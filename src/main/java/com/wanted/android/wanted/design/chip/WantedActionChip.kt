@@ -219,7 +219,7 @@ private fun WantedActionChipLayout(
 
         ProvideTextStyle(value = chipDefault.textStyle) {
             Box(
-                modifier = Modifier.weight(1f, fill = false),
+                modifier = Modifier.wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
                 content()
