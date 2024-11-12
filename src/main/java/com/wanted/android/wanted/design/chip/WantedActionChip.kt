@@ -216,7 +216,7 @@ private fun WantedActionChipLayout(
             Box(
                 modifier = Modifier
                     .actionChipTextPadding(chipDefault.size)
-                    .weight(1f, fill = false),
+                    .wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
                 content()
