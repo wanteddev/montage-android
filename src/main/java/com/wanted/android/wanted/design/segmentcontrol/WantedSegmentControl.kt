@@ -22,8 +22,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +36,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -45,7 +44,6 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_28
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.launch
 
 
@@ -56,10 +54,48 @@ fun WantedSegmentControl(
     selectedIndex: Int,
     onClick: (index: Int) -> Unit = {}
 ) {
+    WantedSegmentControl(
+        modifier = modifier,
+        itemCount = items.size,
+        selectedIndex = selectedIndex,
+        onClick = onClick,
+        item = { index ->
+            WantedSegmentControlItem(
+                modifier = Modifier.fillMaxWidth(),
+                title = items[index],
+                isSelected = index == selectedIndex
+            )
+        }
+    )
+}
+
+@Composable
+fun WantedSegmentControl(
+    modifier: Modifier,
+    itemCount: Int,
+    selectedIndex: Int,
+    item: @Composable (index: Int) -> Unit,
+    onClick: (index: Int) -> Unit = {}
+) {
     val localDensity = LocalDensity.current
-    var width by remember(items) { mutableStateOf(0.dp) }
-    val animatedOffsetX = remember { Animatable(0f) }
+    var width by remember(itemCount) { mutableStateOf(0.dp) }
+    val animatedOffsetX = remember(width) {
+        Animatable(selectedIndex * with(localDensity) { width.toPx() })
+    }
+
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(selectedIndex) {
+        scope.launch {
+            animatedOffsetX.animateTo(
+                targetValue = with(localDensity) { width.toPx() } * selectedIndex,
+                animationSpec = tween(
+                    durationMillis = 500,
+                    easing = CubicBezierEasing(0.25f, 1.25f, 0.4f, 0.99f)
+                )
+            )
+        }
+    }
 
     WantedSegmentControlLayout(
         modifier = modifier,
@@ -75,55 +111,25 @@ fun WantedSegmentControl(
             )
         },
         contents = {
-            items.forEachIndexed { index, item ->
-                WantedSegmentControlItem(
+            for (index in 0 until itemCount) {
+                Box(
                     modifier = Modifier
                         .weight(1f)
                         .clickOnceForDesignSystem(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
-                            scope.launch {
-                                animatedOffsetX.animateTo(
-                                    targetValue = with(localDensity) { width.toPx() } * index,
-                                    animationSpec = tween(
-                                        durationMillis = 500,
-                                        easing = CubicBezierEasing(0.25f, 1.25f, 0.4f, 0.99f)
-                                    )
-                                )
-                            }
                             onClick(index)
                         }
                         .onGloballyPositioned { coordinates ->
                             width = with(localDensity) { coordinates.size.width.toDp() }
                         },
-                    title = item,
-                    isSelected = index == selectedIndex
-                )
+                    contentAlignment = Alignment.Center
+                ) {
+                    item(index)
+                }
             }
         }
-    )
-}
-
-@Composable
-private fun WantedSegmentControlItem(
-    modifier: Modifier = Modifier,
-    title: String,
-    isSelected: Boolean
-) {
-    Text(
-        modifier = modifier
-            .padding(vertical = 9.dp, horizontal = 8.dp),
-        text = title,
-        textAlign = TextAlign.Center,
-        style = WantedTextStyle(
-            colorRes = if (isSelected) {
-                R.color.label_normal
-            } else {
-                R.color.label_alternative
-            },
-            style = DesignSystemTheme.typography.headline2Medium
-        )
     )
 }
 
