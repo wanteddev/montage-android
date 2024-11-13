@@ -29,7 +29,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
-fun WantedSegmentControlItem(
+fun WantedSegmentControlSolidItem(
     modifier: Modifier = Modifier,
     title: String,
     isSelected: Boolean,
@@ -64,6 +64,7 @@ fun WantedSegmentControlItem(
                     modifier = Modifier.wrapContentSize(),
                     text = title,
                     textAlign = TextAlign.Center,
+                    maxLines = 1,
                     style = WantedTextStyle(
                         colorRes = if (isSelected) {
                             R.color.label_normal
@@ -96,19 +97,19 @@ private fun WantedSegmentControlItemPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedSegmentControlItem(
+                WantedSegmentControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = false
                 )
 
-                WantedSegmentControlItem(
+                WantedSegmentControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = true
                 )
 
-                WantedSegmentControlItem(
+                WantedSegmentControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = false,
@@ -121,7 +122,7 @@ private fun WantedSegmentControlItemPreview() {
                     }
                 )
 
-                WantedSegmentControlItem(
+                WantedSegmentControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = true,
@@ -134,7 +135,7 @@ private fun WantedSegmentControlItemPreview() {
                     }
                 )
 
-                WantedSegmentControlItem(
+                WantedSegmentControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = true,

@@ -56,19 +56,19 @@ import kotlinx.coroutines.launch
  * tint를 적용하면 tint color가 적용된다.
  */
 @Composable
-fun WantedSegmentControl(
+fun WantedSegmentControlSolid(
     modifier: Modifier,
     items: List<String>,
     selectedIndex: Int,
     onClick: (index: Int) -> Unit = {}
 ) {
-    WantedSegmentControl(
+    WantedSegmentControlSolid(
         modifier = modifier,
         itemCount = items.size,
         selectedIndex = selectedIndex,
         onClick = onClick,
         item = { index ->
-            WantedSegmentControlItem(
+            WantedSegmentControlSolidItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = items[index],
                 isSelected = index == selectedIndex
@@ -78,7 +78,7 @@ fun WantedSegmentControl(
 }
 
 @Composable
-fun WantedSegmentControl(
+fun WantedSegmentControlSolid(
     modifier: Modifier,
     itemCount: Int,
     selectedIndex: Int,
@@ -105,7 +105,7 @@ fun WantedSegmentControl(
         }
     }
 
-    WantedSegmentControlLayout(
+    WantedSegmentControlSolidLayout(
         modifier = modifier,
         knob = {
             Box(
@@ -119,7 +119,7 @@ fun WantedSegmentControl(
             )
         },
         contents = {
-            for (index in 0 until itemCount) {
+            repeat(itemCount) { index ->
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -142,7 +142,7 @@ fun WantedSegmentControl(
 }
 
 @Composable
-fun WantedSegmentControlLayout(
+private fun WantedSegmentControlSolidLayout(
     modifier: Modifier = Modifier,
     knob: @Composable () -> Unit,
     contents: @Composable RowScope.() -> Unit
@@ -177,7 +177,7 @@ fun WantedSegmentControlLayout(
     device = Devices.FOLDABLE
 )
 @Composable
-private fun WantedSegmentControlPreview() {
+private fun WantedSegmentControlSolidPreview() {
     DesignSystemTheme {
         val items = remember {
             val items = mutableListOf<String>()
@@ -196,7 +196,7 @@ private fun WantedSegmentControlPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedSegmentControl(
+                WantedSegmentControlSolid(
                     modifier = Modifier,
                     items = items,
                     selectedIndex = selectedIndex,
@@ -205,7 +205,7 @@ private fun WantedSegmentControlPreview() {
                     }
                 )
 
-                WantedSegmentControl(
+                WantedSegmentControlSolid(
                     modifier = Modifier,
                     itemCount = items.size,
                     selectedIndex = selectedIndex,
@@ -213,7 +213,7 @@ private fun WantedSegmentControlPreview() {
                         selectedIndex = it
                     },
                     item = { index ->
-                        WantedSegmentControlItem(
+                        WantedSegmentControlSolidItem(
                             modifier = Modifier.fillMaxWidth(),
                             title = items[index],
                             isSelected = index == selectedIndex,
