@@ -35,6 +35,7 @@ import com.wanted.android.wanted.design.util.toAnnotatedString
 fun WantedCellImpl(
     modifier: Modifier = Modifier,
     text: AnnotatedString,
+    textMaxLine: Int = 1,
     caption: AnnotatedString = AnnotatedString(""),
     isEnable: Boolean = true,
     isActive: Boolean = false,
@@ -46,7 +47,7 @@ fun WantedCellImpl(
         text = {
             Text(
                 text = text,
-                maxLines = 1,
+                maxLines = textMaxLine,
                 overflow = TextOverflow.Ellipsis,
                 style = WantedTextStyle(
                     colorRes = when {
@@ -88,6 +89,7 @@ fun WantedCellImpl(
 fun WantedCellImpl(
     modifier: Modifier = Modifier,
     text: String,
+    textMaxLine: Int = 1,
     caption: String = "",
     isEnable: Boolean = true,
     isActive: Boolean = false,
@@ -97,6 +99,7 @@ fun WantedCellImpl(
     WantedCellImpl(
         modifier = modifier,
         text = text.toAnnotatedString(),
+        textMaxLine = textMaxLine,
         caption = caption.toAnnotatedString(),
         isEnable = isEnable,
         isActive = isActive,
