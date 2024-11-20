@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.segmentcontrol
+package com.wanted.android.wanted.design.segmentedcontrol
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.Animatable
@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_28
@@ -56,19 +57,19 @@ import kotlinx.coroutines.launch
  * tint를 적용하면 tint color가 적용된다.
  */
 @Composable
-fun WantedSegmentControlSolid(
+fun WantedSegmentedControlSolid(
     modifier: Modifier,
     items: List<String>,
     selectedIndex: Int,
     onClick: (index: Int) -> Unit = {}
 ) {
-    WantedSegmentControlSolid(
+    WantedSegmentedControlSolid(
         modifier = modifier,
         itemCount = items.size,
         selectedIndex = selectedIndex,
         onClick = onClick,
         item = { index ->
-            WantedSegmentControlSolidItem(
+            WantedSegmentedControlSolidItem(
                 modifier = Modifier.fillMaxWidth(),
                 title = items[index],
                 isSelected = index == selectedIndex
@@ -78,7 +79,7 @@ fun WantedSegmentControlSolid(
 }
 
 @Composable
-fun WantedSegmentControlSolid(
+fun WantedSegmentedControlSolid(
     modifier: Modifier,
     itemCount: Int,
     selectedIndex: Int,
@@ -108,14 +109,11 @@ fun WantedSegmentControlSolid(
     WantedSegmentControlSolidLayout(
         modifier = modifier,
         knob = {
-            Box(
+            WantedSegmentedControlSolidKnob(
                 modifier = Modifier
                     .width(width)
                     .fillMaxHeight()
                     .offset { IntOffset(animatedOffsetX.value.toInt(), 0) }
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(colorResource(id = R.color.background_elevated_normal))
-                    .background(colorResource(id = R.color.static_white).copy(alpha = OPACITY_28))
             )
         },
         contents = {
@@ -139,6 +137,24 @@ fun WantedSegmentControlSolid(
             }
         }
     )
+}
+
+@Composable
+private fun WantedSegmentedControlSolidKnob(modifier: Modifier = Modifier) {
+    Box(modifier = modifier) {
+        WantedDropShadow(
+            Modifier.fillMaxSize(),
+            shape = RoundedCornerShape(12.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(10.dp))
+                .background(colorResource(id = R.color.background_elevated_normal))
+                .background(colorResource(id = R.color.static_white).copy(alpha = OPACITY_28))
+        )
+    }
 }
 
 @Composable
@@ -177,7 +193,7 @@ private fun WantedSegmentControlSolidLayout(
     device = Devices.FOLDABLE
 )
 @Composable
-private fun WantedSegmentControlSolidPreview() {
+private fun WantedSegmentedControlSolidPreview() {
     DesignSystemTheme {
         val items = remember {
             val items = mutableListOf<String>()
@@ -196,7 +212,7 @@ private fun WantedSegmentControlSolidPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedSegmentControlSolid(
+                WantedSegmentedControlSolid(
                     modifier = Modifier,
                     items = items,
                     selectedIndex = selectedIndex,
@@ -205,7 +221,7 @@ private fun WantedSegmentControlSolidPreview() {
                     }
                 )
 
-                WantedSegmentControlSolid(
+                WantedSegmentedControlSolid(
                     modifier = Modifier,
                     itemCount = items.size,
                     selectedIndex = selectedIndex,
@@ -213,7 +229,7 @@ private fun WantedSegmentControlSolidPreview() {
                         selectedIndex = it
                     },
                     item = { index ->
-                        WantedSegmentControlSolidItem(
+                        WantedSegmentedControlSolidItem(
                             modifier = Modifier.fillMaxWidth(),
                             title = items[index],
                             isSelected = index == selectedIndex,

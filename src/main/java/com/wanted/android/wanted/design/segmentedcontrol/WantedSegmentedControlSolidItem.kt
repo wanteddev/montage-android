@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.segmentcontrol
+package com.wanted.android.wanted.design.segmentedcontrol
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
-fun WantedSegmentControlSolidItem(
+fun WantedSegmentedControlSolidItem(
     modifier: Modifier = Modifier,
     title: String,
     isSelected: Boolean,
@@ -44,6 +44,7 @@ fun WantedSegmentControlSolidItem(
             }
         )
     ) {
+        
         Box(
             modifier = modifier
                 .padding(vertical = 9.dp, horizontal = 8.dp),
@@ -88,7 +89,7 @@ fun WantedSegmentControlSolidItem(
     device = Devices.FOLDABLE
 )
 @Composable
-private fun WantedSegmentControlItemPreview() {
+private fun WantedSegmentedControlItemPreview() {
     DesignSystemTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -97,19 +98,19 @@ private fun WantedSegmentControlItemPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedSegmentControlSolidItem(
+                WantedSegmentedControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = false
                 )
 
-                WantedSegmentControlSolidItem(
+                WantedSegmentedControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = true
                 )
 
-                WantedSegmentControlSolidItem(
+                WantedSegmentedControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = false,
@@ -122,7 +123,7 @@ private fun WantedSegmentControlItemPreview() {
                     }
                 )
 
-                WantedSegmentControlSolidItem(
+                WantedSegmentedControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = true,
@@ -135,7 +136,7 @@ private fun WantedSegmentControlItemPreview() {
                     }
                 )
 
-                WantedSegmentControlSolidItem(
+                WantedSegmentedControlSolidItem(
                     modifier = Modifier,
                     title = "타이틀",
                     isSelected = true,
