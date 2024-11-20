@@ -24,7 +24,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 fun WantedTabRow(
     modifier: Modifier,
-    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Normal,
+    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Medium,
     itemSize: Int,
     selectedTabIndex: Int,
     content: (index: Int) -> String,

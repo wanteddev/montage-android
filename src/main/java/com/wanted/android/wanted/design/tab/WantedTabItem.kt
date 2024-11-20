@@ -43,10 +43,18 @@ fun WantedTabItem(
                     } else {
                         R.color.label_assistive
                     },
-                    style = if (tabSize == WantedTabContract.TabSize.Normal) {
-                        DesignSystemTheme.typography.heading2Bold
-                    } else {
-                        DesignSystemTheme.typography.headline2Bold
+                    style = when (tabSize) {
+                        WantedTabContract.TabSize.Large -> {
+                            DesignSystemTheme.typography.heading2Bold
+                        }
+
+                        WantedTabContract.TabSize.Medium -> {
+                            DesignSystemTheme.typography.headline2Bold
+                        }
+
+                        else -> {
+                            DesignSystemTheme.typography.body2Bold
+                        }
                     }
                 ),
                 textAlign = TextAlign.Center,
@@ -104,7 +112,7 @@ private fun WantedTabItemPreview() {
 
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Normal,
+                    tabSize = WantedTabContract.TabSize.Medium,
                     title = "텍스트",
                     isSelect = false,
                     onClick = {},
@@ -113,7 +121,7 @@ private fun WantedTabItemPreview() {
 
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Normal,
+                    tabSize = WantedTabContract.TabSize.Medium,
                     title = "텍스트",
                     isSelect = true,
                     onClick = {},

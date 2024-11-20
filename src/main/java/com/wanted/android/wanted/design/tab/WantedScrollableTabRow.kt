@@ -48,8 +48,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 fun WantedScrollableTabRow(
     modifier: Modifier,
-    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Normal,
-    itemSize: Int,
+    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Medium,
+    itemCount: Int,
     selectedTabIndex: Int,
     padding: Boolean = false,
     isLeftGradation: Boolean = false,
@@ -58,7 +58,7 @@ fun WantedScrollableTabRow(
     scrollState: ScrollState = rememberScrollState(),
     content: (index: Int) -> String,
     onClickItem: (index: Int) -> Unit = {},
-    icon: @Composable (() -> Unit)? = null
+    rightIcon: @Composable (() -> Unit)? = null
 ) {
     CompositionLocalProvider(LocalTabGradationColor provides gradientColor) {
         WantedTabLayout(
@@ -70,14 +70,14 @@ fun WantedScrollableTabRow(
                     modifier = Modifier,
                     tabSize = tabSize,
                     scrollState = scrollState,
-                    itemSize = itemSize,
+                    itemCount = itemCount,
                     selectedTabIndex = selectedTabIndex,
                     padding = padding,
                     content = content,
                     onClickItem = onClickItem
                 )
             },
-            icon = icon
+            rightIcon = rightIcon
         )
     }
 }
@@ -86,7 +86,7 @@ fun WantedScrollableTabRow(
 private fun WantedScrollableFlexTabRow(
     modifier: Modifier = Modifier,
     tabSize: WantedTabContract.TabSize,
-    itemSize: Int,
+    itemCount: Int,
     selectedTabIndex: Int,
     padding: Boolean,
     scrollState: ScrollState,
@@ -94,9 +94,9 @@ private fun WantedScrollableFlexTabRow(
     onClickItem: (index: Int) -> Unit = {},
 ) {
     val density = LocalDensity.current
-    val tabWidths = remember(itemSize) {
+    val tabWidths = remember(itemCount) {
         val tabWidthStateList = mutableStateListOf<Dp>()
-        repeat(itemSize) {
+        repeat(itemCount) {
             tabWidthStateList.add(0.dp)
         }
         tabWidthStateList
@@ -127,7 +127,7 @@ private fun WantedScrollableFlexTabRow(
         },
         divider = {}
     ) {
-        for (index in 0 until itemSize) {
+        for (index in 0 until itemCount) {
             WantedTabItem(
                 modifier = Modifier
                     .padding(vertical = 12.dp)
@@ -152,7 +152,7 @@ private fun WantedTabLayout(
     isLeftGradation: Boolean,
     isRightGradation: Boolean,
     tab: @Composable () -> Unit,
-    icon: @Composable (() -> Unit)?
+    rightIcon: @Composable (() -> Unit)?
 ) {
     Box(
         modifier = modifier
@@ -230,12 +230,12 @@ private fun WantedTabLayout(
                 }
             }
 
-            icon?.let {
+            rightIcon?.let {
                 Box(
                     modifier = Modifier
                         .padding(start = 12.dp, end = 8.dp)
                 ) {
-                    icon()
+                    rightIcon()
                 }
             }
         }
@@ -297,7 +297,7 @@ private fun WantedScrollableTabRowPreview() {
                 WantedScrollableTabRow(
                     modifier = Modifier,
                     selectedTabIndex = 1,
-                    itemSize = itemList.size,
+                    itemCount = itemList.size,
                     content = { index ->
                         itemList[index]
                     },
@@ -309,7 +309,7 @@ private fun WantedScrollableTabRowPreview() {
                     modifier = Modifier,
                     tabSize = WantedTabContract.TabSize.Small,
                     selectedTabIndex = 1,
-                    itemSize = itemList.size,
+                    itemCount = itemList.size,
                     content = { index ->
                         itemList[index]
                     },
@@ -321,7 +321,7 @@ private fun WantedScrollableTabRowPreview() {
                 WantedScrollableTabRow(
                     modifier = Modifier,
                     selectedTabIndex = 1,
-                    itemSize = itemList.size,
+                    itemCount = itemList.size,
                     content = { index ->
                         itemList[index]
                     },
@@ -332,7 +332,7 @@ private fun WantedScrollableTabRowPreview() {
                 WantedScrollableTabRow(
                     modifier = Modifier,
                     selectedTabIndex = 1,
-                    itemSize = itemList.size,
+                    itemCount = itemList.size,
                     content = { index ->
                         itemList[index]
                     },
@@ -340,7 +340,7 @@ private fun WantedScrollableTabRowPreview() {
                     isRightGradation = true,
                     isLeftGradation = true,
                     onClickItem = {},
-                    icon = {
+                    rightIcon = {
                         WantedCheckBox(
                             modifier = Modifier,
                             size = CheckBoxSize.Normal,
