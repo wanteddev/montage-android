@@ -121,7 +121,7 @@ fun WantedTextButton(
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
-    val textColor = remember { mutableStateOf(buttonDefault.contentColor) }
+    val textColor = remember(enabled) { mutableStateOf(buttonDefault.contentColor) }
 
     WantedTouchArea(
         modifier = modifier,
