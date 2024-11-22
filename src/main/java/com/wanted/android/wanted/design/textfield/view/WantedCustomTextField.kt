@@ -164,10 +164,10 @@ internal fun WantedCustomTextField(
                         style = DesignSystemTheme.typography.body1Regular
                     ),
                     onValueChange = {
-                        if (it.length <= maxWordCount) {
-                            onValueChange(it)
-                        } else {
-                            onValueChange(value)
+                        when {
+                            it.length <= maxWordCount -> onValueChange(it)
+                            it.length < value.length -> onValueChange(it)
+                            else -> onValueChange(value)
                         }
                     },
                     decorationBox = { innerTextField ->
