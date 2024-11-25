@@ -1,9 +1,20 @@
 package com.wanted.android.wanted.design.button
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.button.config.WantedButtonDefaults
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
@@ -125,6 +136,49 @@ fun WantedButton(
                 rightDrawable = rightDrawable,
                 onClick = onClick,
             )
+        }
+    }
+}
+
+
+@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
+@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
+@Preview(
+    "foldableLight",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "ko",
+    device = Devices.FOLDABLE
+)
+@Composable
+private fun WantedAvatarPreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                WantedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "텍스트",
+                    buttonShape = ButtonShape.OUTLINED,
+                    type = ButtonType.SECONDARY,
+                    size = ButtonSize.MEDIUM,
+                    onClick = { }
+                )
+
+                WantedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "텍스트",
+                    buttonDefault = WantedButtonDefaults.getDefault(
+                        shape = ButtonShape.OUTLINED,
+                        type = ButtonType.SECONDARY,
+                        size = ButtonSize.MEDIUM
+                    ),
+                    onClick = { }
+                )
+            }
         }
     }
 }
