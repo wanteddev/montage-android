@@ -128,23 +128,38 @@ fun WantedSolidButton(
         modifier = modifier
             .background(
                 buttonDefault.backgroundColor,
-                RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size))
+                RoundedCornerShape(
+                    size = getButtonRadius(
+                        ButtonShape.SOLID,
+                        size = buttonDefault.size
+                    )
+                )
             )
-            .clip(RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size)))
+            .clip(
+                RoundedCornerShape(
+                    size = getButtonRadius(
+                        ButtonShape.SOLID,
+                        size = buttonDefault.size
+                    )
+                )
+            )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12)),
-                enabled = enabled,
+                enabled = buttonDefault.enabled,
                 onClick = {
                     clickListener.clickOnceForDesignSystem()
                 }
             ),
         buttonShape = ButtonShape.SOLID,
-        buttonSize = size,
+        buttonSize = buttonDefault.size,
         leftDrawable = leftDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.SOLID,
+                        size = buttonDefault.size
+                    ),
                     drawableRes = it,
                     tint = buttonDefault.contentColor
                 )
@@ -169,7 +184,10 @@ fun WantedSolidButton(
         rightDrawable = rightDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(shape = ButtonShape.SOLID, size = size),
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.SOLID,
+                        size = buttonDefault.size
+                    ),
                     drawableRes = it,
                     tint = buttonDefault.contentColor
                 )
