@@ -366,12 +366,14 @@ private fun WantedTextArea(
                         style = DesignSystemTheme.typography.body1Regular
                     ),
                     onValueChange = {
-                        if (isGraphemeClusterCount && graphemeClusterCount(text = it) <= maxWordCount) {
-                            onValueChange(it)
-                        } else if (it.length <= maxWordCount) {
-                            onValueChange(it)
-                        } else {
-                            onValueChange(value)
+                        when {
+                            isGraphemeClusterCount && graphemeClusterCount(text = it) <= maxWordCount -> {
+                                onValueChange(it)
+                            }
+
+                            it.length <= maxWordCount -> onValueChange(it)
+                            it.length < value.length -> onValueChange(it)
+                            else -> onValueChange(value)
                         }
                     },
                     decorationBox = { innerTextField ->
