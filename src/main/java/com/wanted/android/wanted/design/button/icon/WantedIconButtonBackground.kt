@@ -64,7 +64,8 @@ fun WantedIconButtonBackground(
                     .onGloballyPositioned { coordinates ->
                         // Set column height using the LayoutCoordinates
                         contentSize.value = with(localDensity) { coordinates.size.width.toDp() }
-                    }.padding(2.dp),
+                    }
+                    .padding(2.dp),
                 painter = painterResource(id = icon),
                 contentDescription = "",
                 tint = if (enabled) tint else colorResource(id = R.color.cool_neutral_50).copy(alpha = OPACITY_22)
@@ -79,7 +80,7 @@ fun WantedIconButtonBackground(
 }
 
 @Composable
-fun Modifier.background(
+private fun Modifier.background(
     alternative: Boolean = false,
     enabled: Boolean = true,
     padding: Dp,
