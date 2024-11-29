@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.loading
+package com.wanted.android.wanted.design.loading.progress
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement

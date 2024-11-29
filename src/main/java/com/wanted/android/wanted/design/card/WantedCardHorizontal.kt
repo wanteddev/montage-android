@@ -35,7 +35,7 @@ import com.wanted.android.wanted.design.badge.WantedContentBadge
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.element.CheckBoxSize
 import com.wanted.android.wanted.design.element.WantedCheckBox
-import com.wanted.android.wanted.design.loading.WantedSkeletonRectangle
+import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**

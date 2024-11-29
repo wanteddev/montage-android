@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.loading
+package com.wanted.android.wanted.design.loading.skeleton
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.loading.shimmer
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
