@@ -20,12 +20,13 @@ object WantedModalDefaults {
     @Composable
     fun DragHandle(
         modifier: Modifier = Modifier,
-        color: Color = colorResource(id = R.color.background_normal_normal),
+        color: Color = colorResource(id = R.color.background_elevated_normal),
         shape: Shape = MaterialTheme.shapes.extraLarge,
     ) {
         Surface(
             modifier = modifier.padding(top = 7.dp),
             color = color,
+            contentColor = color,
             shape = shape
         ) {
             Box(
