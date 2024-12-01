@@ -31,6 +31,7 @@ fun WantedCell(
     modifier: Modifier = Modifier,
     annotatedString: AnnotatedString,
     annotatedCaption: AnnotatedString = AnnotatedString(""),
+    textMaxLine: Int = 1,
     padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
     paddingInset: Boolean = false,
     divider: Boolean = false,
@@ -60,6 +61,7 @@ fun WantedCell(
                             }
                         ),
                     text = annotatedString,
+                    textMaxLine = textMaxLine,
                     caption = annotatedCaption,
                     isEnable = isEnable,
                     isActive = isActive,
@@ -85,6 +87,7 @@ fun WantedCell(
 fun WantedCell(
     modifier: Modifier = Modifier,
     text: String,
+    textMaxLine: Int = 1,
     caption: String = "",
     padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
     paddingInset: Boolean = false,
@@ -99,36 +102,7 @@ fun WantedCell(
         modifier,
         annotatedString = text.toAnnotatedString(),
         annotatedCaption = caption.toAnnotatedString(),
-        padding = padding,
-        paddingInset = paddingInset,
-        divider = divider,
-        isEnable = isEnable,
-        isActive = isActive,
-        leftContent = leftContent,
-        rightContent = rightContent,
-        onClick = onClick
-    )
-}
-
-
-@Composable
-fun WantedCell(
-    modifier: Modifier = Modifier,
-    text: AnnotatedString,
-    caption: String = "",
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
-    paddingInset: Boolean = false,
-    divider: Boolean = false,
-    isEnable: Boolean = true,
-    isActive: Boolean = false,
-    leftContent: (@Composable () -> Unit)? = null,
-    rightContent: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit
-) {
-    WantedCell(
-        modifier = modifier,
-        annotatedString = text,
-        annotatedCaption = caption.toAnnotatedString(),
+        textMaxLine = textMaxLine,
         padding = padding,
         paddingInset = paddingInset,
         divider = divider,
