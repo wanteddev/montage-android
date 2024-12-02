@@ -121,7 +121,7 @@ fun WantedTextButton(
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
-    val textColor = remember(enabled) { mutableStateOf(buttonDefault.contentColor) }
+    val textColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.contentColor) }
 
     WantedTouchArea(
         modifier = modifier,
@@ -138,11 +138,14 @@ fun WantedTextButton(
             WantedButtonLayout(
                 modifier = Modifier,
                 buttonShape = ButtonShape.TEXT,
-                buttonSize = size,
+                buttonSize = buttonDefault.size,
                 leftDrawable = leftDrawable?.let {
                     {
                         WantedButtonSideIcon(
-                            modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
+                            modifier = getButtonDrawableSize(
+                                shape = ButtonShape.TEXT,
+                                size = buttonDefault.size
+                            ),
                             drawableRes = it,
                             tint = textColor.value
                         )
@@ -162,7 +165,10 @@ fun WantedTextButton(
                 rightDrawable = rightDrawable?.let {
                     {
                         WantedButtonSideIcon(
-                            modifier = getButtonDrawableSize(shape = ButtonShape.TEXT, size = size),
+                            modifier = getButtonDrawableSize(
+                                shape = ButtonShape.TEXT,
+                                size = buttonDefault.size
+                            ),
                             drawableRes = it,
                             tint = textColor.value
                         )
@@ -238,7 +244,9 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnableNoBackground() {
         WantedTextButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            modifier = Modifier.padding(top = 20.dp).wrapContentSize()
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .wrapContentSize()
         )
 
 
