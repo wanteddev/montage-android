@@ -482,7 +482,8 @@ private fun WantedTextAreaPreview() {
                     requiredBadge = true,
                     value = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트"
+                    rightButton = "텍스트",
+                    description = "에러가 나면 이렇게 메시지가 나와요"
                 )
 
                 WantedTextArea(
