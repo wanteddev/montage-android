@@ -23,14 +23,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +55,7 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import java.text.BreakIterator
+
 
 @Composable
 fun WantedTextArea(
@@ -73,6 +79,103 @@ fun WantedTextArea(
     background: Color = colorResource(id = R.color.background_normal_normal),
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
+) {
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
+    val textFieldValue = textFieldValueState.copy(text = value)
+
+    SideEffect {
+        if (textFieldValue.selection != textFieldValueState.selection ||
+            textFieldValue.composition != textFieldValueState.composition
+        ) {
+            textFieldValueState = textFieldValue
+        }
+    }
+    var lastTextValue by remember(value) { mutableStateOf(value) }
+
+    WantedTextInputLayout(
+        modifier = modifier,
+        title = if (title.isNotEmpty()) {
+            {
+                WantedComponentTitle(
+                    title = title,
+                    isRequiredBadge = requiredBadge
+                )
+            }
+        } else {
+            null
+        },
+        textField = {
+            WantedTextArea(
+                modifier = Modifier,
+                value = textFieldValue,
+                error = error,
+                enabled = enabled,
+                focused = focused.value,
+                maxLines = maxLines,
+                minLines = minLines,
+                maxWordCount = maxWordCount,
+                isGraphemeClusterCount = isGraphemeClusterCount,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                rightButton = rightButton,
+                placeholder = placeholder,
+                background = background,
+                onClickRightButton = onClickRightButton,
+                onValueChange = { newTextFieldValueState ->
+                    textFieldValueState = newTextFieldValueState
+
+                    val stringChangedSinceLastInvocation =
+                        lastTextValue != newTextFieldValueState.text
+                    lastTextValue = newTextFieldValueState.text
+
+                    if (stringChangedSinceLastInvocation) {
+                        onValueChange(newTextFieldValueState.text)
+                    }
+                }
+            )
+        },
+        message = description?.let {
+            {
+                Text(
+                    text = description,
+                    style = WantedTextStyle(
+                        colorRes = when {
+                            enabled && error -> R.color.status_negative
+                            else -> R.color.label_alternative
+                        },
+                        style = DesignSystemTheme.typography.caption1Regular
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun WantedTextArea(
+    modifier: Modifier = Modifier,
+    value: TextFieldValue,
+    placeholder: String = "",
+    title: String = "",
+    description: String? = null,
+    rightButton: String? = null,
+    enabled: Boolean = true,
+    error: Boolean = false,
+    maxLines: Int = 8,
+    minLines: Int = 1,
+    maxWordCount: Int = 2000,
+    requiredBadge: Boolean = false,
+    isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
+    onClickRightButton: () -> Unit = {},
+    onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     WantedTextInputLayout(
         modifier = modifier,
@@ -126,7 +229,6 @@ fun WantedTextArea(
     )
 }
 
-
 @Composable
 fun WantedTextArea(
     modifier: Modifier = Modifier,
@@ -148,6 +250,102 @@ fun WantedTextArea(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onValueChange: (String) -> Unit = {}
+) {
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
+    val textFieldValue = textFieldValueState.copy(text = value)
+
+    SideEffect {
+        if (textFieldValue.selection != textFieldValueState.selection ||
+            textFieldValue.composition != textFieldValueState.composition
+        ) {
+            textFieldValueState = textFieldValue
+        }
+    }
+    var lastTextValue by remember(value) { mutableStateOf(value) }
+
+    WantedTextInputLayout(
+        modifier = modifier,
+        title = if (title.isNotEmpty()) {
+            {
+                WantedComponentTitle(
+                    title = title,
+                    isRequiredBadge = requiredBadge
+                )
+            }
+        } else {
+            null
+        },
+        textField = {
+            WantedTextArea(
+                modifier = Modifier,
+                value = textFieldValue,
+                error = error,
+                enabled = enabled,
+                focused = focused.value,
+                maxLines = maxLines,
+                minLines = minLines,
+                maxWordCount = maxWordCount,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                rightContent = rightContent,
+                leftContent = leftContent,
+                placeholder = placeholder,
+                background = background,
+                onValueChange = { newTextFieldValueState ->
+                    textFieldValueState = newTextFieldValueState
+
+                    val stringChangedSinceLastInvocation =
+                        lastTextValue != newTextFieldValueState.text
+                    lastTextValue = newTextFieldValueState.text
+
+                    if (stringChangedSinceLastInvocation) {
+                        onValueChange(newTextFieldValueState.text)
+                    }
+                }
+            )
+        },
+        message = description?.let {
+            {
+                Text(
+                    text = description,
+                    style = WantedTextStyle(
+                        colorRes = when {
+                            enabled && error -> R.color.status_negative
+                            else -> R.color.label_alternative
+                        },
+                        style = DesignSystemTheme.typography.caption1Regular
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    )
+}
+
+
+@Composable
+fun WantedTextArea(
+    modifier: Modifier = Modifier,
+    value: TextFieldValue,
+    placeholder: String = "",
+    title: String = "",
+    description: String? = null,
+    leftContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable (() -> Unit)? = null,
+    enabled: Boolean = true,
+    error: Boolean = false,
+    maxLines: Int = 8,
+    minLines: Int = 1,
+    maxWordCount: Int = 2000,
+    requiredBadge: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    background: Color = colorResource(id = R.color.background_normal_normal),
+    onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     WantedTextInputLayout(
         modifier = modifier,
@@ -204,7 +402,7 @@ fun WantedTextArea(
 @Composable
 private fun WantedTextArea(
     modifier: Modifier = Modifier,
-    value: String,
+    value: TextFieldValue,
     placeholder: String = "",
     error: Boolean = false,
     enabled: Boolean = true,
@@ -219,7 +417,7 @@ private fun WantedTextArea(
     background: Color = colorResource(id = R.color.background_normal_normal),
     rightButton: String?,
     onClickRightButton: () -> Unit = {},
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     WantedTextArea(
         modifier = modifier,
@@ -239,9 +437,9 @@ private fun WantedTextArea(
         leftContent = {
             WantedTextAreaCharacterCount(
                 current = if (isGraphemeClusterCount) {
-                    graphemeClusterCount(value)
+                    graphemeClusterCount(value.text)
                 } else {
-                    value.length
+                    value.text.length
                 },
                 maxWordCount = maxWordCount
             )
@@ -276,7 +474,7 @@ private fun WantedTextArea(
 @Composable
 private fun WantedTextArea(
     modifier: Modifier = Modifier,
-    value: String,
+    value: TextFieldValue,
     placeholder: String = "",
     error: Boolean = false,
     enabled: Boolean = true,
@@ -291,7 +489,7 @@ private fun WantedTextArea(
     background: Color = colorResource(id = R.color.background_normal_normal),
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (TextFieldValue) -> Unit
 ) {
     ConstraintLayout {
         val (shadow, textField) = createRefs()
@@ -366,13 +564,14 @@ private fun WantedTextArea(
                         style = DesignSystemTheme.typography.body1Regular
                     ),
                     onValueChange = {
+
                         when {
-                            isGraphemeClusterCount && graphemeClusterCount(text = it) <= maxWordCount -> {
+                            isGraphemeClusterCount && graphemeClusterCount(text = it.text) <= maxWordCount -> {
                                 onValueChange(it)
                             }
 
-                            it.length <= maxWordCount -> onValueChange(it)
-                            it.length < value.length -> onValueChange(it)
+                            it.text.length <= maxWordCount -> onValueChange(it)
+                            it.text.length < value.text.length -> onValueChange(it)
                             else -> onValueChange(value)
                         }
                     },
@@ -380,7 +579,7 @@ private fun WantedTextArea(
                         DecorationBox(
                             modifier = Modifier,
                             innerTextField = innerTextField,
-                            placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
+                            placeholder = if (value.text.isEmpty() && placeholder.isNotEmpty()) {
                                 {
                                     Text(
                                         text = placeholder,
@@ -454,13 +653,10 @@ private fun WantedTextAreaPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-
                 WantedTextArea(
                     modifier = Modifier,
                     value = "입력한 텍스트",
-                    enabled = true,
-                    focused = true,
-                    placeholder = "텍스트를 입력해 주세요."
+                    placeholder = "텍스트를 입력해 주세요.",
                 )
 
                 WantedTextArea(
