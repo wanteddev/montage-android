@@ -351,7 +351,6 @@ private fun WantedTextArea(
             textField = {
                 BasicTextField(
                     modifier = Modifier
-
                         .padding(horizontal = 12.dp)
                         .padding(vertical = 12.dp)
                         .fillMaxWidth(),
