@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun WantedSnackbarHost(
+fun WantedSnackBarHost(
     hostState: SnackbarHostState,
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {

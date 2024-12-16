@@ -1,12 +1,10 @@
 package com.wanted.android.wanted.design.textfield.view
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,29 +19,24 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
-import com.wanted.android.wanted.design.textfield.WantedTextInput
 import com.wanted.android.wanted.design.textfield.WantedTextInputRightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
@@ -53,7 +46,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 internal fun WantedCustomTextField(
     modifier: Modifier,
-    value: String,
+    value: TextFieldValue,
     placeholder: String,
     error: Boolean,
     enabled: Boolean,
@@ -72,7 +65,7 @@ internal fun WantedCustomTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     ConstraintLayout {
         val (shadow, textField) = createRefs()
@@ -165,8 +158,8 @@ internal fun WantedCustomTextField(
                     ),
                     onValueChange = {
                         when {
-                            it.length <= maxWordCount -> onValueChange(it)
-                            it.length < value.length -> onValueChange(it)
+                            it.text.length <= maxWordCount -> onValueChange(it)
+                            it.text.length < value.text.length -> onValueChange(it)
                             else -> onValueChange(value)
                         }
                     },
@@ -174,7 +167,7 @@ internal fun WantedCustomTextField(
                         DecorationBox(
                             modifier = Modifier,
                             innerTextField = innerTextField,
-                            placeholder = if (value.isEmpty() && placeholder.isNotEmpty()) {
+                            placeholder = if (value.text.isEmpty() && placeholder.isNotEmpty()) {
                                 {
                                     Text(
                                         text = placeholder,
@@ -211,13 +204,15 @@ internal fun WantedCustomTextField(
                                     }
                                 }
 
-                                trailingIcon == null && value.isNotEmpty() && enabled -> {
+                                trailingIcon == null && value.text.isNotEmpty() && enabled -> {
                                     {
                                         Icon(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .clip(CircleShape)
-                                                .clickOnceForDesignSystem { onValueChange("") },
+                                                .clickOnceForDesignSystem {
+                                                    onValueChange(value.copy(""))
+                                                },
                                             painter = painterResource(R.drawable.ic_normal_circle_close_svg),
                                             tint = colorResource(id = R.color.label_alternative),
                                             contentDescription = ""
@@ -408,251 +403,6 @@ private fun WantedCustomTextFieldLayout(
 
         rightButton?.let {
             rightButton()
-        }
-    }
-}
-
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
-@Composable
-private fun WantedTextFieldPreview() {
-    DesignSystemTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    focused = remember { mutableStateOf(true) }
-                )
-
-                WantedTextInput(
-                    title = "주제",
-                    requiredBadge = true,
-                    value = "입력한 텍스트.",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트"
-                )
-
-                WantedTextInput(
-                    title = "",
-                    value = "",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    enabled = false,
-                    error = true
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    enabled = false,
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    error = true
-                )
-
-                WantedTextInput(
-                    requiredBadge = true,
-                    value = "입력한 텍스트.",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    enabled = false
-                )
-
-                WantedTextInput(
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    rightButtonVariant = WantedTextInputRightVariant.Assistive
-                )
-
-                WantedTextInput(
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    rightButtonVariant = WantedTextInputRightVariant.Assistive,
-                    rightButtonEnabled = false
-                )
-
-                WantedTextInput(
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    rightButtonEnabled = false
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    complete = true,
-                    focused = remember { mutableStateOf(false) }
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    complete = true,
-                    focused = remember { mutableStateOf(true) }
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    error = true,
-                    focused = remember { mutableStateOf(false) }
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    error = true,
-                    focused = remember { mutableStateOf(true) }
-                )
-            }
-
-        }
-    }
-}
-
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
-@Composable
-private fun WantedTextField1Preview() {
-    DesignSystemTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-            ) {
-                WantedTextInput(
-                    value = "텍스트를 입력해 주세요.",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    leadingIcon = {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
-                            contentDescription = ""
-                        )
-                    }
-                )
-
-                WantedTextInput(
-                    value = "텍스트를 입력해 주세요.",
-                    placeholder = "텍스트를 입력해 주세요. ",
-                    rightButton = "텍스트",
-                    leadingIcon = {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
-                            contentDescription = ""
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
-                            contentDescription = ""
-                        )
-                    },
-                    rightContent = {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
-                            contentDescription = ""
-                        )
-                    }
-                )
-
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    error = true,
-                    description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
-                )
-
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    enabled = false,
-                    description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
-                )
-
-                WantedTextInput(
-                    value = "",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    enabled = false,
-                    description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    enabled = false,
-                    description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    enabled = false,
-                    complete = true,
-                    description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(false) }
-                )
-
-                WantedTextInput(
-                    value = "입력한 텍스트",
-                    placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
-                    enabled = false,
-                    error = true,
-                    description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
-                )
-            }
         }
     }
 }

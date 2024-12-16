@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.toAnnotatedString
 
@@ -34,6 +33,8 @@ import com.wanted.android.wanted.design.util.toAnnotatedString
 fun WantedCell(
     modifier: Modifier = Modifier,
     text: String,
+    textMaxLine: Int = 1,
+    textMaxLine: Int = 1,
     caption: String = "",
     padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
     interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default,
@@ -52,6 +53,7 @@ fun WantedCell(
         modifier = modifier,
         annotatedString = text.toAnnotatedString(),
         annotatedCaption = caption.toAnnotatedString(),
+        textMaxLine = textMaxLine,
         padding = padding,
         interactionPadding = interactionPadding,
         fillWidth = fillWidth,
