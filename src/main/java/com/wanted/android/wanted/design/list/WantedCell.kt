@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,7 +25,50 @@ import com.wanted.android.wanted.design.util.toAnnotatedString
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45065&m=dev
+ * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=4013-9151&m=dev
+ *
  */
+
+
+@Composable
+fun WantedCell(
+    modifier: Modifier = Modifier,
+    text: String,
+    textMaxLine: Int = 1,
+    caption: String = "",
+    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
+    interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default,
+    fillWidth: Boolean = false,
+    divider: Boolean = false,
+    isEnable: Boolean = true,
+    isActive: Boolean = false,
+    ellipsis: Boolean = true,
+    chevrons: Boolean = false,
+    contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
+    leftContent: (@Composable () -> Unit)? = null,
+    rightContent: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit
+) {
+    WantedCell(
+        modifier = modifier,
+        annotatedString = text.toAnnotatedString(),
+        annotatedCaption = caption.toAnnotatedString(),
+        textMaxLine = textMaxLine,
+        padding = padding,
+        interactionPadding = interactionPadding,
+        fillWidth = fillWidth,
+        divider = divider,
+        isEnable = isEnable,
+        isActive = isActive,
+        ellipsis = ellipsis,
+        chevrons = chevrons,
+        contentHeight = contentHeight,
+        leftContent = leftContent,
+        rightContent = rightContent,
+        onClick = onClick
+    )
+}
+
 
 @Composable
 fun WantedCell(
@@ -32,10 +76,17 @@ fun WantedCell(
     annotatedString: AnnotatedString,
     annotatedCaption: AnnotatedString = AnnotatedString(""),
     padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
+    interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default,
     fillWidth: Boolean = false,
     divider: Boolean = false,
     isEnable: Boolean = true,
     isActive: Boolean = false,
+    ellipsis: Boolean = true,
+    chevrons: Boolean = false,
+    contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
+    textMaxLine: Int = 1,
+    titleStyle: TextStyle? = null,
+    captionStyle: TextStyle? = null,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
@@ -51,19 +102,18 @@ fun WantedCell(
                         .clickOnceForDesignSystem(enabled = isEnable) {
                             onClick()
                         }
-                        .padding(horizontal = if (fillWidth) 20.dp else 0.dp)
-                        .padding(
-                            vertical = when (padding) {
-                                WantedCellContract.Padding.Padding8 -> 8.dp
-                                WantedCellContract.Padding.Padding12 -> 12.dp
-                                WantedCellContract.Padding.Padding16 -> 16.dp
-                                WantedCellContract.Padding.Padding0 -> 0.dp
-                            }
-                        ),
+                        .padding(horizontal = if (fillWidth) interactionPadding.padding else 0.dp)
+                        .padding(vertical = padding.value),
                     text = annotatedString,
+                    textMaxLine = textMaxLine,
                     caption = annotatedCaption,
                     isEnable = isEnable,
                     isActive = isActive,
+                    ellipsis = ellipsis,
+                    contentHeight = contentHeight,
+                    chevrons = chevrons,
+                    titleStyle = titleStyle,
+                    captionStyle = captionStyle,
                     leftContent = leftContent,
                     rightContent = rightContent
                 )
@@ -80,65 +130,6 @@ fun WantedCell(
     ) {
         onClick()
     }
-}
-
-@Composable
-fun WantedCell(
-    modifier: Modifier = Modifier,
-    text: String,
-    caption: String = "",
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
-    fillWidth: Boolean = false,
-    divider: Boolean = false,
-    isEnable: Boolean = true,
-    isActive: Boolean = false,
-    leftContent: (@Composable () -> Unit)? = null,
-    rightContent: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit
-) {
-    WantedCell(
-        modifier,
-        annotatedString = text.toAnnotatedString(),
-        annotatedCaption = caption.toAnnotatedString(),
-        padding = padding,
-        fillWidth = fillWidth,
-        divider = divider,
-        isEnable = isEnable,
-        isActive = isActive,
-        leftContent = leftContent,
-        rightContent = rightContent,
-        onClick = onClick
-    )
-}
-
-
-@Composable
-fun WantedCell(
-    modifier: Modifier = Modifier,
-    text: AnnotatedString,
-    caption: String = "",
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
-    fillWidth: Boolean = false,
-    divider: Boolean = false,
-    isEnable: Boolean = true,
-    isActive: Boolean = false,
-    leftContent: (@Composable () -> Unit)? = null,
-    rightContent: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit
-) {
-    WantedCell(
-        modifier = modifier,
-        annotatedString = text,
-        annotatedCaption = caption.toAnnotatedString(),
-        padding = padding,
-        fillWidth = fillWidth,
-        divider = divider,
-        isEnable = isEnable,
-        isActive = isActive,
-        leftContent = leftContent,
-        rightContent = rightContent,
-        onClick = onClick
-    )
 }
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
@@ -161,6 +152,14 @@ private fun WantedCellPreview() {
             ) {
                 WantedCell(
                     text = "텍스트",
+                    fillWidth = true,
+                    onClick = {}
+                )
+
+                WantedCell(
+                    text = "텍스트",
+                    fillWidth = true,
+                    interactionPadding = WantedCellContract.InteractionPadding.Custom(30.dp),
                     onClick = {}
                 )
 

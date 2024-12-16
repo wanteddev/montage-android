@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.snackbar.WantedSnackbarHost
+import com.wanted.android.wanted.design.snackbar.WantedSnackBarHost
 
 @Composable
 fun WantedScaffold(
@@ -47,7 +47,7 @@ fun WantedScaffold(
             if (snackbarHost != null) {
                 snackbarHost()
             } else {
-                WantedSnackbarHost(
+                WantedSnackBarHost(
                     hostState = snackbarHostState
                 )
             }

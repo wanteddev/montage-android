@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +36,6 @@ import com.wanted.android.wanted.design.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
-import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
@@ -136,7 +134,14 @@ fun WantedOutlinedButton(
 ) {
     WantedButtonLayout(
         modifier = modifier
-            .clip(RoundedCornerShape(size = getButtonRadius(ButtonShape.SOLID, size = size)))
+            .clip(
+                RoundedCornerShape(
+                    size = getButtonRadius(
+                        ButtonShape.SOLID,
+                        size = buttonDefault.size
+                    )
+                )
+            )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(
@@ -153,14 +158,17 @@ fun WantedOutlinedButton(
             )
             .border(
                 BorderStroke(1.dp, buttonDefault.borderColor),
-                RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, size))
+                RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, buttonDefault.size))
             ),
         buttonShape = ButtonShape.OUTLINED,
-        buttonSize = size,
+        buttonSize = buttonDefault.size,
         leftDrawable = leftDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(shape = ButtonShape.OUTLINED, size = size),
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.OUTLINED,
+                        size = buttonDefault.size
+                    ),
                     drawableRes = it,
                     tint = buttonDefault.contentColor
                 )
@@ -182,7 +190,10 @@ fun WantedOutlinedButton(
         rightDrawable = rightDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(shape = ButtonShape.OUTLINED, size = size),
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.OUTLINED,
+                        size = buttonDefault.size
+                    ),
                     drawableRes = it,
                     tint = buttonDefault.contentColor
                 )
@@ -190,15 +201,6 @@ fun WantedOutlinedButton(
         }
     )
 }
-
-@Composable
-private fun getStrokeColor(status: ButtonStatus, type: ButtonType): Color = colorResource(
-    if (status == ButtonStatus.ENABLE && type == ButtonType.PRIMARY) {
-        R.color.primary_normal
-    } else {
-        R.color.line_normal_neutral
-    }
-)
 
 @Preview
 @Composable
@@ -284,7 +286,9 @@ fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
         WantedOutlinedButton(
             text = "Button",
             size = ButtonSize.SMALL,
-            modifier = Modifier.padding(top = 20.dp).wrapContentSize()
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .wrapContentSize()
         )
 
         WantedOutlinedButton(
