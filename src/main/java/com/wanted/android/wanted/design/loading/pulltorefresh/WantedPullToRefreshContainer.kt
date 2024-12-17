@@ -1,9 +1,6 @@
 package com.wanted.android.wanted.design.loading.pulltorefresh
 
-import android.content.Context
 import android.content.res.Configuration
-import android.provider.Settings
-import android.util.Log
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -33,7 +30,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -41,15 +37,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieAnimationState
-import com.airbnb.lottie.compose.LottieCancellationBehavior
-import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.rememberLottieAnimatable
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.airbnb.lottie.compose.resetToBeginning
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import kotlin.math.abs
@@ -68,35 +59,22 @@ fun WantedPullToRefreshContainer(
         offset?.invoke(with(density) { state.verticalOffset.toDp() })
     }
 
-    var isRefresh by remember { mutableStateOf(false) }
-    var isPlaying by remember { mutableStateOf(false) }
     var atEndAnimation by remember { mutableStateOf(false) }
 
     val pullToRefreshState = (state as? WantedPullToRefreshStateImpl)
     pullToRefreshState?.setDelegate(object : WantedPullToRefreshStateDelegate {
         override fun onEndRefresh() {
-            isRefresh = false
-            isPlaying = false
-            Log.d("_SMY", "onEndRefresh")
+            atEndAnimation = true
         }
 
         override fun onStartRefresh() {
-            isRefresh = true
-            isPlaying = true
-            Log.d("_SMY", "onStartRefresh")
+            atEndAnimation = false
         }
     })
 
-    LaunchedEffect(isRefresh, atEndAnimation, isPlaying) {
-
-        if (atEndAnimation && !isRefresh) {
+    LaunchedEffect(atEndAnimation) {
+        if (atEndAnimation) {
             pullToRefreshState?.animatedToEndRefresh()
-        } else {
-            Log.d(
-                "_SMY",
-                "replay"
-            )
-            isPlaying = isRefresh
         }
     }
 
@@ -111,12 +89,7 @@ fun WantedPullToRefreshContainer(
                 )
             } else {
                 ProgressIndicatorLoading(
-                    modifier = Modifier.fillMaxSize(),
-                    isPlaying = isPlaying,
-                    onAtEndAnimation = {
-                        atEndAnimation = it
-                        isPlaying = !it
-                    }
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
@@ -144,103 +117,24 @@ private fun WantedPullToRefreshContainer(
 @Composable
 private fun ProgressIndicatorLoading(
     modifier: Modifier = Modifier,
-    isPlaying: Boolean,
-    onAtEndAnimation: (Boolean) -> Unit = {}
 ) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.Asset(
             assetName = if (isSystemInDarkTheme()) {
-                "pullToRefresh-loading-0.5sEnd.json"
+                "pullToRefresh-pulse.json"
             } else {
-                "pullToRefresh-loading-0.5sEnd.json"
+                "pullToRefresh-pulse.json"
             }
         )
-    )
-
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = 1,
-        onAtEndAnimation = onAtEndAnimation,
-        cancellationBehavior = LottieCancellationBehavior.OnIterationFinish,
-        isPlaying = isPlaying,
-        ignoreSystemAnimatorScale = true
     )
 
     LottieAnimation(
         modifier = modifier
             .padding(4.dp)
             .fillMaxSize(),
+        iterations = LottieConstants.IterateForever,
         composition = composition,
-        progress = { progress },
         safeMode = true
-    )
-}
-
-@Composable
-private fun animateLottieCompositionAsState(
-    composition: LottieComposition?,
-    isPlaying: Boolean = true,
-    restartOnPlay: Boolean = true,
-    reverseOnRepeat: Boolean = false,
-    clipSpec: LottieClipSpec? = null,
-    speed: Float = 1f,
-    iterations: Int = 1,
-    cancellationBehavior: LottieCancellationBehavior = LottieCancellationBehavior.Immediately,
-    ignoreSystemAnimatorScale: Boolean = false,
-    useCompositionFrameRate: Boolean = false,
-    onAtEndAnimation: (Boolean) -> Unit
-): LottieAnimationState {
-    require(iterations > 0) { "Iterations must be a positive number ($iterations)." }
-    require(speed.isFinite()) { "Speed must be a finite number. It is $speed." }
-
-    val animatable = rememberLottieAnimatable()
-    var wasPlaying by remember { mutableStateOf(isPlaying) }
-
-    // Dividing by 0 correctly yields Float.POSITIVE_INFINITY here.
-    val actualSpeed = if (ignoreSystemAnimatorScale) speed else (speed / getAnimationScale(
-        LocalContext.current
-    ))
-
-    LaunchedEffect(animatable.isAtEnd) {
-        onAtEndAnimation(animatable.isAtEnd)
-    }
-    LaunchedEffect(
-        composition,
-        isPlaying,
-        clipSpec,
-        actualSpeed,
-        iterations,
-    ) {
-        if (isPlaying && !wasPlaying && restartOnPlay) {
-            Log.d(
-                "_SMY",
-                "isPlaying: $isPlaying  wasPlaying: $wasPlaying restartOnPlay: $restartOnPlay"
-            )
-            animatable.resetToBeginning()
-        }
-        wasPlaying = isPlaying
-        if (!isPlaying) return@LaunchedEffect
-
-        animatable.animate(
-            composition,
-            iterations = iterations,
-            reverseOnRepeat = reverseOnRepeat,
-            speed = actualSpeed,
-            clipSpec = clipSpec,
-            initialProgress = animatable.progress,
-            continueFromPreviousAnimate = false,
-            cancellationBehavior = cancellationBehavior,
-            useCompositionFrameRate = useCompositionFrameRate,
-        )
-    }
-
-    return animatable
-}
-
-private fun getAnimationScale(context: Context): Float {
-    return Settings.Global.getFloat(
-        context.contentResolver,
-        Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f
     )
 }
 
@@ -497,10 +391,11 @@ private fun WantedPullToRefreshContainerPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-//                WantedPullToRefreshContainer(
-//                    modifier = Modifier,
-//                    state = rememberWantedPullToRefreshState()
-//                )
+                WantedPullToRefreshContainer(
+                    modifier = Modifier,
+                    state = rememberWantedPullToRefreshState(),
+                    offset = {}
+                )
             }
         }
     }
