@@ -253,18 +253,19 @@ inline fun Modifier.getBoarderModifier(
     boarderType: BoarderType,
     cornerRadius: Dp = 0.dp,
     boarderWidth: Dp = 1.dp,
-    boarderColor: Color = colorResource(id = R.color.label_normal).copy(OPACITY_5)
+    boarderColor: Color = colorResource(id = R.color.label_normal).copy(OPACITY_5),
+    backgroundColor: Color = colorResource(id = R.color.static_white)
 ) = this.then(
     when (boarderType) {
         BoarderType.None -> {
             if (isCircleShape) {
                 Modifier
                     .clip(CircleShape)
-                    .background(color = colorResource(id = R.color.static_white))
+                    .background(color = backgroundColor)
             } else {
                 Modifier
                     .clip(RoundedCornerShape(cornerRadius))
-                    .background(color = colorResource(id = R.color.static_white))
+                    .background(color = backgroundColor)
             }
         }
 
@@ -294,7 +295,7 @@ inline fun Modifier.getBoarderModifier(
                     }
                 }
                 .background(
-                    color = colorResource(id = R.color.static_white),
+                    color = backgroundColor,
                     shape = if (isCircleShape) {
                         CircleShape
                     } else {
@@ -307,7 +308,7 @@ inline fun Modifier.getBoarderModifier(
             if (isCircleShape) {
                 Modifier
                     .clip(CircleShape)
-                    .background(color = colorResource(id = R.color.static_white))
+                    .background(color = backgroundColor)
                     .border(
                         width = boarderWidth,
                         color = boarderColor,
@@ -316,7 +317,7 @@ inline fun Modifier.getBoarderModifier(
             } else {
                 Modifier
                     .clip(RoundedCornerShape(cornerRadius))
-                    .background(color = colorResource(id = R.color.static_white))
+                    .background(color = backgroundColor)
                     .border(
                         width = boarderWidth,
                         color = boarderColor,

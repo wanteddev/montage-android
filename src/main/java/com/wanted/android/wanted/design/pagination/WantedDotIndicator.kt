@@ -36,6 +36,7 @@ import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.Wante
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_16
 import com.wanted.android.wanted.design.util.OPACITY_52
+import com.wanted.android.wanted.design.util.OPACITY_8
 import kotlin.math.abs
 import kotlin.math.floor
 
@@ -217,21 +218,17 @@ private fun IndicatorBoarder(
                     boarderType = BoarderType.OutLine,
                     boarderWidth = 1.dp,
                     boarderColor = if (currentIndex == index) {
-                        colorResource(id = R.color.transparent)
-                    } else {
-                        colorResource(id = R.color.static_white).copy(alpha = OPACITY_52)
-                    }
-                )
-                .getBoarderModifier(
-                    size = indicatorDotSize,
-                    isCircleShape = true,
-                    boarderType = BoarderType.OutLine,
-                    boarderWidth = 1.dp,
-                    boarderColor = if (currentIndex == index) {
                         colorResource(id = R.color.line_normal_neutral)
                     } else {
-                        colorResource(id = R.color.line_normal_neutral)
-                    }
+                        colorResource(id = R.color.line_normal_neutral).copy(OPACITY_8)
+                    },
+                    backgroundColor = colorResource(R.color.static_white).copy(
+                        if (currentIndex == index) {
+                            1f
+                        } else {
+                            OPACITY_52
+                        }
+                    )
                 )
 
 
