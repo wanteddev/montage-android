@@ -7,6 +7,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -88,7 +89,7 @@ fun WantedTextStyle(colorRes: Int, style: TextStyle, alpha: Float? = null) = sty
 @Composable
 fun wantedRippleEffect(
     color: Color = colorResource(id = R.color.label_normal_opacity12),
-) = rememberRipple(
+) = ripple(
     color = color,
 )
 
@@ -185,29 +186,6 @@ fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
             is UnderlineSpan -> addStyle(SpanStyle(textDecoration = TextDecoration.Underline), start, end)
             is ForegroundColorSpan -> addStyle(SpanStyle(color = Color(span.foregroundColor)), start, end)
         }
-    }
-}
-
-
-@SuppressLint("DiscouragedApi", "InternalInsetResource")
-@Composable
-fun getStatusBarHeight(): Int {
-    val resources = LocalContext.current.resources
-    var result = 0
-    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-    if (resourceId > 0) result = resources.getDimensionPixelSize(resourceId)
-    return result
-}
-
-@SuppressLint("DiscouragedApi", "InternalInsetResource")
-@Composable
-fun getNavigationBarHeight(): Int {
-    val resources = LocalContext.current.resources
-    val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-    return if (resourceId > 0 && hasSoftNavigationBar()) {
-        resources.getDimensionPixelSize(resourceId)
-    } else {
-        0
     }
 }
 

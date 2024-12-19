@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.beta.bottomsheet
 
-import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +23,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,13 +46,12 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.button.WantedSolidButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemBottomSheetTheme
@@ -65,6 +63,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CustomBottomSheet(
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets.systemBars,
     isVisible: Boolean,
     setStatusBarColor: Boolean = true,
     backgroundColor: Color = colorResource(id = R.color.background_normal_normal),
@@ -82,6 +81,7 @@ fun CustomBottomSheet(
     ) {
         CustomBottomSheetImpl(
             modifier = modifier,
+            windowInsets = windowInsets,
             visibleState = visibleState,
             dialogVisibility = dialogVisibility,
             isVisible = isVisible,
@@ -96,6 +96,7 @@ fun CustomBottomSheet(
 @Composable
 private fun CustomBottomSheetImpl(
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets.systemBars,
     visibleState: MutableTransitionState<Boolean>,
     dialogVisibility: MutableState<Boolean>,
     isVisible: Boolean,
@@ -133,13 +134,9 @@ private fun CustomBottomSheetImpl(
     if (dialogVisibility.value) {
         Layout(
             modifier = Modifier
-                .padding(
-                    bottom = WindowInsets.systemBars
-                        .asPaddingValues()
-                        .calculateBottomPadding()
-                )
                 .fillMaxSize()
-                .background(colorResource(id = R.color.material_dimmer)),
+                .background(colorResource(id = R.color.material_dimmer))
+                .windowInsetsPadding(windowInsets),
             content = {
                 Box(
                     modifier = Modifier
@@ -228,11 +225,6 @@ fun CustomBottomSheet(
     if (dialogVisibility.value) {
         Layout(
             modifier = Modifier
-                .padding(
-                    bottom = WindowInsets.systemBars
-                        .asPaddingValues()
-                        .calculateBottomPadding()
-                )
                 .fillMaxSize()
                 .background(colorResource(id = R.color.material_dimmer)),
             content = {
@@ -379,14 +371,7 @@ private fun CustomDialogContentImpl(
     }
 }
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun OnBoardingCareerScreenPreview() {
     DesignSystemTheme {

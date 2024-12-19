@@ -1,14 +1,12 @@
 package com.wanted.android.wanted.design.element
 
 import android.content.Context
-import android.content.res.Configuration
 import android.util.AttributeSet
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +19,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Surface
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,17 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.OPACITY_12
-import com.wanted.android.wanted.design.util.OPACITY_43
-import com.wanted.android.wanted.design.util.OPACITY_8
 import com.wanted.android.wanted.design.util.dpToPx
 import kotlinx.coroutines.launch
 
@@ -139,7 +133,7 @@ fun WantedSwitch(
                 .offset { IntOffset(animatedOffsetX.value.toInt(), 0) }
                 .indication(
                     interactionSource = interactionSource,
-                    indication = rememberRipple(
+                    indication = ripple(
                         bounded = false,
                         radius = thumbSize / 2
                     )
@@ -152,14 +146,7 @@ fun WantedSwitch(
     }
 }
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedSwitchPreview() {
     DesignSystemTheme {
