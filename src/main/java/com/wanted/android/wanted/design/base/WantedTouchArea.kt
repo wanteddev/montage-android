@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,7 +85,7 @@ fun WantedTouchArea(
                 .clickOnceForDesignSystem(
                     enabled = enabled,
                     indication = if (isUseRipple) {
-                        rememberRipple(
+                        ripple(
                             bounded = true, // 확장된 영역에 리플 효과를 적용
                             radius = if (contentWidth.value > contentHeight.value) {
                                 contentWidth.value

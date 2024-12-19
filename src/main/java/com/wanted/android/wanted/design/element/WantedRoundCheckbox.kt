@@ -1,7 +1,6 @@
 package com.wanted.android.wanted.design.element
 
 import android.content.Context
-import android.content.res.Configuration
 import android.util.AttributeSet
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -10,10 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.triStateToggleable
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,11 +21,10 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.state.ToggleableState
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 class WantedRoundCheckBox : MaterialCheckBox {
@@ -68,7 +66,7 @@ fun WantedRoundCheckBox(
         enabled = enabled,
         role = Role.Checkbox,
         interactionSource = interactionSource,
-        indication = rememberRipple(bounded = false)
+        indication = ripple(bounded = false)
     )
 
     RoundCheckboxImpl(
@@ -160,14 +158,7 @@ private fun RoundCheckboxImpl(
 //    }
 //}
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun CertificationAuthInputScreenPreview() {
     DesignSystemTheme {
