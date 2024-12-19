@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +30,6 @@ import com.wanted.android.wanted.design.topbar.view.LocalWantedTopBarIconType
 import com.wanted.android.wanted.design.topbar.view.WantedExtendedTopAppBarLayout
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.topbar.view.WantedTopAppBarLayout
-import com.wanted.android.wanted.design.util.getStatusBarHeight
-import com.wanted.android.wanted.design.util.pxToDp
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
@@ -39,7 +38,7 @@ import com.wanted.android.wanted.design.util.pxToDp
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
+    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     type: TopAppBarType = TopAppBarType.Normal,
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
@@ -50,7 +49,7 @@ fun WantedTopAppBar(
     if (titleAlignCenter) {
         WantedCenterTopAppBar(
             modifier = modifier,
-            isFullScreen = isFullScreen,
+            windowInsets = windowInsets,
             type = type,
             scrollableState = scrollableState,
             navigationIcon = navigationIcon,
@@ -66,7 +65,8 @@ fun WantedTopAppBar(
     } else {
         WantedTopAppBar(
             modifier = modifier,
-            isFullScreen = isFullScreen, type = type,
+            windowInsets = windowInsets,
+            type = type,
             scrollableState = scrollableState,
             navigationIcon = navigationIcon,
             title = {
@@ -84,7 +84,7 @@ fun WantedTopAppBar(
 @Composable
 fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
+    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -93,7 +93,7 @@ fun WantedBackTopAppBar(
 ) {
     WantedTopAppBar(
         modifier = modifier,
-        isFullScreen = isFullScreen,
+        windowInsets = windowInsets,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = {
@@ -111,7 +111,7 @@ fun WantedBackTopAppBar(
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
-    isFullScreen: Boolean = false,
+    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -127,12 +127,6 @@ fun WantedTopAppBar(
         }
     }
 
-    val layoutModifier = if (isFullScreen) {
-        Modifier.padding(top = getStatusBarHeight().pxToDp())
-    } else {
-        Modifier
-    }
-
     Surface(
         modifier = modifier,
         shadowElevation = elevation.intValue.dp,
@@ -146,7 +140,8 @@ fun WantedTopAppBar(
             when (type) {
                 TopAppBarType.Normal -> {
                     WantedTopAppBarLayout(
-                        modifier = layoutModifier,
+                        modifier = Modifier
+                            .windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
                         title = title,
                         actions = actions
@@ -155,7 +150,7 @@ fun WantedTopAppBar(
 
                 TopAppBarType.Extended -> {
                     WantedExtendedTopAppBarLayout(
-                        modifier = layoutModifier,
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
                         title = title,
                         actions = actions
@@ -164,7 +159,7 @@ fun WantedTopAppBar(
 
                 else -> {
                     WantedTopAppBarLayout(
-                        modifier = Modifier,
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
                         title = title,
                         actions = actions

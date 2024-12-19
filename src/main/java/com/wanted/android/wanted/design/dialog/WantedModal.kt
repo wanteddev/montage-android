@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.dialog
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,10 +11,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.dialog.view.WantedDialogLayout
 import com.wanted.android.wanted.design.dialog.view.WantedDialogTwoButtonImpl
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -114,14 +112,7 @@ fun WantedModal(
 }
 
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedDialogPreview() {
     DesignSystemTheme {
