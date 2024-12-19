@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.avatar.BoarderType
-import com.wanted.android.wanted.design.avatar.getBoarderModifier
+import com.wanted.android.wanted.design.base.BoarderType
+import com.wanted.android.wanted.design.base.getBoarderModifier
 import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.IndicatorDotSize
 import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.WantedDotIndicatorType
 import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.WantedIndicatorSize
@@ -208,10 +208,6 @@ private fun IndicatorBoarder(
         Box(
             modifier = Modifier
                 .size(indicatorDotSize)
-                .background(
-                    colorResource(id = R.color.static_white),
-                    shape = CircleShape
-                )
                 .getBoarderModifier(
                     size = indicatorDotSize,
                     isCircleShape = true,
@@ -222,16 +218,12 @@ private fun IndicatorBoarder(
                     } else {
                         colorResource(id = R.color.line_normal_neutral).copy(OPACITY_8)
                     },
-                    backgroundColor = colorResource(R.color.static_white).copy(
-                        if (currentIndex == index) {
-                            1f
-                        } else {
-                            OPACITY_52
-                        }
-                    )
+                    backgroundColor = if (currentIndex == index) {
+                        colorResource(id = R.color.static_white)
+                    } else {
+                        colorResource(id = R.color.static_white).copy(alpha = OPACITY_52)
+                    }
                 )
-
-
         )
     }
 }
