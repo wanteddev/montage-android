@@ -6,6 +6,12 @@ object WantedIndicatorContract {
         Normal
     }
 
+    enum class WantedDotIndicatorType {
+        Normal,
+        White
+    }
+
+
     internal enum class IndicatorDotSize {
         Max,
         Mid,

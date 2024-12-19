@@ -4,13 +4,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -22,16 +22,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.avatar.BoarderType
+import com.wanted.android.wanted.design.avatar.getBoarderModifier
 import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.IndicatorDotSize
+import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.WantedDotIndicatorType
 import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.WantedIndicatorSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.OPACITY_43
-import com.wanted.android.wanted.design.util.OPACITY_8
+import com.wanted.android.wanted.design.util.OPACITY_16
+import com.wanted.android.wanted.design.util.OPACITY_52
 import kotlin.math.abs
 import kotlin.math.floor
 
@@ -40,6 +44,7 @@ import kotlin.math.floor
 fun WantedDotIndicator(
     modifier: Modifier = Modifier,
     indicatorSize: WantedIndicatorSize = WantedIndicatorSize.Normal,
+    type: WantedDotIndicatorType = WantedDotIndicatorType.Normal,
     totalPageCount: Int,
     visibleDotCount: Int,
     currentIndex: Int
@@ -59,18 +64,29 @@ fun WantedDotIndicator(
         horizontalArrangement = Arrangement.spacedBy(
             space = 10.dp,
             alignment = Alignment.CenterHorizontally
-        )
+        ),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(totalPageCount) { index ->
-            IndicatorDot(
-                indicatorSize = indicatorSize,
-                index = index,
-                visibleArea = visibleArea,
-                visibleDotCount = visibleDotCount,
-                totalPageCount = totalPageCount,
-                currentIndex = currentIndex,
-
+            if (type == WantedDotIndicatorType.Normal) {
+                IndicatorDot(
+                    indicatorSize = indicatorSize,
+                    index = index,
+                    visibleArea = visibleArea,
+                    visibleDotCount = visibleDotCount,
+                    totalPageCount = totalPageCount,
+                    currentIndex = currentIndex
                 )
+            } else {
+                IndicatorBoarder(
+                    indicatorSize = indicatorSize,
+                    index = index,
+                    visibleArea = visibleArea,
+                    visibleDotCount = visibleDotCount,
+                    totalPageCount = totalPageCount,
+                    currentIndex = currentIndex
+                )
+            }
         }
     }
 }
@@ -131,18 +147,98 @@ private fun IndicatorDot(
                     color = if (currentIndex == index) {
                         colorResource(id = R.color.label_normal)
                     } else {
-                        colorResource(id = R.color.label_normal).copy(OPACITY_43)
+                        colorResource(id = R.color.label_normal).copy(OPACITY_16)
                     },
-                    shape = CircleShape
-                )
-                .border(
-                    width = 1.dp,
-                    color = colorResource(id = R.color.label_normal).copy(OPACITY_8),
                     shape = CircleShape
                 )
         )
     }
 }
+
+
+@Composable
+private fun IndicatorBoarder(
+    modifier: Modifier = Modifier,
+    indicatorSize: WantedIndicatorSize,
+    index: Int,
+    visibleArea: Pair<Int, Int>,
+    visibleDotCount: Int,
+    totalPageCount: Int,
+    currentIndex: Int
+) {
+
+    val indicatorDotSize by remember(
+        index,
+        visibleArea,
+        visibleDotCount,
+        totalPageCount,
+        currentIndex
+    ) {
+        mutableStateOf(
+            getDotSize(
+                size = indicatorSize,
+                dotSize = getIndicatorDotSize(
+                    index = index,
+                    visibleStartIndex = visibleArea.first,
+                    visibleEndIndex = visibleArea.second,
+                    visibleDotCount = visibleDotCount,
+                    totalPageCount = totalPageCount
+                )
+            )
+        )
+    }
+
+    val isVisible by remember(indicatorDotSize) { mutableStateOf(indicatorDotSize > 0.dp) }
+
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = isVisible,
+        enter = if (visibleArea.first == index) {
+            expandHorizontally(expandFrom = Alignment.End)
+        } else {
+            expandHorizontally(expandFrom = Alignment.Start)
+        },
+        exit = if (visibleArea.first == index) {
+            shrinkHorizontally(shrinkTowards = Alignment.End)
+        } else {
+            shrinkHorizontally(shrinkTowards = Alignment.Start)
+        }
+    ) {
+        Box(
+            modifier = Modifier
+                .size(indicatorDotSize)
+                .background(
+                    colorResource(id = R.color.static_white),
+                    shape = CircleShape
+                )
+                .getBoarderModifier(
+                    size = indicatorDotSize,
+                    isCircleShape = true,
+                    boarderType = BoarderType.OutLine,
+                    boarderWidth = 1.dp,
+                    boarderColor = if (currentIndex == index) {
+                        colorResource(id = R.color.transparent)
+                    } else {
+                        colorResource(id = R.color.static_white).copy(alpha = OPACITY_52)
+                    }
+                )
+                .getBoarderModifier(
+                    size = indicatorDotSize,
+                    isCircleShape = true,
+                    boarderType = BoarderType.OutLine,
+                    boarderWidth = 1.dp,
+                    boarderColor = if (currentIndex == index) {
+                        colorResource(id = R.color.line_normal_neutral)
+                    } else {
+                        colorResource(id = R.color.line_normal_neutral)
+                    }
+                )
+
+
+        )
+    }
+}
+
 
 fun getPaginationDotVisibleArea(
     maxDotCount: Int = 5,
@@ -279,6 +375,22 @@ private fun WantedDotIndicatorPreview() {
                     totalPageCount = 10,
                     currentIndex = 3
                 )
+
+                Box(
+                    modifier = Modifier
+                        .height(20.dp)
+                        .background(Color.Cyan)
+                        .padding(5.dp)
+                ) {
+                    WantedDotIndicator(
+                        visibleDotCount = 5,
+                        indicatorSize = WantedIndicatorSize.Small,
+                        type = WantedDotIndicatorType.White,
+                        totalPageCount = 10,
+                        currentIndex = 3
+                    )
+                }
+
             }
         }
     }

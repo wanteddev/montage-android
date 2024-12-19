@@ -247,7 +247,7 @@ fun WantedAvatarLayout(
 }
 
 @Composable
-private fun Modifier.getBoarderModifier(
+inline fun Modifier.getBoarderModifier(
     size: Dp,
     isCircleShape: Boolean,
     boarderType: BoarderType,
