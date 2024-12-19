@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.toAnnotatedString
 
@@ -31,6 +30,7 @@ fun WantedCell(
     modifier: Modifier = Modifier,
     annotatedString: AnnotatedString,
     annotatedCaption: AnnotatedString = AnnotatedString(""),
+    textMaxLine: Int = 1,
     padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
     paddingInset: Boolean = false,
     divider: Boolean = false,
@@ -43,14 +43,12 @@ fun WantedCell(
     WantedTouchArea(
         horizontalPadding = if (paddingInset) 0.dp else 12.dp,
         shape = RoundedCornerShape(12.dp),
+        enabled = isEnable,
         content = {
             Column {
                 WantedCellImpl(
                     modifier = modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .clickOnceForDesignSystem(enabled = isEnable) {
-                            onClick()
-                        }
                         .padding(horizontal = if (paddingInset) 20.dp else 0.dp)
                         .padding(
                             vertical = when (padding) {
@@ -60,6 +58,7 @@ fun WantedCell(
                             }
                         ),
                     text = annotatedString,
+                    textMaxLine = textMaxLine,
                     caption = annotatedCaption,
                     isEnable = isEnable,
                     isActive = isActive,
@@ -85,6 +84,7 @@ fun WantedCell(
 fun WantedCell(
     modifier: Modifier = Modifier,
     text: String,
+    textMaxLine: Int = 1,
     caption: String = "",
     padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
     paddingInset: Boolean = false,
@@ -99,36 +99,7 @@ fun WantedCell(
         modifier,
         annotatedString = text.toAnnotatedString(),
         annotatedCaption = caption.toAnnotatedString(),
-        padding = padding,
-        paddingInset = paddingInset,
-        divider = divider,
-        isEnable = isEnable,
-        isActive = isActive,
-        leftContent = leftContent,
-        rightContent = rightContent,
-        onClick = onClick
-    )
-}
-
-
-@Composable
-fun WantedCell(
-    modifier: Modifier = Modifier,
-    text: AnnotatedString,
-    caption: String = "",
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Normal,
-    paddingInset: Boolean = false,
-    divider: Boolean = false,
-    isEnable: Boolean = true,
-    isActive: Boolean = false,
-    leftContent: (@Composable () -> Unit)? = null,
-    rightContent: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit
-) {
-    WantedCell(
-        modifier = modifier,
-        annotatedString = text,
-        annotatedCaption = caption.toAnnotatedString(),
+        textMaxLine = textMaxLine,
         padding = padding,
         paddingInset = paddingInset,
         divider = divider,
