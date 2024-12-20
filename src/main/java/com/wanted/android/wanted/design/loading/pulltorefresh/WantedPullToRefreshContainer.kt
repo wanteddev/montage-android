@@ -1,141 +1,152 @@
 package com.wanted.android.wanted.design.loading.pulltorefresh
 
-import android.content.res.Configuration
-import androidx.compose.animation.core.animate
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Surface
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import kotlin.math.abs
-import kotlin.math.pow
+import kotlinx.coroutines.launch
 
 
+/**
+ * 피그마 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=4279-37961&t=rgBL8FqtWf5Wcg7D-0
+ */
 @Composable
-fun WantedPullToRefreshContainer(
+fun WantedPullToRefreshBox(
     modifier: Modifier = Modifier,
-    state: WantedPullToRefreshState,
-    offset: ((Dp) -> Unit)? = null
+    state: PullToRefreshState = rememberPullToRefreshState(),
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+    content: @Composable () -> Unit
 ) {
-    val density = LocalDensity.current
+    val scope = rememberCoroutineScope()
+    val scale = remember { Animatable(1f) }
+    var isRefresh by remember(isRefreshing) { mutableStateOf(isRefreshing) }
+    var isPullEnd by remember { mutableStateOf(true) }
 
-    LaunchedEffect(state.verticalOffset) {
-        offset?.invoke(with(density) { state.verticalOffset.toDp() })
+    val infiniteTransition = rememberInfiniteTransition(label = "")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = if (isRefresh) 0.61f else 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 500,
+                easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+            ),
+            repeatMode = RepeatMode.Reverse // 1 → 0.61 → 1로 반복
+        ),
+        label = ""
+    )
+
+    LaunchedEffect(state.distanceFraction) {
+        if (state.distanceFraction <= 0f) {
+            isPullEnd = false
+        }
+
+        if (!isRefresh && state.distanceFraction > 1f) {
+            isRefresh = true
+
+            scope.launch {
+                scale.animateTo(
+                    targetValue = 1.025f,
+                    animationSpec = tween(
+                        durationMillis = 250,
+                        easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+                    )
+                )
+
+                scale.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(
+                        durationMillis = 250,
+                        easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+                    )
+                )
+
+                onRefresh()
+                isPullEnd = true
+            }
+        }
+
     }
 
-    var atEndAnimation by remember { mutableStateOf(false) }
-
-    val pullToRefreshState = (state as? WantedPullToRefreshStateImpl)
-    pullToRefreshState?.setDelegate(object : WantedPullToRefreshStateDelegate {
-        override fun onEndRefresh() {
-            atEndAnimation = true
-        }
-
-        override fun onStartRefresh() {
-            atEndAnimation = false
-        }
-    })
-
-    LaunchedEffect(atEndAnimation) {
-        if (atEndAnimation) {
-            pullToRefreshState?.animatedToEndRefresh()
-        }
-    }
-
-    WantedPullToRefreshContainer(
+    PullToRefreshBox(
         modifier = modifier,
+        isRefreshing = isRefresh,
         state = state,
+        onRefresh = onRefresh,
         indicator = {
-            if (!state.isRefreshing) {
+            Box(modifier = Modifier.fillMaxWidth()) {
                 ProgressIndicator(
-                    modifier = Modifier.fillMaxSize(),
-                    progress = state.progress
-                )
-            } else {
-                ProgressIndicatorLoading(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .size(SIZE)
+                        .scale(scale.value)
+                        .graphicsLayer {
+                            translationY =
+                                state.distanceFraction * PositionalThreshold.roundToPx() - size.height
+                            clip = true
+                        }
+                        .alpha(alpha),
+                    progress = if (!isPullEnd) {
+                        state.distanceFraction
+                    } else {
+                        1f
+                    }
                 )
             }
         }
-    )
-}
-
-@Composable
-private fun WantedPullToRefreshContainer(
-    modifier: Modifier = Modifier,
-    state: WantedPullToRefreshState,
-    indicator: @Composable () -> Unit = {}
-) {
-    Box(
-        modifier = modifier
-            .size(32.dp)
-            .graphicsLayer {
-                translationY = state.verticalOffset - size.height
-            }
-            .background(color = colorResource(R.color.transparent))
     ) {
-        indicator()
+        Box(
+            Modifier
+                .align(Alignment.TopCenter)
+                .graphicsLayer {
+                    translationY = when {
+                        isRefresh -> {
+                            state.distanceFraction * PositionalThreshold.roundToPx()
+                        }
+
+                        isPullEnd -> {
+                            state.distanceFraction * (PositionalThreshold * 0.5f).roundToPx()
+                        }
+
+                        else -> {
+                            state.distanceFraction * (PositionalThreshold * 1.5f).roundToPx()
+                        }
+                    }
+                    clip = true
+                }
+        ) {
+            content()
+        }
     }
-}
-
-@Composable
-private fun ProgressIndicatorLoading(
-    modifier: Modifier = Modifier,
-) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.Asset(
-            assetName = if (isSystemInDarkTheme()) {
-                "pullToRefresh-pulse.json"
-            } else {
-                "pullToRefresh-pulse.json"
-            }
-        )
-    )
-
-    LottieAnimation(
-        modifier = modifier
-            .padding(4.dp)
-            .fillMaxSize(),
-        iterations = LottieConstants.IterateForever,
-        composition = composition,
-        safeMode = true
-    )
 }
 
 @Composable
@@ -146,13 +157,12 @@ private fun ProgressIndicator(
     val composition by rememberLottieComposition(
         LottieCompositionSpec.Asset(
             assetName = if (isSystemInDarkTheme()) {
-                "pullToRefresh-pull.json"
+                "pullToRefresh-pull-dark.json"
             } else {
                 "pullToRefresh-pull.json"
             }
         )
     )
-
 
     LottieAnimation(
         modifier = modifier
@@ -163,240 +173,6 @@ private fun ProgressIndicator(
     )
 }
 
-/**
- * Creates a [PullToRefreshState].
- *
- * Note that in most cases, you are advised to use [rememberPullToRefreshState] when in composition.
- *
- * @param positionalThresholdPx The positional threshold, in pixels, in which a refresh is triggered
- * @param initialRefreshing The initial refreshing value of [PullToRefreshState]
- * @param enabled a callback used to determine whether scroll events are to be handled by this
- * [PullToRefreshState]
- */
-fun WantedPullToRefreshState(
-    positionalThresholdPx: Float,
-    initialRefreshing: Boolean = false,
-    enabled: () -> Boolean = { true },
-): WantedPullToRefreshState = WantedPullToRefreshStateImpl(
-    initialRefreshing = initialRefreshing,
-    positionalThreshold = positionalThresholdPx,
-    enabled = enabled,
-)
 
-@Stable
-interface WantedPullToRefreshState : PullToRefreshState {
-
-}
-
-@Stable
-private interface WantedPullToRefreshAnimatedState : WantedPullToRefreshState {
-    fun setDelegate(delegate: WantedPullToRefreshStateDelegate)
-
-    suspend fun animatedToEndRefresh()
-}
-
-
-@Composable
-fun rememberWantedPullToRefreshState(
-    positionalThreshold: Dp = PullToRefreshDefaults.PositionalThreshold,
-    enabled: () -> Boolean = { true },
-): WantedPullToRefreshState {
-    val density = LocalDensity.current
-    val positionalThresholdPx = with(density) { positionalThreshold.toPx() }
-    return rememberSaveable(
-        positionalThresholdPx, enabled,
-        saver = WantedPullToRefreshStateImpl.Saver(
-            positionalThreshold = positionalThresholdPx,
-            enabled = enabled,
-        )
-    ) {
-        WantedPullToRefreshStateImpl(
-            initialRefreshing = false,
-            positionalThreshold = positionalThresholdPx,
-            enabled = enabled,
-        )
-    }
-}
-
-
-internal interface WantedPullToRefreshStateDelegate {
-    fun onEndRefresh()
-    fun onStartRefresh()
-}
-
-internal class WantedPullToRefreshStateImpl(
-    initialRefreshing: Boolean,
-    override val positionalThreshold: Float,
-    enabled: () -> Boolean,
-) : WantedPullToRefreshAnimatedState {
-
-    private var delegate: WantedPullToRefreshStateDelegate? = null
-
-    override val progress get() = adjustedDistancePulled / positionalThreshold
-    override val verticalOffset get() = _verticalOffset
-
-    override val isRefreshing get() = _refreshing
-
-    override fun startRefresh() {
-        delegate?.onStartRefresh()
-        _refreshing = true
-        _verticalOffset = positionalThreshold
-    }
-
-    override fun setDelegate(delegate: WantedPullToRefreshStateDelegate) {
-        this.delegate = delegate
-    }
-
-
-    override fun endRefresh() {
-        delegate?.onEndRefresh() ?: run {
-            _verticalOffset = 0f
-            _refreshing = false
-        }
-    }
-
-    override suspend fun animatedToEndRefresh() {
-        animateTo(0f)
-        _refreshing = false
-    }
-
-    override var nestedScrollConnection = object : NestedScrollConnection {
-        override fun onPreScroll(
-            available: Offset,
-            source: NestedScrollSource,
-        ): Offset = when {
-            !enabled() -> Offset.Zero
-            // Swiping up
-            source == NestedScrollSource.Drag && available.y < 0 -> {
-                consumeAvailableOffset(available)
-            }
-
-            else -> Offset.Zero
-        }
-
-        override fun onPostScroll(
-            consumed: Offset,
-            available: Offset,
-            source: NestedScrollSource
-        ): Offset = when {
-            !enabled() -> Offset.Zero
-            // Swiping down
-            source == NestedScrollSource.Drag && available.y > 0 -> {
-                consumeAvailableOffset(available)
-            }
-
-            else -> Offset.Zero
-        }
-
-        override suspend fun onPreFling(available: Velocity): Velocity {
-            return Velocity(0f, onRelease(available.y))
-        }
-    }
-
-    /** Helper method for nested scroll connection */
-    fun consumeAvailableOffset(available: Offset): Offset {
-        val y = if (isRefreshing) 0f else {
-            val newOffset = (distancePulled + available.y).coerceAtLeast(0f)
-            val dragConsumed = newOffset - distancePulled
-            distancePulled = newOffset
-            _verticalOffset = calculateVerticalOffset()
-            dragConsumed
-        }
-        return Offset(0f, y)
-    }
-
-    /** Helper method for nested scroll connection. Calls onRefresh callback when triggered */
-    suspend fun onRelease(velocity: Float): Float {
-        if (isRefreshing) return 0f // Already refreshing, do nothing
-        // Trigger refresh
-        if (adjustedDistancePulled > positionalThreshold) {
-            startRefresh()
-        } else {
-            animateTo(0f)
-        }
-
-        val consumed = when {
-            // We are flinging without having dragged the pull refresh (for example a fling inside
-            // a list) - don't consume
-            distancePulled == 0f -> 0f
-            // If the velocity is negative, the fling is upwards, and we don't want to prevent the
-            // the list from scrolling
-            velocity < 0f -> 0f
-            // We are showing the indicator, and the fling is downwards - consume everything
-            else -> velocity
-        }
-        distancePulled = 0f
-        return consumed
-    }
-
-    private suspend fun animateTo(offset: Float) {
-        animate(initialValue = _verticalOffset, targetValue = offset) { value, _ ->
-            _verticalOffset = value
-        }
-    }
-
-    /** Provides custom vertical offset behavior for [PullToRefreshContainer] */
-    private fun calculateVerticalOffset(): Float = when {
-        // If drag hasn't gone past the threshold, the position is the adjustedDistancePulled.
-        adjustedDistancePulled <= positionalThreshold -> adjustedDistancePulled
-        else -> {
-            // How far beyond the threshold pull has gone, as a percentage of the threshold.
-            val overshootPercent = abs(progress) - 1.0f
-            // Limit the overshoot to 200%. Linear between 0 and 200.
-            val linearTension = overshootPercent.coerceIn(0f, 2f)
-            // Non-linear tension. Increases with linearTension, but at a decreasing rate.
-            val tensionPercent = linearTension - linearTension.pow(2) / 4
-            // The additional offset beyond the threshold.
-            val extraOffset = positionalThreshold * tensionPercent
-            positionalThreshold + extraOffset
-        }
-    }
-
-    companion object {
-        /** The default [Saver] for [PullToRefreshStateImpl]. */
-        fun Saver(
-            positionalThreshold: Float,
-            enabled: () -> Boolean,
-        ) = Saver<WantedPullToRefreshState, Boolean>(
-            save = { it.isRefreshing },
-            restore = { isRefreshing ->
-                WantedPullToRefreshStateImpl(isRefreshing, positionalThreshold, enabled)
-            }
-        )
-    }
-
-    private var distancePulled by mutableFloatStateOf(0f)
-    private val adjustedDistancePulled: Float get() = distancePulled * DragMultiplier
-    private var _verticalOffset by mutableFloatStateOf(0f)
-    private var _refreshing by mutableStateOf(initialRefreshing)
-}
-
-private const val DragMultiplier = 0.5f
-
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
-@Composable
-private fun WantedPullToRefreshContainerPreview() {
-    DesignSystemTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-            ) {
-                WantedPullToRefreshContainer(
-                    modifier = Modifier,
-                    state = rememberWantedPullToRefreshState(),
-                    offset = {}
-                )
-            }
-        }
-    }
-}
+private val SIZE = 50.dp
+private val PositionalThreshold = 80.dp
