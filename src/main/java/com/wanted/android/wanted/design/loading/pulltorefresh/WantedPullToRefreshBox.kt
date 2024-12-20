@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -50,6 +52,14 @@ fun WantedPullToRefreshBox(
     val scale = remember { Animatable(1f) }
     var isRefresh by remember(isRefreshing) { mutableStateOf(isRefreshing) }
     var isPullEnd by remember { mutableStateOf(true) }
+    val density = LocalDensity.current
+    val animateTransitionY by animateFloatAsState(
+        when {
+            isRefresh -> state.distanceFraction * with(density) { SIZE_HEIGHT.toPx() }
+            isPullEnd -> 0f
+            else -> state.distanceFraction * with(density) { (PositionalThreshold * 1.5f).toPx() }
+        }, label = "animateTransitionY"
+    )
 
     // Alpha 애니메이션
     val alpha by rememberInfiniteTransition(label = "").animateFloat(
@@ -57,7 +67,7 @@ fun WantedPullToRefreshBox(
         targetValue = if (isRefresh) 0.61f else 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = 500,
+                durationMillis = 1000,
                 easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
             ),
             repeatMode = RepeatMode.Reverse
@@ -83,9 +93,8 @@ fun WantedPullToRefreshBox(
                     1f,
                     animationSpec = tween(250, easing = easingCurve)
                 )
-
-                onRefresh()
                 isPullEnd = true
+                onRefresh()
             }
         }
     }
@@ -101,7 +110,8 @@ fun WantedPullToRefreshBox(
                 state = state,
                 scale = scale.value,
                 alpha = alpha,
-                isPullEnd = isPullEnd
+                isPullEnd = isPullEnd,
+                isRefresh = isRefresh,
             )
         }
     ) {
@@ -110,9 +120,9 @@ fun WantedPullToRefreshBox(
                 .align(Alignment.TopCenter)
                 .graphicsLayer {
                     translationY = when {
-                        isRefresh -> state.distanceFraction * PositionalThreshold.toPx()
-                        isPullEnd -> state.distanceFraction * (PositionalThreshold * 0.5f).toPx()
-                        else -> state.distanceFraction * (PositionalThreshold * 1.5f).toPx()
+                        isRefresh -> animateTransitionY
+                        isPullEnd -> state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
+                        else -> animateTransitionY
                     }
                     clip = true
                 }
@@ -127,16 +137,21 @@ private fun RefreshIndicator(
     state: PullToRefreshState,
     scale: Float,
     alpha: Float,
-    isPullEnd: Boolean
+    isPullEnd: Boolean,
+    isRefresh: Boolean
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
         ProgressIndicator(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .size(SIZE)
+                .size(SIZE_WIDTH)
                 .scale(scale)
                 .graphicsLayer {
-                    translationY = state.distanceFraction * PositionalThreshold.toPx() - size.height
+                    translationY = when {
+                        isRefresh -> 0f
+                        isPullEnd -> state.distanceFraction * SIZE_HEIGHT.toPx() - SIZE_HEIGHT.toPx()
+                        else -> state.distanceFraction * PositionalThreshold.toPx() - SIZE_HEIGHT.toPx()
+                    }
                     clip = true
                 }
                 .alpha(alpha),
@@ -170,7 +185,8 @@ private fun ProgressIndicator(
 }
 
 // Constants
-private val SIZE = 50.dp
+private val SIZE_WIDTH = 50.dp
+private val SIZE_HEIGHT = 40.dp
 private val PositionalThreshold = 80.dp
 
 // Common easing curve
