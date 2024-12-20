@@ -31,8 +31,8 @@ import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.BoarderType
 import com.wanted.android.wanted.design.base.getBoarderModifier
 import com.wanted.android.wanted.design.pagination.WantedPaginationContract.IndicatorDotSize
+import com.wanted.android.wanted.design.pagination.WantedPaginationContract.WantedDotIndicatorSize
 import com.wanted.android.wanted.design.pagination.WantedPaginationContract.WantedDotIndicatorType
-import com.wanted.android.wanted.design.pagination.WantedPaginationContract.WantedIndicatorSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_16
 import com.wanted.android.wanted.design.util.OPACITY_52
@@ -44,7 +44,7 @@ import kotlin.math.floor
 @Composable
 fun WantedDotIndicator(
     modifier: Modifier = Modifier,
-    indicatorSize: WantedIndicatorSize = WantedIndicatorSize.Normal,
+    size: WantedDotIndicatorSize = WantedDotIndicatorSize.Normal,
     type: WantedDotIndicatorType = WantedDotIndicatorType.Normal,
     totalPageCount: Int,
     visibleDotCount: Int,
@@ -71,7 +71,7 @@ fun WantedDotIndicator(
         repeat(totalPageCount) { index ->
             if (type == WantedDotIndicatorType.Normal) {
                 IndicatorDot(
-                    indicatorSize = indicatorSize,
+                    indicatorSize = size,
                     index = index,
                     visibleArea = visibleArea,
                     visibleDotCount = visibleDotCount,
@@ -80,7 +80,7 @@ fun WantedDotIndicator(
                 )
             } else {
                 IndicatorBoarder(
-                    indicatorSize = indicatorSize,
+                    indicatorSize = size,
                     index = index,
                     visibleArea = visibleArea,
                     visibleDotCount = visibleDotCount,
@@ -95,7 +95,7 @@ fun WantedDotIndicator(
 @Composable
 private fun IndicatorDot(
     modifier: Modifier = Modifier,
-    indicatorSize: WantedIndicatorSize,
+    indicatorSize: WantedDotIndicatorSize,
     index: Int,
     visibleArea: Pair<Int, Int>,
     visibleDotCount: Int,
@@ -160,7 +160,7 @@ private fun IndicatorDot(
 @Composable
 private fun IndicatorBoarder(
     modifier: Modifier = Modifier,
-    indicatorSize: WantedIndicatorSize,
+    indicatorSize: WantedDotIndicatorSize,
     index: Int,
     visibleArea: Pair<Int, Int>,
     visibleDotCount: Int,
@@ -269,10 +269,10 @@ fun getPaginationDotVisibleArea(
 }
 
 private fun getDotSize(
-    size: WantedIndicatorSize,
+    size: WantedDotIndicatorSize,
     dotSize: IndicatorDotSize
 ): Dp {
-    return if (size == WantedIndicatorSize.Normal) {
+    return if (size == WantedDotIndicatorSize.Normal) {
         when (dotSize) {
             IndicatorDotSize.Max -> 10
             IndicatorDotSize.Mid -> 8
@@ -360,7 +360,7 @@ private fun WantedDotIndicatorPreview() {
             ) {
                 WantedDotIndicator(
                     visibleDotCount = 5,
-                    indicatorSize = WantedIndicatorSize.Small,
+                    size = WantedDotIndicatorSize.Small,
                     totalPageCount = 10,
                     currentIndex = 3
                 )
@@ -373,7 +373,7 @@ private fun WantedDotIndicatorPreview() {
                 ) {
                     WantedDotIndicator(
                         visibleDotCount = 5,
-                        indicatorSize = WantedIndicatorSize.Small,
+                        size = WantedDotIndicatorSize.Small,
                         type = WantedDotIndicatorType.White,
                         totalPageCount = 10,
                         currentIndex = 3
