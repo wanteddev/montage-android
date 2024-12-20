@@ -122,7 +122,7 @@ fun WantedPullToRefreshBox(
                     translationY = when {
                         isRefresh -> animateTransitionY
                         isPullEnd -> state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
-                        else -> animateTransitionY
+                        else -> state.distanceFraction * with(density) { (PositionalThreshold * 1.5f).toPx() }
                     }
                     clip = true
                 }
