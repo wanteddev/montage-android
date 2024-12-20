@@ -30,9 +30,9 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.BoarderType
 import com.wanted.android.wanted.design.base.getBoarderModifier
-import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.IndicatorDotSize
-import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.WantedDotIndicatorType
-import com.wanted.android.wanted.design.pagination.WantedIndicatorContract.WantedIndicatorSize
+import com.wanted.android.wanted.design.pagination.WantedPaginationContract.IndicatorDotSize
+import com.wanted.android.wanted.design.pagination.WantedPaginationContract.WantedDotIndicatorType
+import com.wanted.android.wanted.design.pagination.WantedPaginationContract.WantedIndicatorSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_16
 import com.wanted.android.wanted.design.util.OPACITY_52

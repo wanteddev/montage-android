@@ -1,6 +1,6 @@
 package com.wanted.android.wanted.design.pagination
 
-object WantedIndicatorContract {
+object WantedPaginationContract {
     enum class WantedIndicatorSize {
         Small,
         Normal
@@ -10,7 +10,6 @@ object WantedIndicatorContract {
         Normal,
         White
     }
-
 
     internal enum class IndicatorDotSize {
         Max,
