@@ -63,7 +63,7 @@ fun WantedDotIndicator(
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(
-            space = 10.dp,
+            space = if (type == WantedDotIndicatorType.Normal) 10.dp else 6.dp,
             alignment = Alignment.CenterHorizontally
         ),
         verticalAlignment = Alignment.CenterVertically
