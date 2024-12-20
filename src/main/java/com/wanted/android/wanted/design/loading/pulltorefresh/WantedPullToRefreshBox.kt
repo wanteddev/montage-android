@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -50,6 +52,14 @@ fun WantedPullToRefreshBox(
     val scale = remember { Animatable(1f) }
     var isRefresh by remember(isRefreshing) { mutableStateOf(isRefreshing) }
     var isPullEnd by remember { mutableStateOf(true) }
+    val density = LocalDensity.current
+    val animateTransitionY by animateFloatAsState(
+        when {
+            isRefresh -> state.distanceFraction * with(density) { PositionalThreshold.toPx() }
+            isPullEnd -> state.distanceFraction * with(density) { (PositionalThreshold * 0.5f).toPx() }
+            else -> state.distanceFraction * with(density) { (PositionalThreshold * 1.5f).toPx() }
+        }, label = "animateTransitionY"
+    )
 
     // Alpha 애니메이션
     val alpha by rememberInfiniteTransition(label = "").animateFloat(
@@ -109,11 +119,7 @@ fun WantedPullToRefreshBox(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .graphicsLayer {
-                    translationY = when {
-                        isRefresh -> state.distanceFraction * PositionalThreshold.toPx()
-                        isPullEnd -> state.distanceFraction * (PositionalThreshold * 0.5f).toPx()
-                        else -> state.distanceFraction * (PositionalThreshold * 1.5f).toPx()
-                    }
+                    translationY = animateTransitionY
                     clip = true
                 }
         ) {
