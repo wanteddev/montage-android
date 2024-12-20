@@ -51,8 +51,8 @@ fun WantedPullToRefreshBox(
     var isRefresh by remember(isRefreshing) { mutableStateOf(isRefreshing) }
     var isPullEnd by remember { mutableStateOf(true) }
 
-    val infiniteTransition = rememberInfiniteTransition(label = "")
-    val alpha by infiniteTransition.animateFloat(
+    // Alpha 애니메이션
+    val alpha by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = 1f,
         targetValue = if (isRefresh) 0.61f else 1f,
         animationSpec = infiniteRepeatable(
@@ -60,11 +60,12 @@ fun WantedPullToRefreshBox(
                 durationMillis = 500,
                 easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
             ),
-            repeatMode = RepeatMode.Reverse // 1 → 0.61 → 1로 반복
+            repeatMode = RepeatMode.Reverse
         ),
         label = ""
     )
 
+    // Refresh 상태 관리
     LaunchedEffect(state.distanceFraction) {
         if (state.distanceFraction <= 0f) {
             isPullEnd = false
@@ -72,80 +73,75 @@ fun WantedPullToRefreshBox(
 
         if (!isRefresh && state.distanceFraction > 1f) {
             isRefresh = true
-
             scope.launch {
                 scale.animateTo(
-                    targetValue = 1.025f,
-                    animationSpec = tween(
-                        durationMillis = 250,
-                        easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
-                    )
+                    1.025f,
+                    animationSpec = tween(250, easing = easingCurve)
                 )
 
                 scale.animateTo(
-                    targetValue = 1f,
-                    animationSpec = tween(
-                        durationMillis = 250,
-                        easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
-                    )
+                    1f,
+                    animationSpec = tween(250, easing = easingCurve)
                 )
 
                 onRefresh()
                 isPullEnd = true
             }
         }
-
     }
 
+    // PullToRefreshBox 구현
     PullToRefreshBox(
         modifier = modifier,
         isRefreshing = isRefresh,
         state = state,
         onRefresh = onRefresh,
         indicator = {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                ProgressIndicator(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .size(SIZE)
-                        .scale(scale.value)
-                        .graphicsLayer {
-                            translationY =
-                                state.distanceFraction * PositionalThreshold.roundToPx() - size.height
-                            clip = true
-                        }
-                        .alpha(alpha),
-                    progress = if (!isPullEnd) {
-                        state.distanceFraction
-                    } else {
-                        1f
-                    }
-                )
-            }
+            RefreshIndicator(
+                state = state,
+                scale = scale.value,
+                alpha = alpha,
+                isPullEnd = isPullEnd
+            )
         }
     ) {
         Box(
-            Modifier
+            modifier = Modifier
                 .align(Alignment.TopCenter)
                 .graphicsLayer {
                     translationY = when {
-                        isRefresh -> {
-                            state.distanceFraction * PositionalThreshold.roundToPx()
-                        }
-
-                        isPullEnd -> {
-                            state.distanceFraction * (PositionalThreshold * 0.5f).roundToPx()
-                        }
-
-                        else -> {
-                            state.distanceFraction * (PositionalThreshold * 1.5f).roundToPx()
-                        }
+                        isRefresh -> state.distanceFraction * PositionalThreshold.toPx()
+                        isPullEnd -> state.distanceFraction * (PositionalThreshold * 0.5f).toPx()
+                        else -> state.distanceFraction * (PositionalThreshold * 1.5f).toPx()
                     }
                     clip = true
                 }
         ) {
             content()
         }
+    }
+}
+
+@Composable
+private fun RefreshIndicator(
+    state: PullToRefreshState,
+    scale: Float,
+    alpha: Float,
+    isPullEnd: Boolean
+) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        ProgressIndicator(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .size(SIZE)
+                .scale(scale)
+                .graphicsLayer {
+                    translationY = state.distanceFraction * PositionalThreshold.toPx() - size.height
+                    clip = true
+                }
+                .alpha(alpha),
+            progress = if (!isPullEnd) state.distanceFraction else 1f
+        )
     }
 }
 
@@ -169,10 +165,13 @@ private fun ProgressIndicator(
             .padding(4.dp)
             .fillMaxSize(),
         composition = composition,
-        progress = { progress },
+        progress = { progress }
     )
 }
 
-
+// Constants
 private val SIZE = 50.dp
 private val PositionalThreshold = 80.dp
+
+// Common easing curve
+private val easingCurve = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
