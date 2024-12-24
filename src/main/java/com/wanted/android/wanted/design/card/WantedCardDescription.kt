@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.badge.WantedContentBadge
-import com.wanted.android.wanted.design.loading.WantedSkeletonLength
-import com.wanted.android.wanted.design.loading.WantedSkeletonRectangle
-import com.wanted.android.wanted.design.loading.WantedSkeletonText
+import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonLength
+import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
+import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonText
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
