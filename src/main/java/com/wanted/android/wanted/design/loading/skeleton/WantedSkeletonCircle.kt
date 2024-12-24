@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.loading
+package com.wanted.android.wanted.design.loading.skeleton
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
