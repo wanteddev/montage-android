@@ -65,7 +65,6 @@ fun CustomBottomSheet(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets.systemBars,
     isVisible: Boolean,
-    setStatusBarColor: Boolean = true,
     backgroundColor: Color = colorResource(id = R.color.background_normal_normal),
     content: @Composable () -> Unit,
     onDismissRequest: () -> Unit,
@@ -74,11 +73,7 @@ fun CustomBottomSheet(
     val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
     val dialogVisibility: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-    DesignSystemBottomSheetTheme(
-        isVisible = isVisible,
-        setStatusBarColor = setStatusBarColor,
-        coroutineScope = rememberCoroutineScope()
-    ) {
+    DesignSystemBottomSheetTheme {
         CustomBottomSheetImpl(
             modifier = modifier,
             windowInsets = windowInsets,
