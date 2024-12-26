@@ -107,7 +107,7 @@ private fun WantedScrollableFlexTabRow(
         scrollState = scrollState,
         selectedTabProvider = { selectedTabIndex },
         dividerFitTab = false,
-        edgePadding = if (padding) 8.dp else 0.dp,
+        edgePadding = if (padding) 20.dp else 0.dp,
         minItemWidth = 32.dp,
         contentColor = colorResource(id = R.color.transparent),
         containerColor = colorResource(id = R.color.transparent),
