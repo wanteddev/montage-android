@@ -1,8 +1,8 @@
 package com.wanted.android.wanted.design.loading.progress
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
@@ -69,14 +70,24 @@ private fun WantedProgressTrackerHorizontalLayout(
     progress: @Composable () -> Unit,
     step: @Composable (index: Int) -> Unit
 ) {
-    Box(
+
+    BoxWithConstraints(
         modifier = modifier,
         contentAlignment = Alignment.TopStart
     ) {
+        val progressPadding = remember(maxWidth, stepCount) {
+            mutableStateOf(
+                if (maxWidth != 0.dp && stepCount != 0) {
+                    maxWidth / stepCount / 2
+                } else {
+                    0.dp
+                }
+            )
+        }
 
         Box(
             modifier = Modifier
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = progressPadding.value)
                 .fillMaxWidth()
                 .height(20.dp),
             contentAlignment = Alignment.Center
@@ -86,24 +97,22 @@ private fun WantedProgressTrackerHorizontalLayout(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             repeat(stepCount) { index ->
-                step(index)
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    step(index)
+                }
             }
         }
     }
 }
 
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedProgressTrackerPreview() {
     DesignSystemTheme {
@@ -119,7 +128,14 @@ private fun WantedProgressTrackerPreview() {
                     modifier = Modifier,
                     stepCount = 4,
                     label = { index ->
-                        "${index + 1}단계"
+                        when (index) {
+                            2 -> {
+                                "${index + 1}단계 askjdh fkasjdhfksj hdf"
+                            }
+
+                            else -> "${index + 1}단계"
+                        }
+
                     },
                     currentStep = 1
                 )

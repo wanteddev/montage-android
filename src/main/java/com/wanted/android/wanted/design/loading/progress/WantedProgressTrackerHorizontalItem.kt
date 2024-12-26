@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
@@ -55,7 +57,10 @@ internal fun WantedProgressTrackerHorizontalItem(
                         R.color.label_normal
                     },
                     style = DesignSystemTheme.typography.label2Bold
-                )
+                ),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
             )
         }
     }
