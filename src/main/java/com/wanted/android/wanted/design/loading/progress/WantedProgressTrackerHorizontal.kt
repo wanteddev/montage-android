@@ -52,7 +52,7 @@ fun WantedProgressTrackerHorizontal(
             )
         },
         step = { index ->
-            WantedProgressTrackerItem(
+            WantedProgressTrackerHorizontalItem(
                 step = "${index + 1}",
                 completed = index < (currentStep - 1),
                 enabled = index == (currentStep - 1),
