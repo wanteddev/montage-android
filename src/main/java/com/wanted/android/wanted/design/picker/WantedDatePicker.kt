@@ -103,7 +103,7 @@ private fun WantedDatePickerContent(
             // 연도 항목 콘텐츠에 사용된 색상
             yearContentColor = colorResource(R.color.label_normal),
             // 연도를 선택할 때 현재 연도 콘텐츠에 사용된 색상
-            currentYearContentColor = colorResource(R.color.static_white)
+            currentYearContentColor = colorResource(R.color.label_normal)
 
         )
     )
