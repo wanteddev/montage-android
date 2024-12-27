@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.loading.progress
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,16 +15,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
@@ -34,18 +34,18 @@ fun WantedProgressTrackerVertical(
     stepCount: Int,
     currentStep: Int,
     label: ((index: Int) -> String)? = null,
+    labelContent: @Composable ((index: Int) -> Unit)? = null,
     content: @Composable (index: Int) -> Unit
 ) {
     WantedProgressTrackerVerticalLayout(
         modifier = modifier,
         stepCount = stepCount,
         step = { index ->
-            WantedProgressTrackerItem(
-                isHorizontalItem = false,
+            WantedProgressTrackerStep(
+                modifier = modifier,
                 step = "${index + 1}",
                 completed = index < (currentStep - 1),
-                enabled = index == (currentStep - 1),
-                label = label?.invoke(index) ?: ""
+                enabled = index == (currentStep - 1)
             )
         },
         progress = { index ->
@@ -62,8 +62,59 @@ fun WantedProgressTrackerVertical(
                 }
             }
         },
-        content = content
+        content = { index ->
+            Column(
+                modifier = Modifier.defaultMinSize(minHeight = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+
+                WantedProgressTrackerLabel(
+                    modifier = Modifier,
+                    index = index,
+                    labelText = label?.invoke(index) ?: "",
+                    labelContent = labelContent,
+                    completed = index < (currentStep - 1),
+                    enabled = index == (currentStep - 1)
+                )
+
+                content(index)
+            }
+        }
     )
+}
+
+@Composable
+private fun WantedProgressTrackerLabel(
+    modifier: Modifier = Modifier,
+    index: Int,
+    labelText: String,
+    labelContent: @Composable ((index: Int) -> Unit)? = null,
+    enabled: Boolean,
+    completed: Boolean
+) {
+    if (labelText.isNotEmpty() || labelContent != null) {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (labelText.isNotEmpty()) {
+                Text(
+                    text = labelText,
+                    style = WantedTextStyle(
+                        colorRes = if (enabled || completed) {
+                            R.color.label_alternative
+                        } else {
+                            R.color.label_normal
+                        },
+                        style = DesignSystemTheme.typography.label2Bold
+                    )
+                )
+            }
+
+            labelContent?.invoke(index)
+        }
+    }
 }
 
 @Composable
@@ -94,9 +145,7 @@ private fun WantedProgressTrackerVerticalLayout(
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
-                    Box(modifier = Modifier.defaultMinSize(minHeight = 20.dp)) {
-                        content(index)
-                    }
+                    content(index)
 
                     if (stepCount != index + 1) {
                         Spacer(modifier = Modifier.size(20.dp))
@@ -107,14 +156,7 @@ private fun WantedProgressTrackerVerticalLayout(
     }
 }
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedProgressTrackerVerticalPreview() {
     DesignSystemTheme {
