@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.segmentedcontrol
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,10 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.segmentedcontrol.WantedSegmentedContract.SegmentedSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -44,10 +43,21 @@ fun WantedSegmentedControlSolidItem(
             }
         )
     ) {
-        
+
         Box(
             modifier = modifier
-                .padding(vertical = 9.dp, horizontal = 8.dp),
+                .padding(
+                    vertical = when (LocalWantedSegmentedSize.current) {
+                        SegmentedSize.Small -> 5.dp
+                        SegmentedSize.Medium -> 7.dp
+                        SegmentedSize.Large -> 9.dp
+                    },
+                    horizontal = when (LocalWantedSegmentedSize.current) {
+                        SegmentedSize.Small -> 6.dp
+                        SegmentedSize.Medium -> 8.dp
+                        SegmentedSize.Large -> 8.dp
+                    }
+                ),
             contentAlignment = Alignment.Center
         ) {
             Row(
@@ -72,7 +82,11 @@ fun WantedSegmentedControlSolidItem(
                         } else {
                             R.color.label_alternative
                         },
-                        style = DesignSystemTheme.typography.headline2Medium
+                        style = when (LocalWantedSegmentedSize.current) {
+                            SegmentedSize.Small -> DesignSystemTheme.typography.label2Medium
+                            SegmentedSize.Medium -> DesignSystemTheme.typography.body2Medium
+                            SegmentedSize.Large -> DesignSystemTheme.typography.headline2Medium
+                        }
                     )
                 )
             }
@@ -80,14 +94,7 @@ fun WantedSegmentedControlSolidItem(
     }
 }
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedSegmentedControlItemPreview() {
     DesignSystemTheme {
