@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.segmentedcontrol
 
-import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -22,16 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.segmentedcontrol.WantedSegmentedContract.SegmentedSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.OPACITY_5
@@ -47,8 +45,8 @@ fun WantedSegmentedControlOutlinedItem(
     isLast: Boolean = false,
     icon: @Composable (() -> Unit)? = null
 ) {
-
-    val textColor = remember { mutableIntStateOf(
+    val textColor = remember {
+        mutableIntStateOf(
             if (isSelected) {
                 R.color.primary_normal
             } else {
@@ -100,7 +98,18 @@ fun WantedSegmentedControlOutlinedItem(
                         else -> RoundedCornerShape(0.dp)
                     }
                 )
-                .padding(vertical = 12.dp, horizontal = 8.dp)
+                .padding(
+                    vertical = when (LocalWantedSegmentedSize.current) {
+                        SegmentedSize.Small -> 7.dp
+                        SegmentedSize.Medium -> 9.dp
+                        SegmentedSize.Large -> 12.dp
+                    },
+                    horizontal = when (LocalWantedSegmentedSize.current) {
+                        SegmentedSize.Small -> 6.dp
+                        SegmentedSize.Medium -> 8.dp
+                        SegmentedSize.Large -> 8.dp
+                    }
+                )
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(
                 space = 4.dp,
@@ -125,7 +134,11 @@ fun WantedSegmentedControlOutlinedItem(
                     } else {
                         R.color.label_alternative
                     },
-                    style = DesignSystemTheme.typography.headline2Medium
+                    style = when (LocalWantedSegmentedSize.current) {
+                        SegmentedSize.Small -> DesignSystemTheme.typography.label2Medium
+                        SegmentedSize.Medium -> DesignSystemTheme.typography.body2Medium
+                        SegmentedSize.Large -> DesignSystemTheme.typography.headline2Medium
+                    }
                 )
             )
         }
@@ -133,14 +146,7 @@ fun WantedSegmentedControlOutlinedItem(
     }
 }
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedSegmentedControlOutlinedItemPreview() {
     DesignSystemTheme {

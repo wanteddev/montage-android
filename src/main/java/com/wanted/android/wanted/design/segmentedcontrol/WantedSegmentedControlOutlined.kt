@@ -1,9 +1,5 @@
 package com.wanted.android.wanted.design.segmentedcontrol
 
-import android.content.res.Configuration
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -15,35 +11,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.OPACITY_43
-import com.wanted.android.wanted.design.util.OPACITY_5
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 /**
@@ -55,68 +41,75 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 fun WantedSegmentedControlOutlined(
     modifier: Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     items: List<String>,
     selectedIndex: Int,
     onClick: (index: Int) -> Unit = {}
 ) {
-    WantedSegmentedControlOutlined(
-        modifier = modifier,
-        itemCount = items.size,
-        onClick = onClick,
-        selectedIndex = selectedIndex,
-        item = { index ->
-            WantedSegmentedControlOutlinedItem(
-                modifier = Modifier.fillMaxWidth(),
-                title = items[index],
-                isSelected = index == selectedIndex,
-                isFirst = index == 0,
-                isLast = index == items.lastIndex
-            )
-        }
-    )
+    CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
+        WantedSegmentedControlOutlined(
+            modifier = modifier,
+            size = size,
+            itemCount = items.size,
+            onClick = onClick,
+            selectedIndex = selectedIndex,
+            item = { index ->
+                WantedSegmentedControlOutlinedItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = items[index],
+                    isSelected = index == selectedIndex,
+                    isFirst = index == 0,
+                    isLast = index == items.lastIndex
+                )
+            }
+        )
+    }
 }
 
 @Composable
 fun WantedSegmentedControlOutlined(
     modifier: Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     itemCount: Int,
     selectedIndex: Int,
     item: @Composable (index: Int) -> Unit,
     onClick: (index: Int) -> Unit = {}
 ) {
-    Row(
-        modifier = modifier
-            .height(IntrinsicSize.Min)
-            .border(
-                width = 1.dp,
-                shape = RoundedCornerShape(10.dp),
-                color = colorResource(id = R.color.line_normal_normal)
-            ),
-        horizontalArrangement = Arrangement.spacedBy(-(1).dp)
-    ) {
-        repeat(itemCount) { index ->
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickOnceForDesignSystem(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        onClick(index)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                item(index)
-            }
+    CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
+        Row(
+            modifier = modifier
+                .height(IntrinsicSize.Min)
+                .border(
+                    width = 1.dp,
+                    shape = RoundedCornerShape(10.dp),
+                    color = colorResource(id = R.color.line_normal_normal)
+                ),
+            horizontalArrangement = Arrangement.spacedBy(-(1).dp)
+        ) {
+            repeat(itemCount) { index ->
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickOnceForDesignSystem(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            onClick(index)
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    item(index)
+                }
 
-            when (index) {
-                itemCount - 1 -> Unit
-                selectedIndex -> Unit
-                selectedIndex - 1 -> Unit
-                else -> {
-                    VerticalDivider(
-                        color = colorResource(id = R.color.line_normal_normal)
-                    )
+                when (index) {
+                    itemCount - 1 -> Unit
+                    selectedIndex -> Unit
+                    selectedIndex - 1 -> Unit
+                    else -> {
+                        VerticalDivider(
+                            color = colorResource(id = R.color.line_normal_normal)
+                        )
+                    }
                 }
             }
         }
@@ -124,14 +117,7 @@ fun WantedSegmentedControlOutlined(
 }
 
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedSegmentedControlSolidPreview() {
     DesignSystemTheme {

@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.segmentedcontrol
 
-import android.content.res.Configuration
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.tween
@@ -24,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,11 +38,10 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -59,28 +58,32 @@ import kotlinx.coroutines.launch
 @Composable
 fun WantedSegmentedControlSolid(
     modifier: Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     items: List<String>,
     selectedIndex: Int,
     onClick: (index: Int) -> Unit = {}
 ) {
-    WantedSegmentedControlSolid(
-        modifier = modifier,
-        itemCount = items.size,
-        selectedIndex = selectedIndex,
-        onClick = onClick,
-        item = { index ->
-            WantedSegmentedControlSolidItem(
-                modifier = Modifier.fillMaxWidth(),
-                title = items[index],
-                isSelected = index == selectedIndex
-            )
-        }
-    )
+    CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
+        WantedSegmentedControlSolid(
+            modifier = modifier,
+            itemCount = items.size,
+            selectedIndex = selectedIndex,
+            onClick = onClick,
+            item = { index ->
+                WantedSegmentedControlSolidItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = items[index],
+                    isSelected = index == selectedIndex
+                )
+            }
+        )
+    }
 }
 
 @Composable
 fun WantedSegmentedControlSolid(
     modifier: Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     itemCount: Int,
     selectedIndex: Int,
     item: @Composable (index: Int) -> Unit,
@@ -106,37 +109,39 @@ fun WantedSegmentedControlSolid(
         }
     }
 
-    WantedSegmentControlSolidLayout(
-        modifier = modifier,
-        knob = {
-            WantedSegmentedControlSolidKnob(
-                modifier = Modifier
-                    .width(width)
-                    .fillMaxHeight()
-                    .offset { IntOffset(animatedOffsetX.value.toInt(), 0) }
-            )
-        },
-        contents = {
-            repeat(itemCount) { index ->
-                Box(
+    CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
+        WantedSegmentControlSolidLayout(
+            modifier = modifier,
+            knob = {
+                WantedSegmentedControlSolidKnob(
                     modifier = Modifier
-                        .weight(1f)
-                        .clickOnceForDesignSystem(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            onClick(index)
-                        }
-                        .onGloballyPositioned { coordinates ->
-                            width = with(localDensity) { coordinates.size.width.toDp() }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    item(index)
+                        .width(width)
+                        .fillMaxHeight()
+                        .offset { IntOffset(animatedOffsetX.value.toInt(), 0) }
+                )
+            },
+            contents = {
+                repeat(itemCount) { index ->
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickOnceForDesignSystem(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                                onClick(index)
+                            }
+                            .onGloballyPositioned { coordinates ->
+                                width = with(localDensity) { coordinates.size.width.toDp() }
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        item(index)
+                    }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -184,14 +189,7 @@ private fun WantedSegmentControlSolidLayout(
     }
 }
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedSegmentedControlSolidPreview() {
     DesignSystemTheme {
