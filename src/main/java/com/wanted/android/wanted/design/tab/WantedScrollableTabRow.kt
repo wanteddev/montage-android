@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.tab
 
-import android.content.res.Configuration
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -34,13 +33,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.element.CheckBoxSize
 import com.wanted.android.wanted.design.element.WantedCheckBox
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -63,8 +61,8 @@ fun WantedScrollableTabRow(
     CompositionLocalProvider(LocalTabGradationColor provides gradientColor) {
         WantedTabLayout(
             modifier = modifier,
-            isLeftGradation = isLeftGradation,
-            isRightGradation = isRightGradation,
+            isLeftGradation = isLeftGradation && scrollState.canScrollBackward,
+            isRightGradation = isRightGradation && scrollState.canScrollForward,
             tab = {
                 WantedScrollableFlexTabRow(
                     modifier = Modifier,
@@ -101,6 +99,7 @@ private fun WantedScrollableFlexTabRow(
         }
         tabWidthStateList
     }
+
 
     ScrollableFlexTabRow(
         modifier = modifier,
@@ -268,14 +267,7 @@ private fun Modifier.customTabIndicatorOffset(
 }
 
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedScrollableTabRowPreview() {
     DesignSystemTheme {
@@ -286,7 +278,7 @@ private fun WantedScrollableTabRowPreview() {
             }
             items
         }
-        Scaffold() {
+        Scaffold {
             Column(
                 modifier = Modifier
                     .padding(it)

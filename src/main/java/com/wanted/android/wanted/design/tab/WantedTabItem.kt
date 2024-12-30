@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.tab
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +12,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -66,7 +64,7 @@ fun WantedTabItem(
             )
         },
         horizontalPadding = 12.dp,
-        verticalPadding = 12.dp,
+        verticalPadding = if (tabSize == WantedTabContract.TabSize.Large) 14.dp else 12.dp,
         isUseRipple = false,
         rippleColor = colorResource(R.color.transparent),
         onClick = onClick
@@ -74,14 +72,7 @@ fun WantedTabItem(
 
 }
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedTabItemPreview() {
     DesignSystemTheme {
@@ -122,6 +113,24 @@ private fun WantedTabItemPreview() {
                 WantedTabItem(
                     modifier = Modifier,
                     tabSize = WantedTabContract.TabSize.Medium,
+                    title = "텍스트",
+                    isSelect = true,
+                    onClick = {},
+                    onTextLayout = {}
+                )
+
+                WantedTabItem(
+                    modifier = Modifier,
+                    tabSize = WantedTabContract.TabSize.Large,
+                    title = "텍스트",
+                    isSelect = false,
+                    onClick = {},
+                    onTextLayout = {}
+                )
+
+                WantedTabItem(
+                    modifier = Modifier,
+                    tabSize = WantedTabContract.TabSize.Large,
                     title = "텍스트",
                     isSelect = true,
                     onClick = {},
