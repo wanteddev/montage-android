@@ -55,16 +55,16 @@ fun WantedPullToRefreshBox(
     val density = LocalDensity.current
     val animateTransitionY by animateFloatAsState(
         when {
-            isRefresh -> state.distanceFraction * with(density) { SIZE_HEIGHT.toPx() }
+            isRefresh -> state.distanceFraction * with(density) { (SIZE_HEIGHT + INDICATOR_PADDING * 2).toPx() }
             isPullEnd -> 0f
-            else -> state.distanceFraction * with(density) { (PositionalThreshold * 1.5f).toPx() }
+            else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING)  * 3).toPx() }
         }, label = "animateTransitionY"
     )
 
     // Alpha 애니메이션
     val alpha by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = 1f,
-        targetValue = if (isRefresh) 0.61f else 1f,
+        targetValue = if (isPullEnd) 0.61f else 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 1000,
@@ -81,7 +81,7 @@ fun WantedPullToRefreshBox(
             isPullEnd = false
         }
 
-        if (!isRefresh && state.distanceFraction > 1f) {
+        if (!isRefresh && state.distanceFraction > 1.1f) {
             isRefresh = true
             scope.launch {
                 scale.animateTo(
@@ -122,7 +122,7 @@ fun WantedPullToRefreshBox(
                     translationY = when {
                         isRefresh -> animateTransitionY
                         isPullEnd -> state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
-                        else -> state.distanceFraction * with(density) { (PositionalThreshold * 1.5f).toPx() }
+                        else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING)  * 3).toPx() }
                     }
                     clip = true
                 }
@@ -150,7 +150,7 @@ private fun RefreshIndicator(
                     translationY = when {
                         isRefresh -> 0f
                         isPullEnd -> state.distanceFraction * SIZE_HEIGHT.toPx() - SIZE_HEIGHT.toPx()
-                        else -> state.distanceFraction * PositionalThreshold.toPx() - SIZE_HEIGHT.toPx()
+                        else -> state.distanceFraction * (SIZE_HEIGHT * 2).toPx() - SIZE_HEIGHT.toPx()
                     }
                     clip = true
                 }
@@ -187,7 +187,7 @@ private fun ProgressIndicator(
 // Constants
 private val SIZE_WIDTH = 50.dp
 private val SIZE_HEIGHT = 40.dp
-private val PositionalThreshold = 80.dp
+private val INDICATOR_PADDING = 5.dp
 
 // Common easing curve
 private val easingCurve = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
