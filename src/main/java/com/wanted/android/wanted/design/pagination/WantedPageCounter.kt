@@ -48,7 +48,10 @@ fun WantedPageCounter(
                 maxLines = 1,
                 style = WantedTextStyle(
                     colorRes = R.color.label_alternative,
-                    style = DesignSystemTheme.typography.body2Bold
+                    style = when (size) {
+                        WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Bold
+                        WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Bold
+                    }
                 ),
                 color = colorResource(R.color.static_white)
 
@@ -60,7 +63,13 @@ fun WantedPageCounter(
                 maxLines = 1,
                 style = WantedTextStyle(
                     colorRes = R.color.label_alternative,
-                    style = DesignSystemTheme.typography.body2Bold
+                    style = WantedTextStyle(
+                        colorRes = R.color.label_alternative,
+                        style = when (size) {
+                            WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Bold
+                            WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Bold
+                        }
+                    )
                 ),
                 color = colorResource(R.color.static_white)
             )
@@ -104,7 +113,10 @@ private fun PageCounterLayout(
             text = "/",
             style = WantedTextStyle(
                 colorRes = R.color.label_alternative,
-                style = DesignSystemTheme.typography.body2Regular
+                style = when (size) {
+                    WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Regular
+                    WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Regular
+                }
             ),
             color = colorResource(R.color.static_white)
         )
