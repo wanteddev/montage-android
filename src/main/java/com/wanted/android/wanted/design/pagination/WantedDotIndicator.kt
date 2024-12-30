@@ -1,6 +1,9 @@
 package com.wanted.android.wanted.design.pagination
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
@@ -126,6 +129,20 @@ private fun IndicatorDot(
 
     val isVisible by remember(indicatorDotSize) { mutableStateOf(indicatorDotSize > 0.dp) }
 
+
+    val backgroundColor by animateColorAsState(
+        targetValue = if (currentIndex == index) {
+            colorResource(id = R.color.label_normal)
+        } else {
+            colorResource(id = R.color.label_normal).copy(OPACITY_16)
+        },
+        animationSpec = tween(
+            durationMillis = 200,
+            easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+        ),
+        label = ""
+    )
+
     AnimatedVisibility(
         modifier = modifier,
         visible = isVisible,
@@ -145,11 +162,7 @@ private fun IndicatorDot(
                 .clip(CircleShape)
                 .size(indicatorDotSize)
                 .background(
-                    color = if (currentIndex == index) {
-                        colorResource(id = R.color.label_normal)
-                    } else {
-                        colorResource(id = R.color.label_normal).copy(OPACITY_16)
-                    },
+                    color = backgroundColor,
                     shape = CircleShape
                 )
         )
@@ -191,6 +204,32 @@ private fun IndicatorBoarder(
 
     val isVisible by remember(indicatorDotSize) { mutableStateOf(indicatorDotSize > 0.dp) }
 
+    val backgroundColor by animateColorAsState(
+        targetValue = if (currentIndex == index) {
+            colorResource(id = R.color.static_white)
+        } else {
+            colorResource(id = R.color.static_white).copy(alpha = OPACITY_52)
+        },
+        animationSpec = tween(
+            durationMillis = 200,
+            easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+        ),
+        label = ""
+    )
+
+    val boarderColor by animateColorAsState(
+        targetValue = if (currentIndex == index) {
+            colorResource(id = R.color.line_normal_neutral)
+        } else {
+            colorResource(id = R.color.line_normal_neutral).copy(OPACITY_8)
+        },
+        animationSpec = tween(
+            durationMillis = 200,
+            easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+        ),
+        label = ""
+    )
+
     AnimatedVisibility(
         modifier = modifier,
         visible = isVisible,
@@ -213,16 +252,8 @@ private fun IndicatorBoarder(
                     isCircleShape = true,
                     boarderType = BoarderType.OutLine,
                     boarderWidth = 1.dp,
-                    boarderColor = if (currentIndex == index) {
-                        colorResource(id = R.color.line_normal_neutral)
-                    } else {
-                        colorResource(id = R.color.line_normal_neutral).copy(OPACITY_8)
-                    },
-                    backgroundColor = if (currentIndex == index) {
-                        colorResource(id = R.color.static_white)
-                    } else {
-                        colorResource(id = R.color.static_white).copy(alpha = OPACITY_52)
-                    }
+                    boarderColor = boarderColor,
+                    backgroundColor = backgroundColor
                 )
         )
     }
