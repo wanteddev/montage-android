@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
@@ -35,7 +36,6 @@ import androidx.compose.ui.window.Dialog
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import java.util.Calendar
 
@@ -113,14 +113,25 @@ private fun WantedTimePickerContent(
                 )
             }
         },
-        bottomBar = {
-            TimePickerBottomBar(
+        modeChange = {
+            TimepickerModeChangeButton(
+                modifier = Modifier,
                 isEnableClock = isEnableClock,
-                confirm = confirm,
-                cancel = cancel,
-                onClickChangeMode = onClickChangeMode,
-                onClickConfirm = onClickConfirm,
-                onClickCancel = onClickCancel
+                onClickChangeMode = onClickChangeMode
+            )
+        },
+        cancel = {
+            cancel?.let {
+                TimepickerButton(
+                    text = cancel,
+                    onClick = onClickCancel
+                )
+            }
+        },
+        confirm = {
+            TimepickerButton(
+                text = confirm,
+                onClick = onClickConfirm
             )
         }
     )
@@ -128,85 +139,74 @@ private fun WantedTimePickerContent(
 
 
 @Composable
-private fun TimePickerBottomBar(
+private fun TimepickerButton(
     modifier: Modifier = Modifier,
-    isEnableClock: Boolean = true,
-    confirm: String,
-    cancel: String?,
-    onClickChangeMode: () -> Unit,
-    onClickConfirm: () -> Unit,
-    onClickCancel: () -> Unit
+    text: String,
+    onClick: () -> Unit
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.End),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        WantedTouchArea(
-            verticalPadding = 4.dp,
-            horizontalPadding = 4.dp,
-            shape = CircleShape,
-            content = {
-                if (isEnableClock) {
-                    Icon(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(8.dp),
-                        imageVector = Icons.Outlined.Keyboard,
-                        tint = colorResource(R.color.label_alternative),
-                        contentDescription = ""
-                    )
-                } else {
-                    Icon(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(8.dp),
-                        imageVector = Icons.Outlined.AccessTime,
-                        tint = colorResource(R.color.label_alternative),
-                        contentDescription = ""
-                    )
-                }
-            },
-            onClick = {
-                onClickChangeMode()
-            }
-        )
-
-        Spacer(Modifier.weight(1f))
-
-        cancel?.let {
+    TextButton(
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp),
+        content = {
             Text(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickOnceForDesignSystem { onClickCancel() }
-                    .padding(vertical = 10.dp)
-                    .padding(horizontal = 12.dp),
-                text = cancel,
+                modifier = Modifier,
+                text = text,
                 style = MaterialTheme.typography.labelLarge,
                 color = colorResource(R.color.primary_normal)
             )
+        },
+        onClick = {
+            onClick()
         }
-
-        Text(
-            modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
-                .clickOnceForDesignSystem { onClickConfirm() }
-                .padding(vertical = 10.dp)
-                .padding(horizontal = 12.dp),
-            text = confirm,
-            style = MaterialTheme.typography.labelLarge,
-            color = colorResource(R.color.primary_normal)
-        )
-    }
+    )
 }
 
+@Composable
+private fun TimepickerModeChangeButton(
+    modifier: Modifier = Modifier,
+    isEnableClock: Boolean,
+    onClickChangeMode: () -> Unit
+) {
+    WantedTouchArea(
+        modifier = modifier,
+        verticalPadding = 4.dp,
+        horizontalPadding = 4.dp,
+        shape = CircleShape,
+        content = {
+            if (isEnableClock) {
+                Icon(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(8.dp),
+                    imageVector = Icons.Outlined.Keyboard,
+                    tint = colorResource(R.color.label_alternative),
+                    contentDescription = ""
+                )
+            } else {
+                Icon(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(8.dp),
+                    imageVector = Icons.Outlined.AccessTime,
+                    tint = colorResource(R.color.label_alternative),
+                    contentDescription = ""
+                )
+            }
+        },
+        onClick = {
+            onClickChangeMode()
+        }
+    )
+}
 
 @Composable
 private fun TimePickerLayout(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit,
     content: @Composable () -> Unit,
-    bottomBar: @Composable () -> Unit
+    modeChange: @Composable () -> Unit,
+    cancel: @Composable () -> Unit,
+    confirm: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -220,7 +220,20 @@ private fun TimePickerLayout(
 
         content()
 
-        bottomBar()
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.End),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+
+            modeChange()
+
+            Spacer(Modifier.weight(1f))
+
+            cancel()
+
+            confirm()
+        }
     }
 }
 
