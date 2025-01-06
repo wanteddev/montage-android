@@ -1,11 +1,6 @@
 package com.wanted.android.wanted.design.accordion
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,7 +55,7 @@ fun WantedAccordion(
     }
 ) {
     AccordionLayout(
-        modifier = modifier,
+        modifier = modifier.animateContentSize(),
         isExpanded = isExpanded,
         divider = divider,
         header = {
@@ -122,12 +117,7 @@ fun AccordionLayout(
 
             header()
 
-            AnimatedVisibility(
-                modifier = Modifier.fillMaxWidth(),
-                visible = isExpanded,
-                enter = expandVertically(animationSpec = tween(EXPEND_ANIMATION_DURATION)) + fadeIn(),
-                exit = shrinkVertically(animationSpec = tween(EXPEND_ANIMATION_DURATION)) + fadeOut()
-            ) {
+            if (isExpanded) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -159,9 +149,6 @@ fun AccordionLayout(
         }
     }
 }
-
-
-private const val EXPEND_ANIMATION_DURATION = 300
 
 @DevicePreviews
 @Composable
