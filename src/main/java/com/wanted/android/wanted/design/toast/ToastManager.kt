@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 
 @SuppressLint("StaticFieldLeak")
 object ToastManager {
+    private var isInitialized: Boolean = false
     private var currentActivity: Activity? = null
     private var toastView: ComposeView? = null
     private var toastContent: @Composable (() -> Unit)? = null
@@ -32,34 +33,46 @@ object ToastManager {
         }
 
     fun initialize(application: Application) {
-        application.registerActivityLifecycleCallbacks(object :
-            Application.ActivityLifecycleCallbacks {
-            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                currentActivity = activity
-            }
+        unregisterLifecycle(application)
+        registerLifecycle(application)
+        isInitialized = true
+    }
 
-            override fun onActivityResumed(activity: Activity) {
-                currentActivity = activity
-                attachToastToActivity()
-                attachLayoutChange()
-            }
+    private fun registerLifecycle(application: Application) {
+        application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+    }
 
-            override fun onActivityPaused(activity: Activity) {
-                if (currentActivity == activity) {
-                    detachLayoutChange()
-                    removeToast()
-                    currentActivity = null
-                }
-            }
+    private fun unregisterLifecycle(application: Application) {
+        application.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks)
+    }
 
-            override fun onActivityDestroyed(activity: Activity) = Unit
-            override fun onActivityStarted(activity: Activity) = Unit
-            override fun onActivityStopped(activity: Activity) = Unit
-            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
-        })
+    private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+            currentActivity = activity
+        }
+
+        override fun onActivityResumed(activity: Activity) {
+            currentActivity = activity
+            attachToastToActivity()
+            attachLayoutChange()
+        }
+
+        override fun onActivityPaused(activity: Activity) {
+            if (currentActivity == activity) {
+                detachLayoutChange()
+                removeToast()
+                currentActivity = null
+            }
+        }
+
+        override fun onActivityDestroyed(activity: Activity) = Unit
+        override fun onActivityStarted(activity: Activity) = Unit
+        override fun onActivityStopped(activity: Activity) = Unit
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
     }
 
     fun showToast(duration: ToastDuration = ToastDuration.Short, content: @Composable () -> Unit) {
+        if (!isInitialized) return
         cancelPreviousToast()
         updateToastContent(content)
         attachToastToActivity()
