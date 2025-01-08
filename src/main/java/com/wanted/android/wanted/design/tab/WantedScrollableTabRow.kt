@@ -50,8 +50,8 @@ fun WantedScrollableTabRow(
     itemCount: Int,
     selectedTabIndex: Int,
     padding: Boolean = false,
-    isLeftGradation: Boolean = false,
-    isRightGradation: Boolean = false,
+    isLeftGradient: Boolean = false,
+    isRightGradient: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
     scrollState: ScrollState = rememberScrollState(),
     content: (index: Int) -> String,
@@ -61,8 +61,8 @@ fun WantedScrollableTabRow(
     CompositionLocalProvider(LocalTabGradationColor provides gradientColor) {
         WantedTabLayout(
             modifier = modifier,
-            isLeftGradation = isLeftGradation && scrollState.canScrollBackward,
-            isRightGradation = isRightGradation && scrollState.canScrollForward,
+            isLeftGradient = isLeftGradient && scrollState.canScrollBackward,
+            isRightGradient = isRightGradient && scrollState.canScrollForward,
             tab = {
                 WantedScrollableFlexTabRow(
                     modifier = Modifier,
@@ -148,8 +148,8 @@ private fun WantedScrollableFlexTabRow(
 @Composable
 private fun WantedTabLayout(
     modifier: Modifier = Modifier,
-    isLeftGradation: Boolean,
-    isRightGradation: Boolean,
+    isLeftGradient: Boolean,
+    isRightGradient: Boolean,
     tab: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)?
 ) {
@@ -184,7 +184,7 @@ private fun WantedTabLayout(
                     tab()
                 }
 
-                if (isLeftGradation) {
+                if (isLeftGradient) {
                     Box(
                         modifier = Modifier
                             .padding(bottom = 1.dp)
@@ -206,7 +206,7 @@ private fun WantedTabLayout(
                     )
                 }
 
-                if (isRightGradation) {
+                if (isRightGradient) {
                     Box(
                         modifier = Modifier
                             .padding(bottom = 1.dp)
@@ -329,8 +329,8 @@ private fun WantedScrollableTabRowPreview() {
                         itemList[index]
                     },
                     padding = false,
-                    isRightGradation = true,
-                    isLeftGradation = true,
+                    isRightGradient = true,
+                    isLeftGradient = true,
                     onClickItem = {},
                     rightIcon = {
                         WantedCheckBox(

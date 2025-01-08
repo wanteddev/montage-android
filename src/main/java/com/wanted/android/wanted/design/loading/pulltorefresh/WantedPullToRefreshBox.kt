@@ -85,7 +85,7 @@ fun WantedPullToRefreshBox(
             isRefresh = true
             scope.launch {
                 scale.animateTo(
-                    1.025f,
+                    1.05f,
                     animationSpec = tween(250, easing = easingCurve)
                 )
 
