@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CaretProperties
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,12 +38,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedToastIcon
 import com.wanted.android.wanted.design.button.WantedButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
@@ -94,9 +93,9 @@ fun WantedTooltip(
                             backgroundColor = backgroundColor,
                             containerColor = color,
                             containerColor1 = color1,
-                            caretProperties = TooltipDefaults.caretProperties.copy(
-                                caretWidth = 12.dp,
-                                caretHeight = 6.dp
+                            dpSize = DpSize(
+                                width = 12.dp,
+                                height = 6.dp
                             ),
                             anchorLayoutCoordinates = anchorLayoutCoordinates
                         )
@@ -242,7 +241,7 @@ private fun CacheDrawScope.drawCaretWithPath(
     backgroundColor: Color,
     containerColor: Color,
     containerColor1: Color,
-    caretProperties: CaretProperties,
+    dpSize: DpSize,
     anchorLayoutCoordinates: LayoutCoordinates?
 ): DrawResult {
     val path = Path()
@@ -254,8 +253,8 @@ private fun CacheDrawScope.drawCaretWithPath(
         val tooltipAnchorSpacing: Int
         val anchorSize: Float
         with(density) {
-            caretHeightPx = caretProperties.caretHeight.roundToPx()
-            caretWidthPx = caretProperties.caretWidth.roundToPx()
+            caretHeightPx = dpSize.height.roundToPx()
+            caretWidthPx = dpSize.width.roundToPx()
             screenWidthPx = configuration.screenWidthDp.dp.roundToPx()
             tooltipAnchorSpacing = spacingBetweenTooltipAndAnchor.roundToPx()
             anchorSize = 2.dp.roundToPx().toFloat()
@@ -359,14 +358,7 @@ private fun CacheDrawScope.drawCaretWithPath(
 private const val SpacingBetweenTooltipAndAnchor = 8
 private const val SpacingBetweenTooltipAndAnchorNotArrow = 2
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedTooltipPreview() {
     DesignSystemTheme {
