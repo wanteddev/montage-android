@@ -55,9 +55,9 @@ fun WantedPullToRefreshBox(
     val density = LocalDensity.current
     val animateTransitionY by animateFloatAsState(
         when {
-            isRefresh -> state.distanceFraction * with(density) { (SIZE_HEIGHT + INDICATOR_PADDING * 2).toPx() }
+            isRefresh -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 2).toPx() }
             isPullEnd -> 0f
-            else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING)  * 3).toPx() }
+            else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 3).toPx() }
         }, label = "animateTransitionY"
     )
 
@@ -121,8 +121,10 @@ fun WantedPullToRefreshBox(
                 .graphicsLayer {
                     translationY = when {
                         isRefresh -> animateTransitionY
-                        isPullEnd -> state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
-                        else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING)  * 3).toPx() }
+                        // 들어갈때 Container 위치
+                        isPullEnd -> state.distanceFraction  * (SIZE_HEIGHT * 0.5f).toPx()
+                        // 땡겼을때 Container 위치
+                        else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 3).toPx() }
                     }
                     clip = true
                 }
@@ -148,8 +150,11 @@ private fun RefreshIndicator(
                 .scale(scale)
                 .graphicsLayer {
                     translationY = when {
-                        isRefresh -> 0f
+                        // 로딩중일때 indicator 위치
+                        isRefresh -> (SIZE_HEIGHT * 0.5f).toPx()
+                        // 들어갈때 indicator 위치
                         isPullEnd -> state.distanceFraction * SIZE_HEIGHT.toPx() - SIZE_HEIGHT.toPx()
+                        // 땡길때 indicator 위치
                         else -> state.distanceFraction * (SIZE_HEIGHT * 2).toPx() - SIZE_HEIGHT.toPx()
                     }
                     clip = true

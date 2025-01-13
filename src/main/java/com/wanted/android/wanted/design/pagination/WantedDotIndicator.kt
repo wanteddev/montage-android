@@ -2,7 +2,8 @@ package com.wanted.android.wanted.design.pagination
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.shrinkHorizontally
@@ -138,7 +139,7 @@ private fun IndicatorDot(
         },
         animationSpec = tween(
             durationMillis = 200,
-            easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+            easing = FastOutSlowInEasing
         ),
         label = ""
     )
@@ -147,24 +148,54 @@ private fun IndicatorDot(
         modifier = modifier,
         visible = isVisible,
         enter = if (visibleArea.first == index) {
-            expandHorizontally(expandFrom = Alignment.End)
+            expandHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                expandFrom = Alignment.End
+            )
         } else {
-            expandHorizontally(expandFrom = Alignment.Start)
+            expandHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                expandFrom = Alignment.Start
+            )
         },
         exit = if (visibleArea.first == index) {
-            shrinkHorizontally(shrinkTowards = Alignment.End)
+            shrinkHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                shrinkTowards = Alignment.End
+            )
         } else {
-            shrinkHorizontally(shrinkTowards = Alignment.Start)
+            shrinkHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                shrinkTowards = Alignment.Start
+            )
         }
     ) {
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .size(indicatorDotSize)
                 .background(
                     color = backgroundColor,
                     shape = CircleShape
                 )
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = 200,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+                .size(indicatorDotSize)
         )
     }
 }
@@ -212,7 +243,7 @@ private fun IndicatorBoarder(
         },
         animationSpec = tween(
             durationMillis = 200,
-            easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+            easing = FastOutSlowInEasing
         ),
         label = ""
     )
@@ -225,7 +256,7 @@ private fun IndicatorBoarder(
         },
         animationSpec = tween(
             durationMillis = 200,
-            easing = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)
+            easing = FastOutSlowInEasing
         ),
         label = ""
     )
@@ -234,19 +265,47 @@ private fun IndicatorBoarder(
         modifier = modifier,
         visible = isVisible,
         enter = if (visibleArea.first == index) {
-            expandHorizontally(expandFrom = Alignment.End)
+            expandHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                expandFrom = Alignment.End
+            )
         } else {
-            expandHorizontally(expandFrom = Alignment.Start)
+            expandHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                expandFrom = Alignment.Start
+            )
         },
         exit = if (visibleArea.first == index) {
-            shrinkHorizontally(shrinkTowards = Alignment.End)
+            shrinkHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                shrinkTowards = Alignment.End
+            )
         } else {
-            shrinkHorizontally(shrinkTowards = Alignment.Start)
+            shrinkHorizontally(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                shrinkTowards = Alignment.Start
+            )
         }
     ) {
         Box(
             modifier = Modifier
-                .size(indicatorDotSize)
+                .clip(CircleShape)
+                .background(
+                    color = backgroundColor,
+                    shape = CircleShape
+                )
                 .getBoarderModifier(
                     size = indicatorDotSize,
                     isCircleShape = true,
@@ -255,6 +314,13 @@ private fun IndicatorBoarder(
                     boarderColor = boarderColor,
                     backgroundColor = backgroundColor
                 )
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = 200,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+                .size(indicatorDotSize)
         )
     }
 }

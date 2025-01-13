@@ -45,7 +45,7 @@ fun WantedSegmentedControlOutlinedItem(
     isLast: Boolean = false,
     icon: @Composable (() -> Unit)? = null
 ) {
-    val textColor = remember {
+    val textColor = remember(isSelected) {
         mutableIntStateOf(
             if (isSelected) {
                 R.color.primary_normal
@@ -77,7 +77,7 @@ fun WantedSegmentedControlOutlinedItem(
 
 
     CompositionLocalProvider(
-        value = LocalContentColor provides colorResource(id = textColor.value)
+        value = LocalContentColor provides colorResource(id = textColor.intValue)
     ) {
         Row(
             modifier = modifier

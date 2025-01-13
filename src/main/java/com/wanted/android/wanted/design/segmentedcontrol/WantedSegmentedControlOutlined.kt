@@ -103,7 +103,6 @@ fun WantedSegmentedControlOutlined(
 
                 when (index) {
                     itemCount - 1 -> Unit
-                    selectedIndex -> Unit
                     selectedIndex - 1 -> Unit
                     else -> {
                         VerticalDivider(
