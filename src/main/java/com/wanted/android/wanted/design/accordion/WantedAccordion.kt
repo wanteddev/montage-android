@@ -58,6 +58,7 @@ fun WantedAccordion(
         modifier = modifier.animateContentSize(),
         isExpanded = isExpanded,
         divider = divider,
+        headerVerticalPadding = headerVerticalPadding,
         header = {
             WantedAccordionHeader(
                 modifier = Modifier
@@ -102,6 +103,7 @@ fun AccordionLayout(
     modifier: Modifier = Modifier,
     divider: Boolean,
     isExpanded: Boolean,
+    headerVerticalPadding: HeaderVerticalPadding,
     header: @Composable () -> Unit,
     description: @Composable (() -> Unit)?,
     content: @Composable (() -> Unit)?,
@@ -121,6 +123,13 @@ fun AccordionLayout(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(
+                            top = when (headerVerticalPadding) {
+                                HeaderVerticalPadding.Padding16 -> 0.dp
+                                HeaderVerticalPadding.Padding12 -> 4.dp
+                                HeaderVerticalPadding.Padding8 -> 8.dp
+                            }
+                        )
                         .padding(bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
