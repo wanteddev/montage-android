@@ -49,8 +49,7 @@ fun WantedAccordion(
     trail: @Composable () -> Unit = {
         WantedAccordionTrailArrowIcon(
             isExpanded = isExpanded,
-            tint = titleStyle.color,
-            onClick = { onChangeExpanded(!isExpanded) }
+            tint = titleStyle.color
         )
     }
 ) {

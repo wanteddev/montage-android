@@ -95,8 +95,12 @@ fun WantedCategory(
         WantedCategoryLayout(
             modifier = modifier
                 .fillMaxWidth(),
-            isLeftGradient = state.canScrollBackward,
-            isRightGradient = state.canScrollForward,
+            isLeftGradient = if (padding) false else state.canScrollBackward,
+            isRightGradient = when {
+                padding && rightIcon != null -> state.canScrollForward
+                padding -> false
+                else -> state.canScrollForward
+            },
             content = {
                 LazyRow(
                     modifier = Modifier
