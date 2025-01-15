@@ -35,13 +35,15 @@ fun WantedPlayTime(
     Box(
         modifier = modifier
             .size(size.container)
-            .clip(CircleShape),
+            .clip(CircleShape)
+            .background(colorResource(R.color.transparent)),
         contentAlignment = Alignment.Center
     ) {
         Box(
             Modifier
                 .size(size.container)
                 .clip(CircleShape)
+                .alpha(if (isAlternative) OPACITY_61 else OPACITY_28)
                 .background(
                     if (isAlternative) {
                         colorResource(R.color.cool_neutral_30)
@@ -49,7 +51,7 @@ fun WantedPlayTime(
                         colorResource(R.color.cool_neutral_40)
                     }
                 )
-                .alpha(if (isAlternative) OPACITY_28 else OPACITY_61)
+
         )
 
         Icon(
