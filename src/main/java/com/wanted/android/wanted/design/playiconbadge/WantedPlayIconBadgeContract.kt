@@ -1,9 +1,9 @@
-package com.wanted.android.wanted.design.playtime
+package com.wanted.android.wanted.design.playiconbadge
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-object WantedPlayTimeContract {
+object WantedPlayIconBadgeContract {
     enum class Size(val container: Dp, val icon: Dp) {
         Small(36.dp, 24.dp),
         Medium(60.dp, 40.dp),
