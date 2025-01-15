@@ -103,7 +103,6 @@ fun WantedSegmentedControlOutlined(
 
                 when (index) {
                     itemCount - 1 -> Unit
-                    selectedIndex - 1 -> Unit
                     else -> {
                         VerticalDivider(
                             color = colorResource(id = R.color.line_normal_normal)
