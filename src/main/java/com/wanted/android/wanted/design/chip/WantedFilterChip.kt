@@ -2,13 +2,18 @@ package com.wanted.android.wanted.design.chip
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +21,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -25,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.chip.WantedActionContract.ChipActionVariant
 import com.wanted.android.wanted.design.chip.config.LocalWantedChipActive
@@ -34,6 +41,8 @@ import com.wanted.android.wanted.design.chip.config.LocalWantedChipVariant
 import com.wanted.android.wanted.design.chip.config.WantedChipDefault
 import com.wanted.android.wanted.design.chip.config.WantedChipDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_12
+import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40136&m=dev
@@ -83,7 +92,7 @@ fun WantedFilterChip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {
-    WantedActionChip(
+    WantedFilterChip(
         modifier = modifier,
         interactionSource = interactionSource,
         size = chipDefault.size,
@@ -129,6 +138,93 @@ fun WantedFilterChip(
         },
         onClick = onClick
     )
+}
+
+@Composable
+private fun WantedFilterChip(
+    modifier: Modifier = Modifier,
+    size: ChipActionSize = ChipActionSize.SMALL,
+    variant: ChipActionVariant = ChipActionVariant.FILLED,
+    isActive: Boolean = false,
+    isEnable: Boolean = true,
+    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
+        size = size,
+        variant = variant,
+        isActive = isActive,
+        isEnable = isEnable
+    ),
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable () -> Unit,
+    rightIcon: @Composable (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null
+) {
+    WantedFilterChipLayout(
+        modifier = modifier
+            .clip(RoundedCornerShape(getChipRadius(chipDefault.size)))
+            .background(chipDefault.backgroundColor)
+            .border(
+                width = 1.dp,
+                shape = RoundedCornerShape(getChipRadius(chipDefault.size)),
+                color = chipDefault.borderColor
+            )
+            .clickOnceForDesignSystem(
+                interactionSource = interactionSource,
+                indication = if (chipDefault.variant == ChipActionVariant.FILLED) {
+                    wantedRippleEffect(
+                        color = colorResource(id = R.color.label_normal).copy(
+                            OPACITY_12
+                        )
+                    )
+                } else {
+                    wantedRippleEffect(
+                        color = chipDefault.backgroundColor.copy(OPACITY_12)
+                    )
+                },
+                enabled = chipDefault.isEnable
+            ) {
+                onClick?.invoke()
+            },
+        chipDefault = chipDefault,
+        content = content,
+        rightIcon = rightIcon
+    )
+}
+
+
+@Composable
+private fun WantedFilterChipLayout(
+    modifier: Modifier,
+    chipDefault: WantedChipDefault,
+    content: @Composable () -> Unit,
+    rightIcon: @Composable (() -> Unit)? = null
+) {
+    Row(
+        modifier = modifier
+            .filterChipPadding(size = chipDefault.size),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(getFilterChipHorizontalArrangement(size = chipDefault.size))
+    ) {
+
+        ProvideTextStyle(value = chipDefault.textStyle) {
+            Box(
+                modifier = Modifier
+                    .actionChipTextPadding(chipDefault.size)
+                    .wrapContentSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                content()
+            }
+        }
+
+        rightIcon?.let {
+            Box(
+                modifier = Modifier.filterChipIconSize(chipDefault.size),
+                contentAlignment = Alignment.Center
+            ) {
+                rightIcon()
+            }
+        }
+    }
 }
 
 

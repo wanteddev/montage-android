@@ -27,7 +27,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.badge.WantedContentBadge
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.loading.WantedSkeletonRectangle
+import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
