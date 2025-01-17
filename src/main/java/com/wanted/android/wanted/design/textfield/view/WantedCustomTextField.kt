@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.textfield.WantedTextInputRightVariant
@@ -55,6 +54,7 @@ internal fun WantedCustomTextField(
     focused: Boolean,
     complete: Boolean,
     maxLines: Int,
+    minLines: Int,
     maxWordCount: Int,
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
@@ -149,7 +149,9 @@ internal fun WantedCustomTextField(
                         .fillMaxSize(),
                     value = value,
                     maxLines = maxLines,
+                    minLines = minLines,
                     enabled = enabled,
+                    singleLine = true,
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
@@ -205,7 +207,7 @@ internal fun WantedCustomTextField(
                                     }
                                 }
 
-                                trailingIcon == null && value.text.isNotEmpty() && enabled -> {
+                                trailingIcon == null && value.text.isNotEmpty() && enabled && focused -> {
                                     {
                                         Icon(
                                             modifier = Modifier
@@ -215,7 +217,7 @@ internal fun WantedCustomTextField(
                                                     onValueChange(value.copy(""))
                                                 },
                                             painter = painterResource(R.drawable.ic_normal_circle_close_svg),
-                                            tint = colorResource(id = R.color.label_alternative),
+                                            tint = colorResource(id = R.color.label_assistive),
                                             contentDescription = ""
                                         )
                                     }
