@@ -8,9 +8,9 @@ object WantedCategoryContract {
         val verticalPadding: Dp,
         val horizontalSpacing: Dp,
     ) {
-        XSmall(8.dp, 4.dp),
-        Small(8.dp, 6.dp),
-        Medium(10.dp, 7.dp),
-        Large(10.dp, 9.dp)
+        Small(8.dp, 4.dp),
+        Medium(8.dp, 6.dp),
+        Large(10.dp, 8.dp),
+        XLarge(10.dp, 10.dp)
     }
 }

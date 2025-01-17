@@ -40,8 +40,10 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 fun WantedCategory(
     modifier: Modifier,
     state: LazyListState = rememberLazyListState(),
-    size: Size = Size.Small,
+    size: Size = Size.Medium,
     padding: Boolean = false,
+    isVerticalPadding: Boolean = false,
+    isAlternative: Boolean = false,
     itemList: List<String>,
     selectedList: List<String>,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
@@ -53,6 +55,7 @@ fun WantedCategory(
         state = state,
         size = size,
         padding = padding,
+        isVerticalPadding = isVerticalPadding,
         gradientColor = gradientColor,
         rightIcon = rightIcon,
         content = {
@@ -60,15 +63,19 @@ fun WantedCategory(
                 WantedActionChip(
                     text = item,
                     variant = if (selectedList.contains(item)) {
-                        ChipActionVariant.FILLED
+                        if (isAlternative) {
+                            ChipActionVariant.OUTLINED
+                        } else {
+                            ChipActionVariant.FILLED
+                        }
                     } else {
                         ChipActionVariant.OUTLINED
                     },
                     size = when (size) {
-                        Size.XSmall -> ChipActionSize.XSMALL
-                        Size.Small -> ChipActionSize.SMALL
-                        Size.Medium -> ChipActionSize.NORMAL
-                        Size.Large -> ChipActionSize.LARGE
+                        Size.Small -> ChipActionSize.XSMALL
+                        Size.Medium -> ChipActionSize.SMALL
+                        Size.Large -> ChipActionSize.NORMAL
+                        Size.XLarge -> ChipActionSize.LARGE
                     },
                     isActive = selectedList.contains(item),
                     onClick = {
@@ -85,8 +92,9 @@ fun WantedCategory(
 fun WantedCategory(
     modifier: Modifier,
     state: LazyListState = rememberLazyListState(),
-    size: Size = Size.Small,
+    size: Size = Size.Medium,
     padding: Boolean = false,
+    isVerticalPadding: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
     content: LazyListScope.() -> Unit,
     rightIcon: @Composable (() -> Unit)? = null
@@ -105,7 +113,7 @@ fun WantedCategory(
                 LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = size.verticalPadding),
+                        .padding(vertical = if (isVerticalPadding) size.verticalPadding else 0.dp),
                     state = state,
                     contentPadding = PaddingValues(horizontal = if (padding) 20.dp else 0.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -230,7 +238,7 @@ private fun WantedCategoryPreview() {
             ) {
                 WantedCategory(
                     modifier = Modifier,
-                    size = Size.Small,
+                    size = Size.Medium,
                     content = {
                         itemsIndexed(itemList) { index, item ->
                             WantedActionChip(
@@ -249,8 +257,17 @@ private fun WantedCategoryPreview() {
 
                 WantedCategory(
                     modifier = Modifier,
-                    size = Size.Small,
+                    size = Size.Medium,
                     itemList = itemList,
+                    selectedList = listOf(itemList.first()),
+                    onClick = { _, _ -> }
+                )
+
+                WantedCategory(
+                    modifier = Modifier,
+                    size = Size.Medium,
+                    itemList = itemList,
+                    isAlternative = true,
                     selectedList = listOf(itemList.first()),
                     onClick = { _, _ -> }
                 )
