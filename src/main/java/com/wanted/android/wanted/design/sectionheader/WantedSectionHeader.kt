@@ -27,7 +27,6 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedSectionHeader(
     modifier: Modifier,
     title: String,
-    maxLine: Int = 2,
     size: Size = Size.Medium,
     isContentAlignLeft: Boolean = false,
     textStyle: TextStyle? = null,
@@ -52,20 +51,20 @@ fun WantedSectionHeader(
 
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.Top,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(
             modifier = Modifier.weight(1f, fill = !isContentAlignLeft),
             text = title,
             overflow = TextOverflow.Ellipsis,
-            maxLines = maxLine,
+            maxLines = if (content != null) 1 else 2,
             style = style
         )
 
         Row(
             modifier = Modifier,
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             content?.invoke(this)
@@ -95,6 +94,12 @@ private fun WantedSectionHeaderPreview() {
                         )
                     }
                 )
+
+                WantedSectionHeader(
+                    modifier = Modifier,
+                    title = "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목",
+                )
+
 
                 WantedSectionHeader(
                     modifier = Modifier,
