@@ -27,6 +27,8 @@ fun WantedTopAppBarIconButton(
     type: TopAppBarType = LocalWantedTopBarIconType.current,
     painter: Painter,
     enabled: Boolean = true,
+    floatingStyleAlternative: Boolean = false,
+    floatingStyleBackground: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tint: Color = colorResource(id = R.color.label_normal),
     onClick: () -> Unit
@@ -35,8 +37,28 @@ fun WantedTopAppBarIconButton(
      * 시스템에 정의되어 있는 IconButton의 default size 56.dp
      * size를 40으로 줄이면 ripple 효과만 56.dp 로 보인다.
      */
-    when (type) {
-        TopAppBarType.Floating -> {
+    when {
+        type == TopAppBarType.Floating && floatingStyleAlternative -> {
+            IconButton(
+                modifier = modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .padding(4.dp)
+                    .background(colorResource(id = R.color.cool_neutral_30).copy(alpha = 0.18f)),
+                enabled = enabled,
+                interactionSource = interactionSource,
+                onClick = { onClick.clickOnceForDesignSystem() }
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painter,
+                    contentDescription = null,
+                    tint = tint
+                )
+            }
+        }
+
+        type == TopAppBarType.Floating && floatingStyleBackground -> {
             IconButton(
                 modifier = modifier
                     .size(40.dp)

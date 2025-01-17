@@ -231,6 +231,30 @@ private fun CustomTopAppBarPreview() {
                     onClickBack = { }
                 )
             }
+            Box(Modifier.background(Color.White)) {
+                WantedBackTopAppBar(
+                    type = TopAppBarType.Floating,
+                    actions = {
+                        WantedTopAppBarIconButton(
+                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                            onClick = { }
+                        )
+
+                        WantedTopAppBarIconButton(
+                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                            floatingStyleBackground = false,
+                            onClick = { }
+                        )
+                        WantedTopAppBarIconButton(
+                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                            floatingStyleAlternative = true,
+                            onClick = { }
+                        )
+                    },
+                    onClickBack = { }
+                )
+            }
+
 
             WantedBackTopAppBar(
                 type = TopAppBarType.Extended,
