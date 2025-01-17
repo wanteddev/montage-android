@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
@@ -42,6 +43,23 @@ fun WantedInput(
     checkBoxState: CheckBoxState = CheckBoxState.Unchecked,
     bold: Boolean = false,
     enabled: Boolean = true,
+    textStyle: TextStyle = WantedTextStyle(
+        colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
+        style = if (size == WantedInputSize.Normal) {
+            if (bold) {
+                DesignSystemTheme.typography.body2Bold
+            } else {
+                DesignSystemTheme.typography.body2Regular
+            }
+
+        } else {
+            if (bold) {
+                DesignSystemTheme.typography.label1Bold
+            } else {
+                DesignSystemTheme.typography.label1Regular
+            }
+        }
+    ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onCheckedChange: ((Boolean) -> Unit)
 ) {
@@ -49,25 +67,7 @@ fun WantedInput(
     val checkBoxInteractionSource: MutableInteractionSource =
         remember { MutableInteractionSource() }
 
-    ProvideTextStyle(
-        value = WantedTextStyle(
-            colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
-            style = if (size == WantedInputSize.Normal) {
-                if (bold) {
-                    DesignSystemTheme.typography.body2Bold
-                } else {
-                    DesignSystemTheme.typography.body2Regular
-                }
-
-            } else {
-                if (bold) {
-                    DesignSystemTheme.typography.label1Bold
-                } else {
-                    DesignSystemTheme.typography.label1Regular
-                }
-            }
-        )
-    ) {
+    ProvideTextStyle(value = textStyle) {
         WantedInputLayout(
             modifier = modifier
                 .clickOnceForDesignSystem(
