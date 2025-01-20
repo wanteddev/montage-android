@@ -27,6 +27,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
+@Deprecated("Deprecated")
 class WantedRoundCheckBox : MaterialCheckBox {
 
     constructor(context: Context) : super(context)
@@ -40,6 +41,7 @@ class WantedRoundCheckBox : MaterialCheckBox {
     )
 }
 
+@Deprecated("Deprecated")
 @Composable
 fun WantedRoundCheckBox(
     modifier: Modifier = Modifier,
