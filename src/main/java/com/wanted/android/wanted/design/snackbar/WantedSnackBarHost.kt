@@ -64,7 +64,8 @@ fun WantedSnackBarHost(
 
     ObserveAsEvents(
         flow = SnackbarController.events,
-        key1 = hostState
+        key1 = hostState,
+        key2 = coroutineScope
     ) { event ->
         coroutineScope.launch {
             hostState.currentSnackbarData?.dismiss()
