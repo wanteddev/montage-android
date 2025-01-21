@@ -255,11 +255,11 @@ private fun getWantedTimePickerDefaults(
     // 오전 / 오후 boarder 색상
     periodSelectorBorderColor = colorResource(R.color.line_normal_normal),
     // 오전 / 오후 select 배경
-    periodSelectorSelectedContainerColor = colorResource(R.color.primary_normal),
+    periodSelectorSelectedContainerColor = colorResource(R.color.fill_normal),
     //오전 / 오후 unSelect 배경
     periodSelectorUnselectedContainerColor = colorResource(R.color.background_elevated_normal),
     // 오전 / 오후 select text
-    periodSelectorSelectedContentColor = colorResource(R.color.static_white),
+    periodSelectorSelectedContentColor = colorResource(R.color.label_normal),
     // 오전 / 오후 unselect text
     periodSelectorUnselectedContentColor = colorResource(R.color.label_alternative),
     // 시간 선택기의 select 배경
