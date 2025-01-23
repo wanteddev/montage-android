@@ -10,7 +10,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.OPACITY_70
+import com.wanted.android.wanted.design.util.OPACITY_74
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
@@ -25,7 +25,7 @@ internal fun WantedTextAreaCharacterCount(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.alpha(OPACITY_70),
+            modifier = Modifier.alpha(OPACITY_74),
             text = "$current",
             style = WantedTextStyle(
                 colorRes = R.color.label_alternative,
@@ -34,7 +34,7 @@ internal fun WantedTextAreaCharacterCount(
         )
 
         Text(
-            modifier = Modifier.alpha(OPACITY_70),
+            modifier = Modifier.alpha(OPACITY_74),
             text = "/$maxWordCount",
             style = WantedTextStyle(
                 colorRes = R.color.label_alternative,
