@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +24,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -159,11 +157,11 @@ fun WantedActionChip(
 ) {
     WantedActionChipLayout(
         modifier = modifier
-            .clip(RoundedCornerShape(getCipRadius(chipDefault.size)))
+            .clip(RoundedCornerShape(getChipRadius(chipDefault.size)))
             .background(chipDefault.backgroundColor)
             .border(
                 width = 1.dp,
-                shape = RoundedCornerShape(getCipRadius(chipDefault.size)),
+                shape = RoundedCornerShape(getChipRadius(chipDefault.size)),
                 color = chipDefault.borderColor
             )
             .clickOnceForDesignSystem(
@@ -202,11 +200,8 @@ private fun WantedActionChipLayout(
         modifier = modifier
             .actionChipPadding(size = chipDefault.size),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-            if (chipDefault.size == ChipActionSize.LARGE) 6.dp else 4.dp
-        )
+        horizontalArrangement = Arrangement.spacedBy(getActionChipHorizontalArrangement(size = chipDefault.size))
     ) {
-
         leftIcon?.let {
             Box(
                 modifier = Modifier.actionChipIconSize(chipDefault.size),
@@ -219,7 +214,9 @@ private fun WantedActionChipLayout(
 
         ProvideTextStyle(value = chipDefault.textStyle) {
             Box(
-                modifier = Modifier.wrapContentSize(),
+                modifier = Modifier
+                    .actionChipTextPadding(chipDefault.size)
+                    .wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
                 content()
@@ -237,47 +234,6 @@ private fun WantedActionChipLayout(
     }
 }
 
-private fun Modifier.actionChipPadding(
-    size: ChipActionSize
-): Modifier = composed {
-    when (size) {
-        ChipActionSize.LARGE -> {
-            this.then(padding(vertical = 9.dp, horizontal = 12.dp))
-        }
-
-        ChipActionSize.NORMAL -> {
-            this.then(padding(vertical = 7.dp, horizontal = 12.dp))
-        }
-
-        ChipActionSize.SMALL -> {
-            this.then(padding(vertical = 6.dp, horizontal = 10.dp))
-        }
-
-        ChipActionSize.XSMALL -> {
-            this.then(padding(vertical = 4.dp, horizontal = 6.dp))
-        }
-    }
-}
-
-private fun Modifier.actionChipIconSize(
-    size: ChipActionSize
-): Modifier = composed {
-    val modifier = when (size) {
-        ChipActionSize.LARGE -> Modifier.size(16.dp)
-        ChipActionSize.NORMAL -> Modifier.size(16.dp)
-        ChipActionSize.SMALL -> Modifier.size(16.dp)
-        ChipActionSize.XSMALL -> Modifier.size(12.dp)
-    }
-    this.then(modifier)
-}
-
-@Composable
-private fun getCipRadius(size: ChipActionSize) = when (size) {
-    ChipActionSize.XSMALL -> 6.dp
-    ChipActionSize.SMALL -> 8.dp
-    ChipActionSize.NORMAL -> 10.dp
-    ChipActionSize.LARGE -> 10.dp
-}
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")

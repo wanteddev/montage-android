@@ -1,8 +1,6 @@
 package com.wanted.android.wanted.design.avatar
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -12,28 +10,21 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.badge.WantedPushBadge
+import com.wanted.android.wanted.design.base.BoarderType
 import com.wanted.android.wanted.design.base.WantedTouchArea
+import com.wanted.android.wanted.design.base.getBoarderModifier
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.OPACITY_5
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40148&m=dev
@@ -244,93 +235,6 @@ fun WantedAvatarLayout(
     }
 }
 
-@Composable
-private fun Modifier.getBoarderModifier(
-    size: Dp,
-    isCircleShape: Boolean,
-    boarderType: BoarderType,
-    cornerRadius: Dp = 0.dp,
-    boarderWidth: Dp = 1.dp,
-    boarderColor: Color = colorResource(id = R.color.label_normal).copy(OPACITY_5)
-) = this.then(
-    when (boarderType) {
-        BoarderType.None -> {
-            if (isCircleShape) {
-                Modifier
-                    .clip(CircleShape)
-                    .background(color = colorResource(id = R.color.static_white))
-            } else {
-                Modifier
-                    .clip(RoundedCornerShape(cornerRadius))
-                    .background(color = colorResource(id = R.color.static_white))
-            }
-        }
-
-        BoarderType.OutLine -> {
-            val localDensity = LocalDensity.current
-            Modifier
-                .drawBehind {
-                    if (isCircleShape) {
-                        drawCircle(
-                            color = boarderColor,
-                            radius = with(localDensity) { (size + boarderWidth * 2).toPx() } / 2,
-                            center = center,
-                            style = Fill
-                        )
-                    } else {
-                        drawRoundRect(
-                            color = boarderColor,
-                            topLeft = Offset(
-                                -with(localDensity) { boarderWidth.toPx() },
-                                -with(localDensity) { boarderWidth.toPx() }),
-                            size = Size(
-                                with(localDensity) { (size + boarderWidth * 2).toPx() },
-                                with(localDensity) { (size + boarderWidth * 2).toPx() }),
-                            cornerRadius = CornerRadius(with(localDensity) { (cornerRadius + boarderWidth).toPx() }),
-                            style = Fill
-                        )
-                    }
-                }
-                .background(
-                    color = colorResource(id = R.color.static_white),
-                    shape = if (isCircleShape) {
-                        CircleShape
-                    } else {
-                        RoundedCornerShape(cornerRadius)
-                    }
-                )
-        }
-
-        BoarderType.InnerLine -> {
-            if (isCircleShape) {
-                Modifier
-                    .clip(CircleShape)
-                    .background(color = colorResource(id = R.color.static_white))
-                    .border(
-                        width = boarderWidth,
-                        color = boarderColor,
-                        shape = CircleShape
-                    )
-            } else {
-                Modifier
-                    .clip(RoundedCornerShape(cornerRadius))
-                    .background(color = colorResource(id = R.color.static_white))
-                    .border(
-                        width = boarderWidth,
-                        color = boarderColor,
-                        shape = RoundedCornerShape(cornerRadius)
-                    )
-            }
-        }
-    }
-)
-
-
-enum class BoarderType {
-    None,
-    InnerLine,
-    OutLine
-}
 
 enum class WantedAvatarSize(
     val size: Dp,

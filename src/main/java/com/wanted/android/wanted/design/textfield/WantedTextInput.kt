@@ -1,6 +1,5 @@
 package com.wanted.android.wanted.design.textfield
 
-import android.content.res.Configuration
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -25,10 +24,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedComponentTitle
 import com.wanted.android.wanted.design.textfield.view.WantedCustomTextField
 import com.wanted.android.wanted.design.textfield.view.WantedTextInputLayout
@@ -42,7 +40,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 fun WantedTextInput(
     modifier: Modifier = Modifier,
-    value: String,
+    text: String,
     placeholder: String = "",
     title: String = "",
     description: String? = null,
@@ -56,6 +54,7 @@ fun WantedTextInput(
     error: Boolean = false,
     complete: Boolean = false,
     maxLines: Int = 1,
+    minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -66,8 +65,8 @@ fun WantedTextInput(
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
-    val textFieldValue = textFieldValueState.copy(text = value)
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
+    val textFieldValue = textFieldValueState.copy(text = text)
 
     SideEffect {
         if (textFieldValue.selection != textFieldValueState.selection ||
@@ -76,7 +75,7 @@ fun WantedTextInput(
             textFieldValueState = textFieldValue
         }
     }
-    var lastTextValue by remember(value) { mutableStateOf(value) }
+    var lastTextValue by remember(text) { mutableStateOf(text) }
 
     WantedTextInputLayout(
         modifier = modifier,
@@ -100,6 +99,7 @@ fun WantedTextInput(
                 focused = focused.value,
                 complete = complete,
                 maxLines = maxLines,
+                minLines = minLines,
                 maxWordCount = maxWordCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -162,6 +162,7 @@ fun WantedTextInput(
     error: Boolean = false,
     complete: Boolean = false,
     maxLines: Int = 1,
+    minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -194,6 +195,7 @@ fun WantedTextInput(
                 focused = focused.value,
                 complete = complete,
                 maxLines = maxLines,
+                minLines = minLines,
                 maxWordCount = maxWordCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -234,14 +236,7 @@ enum class WantedTextInputRightVariant {
 }
 
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedTextFieldPreview() {
     DesignSystemTheme {
@@ -254,7 +249,7 @@ private fun WantedTextFieldPreview() {
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     focused = remember { mutableStateOf(true) }
                 )
@@ -262,21 +257,21 @@ private fun WantedTextFieldPreview() {
                 WantedTextInput(
                     title = "주제",
                     requiredBadge = true,
-                    value = "입력한 텍스트.",
+                    text = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
 
                 WantedTextInput(
                     title = "",
-                    value = "",
+                    text = "",
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
                     error = true
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     enabled = false,
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
@@ -285,21 +280,21 @@ private fun WantedTextFieldPreview() {
 
                 WantedTextInput(
                     requiredBadge = true,
-                    value = "입력한 텍스트.",
+                    text = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     enabled = false
                 )
 
                 WantedTextInput(
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     rightButtonVariant = WantedTextInputRightVariant.Assistive
                 )
 
                 WantedTextInput(
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     rightButtonVariant = WantedTextInputRightVariant.Assistive,
@@ -307,14 +302,14 @@ private fun WantedTextFieldPreview() {
                 )
 
                 WantedTextInput(
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     rightButtonEnabled = false
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     complete = true,
@@ -322,7 +317,7 @@ private fun WantedTextFieldPreview() {
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     complete = true,
@@ -330,7 +325,7 @@ private fun WantedTextFieldPreview() {
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     error = true,
@@ -338,7 +333,7 @@ private fun WantedTextFieldPreview() {
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     error = true,
@@ -351,14 +346,7 @@ private fun WantedTextFieldPreview() {
 }
 
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedTextInputPreview() {
     DesignSystemTheme {
@@ -371,7 +359,7 @@ private fun WantedTextInputPreview() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 WantedTextInput(
-                    value = "텍스트를 입력해 주세요.",
+                    text = "텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     leadingIcon = {
@@ -384,7 +372,7 @@ private fun WantedTextInputPreview() {
                 )
 
                 WantedTextInput(
-                    value = "텍스트를 입력해 주세요.",
+                    text = "텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요. ",
                     rightButton = "텍스트",
                     leadingIcon = {
@@ -412,7 +400,7 @@ private fun WantedTextInputPreview() {
 
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     description = "메시지에 마침표를 찍어요.",
@@ -420,7 +408,7 @@ private fun WantedTextInputPreview() {
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     error = true,
@@ -430,7 +418,7 @@ private fun WantedTextInputPreview() {
 
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
                     description = "메시지에 마침표를 찍어요.",
@@ -438,7 +426,7 @@ private fun WantedTextInputPreview() {
                 )
 
                 WantedTextInput(
-                    value = "",
+                    text = "",
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
                     description = "메시지에 마침표를 찍어요.",
@@ -446,7 +434,7 @@ private fun WantedTextInputPreview() {
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     enabled = false,
@@ -455,7 +443,7 @@ private fun WantedTextInputPreview() {
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     enabled = false,
@@ -465,7 +453,7 @@ private fun WantedTextInputPreview() {
                 )
 
                 WantedTextInput(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     enabled = false,

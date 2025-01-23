@@ -39,6 +39,7 @@ fun WantedTouchArea(
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
     rippleColor: Color = Color.Unspecified,
+    isUseRipple: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable BoxScope.() -> Unit,
     onClick: () -> Unit
@@ -83,15 +84,17 @@ fun WantedTouchArea(
                 .clip(shape)
                 .clickOnceForDesignSystem(
                     enabled = enabled,
-                    indication = ripple(
-                        bounded = true, // 확장된 영역에 리플 효과를 적용
-                        radius = if (contentWidth.value > contentHeight.value) {
-                            contentWidth.value
-                        } else {
-                            contentHeight.value
-                        }, // 리플의 크기를 확장된 터치 영역에 맞춤
-                        color = rippleColor
-                    ),
+                    indication = if (isUseRipple) {
+                        ripple(
+                            bounded = true, // 확장된 영역에 리플 효과를 적용
+                            radius = if (contentWidth.value > contentHeight.value) {
+                                contentWidth.value
+                            } else {
+                                contentHeight.value
+                            }, // 리플의 크기를 확장된 터치 영역에 맞춤
+                            color = rippleColor
+                        )
+                    } else null,
                     interactionSource = interactionSource
                 ) {
                     onClick()

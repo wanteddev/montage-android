@@ -58,7 +58,7 @@ enum class CheckBoxStyle {
 enum class CheckBoxState {
     Unchecked,
     Checked,
-    Partial
+    Indeterminate
 }
 
 
@@ -198,7 +198,7 @@ private fun WantedCheckBoxImpl(
                             .size(if (size == CheckBoxSize.Small) 16.dp else 18.dp)
                             .padding(2.dp),
                         painter = painterResource(
-                            if (checkState == CheckBoxState.Partial) {
+                            if (checkState == CheckBoxState.Indeterminate) {
                                 R.drawable.icon_normal_line_horizontal
                             } else {
                                 R.drawable.icon_normal_check_thick
@@ -363,7 +363,7 @@ private fun CheckBox(
                 modifier = Modifier,
                 size = CheckBoxSize.Small,
                 style = style,
-                checkState = CheckBoxState.Partial,
+                checkState = CheckBoxState.Indeterminate,
                 onCheckedChange = {
 
                 }
@@ -392,7 +392,7 @@ private fun CheckBox(
                 modifier = Modifier,
                 size = CheckBoxSize.Normal,
                 style = style,
-                checkState = CheckBoxState.Partial,
+                checkState = CheckBoxState.Indeterminate,
                 onCheckedChange = {
 
                 }
@@ -430,7 +430,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Small,
                 style = style,
                 enabled = false,
-                checkState = CheckBoxState.Partial,
+                checkState = CheckBoxState.Indeterminate,
                 onCheckedChange = {
 
                 }
@@ -462,7 +462,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Normal,
                 style = style,
                 enabled = false,
-                checkState = CheckBoxState.Partial,
+                checkState = CheckBoxState.Indeterminate,
                 onCheckedChange = {
 
                 }
