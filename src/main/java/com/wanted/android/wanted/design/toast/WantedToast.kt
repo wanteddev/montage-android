@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -60,6 +62,7 @@ sealed class WantedToastVariant(
 fun WantedToast(
     @StringRes text: Int,
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets(0),
     variant: WantedToastVariant = WantedToastVariant.NORMAL,
     @DrawableRes icon: Int? = null,
     @ColorRes tintColor: Int? = null,
@@ -67,6 +70,7 @@ fun WantedToast(
     WantedToast(
         modifier = modifier,
         variant = variant,
+        windowInsets = windowInsets,
         text = stringResource(id = text),
         icon = icon?.let {
             {
@@ -86,6 +90,7 @@ fun WantedToast(
 fun WantedToast(
     text: String,
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets(0),
     variant: WantedToastVariant = WantedToastVariant.NORMAL,
     icon: @Composable (() -> Unit)? = null
 ) {
@@ -112,6 +117,7 @@ fun WantedToast(
     WantedToastLayout(
         modifier = modifier,
         icon = iconSlot,
+        windowInsets = windowInsets,
         content = {
             Text(
                 text = text,
@@ -125,12 +131,14 @@ fun WantedToast(
 @Composable
 private fun WantedToastLayout(
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets(0),
     icon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .padding(20.dp)
+            .windowInsetsPadding(windowInsets)
             .wrapContentHeight()
             .widthIn(max = 420.dp)
             .clip(RoundedCornerShape(12.dp))
