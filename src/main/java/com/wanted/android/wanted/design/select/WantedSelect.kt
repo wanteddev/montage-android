@@ -54,7 +54,7 @@ fun WantedSelect(
     valueList: List<WantedSelectData>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
-    errorList: List<WantedSelectData> = emptyList(),
+    negativeList: List<WantedSelectData> = emptyList(),
     focused: Boolean = false,
     enabled: Boolean = true,
     overflow: Boolean = false,
@@ -70,7 +70,7 @@ fun WantedSelect(
             title = title,
             description = description,
             isRequiredBadge = isRequiredBadge,
-            error = errorList.isNotEmpty(),
+            negative = negativeList.isNotEmpty(),
             focused = focused,
             enabled = enabled,
             background = background,
@@ -81,7 +81,7 @@ fun WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
                     valueList = valueList,
                     placeHolder = placeHolder,
-                    errorList = errorList,
+                    errorList = negativeList,
                     overflow = overflow,
                     enabled = enabled,
                     isChip = isChip,
@@ -100,7 +100,7 @@ fun WantedSelect(
     value: WantedSelectData,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
-    error: Boolean = false,
+    negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -114,7 +114,7 @@ fun WantedSelect(
         value = value.text,
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
-        error = error,
+        negative = negative,
         focused = focused,
         enabled = enabled,
         background = background,
@@ -131,7 +131,7 @@ fun WantedSelect(
     value: String,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
-    error: Boolean = false,
+    negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -143,7 +143,7 @@ fun WantedSelect(
         title = title,
         description = description,
         isRequiredBadge = isRequiredBadge,
-        error = error,
+        negative = negative,
         focused = focused,
         enabled = enabled,
         background = background,
@@ -184,7 +184,7 @@ private fun WantedSelectImpl(
     title: String? = null,
     description: String? = null,
     isRequiredBadge: Boolean = false,
-    error: Boolean = false,
+    negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
     background: Color,
@@ -231,7 +231,7 @@ private fun WantedSelectImpl(
                         .border(
                             shape = RoundedCornerShape(12.dp),
                             color = when {
-                                error || focused -> {
+                                negative || focused -> {
                                     colorResource(id = R.color.background_normal_normal)
                                         .copy(alpha = OPACITY_43)
                                 }
@@ -244,7 +244,7 @@ private fun WantedSelectImpl(
                             shape = RoundedCornerShape(12.dp),
                             color = when {
                                 !enabled -> colorResource(R.color.line_normal_alternative)
-                                error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                                negative -> colorResource(R.color.status_negative).copy(OPACITY_43)
                                 focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
                                 else -> colorResource(R.color.line_normal_neutral)
                             },
@@ -264,7 +264,7 @@ private fun WantedSelectImpl(
                             indication = getSelectRippleEffect(
                                 enabled = enabled,
                                 focused = focused,
-                                error = error
+                                negative = negative
                             )
                         ) {
                             onClick()
@@ -294,7 +294,7 @@ private fun WantedSelectImpl(
                             contentDescription = ""
                         )
                     },
-                    trailingIcon = if (error && !focused && enabled) {
+                    trailingIcon = if (negative && !focused && enabled) {
                         {
                             Icon(
                                 modifier = Modifier
@@ -319,7 +319,7 @@ private fun WantedSelectImpl(
                     text = description,
                     style = WantedTextStyle(
                         colorRes = when {
-                            enabled && error -> R.color.status_negative
+                            enabled && negative -> R.color.status_negative
                             else -> R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.caption1Regular
@@ -335,12 +335,12 @@ private fun WantedSelectImpl(
 
 @Composable
 private fun getSelectRippleEffect(
-    error: Boolean = false,
+    negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
 ) = when {
     !enabled -> null
-    error -> wantedRippleEffect(colorResource(id = R.color.status_negative))
+    negative -> wantedRippleEffect(colorResource(id = R.color.status_negative))
     focused -> wantedRippleEffect(colorResource(id = R.color.primary_normal))
     else -> wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12))
 }
@@ -392,7 +392,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     value = "선택값",
                     description = "메시지에 마침표를 찍어요.",
-                    error = true,
+                    negative = true,
                     onClick = {}
                 )
 
@@ -400,7 +400,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     title = "주제",
                     focused = true,
-                    error = true,
+                    negative = true,
                     value = "선택값",
                     onClick = {}
                 )
@@ -434,7 +434,7 @@ private fun WantedSelectPreview() {
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    errorList = listOf(
+                    negativeList = listOf(
                         WantedSelectData(text = "선택값1")
                     ),
                     onDelete = { },
@@ -448,7 +448,7 @@ private fun WantedSelectPreview() {
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    errorList = listOf(
+                    negativeList = listOf(
                         WantedSelectData(text = "선택값1")
                     ),
                     onDelete = { },
@@ -463,7 +463,7 @@ private fun WantedSelectPreview() {
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    errorList = listOf(
+                    negativeList = listOf(
                         WantedSelectData(text = "선택값1")
                     ),
                     onDelete = { },
@@ -478,7 +478,7 @@ private fun WantedSelectPreview() {
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    errorList = listOf(
+                    negativeList = listOf(
                         WantedSelectData(text = "선택값2")
                     ),
                     onDelete = { },

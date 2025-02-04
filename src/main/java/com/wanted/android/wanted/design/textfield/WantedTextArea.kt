@@ -64,7 +64,7 @@ fun WantedTextArea(
     description: String? = null,
     rightButton: String? = null,
     enabled: Boolean = true,
-    error: Boolean = false,
+    negative: Boolean = false,
     maxLines: Int = 8,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -106,7 +106,7 @@ fun WantedTextArea(
             WantedTextArea(
                 modifier = Modifier,
                 value = textFieldValue,
-                error = error,
+                error = negative,
                 enabled = enabled,
                 focused = focused.value,
                 maxLines = maxLines,
@@ -139,7 +139,7 @@ fun WantedTextArea(
                     text = description,
                     style = WantedTextStyle(
                         colorRes = when {
-                            enabled && error -> R.color.status_negative
+                            enabled && negative -> R.color.status_negative
                             else -> R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.caption1Regular
@@ -653,7 +653,7 @@ private fun WantedTextAreaPreview() {
                 WantedTextArea(
                     modifier = Modifier,
                     title = "주제",
-                    error = true,
+                    negative = true,
                     requiredBadge = true,
                     value = "입력한 텍스트.",
                     isGraphemeClusterCount = true,
@@ -664,7 +664,7 @@ private fun WantedTextAreaPreview() {
                 WantedTextArea(
                     modifier = Modifier,
                     title = "주제",
-                    error = true,
+                    negative = true,
                     requiredBadge = true,
                     value = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
