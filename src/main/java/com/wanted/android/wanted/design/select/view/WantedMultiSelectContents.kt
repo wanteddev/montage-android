@@ -33,6 +33,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.select.LocalWantedSelectBackground
+import com.wanted.android.wanted.design.select.WantedSelectContract
 import com.wanted.android.wanted.design.select.WantedSelectData
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -43,7 +44,7 @@ internal fun WantedMultiSelectContents(
     valueList: List<WantedSelectData>,
     placeHolder: String = "",
     errorList: List<WantedSelectData>,
-    isChip: Boolean,
+    render: WantedSelectContract.MultiSelectRender,
     enabled: Boolean,
     overflow: Boolean,
     onDelete: (WantedSelectData) -> Unit
@@ -57,7 +58,7 @@ internal fun WantedMultiSelectContents(
             )
         }
 
-        isChip -> {
+        render == WantedSelectContract.MultiSelectRender.Chip -> {
             WantedMultiSelectChipList(
                 modifier = modifier,
                 valueList = valueList,

@@ -58,7 +58,7 @@ fun WantedSelect(
     focused: Boolean = false,
     enabled: Boolean = true,
     overflow: Boolean = false,
-    isChip: Boolean = false,
+    render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onDelete: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
@@ -84,7 +84,7 @@ fun WantedSelect(
                     errorList = errorList,
                     overflow = overflow,
                     enabled = enabled,
-                    isChip = isChip,
+                    render = render,
                     onDelete = onDelete
                 )
             }
@@ -443,7 +443,7 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    isChip = true,
+                    render = WantedSelectContract.MultiSelectRender.Chip,
                     valueList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
@@ -457,7 +457,7 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    isChip = true,
+                    render = WantedSelectContract.MultiSelectRender.Chip,
                     focused = true,
                     valueList = listOf(
                         WantedSelectData(text = "선택값1"),
@@ -472,7 +472,7 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    isChip = true,
+                    render = WantedSelectContract.MultiSelectRender.Chip,
                     enabled = false,
                     valueList = listOf(
                         WantedSelectData(text = "선택값1"),
