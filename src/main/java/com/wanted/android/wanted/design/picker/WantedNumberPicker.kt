@@ -52,17 +52,17 @@ fun WantedNumberPicker(
     modifier: Modifier = Modifier,
     start: Int,
     end: Int,
-    gap: Int,
+    step: Int,
     itemList: List<Int> = mutableListOf<Int>().apply {
-        for (value in start until end + 1 step gap) {
+        for (value in start until end + 1 step step) {
             this.add(value)
         }
     }.toList(),
-    selectedIndex: Int = 0,
+    selectedValue: Int = start,
     enableMinValue: Int = 0,
     enableMaxValue: Int = itemList.lastOrNull() ?: 0,
     pagerState: PagerState = rememberPagerState(
-        initialPage = selectedIndex,
+        initialPage = itemList.indexOf(selectedValue).let { if (it == -1) 0 else it },
         initialPageOffsetFraction = 0f
     ) {
         itemList.size
@@ -73,12 +73,13 @@ fun WantedNumberPicker(
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 7,
-    onSelect: (index: Int, enabled: Boolean) -> Unit = { _, _ -> }
+    onSelect: (index: Int, value: Int, enabled: Boolean) -> Unit = { _, _, _ -> }
 ) {
+
     WantedStringPicker(
         modifier = modifier,
         itemList = itemList.map { it.toString() },
-        selectedIndex = selectedIndex,
+        selectedIndex = itemList.indexOf(selectedValue).let { if (it == -1) 0 else it },
         enableStartIndex = itemList.indexOf(enableMinValue).let { index ->
             if (index == -1) {
                 itemList.firstOrNull { it > enableMinValue }?.let {
@@ -92,11 +93,7 @@ fun WantedNumberPicker(
             if (index == -1) {
                 itemList.firstOrNull { it > enableMaxValue }?.let {
                     val result = itemList.indexOf(it) - 1
-                    if (result > 0) {
-                        result
-                    } else {
-                        0
-                    }
+                    if (result > 0) result else 0
                 } ?: 0
             } else {
                 index
@@ -106,7 +103,9 @@ fun WantedNumberPicker(
         textStyle = textStyle,
         itemSize = itemSize,
         visibleCount = visibleCount,
-        onSelect = onSelect
+        onSelect = { index, enabled ->
+            onSelect(index, itemList[index], enabled)
+        }
     )
 }
 
