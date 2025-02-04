@@ -24,7 +24,7 @@ import com.wanted.android.wanted.design.util.OPACITY_43
 
 
 @Composable
-internal fun WantedCheck(
+internal fun WantedCheckMark(
     modifier: Modifier,
     size: CheckBoxSize,
     checked: Boolean,
@@ -79,14 +79,14 @@ private fun WantedCheckPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedCheck(
+                WantedCheckMark(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
                     checked = false,
                     onCheckedChange = {}
                 )
 
-                WantedCheck(
+                WantedCheckMark(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
                     checked = false,
@@ -94,14 +94,14 @@ private fun WantedCheckPreview() {
                     onCheckedChange = {}
                 )
 
-                WantedCheck(
+                WantedCheckMark(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
                     checked = true,
                     onCheckedChange = {}
                 )
 
-                WantedCheck(
+                WantedCheckMark(
                     modifier = Modifier,
                     size = CheckBoxSize.Normal,
                     checked = true,
