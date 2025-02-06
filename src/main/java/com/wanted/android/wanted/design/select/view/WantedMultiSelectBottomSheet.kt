@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,34 +29,34 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonType
 
 @Composable
-fun WantedSelectBottomSheet(
+fun WantedMultiSelectBottomSheet(
     modifier: Modifier = Modifier,
-    items: List<WantedSelectData>,
+            items: List<WantedSelectData>,
     confirmText: String,
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
-    bottomSheetType: BottomSheetDialogType = BottomSheetDialogType.Flexible,
-    selectedItem: WantedSelectData? = null,
-    onSelect: (item: WantedSelectData) -> Unit,
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
+    dialogType: BottomSheetDialogType = BottomSheetDialogType.Flexible,
+    selectedItemList: List<WantedSelectData>,
+    onSelect: (itemList: List<WantedSelectData>) -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    val selectItem = remember(selectedItem) { mutableStateOf(selectedItem) }
+    val selectItemList = remember(selectedItemList) { mutableStateOf(selectedItemList) }
 
     WantedModalBottomSheet(
         modifier = modifier,
-        type = bottomSheetType,
+        type = dialogType,
         content = {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(items) { item ->
+                itemsIndexed(items) { index, item ->
                     WantedCell(
                         modifier = Modifier,
                         padding = WantedCellContract.Padding.Padding12,
                         text = item.text,
                         rightContent = when {
-                            selectItem.value == item
+                            selectItemList.value.contains(item)
                                 && selectType == WantedSelectContract.SelectType.CheckMark -> {
                                 {
                                     WantedCheckMark(
@@ -71,7 +71,7 @@ fun WantedSelectBottomSheet(
                             else -> null
                         },
                         leftContent = when {
-                            selectItem.value == item
+                            selectItemList.value.contains(item)
                                 && selectType == WantedSelectContract.SelectType.CheckBox -> {
                                 {
                                     WantedCheckBox(
@@ -83,7 +83,7 @@ fun WantedSelectBottomSheet(
                                 }
                             }
 
-                            selectItem.value == item
+                            selectItemList.value.contains(item)
                                 && selectType == WantedSelectContract.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
@@ -98,11 +98,14 @@ fun WantedSelectBottomSheet(
                             else -> null
                         },
                         onClick = {
-                            if (confirmText.isEmpty()) {
-                                onSelect(item)
+                            val list = selectItemList.value.toMutableList()
+                            if (selectItemList.value.contains(item)) {
+                                list.remove(item)
                             } else {
-                                selectItem.value = item
+                                list.add(item)
                             }
+
+                            selectItemList.value = list.toSet().toList()
                         }
                     )
                 }
@@ -122,7 +125,7 @@ fun WantedSelectBottomSheet(
                         type = ButtonType.ASSISTIVE,
                         leftDrawable = R.drawable.ic_normal_refresh_svg,
                         onClick = {
-                            selectItem.value = selectedItem
+                            selectItemList.value = selectedItemList
                         }
                     )
 
@@ -131,7 +134,7 @@ fun WantedSelectBottomSheet(
                         text = confirmText,
                         buttonShape = ButtonShape.SOLID,
                         onClick = {
-                            onSelect(selectItem.value ?: WantedSelectData())
+                            onSelect(items.filter { item -> selectItemList.value.contains(item) })
                         }
                     )
                 }
