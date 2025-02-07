@@ -24,7 +24,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.button.WantedOutlinedButton
 import com.wanted.android.wanted.design.button.WantedSolidButton
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
-import com.wanted.android.wanted.design.dialog.ModalSize
+import com.wanted.android.wanted.design.dialog.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.util.ButtonType

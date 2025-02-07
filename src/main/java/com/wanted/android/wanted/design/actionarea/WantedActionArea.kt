@@ -551,10 +551,8 @@ private fun WantedActionAreaPreview() {
                     type = ActionAreaType.Neutral,
                     caption = "캡션",
                     positive = "메인 액션",
-                    negative = "대체 액션",
                     neutral = "보조 액션",
                     onClickPositive = {},
-                    onClickNegative = {},
                     onClickNeutral = {}
                 )
 

@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.dialog.ModalSize
+import com.wanted.android.wanted.design.dialog.WantedModalContract.ModalSize
 
 
 @Composable
@@ -54,7 +54,13 @@ fun WantedDialogLayout(
         /**
          * content
          */
-        content()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f, fill = false)
+        ) {
+            content()
+        }
 
         /**
          * bottomBar

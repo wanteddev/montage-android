@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.dialog.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.dialog.view.WantedDialogLayout
 import com.wanted.android.wanted.design.dialog.view.WantedDialogTwoButtonImpl
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
