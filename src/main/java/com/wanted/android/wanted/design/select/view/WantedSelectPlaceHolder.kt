@@ -11,7 +11,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
-internal fun WantedMultiSelectPlaceHolder(
+internal fun WantedSelectPlaceHolder(
     modifier: Modifier = Modifier,
     placeHolder: String = "",
     enabled: Boolean,

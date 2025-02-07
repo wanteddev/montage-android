@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -188,9 +187,7 @@ fun WantedStringPicker(
         contentAlignment = Alignment.CenterStart
     ) {
         VerticalPager(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.LightGray),
+            modifier = Modifier.fillMaxSize(),
             state = pagerState,
             contentPadding = PaddingValues(
                 top = (maxHeight - itemSize) * 0.5f,
@@ -216,12 +213,11 @@ fun WantedStringPicker(
 
         Box(
             Modifier
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = 8.dp)
                 .height(itemSize)
                 .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = colorResource(R.color.line_normal_normal),
+                .background(
+                    color = colorResource(R.color.fill_normal),
                     shape = RoundedCornerShape(8.dp)
                 )
         )
@@ -248,10 +244,10 @@ fun PickerContent(
             .graphicsLayer {
                 val pageOffset = pagerState.calculateCurrentOffsetForPage(page)
                 val rotation = lerp(0f, 90f, pageOffset / halfVisibleCount)
-                if (rotation > 90 || rotation < -90) {
-                    rotationX = 90f
+                rotationX = if (rotation > 90 || rotation < -90) {
+                    90f
                 } else {
-                    rotationX = rotation
+                    rotation
                 }
 
                 scaleX = lerp(
@@ -276,7 +272,15 @@ fun PickerContent(
         text = title,
         textAlign = TextAlign.Center,
         style = WantedTextStyle(
-            colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
+            colorRes = if (enabled) {
+                if (pagerState.currentPage == page) {
+                    R.color.label_normal
+                } else {
+                    R.color.label_assistive
+                }
+            } else {
+                R.color.label_disable
+            },
             style = DesignSystemTheme.typography.heading1Medium
         )
     )

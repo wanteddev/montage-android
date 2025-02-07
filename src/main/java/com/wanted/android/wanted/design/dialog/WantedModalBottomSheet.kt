@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.dialog
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ModalBottomSheet
@@ -33,23 +34,44 @@ fun WantedModalBottomSheet(
     bottomBar: (@Composable () -> Unit)? = null
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = type is BottomSheetDialogType.Fixed
+        skipPartiallyExpanded = type !is BottomSheetDialogType.Flexible
     )
 
     val configuration = LocalConfiguration.current
     val width = remember(configuration) { configuration.screenWidthDp.dp }
     val windowInset = WantedTopAppBarDefaults.windowInsets.getTop(LocalDensity.current).pxToDp()
-    val maxHeight = remember(configuration) {
-        if (type is BottomSheetDialogType.Fixed) {
-            if (type.isFullScreen) {
-                configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
-            } else {
-                type.height
+    val heightModifier = remember(configuration) {
+        when (type) {
+            is BottomSheetDialogType.Fixed -> {
+                val result = if (type.isFullScreen) {
+                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                } else {
+                    type.height
+                }
+                Modifier.height(result)
             }
-        } else {
-            configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+
+            is BottomSheetDialogType.FixedRatio -> {
+                val height =
+                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                val ratioHeight = (configuration.screenHeightDp * type.ratio).dp
+                val result = if (ratioHeight > height) {
+                    height
+                } else {
+                    ratioHeight
+                }
+
+                Modifier.height(result)
+            }
+
+            else -> {
+                val result =
+                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                Modifier.heightIn(max = result)
+            }
         }
     }
+
 
     ModalBottomSheet(
         modifier = modifier.fillMaxWidth(),
@@ -61,7 +83,7 @@ fun WantedModalBottomSheet(
         dragHandle = { WantedModalDefaults.DragHandle() },
         content = {
             WantedDialogLayout(
-                modifier = modifier.heightIn(max = maxHeight),
+                modifier = heightModifier.fillMaxWidth(),
                 modalSize = modalSize,
                 topBar = topBar,
                 content = content,
