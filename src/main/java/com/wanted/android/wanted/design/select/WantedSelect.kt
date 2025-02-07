@@ -50,6 +50,55 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1934-43909&t=33KjAy2RlyzyhLH6-4
  */
 @Composable
+fun WantedSelectWithString(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    description: String? = null,
+    confirmText: String = "",
+    valueList: List<String>,
+    placeHolder: String = "",
+    isRequiredBadge: Boolean = false,
+    negativeList: List<String> = emptyList(),
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    overflow: Boolean = false,
+    selectValueList: List<String> = emptyList(),
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
+    render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
+    background: Color = colorResource(id = R.color.background_normal_normal),
+    onDelete: (String) -> Unit = {},
+    onClick: () -> Unit = {},
+    leadingIcon: @Composable (() -> Unit)? = null,
+    onSelect: (itemList: List<String>) -> Unit = { },
+) {
+    WantedSelect(
+        modifier = modifier,
+        title = title,
+        description = description,
+        confirmText = confirmText,
+        valueList = valueList.map { WantedSelectData(text = it) },
+        placeHolder = placeHolder,
+        isRequiredBadge = isRequiredBadge,
+        negativeList = negativeList.map { WantedSelectData(text = it) },
+        focused = focused,
+        enabled = enabled,
+        overflow = overflow,
+        selectValueList = selectValueList.map { WantedSelectData(text = it) },
+        selectType = selectType,
+        render = render,
+        background = background,
+        onDelete = {
+            onDelete(it.text)
+        },
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        onSelect = { itemList ->
+            onSelect(itemList.map { it.text })
+        }
+    )
+}
+
+@Composable
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
@@ -64,7 +113,6 @@ fun WantedSelect(
     overflow: Boolean = false,
     selectValueList: List<WantedSelectData> = emptyList(),
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
-    selectedItemList: List<WantedSelectData> = emptyList(),
     render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onDelete: (WantedSelectData) -> Unit = {},
@@ -83,10 +131,17 @@ fun WantedSelect(
             description = description,
             isRequiredBadge = isRequiredBadge,
             negative = negativeList.isNotEmpty(),
-            focused = focused,
+            focused = isFocus.value,
             enabled = enabled,
             background = background,
-            onClick = onClick,
+            onClick = {
+                isFocus.value = true
+                onClick()
+
+                if (selectValueList.isNotEmpty()) {
+                    isShowBottomSheetDialog.value = true
+                }
+            },
             leadingIcon = leadingIcon,
             contents = {
                 WantedMultiSelectContents(
@@ -109,13 +164,14 @@ fun WantedSelect(
             items = selectValueList,
             confirmText = confirmText,
             selectType = selectType,
-            selectedItemList = selectedItemList,
+            selectedItemList = valueList,
             onSelect = { itemList ->
                 isFocus.value = false
                 isShowBottomSheetDialog.value = false
                 onSelect(itemList)
             },
             onDismissRequest = {
+                isShowBottomSheetDialog.value = false
                 isFocus.value = false
             }
         )

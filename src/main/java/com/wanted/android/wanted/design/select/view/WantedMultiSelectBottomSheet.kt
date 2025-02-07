@@ -31,7 +31,7 @@ import com.wanted.android.wanted.design.util.ButtonType
 @Composable
 fun WantedMultiSelectBottomSheet(
     modifier: Modifier = Modifier,
-            items: List<WantedSelectData>,
+    items: List<WantedSelectData>,
     confirmText: String,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
     dialogType: BottomSheetDialogType = BottomSheetDialogType.Flexible,
@@ -57,7 +57,7 @@ fun WantedMultiSelectBottomSheet(
                         text = item.text,
                         rightContent = when {
                             selectItemList.value.contains(item)
-                                && selectType == WantedSelectContract.SelectType.CheckMark -> {
+                                    && selectType == WantedSelectContract.SelectType.CheckMark -> {
                                 {
                                     WantedCheckMark(
                                         modifier = Modifier,
@@ -71,20 +71,23 @@ fun WantedMultiSelectBottomSheet(
                             else -> null
                         },
                         leftContent = when {
-                            selectItemList.value.contains(item)
-                                && selectType == WantedSelectContract.SelectType.CheckBox -> {
+                            selectType == WantedSelectContract.SelectType.CheckBox -> {
                                 {
                                     WantedCheckBox(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checkState = CheckBoxState.Checked,
+                                        checkState = if (selectItemList.value.contains(item)) {
+                                            CheckBoxState.Checked
+                                        } else {
+                                            CheckBoxState.Unchecked
+                                        },
                                         onCheckedChange = { }
                                     )
                                 }
                             }
 
                             selectItemList.value.contains(item)
-                                && selectType == WantedSelectContract.SelectType.Radio -> {
+                                    && selectType == WantedSelectContract.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
                                         modifier = Modifier,
