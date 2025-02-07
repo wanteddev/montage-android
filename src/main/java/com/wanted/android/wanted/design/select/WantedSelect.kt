@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
@@ -32,8 +33,11 @@ import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.dialog.WantedModalContract
+import com.wanted.android.wanted.design.select.view.WantedMultiSelectBottomSheet
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectPlaceHolder
+import com.wanted.android.wanted.design.select.view.WantedSelectBottomSheet
 import com.wanted.android.wanted.design.select.view.WantedSelectContentLayout
 import com.wanted.android.wanted.design.select.view.WantedSelectLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -45,12 +49,61 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-44983&m=dev
  * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1934-43909&t=33KjAy2RlyzyhLH6-4
  */
+@Composable
+fun WantedSelectWithString(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    description: String? = null,
+    confirmText: String = "",
+    valueList: List<String>,
+    placeHolder: String = "",
+    isRequiredBadge: Boolean = false,
+    negativeList: List<String> = emptyList(),
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    overflow: Boolean = false,
+    selectValueList: List<String> = emptyList(),
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
+    render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
+    background: Color = colorResource(id = R.color.background_normal_normal),
+    onDelete: (String) -> Unit = {},
+    onClick: () -> Unit = {},
+    leadingIcon: @Composable (() -> Unit)? = null,
+    onSelect: (itemList: List<String>) -> Unit = { },
+) {
+    WantedSelect(
+        modifier = modifier,
+        title = title,
+        description = description,
+        confirmText = confirmText,
+        valueList = valueList.map { WantedSelectData(text = it) },
+        placeHolder = placeHolder,
+        isRequiredBadge = isRequiredBadge,
+        negativeList = negativeList.map { WantedSelectData(text = it) },
+        focused = focused,
+        enabled = enabled,
+        overflow = overflow,
+        selectValueList = selectValueList.map { WantedSelectData(text = it) },
+        selectType = selectType,
+        render = render,
+        background = background,
+        onDelete = {
+            onDelete(it.text)
+        },
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        onSelect = { itemList ->
+            onSelect(itemList.map { it.text })
+        }
+    )
+}
 
 @Composable
 fun WantedSelect(
     modifier: Modifier = Modifier,
     title: String? = null,
     description: String? = null,
+    confirmText: String = "",
     valueList: List<WantedSelectData>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
@@ -58,12 +111,19 @@ fun WantedSelect(
     focused: Boolean = false,
     enabled: Boolean = true,
     overflow: Boolean = false,
+    selectValueList: List<WantedSelectData> = emptyList(),
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
     render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onDelete: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
-    leadingIcon: @Composable (() -> Unit)? = null
+    leadingIcon: @Composable (() -> Unit)? = null,
+    onSelect: (itemList: List<WantedSelectData>) -> Unit = { },
 ) {
+
+    val isShowBottomSheetDialog = remember { mutableStateOf(false) }
+    val isFocus = remember(focused) { mutableStateOf(focused) }
+
     CompositionLocalProvider(LocalWantedSelectBackground.provides(background)) {
         WantedSelectImpl(
             modifier = modifier,
@@ -71,10 +131,17 @@ fun WantedSelect(
             description = description,
             isRequiredBadge = isRequiredBadge,
             negative = negativeList.isNotEmpty(),
-            focused = focused,
+            focused = isFocus.value,
             enabled = enabled,
             background = background,
-            onClick = onClick,
+            onClick = {
+                isFocus.value = true
+                onClick()
+
+                if (selectValueList.isNotEmpty()) {
+                    isShowBottomSheetDialog.value = true
+                }
+            },
             leadingIcon = leadingIcon,
             contents = {
                 WantedMultiSelectContents(
@@ -90,37 +157,25 @@ fun WantedSelect(
             }
         )
     }
-}
 
-@Composable
-fun WantedSelect(
-    modifier: Modifier = Modifier,
-    title: String? = null,
-    description: String? = null,
-    value: WantedSelectData,
-    placeHolder: String = "",
-    isRequiredBadge: Boolean = false,
-    negative: Boolean = false,
-    focused: Boolean = false,
-    enabled: Boolean = true,
-    background: Color = colorResource(id = R.color.background_normal_normal),
-    onClick: () -> Unit = {},
-    leadingIcon: @Composable (() -> Unit)? = null
-) {
-    WantedSelect(
-        modifier = modifier,
-        title = title,
-        description = description,
-        value = value.text,
-        placeHolder = placeHolder,
-        isRequiredBadge = isRequiredBadge,
-        negative = negative,
-        focused = focused,
-        enabled = enabled,
-        background = background,
-        onClick = onClick,
-        leadingIcon = leadingIcon
-    )
+    if (selectValueList.isNotEmpty() && isShowBottomSheetDialog.value) {
+        WantedMultiSelectBottomSheet(
+            modifier = Modifier,
+            items = selectValueList,
+            confirmText = confirmText,
+            selectType = selectType,
+            selectedItemList = valueList,
+            onSelect = { itemList ->
+                isFocus.value = false
+                isShowBottomSheetDialog.value = false
+                onSelect(itemList)
+            },
+            onDismissRequest = {
+                isShowBottomSheetDialog.value = false
+                isFocus.value = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -130,27 +185,90 @@ fun WantedSelect(
     description: String? = null,
     value: String,
     placeHolder: String = "",
+    confirmText: String = "",
     isRequiredBadge: Boolean = false,
     negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
+    selectValueList: List<String> = emptyList(),
+    bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
+    selectedItem: String? = null,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onClick: () -> Unit = {},
+    onSelect: (item: String) -> Unit = { },
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
+    WantedSelect(
+        modifier = modifier,
+        title = title,
+        description = description,
+        confirmText = confirmText,
+        value = WantedSelectData(text = value),
+        placeHolder = placeHolder,
+        isRequiredBadge = isRequiredBadge,
+        negative = negative,
+        focused = focused,
+        enabled = enabled,
+        bottomSheetType = bottomSheetType,
+        selectValueList = selectValueList.map { WantedSelectData(text = it) },
+        selectType = selectType,
+        selectedItem = WantedSelectData(text = selectedItem ?: ""),
+        background = background,
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        onSelect = { item ->
+            onSelect(item.text)
+        }
+    )
+}
+
+
+@Composable
+fun WantedSelect(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    description: String? = null,
+    confirmText: String = "",
+    value: WantedSelectData,
+    placeHolder: String = "",
+    isRequiredBadge: Boolean = false,
+    negative: Boolean = false,
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    selectValueList: List<WantedSelectData> = emptyList(),
+    bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
+    selectedItem: WantedSelectData? = null,
+    background: Color = colorResource(id = R.color.background_normal_normal),
+    onClick: () -> Unit = {},
+    onSelect: (item: WantedSelectData) -> Unit = {},
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
+
+    val isShowBottomSheetDialog = remember { mutableStateOf(false) }
+    val isFocus = remember(focused) { mutableStateOf(focused) }
+
     WantedSelectImpl(
         modifier = modifier,
         title = title,
         description = description,
         isRequiredBadge = isRequiredBadge,
         negative = negative,
-        focused = focused,
+        focused = isFocus.value,
         enabled = enabled,
         background = background,
-        onClick = onClick,
+        onClick = {
+            isFocus.value = true
+            onClick()
+
+            if (selectValueList.isNotEmpty()) {
+                isShowBottomSheetDialog.value = true
+            }
+        },
         leadingIcon = leadingIcon,
         contents = {
-            if (value.isEmpty()) {
+            if (value.text.isEmpty()) {
                 WantedMultiSelectPlaceHolder(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = placeHolder,
@@ -161,7 +279,7 @@ fun WantedSelect(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp),
-                    text = value,
+                    text = value.text,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = WantedTextStyle(
@@ -176,7 +294,28 @@ fun WantedSelect(
             }
         }
     )
+
+    if (selectValueList.isNotEmpty() && isShowBottomSheetDialog.value) {
+        WantedSelectBottomSheet(
+            modifier = Modifier,
+            items = selectValueList,
+            confirmText = confirmText,
+            selectType = selectType,
+            bottomSheetType = bottomSheetType,
+            selectedItem = selectedItem,
+            onSelect = { item ->
+                isFocus.value = false
+                onSelect(item)
+                isShowBottomSheetDialog.value = false
+            },
+            onDismissRequest = {
+                isFocus.value = false
+                isShowBottomSheetDialog.value = false
+            }
+        )
+    }
 }
+
 
 @Composable
 private fun WantedSelectImpl(

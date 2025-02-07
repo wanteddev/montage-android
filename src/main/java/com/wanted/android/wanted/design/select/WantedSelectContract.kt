@@ -5,4 +5,10 @@ object WantedSelectContract {
         Chip,
         Text
     }
+
+    enum class SelectType {
+        CheckMark,
+        CheckBox,
+        Radio
+    }
 }
