@@ -41,4 +41,6 @@ object WantedModalDefaults {
             )
         }
     }
+
+    const val DRAG_HANDLE_SIZE_DP = 19
 }

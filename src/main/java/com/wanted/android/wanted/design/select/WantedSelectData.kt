@@ -7,6 +7,8 @@ data class WantedSelectData(
     val id: String = "",
     val text: String = "",
     val iconUrl: String = "",
+    val any: Any? = null,
+
     @DrawableRes val iconRes: Int = 0,
     @ColorRes val tint: Int = 0
 )

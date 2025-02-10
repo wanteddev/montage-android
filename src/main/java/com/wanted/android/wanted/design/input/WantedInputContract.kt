@@ -9,6 +9,6 @@ object WantedInputContract {
     enum class WantedInputType {
         CheckBox,
         Radio,
-        NestedCheckBox
+        CheckMark
     }
 }
