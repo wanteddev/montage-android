@@ -14,10 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.dialog.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.dialog.view.WantedDialogLayout
 import com.wanted.android.wanted.design.dialog.view.WantedDialogTwoButtonImpl
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.topbar.WantedTopAppBar
+import com.wanted.android.wanted.design.topbar.WantedDialogTopAppBar
 
 
 @Composable
@@ -122,8 +123,8 @@ private fun WantedDialogPreview() {
                 modalSize = ModalSize.Normal,
                 positive = "확인",
                 topBar = {
-                    WantedTopAppBar(
-                        title = { Text(text = "다이얼로그 타이틀") },
+                    WantedDialogTopAppBar(
+                        title = "다이얼로그 타이틀",
                     )
                 },
                 onClickPositive = {},

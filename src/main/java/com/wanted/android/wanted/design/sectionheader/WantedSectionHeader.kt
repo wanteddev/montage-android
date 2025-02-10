@@ -18,9 +18,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.sectionheader.WantedSectionHeaderContract.Size
@@ -91,14 +89,6 @@ fun WantedSectionHeader(
                 rightContent.invoke(this)
             }
         }
-    }
-}
-
-@Composable
-fun spToDp(spValue: Float): Dp {
-    val density = LocalDensity.current
-    return with(density) {
-        spValue.sp.toDp()
     }
 }
 

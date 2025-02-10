@@ -101,7 +101,7 @@ fun WantedInput(
                     style = when (type) {
                         WantedInputType.CheckBox -> CheckBoxStyle.CheckBox
                         WantedInputType.Radio -> CheckBoxStyle.Radio
-                        WantedInputType.NestedCheckBox -> CheckBoxStyle.Check
+                        WantedInputType.CheckMark -> CheckBoxStyle.Check
                     },
                     checkState = checkBoxState,
                     enabled = enabled,
@@ -143,10 +143,10 @@ private fun WantedInputPreview() {
                 WantedInput(WantedInputSize.Normal, WantedInputType.Radio)
 
                 Text(text = "NestedCheckBox Small")
-                WantedInput(WantedInputSize.Small, WantedInputType.NestedCheckBox)
+                WantedInput(WantedInputSize.Small, WantedInputType.CheckMark)
 
                 Text(text = "NestedCheckBox Normal")
-                WantedInput(WantedInputSize.Normal, WantedInputType.NestedCheckBox)
+                WantedInput(WantedInputSize.Normal, WantedInputType.CheckMark)
             }
         }
     }

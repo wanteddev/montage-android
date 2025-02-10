@@ -45,11 +45,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.dialog.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.dialog.view.WantedDialogLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+@Deprecated("Use WantedModalBottomSheet")
 @Composable
 fun WantedBottomSheetDialog(
     isVisible: Boolean,
@@ -118,6 +120,7 @@ fun WantedBottomSheetDialog(
     }
 }
 
+@Deprecated("Use WantedModalBottomSheet")
 @Composable
 fun WantedBottomSheetLayout(
     modifier: Modifier = Modifier,
