@@ -7,8 +7,14 @@ object WantedModalContract {
 
     sealed class BottomSheetDialogType {
         data object Flexible : BottomSheetDialogType()
-        data class Fixed(val height: Dp, val isFullScreen: Boolean = false) :
-            BottomSheetDialogType()
+
+        data object FixedWrapContent : BottomSheetDialogType()
+        data class Fixed(
+            val height: Dp,
+            val isFullScreen: Boolean = false
+        ) : BottomSheetDialogType()
+
+        data class FixedRatio(val ratio: Float) : BottomSheetDialogType()
     }
 
     enum class ModalSize(

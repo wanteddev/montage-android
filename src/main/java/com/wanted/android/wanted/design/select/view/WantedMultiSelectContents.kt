@@ -51,7 +51,7 @@ internal fun WantedMultiSelectContents(
 ) {
     when {
         valueList.isEmpty() -> {
-            WantedMultiSelectPlaceHolder(
+            WantedSelectPlaceHolder(
                 modifier = modifier,
                 placeHolder = placeHolder,
                 enabled = enabled,

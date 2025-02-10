@@ -36,10 +36,10 @@ import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.dialog.WantedModalContract
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectBottomSheet
 import com.wanted.android.wanted.design.select.view.WantedMultiSelectContents
-import com.wanted.android.wanted.design.select.view.WantedMultiSelectPlaceHolder
 import com.wanted.android.wanted.design.select.view.WantedSelectBottomSheet
 import com.wanted.android.wanted.design.select.view.WantedSelectContentLayout
 import com.wanted.android.wanted.design.select.view.WantedSelectLayout
+import com.wanted.android.wanted.design.select.view.WantedSelectPlaceHolder
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -269,7 +269,7 @@ fun WantedSelect(
         leadingIcon = leadingIcon,
         contents = {
             if (value.text.isEmpty()) {
-                WantedMultiSelectPlaceHolder(
+                WantedSelectPlaceHolder(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = placeHolder,
                     enabled = enabled
