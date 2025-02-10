@@ -125,7 +125,7 @@ fun WantedTextInput(
                 }
             )
         },
-        message = description?.let {
+        message = if (!description.isNullOrEmpty()) {
             {
                 Text(
                     text = description,
@@ -140,7 +140,7 @@ fun WantedTextInput(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-        }
+        } else null
     )
 }
 
