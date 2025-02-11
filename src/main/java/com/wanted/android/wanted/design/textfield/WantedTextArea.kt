@@ -106,7 +106,7 @@ fun WantedTextArea(
             WantedTextArea(
                 modifier = Modifier,
                 value = textFieldValue,
-                error = negative,
+                negative = negative,
                 enabled = enabled,
                 focused = focused.value,
                 maxLines = maxLines,
@@ -161,7 +161,7 @@ fun WantedTextArea(
     description: String? = null,
     rightButton: String? = null,
     enabled: Boolean = true,
-    error: Boolean = false,
+    negative: Boolean = false,
     maxLines: Int = 8,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -191,7 +191,7 @@ fun WantedTextArea(
             WantedTextArea(
                 modifier = Modifier,
                 value = value,
-                error = error,
+                negative = negative,
                 enabled = enabled,
                 focused = focused.value,
                 maxLines = maxLines,
@@ -214,7 +214,7 @@ fun WantedTextArea(
                     text = description,
                     style = WantedTextStyle(
                         colorRes = when {
-                            enabled && error -> R.color.status_negative
+                            enabled && negative -> R.color.status_negative
                             else -> R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.caption1Regular
@@ -237,7 +237,7 @@ fun WantedTextArea(
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
-    error: Boolean = false,
+    negative: Boolean = false,
     maxLines: Int = 8,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -277,7 +277,7 @@ fun WantedTextArea(
             WantedTextArea(
                 modifier = Modifier,
                 value = textFieldValue,
-                error = error,
+                negative = negative,
                 enabled = enabled,
                 focused = focused.value,
                 maxLines = maxLines,
@@ -309,7 +309,7 @@ fun WantedTextArea(
                     text = description,
                     style = WantedTextStyle(
                         colorRes = when {
-                            enabled && error -> R.color.status_negative
+                            enabled && negative -> R.color.status_negative
                             else -> R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.caption1Regular
@@ -333,7 +333,7 @@ fun WantedTextArea(
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
-    error: Boolean = false,
+    negative: Boolean = false,
     maxLines: Int = 8,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -361,7 +361,7 @@ fun WantedTextArea(
             WantedTextArea(
                 modifier = Modifier,
                 value = value,
-                error = error,
+                negative = negative,
                 enabled = enabled,
                 focused = focused.value,
                 maxLines = maxLines,
@@ -383,7 +383,7 @@ fun WantedTextArea(
                     text = description,
                     style = WantedTextStyle(
                         colorRes = when {
-                            enabled && error -> R.color.status_negative
+                            enabled && negative -> R.color.status_negative
                             else -> R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.caption1Regular
@@ -402,7 +402,7 @@ private fun WantedTextArea(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
     placeholder: String = "",
-    error: Boolean = false,
+    negative: Boolean = false,
     enabled: Boolean = true,
     focused: Boolean = false,
     isGraphemeClusterCount: Boolean = false,
@@ -421,7 +421,7 @@ private fun WantedTextArea(
         modifier = modifier,
         value = value,
         placeholder = placeholder,
-        error = error,
+        negative = negative,
         enabled = enabled,
         focused = focused,
         maxLines = maxLines,
@@ -443,7 +443,7 @@ private fun WantedTextArea(
             )
         },
         rightContent = {
-            if (error) {
+            if (negative) {
                 Icon(
                     modifier = Modifier
                         .size(24.dp)
@@ -474,7 +474,7 @@ private fun WantedTextArea(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
     placeholder: String = "",
-    error: Boolean = false,
+    negative: Boolean = false,
     enabled: Boolean = true,
     focused: Boolean = false,
     maxLines: Int = 8,
@@ -517,7 +517,7 @@ private fun WantedTextArea(
                 .border(
                     shape = RoundedCornerShape(12.dp),
                     color = when {
-                        error || focused -> {
+                        negative || focused -> {
                             colorResource(id = R.color.background_normal_normal)
                                 .copy(alpha = OPACITY_43)
                         }
@@ -530,7 +530,7 @@ private fun WantedTextArea(
                     shape = RoundedCornerShape(12.dp),
                     color = when {
                         !enabled -> colorResource(R.color.line_normal_neutral)
-                        error -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                        negative -> colorResource(R.color.status_negative).copy(OPACITY_43)
                         focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
                         else -> colorResource(R.color.line_normal_neutral)
                     },
