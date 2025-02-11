@@ -56,12 +56,13 @@ fun WantedSelectBottomSheet(
                         padding = WantedCellContract.Padding.Padding12,
                         text = item.text,
                         rightContent = when {
-                            selectType == WantedSelectContract.SelectType.CheckMark -> {
+                            selectItem.value == item
+                                && selectType == WantedSelectContract.SelectType.CheckMark -> {
                                 {
                                     WantedCheckMark(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checked = selectItem.value == item,
+                                        checked = true,
                                         onCheckedChange = { }
                                     )
                                 }
