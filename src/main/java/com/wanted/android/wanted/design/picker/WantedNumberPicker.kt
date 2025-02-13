@@ -72,6 +72,7 @@ fun WantedNumberPicker(
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 7,
+    userScrollEnabled: Boolean = true,
     onSelect: (index: Int, value: Int, enabled: Boolean) -> Unit = { _, _, _ -> }
 ) {
 
@@ -102,6 +103,7 @@ fun WantedNumberPicker(
         textStyle = textStyle,
         itemSize = itemSize,
         visibleCount = visibleCount,
+        userScrollEnabled = userScrollEnabled,
         onSelect = { index, enabled ->
             onSelect(index, itemList[index], enabled)
         }
@@ -162,6 +164,7 @@ fun WantedStringPicker(
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 7,
+    userScrollEnabled: Boolean = true,
     onSelect: (index: Int, enabled: Boolean) -> Unit = { _, _ -> }
 ) {
     LaunchedEffect(selectedIndex) {
@@ -212,9 +215,10 @@ fun WantedStringPicker(
                     page = page,
                     visibleCount = visibleCount,
                     title = itemList.get(index = page),
-                    enabled = page in enableStartIndex..enableEndIndex
+                    enabled = if (userScrollEnabled) page in enableStartIndex..enableEndIndex else false
                 )
-            }
+            },
+            userScrollEnabled = userScrollEnabled
         )
     }
 }
