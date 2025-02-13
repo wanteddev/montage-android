@@ -21,7 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.accordion.WantedAccordionContract.HeaderVerticalPadding
+import com.wanted.android.wanted.design.accordion.WantedAccordionContract.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_8
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -43,7 +43,7 @@ fun WantedAccordion(
     isExpanded: Boolean = false,
     fillWidth: Boolean = false,
     divider: Boolean = true,
-    headerVerticalPadding: HeaderVerticalPadding = HeaderVerticalPadding.Padding12,
+    verticalPadding: VerticalPadding = VerticalPadding.Padding12,
     content: @Composable (() -> Unit)? = null,
     onChangeExpanded: (Boolean) -> Unit,
     trail: @Composable () -> Unit = {
@@ -57,12 +57,12 @@ fun WantedAccordion(
         modifier = modifier.animateContentSize(),
         isExpanded = isExpanded,
         divider = divider,
-        headerVerticalPadding = headerVerticalPadding,
+        verticalPadding = verticalPadding,
         header = {
             WantedAccordionHeader(
                 modifier = Modifier
                     .fillMaxWidth(),
-                headerVerticalPadding = headerVerticalPadding,
+                verticalPadding = verticalPadding,
                 title = title,
                 style = titleStyle,
                 fillWidth = fillWidth,
@@ -102,7 +102,7 @@ fun AccordionLayout(
     modifier: Modifier = Modifier,
     divider: Boolean,
     isExpanded: Boolean,
-    headerVerticalPadding: HeaderVerticalPadding,
+    verticalPadding: VerticalPadding,
     header: @Composable () -> Unit,
     description: @Composable (() -> Unit)?,
     content: @Composable (() -> Unit)?,
@@ -123,10 +123,10 @@ fun AccordionLayout(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = when (headerVerticalPadding) {
-                                HeaderVerticalPadding.Padding16 -> 0.dp
-                                HeaderVerticalPadding.Padding12 -> 4.dp
-                                HeaderVerticalPadding.Padding8 -> 8.dp
+                            top = when (verticalPadding) {
+                                VerticalPadding.Padding16 -> 0.dp
+                                VerticalPadding.Padding12 -> 4.dp
+                                VerticalPadding.Padding8 -> 8.dp
                             }
                         )
                         .padding(bottom = 16.dp),

@@ -49,7 +49,7 @@ fun WantedScrollableTabRow(
     tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Medium,
     itemCount: Int,
     selectedTabIndex: Int,
-    padding: Boolean = false,
+    horizontalPadding: Boolean = false,
     isLeftGradient: Boolean = false,
     isRightGradient: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
@@ -70,7 +70,7 @@ fun WantedScrollableTabRow(
                     scrollState = scrollState,
                     itemCount = itemCount,
                     selectedTabIndex = selectedTabIndex,
-                    padding = padding,
+                    horizontalPadding = horizontalPadding,
                     content = content,
                     onClickItem = onClickItem
                 )
@@ -86,7 +86,7 @@ private fun WantedScrollableFlexTabRow(
     tabSize: WantedTabContract.TabSize,
     itemCount: Int,
     selectedTabIndex: Int,
-    padding: Boolean,
+    horizontalPadding: Boolean,
     scrollState: ScrollState,
     content: (index: Int) -> String,
     onClickItem: (index: Int) -> Unit = {},
@@ -106,7 +106,7 @@ private fun WantedScrollableFlexTabRow(
         scrollState = scrollState,
         selectedTabProvider = { selectedTabIndex },
         dividerFitTab = false,
-        edgePadding = if (padding) 20.dp else 0.dp,
+        edgePadding = if (horizontalPadding) 20.dp else 0.dp,
         minItemWidth = 32.dp,
         contentColor = colorResource(id = R.color.transparent),
         containerColor = colorResource(id = R.color.transparent),
@@ -293,7 +293,7 @@ private fun WantedScrollableTabRowPreview() {
                     content = { index ->
                         itemList[index]
                     },
-                    padding = false,
+                    horizontalPadding = false,
                     onClickItem = {}
                 )
 
@@ -305,7 +305,7 @@ private fun WantedScrollableTabRowPreview() {
                     content = { index ->
                         itemList[index]
                     },
-                    padding = false,
+                    horizontalPadding = false,
                     onClickItem = {}
                 )
 
@@ -317,7 +317,7 @@ private fun WantedScrollableTabRowPreview() {
                     content = { index ->
                         itemList[index]
                     },
-                    padding = true,
+                    horizontalPadding = true,
                     onClickItem = {}
                 )
 
@@ -328,7 +328,7 @@ private fun WantedScrollableTabRowPreview() {
                     content = { index ->
                         itemList[index]
                     },
-                    padding = false,
+                    horizontalPadding = false,
                     isRightGradient = true,
                     isLeftGradient = true,
                     onClickItem = {},

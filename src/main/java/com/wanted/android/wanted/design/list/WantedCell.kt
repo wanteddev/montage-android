@@ -13,8 +13,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
@@ -36,7 +34,7 @@ fun WantedCell(
     text: String,
     textMaxLine: Int = 1,
     caption: String = "",
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
+    verticalPadding: WantedCellContract.VerticalPadding = WantedCellContract.VerticalPadding.Padding12,
     interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default,
     fillWidth: Boolean = false,
     divider: Boolean = false,
@@ -54,7 +52,7 @@ fun WantedCell(
         annotatedString = text.toAnnotatedString(),
         annotatedCaption = caption.toAnnotatedString(),
         textMaxLine = textMaxLine,
-        padding = padding,
+        verticalPadding = verticalPadding,
         interactionPadding = interactionPadding,
         fillWidth = fillWidth,
         divider = divider,
@@ -75,7 +73,7 @@ fun WantedCell(
     modifier: Modifier = Modifier,
     annotatedString: AnnotatedString,
     annotatedCaption: AnnotatedString = AnnotatedString(""),
-    padding: WantedCellContract.Padding = WantedCellContract.Padding.Padding12,
+    verticalPadding: WantedCellContract.VerticalPadding = WantedCellContract.VerticalPadding.Padding12,
     interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default,
     fillWidth: Boolean = false,
     divider: Boolean = false,
@@ -103,7 +101,7 @@ fun WantedCell(
                             onClick()
                         }
                         .padding(horizontal = if (fillWidth) interactionPadding.padding else 0.dp)
-                        .padding(vertical = padding.value),
+                        .padding(vertical = verticalPadding.value),
                     text = annotatedString,
                     textMaxLine = textMaxLine,
                     caption = annotatedCaption,
@@ -200,21 +198,21 @@ private fun WantedCellPreview() {
                 WantedCell(
                     text = "텍스트 padding Small",
                     caption = "캡션",
-                    padding = WantedCellContract.Padding.Padding8,
+                    verticalPadding = WantedCellContract.VerticalPadding.Padding8,
                     onClick = {}
                 )
 
                 WantedCell(
                     text = "텍스트 padding Normal",
                     caption = "캡션",
-                    padding = WantedCellContract.Padding.Padding12,
+                    verticalPadding = WantedCellContract.VerticalPadding.Padding12,
                     onClick = {}
                 )
 
                 WantedCell(
                     text = "텍스트 padding Medium",
                     caption = "캡션",
-                    padding = WantedCellContract.Padding.Padding16,
+                    verticalPadding = WantedCellContract.VerticalPadding.Padding16,
                     onClick = {}
                 )
 
@@ -223,7 +221,7 @@ private fun WantedCellPreview() {
                     caption = "캡션",
                     fillWidth = true,
                     divider = true,
-                    padding = WantedCellContract.Padding.Padding16,
+                    verticalPadding = WantedCellContract.VerticalPadding.Padding16,
                     onClick = {}
                 )
 
