@@ -41,7 +41,7 @@ fun WantedCategory(
     modifier: Modifier,
     state: LazyListState = rememberLazyListState(),
     size: Size = Size.Medium,
-    padding: Boolean = false,
+    horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
     isAlternative: Boolean = false,
     itemList: List<String>,
@@ -54,7 +54,7 @@ fun WantedCategory(
         modifier = modifier,
         state = state,
         size = size,
-        padding = padding,
+        horizontalPadding = horizontalPadding,
         isVerticalPadding = isVerticalPadding,
         gradientColor = gradientColor,
         rightIcon = rightIcon,
@@ -93,7 +93,7 @@ fun WantedCategory(
     modifier: Modifier,
     state: LazyListState = rememberLazyListState(),
     size: Size = Size.Medium,
-    padding: Boolean = false,
+    horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
     content: LazyListScope.() -> Unit,
@@ -103,10 +103,10 @@ fun WantedCategory(
         WantedCategoryLayout(
             modifier = modifier
                 .fillMaxWidth(),
-            isLeftGradient = if (padding) false else state.canScrollBackward,
+            isLeftGradient = if (horizontalPadding) false else state.canScrollBackward,
             isRightGradient = when {
-                padding && rightIcon != null -> state.canScrollForward
-                padding -> false
+                horizontalPadding && rightIcon != null -> state.canScrollForward
+                horizontalPadding -> false
                 else -> state.canScrollForward
             },
             content = {
@@ -115,7 +115,7 @@ fun WantedCategory(
                         .fillMaxWidth()
                         .padding(vertical = if (isVerticalPadding) size.verticalPadding else 0.dp),
                     state = state,
-                    contentPadding = PaddingValues(horizontal = if (padding) 20.dp else 0.dp),
+                    contentPadding = PaddingValues(horizontal = if (horizontalPadding) 20.dp else 0.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(size.horizontalSpacing)
                 ) {
