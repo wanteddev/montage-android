@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object WantedCellContract {
-    enum class Padding(val value: Dp) {
+    enum class VerticalPadding(val value: Dp) {
         Padding0(0.dp),
         Padding8(8.dp),
         Padding12(12.dp),
