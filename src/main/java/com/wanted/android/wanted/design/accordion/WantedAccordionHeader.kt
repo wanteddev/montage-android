@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -36,6 +38,7 @@ internal fun WantedAccordionHeader(
     modifier: Modifier = Modifier,
     verticalPadding: VerticalPadding,
     title: String,
+    maxLine: Int = Int.MAX_VALUE,
     style: TextStyle,
     fillWidth: Boolean,
     leadingIcon: (@Composable () -> Unit)? = null,
@@ -56,15 +59,11 @@ internal fun WantedAccordionHeader(
                 modifier = Modifier
                     .size(
                         with(LocalDensity.current) { style.lineHeight.toDp() }
-                    ),
+                    )
+                    .widthIn(max = 24.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier.size(24.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    leadingIcon()
-                }
+                leadingIcon()
             }
         }
 
@@ -72,14 +71,16 @@ internal fun WantedAccordionHeader(
             modifier = Modifier.weight(1f),
             text = title,
             style = style,
-            maxLines = 1,
+            maxLines = maxLine,
             overflow = TextOverflow.Ellipsis
         )
 
         Box(
-            modifier = Modifier.size(
-                with(LocalDensity.current) { style.lineHeight.toDp() }
-            ),
+            modifier = Modifier
+                .height(
+                    height = with(LocalDensity.current) { style.lineHeight.toDp() }
+                )
+                .widthIn(max = 24.dp),
             contentAlignment = Alignment.Center
         ) {
             trailIcon()

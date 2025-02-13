@@ -31,6 +31,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedAccordion(
     modifier: Modifier = Modifier,
     title: String,
+    titleMaxLine: Int = Int.MAX_VALUE,
     description: String? = null,
     titleStyle: TextStyle = WantedTextStyle(
         colorRes = R.color.label_normal,
@@ -65,6 +66,7 @@ fun WantedAccordion(
                     .fillMaxWidth(),
                 verticalPadding = verticalPadding,
                 title = title,
+                maxLine = titleMaxLine,
                 style = titleStyle,
                 fillWidth = fillWidth,
                 leadingIcon = leadingIcon,
