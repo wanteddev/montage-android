@@ -27,11 +27,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -161,7 +164,6 @@ fun WantedStringPicker(
     visibleCount: Int = 7,
     onSelect: (index: Int, enabled: Boolean) -> Unit = { _, _ -> }
 ) {
-
     LaunchedEffect(selectedIndex) {
         if (pagerState.currentPage != selectedIndex) {
             pagerState.scrollToPage(selectedIndex)
@@ -174,6 +176,13 @@ fun WantedStringPicker(
                 pagerState.currentPage,
                 pagerState.currentPage in enableStartIndex..enableEndIndex
             )
+        }
+    }
+
+    val haptic = LocalHapticFeedback.current
+    LaunchedEffect(haptic, pagerState.currentPage) {
+        snapshotFlow { pagerState.currentPage }.collect {
+            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
         }
     }
 
