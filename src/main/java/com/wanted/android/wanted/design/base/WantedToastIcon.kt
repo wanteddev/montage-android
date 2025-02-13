@@ -83,7 +83,7 @@ private fun WantedCommonIconPreview() {
                         .size(22.dp)
                         .clip(CircleShape)
                         .clickOnceForDesignSystem { },
-                    resourceId = R.drawable.ic_normal_circle_close_svg,
+                    resourceId = R.drawable.ic_normal_circle_close_fill_svg,
                     tint = colorResource(id = R.color.label_alternative)
                 )
 
