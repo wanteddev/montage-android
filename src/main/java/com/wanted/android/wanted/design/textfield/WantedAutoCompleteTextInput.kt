@@ -111,9 +111,7 @@ fun WantedAutoCompleteTextInput(
             )
 
             ExposedDropdownMenu(
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .width(maxWidth),
+                modifier = Modifier.width(maxWidth),
                 containerColor = colorResource(R.color.background_normal_normal),
                 shape = RoundedCornerShape(20.dp),
                 expanded = isExpended,
@@ -206,9 +204,7 @@ fun WantedAutoCompleteTextInput(
             )
 
             ExposedDropdownMenu(
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .width(maxWidth),
+                modifier = Modifier.width(maxWidth),
                 containerColor = colorResource(R.color.background_normal_normal),
                 shape = RoundedCornerShape(20.dp),
                 expanded = isExpended,
