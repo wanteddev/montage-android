@@ -46,6 +46,7 @@ fun WantedAccordion(
     verticalPadding: VerticalPadding = VerticalPadding.Padding12,
     content: @Composable (() -> Unit)? = null,
     onChangeExpanded: (Boolean) -> Unit,
+    leadingIcon: (@Composable () -> Unit)? = null,
     trail: @Composable () -> Unit = {
         WantedAccordionTrailArrowIcon(
             isExpanded = isExpanded,
@@ -66,7 +67,8 @@ fun WantedAccordion(
                 title = title,
                 style = titleStyle,
                 fillWidth = fillWidth,
-                trail = trail,
+                leadingIcon = leadingIcon,
+                trailIcon = trail,
                 onClick = {
                     onChangeExpanded(!isExpanded)
                 }
@@ -98,7 +100,7 @@ fun WantedAccordion(
 }
 
 @Composable
-fun AccordionLayout(
+private fun AccordionLayout(
     modifier: Modifier = Modifier,
     divider: Boolean,
     isExpanded: Boolean,
