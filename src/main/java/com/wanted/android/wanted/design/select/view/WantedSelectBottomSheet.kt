@@ -19,6 +19,7 @@ import com.wanted.android.wanted.design.dialog.WantedModalContract.BottomSheetDi
 import com.wanted.android.wanted.design.element.CheckBoxSize
 import com.wanted.android.wanted.design.element.CheckBoxState
 import com.wanted.android.wanted.design.element.WantedCheckBox
+import com.wanted.android.wanted.design.element.WantedCheckMark
 import com.wanted.android.wanted.design.element.WantedRadioButton
 import com.wanted.android.wanted.design.list.WantedCell
 import com.wanted.android.wanted.design.list.WantedCellContract
@@ -55,16 +56,13 @@ fun WantedSelectBottomSheet(
                         padding = WantedCellContract.Padding.Padding12,
                         text = item.text,
                         rightContent = when {
-                            selectType == WantedSelectContract.SelectType.CheckMark -> {
+                            selectItem.value == item
+                                && selectType == WantedSelectContract.SelectType.CheckMark -> {
                                 {
-                                    WantedCheckBox(
+                                    WantedCheckMark(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checkState = if (selectItem.value == item) {
-                                            CheckBoxState.Checked
-                                        } else {
-                                            CheckBoxState.Unchecked
-                                        },
+                                        checked = true,
                                         onCheckedChange = { }
                                     )
                                 }
