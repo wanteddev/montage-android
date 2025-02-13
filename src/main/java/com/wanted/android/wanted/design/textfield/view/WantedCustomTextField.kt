@@ -217,7 +217,7 @@ internal fun WantedCustomTextField(
                                                 .clickOnceForDesignSystem {
                                                     onValueChange(value.copy(""))
                                                 },
-                                            painter = painterResource(R.drawable.ic_normal_circle_close_svg),
+                                            painter = painterResource(R.drawable.ic_normal_circle_close_fill_svg),
                                             tint = colorResource(id = R.color.label_assistive),
                                             contentDescription = ""
                                         )
