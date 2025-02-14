@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
@@ -65,14 +66,7 @@ fun WantedTabRow(
 }
 
 
-@Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
-@Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")
-@Preview(
-    "foldableLight",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ko",
-    device = Devices.FOLDABLE
-)
+@DevicePreviews
 @Composable
 private fun WantedTabPreview() {
     DesignSystemTheme {

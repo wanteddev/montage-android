@@ -65,8 +65,8 @@ fun WantedTextArea(
     rightButton: String? = null,
     enabled: Boolean = true,
     negative: Boolean = false,
-    maxLines: Int = 8,
-    minLines: Int = 1,
+    maxLines: Int = MAX_LINE,
+    minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
@@ -162,8 +162,8 @@ fun WantedTextArea(
     rightButton: String? = null,
     enabled: Boolean = true,
     negative: Boolean = false,
-    maxLines: Int = 8,
-    minLines: Int = 1,
+    maxLines: Int = MAX_LINE,
+    minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
@@ -238,8 +238,8 @@ fun WantedTextArea(
     rightContent: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
     negative: Boolean = false,
-    maxLines: Int = 8,
-    minLines: Int = 1,
+    maxLines: Int = MAX_LINE,
+    minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -334,8 +334,8 @@ fun WantedTextArea(
     rightContent: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
     negative: Boolean = false,
-    maxLines: Int = 8,
-    minLines: Int = 1,
+    maxLines: Int = MAX_LINE,
+    minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -406,8 +406,8 @@ private fun WantedTextArea(
     enabled: Boolean = true,
     focused: Boolean = false,
     isGraphemeClusterCount: Boolean = false,
-    maxLines: Int = 8,
-    minLines: Int = 1,
+    maxLines: Int = MAX_LINE,
+    minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -477,8 +477,8 @@ private fun WantedTextArea(
     negative: Boolean = false,
     enabled: Boolean = true,
     focused: Boolean = false,
-    maxLines: Int = 8,
-    minLines: Int = 1,
+    maxLines: Int = MAX_LINE,
+    minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -631,6 +631,9 @@ private fun graphemeClusterCount(text: String): Int {
     }
     return count
 }
+
+private const val MAX_LINE = 3
+private const val MIN_LINE = 1
 
 
 @DevicePreviews

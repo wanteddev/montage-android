@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.accordion.WantedAccordionContract.HeaderVerticalPadding
+import com.wanted.android.wanted.design.accordion.WantedAccordionContract.VerticalPadding
 import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -30,7 +30,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 internal fun WantedAccordionHeader(
     modifier: Modifier = Modifier,
-    headerVerticalPadding: HeaderVerticalPadding,
+    verticalPadding: VerticalPadding,
     title: String,
     style: TextStyle,
     fillWidth: Boolean,
@@ -41,7 +41,7 @@ internal fun WantedAccordionHeader(
         modifier = modifier
             .clickOnceForDesignSystem(onClick = onClick)
             .wrapContentSize()
-            .padding(vertical = headerVerticalPadding.value)
+            .padding(vertical = verticalPadding.value)
             .padding(horizontal = if (fillWidth) 20.dp else 0.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -71,7 +71,7 @@ private fun AccordionHeaderPreview() {
                 WantedAccordionHeader(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    headerVerticalPadding = HeaderVerticalPadding.Padding12,
+                    verticalPadding = VerticalPadding.Padding12,
                     title = "제목ㅁㄴ ㅏ이ㅓㅗ ㅁ나ㅣㅓㅇ롸ㅣㅁ 너ㅗㅇ 라ㅣ머농 라ㅣㅓㅁ노 ㅇ리ㅏㅓㅗㅁㄴ이ㅏ 러ㅗㅁ나ㅣㅓㅇ 로",
                     style = WantedTextStyle(
                         colorRes = R.color.label_normal,

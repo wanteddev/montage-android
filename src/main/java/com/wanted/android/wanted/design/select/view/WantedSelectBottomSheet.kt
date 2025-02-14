@@ -53,7 +53,7 @@ fun WantedSelectBottomSheet(
                 items(items) { item ->
                     WantedCell(
                         modifier = Modifier,
-                        padding = WantedCellContract.Padding.Padding12,
+                        verticalPadding = WantedCellContract.VerticalPadding.Padding12,
                         text = item.text,
                         rightContent = when {
                             selectItem.value == item

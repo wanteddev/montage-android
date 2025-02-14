@@ -53,7 +53,7 @@ fun WantedMultiSelectBottomSheet(
                 itemsIndexed(items) { index, item ->
                     WantedCell(
                         modifier = Modifier,
-                        padding = WantedCellContract.Padding.Padding12,
+                        verticalPadding = WantedCellContract.VerticalPadding.Padding12,
                         text = item.text,
                         rightContent = when {
                             selectItemList.value.contains(item)
