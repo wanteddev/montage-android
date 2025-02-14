@@ -87,7 +87,7 @@ fun DraggableModal(
     var layoutHeight by remember { mutableStateOf(0.dp) }
     var dragSize by remember { mutableStateOf(IntSize.Zero) }
     val currentDismissRequest by rememberUpdatedState(onDismissRequest)
-    val dragState = remember(layoutHeight) {
+    val dragState = remember(layoutHeight, positionalThreshold, density) {
         AnchoredDraggableState(
             initialValue = DragValue.Close,
             anchors = DraggableAnchors {
