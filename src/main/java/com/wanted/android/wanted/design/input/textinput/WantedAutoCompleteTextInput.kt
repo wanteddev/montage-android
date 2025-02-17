@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,10 +20,7 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -61,17 +59,18 @@ fun WantedAutoCompleteTextInput(
     background: Color = colorResource(id = R.color.background_normal_normal),
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {},
-    initExpended: Boolean = false,
+    expended: Boolean = false,
     anchorPadding: Dp = 0.dp,
-    autoCompleteContent: @Composable ColumnScope.() -> Unit
+    dropDownMaxHeight: Dp = 200.dp,
+    autoCompleteContent: @Composable ColumnScope.() -> Unit,
+    onExpandedChange: (Boolean) -> Unit
 ) {
-    var isExpended by remember { mutableStateOf(initExpended) }
 
     ExposedDropdownMenuBox(
         modifier = modifier,
-        expanded = isExpended,
+        expanded = expended,
         onExpandedChange = {
-            isExpended = it
+            onExpandedChange(it)
         }
     ) {
         BoxWithConstraints(
@@ -79,7 +78,7 @@ fun WantedAutoCompleteTextInput(
         ) {
             WantedTextField(
                 modifier = Modifier
-                    .padding(bottom = anchorPadding)
+                    .padding(vertical = anchorPadding)
                     .fillMaxWidth()
                     .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = text.isNotEmpty()),
                 title = title,
@@ -105,18 +104,20 @@ fun WantedAutoCompleteTextInput(
                 rightContent = rightContent,
                 onClickRightButton = onClickRightButton,
                 onValueChange = { text ->
-                    isExpended = text.isNotEmpty()
+                    onExpandedChange(text.isNotEmpty())
                     onValueChange(text)
                 },
             )
 
             ExposedDropdownMenu(
-                modifier = Modifier.width(maxWidth),
+                modifier = Modifier
+                    .width(maxWidth)
+                    .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
                 shape = RoundedCornerShape(20.dp),
-                expanded = isExpended,
+                expanded = expended,
                 onDismissRequest = {
-                    isExpended = false
+                    onExpandedChange(false)
                 }
             ) {
                 autoCompleteContent()
@@ -151,17 +152,17 @@ fun WantedAutoCompleteTextInput(
     background: Color = colorResource(id = R.color.background_normal_normal),
     onClickRightButton: () -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit = {},
-    initExpended: Boolean = false,
+    expended: Boolean = false,
     anchorPadding: Dp = 0.dp,
-    autoCompleteContent: @Composable ColumnScope.() -> Unit
+    dropDownMaxHeight: Dp = 200.dp,
+    autoCompleteContent: @Composable ColumnScope.() -> Unit,
+    onExpandedChange: (Boolean) -> Unit
 ) {
-    var isExpended by remember { mutableStateOf(initExpended) }
-
     ExposedDropdownMenuBox(
         modifier = modifier,
-        expanded = isExpended,
+        expanded = expended,
         onExpandedChange = {
-            isExpended = it
+            onExpandedChange(it)
         }
     ) {
         BoxWithConstraints(
@@ -169,7 +170,7 @@ fun WantedAutoCompleteTextInput(
         ) {
             WantedTextField(
                 modifier = Modifier
-                    .padding(bottom = anchorPadding)
+                    .padding(vertical = anchorPadding)
                     .fillMaxWidth()
                     .menuAnchor(
                         type = MenuAnchorType.PrimaryEditable,
@@ -198,18 +199,20 @@ fun WantedAutoCompleteTextInput(
                 rightContent = rightContent,
                 onClickRightButton = onClickRightButton,
                 onValueChange = { text ->
-                    isExpended = text.text.isNotEmpty()
+                    onExpandedChange(text.text.isNotEmpty())
                     onValueChange(text)
                 },
             )
 
             ExposedDropdownMenu(
-                modifier = Modifier.width(maxWidth),
+                modifier = Modifier
+                    .width(maxWidth)
+                    .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
                 shape = RoundedCornerShape(20.dp),
-                expanded = isExpended,
+                expanded = expended,
                 onDismissRequest = {
-                    isExpended = false
+                    onExpandedChange(expended)
                 }
             ) {
                 autoCompleteContent()
@@ -234,7 +237,7 @@ private fun WantedAutoCompleteTextInputPreview() {
                     text = "ㅁㄴㅇ",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    initExpended = false,
+                    expended = false,
                     onValueChange = {
                     },
                     onClickRightButton = {
@@ -251,6 +254,9 @@ private fun WantedAutoCompleteTextInputPreview() {
                             onClick = {
                             }
                         )
+                    },
+                    onExpandedChange = {
+
                     }
                 )
             }
