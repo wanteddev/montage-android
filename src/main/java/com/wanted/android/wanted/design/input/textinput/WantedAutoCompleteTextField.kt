@@ -34,7 +34,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 @Composable
-fun WantedAutoCompleteTextInput(
+fun WantedAutoCompleteTextField(
     modifier: Modifier = Modifier,
     text: String,
     placeholder: String = "",
@@ -127,7 +127,7 @@ fun WantedAutoCompleteTextInput(
 }
 
 @Composable
-fun WantedAutoCompleteTextInput(
+fun WantedAutoCompleteTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
     placeholder: String = "",
@@ -232,7 +232,7 @@ private fun WantedAutoCompleteTextInputPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedAutoCompleteTextInput(
+                WantedAutoCompleteTextField(
                     modifier = Modifier.fillMaxWidth(),
                     text = "ㅁㄴㅇ",
                     placeholder = "텍스트를 입력해 주세요.",
