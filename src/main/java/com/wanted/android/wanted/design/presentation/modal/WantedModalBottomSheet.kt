@@ -89,7 +89,11 @@ fun WantedModalBottomSheet(
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetMaxWidth = width,
         sheetState = bottomSheetState,
-        dragHandle = { WantedModalDefaults.DragHandle() },
+        dragHandle = if (type.isCloseable) {
+            { WantedModalDefaults.DragHandle() }
+        } else {
+            null
+        },
         content = {
             WantedDialogLayout(
                 modifier = heightModifier.fillMaxWidth(),
