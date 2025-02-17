@@ -5,16 +5,28 @@ import androidx.compose.ui.unit.dp
 
 object WantedModalContract {
 
-    sealed class BottomSheetDialogType {
+    sealed class BottomSheetDialogType(
+        open val isCloseable: Boolean = true
+    ) {
         data object Flexible : BottomSheetDialogType()
 
-        data object FixedWrapContent : BottomSheetDialogType()
+        data class FixedWrapContent(
+            override val isCloseable: Boolean = true
+        ) : BottomSheetDialogType(isCloseable)
+
         data class Fixed(
             val height: Dp,
-            val isFullScreen: Boolean = false
-        ) : BottomSheetDialogType()
+            override val isCloseable: Boolean = true
+        ) : BottomSheetDialogType(isCloseable)
 
-        data class FixedRatio(val ratio: Float) : BottomSheetDialogType()
+        data class FixedFullScreen(
+            override val isCloseable: Boolean = true
+        ) : BottomSheetDialogType(isCloseable)
+
+        data class FixedRatio(
+            val ratio: Float,
+            override val isCloseable: Boolean = true
+        ) : BottomSheetDialogType(isCloseable)
     }
 
     enum class ModalSize(
