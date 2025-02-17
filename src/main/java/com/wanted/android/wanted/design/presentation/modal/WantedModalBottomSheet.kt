@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -15,16 +16,16 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.BottomSheetDialogType
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
-import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.util.pxToDp
 
 
 @Composable
 fun WantedModalBottomSheet(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     background: Color = colorResource(id = R.color.background_elevated_normal),
     type: BottomSheetDialogType = BottomSheetDialogType.Flexible,
     modalSize: ModalSize = ModalSize.Normal,
@@ -34,7 +35,14 @@ fun WantedModalBottomSheet(
     bottomBar: (@Composable () -> Unit)? = null
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = type !is BottomSheetDialogType.Flexible
+        skipPartiallyExpanded = type !is BottomSheetDialogType.Flexible,
+        confirmValueChange = { sheetValue: SheetValue ->
+            if (!type.isCloseable) {
+                sheetValue == SheetValue.Expanded
+            } else {
+                true
+            }
+        }
     )
 
     val configuration = LocalConfiguration.current
@@ -43,12 +51,13 @@ fun WantedModalBottomSheet(
     val heightModifier = remember(configuration) {
         when (type) {
             is BottomSheetDialogType.Fixed -> {
-                val result = if (type.isFullScreen) {
+                Modifier.height(type.height)
+            }
+
+            is BottomSheetDialogType.FixedFullScreen -> {
+                Modifier.height(
                     configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
-                } else {
-                    type.height
-                }
-                Modifier.height(result)
+                )
             }
 
             is BottomSheetDialogType.FixedRatio -> {
@@ -80,7 +89,11 @@ fun WantedModalBottomSheet(
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetMaxWidth = width,
         sheetState = bottomSheetState,
-        dragHandle = { WantedModalDefaults.DragHandle() },
+        dragHandle = if (type.isCloseable) {
+            { WantedModalDefaults.DragHandle() }
+        } else {
+            null
+        },
         content = {
             WantedDialogLayout(
                 modifier = heightModifier.fillMaxWidth(),
