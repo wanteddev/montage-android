@@ -17,7 +17,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.loading.shimmer
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
