@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,6 +35,7 @@ import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaul
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
+import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
@@ -122,6 +124,7 @@ fun WantedOutlinedButton(
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
         shape = ButtonShape.OUTLINED,
         type = type,
@@ -164,17 +167,26 @@ fun WantedOutlinedButton(
         buttonSize = buttonDefault.size,
         leftDrawable = leftDrawable?.let {
             {
-                WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonShape.OUTLINED,
-                        size = buttonDefault.size
-                    ),
-                    drawableRes = it,
-                    tint = buttonDefault.contentColor
-                )
+                if (!isLoading) {
+                    WantedButtonSideIcon(
+                        modifier = getButtonDrawableSize(
+                            shape = ButtonShape.OUTLINED,
+                            size = buttonDefault.size
+                        ),
+                        drawableRes = it,
+                        tint = buttonDefault.contentColor
+                    )
+                }
             }
         },
-        text = if (text.isNotEmpty()) {
+        text = if (isLoading) {
+            {
+                WantedCircularProgressIndicator(
+                    modifier = Modifier.size(buttonDefault.loadingSize),
+                    color = buttonDefault.loadingColor
+                )
+            }
+        } else if (text.isNotEmpty()) {
             {
                 Text(
                     text = text,
@@ -189,14 +201,16 @@ fun WantedOutlinedButton(
         } else null,
         rightDrawable = rightDrawable?.let {
             {
-                WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonShape.OUTLINED,
-                        size = buttonDefault.size
-                    ),
-                    drawableRes = it,
-                    tint = buttonDefault.contentColor
-                )
+                if (!isLoading) {
+                    WantedButtonSideIcon(
+                        modifier = getButtonDrawableSize(
+                            shape = ButtonShape.OUTLINED,
+                            size = buttonDefault.size
+                        ),
+                        drawableRes = it,
+                        tint = buttonDefault.contentColor
+                    )
+                }
             }
         }
     )
@@ -213,6 +227,8 @@ fun PreviewOutlinedButtons() {
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        PreviewWantedOutlinedButtonLoading()
+
         PreviewWantedOutlinedButtonSmallNoDrawableEnable()
 
         PreviewWantedOutlinedButtonSmallLeftDrawableEnable()
@@ -274,6 +290,45 @@ fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
     }
 }
 
+
+@Preview
+@Composable
+fun PreviewWantedOutlinedButtonLoading() {
+    Column(
+        modifier = Modifier
+            .background(colorResource(id = R.color.background_normal_normal))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.SMALL,
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.LARGE,
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .wrapContentSize()
+        )
+    }
+}
+
 @Preview
 @Composable
 fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
@@ -293,6 +348,23 @@ fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
 
         WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.SMALL,
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize()
@@ -323,6 +395,23 @@ fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg
         )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
     }
 }
 
@@ -344,6 +433,23 @@ fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
 
         WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
@@ -377,6 +483,25 @@ fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             leftDrawable = R.drawable.ic_normal_bookmark_svg,
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
     }
 }
 
@@ -397,6 +522,21 @@ fun PreviewWantedOutlinedButtonMediumEnable() {
 
         WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.MEDIUM,
             modifier = Modifier.wrapContentSize()
@@ -425,6 +565,21 @@ fun PreviewWantedOutlinedButtonLargeEnable() {
             size = ButtonSize.LARGE,
             modifier = Modifier.wrapContentSize()
         )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.LARGE,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.LARGE,
+            modifier = Modifier.wrapContentSize()
+        )
     }
 }
 
@@ -445,6 +600,21 @@ fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
 
         WantedOutlinedButton(
             text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.LARGE,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
+            size = ButtonSize.LARGE,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            isLoading = true,
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
             modifier = Modifier.fillMaxWidth()
@@ -475,6 +645,23 @@ fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
             enabled = false,
             modifier = Modifier.wrapContentSize()
         )
+
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize()
+        )
     }
 }
 
@@ -503,6 +690,25 @@ fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
             modifier = Modifier.wrapContentSize(),
             leftDrawable = R.drawable.ic_normal_bookmark_svg
         )
+
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg
+        )
     }
 }
 
@@ -528,6 +734,25 @@ fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             enabled = false,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize(),
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.SMALL,
+            enabled = false,
+            isLoading = true,
             modifier = Modifier.wrapContentSize(),
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
@@ -561,6 +786,27 @@ fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             leftDrawable = R.drawable.ic_normal_bookmark_svg,
             rightDrawable = R.drawable.ic_normal_heart_svg
         )
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.SMALL,
+            type = ButtonType.ASSISTIVE,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize(),
+            leftDrawable = R.drawable.ic_normal_bookmark_svg,
+            rightDrawable = R.drawable.ic_normal_heart_svg
+        )
+
     }
 }
 
@@ -585,6 +831,23 @@ fun PreviewWantedOutlinedButtonMediumDisable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.MEDIUM,
             enabled = false,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.MEDIUM,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.MEDIUM,
+            enabled = false,
+            isLoading = true,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -613,6 +876,23 @@ fun PreviewWantedOutlinedButtonLargeDisable() {
             enabled = false,
             modifier = Modifier.wrapContentSize()
         )
+
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.LARGE,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.wrapContentSize()
+        )
     }
 }
 
@@ -637,6 +917,23 @@ fun PreviewWantedOutlinedButtonLargeMaxWidthDisable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.LARGE,
             enabled = false,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            size = ButtonSize.LARGE,
+            enabled = false,
+            isLoading = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        WantedOutlinedButton(
+            text = "Button",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.LARGE,
+            enabled = false,
+            isLoading = true,
             modifier = Modifier.fillMaxWidth()
         )
     }
