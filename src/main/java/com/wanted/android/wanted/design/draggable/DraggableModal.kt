@@ -57,8 +57,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.topbar.WantedTopAppBarDefaults
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
