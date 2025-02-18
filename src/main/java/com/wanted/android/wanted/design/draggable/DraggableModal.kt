@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -32,14 +33,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,10 +63,17 @@ import androidx.compose.ui.window.DialogWindowProvider
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 enum class DragValue { Close, Open }
+
+@Stable
+data class ContentSize(
+    val maxHeight: Dp,
+    val maxWidth: Dp
+)
 
 @Composable
 fun DraggableModal(
@@ -79,7 +90,7 @@ fun DraggableModal(
     positionalThreshold: (Float) -> Float = remember { { d: Float -> d * 0.01f } },
     onDismissRequest: () -> Unit = {},
     dragHandle: @Composable () -> Unit = { WantedDraggableModalDefaults.DragHandle() },
-    content: @Composable (Dp) -> Unit = {},
+    content: @Composable (ContentSize) -> Unit = {},
 ) {
     val density = LocalDensity.current
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
@@ -133,79 +144,131 @@ fun DraggableModal(
             SetUpEdgeToEdgeDialog(
                 dimAmount = dimAmount
             )
+
+
             Box(
-                modifier
+                modifier = Modifier
                     .windowInsetsPadding(windowInsets)
                     .fillMaxSize(),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                if (!dragState.offset.isNaN()) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() }
-                                ) {
-                                    if (properties.dismissOnClickOutside) {
-                                        coroutineScope.launch {
-                                            dragState.animateTo(DragValue.Close)
-                                        }
-                                    }
-                                }
-                                .weight(1f)
-                        )
+                DragModalLayout(
+                    modifier = modifier,
+                    properties = properties,
+                    coroutineScope = coroutineScope,
+                    dragState = dragState,
+                    dragSize = dragSize,
+                    onLayoutHeightChanged = { layoutHeight = it },
+                    onDragSizeChanged = { dragSize = it },
+                    dragHandle = dragHandle,
+                    content = content,
+                )
+            }
+        }
+}
 
-                        BoxWithConstraints(
-                            modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .offset {
-                                        IntOffset(
-                                            0,
-                                            dragState
-                                                .requireOffset()
-                                                .roundToInt()
-                                        )
-                                    }
-                            ) {
-                                Box(
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .onGloballyPositioned {
-                                            dragSize = it.size
-                                        }
-                                        .anchoredDraggable(
-                                            state = dragState,
-                                            orientation = Orientation.Vertical,
-                                            enabled = true
-                                        )
-                                ) {
-                                    dragHandle()
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                ) {
-                                    content(this@BoxWithConstraints.maxHeight - with(density) { dragSize.height.toDp() })
-                                }
-                            }
-                            LaunchedEffect(layoutHeight) {
-                                layoutHeight = maxHeight
-                            }
+@Composable
+private fun DragModalLayout(
+    properties: DialogProperties,
+    coroutineScope: CoroutineScope,
+    dragState: AnchoredDraggableState<DragValue>,
+    modifier: Modifier = Modifier,
+    dragSize: IntSize = IntSize.Zero,
+    onLayoutHeightChanged: (Dp) -> Unit = {},
+    onDragSizeChanged: (IntSize) -> Unit = {},
+    dragHandle: @Composable () -> Unit = {},
+    content: @Composable (ContentSize) -> Unit = {},
+) {
+    val currentOnLayoutHeightChanged by rememberUpdatedState(onLayoutHeightChanged)
+    val currentOnDragSizeChanged by rememberUpdatedState(onDragSizeChanged)
+    val density = LocalDensity.current
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    if (properties.dismissOnClickOutside) {
+                        coroutineScope.launch {
+                            dragState.animateTo(DragValue.Close)
                         }
                     }
                 }
+                .weight(1f)
+        )
+
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            val validMaxHeight = remember(maxHeight, dragSize.height, density) {
+                val dragHeight = with(density) { dragSize.height.toDp() }
+                val height = maxHeight - dragHeight
+                height.value.coerceAtLeast(0f).dp
+            }
+
+            val validMaxWidth = remember(maxWidth) {
+                maxWidth
+            }
+
+
+            if (!dragState.offset.isNaN()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .offset {
+                            IntOffset(
+                                x = 0,
+                                y = dragState
+                                    .requireOffset()
+                                    .roundToInt()
+                            )
+                        }
+                ) {
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned {
+                                currentOnDragSizeChanged(it.size)
+                            }
+                            .anchoredDraggable(
+                                state = dragState,
+                                orientation = Orientation.Vertical,
+                                enabled = true
+                            )
+                    ) {
+                        dragHandle()
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        content(
+                            ContentSize(
+                                maxHeight = validMaxHeight,
+                                maxWidth = validMaxWidth
+                            )
+                        )
+                    }
+                }
+            }
+            LaunchedEffect(Unit) {
+                snapshotFlow { maxHeight }
+                    .collect({
+                        currentOnLayoutHeightChanged(it)
+                    })
             }
         }
+    }
 }
 
 @Composable
@@ -226,6 +289,7 @@ private fun SetUpEdgeToEdgeDialog(
     window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     window.setDimAmount(dimAmount)
+    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         window.attributes.fitInsetsTypes = 0
@@ -235,9 +299,12 @@ private fun SetUpEdgeToEdgeDialog(
 
 @Preview
 @Composable
-fun DraggableModalPreview() {
+private fun DraggableModalPreview() {
     var isShow by remember {
         mutableStateOf(false)
+    }
+    var text by remember {
+        mutableStateOf("")
     }
     DesignSystemTheme {
         Box(
@@ -261,11 +328,18 @@ fun DraggableModalPreview() {
         ) {
             Column(
                 modifier = Modifier
-                    .height((it.value * 0.95).dp)
+                    .height((it.maxHeight.value * 0.90).dp)
                     .background(colorResource(R.color.background_normal_normal))
                     .navigationBarsPadding()
                     .verticalScroll(rememberScrollState())
+                    .imePadding()
             ) {
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = text,
+                    onValueChange = {
+                        text = it
+                    })
                 repeat(50) {
                     Box(
                         Modifier
@@ -274,6 +348,12 @@ fun DraggableModalPreview() {
                             .height(50.dp)
                     )
                 }
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = text,
+                    onValueChange = {
+                        text = it
+                    })
             }
         }
     }
