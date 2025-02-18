@@ -23,7 +23,7 @@ internal fun WantedSelectPlaceHolder(
         overflow = TextOverflow.Ellipsis,
         style = WantedTextStyle(
             colorRes = if (enabled) {
-                R.color.label_alternative
+                R.color.label_assistive
             } else {
                 R.color.label_disable
             },
