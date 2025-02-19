@@ -193,7 +193,9 @@ fun WantedTextButton(
             )
         },
         onClick = {
-            onClick.clickOnceForDesignSystem()
+            if (!isLoading) {
+                onClick.clickOnceForDesignSystem()
+            }
         }
     )
 

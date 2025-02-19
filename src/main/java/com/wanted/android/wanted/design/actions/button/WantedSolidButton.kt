@@ -151,7 +151,9 @@ fun WantedSolidButton(
                 indication = wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12)),
                 enabled = buttonDefault.enabled,
                 onClick = {
-                    clickListener.clickOnceForDesignSystem()
+                    if (!isLoading) {
+                        clickListener.clickOnceForDesignSystem()
+                    }
                 }
             ),
         buttonShape = ButtonShape.SOLID,

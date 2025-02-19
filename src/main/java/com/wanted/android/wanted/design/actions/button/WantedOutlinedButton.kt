@@ -156,7 +156,9 @@ fun WantedOutlinedButton(
                 ),
                 enabled = enabled,
                 onClick = {
-                    clickListener.clickOnceForDesignSystem()
+                    if (!isLoading) {
+                        clickListener.clickOnceForDesignSystem()
+                    }
                 }
             )
             .border(
