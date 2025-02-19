@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme

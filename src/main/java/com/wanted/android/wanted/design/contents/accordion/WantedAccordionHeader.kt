@@ -20,8 +20,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionContract.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -39,7 +39,7 @@ internal fun WantedAccordionHeader(
 ) {
     Row(
         modifier = modifier
-            .clickOnceForDesignSystem(onClick = onClick)
+            .clickOnce(onClick = onClick)
             .wrapContentSize()
             .padding(vertical = verticalPadding.value)
             .padding(horizontal = if (fillWidth) 20.dp else 0.dp),

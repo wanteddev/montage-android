@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.ComponentTitle
 import com.wanted.android.wanted.design.input.textinput.view.WantedCustomTextField
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout

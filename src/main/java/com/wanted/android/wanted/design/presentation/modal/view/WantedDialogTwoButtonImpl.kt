@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedOutlinedButton
 import com.wanted.android.wanted.design.actions.button.WantedSolidButton
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -252,7 +252,7 @@ private fun WantedDialogTopBarPreview() {
                         title = { Text(text = "다이얼로그 타이틀") },
                         actions = {
                             Icon(
-                                modifier = Modifier.clickOnceForDesignSystem { },
+                                modifier = Modifier.clickOnce { },
                                 painter = painterResource(id = R.drawable.ic_normal_close_svg),
                                 contentDescription = ""
                             )
@@ -272,7 +272,7 @@ private fun WantedDialogTopBarPreview() {
                     WantedTopAppBar(
                         navigationIcon = {
                             Icon(
-                                modifier = Modifier.clickOnceForDesignSystem { },
+                                modifier = Modifier.clickOnce { },
                                 painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
                                 contentDescription = ""
                             )

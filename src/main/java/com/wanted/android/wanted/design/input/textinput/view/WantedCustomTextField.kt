@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.textinput.WantedTextInputRightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -214,7 +214,7 @@ internal fun WantedCustomTextField(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .clip(CircleShape)
-                                                .clickOnceForDesignSystem {
+                                                .clickOnce {
                                                     onValueChange(value.copy(""))
                                                 },
                                             painter = painterResource(R.drawable.ic_normal_circle_close_fill_svg),
@@ -238,7 +238,7 @@ internal fun WantedCustomTextField(
                     Row(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .clickOnceForDesignSystem(
+                            .clickOnce(
                                 isEnableRightButton(
                                     rightButtonEnabled,
                                     enabled

@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.TopAppBarType
 import com.wanted.android.wanted.design.navigations.topbar.view.LocalWantedTopBarIconType

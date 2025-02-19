@@ -38,6 +38,7 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.OPACITY_12
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getTextButtonSize
 
@@ -194,7 +195,7 @@ fun WantedTextButton(
         },
         onClick = {
             if (!isLoading) {
-                onClick.clickOnceForDesignSystem()
+                onClick.clickOnce()
             }
         }
     )

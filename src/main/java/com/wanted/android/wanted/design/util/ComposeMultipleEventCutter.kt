@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.button
+package com.wanted.android.wanted.design.util
 
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.clickable
@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 
 
-fun Modifier.clickOnceForDesignSystem(
+internal fun Modifier.clickOnce(
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
@@ -16,10 +16,10 @@ fun Modifier.clickOnceForDesignSystem(
     enabled = enabled,
     onClickLabel = onClickLabel,
     role = role,
-    onClick = { onClick.clickOnceForDesignSystem() }
+    onClick = { onClick.clickOnce() }
 )
 
-fun Modifier.clickOnceForDesignSystem(
+internal fun Modifier.clickOnce(
     interactionSource: MutableInteractionSource,
     indication: Indication?,
     enabled: Boolean = true,
@@ -32,18 +32,18 @@ fun Modifier.clickOnceForDesignSystem(
     enabled = enabled,
     onClickLabel = onClickLabel,
     role = role,
-    onClick = { onClick.clickOnceForDesignSystem() }
+    onClick = { onClick.clickOnce() }
 )
 
-fun (() -> Unit).clickOnceForDesignSystem(time: Long = 200L) {
+internal fun (() -> Unit).clickOnce(time: Long = 200L) {
     ComposeMultipleEventCutter.processEvent(time) { this() }
 }
 
-fun <T> ((T) -> Unit).clickOnceForDesignSystem(value: T, time: Long = 200L) {
+internal fun <T> ((T) -> Unit).clickOnce(value: T, time: Long = 200L) {
     ComposeMultipleEventCutter.processEvent(time) { this(value) }
 }
 
-object ComposeMultipleEventCutter {
+internal object ComposeMultipleEventCutter {
     private val now: Long
         get() = System.currentTimeMillis()
 
