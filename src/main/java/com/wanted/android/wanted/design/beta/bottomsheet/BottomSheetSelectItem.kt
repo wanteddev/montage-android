@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
-import com.wanted.android.wanted.design.element.WantedRadioButton
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
+import com.wanted.android.wanted.design.input.control.WantedRadioButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -32,7 +32,7 @@ fun BottomSheetSelectItem(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickOnceForDesignSystem { onClick() }
+            .clickOnce { onClick() }
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
