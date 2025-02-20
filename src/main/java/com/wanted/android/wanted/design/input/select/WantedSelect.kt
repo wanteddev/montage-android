@@ -394,7 +394,7 @@ private fun WantedSelectImpl(
                             if (enabled) {
                                 background
                             } else {
-                                colorResource(R.color.line_normal_alternative)
+                                colorResource(R.color.interaction_disable)
                             }
                         )
                         .clickOnce(

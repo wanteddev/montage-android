@@ -97,7 +97,7 @@ fun WantedActionArea(
 @Composable
 fun WantedActionArea(
     modifier: Modifier = Modifier,
-    safeArea: Boolean = true,
+    safeArea: Boolean = true, // dialog 에서는 false, 일반 screen  에서는 true
     sticky: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     type: ActionAreaType = ActionAreaType.Strong,
