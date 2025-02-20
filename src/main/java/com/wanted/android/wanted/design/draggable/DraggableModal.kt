@@ -4,6 +4,7 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.background
@@ -87,7 +88,10 @@ fun DraggableModal(
             decorFitsSystemWindows = false,
         )
     },
-    positionalThreshold: (Float) -> Float = remember { { d: Float -> d * 0.01f } },
+    positionalThreshold: (Float) -> Float = { d: Float -> d * 0.01f },
+    velocityThreshold: () -> Float = { 0f },
+    snapAnimationSpec: AnimationSpec<Float> = tween(),
+    confirmValueChange: (DragValue) -> Boolean = { true },
     onDismissRequest: () -> Unit = {},
     dragHandle: @Composable () -> Unit = { WantedDraggableModalDefaults.DragHandle() },
     content: @Composable (ContentSize) -> Unit = {},
@@ -98,7 +102,15 @@ fun DraggableModal(
     var layoutHeight by remember { mutableStateOf(0.dp) }
     var dragSize by remember { mutableStateOf(IntSize.Zero) }
     val currentDismissRequest by rememberUpdatedState(onDismissRequest)
-    val dragState = remember(layoutHeight, positionalThreshold, density) {
+    val dragState = remember(
+        layoutHeight,
+        positionalThreshold,
+        density,
+        velocityThreshold,
+        snapAnimationSpec,
+        decayAnimationSpec,
+        confirmValueChange
+    ) {
         AnchoredDraggableState(
             initialValue = DragValue.Close,
             anchors = DraggableAnchors {
@@ -106,9 +118,10 @@ fun DraggableModal(
                 DragValue.Open at 0f
             },
             positionalThreshold = positionalThreshold,
-            velocityThreshold = { 0f },
-            snapAnimationSpec = tween(),
-            decayAnimationSpec = decayAnimationSpec
+            velocityThreshold = velocityThreshold,
+            snapAnimationSpec = snapAnimationSpec,
+            decayAnimationSpec = decayAnimationSpec,
+            confirmValueChange = confirmValueChange
         )
     }
 
