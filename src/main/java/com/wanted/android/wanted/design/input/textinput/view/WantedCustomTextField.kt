@@ -148,8 +148,8 @@ internal fun WantedCustomTextField(
                         )
                         .padding(horizontal = 12.dp)
                         .padding(vertical = 12.dp)
-                        .defaultMinSize(
-                            minHeight = with(LocalDensity.current) {
+                        .height(
+                            with(LocalDensity.current) {
                                 DesignSystemTheme.typography.body1Regular.lineHeight.toDp()
                             }
                         )
