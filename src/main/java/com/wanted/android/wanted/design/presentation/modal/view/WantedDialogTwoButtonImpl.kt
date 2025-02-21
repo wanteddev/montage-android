@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,16 +26,17 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedOutlinedButton
 import com.wanted.android.wanted.design.actions.button.WantedSolidButton
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
 fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
+    background: Color = colorResource(R.color.background_elevated_normal),
     modalSize: ModalSize,
     topBar: @Composable (() -> Unit)? = null,
     positiveButtonType: ButtonType = ButtonType.PRIMARY,
@@ -44,7 +48,9 @@ fun WantedDialogTwoButtonImpl(
     content: @Composable BoxScope.() -> Unit
 ) {
     WantedDialogLayout(
-        modifier = modifier,
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(background),
         modalSize = modalSize,
         topBar = topBar,
         content = {
