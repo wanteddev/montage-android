@@ -90,7 +90,6 @@ fun WantedCell(
     onClick: () -> Unit
 ) {
     WantedTouchArea(
-        horizontalPadding = if (fillWidth) 0.dp else 12.dp,
         shape = RoundedCornerShape(12.dp),
         content = {
             Column {
