@@ -133,7 +133,7 @@ fun WantedTextArea(
                 }
             )
         },
-        message = description?.let {
+        message = if (description.isNullOrEmpty()) null else {
             {
                 Text(
                     text = description,
