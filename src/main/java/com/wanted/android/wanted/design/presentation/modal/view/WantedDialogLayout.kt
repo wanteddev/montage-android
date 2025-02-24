@@ -3,10 +3,8 @@ package com.wanted.android.wanted.design.presentation.modal.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -49,8 +47,6 @@ fun WantedDialogLayout(
                 topBar()
             }
 
-        } ?: run {
-            Spacer(modifier = Modifier.size(modalSize.bottomBarPadding))
         }
 
         /**
@@ -78,8 +74,6 @@ fun WantedDialogLayout(
             ) {
                 bottomBar()
             }
-        } ?: run {
-            Spacer(modifier = Modifier.size(modalSize.bottomBarPadding))
         }
     }
 }
