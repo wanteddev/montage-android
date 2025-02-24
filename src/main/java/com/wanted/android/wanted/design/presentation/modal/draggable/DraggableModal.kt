@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.draggable
+package com.wanted.android.wanted.design.presentation.modal.draggable
 
 import android.os.Build
 import android.view.View
@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
@@ -32,13 +33,16 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,7 +53,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
@@ -63,25 +69,211 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
+import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
+import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.BottomSheetDialogType
+import com.wanted.android.wanted.design.presentation.modal.WantedModalDefaults
+import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.pxToDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-enum class DragValue { Close, Open }
 
-@Stable
-data class ContentSize(
-    val maxHeight: Dp,
-    val maxWidth: Dp
-)
+@Composable
+fun WantedModalBottomSheet1(
+    modifier: Modifier = Modifier,
+    isShow: Boolean,
+    background: Color = colorResource(id = R.color.background_elevated_normal),
+    type: BottomSheetDialogType = BottomSheetDialogType.Flexible,
+    modalSize: WantedModalContract.ModalSize = WantedModalContract.ModalSize.Normal,
+    onDismissRequest: () -> Unit,
+    topBar: @Composable (() -> Unit)? = null,
+    content: @Composable () -> Unit,
+    bottomBar: (@Composable () -> Unit)? = null
+) {
+    val configuration = LocalConfiguration.current
+    val windowInset = WantedTopAppBarDefaults.windowInsets.getTop(LocalDensity.current).pxToDp()
+
+    val heightModifier = remember(configuration) {
+        when (type) {
+            is BottomSheetDialogType.Fixed -> {
+                Modifier.height(type.height)
+            }
+
+            is BottomSheetDialogType.FixedFullScreen -> {
+                Modifier.height(
+                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                )
+            }
+
+            is BottomSheetDialogType.FixedRatio -> {
+                val height =
+                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                val ratioHeight = (configuration.screenHeightDp * type.ratio).dp
+                val result = if (ratioHeight > height) {
+                    height
+                } else {
+                    ratioHeight
+                }
+
+                Modifier.height(result)
+            }
+
+            else -> {
+                val result =
+                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                Modifier.heightIn(max = result)
+            }
+        }
+    }
+
+
+    DraggableModalBottomSheet(
+        isShow = isShow,
+        contentColor = background,
+        content = {
+            WantedDialogLayout(
+                modifier = heightModifier.fillMaxWidth(),
+                modalSize = modalSize,
+                topBar = topBar,
+                content = content,
+                bottomBar = bottomBar
+            )
+        },
+        onDismissRequest = onDismissRequest
+    )
+}
+
+@Composable
+private fun DraggableModalBottomSheet(
+    isShow: Boolean,
+    properties: DialogProperties = remember {
+        DialogProperties(
+            usePlatformDefaultWidth = true,
+            decorFitsSystemWindows = false
+        )
+    },
+    contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
+    contentColor: Color = colorResource(R.color.background_elevated_normal),
+    shape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+    dragHandle: @Composable (() -> Unit)? = { WantedModalDefaults.DragHandle() },
+    content: @Composable () -> Unit,
+    onDismissRequest: () -> Unit
+) {
+
+    val coroutineScope = rememberCoroutineScope()
+    val density = LocalDensity.current
+    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
+
+    var layoutHeight by remember { mutableFloatStateOf(0f) }
+
+    val currentDismissRequest by rememberUpdatedState(onDismissRequest)
+
+    val dragState = remember(
+        layoutHeight,
+        density,
+        decayAnimationSpec,
+    ) {
+        AnchoredDraggableState(
+            initialValue = SheetValue.Hidden,
+            anchors = DraggableAnchors {
+                SheetValue.Hidden at layoutHeight
+                SheetValue.Expanded at 0f
+            },
+            positionalThreshold = { d: Float -> d * 0.01f },
+            velocityThreshold = { 0f },
+            snapAnimationSpec = tween(),
+            decayAnimationSpec = decayAnimationSpec
+        )
+    }
+
+    LaunchedEffect(isShow, dragState) {
+        val nextValue = when (isShow) {
+            true -> SheetValue.Expanded
+            false -> SheetValue.Hidden
+        }
+
+        dragState.animateTo(nextValue)
+    }
+
+    LaunchedEffect(
+        dragState.isAnimationRunning,
+        dragState.currentValue,
+        dragState.settledValue
+    ) {
+        if (dragState.isAnimationRunning) return@LaunchedEffect
+        if (dragState.currentValue == SheetValue.Hidden && dragState.settledValue == SheetValue.Hidden) {
+            currentDismissRequest()
+        }
+    }
+
+    if (isShow) {
+        Dialog(
+            properties = properties,
+            onDismissRequest = {
+                coroutineScope.launch {
+                    dragState.animateTo(SheetValue.Hidden)
+                }
+            }
+        ) {
+            SetUpEdgeToEdgeDialog(dimAmount = 0.5f)
+
+            Box(
+                modifier = Modifier
+                    .windowInsetsPadding(WantedTopAppBarDefaults.windowInsets)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset {
+                            IntOffset(
+                                x = 0,
+                                y = dragState
+                                    .requireOffset()
+                                    .roundToInt()
+                            )
+                        }
+                        .clip(shape)
+                        .background(contentColor)
+                        .onGloballyPositioned {
+                            layoutHeight = it.size.height.toFloat()
+                        }
+                        .windowInsetsPadding(contentWindowInsets())
+
+                ) {
+                    dragHandle?.let {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .anchoredDraggable(
+                                    state = dragState,
+                                    orientation = Orientation.Vertical,
+                                    enabled = true
+                                ),
+                            contentAlignment = Alignment.BottomCenter
+                        ) {
+                            it()
+                        }
+
+                    }
+
+                    content()
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
 fun DraggableModal(
     modifier: Modifier = Modifier,
     isShow: Boolean = false,
     dimAmount: Float = 0.5f,
-    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     properties: DialogProperties = remember {
         DialogProperties(
             usePlatformDefaultWidth = true,
@@ -134,6 +326,17 @@ fun DraggableModal(
         dragState.animateTo(nextValue)
     }
 
+    LaunchedEffect(
+        dragState.isAnimationRunning,
+        dragState.currentValue,
+        dragState.settledValue
+    ) {
+        if (dragState.isAnimationRunning) return@LaunchedEffect
+        if (dragState.currentValue == DragValue.Close && dragState.settledValue == DragValue.Close) {
+            currentDismissRequest()
+        }
+    }
+
     if (isShow)
         Dialog(
             properties = properties,
@@ -143,25 +346,10 @@ fun DraggableModal(
                 }
             }
         ) {
-            LaunchedEffect(
-                dragState.isAnimationRunning,
-                dragState.currentValue,
-                dragState.settledValue
-            ) {
-                if (dragState.isAnimationRunning) return@LaunchedEffect
-                if (dragState.currentValue == DragValue.Close && dragState.settledValue == DragValue.Close) {
-                    currentDismissRequest()
-                }
-            }
-
-            SetUpEdgeToEdgeDialog(
-                dimAmount = dimAmount
-            )
-
+            SetUpEdgeToEdgeDialog(dimAmount = dimAmount)
 
             Box(
                 modifier = Modifier
-                    .windowInsetsPadding(windowInsets)
                     .fillMaxSize(),
                 contentAlignment = Alignment.BottomCenter
             ) {
@@ -179,6 +367,15 @@ fun DraggableModal(
             }
         }
 }
+
+
+enum class DragValue { Close, Open }
+
+@Stable
+data class ContentSize(
+    val maxHeight: Dp,
+    val maxWidth: Dp
+)
 
 @Composable
 private fun DragModalLayout(
@@ -228,10 +425,7 @@ private fun DragModalLayout(
                 height.value.coerceAtLeast(0f).dp
             }
 
-            val validMaxWidth = remember(maxWidth) {
-                maxWidth
-            }
-
+            val validMaxWidth = remember(maxWidth) { maxWidth }
 
             if (!dragState.offset.isNaN()) {
                 Column(
@@ -275,10 +469,9 @@ private fun DragModalLayout(
                 }
             }
             LaunchedEffect(Unit) {
-                snapshotFlow { maxHeight }
-                    .collect({
-                        currentOnLayoutHeightChanged(it)
-                    })
+                snapshotFlow { maxHeight }.collect({
+                    currentOnLayoutHeightChanged(it)
+                })
             }
         }
     }
