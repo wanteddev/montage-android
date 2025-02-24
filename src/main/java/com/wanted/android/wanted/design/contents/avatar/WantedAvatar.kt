@@ -10,21 +10,23 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.BoarderType
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.base.getBoarderModifier
 import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40148&m=dev
@@ -159,6 +161,7 @@ private fun WantedAvatar(
                 boarderWidth = 2.dp,
                 boarderColor = boarderColor
             ),
+        interactionShape = RoundedCornerShape(size.interactionRadius),
         content = {
             WantedAvatarContent(
                 modifier = Modifier
@@ -181,8 +184,9 @@ private fun WantedAvatar(
 
 
 @Composable
-fun WantedAvatarLayout(
+private fun WantedAvatarLayout(
     modifier: Modifier = Modifier,
+    interactionShape: Shape = CircleShape,
     content: @Composable BoxScope.() -> Unit,
     pushBadge: @Composable (() -> Unit)? = null,
     onClick: (() -> Unit)? = null
@@ -192,7 +196,7 @@ fun WantedAvatarLayout(
             modifier = Modifier,
             horizontalPadding = 8.dp,
             verticalPadding = 8.dp,
-            shape = CircleShape,
+            shape = interactionShape,
             content = {
                 Box(
                     modifier = modifier,
@@ -236,15 +240,26 @@ fun WantedAvatarLayout(
 }
 
 
-enum class WantedAvatarSize(
-    val size: Dp,
-    val cornerRadius: Dp
+sealed class WantedAvatarSize(
+    open val size: Dp,
+    open val cornerRadius: Dp,
+    open val interactionRadius: Dp
 ) {
-    XSmall(24.dp, 6.dp),
-    Small(32.dp, 6.dp),
-    Medium(40.dp, 8.dp),
-    Large(48.dp, 10.dp),
-    XLarge(56.dp, 12.dp)
+
+    data object XSmall : WantedAvatarSize(24.dp, 6.dp, 12.dp)
+    data object Small : WantedAvatarSize(32.dp, 6.dp, 12.dp)
+    data object Medium : WantedAvatarSize(40.dp, 8.dp, 14.dp)
+    data object Large : WantedAvatarSize(48.dp, 10.dp, 16.dp)
+    data object XLarge : WantedAvatarSize(56.dp, 12.dp, 20.dp)
+    data class Custom(
+        override val size: Dp,
+        override val cornerRadius: Dp,
+        override val interactionRadius: Dp
+    ) : WantedAvatarSize(size, cornerRadius, interactionRadius)
+
+    companion object {
+        val entries: List<WantedAvatarSize> = listOf(XSmall, Small, Medium, Large, XLarge)
+    }
 }
 
 enum class WantedAvatarType {

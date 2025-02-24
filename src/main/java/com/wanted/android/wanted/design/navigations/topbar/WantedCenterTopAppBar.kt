@@ -17,19 +17,20 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.TopAppBarType
 import com.wanted.android.wanted.design.navigations.topbar.view.LocalWantedTopBarIconType
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedCenterTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedExtendedTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarIconButton
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
@@ -39,15 +40,18 @@ import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarI
 private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
+    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
+
     WantedCenterTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
+        background = background,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,
@@ -66,6 +70,7 @@ private fun WantedCenterTopAppBar(
 private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
+    background: Color = colorResource(R.color.background_elevated_normal),
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -75,6 +80,7 @@ private fun WantedCenterBackTopAppBar(
     WantedCenterTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
+        background = background,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = {
@@ -92,6 +98,7 @@ private fun WantedCenterBackTopAppBar(
 fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
+    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -112,6 +119,7 @@ fun WantedCenterTopAppBar(
             .windowInsetsPadding(windowInsets)
             .shadow(elevation.intValue.dp)
             .zIndex(1f),
+        color = background
     ) {
         CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
             when (type) {

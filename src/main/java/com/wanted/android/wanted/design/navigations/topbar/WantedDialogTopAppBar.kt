@@ -11,13 +11,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarIconButton
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
@@ -25,6 +26,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedDialogCloseTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
+    background: Color = colorResource(R.color.background_elevated_normal),
     type: WantedTopAppBarContract.TopAppBarType = WantedTopAppBarContract.TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -34,6 +36,7 @@ fun WantedDialogCloseTopAppBar(
     WantedTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
+        background = background,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,
@@ -70,6 +73,7 @@ fun WantedDialogCloseTopAppBar(
 fun WantedDialogTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
+    background: Color = colorResource(R.color.background_elevated_normal),
     type: WantedTopAppBarContract.TopAppBarType = WantedTopAppBarContract.TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -79,6 +83,7 @@ fun WantedDialogTopAppBar(
     WantedTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
+        background = background,
         type = type,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,

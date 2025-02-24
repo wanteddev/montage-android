@@ -43,7 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.OPACITY_16
@@ -148,7 +148,7 @@ fun WantedContentBadge(
                 shape = RoundedCornerShape(getRadius(size = size)),
                 color = getOutlineColor(type = type, color = color, default = accentDefault)
             )
-            .clickOnceForDesignSystem(
+            .clickOnce(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = if (color == ContentBadgeColor.NEUTRAL) {
                     wantedRippleEffect(colorResource(id = R.color.label_normal).copy(OPACITY_12))

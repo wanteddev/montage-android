@@ -43,9 +43,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedButton
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.base.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -132,7 +132,7 @@ fun WantedTooltip(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(CircleShape)
-                                .clickOnceForDesignSystem {
+                                .clickOnce {
                                     scope.launch {
                                         state.dismiss()
                                     }
@@ -169,7 +169,7 @@ fun WantedTooltip(
             Box(
                 modifier = Modifier
                     .wrapContentSize()
-                    .clickOnceForDesignSystem {
+                    .clickOnce {
                         scope.launch {
                             state.show()
                         }

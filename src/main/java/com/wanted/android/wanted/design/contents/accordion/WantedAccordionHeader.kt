@@ -1,12 +1,16 @@
 package com.wanted.android.wanted.design.contents.accordion
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -14,14 +18,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionContract.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -32,28 +38,53 @@ internal fun WantedAccordionHeader(
     modifier: Modifier = Modifier,
     verticalPadding: VerticalPadding,
     title: String,
+    maxLine: Int = Int.MAX_VALUE,
     style: TextStyle,
     fillWidth: Boolean,
-    trail: @Composable () -> Unit,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailIcon: @Composable () -> Unit,
     onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
-            .clickOnceForDesignSystem(onClick = onClick)
+            .clickOnce(onClick = onClick)
             .wrapContentSize()
             .padding(vertical = verticalPadding.value)
             .padding(horizontal = if (fillWidth) 20.dp else 0.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        leadingIcon?.let {
+            Box(
+                modifier = Modifier
+                    .size(
+                        with(LocalDensity.current) { style.lineHeight.toDp() }
+                    )
+                    .widthIn(max = 24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                leadingIcon()
+            }
+        }
+
         Text(
             modifier = Modifier.weight(1f),
             text = title,
             style = style,
-            maxLines = 1,
+            maxLines = maxLine,
             overflow = TextOverflow.Ellipsis
         )
-        trail()
+
+        Box(
+            modifier = Modifier
+                .height(
+                    height = with(LocalDensity.current) { style.lineHeight.toDp() }
+                )
+                .widthIn(max = 24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            trailIcon()
+        }
     }
 }
 
@@ -78,7 +109,14 @@ private fun AccordionHeaderPreview() {
                         style = DesignSystemTheme.typography.body2Bold
                     ),
                     fillWidth = false,
-                    trail = {
+                    leadingIcon = {
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                                .background(Color.Blue)
+                        )
+                    },
+                    trailIcon = {
                         Icon(
                             modifier = Modifier.size(20.dp),
                             painter = if (true) {

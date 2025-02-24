@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme

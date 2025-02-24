@@ -10,6 +10,9 @@ object WantedModalContract {
     ) {
         data object Flexible : BottomSheetDialogType()
 
+        /**
+         * hug
+         */
         data class FixedWrapContent(
             override val isCloseable: Boolean = true
         ) : BottomSheetDialogType(isCloseable)
@@ -19,6 +22,9 @@ object WantedModalContract {
             override val isCloseable: Boolean = true
         ) : BottomSheetDialogType(isCloseable)
 
+        /**
+         * fill
+         */
         data class FixedFullScreen(
             override val isCloseable: Boolean = true
         ) : BottomSheetDialogType(isCloseable)

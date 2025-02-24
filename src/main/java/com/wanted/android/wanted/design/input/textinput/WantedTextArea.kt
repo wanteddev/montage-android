@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedActionChip
 import com.wanted.android.wanted.design.base.ComponentTitle
@@ -570,6 +570,7 @@ private fun WantedTextArea(
 
                             it.text.length <= maxWordCount -> onValueChange(it)
                             it.text.length < value.text.length -> onValueChange(it)
+                            it.text == value.text -> onValueChange(it)
                             else -> onValueChange(value)
                         }
                     },

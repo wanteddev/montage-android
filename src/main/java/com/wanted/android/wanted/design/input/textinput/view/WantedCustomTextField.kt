@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -36,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.textinput.WantedTextInputRightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -147,6 +148,11 @@ internal fun WantedCustomTextField(
                         )
                         .padding(horizontal = 12.dp)
                         .padding(vertical = 12.dp)
+                        .height(
+                            with(LocalDensity.current) {
+                                DesignSystemTheme.typography.body1Regular.lineHeight.toDp()
+                            }
+                        )
                         .fillMaxSize(),
                     value = value,
                     maxLines = maxLines,
@@ -214,7 +220,7 @@ internal fun WantedCustomTextField(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .clip(CircleShape)
-                                                .clickOnceForDesignSystem {
+                                                .clickOnce {
                                                     onValueChange(value.copy(""))
                                                 },
                                             painter = painterResource(R.drawable.ic_normal_circle_close_fill_svg),
@@ -238,7 +244,7 @@ internal fun WantedCustomTextField(
                     Row(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .clickOnceForDesignSystem(
+                            .clickOnce(
                                 isEnableRightButton(
                                     rightButtonEnabled,
                                     enabled

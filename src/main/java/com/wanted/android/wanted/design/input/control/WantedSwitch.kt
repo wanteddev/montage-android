@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.dpToPx
 import kotlinx.coroutines.launch
@@ -104,7 +104,7 @@ fun WantedSwitch(
     }
 
 
-    val toggleableModifier = Modifier.clickOnceForDesignSystem(
+    val toggleableModifier = Modifier.clickOnce(
         enabled = enabled,
         interactionSource = interactionSource,
         indication = null

@@ -20,9 +20,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.contents.sectionheader.WantedSectionHeaderContract.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
@@ -32,8 +32,8 @@ fun WantedSectionHeader(
     title: String,
     size: Size = Size.Medium,
     textStyle: TextStyle? = null,
-    leftContent: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (RowScope.() -> Unit)? = null
+    headingContents: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (RowScope.() -> Unit)? = null
 ) {
     val density = LocalDensity.current
     val style = textStyle ?: run {
@@ -66,27 +66,27 @@ fun WantedSectionHeader(
                 modifier = Modifier.weight(1f, false),
                 text = title,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = if (leftContent != null) 1 else Int.MAX_VALUE,
+                maxLines = if (headingContents != null) 1 else Int.MAX_VALUE,
                 style = style
             )
 
-            leftContent?.let {
+            headingContents?.let {
                 Box(
                     modifier = Modifier.height(with(density) { style.lineHeight.toDp() }),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.BottomStart
                 ) {
-                    leftContent()
+                    headingContents()
                 }
             }
         }
 
-        rightContent?.let {
+        trailingContent?.let {
             Row(
                 modifier = Modifier.height(with(density) { style.lineHeight.toDp() }),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                rightContent.invoke(this)
+                trailingContent.invoke(this)
             }
         }
     }
@@ -106,13 +106,13 @@ private fun WantedSectionHeaderPreview() {
                 WantedSectionHeader(
                     modifier = Modifier,
                     title = "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목",
-                    leftContent = {
+                    headingContents = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
                         )
                     },
-                    rightContent = {
+                    trailingContent = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
@@ -129,13 +129,13 @@ private fun WantedSectionHeaderPreview() {
                 WantedSectionHeader(
                     modifier = Modifier,
                     title = "제목",
-                    leftContent = {
+                    headingContents = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
                         )
                     },
-                    rightContent = {
+                    trailingContent = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
@@ -146,7 +146,7 @@ private fun WantedSectionHeaderPreview() {
                 WantedSectionHeader(
                     modifier = Modifier,
                     title = "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목",
-                    rightContent = {
+                    trailingContent = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
@@ -157,7 +157,7 @@ private fun WantedSectionHeaderPreview() {
                 WantedSectionHeader(
                     modifier = Modifier,
                     title = "제목",
-                    rightContent = {
+                    trailingContent = {
                         Icon(
                             modifier = Modifier,
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
@@ -170,7 +170,7 @@ private fun WantedSectionHeaderPreview() {
                     modifier = Modifier,
                     title = "제목",
                     size = Size.XSmall,
-                    leftContent = {
+                    headingContents = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
@@ -182,7 +182,7 @@ private fun WantedSectionHeaderPreview() {
                     modifier = Modifier,
                     title = "제목",
                     size = Size.Small,
-                    leftContent = {
+                    headingContents = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
@@ -194,7 +194,7 @@ private fun WantedSectionHeaderPreview() {
                     modifier = Modifier,
                     title = "제목",
                     size = Size.Medium,
-                    leftContent = {
+                    headingContents = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""
@@ -206,7 +206,7 @@ private fun WantedSectionHeaderPreview() {
                     modifier = Modifier,
                     title = "제목",
                     size = Size.Large,
-                    leftContent = {
+                    headingContents = {
                         Icon(
                             painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
                             contentDescription = ""

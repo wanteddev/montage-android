@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -28,6 +28,7 @@ fun WantedButton(
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
@@ -40,6 +41,7 @@ fun WantedButton(
                 type = type,
                 size = size,
                 enabled = enabled,
+                isLoading = isLoading,
                 buttonDefault = WantedButtonDefaults.getDefault(
                     shape = buttonShape,
                     type = type,
@@ -59,6 +61,7 @@ fun WantedButton(
                 size = size,
                 type = type,
                 enabled = enabled,
+                isLoading = isLoading,
                 buttonDefault = WantedButtonDefaults.getDefault(
                     shape = buttonShape,
                     type = type,
@@ -78,6 +81,7 @@ fun WantedButton(
                 size = size,
                 type = type,
                 enabled = enabled,
+                isLoading = isLoading,
                 buttonDefault = WantedButtonDefaults.getDefault(
                     shape = buttonShape,
                     type = type,
@@ -96,6 +100,7 @@ fun WantedButton(
 fun WantedButton(
     modifier: Modifier = Modifier,
     text: String,
+    isLoading: Boolean = false,
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(),
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
@@ -107,6 +112,7 @@ fun WantedButton(
             WantedSolidButton(
                 modifier = modifier,
                 text = text,
+                isLoading = isLoading,
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
@@ -118,6 +124,7 @@ fun WantedButton(
             WantedOutlinedButton(
                 modifier = modifier,
                 text = text,
+                isLoading = isLoading,
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
@@ -129,6 +136,7 @@ fun WantedButton(
             WantedTextButton(
                 modifier = modifier,
                 text = text,
+                isLoading = isLoading,
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
