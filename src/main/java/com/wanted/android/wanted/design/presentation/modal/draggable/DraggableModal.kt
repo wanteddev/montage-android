@@ -228,6 +228,7 @@ private fun DraggableModalBottomSheet(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .imePadding()
                         .offset {
                             IntOffset(
                                 x = 0,
@@ -242,7 +243,6 @@ private fun DraggableModalBottomSheet(
                             layoutHeight = it.size.height.toFloat()
                         }
                         .windowInsetsPadding(contentWindowInsets())
-
                 ) {
                     dragHandle?.let {
                         Box(
