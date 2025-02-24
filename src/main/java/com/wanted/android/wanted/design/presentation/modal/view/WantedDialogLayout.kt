@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.presentation.modal.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,20 +13,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 
 
 @Composable
 fun WantedDialogLayout(
     modifier: Modifier = Modifier,
+    backgroundColor: Color = colorResource(R.color.background_elevated_normal),
     modalSize: ModalSize,
     topBar: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
     bottomBar: (@Composable () -> Unit)? = null
 ) {
     Column(
-        modifier = modifier.clip(RoundedCornerShape(12.dp)),
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

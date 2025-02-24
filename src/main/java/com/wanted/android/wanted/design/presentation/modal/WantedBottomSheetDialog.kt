@@ -36,6 +36,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
@@ -124,6 +125,7 @@ fun WantedBottomSheetDialog(
 @Composable
 fun WantedBottomSheetLayout(
     modifier: Modifier = Modifier,
+    backgroundColor: Color = colorResource(R.color.background_elevated_normal),
     modalSize: ModalSize,
     shadowElevation: Dp = 4.dp,
     topBar: @Composable (() -> Unit)?,
@@ -140,6 +142,7 @@ fun WantedBottomSheetLayout(
         Column(Modifier.fillMaxWidth()) {
             WantedDialogLayout(
                 modifier = Modifier.fillMaxWidth(),
+                backgroundColor = backgroundColor,
                 modalSize = modalSize,
                 topBar = topBar,
                 content = {
