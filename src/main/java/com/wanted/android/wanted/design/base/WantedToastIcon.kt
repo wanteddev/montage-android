@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
@@ -83,7 +83,7 @@ private fun WantedCommonIconPreview() {
                         .size(22.dp)
                         .clip(CircleShape)
                         .clickOnceForDesignSystem { },
-                    resourceId = R.drawable.ic_normal_circle_close_svg,
+                    resourceId = R.drawable.ic_normal_circle_close_fill_svg,
                     tint = colorResource(id = R.color.label_alternative)
                 )
 

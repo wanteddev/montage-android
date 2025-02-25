@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 

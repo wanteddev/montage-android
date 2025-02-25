@@ -36,7 +36,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,8 +51,8 @@ import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.button.WantedSolidButton
-import com.wanted.android.wanted.design.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.actions.button.WantedSolidButton
+import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemBottomSheetTheme
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
