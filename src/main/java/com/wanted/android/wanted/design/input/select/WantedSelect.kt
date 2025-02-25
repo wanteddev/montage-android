@@ -29,8 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.ComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectBottomSheet
@@ -41,8 +39,10 @@ import com.wanted.android.wanted.design.input.select.view.WantedSelectLayout
 import com.wanted.android.wanted.design.input.select.view.WantedSelectPlaceHolder
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
@@ -158,24 +158,23 @@ fun WantedSelect(
         )
     }
 
-    if (selectValueList.isNotEmpty() && isShowBottomSheetDialog.value) {
-        WantedMultiSelectBottomSheet(
-            modifier = Modifier,
-            items = selectValueList,
-            confirmText = confirmText,
-            selectType = selectType,
-            selectedItemList = valueList,
-            onSelect = { itemList ->
-                isFocus.value = false
-                isShowBottomSheetDialog.value = false
-                onSelect(itemList)
-            },
-            onDismissRequest = {
-                isShowBottomSheetDialog.value = false
-                isFocus.value = false
-            }
-        )
-    }
+    WantedMultiSelectBottomSheet(
+        modifier = Modifier,
+        isShow = selectValueList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectValueList,
+        confirmText = confirmText,
+        selectType = selectType,
+        selectedItemList = valueList,
+        onSelect = { itemList ->
+            isFocus.value = false
+            isShowBottomSheetDialog.value = false
+            onSelect(itemList)
+        },
+        onDismissRequest = {
+            isShowBottomSheetDialog.value = false
+            isFocus.value = false
+        }
+    )
 }
 
 @Composable
@@ -295,25 +294,24 @@ fun WantedSelect(
         }
     )
 
-    if (selectValueList.isNotEmpty() && isShowBottomSheetDialog.value) {
-        WantedSelectBottomSheet(
-            modifier = Modifier,
-            items = selectValueList,
-            confirmText = confirmText,
-            selectType = selectType,
-            bottomSheetType = bottomSheetType,
-            selectedItem = selectedItem,
-            onSelect = { item ->
-                isFocus.value = false
-                onSelect(item)
-                isShowBottomSheetDialog.value = false
-            },
-            onDismissRequest = {
-                isFocus.value = false
-                isShowBottomSheetDialog.value = false
-            }
-        )
-    }
+    WantedSelectBottomSheet(
+        modifier = Modifier,
+        isShow = selectValueList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectValueList,
+        confirmText = confirmText,
+        selectType = selectType,
+        bottomSheetType = bottomSheetType,
+        selectedItem = selectedItem,
+        onSelect = { item ->
+            isFocus.value = false
+            onSelect(item)
+            isShowBottomSheetDialog.value = false
+        },
+        onDismissRequest = {
+            isFocus.value = false
+            isShowBottomSheetDialog.value = false
+        }
+    )
 }
 
 
