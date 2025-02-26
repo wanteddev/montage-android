@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
@@ -146,45 +148,97 @@ internal fun WantedDraggableModalBottomSheet(
                         }
                 )
 
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .imePadding()
-                        .offset {
-                            IntOffset(
-                                x = 0,
-                                y = dragState
-                                    .requireOffset()
-                                    .roundToInt()
-                            )
-                        }
-                        .clip(shape)
-                        .background(contentColor)
-                        .onGloballyPositioned {
-                            layoutHeight = it.size.height.toFloat()
-                        }
-                        .windowInsetsPadding(contentWindowInsets())
-                ) {
-                    dragHandle?.let {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .anchoredDraggable(
-                                    state = dragState,
-                                    orientation = Orientation.Vertical,
-                                    enabled = true
-                                ),
-                            contentAlignment = Alignment.BottomCenter
-                        ) {
-                            it()
+                Box(modifier = Modifier) {
+                    Column(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .imePadding()
+                            .offset {
+                                IntOffset(
+                                    x = 0,
+                                    y = dragState
+                                        .requireOffset()
+                                        .roundToInt()
+                                )
+                            }
+                            .clip(shape)
+                            .background(contentColor)
+                            .onGloballyPositioned {
+                                layoutHeight = it.size.height.toFloat()
+                            }
+                            .windowInsetsPadding(contentWindowInsets())
+                    ) {
+                        dragHandle?.let {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .anchoredDraggable(
+                                        state = dragState,
+                                        orientation = Orientation.Vertical,
+                                        enabled = true
+                                    ),
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
+                                it()
+
+                            }
+
                         }
 
+                        content()
                     }
 
-                    content()
+                    WantedHandleTouchArea(
+                        modifier = Modifier
+                            .size(58.dp)
+                            .align(Alignment.TopCenter)
+                            .offset {
+                                IntOffset(
+                                    x = 0,
+                                    y = dragState
+                                        .requireOffset()
+                                        .roundToInt()
+                                )
+                            },
+                        draggableState = dragState
+
+                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun WantedHandleTouchArea(
+    modifier: Modifier = Modifier,
+    draggableState: AnchoredDraggableState<SheetValue>
+) {
+    Layout(
+        modifier = modifier,
+        content = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .anchoredDraggable(
+                        state = draggableState,
+                        orientation = Orientation.Vertical,
+                        enabled = true
+                    )
+            )
+        }
+    ) { measurables, constraints ->
+        val textPlaceable = measurables[0].measure(constraints)
+
+        // Calculate the expanded dimensions
+        val expandedHeight = textPlaceable.height
+
+        layout(textPlaceable.width, expandedHeight) {
+            textPlaceable.placeRelative(
+                x = 0,
+                y = -(textPlaceable.height / 2)
+            )
         }
     }
 }

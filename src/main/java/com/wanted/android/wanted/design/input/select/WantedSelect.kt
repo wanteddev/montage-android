@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.ComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
+import com.wanted.android.wanted.design.input.ComponentTitle
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectBottomSheet
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.input.select.view.WantedSelectBottomSheet
