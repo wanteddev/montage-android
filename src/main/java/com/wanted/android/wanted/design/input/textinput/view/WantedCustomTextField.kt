@@ -356,9 +356,7 @@ private fun DecorationBox(
 
         rightContent?.let {
             Box(
-                modifier = Modifier
-                    .defaultMinSize(24.dp)
-                    .padding(1.dp),
+                modifier = Modifier.defaultMinSize(24.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 rightContent()
