@@ -33,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -62,7 +63,7 @@ internal fun WantedCustomTextField(
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
     background: Color = colorResource(id = R.color.background_normal_normal),
-    rightContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable ((size: Dp) -> Unit)? = null,
     rightButton: String? = null,
     rightButtonVariant: WantedTextInputRightVariant,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -311,7 +312,7 @@ private fun DecorationBox(
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null
+    rightContent: @Composable ((size: Dp) -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
@@ -359,7 +360,7 @@ private fun DecorationBox(
                 modifier = Modifier.defaultMinSize(24.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                rightContent()
+                rightContent(24.dp)
             }
         }
     }
