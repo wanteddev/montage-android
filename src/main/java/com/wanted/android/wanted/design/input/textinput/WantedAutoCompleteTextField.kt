@@ -28,13 +28,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.contents.cell.WantedCell
+import com.wanted.android.wanted.design.presentation.autocomplete.WantedAutoComplete
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 @Composable
-fun WantedAutoCompleteTextInput(
+fun WantedAutoCompleteTextField(
     modifier: Modifier = Modifier,
     text: String,
     placeholder: String = "",
@@ -63,7 +64,9 @@ fun WantedAutoCompleteTextInput(
     anchorPadding: Dp = 0.dp,
     dropDownMaxHeight: Dp = 200.dp,
     autoCompleteContent: @Composable ColumnScope.() -> Unit,
-    onExpandedChange: (Boolean) -> Unit
+    onExpandedChange: (Boolean) -> Unit,
+    topDirectInput: @Composable (() -> Unit)? = null,
+    bottomDirectInput: @Composable (() -> Unit)? = null
 ) {
 
     ExposedDropdownMenuBox(
@@ -109,25 +112,27 @@ fun WantedAutoCompleteTextInput(
                 },
             )
 
-            ExposedDropdownMenu(
+            WantedAutoComplete(
                 modifier = Modifier
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
-                shape = RoundedCornerShape(20.dp),
-                expanded = expended,
-                onDismissRequest = {
+                expended = expended,
+                onExpandedChange = {
                     onExpandedChange(false)
-                }
-            ) {
-                autoCompleteContent()
-            }
+                },
+                autoCompleteContent = {
+                    autoCompleteContent()
+                },
+                topDirectInput = topDirectInput,
+                bottomDirectInput = bottomDirectInput
+            )
         }
     }
 }
 
 @Composable
-fun WantedAutoCompleteTextInput(
+fun WantedAutoCompleteTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
     placeholder: String = "",
@@ -232,7 +237,7 @@ private fun WantedAutoCompleteTextInputPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedAutoCompleteTextInput(
+                WantedAutoCompleteTextField(
                     modifier = Modifier.fillMaxWidth(),
                     text = "ㅁㄴㅇ",
                     placeholder = "텍스트를 입력해 주세요.",
