@@ -24,6 +24,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.DevicePreviews
@@ -47,7 +48,7 @@ fun WantedTextField(
     rightButton: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable ((Dp) -> Unit)? = null,
     rightButtonVariant: WantedTextInputRightVariant = WantedTextInputRightVariant.Normal,
     status: WantedTextInputContract.Status = WantedTextInputContract.Status.Normal,
     enabled: Boolean = true,
@@ -154,7 +155,7 @@ fun WantedTextField(
     rightButton: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable ((Dp) -> Unit)? = null,
     rightButtonVariant: WantedTextInputRightVariant = WantedTextInputRightVariant.Normal,
     status: WantedTextInputContract.Status = WantedTextInputContract.Status.Normal,
     enabled: Boolean = true,
