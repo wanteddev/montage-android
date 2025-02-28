@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.base
+package com.wanted.android.wanted.design.input
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

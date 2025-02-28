@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.base
+package com.wanted.android.wanted.design.feedback
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -21,9 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
 internal fun WantedToastIcon(
