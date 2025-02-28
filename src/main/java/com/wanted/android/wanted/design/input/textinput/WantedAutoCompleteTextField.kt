@@ -5,16 +5,13 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Surface
@@ -28,7 +25,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.contents.cell.WantedCell
 import com.wanted.android.wanted.design.presentation.autocomplete.WantedAutoComplete
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -63,10 +59,14 @@ fun WantedAutoCompleteTextField(
     expended: Boolean = false,
     anchorPadding: Dp = 0.dp,
     dropDownMaxHeight: Dp = 200.dp,
-    autoCompleteContent: @Composable ColumnScope.() -> Unit,
-    onExpandedChange: (Boolean) -> Unit,
+    sectionTitleHorizontalPadding: Dp = 20.dp,
+    sectionCount: Int = 1,
+    sectionTitle: ((section: Int) -> String)? = null,
+    sectionItemCount: (section: Int) -> Int,
+    sectionItem: @Composable (section: Int, index: Int) -> Unit,
     topDirectInput: @Composable (() -> Unit)? = null,
-    bottomDirectInput: @Composable (() -> Unit)? = null
+    bottomDirectInput: @Composable (() -> Unit)? = null,
+    onExpandedChange: (Boolean) -> Unit
 ) {
 
     ExposedDropdownMenuBox(
@@ -121,9 +121,11 @@ fun WantedAutoCompleteTextField(
                 onExpandedChange = {
                     onExpandedChange(false)
                 },
-                autoCompleteContent = {
-                    autoCompleteContent()
-                },
+                sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,
+                sectionCount = sectionCount,
+                sectionTitle = sectionTitle,
+                sectionItemCount = sectionItemCount,
+                sectionItem = sectionItem,
                 topDirectInput = topDirectInput,
                 bottomDirectInput = bottomDirectInput
             )
@@ -160,7 +162,13 @@ fun WantedAutoCompleteTextField(
     expended: Boolean = false,
     anchorPadding: Dp = 0.dp,
     dropDownMaxHeight: Dp = 200.dp,
-    autoCompleteContent: @Composable ColumnScope.() -> Unit,
+    sectionTitleHorizontalPadding: Dp = 20.dp,
+    sectionCount: Int = 1,
+    sectionTitle: ((section: Int) -> String)? = null,
+    sectionItemCount: (section: Int) -> Int,
+    sectionItem: @Composable (section: Int, index: Int) -> Unit,
+    topDirectInput: @Composable (() -> Unit)? = null,
+    bottomDirectInput: @Composable (() -> Unit)? = null,
     onExpandedChange: (Boolean) -> Unit
 ) {
     ExposedDropdownMenuBox(
@@ -209,19 +217,23 @@ fun WantedAutoCompleteTextField(
                 },
             )
 
-            ExposedDropdownMenu(
+            WantedAutoComplete(
                 modifier = Modifier
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
-                shape = RoundedCornerShape(20.dp),
-                expanded = expended,
-                onDismissRequest = {
-                    onExpandedChange(expended)
-                }
-            ) {
-                autoCompleteContent()
-            }
+                expended = expended,
+                onExpandedChange = {
+                    onExpandedChange(false)
+                },
+                sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,
+                sectionCount = sectionCount,
+                sectionTitle = sectionTitle,
+                sectionItemCount = sectionItemCount,
+                sectionItem = sectionItem,
+                topDirectInput = topDirectInput,
+                bottomDirectInput = bottomDirectInput
+            )
         }
     }
 }
@@ -247,22 +259,12 @@ private fun WantedAutoCompleteTextInputPreview() {
                     },
                     onClickRightButton = {
                     },
-                    autoCompleteContent = {
-                        DropdownMenuItem(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = {
-                                WantedCell(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = "as;dlkfj"
-                                ) {}
-                            },
-                            onClick = {
-                            }
-                        )
-                    },
                     onExpandedChange = {
 
-                    }
+                    },
+                    sectionItem = { section, index ->
+                    },
+                    sectionItemCount = { 0 }
                 )
             }
         }

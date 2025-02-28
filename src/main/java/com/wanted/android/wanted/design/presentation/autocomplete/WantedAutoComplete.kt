@@ -1,22 +1,36 @@
 package com.wanted.android.wanted.design.presentation.autocomplete
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExposedDropdownMenuBoxScope
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
@@ -24,14 +38,30 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     containerColor: Color = colorResource(R.color.background_normal_normal),
     expended: Boolean,
     onExpandedChange: (Boolean) -> Unit,
-    autoCompleteContent: @Composable ColumnScope.() -> Unit,
+    sectionTitleHorizontalPadding: Dp = 20.dp,
+    sectionCount: Int,
+    sectionTitle: ((section: Int) -> String)? = null,
+    sectionItemCount: (section: Int) -> Int,
+    sectionItem: @Composable (section: Int, index: Int) -> Unit,
     topDirectInput: @Composable (() -> Unit)? = null,
     bottomDirectInput: @Composable (() -> Unit)? = null
 ) {
     val scrollState = rememberScrollState()
 
+    val topDirectInputSize = remember { mutableIntStateOf(0) }
+    val currentSection = remember { mutableIntStateOf(0) }
+    val sectionOffsets = remember { mutableStateMapOf<Int, Int>() }
+    val density = LocalDensity.current
+
+    LaunchedEffect(scrollState.value) {
+        currentSection.intValue = sectionOffsets.filter {
+            it.value <= (scrollState.value + topDirectInputSize.intValue
+                    + with(density) { COLUMN_VERTICAL_PADDING.dp.toPx() + TITLE_VERTICAL_PADDING.dp.toPx() })
+        }.maxOfOrNull { it.key } ?: 0
+    }
+
     ExposedDropdownMenu(
-        modifier = modifier,
+        modifier = modifier.padding(vertical = 8.dp),
         scrollState = scrollState,
         containerColor = containerColor,
         shape = RoundedCornerShape(16.dp),
@@ -44,6 +74,9 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .onGloballyPositioned {
+                        topDirectInputSize.intValue = it.size.height
+                    }
                     .offset {
                         IntOffset(0, scrollState.value)
                     }
@@ -52,13 +85,74 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
 
             ) {
                 it()
-            }
-            autoCompleteContent()
-
-            bottomDirectInput?.let {
-                it()
+                Spacer(modifier = Modifier.size(4.dp))
             }
         }
 
+        val title = sectionTitle?.invoke(currentSection.intValue) ?: ""
+        if (title.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset {
+                        IntOffset(0, scrollState.value)
+                    }
+                    .zIndex(1001f)
+                    .background(containerColor)
+                    .padding(horizontal = sectionTitleHorizontalPadding)
+                    .padding(horizontal = 1.dp)
+                    .padding(vertical = 4.dp),
+                text = title,
+                style = WantedTextStyle(
+                    colorRes = R.color.label_alternative,
+                    style = DesignSystemTheme.typography.caption1Bold
+                )
+            )
+
+            Spacer(modifier = Modifier.size(4.dp))
+        }
+
+        repeat(sectionCount) { section ->
+            if (section != 0) {
+                sectionTitle?.let {
+                    Text(
+                        modifier = Modifier
+                            .onGloballyPositioned {
+                                Log.d(
+                                    "_SMY",
+                                    "onGloballyPositioned: ${it.positionInParent().y.toInt()}, ${it.positionInRoot().y.toInt()}, ${scrollState.value} "
+                                )
+                                sectionOffsets[section] = it.positionInParent().y.toInt()
+                            }
+                            .padding(horizontal = sectionTitleHorizontalPadding)
+                            .padding(horizontal = 1.dp),
+                        text = sectionTitle(section),
+                        style = WantedTextStyle(
+                            colorRes = R.color.label_alternative,
+                            style = DesignSystemTheme.typography.caption1Bold
+                        )
+                    )
+                }
+
+                Spacer(modifier = Modifier.size(4.dp))
+            }
+
+            val itemCount = sectionItemCount(section)
+            repeat(itemCount) { index ->
+                sectionItem(section, index)
+
+                if (itemCount != index - 1) {
+                    Spacer(modifier = Modifier.size(4.dp))
+                }
+            }
+        }
+
+
+        bottomDirectInput?.let {
+            it()
+        }
     }
 }
+
+private const val COLUMN_VERTICAL_PADDING = 4
+private const val TITLE_VERTICAL_PADDING = 4
