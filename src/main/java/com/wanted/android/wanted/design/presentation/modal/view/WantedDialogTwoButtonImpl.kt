@@ -70,7 +70,7 @@ fun WantedDialogTwoButtonImpl(
                     WantedSolidButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = positive.orEmpty(),
-                        clickListener = {
+                        onClick = {
                             onClickPositive()
                         }
                     )

@@ -9,13 +9,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40142&m=dev
@@ -50,7 +50,7 @@ fun WantedButton(
                 ),
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
-                clickListener = onClick,
+                onClick = onClick,
             )
         }
 
@@ -116,7 +116,7 @@ fun WantedButton(
                 buttonDefault = buttonDefault,
                 leftDrawable = leftDrawable,
                 rightDrawable = rightDrawable,
-                clickListener = onClick,
+                onClick = onClick,
             )
         }
 

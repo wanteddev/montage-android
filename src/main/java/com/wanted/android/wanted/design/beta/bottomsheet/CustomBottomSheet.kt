@@ -50,12 +50,12 @@ import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedSolidButton
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemBottomSheetTheme
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -356,7 +356,7 @@ private fun CustomDialogContentImpl(
                     .fillMaxWidth(),
                 text = confirm,
                 enabled = isEnableConfirm,
-                clickListener = {
+                onClick = {
                     onClickConfirm?.invoke()
                 }
             )

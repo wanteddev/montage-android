@@ -105,13 +105,13 @@ class WantedSolidButton @JvmOverloads constructor(
             enabled = buttonStatus,
             leftDrawable = if (leftDrawable != 0) leftDrawable else null,
             rightDrawable = if (rightDrawable != 0) rightDrawable else null,
-            clickListener = onClickListener
+            onClick = onClickListener
         )
     }
 }
 
 @Composable
-fun WantedSolidButton(
+internal fun WantedSolidButton(
     modifier: Modifier = Modifier,
     text: String = "",
     type: ButtonType = ButtonType.PRIMARY,
@@ -126,7 +126,7 @@ fun WantedSolidButton(
     ),
     leftDrawable: Int? = null,
     rightDrawable: Int? = null,
-    clickListener: () -> Unit = {}
+    onClick: () -> Unit = {}
 ) {
     WantedButtonLayout(
         modifier = modifier
@@ -153,7 +153,7 @@ fun WantedSolidButton(
                 enabled = buttonDefault.enabled,
                 onClick = {
                     if (!isLoading) {
-                        clickListener.clickOnce()
+                        onClick.clickOnce()
                     }
                 }
             ),
