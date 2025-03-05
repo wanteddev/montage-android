@@ -570,6 +570,7 @@ private fun WantedTextArea(
 
                             it.text.length <= maxWordCount -> onValueChange(it)
                             it.text.length < value.text.length -> onValueChange(it)
+                            it.text == value.text -> onValueChange(it)
                             else -> onValueChange(value)
                         }
                     },

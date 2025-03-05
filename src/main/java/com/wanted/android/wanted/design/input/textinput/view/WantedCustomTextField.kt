@@ -27,11 +27,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -61,7 +63,7 @@ internal fun WantedCustomTextField(
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
     background: Color = colorResource(id = R.color.background_normal_normal),
-    rightContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable ((size: Dp) -> Unit)? = null,
     rightButton: String? = null,
     rightButtonVariant: WantedTextInputRightVariant,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -147,6 +149,11 @@ internal fun WantedCustomTextField(
                         )
                         .padding(horizontal = 12.dp)
                         .padding(vertical = 12.dp)
+                        .height(
+                            with(LocalDensity.current) {
+                                DesignSystemTheme.typography.body1Regular.lineHeight.toDp()
+                            }
+                        )
                         .fillMaxSize(),
                     value = value,
                     maxLines = maxLines,
@@ -305,7 +312,7 @@ private fun DecorationBox(
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null
+    rightContent: @Composable ((size: Dp) -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
@@ -350,12 +357,10 @@ private fun DecorationBox(
 
         rightContent?.let {
             Box(
-                modifier = Modifier
-                    .defaultMinSize(24.dp)
-                    .padding(1.dp),
+                modifier = Modifier.defaultMinSize(24.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                rightContent()
+                rightContent(24.dp)
             }
         }
     }
