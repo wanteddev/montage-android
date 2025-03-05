@@ -168,7 +168,7 @@ internal fun WantedSolidButton(
                             size = buttonDefault.size
                         ),
                         drawableRes = it,
-                        tint = buttonDefault.contentColor
+                        tint = buttonDefault.leftIconTintColor
                     )
                 }
             }
@@ -205,7 +205,7 @@ internal fun WantedSolidButton(
                             size = buttonDefault.size
                         ),
                         drawableRes = it,
-                        tint = buttonDefault.contentColor
+                        tint = buttonDefault.rightIconTintColor
                     )
                 }
             }

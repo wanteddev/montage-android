@@ -177,7 +177,7 @@ fun WantedOutlinedButton(
                             size = buttonDefault.size
                         ),
                         drawableRes = it,
-                        tint = buttonDefault.contentColor
+                        tint = buttonDefault.leftIconTintColor
                     )
                 }
             }
@@ -211,7 +211,7 @@ fun WantedOutlinedButton(
                             size = buttonDefault.size
                         ),
                         drawableRes = it,
-                        tint = buttonDefault.contentColor
+                        tint = buttonDefault.rightIconTintColor
                     )
                 }
             }

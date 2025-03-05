@@ -127,6 +127,9 @@ fun WantedTextButton(
 ) {
     val textColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.contentColor) }
 
+    val rightIconTintColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.rightIconTintColor) }
+    val leftIconTintColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.leftIconTintColor) }
+
     WantedTouchArea(
         modifier = modifier,
         verticalPadding = 4.dp,
@@ -152,7 +155,7 @@ fun WantedTextButton(
                                     size = buttonDefault.size
                                 ),
                                 drawableRes = it,
-                                tint = textColor.value
+                                tint = leftIconTintColor.value
                             )
                         }
                     }
@@ -186,7 +189,7 @@ fun WantedTextButton(
                                     size = buttonDefault.size
                                 ),
                                 drawableRes = it,
-                                tint = textColor.value
+                                tint = rightIconTintColor.value
                             )
                         }
                     }
