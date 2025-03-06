@@ -68,6 +68,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -112,6 +113,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 isGraphemeClusterCount = isGraphemeClusterCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -165,6 +167,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -197,6 +200,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 isGraphemeClusterCount = isGraphemeClusterCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -241,6 +245,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
@@ -283,6 +288,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -337,6 +343,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
@@ -367,6 +374,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -409,6 +417,7 @@ private fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -427,6 +436,7 @@ private fun WantedTextArea(
         maxLines = maxLines,
         minLines = minLines,
         maxWordCount = maxWordCount,
+        enabledOverflowText = enabledOverflowText,
         isGraphemeClusterCount = isGraphemeClusterCount,
         interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
@@ -480,6 +490,7 @@ private fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -568,6 +579,7 @@ private fun WantedTextArea(
                                 onValueChange(it)
                             }
 
+                            enabledOverflowText -> onValueChange(it)
                             it.text.length <= maxWordCount -> onValueChange(it)
                             it.text.length < value.text.length -> onValueChange(it)
                             it.text == value.text -> onValueChange(it)

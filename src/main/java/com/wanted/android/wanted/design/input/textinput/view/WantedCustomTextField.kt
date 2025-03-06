@@ -59,6 +59,7 @@ internal fun WantedCustomTextField(
     maxLines: Int,
     minLines: Int,
     maxWordCount: Int,
+    enabledOverflowText: Boolean,
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
@@ -169,6 +170,7 @@ internal fun WantedCustomTextField(
                     ),
                     onValueChange = {
                         when {
+                            enabledOverflowText -> onValueChange(it)
                             it.text.length <= maxWordCount -> onValueChange(it)
                             it.text.length < value.text.length -> onValueChange(it)
                             else -> onValueChange(value)
