@@ -21,9 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -128,6 +130,8 @@ internal fun WantedSolidButton(
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
+    val textMeasurer = rememberTextMeasurer()
+
     WantedButtonLayout(
         modifier = modifier
             .background(
@@ -173,28 +177,31 @@ internal fun WantedSolidButton(
                 }
             }
         },
-        text = if (isLoading) {
-            {
-                WantedCircularProgressIndicator(
-                    modifier = Modifier.size(buttonDefault.loadingSize),
-                    color = buttonDefault.loadingColor
-                )
+        text = when {
+            text.isNotEmpty() -> {
+                {
+                    if (isLoading) {
+                        WantedCircularProgressIndicator(
+                            modifier = Modifier.size(buttonDefault.loadingSize),
+                            color = buttonDefault.loadingColor
+                        )
+                    }
+
+                    Text(
+                        text = text,
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .alpha(if (isLoading) 0f else 1f),
+                        style = buttonDefault.textStyle,
+                        color = buttonDefault.contentColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
-        } else if (text.isNotEmpty()) {
-            {
-                Text(
-                    text = text,
-                    modifier = Modifier
-                        .wrapContentHeight(),
-                    style = buttonDefault.textStyle,
-                    color = buttonDefault.contentColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
-                )
-            }
-        } else {
-            null
+
+            else -> null
         },
         rightDrawable = rightDrawable?.let {
             {
