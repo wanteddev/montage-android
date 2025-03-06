@@ -58,7 +58,7 @@ import java.text.BreakIterator
 @Composable
 fun WantedTextArea(
     modifier: Modifier = Modifier,
-    value: String,
+    text: String,
     placeholder: String = "",
     title: String = "",
     description: String? = null,
@@ -79,8 +79,8 @@ fun WantedTextArea(
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
-    val textFieldValue = textFieldValueState.copy(text = value)
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
+    val textFieldValue = textFieldValueState.copy(text = text)
 
     SideEffect {
         if (textFieldValue.selection != textFieldValueState.selection ||
@@ -89,7 +89,7 @@ fun WantedTextArea(
             textFieldValueState = textFieldValue
         }
     }
-    var lastTextValue by remember(value) { mutableStateOf(value) }
+    var lastTextValue by remember(text) { mutableStateOf(text) }
 
     WantedTextInputLayout(
         modifier = modifier,
@@ -234,7 +234,7 @@ fun WantedTextArea(
 @Composable
 fun WantedTextArea(
     modifier: Modifier = Modifier,
-    value: String,
+    text: String,
     placeholder: String = "",
     title: String = "",
     description: String? = null,
@@ -254,8 +254,8 @@ fun WantedTextArea(
     background: Color = colorResource(id = R.color.background_normal_normal),
     onValueChange: (String) -> Unit = {}
 ) {
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
-    val textFieldValue = textFieldValueState.copy(text = value)
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
+    val textFieldValue = textFieldValueState.copy(text = text)
 
     SideEffect {
         if (textFieldValue.selection != textFieldValueState.selection ||
@@ -264,7 +264,7 @@ fun WantedTextArea(
             textFieldValueState = textFieldValue
         }
     }
-    var lastTextValue by remember(value) { mutableStateOf(value) }
+    var lastTextValue by remember(text) { mutableStateOf(text) }
 
     WantedTextInputLayout(
         modifier = modifier,
@@ -662,7 +662,7 @@ private fun WantedTextAreaPreview() {
             ) {
                 WantedTextArea(
                     modifier = Modifier,
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                 )
 
@@ -671,7 +671,7 @@ private fun WantedTextAreaPreview() {
                     title = "주제",
                     negative = true,
                     requiredBadge = true,
-                    value = "입력한 텍스트.",
+                    text = "입력한 텍스트.",
                     isGraphemeClusterCount = true,
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
@@ -682,7 +682,7 @@ private fun WantedTextAreaPreview() {
                     title = "주제",
                     negative = true,
                     requiredBadge = true,
-                    value = "입력한 텍스트.",
+                    text = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     description = "에러가 나면 이렇게 메시지가 나와요"
@@ -690,25 +690,25 @@ private fun WantedTextAreaPreview() {
 
                 WantedTextArea(
                     modifier = Modifier,
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
 
                 WantedTextArea(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
 
                 WantedTextArea(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
 
                 WantedTextArea(
-                    value = "",
+                    text = "",
                     placeholder = "텍스트를 입력해 주세요.",
                     minLines = 4,
                     rightContent = {
@@ -717,7 +717,7 @@ private fun WantedTextAreaPreview() {
                 )
 
                 WantedTextArea(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     leftContent = {
                         WantedActionChip(text = "WantedActionChip")
