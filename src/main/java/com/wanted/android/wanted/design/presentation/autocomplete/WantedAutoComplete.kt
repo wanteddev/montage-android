@@ -61,11 +61,12 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     }
 
     ExposedDropdownMenu(
-        modifier = modifier.padding(vertical = 8.dp),
+        modifier = modifier.padding(horizontal = 8.dp),
         scrollState = scrollState,
         containerColor = containerColor,
         shape = RoundedCornerShape(16.dp),
         expanded = expended,
+        shadowElevation = 1.dp,
         onDismissRequest = {
             onExpandedChange(expended)
         }
