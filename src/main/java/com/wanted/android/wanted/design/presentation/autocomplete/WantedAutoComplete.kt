@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,15 +50,30 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     val scrollState = rememberScrollState()
 
     val topDirectInputSize = remember { mutableIntStateOf(0) }
-    val currentSection = remember { mutableIntStateOf(0) }
+    val currentSection = remember { mutableIntStateOf(-1) }
     val sectionOffsets = remember { mutableStateMapOf<Int, Int>() }
     val density = LocalDensity.current
+    val title = remember { mutableStateOf("") }
+
+    LaunchedEffect(currentSection.intValue) {
+        title.value = if (currentSection.intValue == -1) {
+            ""
+        } else {
+            sectionTitle?.invoke(currentSection.intValue) ?: ""
+        }
+    }
 
     LaunchedEffect(scrollState.value) {
         currentSection.intValue = sectionOffsets.filter {
-            it.value <= (scrollState.value + topDirectInputSize.intValue
-                    + with(density) { COLUMN_VERTICAL_PADDING.dp.toPx() + TITLE_VERTICAL_PADDING.dp.toPx() })
-        }.maxOfOrNull { it.key } ?: 0
+            it.value <= (scrollState.value + with(density) {
+                TITLE_VERTICAL_PADDING.dp.toPx()
+                +if (title.value.isEmpty()) {
+                    0.dp.toPx()
+                } else {
+                    TITLE_VERTICAL_PADDING.dp.toPx() + TITLE_VERTICAL_PADDING.dp.toPx()
+                }
+            })
+        }.maxOfOrNull { it.key } ?: -1
     }
 
     ExposedDropdownMenu(
@@ -78,9 +94,6 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                     .onGloballyPositioned {
                         topDirectInputSize.intValue = it.size.height
                     }
-                    .offset {
-                        IntOffset(0, scrollState.value)
-                    }
                     .zIndex(1000f)
                     .background(containerColor)
 
@@ -90,20 +103,19 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
             }
         }
 
-        val title = sectionTitle?.invoke(currentSection.intValue) ?: ""
-        if (title.isNotEmpty()) {
+        if (title.value.isNotEmpty()) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .offset {
-                        IntOffset(0, scrollState.value)
+                        IntOffset(0, scrollState.value - topDirectInputSize.intValue)
                     }
                     .zIndex(1001f)
                     .background(containerColor)
                     .padding(horizontal = sectionTitleHorizontalPadding)
                     .padding(horizontal = 1.dp)
                     .padding(vertical = 4.dp),
-                text = title,
+                text = title.value,
                 style = WantedTextStyle(
                     colorRes = R.color.label_alternative,
                     style = DesignSystemTheme.typography.caption1Bold
@@ -111,13 +123,15 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
             )
 
             Spacer(modifier = Modifier.size(4.dp))
+
         }
 
         repeat(sectionCount) { section ->
-            if (section != 0) {
+            if (section != 0 || title.value.isEmpty()) {
                 sectionTitle?.let {
                     Text(
                         modifier = Modifier
+                            .fillMaxWidth()
                             .onGloballyPositioned {
                                 Log.d(
                                     "_SMY",
@@ -126,7 +140,8 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                                 sectionOffsets[section] = it.positionInParent().y.toInt()
                             }
                             .padding(horizontal = sectionTitleHorizontalPadding)
-                            .padding(horizontal = 1.dp),
+                            .padding(horizontal = 1.dp)
+                            .padding(vertical = 4.dp),
                         text = sectionTitle(section),
                         style = WantedTextStyle(
                             colorRes = R.color.label_alternative,
@@ -148,12 +163,10 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
             }
         }
 
-
         bottomDirectInput?.let {
             it()
         }
     }
 }
 
-private const val COLUMN_VERTICAL_PADDING = 4
 private const val TITLE_VERTICAL_PADDING = 4
