@@ -22,8 +22,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.control.CheckBoxStyle
@@ -31,7 +29,9 @@ import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputSize
 import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
@@ -43,6 +43,7 @@ fun WantedInput(
     checkBoxState: CheckBoxState = CheckBoxState.Unchecked,
     bold: Boolean = false,
     enabled: Boolean = true,
+    tight: Boolean = false,
     textStyle: TextStyle = WantedTextStyle(
         colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
         style = if (size == WantedInputSize.Normal) {
@@ -90,6 +91,7 @@ fun WantedInput(
                     checkBoxInteractionSource.tryEmit(PressInteraction.Release(press))
                 },
             size = size,
+            tight = tight,
             leadingIcon = {
                 WantedCheckBox(
                     modifier = Modifier,
@@ -104,6 +106,7 @@ fun WantedInput(
                         WantedInputType.CheckMark -> CheckBoxStyle.Check
                     },
                     checkState = checkBoxState,
+                    tight = tight,
                     enabled = enabled,
                     interactionSource = checkBoxInteractionSource,
                     onCheckedChange = onCheckedChange
