@@ -3,19 +3,23 @@ package com.wanted.android.wanted.design.contents.avatar
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 /**
@@ -29,28 +33,42 @@ fun WantedAvatarGroup(
     size: WantedAvatarSize,
     type: WantedAvatarType,
     isIcon: Boolean = false,
-    isDrawableRes: Boolean = false
+    isDrawableRes: Boolean = false,
+    trailingContent: @Composable ((Dp) -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy((-6).dp),
+        horizontalArrangement = Arrangement.spacedBy((8).dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        modelList.forEachIndexed { index, any ->
-            Box(modifier = Modifier.zIndex(modelList.size - index.toFloat())) {
-                WantedAvatar(
-                    modifier = Modifier,
-                    model = any,
-                    placeHolder = placeHolder,
-                    size = size,
-                    type = type,
-                    isGroup = true,
-                    isIcon = isIcon,
-                    isDrawableRes = isDrawableRes
-                )
+        Row(
+            modifier = Modifier.weight(1f, fill = false),
+            horizontalArrangement = Arrangement.spacedBy((-6).dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            modelList.forEachIndexed { index, any ->
+                Box(modifier = Modifier.zIndex(modelList.size - index.toFloat())) {
+                    WantedAvatar(
+                        modifier = Modifier,
+                        model = any,
+                        placeHolder = placeHolder,
+                        size = size,
+                        type = type,
+                        isGroup = true,
+                        isIcon = isIcon,
+                        isDrawableRes = isDrawableRes
+                    )
+                }
+            }
+        }
+
+        trailingContent?.let {
+            BoxWithConstraints(modifier = Modifier.height(24.dp)) {
+                trailingContent(maxHeight)
             }
         }
     }
+
 }
 
 @DevicePreviews
@@ -146,6 +164,24 @@ private fun WantedAvatarPreview() {
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
                     isIcon = true
+                )
+
+
+                WantedAvatarGroup(
+                    modifier = Modifier,
+                    modelList = listOf(
+                        R.drawable.ic_avatar_placeholder_person,
+                        R.drawable.ic_avatar_placeholder_person,
+                        R.drawable.ic_avatar_placeholder_person
+                    ),
+                    placeHolder = R.drawable.ic_avatar_placeholder_person,
+                    size = WantedAvatarSize.XLarge,
+                    type = WantedAvatarType.Person,
+                    isDrawableRes = true,
+                    isIcon = false,
+                    trailingContent = {
+                        Text(text = "외 1명")
+                    }
                 )
             }
         }
