@@ -42,7 +42,6 @@ import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
-import com.wanted.android.wanted.design.navigations.category.WantedCategoryContract.Size
 import com.wanted.android.wanted.design.navigations.tab.WantedTabContract.TabSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
