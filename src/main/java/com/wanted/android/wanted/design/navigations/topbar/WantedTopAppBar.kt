@@ -129,11 +129,7 @@ fun WantedTopAppBar(
 ) {
     val isShowDivider = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
-        if (scrollableState?.canScrollBackward == true) {
-            isShowDivider.value = true
-        } else {
-            isShowDivider.value = false
-        }
+        isShowDivider.value = scrollableState?.canScrollBackward == true
     }
 
     Box(
