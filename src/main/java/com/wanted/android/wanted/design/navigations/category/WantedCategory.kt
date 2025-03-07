@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyListScope
@@ -216,7 +217,13 @@ private fun WantedCategoryLayout(
                 BoxWithConstraints(
                     modifier = Modifier
                         .padding(start = 12.dp, end = 8.dp)
-                        .height(if (size == Size.Small) 20.dp else 22.dp)
+                        .size(
+                            when (size) {
+                                Size.Small -> 20.dp
+                                Size.Medium -> 22.dp
+                                else -> 24.dp
+                            }
+                        )
                 ) {
                     rightIcon(maxHeight)
                 }

@@ -42,13 +42,15 @@ import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
+import com.wanted.android.wanted.design.navigations.category.WantedCategoryContract.Size
+import com.wanted.android.wanted.design.navigations.tab.WantedTabContract.TabSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 @Composable
 fun WantedScrollableTabRow(
     modifier: Modifier,
-    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Medium,
+    tabSize: TabSize = TabSize.Medium,
     itemCount: Int,
     selectedTabIndex: Int,
     horizontalPadding: Boolean = false,
@@ -86,7 +88,7 @@ fun WantedScrollableTabRow(
 @Composable
 private fun WantedScrollableFlexTabRow(
     modifier: Modifier = Modifier,
-    tabSize: WantedTabContract.TabSize,
+    tabSize: TabSize,
     itemCount: Int,
     selectedTabIndex: Int,
     horizontalPadding: Boolean,
@@ -151,7 +153,7 @@ private fun WantedScrollableFlexTabRow(
 @Composable
 private fun WantedTabLayout(
     modifier: Modifier = Modifier,
-    tabSize: WantedTabContract.TabSize,
+    tabSize: TabSize,
     isLeftGradient: Boolean,
     isRightGradient: Boolean,
     tab: @Composable () -> Unit,
@@ -237,7 +239,13 @@ private fun WantedTabLayout(
                 BoxWithConstraints(
                     modifier = Modifier
                         .padding(start = 12.dp, end = 8.dp)
-                        .size(if (tabSize == WantedTabContract.TabSize.Small) 20.dp else 22.dp)
+                        .size(
+                            when (tabSize) {
+                                TabSize.Small -> 20.dp
+                                TabSize.Medium -> 22.dp
+                                else -> 24.dp
+                            }
+                        )
                 ) {
                     rightIcon(maxHeight)
                 }
@@ -304,7 +312,7 @@ private fun WantedScrollableTabRowPreview() {
 
                 WantedScrollableTabRow(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Small,
+                    tabSize = TabSize.Small,
                     selectedTabIndex = 1,
                     itemCount = itemList.size,
                     content = { index ->
