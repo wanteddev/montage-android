@@ -3,34 +3,34 @@ package com.wanted.android.wanted.design.navigations.topbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.TopAppBarType
 import com.wanted.android.wanted.design.navigations.topbar.view.LocalWantedTopBarIconType
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedCenterTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedExtendedTopAppBarLayout
+import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayoutDivider
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
@@ -105,27 +105,23 @@ fun WantedCenterTopAppBar(
     title: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
-    val elevation = remember { mutableIntStateOf(0) }
+    val isShowDivider = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
         if (scrollableState?.canScrollBackward == true) {
-            elevation.intValue = 4
+            isShowDivider.value = true
         } else {
-            elevation.intValue = 0
+            isShowDivider.value = false
         }
     }
 
-    Surface(
-        modifier = modifier
-            .windowInsetsPadding(windowInsets)
-            .shadow(elevation.intValue.dp)
-            .zIndex(1f),
-        color = background
+    Box(
+        modifier = modifier.background(background)
     ) {
         CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
             when (type) {
                 TopAppBarType.Normal -> {
                     WantedCenterTopAppBarLayout(
-                        modifier = Modifier,
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
                         title = title,
                         actions = actions
@@ -134,7 +130,7 @@ fun WantedCenterTopAppBar(
 
                 TopAppBarType.Extended -> {
                     WantedExtendedTopAppBarLayout(
-                        modifier = Modifier,
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
                         title = title,
                         actions = actions
@@ -143,12 +139,19 @@ fun WantedCenterTopAppBar(
 
                 else -> {
                     WantedCenterTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
                         title = title,
                         actions = actions
                     )
                 }
             }
+        }
+
+        if (isShowDivider.value) {
+            WantedOverLayoutDivider(
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
     }
 }
