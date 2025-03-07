@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
@@ -182,26 +183,31 @@ fun WantedOutlinedButton(
                 }
             }
         },
-        text = if (isLoading) {
-            {
-                WantedCircularProgressIndicator(
-                    modifier = Modifier.size(buttonDefault.loadingSize),
-                    color = buttonDefault.loadingColor
-                )
+        text = when {
+            text.isNotEmpty() -> {
+                {
+                    if (isLoading) {
+                        WantedCircularProgressIndicator(
+                            modifier = Modifier.size(buttonDefault.loadingSize),
+                            color = buttonDefault.loadingColor
+                        )
+                    }
+                    Text(
+                        text = text,
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .alpha(if (isLoading) 0f else 1f),
+                        style = buttonDefault.textStyle,
+                        color = buttonDefault.contentColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
-        } else if (text.isNotEmpty()) {
-            {
-                Text(
-                    text = text,
-                    modifier = Modifier.wrapContentHeight(),
-                    style = buttonDefault.textStyle,
-                    color = buttonDefault.contentColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
-                )
-            }
-        } else null,
+
+            else -> null
+        },
         rightDrawable = rightDrawable?.let {
             {
                 if (!isLoading) {
