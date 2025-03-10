@@ -85,6 +85,7 @@ fun WantedModalBottomSheet(
     ModalBottomSheet(
         modifier = modifier.fillMaxWidth(),
         containerColor = background,
+        contentColor = background,
         tonalElevation = 0.dp,
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetMaxWidth = width,
