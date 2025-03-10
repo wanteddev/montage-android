@@ -120,7 +120,7 @@ class WantedOutlinedButton @JvmOverloads constructor(
 
 
 @Composable
-fun WantedOutlinedButton(
+internal fun WantedOutlinedButton(
     modifier: Modifier = Modifier,
     text: String = "",
     type: ButtonType = ButtonType.PRIMARY,
