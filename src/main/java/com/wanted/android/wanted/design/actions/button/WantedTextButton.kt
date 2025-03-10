@@ -109,7 +109,7 @@ class WantedTextButton @JvmOverloads constructor(
 }
 
 @Composable
-fun WantedTextButton(
+internal fun WantedTextButton(
     text: String,
     modifier: Modifier = Modifier,
     type: ButtonType = ButtonType.PRIMARY,
