@@ -130,8 +130,6 @@ internal fun WantedSolidButton(
     rightDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
-    val textMeasurer = rememberTextMeasurer()
-
     WantedButtonLayout(
         modifier = modifier
             .background(
