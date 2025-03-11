@@ -38,9 +38,9 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 
 enum class CheckBoxSize {
@@ -78,9 +78,10 @@ class WantedCheckBox : MaterialCheckBox {
 @Composable
 fun WantedCheckBox(
     modifier: Modifier,
-    size: CheckBoxSize,
+    size: CheckBoxSize = CheckBoxSize.Normal,
     style: CheckBoxStyle = CheckBoxStyle.CheckBox,
     checkState: CheckBoxState = CheckBoxState.Unchecked,
+    tight: Boolean = false,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onCheckedChange: ((Boolean) -> Unit)
@@ -92,6 +93,7 @@ fun WantedCheckBox(
                 size = size,
                 shape = RoundedCornerShape(5.dp),
                 checkState = checkState,
+                tight = tight,
                 enabled = enabled,
                 interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
@@ -104,6 +106,7 @@ fun WantedCheckBox(
                 size = size,
                 shape = CircleShape,
                 checkState = checkState,
+                tight = tight,
                 enabled = enabled,
                 interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
@@ -116,6 +119,7 @@ fun WantedCheckBox(
                 size = size,
                 checked = checkState != CheckBoxState.Unchecked,
                 enabled = enabled,
+                tight = tight,
                 interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
             )
@@ -127,6 +131,7 @@ fun WantedCheckBox(
                 size = size,
                 checked = checkState != CheckBoxState.Unchecked,
                 enabled = enabled,
+                tight = tight,
                 interactionSource = interactionSource,
                 onCheckedChange = onCheckedChange
             )
@@ -151,6 +156,7 @@ private fun WantedCheckBoxImpl(
     size: CheckBoxSize,
     shape: Shape,
     checkState: CheckBoxState,
+    tight: Boolean,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onCheckedChange: ((Boolean) -> Unit)
@@ -159,14 +165,26 @@ private fun WantedCheckBoxImpl(
         modifier = modifier,
         enabled = enabled,
         shape = CircleShape,
-        horizontalPadding = 4.dp,
+        horizontalPadding = if (tight) 6.dp else 4.dp,
         verticalPadding = 4.dp,
         interactionSource = interactionSource,
         content = {
             Box(
                 modifier = Modifier
-                    .size(if (size == CheckBoxSize.Small) 20.dp else 24.dp)
-                    .padding(if (size == CheckBoxSize.Small) 2.dp else 3.dp)
+                    .height(height = if (size == CheckBoxSize.Small) 20.dp else 24.dp)
+                    .width(
+                        width = when {
+                            tight -> if (size == CheckBoxSize.Small) 16.dp else 20.dp
+                            else -> if (size == CheckBoxSize.Small) 20.dp else 24.dp
+                        }
+                    )
+                    .padding(
+                        horizontal = when {
+                            tight -> if (size == CheckBoxSize.Small) 0.dp else 1.dp
+                            else -> if (size == CheckBoxSize.Small) 2.dp else 3.dp
+                        }
+                    )
+                    .padding(vertical = if (size == CheckBoxSize.Small) 2.dp else 3.dp)
                     .clip(shape)
                     .border(
                         width = 1.5.dp,
@@ -322,11 +340,20 @@ private fun CertificationAuthInputScreenPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                CheckBox(CheckBoxStyle.CheckBox)
-                CheckBox(CheckBoxStyle.RoundCheckBox)
-                CheckBox(CheckBoxStyle.Check)
-                CheckBox(CheckBoxStyle.Radio)
-                CheckBox(CheckBoxStyle.Switch)
+                CheckBox(CheckBoxStyle.CheckBox, true)
+                CheckBox(CheckBoxStyle.CheckBox, false)
+
+                CheckBox(CheckBoxStyle.RoundCheckBox, true)
+                CheckBox(CheckBoxStyle.RoundCheckBox, false)
+
+                CheckBox(CheckBoxStyle.Check, true)
+                CheckBox(CheckBoxStyle.Check, false)
+
+                CheckBox(CheckBoxStyle.Radio, true)
+                CheckBox(CheckBoxStyle.Radio, false)
+
+                CheckBox(CheckBoxStyle.Switch, true)
+                CheckBox(CheckBoxStyle.Switch, false)
             }
         }
     }
@@ -335,6 +362,7 @@ private fun CertificationAuthInputScreenPreview() {
 @Composable
 private fun CheckBox(
     style: CheckBoxStyle = CheckBoxStyle.CheckBox,
+    tight: Boolean
 ) {
     Column {
         Row(
@@ -345,6 +373,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Small,
                 style = style,
                 checkState = CheckBoxState.Unchecked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -355,6 +384,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Small,
                 style = style,
                 checkState = CheckBoxState.Checked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -364,6 +394,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Small,
                 style = style,
                 checkState = CheckBoxState.Indeterminate,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -374,6 +405,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Normal,
                 style = style,
                 checkState = CheckBoxState.Unchecked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -384,6 +416,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Normal,
                 style = style,
                 checkState = CheckBoxState.Checked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -393,6 +426,7 @@ private fun CheckBox(
                 size = CheckBoxSize.Normal,
                 style = style,
                 checkState = CheckBoxState.Indeterminate,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -410,6 +444,7 @@ private fun CheckBox(
                 style = style,
                 enabled = false,
                 checkState = CheckBoxState.Unchecked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -421,6 +456,7 @@ private fun CheckBox(
                 style = style,
                 enabled = false,
                 checkState = CheckBoxState.Checked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -431,6 +467,7 @@ private fun CheckBox(
                 style = style,
                 enabled = false,
                 checkState = CheckBoxState.Indeterminate,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -442,6 +479,7 @@ private fun CheckBox(
                 style = style,
                 enabled = false,
                 checkState = CheckBoxState.Unchecked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -453,6 +491,7 @@ private fun CheckBox(
                 style = style,
                 enabled = false,
                 checkState = CheckBoxState.Checked,
+                tight = tight,
                 onCheckedChange = {
 
                 }
@@ -463,6 +502,7 @@ private fun CheckBox(
                 style = style,
                 enabled = false,
                 checkState = CheckBoxState.Indeterminate,
+                tight = tight,
                 onCheckedChange = {
 
                 }
