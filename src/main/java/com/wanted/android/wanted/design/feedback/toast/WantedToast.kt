@@ -46,15 +46,20 @@ sealed class WantedToastVariant(
     @DrawableRes val resourceId: Int,
     @ColorRes val tinColor: Int
 ) {
-    data object NORMAL : WantedToastVariant(-1, -1)
-    data object SUCCESS : WantedToastVariant(
+    data object Normal : WantedToastVariant(-1, -1)
+    data object Positive : WantedToastVariant(
         R.drawable.ic_normal_circle_check_fill_svg,
-        R.color.status_positive
+        R.color.green_60
     )
 
-    data object WARNING : WantedToastVariant(
+    data object Cautionary : WantedToastVariant(
         R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.status_cautionary
+        R.color.orange_60
+    )
+
+    data object Negative : WantedToastVariant(
+        R.drawable.ic_normal_circle_exclamation_fill_svg,
+        R.color.red_60
     )
 }
 
@@ -63,7 +68,7 @@ fun WantedToast(
     @StringRes text: Int,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.NORMAL,
+    variant: WantedToastVariant = WantedToastVariant.Normal,
     @DrawableRes icon: Int? = null,
     @ColorRes tintColor: Int? = null,
 ) {
@@ -91,11 +96,11 @@ fun WantedToast(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.NORMAL,
+    variant: WantedToastVariant = WantedToastVariant.Normal,
     icon: @Composable (() -> Unit)? = null
 ) {
     val iconSlot: @Composable (() -> Unit)? = when (variant) {
-        WantedToastVariant.NORMAL -> {
+        WantedToastVariant.Normal -> {
             icon?.let {
                 {
                     icon()
@@ -184,22 +189,22 @@ private fun ToastNormalPreview() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WantedToast(
-                    variant = WantedToastVariant.NORMAL,
+                    variant = WantedToastVariant.Normal,
                     text = "메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요."
                 )
 
                 WantedToast(
-                    variant = WantedToastVariant.NORMAL,
+                    variant = WantedToastVariant.Normal,
                     text = "메시지에 마침표를 찍어요."
                 )
 
                 WantedToast(
-                    variant = WantedToastVariant.SUCCESS,
+                    variant = WantedToastVariant.Positive,
                     text = "메시지에 마침표를 찍어요."
                 )
 
                 WantedToast(
-                    variant = WantedToastVariant.WARNING,
+                    variant = WantedToastVariant.Cautionary,
                     text = "메시지에 마침표를 찍어요."
                 )
 
