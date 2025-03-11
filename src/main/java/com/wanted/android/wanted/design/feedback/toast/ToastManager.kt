@@ -103,7 +103,7 @@ object ToastManager {
         text: String,
         duration: ToastDuration = ToastDuration.Short,
         padding: PaddingValues = PaddingValues(bottom = 20.dp),
-        variant: WantedToastVariant = WantedToastVariant.NORMAL,
+        variant: WantedToastVariant = WantedToastVariant.Normal,
         icon: @Composable (() -> Unit)? = null
     ) {
         showToast(duration) {
