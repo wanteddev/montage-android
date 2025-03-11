@@ -160,15 +160,15 @@ fun WantedSelect(
 
     WantedMultiSelectBottomSheet(
         modifier = Modifier,
-        isShow = selectValueList.isNotEmpty() && isShowBottomSheetDialog.value,
-        items = selectValueList,
+        isShow = selectDataList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectDataList,
         confirmText = confirmText,
         selectType = selectType,
-        selectedItemList = valueList,
+        selectedItemList = dataList,
         onSelect = { itemList ->
             isFocus.value = false
             isShowBottomSheetDialog.value = false
-            onSelect(itemList)
+            onSelectDataList(itemList)
         },
         onDismissRequest = {
             isShowBottomSheetDialog.value = false
@@ -296,15 +296,15 @@ fun WantedSelect(
 
     WantedSelectBottomSheet(
         modifier = Modifier,
-        isShow = selectValueList.isNotEmpty() && isShowBottomSheetDialog.value,
-        items = selectValueList,
+        isShow = selectDataList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectDataList,
         confirmText = confirmText,
         selectType = selectType,
         bottomSheetType = bottomSheetType,
-        selectedItem = selectedItem,
+        selectedItem = selectedData,
         onSelect = { item ->
             isFocus.value = false
-            onSelect(item)
+            onSelectData(item)
             isShowBottomSheetDialog.value = false
         },
         onDismissRequest = {
