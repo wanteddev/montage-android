@@ -55,7 +55,7 @@ fun WantedSelectWithString(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    valueList: List<String>,
+    selectedValueList: List<String>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negativeList: List<String> = emptyList(),
@@ -76,7 +76,7 @@ fun WantedSelectWithString(
         title = title,
         description = description,
         confirmText = confirmText,
-        dataList = valueList.map { WantedSelectData(text = it) },
+        selectedDataList = selectedValueList.map { WantedSelectData(text = it) },
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
         negativeDataList = negativeList.map { WantedSelectData(text = it) },
@@ -104,7 +104,7 @@ fun WantedSelect(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    dataList: List<WantedSelectData>,
+    selectedDataList: List<WantedSelectData>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negativeDataList: List<WantedSelectData> = emptyList(),
@@ -146,7 +146,7 @@ fun WantedSelect(
             contents = {
                 WantedMultiSelectContents(
                     modifier = Modifier.fillMaxWidth(),
-                    valueList = dataList,
+                    valueList = selectedDataList,
                     placeHolder = placeHolder,
                     errorList = negativeDataList,
                     overflow = overflow,
@@ -164,7 +164,7 @@ fun WantedSelect(
         items = selectDataList,
         confirmText = confirmText,
         selectType = selectType,
-        selectedItemList = dataList,
+        selectedItemList = selectedDataList,
         onSelect = { itemList ->
             isFocus.value = false
             isShowBottomSheetDialog.value = false
@@ -555,7 +555,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     title = "주제",
                     isRequiredBadge = true,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -567,7 +567,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     title = "주제",
                     isRequiredBadge = true,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -581,7 +581,7 @@ private fun WantedSelectPreview() {
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -596,7 +596,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
                     focused = true,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -611,7 +611,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
                     enabled = false,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
