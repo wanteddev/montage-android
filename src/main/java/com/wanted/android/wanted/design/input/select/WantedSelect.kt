@@ -190,6 +190,7 @@ fun WantedSelect(
     focused: Boolean = false,
     enabled: Boolean = true,
     selectValueList: List<String> = emptyList(),
+    selectedValue: String? = null,
     bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -202,7 +203,7 @@ fun WantedSelect(
         title = title,
         description = description,
         confirmText = confirmText,
-        data = WantedSelectData(text = value),
+        selectData = WantedSelectData(text = value),
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
         negative = negative,
@@ -210,6 +211,7 @@ fun WantedSelect(
         enabled = enabled,
         bottomSheetType = bottomSheetType,
         selectDataList = selectValueList.map { WantedSelectData(text = it) },
+        selectedData = selectedValue?.let { WantedSelectData(text = it) },
         selectType = selectType,
         background = background,
         onClick = onClick,
@@ -227,13 +229,14 @@ fun WantedSelect(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    data: WantedSelectData,
+    selectData: WantedSelectData?,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
     selectDataList: List<WantedSelectData> = emptyList(),
+    selectedData: WantedSelectData? = null,
     bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -264,7 +267,7 @@ fun WantedSelect(
         },
         leadingIcon = leadingIcon,
         contents = {
-            if (data.text.isEmpty()) {
+            if (selectData?.text.isNullOrEmpty()) {
                 WantedSelectPlaceHolder(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = placeHolder,
@@ -275,7 +278,7 @@ fun WantedSelect(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp),
-                    text = data.text,
+                    text = selectData?.text ?: "",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = WantedTextStyle(
