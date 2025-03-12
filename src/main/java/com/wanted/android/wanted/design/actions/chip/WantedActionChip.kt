@@ -177,7 +177,7 @@ fun WantedActionChip(
                         color = chipDefault.backgroundColor.copy(OPACITY_12)
                     )
                 },
-                enabled = chipDefault.isEnable
+                enabled = chipDefault.isEnable && onClick != null
             ) {
                 onClick?.invoke()
             },

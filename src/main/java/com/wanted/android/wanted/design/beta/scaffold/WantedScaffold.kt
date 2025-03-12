@@ -20,12 +20,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.feedback.snackbar.WantedSnackBarHost
+import com.wanted.android.wanted.design.feedback.snackbar.WantedSnackBarHostDefaults
 
 @Composable
 fun WantedScaffold(
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
+    snackbarWindowInsets: WindowInsets = WantedSnackBarHostDefaults.windowInsets,
     snackbarHost: @Composable (() -> Unit)? = null,
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
@@ -48,7 +50,8 @@ fun WantedScaffold(
                 snackbarHost()
             } else {
                 WantedSnackBarHost(
-                    hostState = snackbarHostState
+                    hostState = snackbarHostState,
+                    windowInsets = snackbarWindowInsets
                 )
             }
         },
