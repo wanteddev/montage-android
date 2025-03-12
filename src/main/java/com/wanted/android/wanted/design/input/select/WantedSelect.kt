@@ -55,7 +55,7 @@ fun WantedSelectWithString(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    valueList: List<String>,
+    selectedValueList: List<String>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negativeList: List<String> = emptyList(),
@@ -76,7 +76,7 @@ fun WantedSelectWithString(
         title = title,
         description = description,
         confirmText = confirmText,
-        dataList = valueList.map { WantedSelectData(text = it) },
+        selectedDataList = selectedValueList.map { WantedSelectData(text = it) },
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
         negativeDataList = negativeList.map { WantedSelectData(text = it) },
@@ -104,7 +104,7 @@ fun WantedSelect(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    dataList: List<WantedSelectData>,
+    selectedDataList: List<WantedSelectData>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negativeDataList: List<WantedSelectData> = emptyList(),
@@ -146,7 +146,7 @@ fun WantedSelect(
             contents = {
                 WantedMultiSelectContents(
                     modifier = Modifier.fillMaxWidth(),
-                    valueList = dataList,
+                    valueList = selectedDataList,
                     placeHolder = placeHolder,
                     errorList = negativeDataList,
                     overflow = overflow,
@@ -164,7 +164,7 @@ fun WantedSelect(
             items = selectDataList,
             confirmText = confirmText,
             selectType = selectType,
-            selectedItemList = dataList,
+            selectedItemList = selectedDataList,
             onSelect = { itemList ->
                 isFocus.value = false
                 isShowBottomSheetDialog.value = false
@@ -191,6 +191,7 @@ fun WantedSelect(
     focused: Boolean = false,
     enabled: Boolean = true,
     selectValueList: List<String> = emptyList(),
+    selectedValue: String? = null,
     bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -203,7 +204,7 @@ fun WantedSelect(
         title = title,
         description = description,
         confirmText = confirmText,
-        data = WantedSelectData(text = value),
+        selectData = WantedSelectData(text = value),
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
         negative = negative,
@@ -211,6 +212,7 @@ fun WantedSelect(
         enabled = enabled,
         bottomSheetType = bottomSheetType,
         selectDataList = selectValueList.map { WantedSelectData(text = it) },
+        selectedData = selectedValue?.let { WantedSelectData(text = it) },
         selectType = selectType,
         background = background,
         onClick = onClick,
@@ -228,13 +230,14 @@ fun WantedSelect(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    data: WantedSelectData,
+    selectData: WantedSelectData?,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
     selectDataList: List<WantedSelectData> = emptyList(),
+    selectedData: WantedSelectData? = null,
     bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -265,7 +268,7 @@ fun WantedSelect(
         },
         leadingIcon = leadingIcon,
         contents = {
-            if (data.text.isEmpty()) {
+            if (selectData?.text.isNullOrEmpty()) {
                 WantedSelectPlaceHolder(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = placeHolder,
@@ -276,7 +279,7 @@ fun WantedSelect(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp),
-                    text = data.text,
+                    text = selectData?.text ?: "",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = WantedTextStyle(
@@ -299,7 +302,7 @@ fun WantedSelect(
             confirmText = confirmText,
             selectType = selectType,
             bottomSheetType = bottomSheetType,
-            selectedItem = data,
+            selectedItem = selectedData,
             onSelect = { item ->
                 isFocus.value = false
                 onSelectData(item)
@@ -554,7 +557,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     title = "주제",
                     isRequiredBadge = true,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -566,7 +569,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     title = "주제",
                     isRequiredBadge = true,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -580,7 +583,7 @@ private fun WantedSelectPreview() {
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -595,7 +598,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
                     focused = true,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
@@ -610,7 +613,7 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
                     enabled = false,
-                    dataList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
