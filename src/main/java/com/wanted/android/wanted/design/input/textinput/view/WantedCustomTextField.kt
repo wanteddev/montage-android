@@ -38,12 +38,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedDropShadow
-import com.wanted.android.wanted.design.input.textinput.WantedTextInputRightVariant
+import com.wanted.android.wanted.design.input.textinput.WantedTextFieldContract.RightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
@@ -66,7 +66,7 @@ internal fun WantedCustomTextField(
     background: Color = colorResource(id = R.color.background_normal_normal),
     rightContent: @Composable ((size: Dp) -> Unit)? = null,
     rightButton: String? = null,
-    rightButtonVariant: WantedTextInputRightVariant,
+    rightButtonVariant: RightVariant,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
@@ -371,7 +371,7 @@ private fun DecorationBox(
 @Composable
 private fun WantedTextFieldButton(
     modifier: Modifier = Modifier,
-    rightButtonVariant: WantedTextInputRightVariant,
+    rightButtonVariant: RightVariant,
     title: String,
     enable: Boolean
 ) {
@@ -386,7 +386,7 @@ private fun WantedTextFieldButton(
         style = WantedTextStyle(
             colorRes = when {
                 !enable -> R.color.label_assistive
-                rightButtonVariant == WantedTextInputRightVariant.Assistive -> R.color.label_normal
+                rightButtonVariant == RightVariant.Assistive -> R.color.label_normal
                 else -> R.color.primary_normal
             },
             style = DesignSystemTheme.typography.body1Bold

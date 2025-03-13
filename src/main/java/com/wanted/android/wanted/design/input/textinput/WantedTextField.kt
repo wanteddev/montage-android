@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.ComponentTitle
+import com.wanted.android.wanted.design.input.textinput.WantedTextFieldContract.RightVariant
+import com.wanted.android.wanted.design.input.textinput.WantedTextFieldContract.Status
 import com.wanted.android.wanted.design.input.textinput.view.WantedCustomTextField
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -49,8 +51,8 @@ fun WantedTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     rightContent: @Composable ((Dp) -> Unit)? = null,
-    rightButtonVariant: WantedTextInputRightVariant = WantedTextInputRightVariant.Normal,
-    status: WantedTextInputContract.Status = WantedTextInputContract.Status.Normal,
+    rightButtonVariant: RightVariant = RightVariant.Normal,
+    status: Status = Status.Normal,
     enabled: Boolean = true,
     rightButtonEnabled: Boolean = true,
     maxLines: Int = 1,
@@ -94,11 +96,11 @@ fun WantedTextField(
             WantedCustomTextField(
                 modifier = Modifier,
                 value = textFieldValue,
-                error = status == WantedTextInputContract.Status.Negative,
+                error = status == Status.Negative,
                 enabled = enabled,
                 rightButtonEnabled = rightButtonEnabled,
                 focused = focused.value,
-                complete = status == WantedTextInputContract.Status.Positive,
+                complete = status == Status.Positive,
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
@@ -133,7 +135,7 @@ fun WantedTextField(
                     text = description,
                     style = WantedTextStyle(
                         colorRes = when {
-                            enabled && status == WantedTextInputContract.Status.Negative -> R.color.status_negative
+                            enabled && status == Status.Negative -> R.color.status_negative
                             else -> R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.caption1Regular
@@ -158,8 +160,8 @@ fun WantedTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     rightContent: @Composable ((Dp) -> Unit)? = null,
-    rightButtonVariant: WantedTextInputRightVariant = WantedTextInputRightVariant.Normal,
-    status: WantedTextInputContract.Status = WantedTextInputContract.Status.Normal,
+    rightButtonVariant: RightVariant = RightVariant.Normal,
+    status: Status = Status.Normal,
     enabled: Boolean = true,
     rightButtonEnabled: Boolean = true,
     maxLines: Int = 1,
@@ -191,11 +193,11 @@ fun WantedTextField(
             WantedCustomTextField(
                 modifier = Modifier,
                 value = value,
-                error = status == WantedTextInputContract.Status.Negative,
+                error = status == Status.Negative,
                 enabled = enabled,
                 rightButtonEnabled = rightButtonEnabled,
                 focused = focused.value,
-                complete = status == WantedTextInputContract.Status.Positive,
+                complete = status == Status.Positive,
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
@@ -220,7 +222,7 @@ fun WantedTextField(
                     text = description,
                     style = WantedTextStyle(
                         colorRes = when {
-                            enabled && status == WantedTextInputContract.Status.Negative -> R.color.status_negative
+                            enabled && status == Status.Negative -> R.color.status_negative
                             else -> R.color.label_alternative
                         },
                         style = DesignSystemTheme.typography.caption1Regular
@@ -231,11 +233,6 @@ fun WantedTextField(
             }
         }
     )
-}
-
-
-enum class WantedTextInputRightVariant {
-    Normal, Assistive
 }
 
 
@@ -270,7 +267,7 @@ private fun WantedTextFieldPreview() {
                     text = "",
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
-                    status = WantedTextInputContract.Status.Negative
+                    status = Status.Negative
                 )
 
                 WantedTextField(
@@ -278,7 +275,7 @@ private fun WantedTextFieldPreview() {
                     enabled = false,
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    status = WantedTextInputContract.Status.Negative
+                    status = Status.Negative
                 )
 
                 WantedTextField(
@@ -293,14 +290,14 @@ private fun WantedTextFieldPreview() {
                     text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    rightButtonVariant = WantedTextInputRightVariant.Assistive
+                    rightButtonVariant = RightVariant.Assistive
                 )
 
                 WantedTextField(
                     text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    rightButtonVariant = WantedTextInputRightVariant.Assistive,
+                    rightButtonVariant = RightVariant.Assistive,
                     rightButtonEnabled = false
                 )
 
@@ -315,7 +312,7 @@ private fun WantedTextFieldPreview() {
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    status = WantedTextInputContract.Status.Positive,
+                    status = Status.Positive,
                     focused = remember { mutableStateOf(false) }
                 )
 
@@ -323,7 +320,7 @@ private fun WantedTextFieldPreview() {
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    status = WantedTextInputContract.Status.Positive,
+                    status = Status.Positive,
                     focused = remember { mutableStateOf(true) }
                 )
 
@@ -331,7 +328,7 @@ private fun WantedTextFieldPreview() {
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    status = WantedTextInputContract.Status.Positive,
+                    status = Status.Positive,
                     focused = remember { mutableStateOf(false) }
                 )
 
@@ -339,7 +336,7 @@ private fun WantedTextFieldPreview() {
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    status = WantedTextInputContract.Status.Positive,
+                    status = Status.Positive,
                     focused = remember { mutableStateOf(true) }
                 )
             }
@@ -414,7 +411,7 @@ private fun WantedTextInputPreview() {
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    status = WantedTextInputContract.Status.Negative,
+                    status = Status.Negative,
                     description = "메시지에 마침표를 찍어요.",
                     focused = remember { mutableStateOf(true) }
                 )
@@ -450,7 +447,7 @@ private fun WantedTextInputPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     enabled = false,
-                    status = WantedTextInputContract.Status.Positive,
+                    status = Status.Positive,
                     description = "메시지에 마침표를 찍어요.",
                     focused = remember { mutableStateOf(false) }
                 )
@@ -460,7 +457,7 @@ private fun WantedTextInputPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     enabled = false,
-                    status = WantedTextInputContract.Status.Negative,
+                    status = Status.Negative,
                     description = "메시지에 마침표를 찍어요.",
                     focused = remember { mutableStateOf(true) }
                 )
