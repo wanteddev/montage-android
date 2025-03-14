@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.colorResource
@@ -127,8 +128,10 @@ fun WantedTextButton(
 ) {
     val textColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.contentColor) }
 
-    val rightIconTintColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.rightIconTintColor) }
-    val leftIconTintColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.leftIconTintColor) }
+    val rightIconTintColor =
+        remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.rightIconTintColor) }
+    val leftIconTintColor =
+        remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.leftIconTintColor) }
 
     WantedTouchArea(
         modifier = modifier,
@@ -160,25 +163,26 @@ fun WantedTextButton(
                         }
                     }
                 },
-                text = if (isLoading) {
-                    {
+                text =
+                {
+                    if (isLoading) {
                         WantedCircularProgressIndicator(
                             modifier = Modifier.size(buttonDefault.loadingSize),
                             color = buttonDefault.loadingColor
                         )
                     }
-                } else {
-                    {
-                        Text(
-                            text = text,
-                            modifier = Modifier.wrapContentHeight(),
-                            style = buttonDefault.textStyle,
-                            color = textColor.value,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                    Text(
+                        text = text,
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .alpha(if (isLoading) 0f else 1f),
+                        style = buttonDefault.textStyle,
+                        color = textColor.value,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center
+                    )
+
                 },
                 rightDrawable = rightDrawable?.let {
                     {
