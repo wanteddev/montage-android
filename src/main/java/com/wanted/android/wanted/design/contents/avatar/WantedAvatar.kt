@@ -1,13 +1,11 @@
 package com.wanted.android.wanted.design.contents.avatar
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -25,6 +23,8 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.BoarderType
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.base.getBoarderModifier
+import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgeSize
+import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
@@ -52,7 +52,7 @@ fun WantedAvatar(
                 modifier = modifier,
                 model = model,
                 placeHolder = placeHolder ?: R.drawable.ic_avatar_placeholder_person,
-                size = size.size,
+                size = size,
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
                 isGroup = isGroup,
@@ -96,11 +96,11 @@ fun WantedAvatar(
 }
 
 @Composable
-fun WantedAvatarPerson(
+internal fun WantedAvatarPerson(
     modifier: Modifier,
     model: Any?,
     @DrawableRes placeHolder: Int? = null,
-    size: Dp,
+    size: WantedAvatarSize,
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
     isIcon: Boolean = false,
@@ -111,19 +111,19 @@ fun WantedAvatarPerson(
     WantedAvatarLayout(
         modifier = modifier
             .getBoarderModifier(
-                size = size,
+                size = size.size,
                 isCircleShape = true,
                 boarderType = if (isGroup) BoarderType.OutLine else BoarderType.None,
                 boarderWidth = 2.dp,
                 boarderColor = boarderColor
             )
-            .size(size),
+            .size(size.size),
         content = {
             WantedAvatarContent(
                 modifier = Modifier
-                    .size(size)
+                    .size(size.size)
                     .getBoarderModifier(
-                        size = size,
+                        size = size.size,
                         isCircleShape = true,
                         boarderType = if (isIcon) BoarderType.InnerLine else BoarderType.None
                     ),
@@ -134,7 +134,15 @@ fun WantedAvatarPerson(
         },
         pushBadge = if (pushBadge) {
             {
-                AvatarPushBadge(size = size * 0.55f)
+                WantedPushBadge(
+                    size = when (size) {
+                        WantedAvatarSize.XSmall -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Small -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Medium -> PushBadgeSize.Small
+                        WantedAvatarSize.Large -> PushBadgeSize.Small
+                        WantedAvatarSize.XLarge -> PushBadgeSize.Medium
+                    }
+                )
             }
         } else null,
         onClick = onClick
@@ -183,7 +191,15 @@ private fun WantedAvatar(
         },
         pushBadge = if (pushBadge) {
             {
-                AvatarPushBadge(size = size.size * 0.55f)
+                WantedPushBadge(
+                    size = when (size) {
+                        WantedAvatarSize.XSmall -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Small -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Medium -> PushBadgeSize.Small
+                        WantedAvatarSize.Large -> PushBadgeSize.Small
+                        WantedAvatarSize.XLarge -> PushBadgeSize.Medium
+                    }
+                )
             }
         } else null,
         onClick = onClick
@@ -242,26 +258,6 @@ private fun WantedAvatarLayout(
     }
 }
 
-@Composable
-private fun AvatarPushBadge(
-    modifier: Modifier = Modifier,
-    size: Dp
-) {
-    Box(
-        modifier = modifier
-            .size(size)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset(size * 0.5f, -size * 0.5f)
-                .background(colorResource(id = R.color.primary_normal), shape = CircleShape)
-        )
-    }
-}
-
 
 sealed class WantedAvatarSize(
     open val size: Dp,
@@ -273,10 +269,6 @@ sealed class WantedAvatarSize(
     data object Medium : WantedAvatarSize(40.dp, 8.dp)
     data object Large : WantedAvatarSize(48.dp, 10.dp)
     data object XLarge : WantedAvatarSize(56.dp, 12.dp)
-    data class Custom(
-        override val size: Dp,
-        override val cornerRadius: Dp,
-    ) : WantedAvatarSize(size, cornerRadius)
 
     companion object {
         val entries: List<WantedAvatarSize> = listOf(XSmall, Small, Medium, Large, XLarge)
