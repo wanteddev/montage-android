@@ -7,12 +7,14 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -38,15 +40,16 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
+import com.wanted.android.wanted.design.navigations.tab.WantedTabContract.TabSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 @Composable
 fun WantedScrollableTabRow(
     modifier: Modifier,
-    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Medium,
+    tabSize: TabSize = TabSize.Medium,
     itemCount: Int,
     selectedTabIndex: Int,
     horizontalPadding: Boolean = false,
@@ -56,11 +59,12 @@ fun WantedScrollableTabRow(
     scrollState: ScrollState = rememberScrollState(),
     content: (index: Int) -> String,
     onClickItem: (index: Int) -> Unit = {},
-    rightIcon: @Composable (() -> Unit)? = null
+    rightIcon: @Composable ((Dp) -> Unit)? = null
 ) {
     CompositionLocalProvider(LocalTabGradationColor provides gradientColor) {
         WantedTabLayout(
             modifier = modifier,
+            tabSize = tabSize,
             isLeftGradient = isLeftGradient && scrollState.canScrollBackward,
             isRightGradient = isRightGradient && scrollState.canScrollForward,
             tab = {
@@ -83,7 +87,7 @@ fun WantedScrollableTabRow(
 @Composable
 private fun WantedScrollableFlexTabRow(
     modifier: Modifier = Modifier,
-    tabSize: WantedTabContract.TabSize,
+    tabSize: TabSize,
     itemCount: Int,
     selectedTabIndex: Int,
     horizontalPadding: Boolean,
@@ -148,10 +152,11 @@ private fun WantedScrollableFlexTabRow(
 @Composable
 private fun WantedTabLayout(
     modifier: Modifier = Modifier,
+    tabSize: TabSize,
     isLeftGradient: Boolean,
     isRightGradient: Boolean,
     tab: @Composable () -> Unit,
-    rightIcon: @Composable (() -> Unit)?
+    rightIcon: @Composable ((Dp) -> Unit)?
 ) {
     Box(
         modifier = modifier
@@ -230,11 +235,18 @@ private fun WantedTabLayout(
             }
 
             rightIcon?.let {
-                Box(
+                BoxWithConstraints(
                     modifier = Modifier
                         .padding(start = 12.dp, end = 8.dp)
+                        .size(
+                            when (tabSize) {
+                                TabSize.Small -> 20.dp
+                                TabSize.Medium -> 22.dp
+                                else -> 24.dp
+                            }
+                        )
                 ) {
-                    rightIcon()
+                    rightIcon(maxHeight)
                 }
             }
         }
@@ -299,7 +311,7 @@ private fun WantedScrollableTabRowPreview() {
 
                 WantedScrollableTabRow(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Small,
+                    tabSize = TabSize.Small,
                     selectedTabIndex = 1,
                     itemCount = itemList.size,
                     content = { index ->

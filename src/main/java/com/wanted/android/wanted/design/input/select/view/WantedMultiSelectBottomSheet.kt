@@ -128,7 +128,7 @@ fun WantedMultiSelectBottomSheet(
                         text = "",
                         buttonShape = ButtonShape.OUTLINED,
                         type = ButtonType.ASSISTIVE,
-                        leftDrawable = R.drawable.ic_normal_refresh_svg,
+                        leadingDrawable = R.drawable.ic_normal_refresh_svg,
                         onClick = {
                             selectItemList.value = selectedItemList
                         }

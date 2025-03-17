@@ -43,6 +43,7 @@ fun WantedCellImpl(
     isEnable: Boolean = true,
     isActive: Boolean = false,
     ellipsis: Boolean = true,
+    verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
     contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     titleStyle: TextStyle? = null,
@@ -53,7 +54,7 @@ fun WantedCellImpl(
     WantedCellLayout(
         modifier = modifier.fillMaxWidth(),
         contentHeight = contentHeight,
-        verticalAlignment = if (ellipsis) Alignment.CenterVertically else Alignment.Top,
+        verticalAlignment = if (verticalAlignCenter) Alignment.CenterVertically else Alignment.Top,
         text = {
             Text(
                 text = text,

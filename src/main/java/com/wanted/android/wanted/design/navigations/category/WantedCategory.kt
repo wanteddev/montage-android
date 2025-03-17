@@ -3,12 +3,15 @@ package com.wanted.android.wanted.design.navigations.category
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyListScope
@@ -24,16 +27,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.chip.WantedActionChip
 import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryContract.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 @Composable
@@ -47,7 +51,7 @@ fun WantedCategory(
     itemList: List<String>,
     selectedList: List<String>,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
-    rightIcon: @Composable (() -> Unit)? = null,
+    rightIcon: @Composable ((Dp) -> Unit)? = null,
     onClick: (item: String, isSelected: Boolean) -> Unit
 ) {
     WantedCategory(
@@ -97,12 +101,13 @@ fun WantedCategory(
     isVerticalPadding: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
     content: LazyListScope.() -> Unit,
-    rightIcon: @Composable (() -> Unit)? = null
+    rightIcon: @Composable ((Dp) -> Unit)? = null
 ) {
     CompositionLocalProvider(LocalCategoryGradationColor provides gradientColor) {
         WantedCategoryLayout(
             modifier = modifier
                 .fillMaxWidth(),
+            size = size,
             isLeftGradient = if (horizontalPadding) false else state.canScrollBackward,
             isRightGradient = when {
                 horizontalPadding && rightIcon != null -> state.canScrollForward
@@ -131,10 +136,11 @@ fun WantedCategory(
 @Composable
 private fun WantedCategoryLayout(
     modifier: Modifier = Modifier,
+    size: Size = Size.Medium,
     isLeftGradient: Boolean,
     isRightGradient: Boolean,
     content: @Composable () -> Unit,
-    rightIcon: @Composable (() -> Unit)?
+    rightIcon: @Composable ((Dp) -> Unit)?
 ) {
     Box(
         modifier = modifier
@@ -208,11 +214,18 @@ private fun WantedCategoryLayout(
             }
 
             rightIcon?.let {
-                Box(
+                BoxWithConstraints(
                     modifier = Modifier
                         .padding(start = 12.dp, end = 8.dp)
+                        .size(
+                            when (size) {
+                                Size.Small -> 20.dp
+                                Size.Medium -> 22.dp
+                                else -> 24.dp
+                            }
+                        )
                 ) {
-                    rightIcon()
+                    rightIcon(maxHeight)
                 }
             }
         }
