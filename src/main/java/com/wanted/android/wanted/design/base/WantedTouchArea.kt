@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
@@ -82,7 +82,7 @@ fun WantedTouchArea(
                     height = Dimension.fillToConstraints // Match height of text
                 }
                 .clip(shape)
-                .clickOnceForDesignSystem(
+                .clickOnce(
                     enabled = enabled,
                     indication = if (isUseRipple) {
                         ripple(

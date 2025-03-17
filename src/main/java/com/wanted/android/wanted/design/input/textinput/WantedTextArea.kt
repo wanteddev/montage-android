@@ -40,10 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedActionChip
-import com.wanted.android.wanted.design.base.ComponentTitle
+import com.wanted.android.wanted.design.input.ComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaCharacterCount
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaLayout
@@ -58,7 +58,7 @@ import java.text.BreakIterator
 @Composable
 fun WantedTextArea(
     modifier: Modifier = Modifier,
-    value: String,
+    text: String,
     placeholder: String = "",
     title: String = "",
     description: String? = null,
@@ -68,6 +68,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -78,8 +79,8 @@ fun WantedTextArea(
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
-    val textFieldValue = textFieldValueState.copy(text = value)
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
+    val textFieldValue = textFieldValueState.copy(text = text)
 
     SideEffect {
         if (textFieldValue.selection != textFieldValueState.selection ||
@@ -88,7 +89,7 @@ fun WantedTextArea(
             textFieldValueState = textFieldValue
         }
     }
-    var lastTextValue by remember(value) { mutableStateOf(value) }
+    var lastTextValue by remember(text) { mutableStateOf(text) }
 
     WantedTextInputLayout(
         modifier = modifier,
@@ -112,6 +113,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 isGraphemeClusterCount = isGraphemeClusterCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -165,6 +167,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -197,6 +200,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 isGraphemeClusterCount = isGraphemeClusterCount,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
@@ -230,7 +234,7 @@ fun WantedTextArea(
 @Composable
 fun WantedTextArea(
     modifier: Modifier = Modifier,
-    value: String,
+    text: String,
     placeholder: String = "",
     title: String = "",
     description: String? = null,
@@ -241,6 +245,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
@@ -249,8 +254,8 @@ fun WantedTextArea(
     background: Color = colorResource(id = R.color.background_normal_normal),
     onValueChange: (String) -> Unit = {}
 ) {
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
-    val textFieldValue = textFieldValueState.copy(text = value)
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
+    val textFieldValue = textFieldValueState.copy(text = text)
 
     SideEffect {
         if (textFieldValue.selection != textFieldValueState.selection ||
@@ -259,7 +264,7 @@ fun WantedTextArea(
             textFieldValueState = textFieldValue
         }
     }
-    var lastTextValue by remember(value) { mutableStateOf(value) }
+    var lastTextValue by remember(text) { mutableStateOf(text) }
 
     WantedTextInputLayout(
         modifier = modifier,
@@ -283,6 +288,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -337,6 +343,7 @@ fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
@@ -367,6 +374,7 @@ fun WantedTextArea(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -409,6 +417,7 @@ private fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -427,6 +436,7 @@ private fun WantedTextArea(
         maxLines = maxLines,
         minLines = minLines,
         maxWordCount = maxWordCount,
+        enabledOverflowText = enabledOverflowText,
         isGraphemeClusterCount = isGraphemeClusterCount,
         interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
@@ -480,6 +490,7 @@ private fun WantedTextArea(
     maxLines: Int = MAX_LINE,
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -568,6 +579,7 @@ private fun WantedTextArea(
                                 onValueChange(it)
                             }
 
+                            enabledOverflowText -> onValueChange(it)
                             it.text.length <= maxWordCount -> onValueChange(it)
                             it.text.length < value.text.length -> onValueChange(it)
                             it.text == value.text -> onValueChange(it)
@@ -650,7 +662,7 @@ private fun WantedTextAreaPreview() {
             ) {
                 WantedTextArea(
                     modifier = Modifier,
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                 )
 
@@ -659,7 +671,7 @@ private fun WantedTextAreaPreview() {
                     title = "주제",
                     negative = true,
                     requiredBadge = true,
-                    value = "입력한 텍스트.",
+                    text = "입력한 텍스트.",
                     isGraphemeClusterCount = true,
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
@@ -670,7 +682,7 @@ private fun WantedTextAreaPreview() {
                     title = "주제",
                     negative = true,
                     requiredBadge = true,
-                    value = "입력한 텍스트.",
+                    text = "입력한 텍스트.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     description = "에러가 나면 이렇게 메시지가 나와요"
@@ -678,25 +690,25 @@ private fun WantedTextAreaPreview() {
 
                 WantedTextArea(
                     modifier = Modifier,
-                    value = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
+                    text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
 
                 WantedTextArea(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
 
                 WantedTextArea(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트"
                 )
 
                 WantedTextArea(
-                    value = "",
+                    text = "",
                     placeholder = "텍스트를 입력해 주세요.",
                     minLines = 4,
                     rightContent = {
@@ -705,7 +717,7 @@ private fun WantedTextAreaPreview() {
                 )
 
                 WantedTextArea(
-                    value = "입력한 텍스트",
+                    text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     leftContent = {
                         WantedActionChip(text = "WantedActionChip")

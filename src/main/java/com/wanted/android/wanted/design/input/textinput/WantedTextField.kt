@@ -27,11 +27,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.base.ComponentTitle
+import com.wanted.android.wanted.design.input.ComponentTitle
 import com.wanted.android.wanted.design.input.textinput.view.WantedCustomTextField
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
@@ -56,6 +56,7 @@ fun WantedTextField(
     maxLines: Int = 1,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
@@ -101,6 +102,7 @@ fun WantedTextField(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -163,6 +165,7 @@ fun WantedTextField(
     maxLines: Int = 1,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
+    enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
@@ -196,6 +199,7 @@ fun WantedTextField(
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,

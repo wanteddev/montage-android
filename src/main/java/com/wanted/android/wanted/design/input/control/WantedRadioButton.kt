@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -21,9 +22,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 
 class WantedRadioButton : MaterialRadioButton {
@@ -45,6 +46,7 @@ fun WantedRadioButton(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),
     enabled: Boolean = true,
+    tight: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     size: CheckBoxSize = CheckBoxSize.Normal
 ) {
@@ -53,14 +55,21 @@ fun WantedRadioButton(
         modifier = modifier,
         enabled = enabled,
         shape = CircleShape,
-        horizontalPadding = 4.dp,
+        horizontalPadding = if (tight) 6.dp else 4.dp,
         verticalPadding = 4.dp,
         interactionSource = interactionSource,
         content = {
             Box(
                 modifier = Modifier
-                    .size(if (size == CheckBoxSize.Small) 20.dp else 24.dp)
-                    .padding(2.dp)
+                    .height(height = if (size == CheckBoxSize.Small) 20.dp else 24.dp)
+                    .width(
+                        width = when {
+                            tight -> if (size == CheckBoxSize.Small) 16.dp else 20.dp
+                            else -> if (size == CheckBoxSize.Small) 20.dp else 24.dp
+                        }
+                    )
+                    .padding(horizontal = if (tight) 0.dp else 2.dp)
+                    .padding(vertical = 2.dp)
                     .clip(CircleShape)
                     .border(
                         width = when {

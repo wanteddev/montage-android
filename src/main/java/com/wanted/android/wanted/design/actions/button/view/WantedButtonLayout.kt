@@ -7,15 +7,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
-import com.wanted.android.wanted.design.util.getButtonRadius
 import com.wanted.android.wanted.design.util.getButtonSpaceBetweenTextAndIcon
 
 @Composable
@@ -61,46 +58,6 @@ fun WantedButtonLayout(
     }
 }
 
-
-@Composable
-fun WantedTextButtonLayout(
-    modifier: Modifier,
-    buttonShape: ButtonShape = ButtonShape.SOLID,
-    buttonSize: ButtonSize = ButtonSize.LARGE,
-    text: @Composable (() -> Unit)? = null,
-    leftDrawable: @Composable (() -> Unit)? = null,
-    rightDrawable: @Composable (() -> Unit)? = null,
-) {
-    Row(
-        modifier = modifier
-            .clip(RoundedCornerShape(size = getButtonRadius(buttonShape, buttonSize))),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = getButtonSpaceBetweenTextAndIcon(
-                buttonShape,
-                buttonSize
-            ),
-            alignment = Alignment.CenterHorizontally
-        ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        leftDrawable?.let {
-            leftDrawable()
-        }
-
-        text?.let {
-            Box(
-                Modifier.wrapContentHeight(),
-                contentAlignment = Alignment.Center
-            ) {
-                text()
-            }
-        }
-
-        rightDrawable?.let {
-            rightDrawable()
-        }
-    }
-}
 
 @Composable
 private fun Modifier.buttonHeight(

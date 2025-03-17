@@ -20,7 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionContract.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_8
@@ -31,6 +31,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedAccordion(
     modifier: Modifier = Modifier,
     title: String,
+    titleMaxLine: Int = Int.MAX_VALUE,
     description: String? = null,
     titleStyle: TextStyle = WantedTextStyle(
         colorRes = R.color.label_normal,
@@ -46,6 +47,7 @@ fun WantedAccordion(
     verticalPadding: VerticalPadding = VerticalPadding.Padding12,
     content: @Composable (() -> Unit)? = null,
     onChangeExpanded: (Boolean) -> Unit,
+    leadingIcon: (@Composable () -> Unit)? = null,
     trail: @Composable () -> Unit = {
         WantedAccordionTrailArrowIcon(
             isExpanded = isExpanded,
@@ -64,9 +66,11 @@ fun WantedAccordion(
                     .fillMaxWidth(),
                 verticalPadding = verticalPadding,
                 title = title,
+                maxLine = titleMaxLine,
                 style = titleStyle,
                 fillWidth = fillWidth,
-                trail = trail,
+                leadingIcon = leadingIcon,
+                trailIcon = trail,
                 onClick = {
                     onChangeExpanded(!isExpanded)
                 }
@@ -98,7 +102,7 @@ fun WantedAccordion(
 }
 
 @Composable
-fun AccordionLayout(
+private fun AccordionLayout(
     modifier: Modifier = Modifier,
     divider: Boolean,
     isExpanded: Boolean,

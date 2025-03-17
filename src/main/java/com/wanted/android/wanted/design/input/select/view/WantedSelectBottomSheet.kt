@@ -32,6 +32,7 @@ import com.wanted.android.wanted.design.util.ButtonType
 @Composable
 fun WantedSelectBottomSheet(
     modifier: Modifier = Modifier,
+    isShow: Boolean,
     items: List<WantedSelectData>,
     confirmText: String,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
@@ -44,6 +45,7 @@ fun WantedSelectBottomSheet(
 
     WantedModalBottomSheet(
         modifier = modifier,
+        isShow = isShow,
         type = bottomSheetType,
         content = {
             LazyColumn(
@@ -59,7 +61,7 @@ fun WantedSelectBottomSheet(
                         isActive = selectItem.value == item,
                         rightContent = when {
                             selectItem.value == item
-                                    && selectType == WantedSelectContract.SelectType.CheckMark -> {
+                                && selectType == WantedSelectContract.SelectType.CheckMark -> {
                                 {
                                     WantedCheckMark(
                                         modifier = Modifier,
@@ -74,7 +76,7 @@ fun WantedSelectBottomSheet(
                         },
                         leftContent = when {
                             selectItem.value == item
-                                    && selectType == WantedSelectContract.SelectType.CheckBox -> {
+                                && selectType == WantedSelectContract.SelectType.CheckBox -> {
                                 {
                                     WantedCheckBox(
                                         modifier = Modifier,
@@ -86,7 +88,7 @@ fun WantedSelectBottomSheet(
                             }
 
                             selectItem.value == item
-                                    && selectType == WantedSelectContract.SelectType.Radio -> {
+                                && selectType == WantedSelectContract.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
                                         modifier = Modifier,

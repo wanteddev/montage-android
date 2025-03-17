@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.textinput.WantedTextInputRightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -59,6 +59,7 @@ internal fun WantedCustomTextField(
     maxLines: Int,
     minLines: Int,
     maxWordCount: Int,
+    enabledOverflowText: Boolean,
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
@@ -169,6 +170,7 @@ internal fun WantedCustomTextField(
                     ),
                     onValueChange = {
                         when {
+                            enabledOverflowText -> onValueChange(it)
                             it.text.length <= maxWordCount -> onValueChange(it)
                             it.text.length < value.text.length -> onValueChange(it)
                             else -> onValueChange(value)
@@ -221,7 +223,7 @@ internal fun WantedCustomTextField(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .clip(CircleShape)
-                                                .clickOnceForDesignSystem {
+                                                .clickOnce {
                                                     onValueChange(value.copy(""))
                                                 },
                                             painter = painterResource(R.drawable.ic_normal_circle_close_fill_svg),
@@ -245,7 +247,7 @@ internal fun WantedCustomTextField(
                     Row(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .clickOnceForDesignSystem(
+                            .clickOnce(
                                 isEnableRightButton(
                                     rightButtonEnabled,
                                     enabled
