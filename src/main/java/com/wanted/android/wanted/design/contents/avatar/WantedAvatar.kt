@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +23,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.BoarderType
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.base.getBoarderModifier
+import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgeSize
 import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -43,7 +43,7 @@ fun WantedAvatar(
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
     boarderColor: Color = colorResource(id = R.color.background_normal_normal),
-    pushBadge: @Composable (() -> Unit)? = null,
+    pushBadge: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     when (type) {
@@ -52,7 +52,7 @@ fun WantedAvatar(
                 modifier = modifier,
                 model = model,
                 placeHolder = placeHolder ?: R.drawable.ic_avatar_placeholder_person,
-                size = size.size,
+                size = size,
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
                 isGroup = isGroup,
@@ -96,34 +96,34 @@ fun WantedAvatar(
 }
 
 @Composable
-fun WantedAvatarPerson(
+internal fun WantedAvatarPerson(
     modifier: Modifier,
     model: Any?,
     @DrawableRes placeHolder: Int? = null,
-    size: Dp,
+    size: WantedAvatarSize,
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
     isIcon: Boolean = false,
     boarderColor: Color = colorResource(id = R.color.background_normal_normal),
-    pushBadge: @Composable (() -> Unit)? = null,
+    pushBadge: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     WantedAvatarLayout(
         modifier = modifier
             .getBoarderModifier(
-                size = size,
+                size = size.size,
                 isCircleShape = true,
                 boarderType = if (isGroup) BoarderType.OutLine else BoarderType.None,
                 boarderWidth = 2.dp,
                 boarderColor = boarderColor
             )
-            .size(size),
+            .size(size.size),
         content = {
             WantedAvatarContent(
                 modifier = Modifier
-                    .size(size)
+                    .size(size.size)
                     .getBoarderModifier(
-                        size = size,
+                        size = size.size,
                         isCircleShape = true,
                         boarderType = if (isIcon) BoarderType.InnerLine else BoarderType.None
                     ),
@@ -132,7 +132,19 @@ fun WantedAvatarPerson(
                 isDrawableRes = isDrawableRes
             )
         },
-        pushBadge = pushBadge,
+        pushBadge = if (pushBadge) {
+            {
+                WantedPushBadge(
+                    size = when (size) {
+                        WantedAvatarSize.XSmall -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Small -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Medium -> PushBadgeSize.Small
+                        WantedAvatarSize.Large -> PushBadgeSize.Small
+                        WantedAvatarSize.XLarge -> PushBadgeSize.Medium
+                    }
+                )
+            }
+        } else null,
         onClick = onClick
     )
 }
@@ -147,7 +159,7 @@ private fun WantedAvatar(
     isIcon: Boolean = false,
     isGroup: Boolean = false,
     boarderColor: Color = colorResource(id = R.color.background_normal_normal),
-    pushBadge: @Composable (() -> Unit)? = null,
+    pushBadge: Boolean,
     onClick: (() -> Unit)? = null
 ) {
     WantedAvatarLayout(
@@ -161,7 +173,7 @@ private fun WantedAvatar(
                 boarderWidth = 2.dp,
                 boarderColor = boarderColor
             ),
-        interactionShape = RoundedCornerShape(size.interactionRadius),
+        interactionShape = RoundedCornerShape(size.size / 4),
         content = {
             WantedAvatarContent(
                 modifier = Modifier
@@ -177,7 +189,19 @@ private fun WantedAvatar(
                 isDrawableRes = isDrawableRes
             )
         },
-        pushBadge = pushBadge,
+        pushBadge = if (pushBadge) {
+            {
+                WantedPushBadge(
+                    size = when (size) {
+                        WantedAvatarSize.XSmall -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Small -> PushBadgeSize.XSmall
+                        WantedAvatarSize.Medium -> PushBadgeSize.Small
+                        WantedAvatarSize.Large -> PushBadgeSize.Small
+                        WantedAvatarSize.XLarge -> PushBadgeSize.Medium
+                    }
+                )
+            }
+        } else null,
         onClick = onClick
     )
 }
@@ -206,11 +230,7 @@ private fun WantedAvatarLayout(
                 }
 
                 pushBadge?.let {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .offset(10.dp, (-10).dp)
-                    ) {
+                    Box(modifier = Modifier.align(Alignment.TopEnd)) {
                         pushBadge()
                     }
                 }
@@ -230,7 +250,6 @@ private fun WantedAvatarLayout(
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .offset(10.dp, (-10).dp)
                 ) {
                     pushBadge()
                 }
@@ -242,20 +261,14 @@ private fun WantedAvatarLayout(
 
 sealed class WantedAvatarSize(
     open val size: Dp,
-    open val cornerRadius: Dp,
-    open val interactionRadius: Dp
+    open val cornerRadius: Dp
 ) {
 
-    data object XSmall : WantedAvatarSize(24.dp, 6.dp, 12.dp)
-    data object Small : WantedAvatarSize(32.dp, 6.dp, 12.dp)
-    data object Medium : WantedAvatarSize(40.dp, 8.dp, 14.dp)
-    data object Large : WantedAvatarSize(48.dp, 10.dp, 16.dp)
-    data object XLarge : WantedAvatarSize(56.dp, 12.dp, 20.dp)
-    data class Custom(
-        override val size: Dp,
-        override val cornerRadius: Dp,
-        override val interactionRadius: Dp
-    ) : WantedAvatarSize(size, cornerRadius, interactionRadius)
+    data object XSmall : WantedAvatarSize(24.dp, 6.dp)
+    data object Small : WantedAvatarSize(32.dp, 6.dp)
+    data object Medium : WantedAvatarSize(40.dp, 8.dp)
+    data object Large : WantedAvatarSize(48.dp, 10.dp)
+    data object XLarge : WantedAvatarSize(56.dp, 12.dp)
 
     companion object {
         val entries: List<WantedAvatarSize> = listOf(XSmall, Small, Medium, Large, XLarge)
@@ -287,9 +300,7 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
-                    pushBadge = {
-                        WantedPushBadge()
-                    },
+                    pushBadge = true,
                     onClick = {}
                 )
                 WantedAvatar(
@@ -318,9 +329,7 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.Medium,
                     type = WantedAvatarType.Company,
                     isDrawableRes = true,
-                    pushBadge = {
-                        WantedPushBadge()
-                    },
+                    pushBadge = true,
                     onClick = {}
                 )
 
@@ -348,9 +357,7 @@ private fun WantedAvatarPreview() {
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
                     isIcon = true,
-                    pushBadge = {
-                        WantedPushBadge()
-                    },
+                    pushBadge = true,
                     onClick = {}
                 )
             }
