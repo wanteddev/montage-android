@@ -167,11 +167,10 @@ private fun PushBadgeImpl(
             }
             .background(background, shape = CircleShape)
             .padding(
-                vertical = when (size) {
+                when (size) {
                     PushBadgeSize.XSmall -> 1.dp
                     PushBadgeSize.Small -> 3.dp
                     PushBadgeSize.Medium -> 2.dp
-
                 }
             )
             .onGloballyPositioned { coordinates ->
