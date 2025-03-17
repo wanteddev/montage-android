@@ -29,9 +29,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
@@ -217,7 +217,11 @@ private fun WantedActionAreaLayout(
 ) {
     val isShowGradient = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = scrollableState?.canScrollForward) {
-        isShowGradient.value = scrollableState?.canScrollForward == true
+        scrollableState?.canScrollForward?.let {
+            isShowGradient.value = scrollableState.canScrollForward == true
+        } ?:run {
+            isShowGradient.value = true
+        }
     }
 
     Column(
