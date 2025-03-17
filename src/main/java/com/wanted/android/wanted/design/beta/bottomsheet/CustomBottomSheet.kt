@@ -50,12 +50,12 @@ import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedSolidButton
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemBottomSheetTheme
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -135,7 +135,7 @@ private fun CustomBottomSheetImpl(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickOnceForDesignSystem(
+                        .clickOnce(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) { onDismissRequest() },
@@ -226,7 +226,7 @@ fun CustomBottomSheet(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Transparent)
-                        .clickOnceForDesignSystem(
+                        .clickOnce(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) { onDismissRequest() },
@@ -318,7 +318,7 @@ private fun CustomDialogContentImpl(
                     .padding(2.dp)
                     .size(56.dp)
                     .clip(CircleShape)
-                    .clickOnceForDesignSystem { onDismissRequest() }
+                    .clickOnce { onDismissRequest() }
                     .padding(18.dp),
                 painter = painterResource(id = R.drawable.ic_normal_close_svg),
                 contentDescription = "close button",
@@ -356,7 +356,7 @@ private fun CustomDialogContentImpl(
                     .fillMaxWidth(),
                 text = confirm,
                 enabled = isEnableConfirm,
-                clickListener = {
+                onClick = {
                     onClickConfirm?.invoke()
                 }
             )

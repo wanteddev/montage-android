@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.TopAppBarType
 
 @Composable
@@ -47,7 +47,7 @@ fun WantedTopAppBarIconButton(
                     .background(colorResource(id = R.color.cool_neutral_30).copy(alpha = 0.18f)),
                 enabled = enabled,
                 interactionSource = interactionSource,
-                onClick = { onClick.clickOnceForDesignSystem() }
+                onClick = { onClick.clickOnce() }
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
@@ -68,7 +68,7 @@ fun WantedTopAppBarIconButton(
                     .background(colorResource(id = R.color.static_white).copy(alpha = 0.35f)),
                 enabled = enabled,
                 interactionSource = interactionSource,
-                onClick = { onClick.clickOnceForDesignSystem() }
+                onClick = { onClick.clickOnce() }
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
@@ -85,7 +85,7 @@ fun WantedTopAppBarIconButton(
                     .size(40.dp),
                 enabled = enabled,
                 interactionSource = interactionSource,
-                onClick = { onClick.clickOnceForDesignSystem() }
+                onClick = { onClick.clickOnce() }
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),

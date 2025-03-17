@@ -31,7 +31,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.BoarderType
 import com.wanted.android.wanted.design.base.getBoarderModifier
 import com.wanted.android.wanted.design.navigations.pagination.WantedPaginationContract.IndicatorDotSize

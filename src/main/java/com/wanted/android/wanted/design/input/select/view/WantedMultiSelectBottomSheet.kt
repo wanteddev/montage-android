@@ -31,6 +31,7 @@ import com.wanted.android.wanted.design.util.ButtonType
 @Composable
 fun WantedMultiSelectBottomSheet(
     modifier: Modifier = Modifier,
+    isShow: Boolean,
     items: List<WantedSelectData>,
     confirmText: String,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
@@ -44,6 +45,7 @@ fun WantedMultiSelectBottomSheet(
     WantedModalBottomSheet(
         modifier = modifier,
         type = dialogType,
+        isShow = isShow,
         content = {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -57,7 +59,7 @@ fun WantedMultiSelectBottomSheet(
                         text = item.text,
                         rightContent = when {
                             selectItemList.value.contains(item)
-                                    && selectType == WantedSelectContract.SelectType.CheckMark -> {
+                                && selectType == WantedSelectContract.SelectType.CheckMark -> {
                                 {
                                     WantedCheckMark(
                                         modifier = Modifier,
@@ -87,7 +89,7 @@ fun WantedMultiSelectBottomSheet(
                             }
 
                             selectItemList.value.contains(item)
-                                    && selectType == WantedSelectContract.SelectType.Radio -> {
+                                && selectType == WantedSelectContract.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
                                         modifier = Modifier,

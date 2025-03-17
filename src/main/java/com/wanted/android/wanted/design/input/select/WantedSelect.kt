@@ -29,10 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
-import com.wanted.android.wanted.design.base.ComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
+import com.wanted.android.wanted.design.input.ComponentTitle
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectBottomSheet
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.input.select.view.WantedSelectBottomSheet
@@ -41,8 +39,10 @@ import com.wanted.android.wanted.design.input.select.view.WantedSelectLayout
 import com.wanted.android.wanted.design.input.select.view.WantedSelectPlaceHolder
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
@@ -158,24 +158,23 @@ fun WantedSelect(
         )
     }
 
-    if (selectDataList.isNotEmpty() && isShowBottomSheetDialog.value) {
-        WantedMultiSelectBottomSheet(
-            modifier = Modifier,
-            items = selectDataList,
-            confirmText = confirmText,
-            selectType = selectType,
-            selectedItemList = selectedDataList,
-            onSelect = { itemList ->
-                isFocus.value = false
-                isShowBottomSheetDialog.value = false
-                onSelectDataList(itemList)
-            },
-            onDismissRequest = {
-                isShowBottomSheetDialog.value = false
-                isFocus.value = false
-            }
-        )
-    }
+    WantedMultiSelectBottomSheet(
+        modifier = Modifier,
+        isShow = selectDataList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectDataList,
+        confirmText = confirmText,
+        selectType = selectType,
+        selectedItemList = selectedDataList,
+        onSelect = { itemList ->
+            isFocus.value = false
+            isShowBottomSheetDialog.value = false
+            onSelectDataList(itemList)
+        },
+        onDismissRequest = {
+            isShowBottomSheetDialog.value = false
+            isFocus.value = false
+        }
+    )
 }
 
 @Composable
@@ -295,25 +294,24 @@ fun WantedSelect(
         }
     )
 
-    if (selectDataList.isNotEmpty() && isShowBottomSheetDialog.value) {
-        WantedSelectBottomSheet(
-            modifier = Modifier,
-            items = selectDataList,
-            confirmText = confirmText,
-            selectType = selectType,
-            bottomSheetType = bottomSheetType,
-            selectedItem = selectedData,
-            onSelect = { item ->
-                isFocus.value = false
-                onSelectData(item)
-                isShowBottomSheetDialog.value = false
-            },
-            onDismissRequest = {
-                isFocus.value = false
-                isShowBottomSheetDialog.value = false
-            }
-        )
-    }
+    WantedSelectBottomSheet(
+        modifier = Modifier,
+        isShow = selectDataList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectDataList,
+        confirmText = confirmText,
+        selectType = selectType,
+        bottomSheetType = bottomSheetType,
+        selectedItem = selectedData,
+        onSelect = { item ->
+            isFocus.value = false
+            onSelectData(item)
+            isShowBottomSheetDialog.value = false
+        },
+        onDismissRequest = {
+            isFocus.value = false
+            isShowBottomSheetDialog.value = false
+        }
+    )
 }
 
 
@@ -397,7 +395,7 @@ private fun WantedSelectImpl(
                                 colorResource(R.color.interaction_disable)
                             }
                         )
-                        .clickOnceForDesignSystem(
+                        .clickOnce(
                             enabled = enabled,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = getSelectRippleEffect(

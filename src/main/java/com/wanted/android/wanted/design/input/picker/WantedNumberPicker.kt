@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -71,7 +71,7 @@ fun WantedNumberPicker(
         style = DesignSystemTheme.typography.heading1Medium
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
-    visibleCount: Int = 7,
+    visibleCount: Int = 5,
     userScrollEnabled: Boolean = true,
     onSelect: (index: Int, value: Int, enabled: Boolean) -> Unit = { _, _, _ -> }
 ) {
@@ -128,7 +128,7 @@ fun WantedNumberPicker(
         style = DesignSystemTheme.typography.heading1Medium
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
-    visibleCount: Int = 7,
+    visibleCount: Int = 5,
     onSelect: (index: Int, enabled: Boolean) -> Unit = { _, _ -> }
 ) {
     WantedStringPicker(
@@ -163,7 +163,7 @@ fun WantedStringPicker(
         style = DesignSystemTheme.typography.heading1Medium
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
-    visibleCount: Int = 7,
+    visibleCount: Int = 5,
     userScrollEnabled: Boolean = true,
     onSelect: (index: Int, enabled: Boolean) -> Unit = { _, _ -> }
 ) {
@@ -192,7 +192,7 @@ fun WantedStringPicker(
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .height(itemSize * (visibleCount)),
+            .height(itemSize * (visibleCount + 2)),
         contentAlignment = Alignment.CenterStart
     ) {
         VerticalPager(
@@ -213,7 +213,7 @@ fun WantedStringPicker(
                     modifier = Modifier.height(height = itemSize),
                     pagerState = pagerState,
                     page = page,
-                    visibleCount = visibleCount,
+                    visibleCount = visibleCount + 2,
                     title = itemList.get(index = page),
                     enabled = if (userScrollEnabled) page in enableStartIndex..enableEndIndex else false
                 )
@@ -224,7 +224,7 @@ fun WantedStringPicker(
 }
 
 @Composable
-fun PickerContent(
+private fun PickerContent(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
     page: Int,
@@ -266,7 +266,9 @@ fun PickerContent(
                 } else {
                     (GAP / halfVisibleCount * (pageOffset * pageOffset)).dp
                 }
-                Log.d("_SMY", "graphicsLayer $page $title $offsetY $pageOffset")
+                if (visibleCount == 7) {
+                    Log.d("_SMY", "graphicsLayer 1 $GAP $page $halfVisibleCount $pageOffset $offsetY $rotation")
+                }
             },
         text = title,
         textAlign = TextAlign.Center,

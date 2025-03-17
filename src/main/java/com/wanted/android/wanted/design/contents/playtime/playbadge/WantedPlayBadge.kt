@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.contents.playtime.playiconbadge
+package com.wanted.android.wanted.design.contents.playtime.playbadge
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,15 +19,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.contents.playtime.playiconbadge.WantedPlayIconBadgeContract.Size
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.contents.playtime.playbadge.WantedPlayBadgeContract.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_28
 import com.wanted.android.wanted.design.util.OPACITY_61
 
 
 @Composable
-fun WantedPlayIconBadge(
+fun WantedPlayBadge(
     modifier: Modifier,
     size: Size = Size.Medium,
     isAlternative: Boolean = false
@@ -75,22 +75,22 @@ private fun WantedPlayTimePreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedPlayIconBadge(
+                WantedPlayBadge(
                     modifier = Modifier,
                     size = Size.Small
                 )
 
-                WantedPlayIconBadge(
+                WantedPlayBadge(
                     modifier = Modifier,
                     size = Size.Medium
                 )
 
-                WantedPlayIconBadge(
+                WantedPlayBadge(
                     modifier = Modifier,
                     size = Size.Large
                 )
 
-                WantedPlayIconBadge(
+                WantedPlayBadge(
                     modifier = Modifier,
                     isAlternative = true
                 )

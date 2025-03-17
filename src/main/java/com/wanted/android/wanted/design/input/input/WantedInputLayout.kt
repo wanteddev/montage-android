@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -16,23 +16,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wanted.android.wanted.design.DevicePreviews
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 @Composable
 internal fun WantedInputLayout(
     modifier: Modifier,
     size: WantedInputSize,
+    tight: Boolean,
     leadingIcon: @Composable (() -> Unit)? = null,
     text: @Composable () -> Unit
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(if (tight) 10.dp else 8.dp)
     ) {
         leadingIcon?.let {
             Box(
@@ -49,7 +50,13 @@ internal fun WantedInputLayout(
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .size(if (size == WantedInputSize.Normal) 24.dp else 20.dp),
+                        .width(
+                            when (tight) {
+                                true -> if (size == WantedInputSize.Normal) 20.dp else 16.dp
+                                else -> if (size == WantedInputSize.Normal) 24.dp else 20.dp
+                            }
+                        )
+                        .height(if (size == WantedInputSize.Normal) 24.dp else 20.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     leadingIcon()
@@ -78,6 +85,7 @@ private fun WantedInputLayoutPreview() {
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
+                    tight = false,
                     text = {
                         Text(
                             text = "텍스트\n텍스트"
@@ -91,6 +99,7 @@ private fun WantedInputLayoutPreview() {
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
+                    tight = false,
                     text = {
                         Text(text = "텍스트\n텍스트")
                     }

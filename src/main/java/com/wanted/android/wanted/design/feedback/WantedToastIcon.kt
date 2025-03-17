@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.base
+package com.wanted.android.wanted.design.feedback
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -21,9 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
 internal fun WantedToastIcon(
@@ -82,7 +82,7 @@ private fun WantedCommonIconPreview() {
                     modifier = Modifier
                         .size(22.dp)
                         .clip(CircleShape)
-                        .clickOnceForDesignSystem { },
+                        .clickOnce { },
                     resourceId = R.drawable.ic_normal_circle_close_fill_svg,
                     tint = colorResource(id = R.color.label_alternative)
                 )

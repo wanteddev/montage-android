@@ -41,8 +41,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_28
@@ -125,7 +125,7 @@ fun WantedSegmentedControlSolid(
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .clickOnceForDesignSystem(
+                            .clickOnce(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
                             ) {
