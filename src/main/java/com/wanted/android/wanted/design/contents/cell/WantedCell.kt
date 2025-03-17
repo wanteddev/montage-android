@@ -15,10 +15,10 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.toAnnotatedString
 
 /**
@@ -41,6 +41,7 @@ fun WantedCell(
     isEnable: Boolean = true,
     isActive: Boolean = false,
     ellipsis: Boolean = true,
+    verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
     contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     leftContent: (@Composable () -> Unit)? = null,
@@ -59,6 +60,7 @@ fun WantedCell(
         isEnable = isEnable,
         isActive = isActive,
         ellipsis = ellipsis,
+        verticalAlignCenter = verticalAlignCenter,
         chevrons = chevrons,
         contentHeight = contentHeight,
         leftContent = leftContent,
@@ -80,6 +82,7 @@ fun WantedCell(
     isEnable: Boolean = true,
     isActive: Boolean = false,
     ellipsis: Boolean = true,
+    verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
     contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     textMaxLine: Int = 1,
@@ -107,6 +110,7 @@ fun WantedCell(
                     isEnable = isEnable,
                     isActive = isActive,
                     ellipsis = ellipsis,
+                    verticalAlignCenter = verticalAlignCenter,
                     contentHeight = contentHeight,
                     chevrons = chevrons,
                     titleStyle = titleStyle,
