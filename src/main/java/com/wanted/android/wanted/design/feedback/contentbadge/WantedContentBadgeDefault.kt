@@ -17,7 +17,7 @@ data class WantedContentBadgeDefault(
 object WantedContentBadgeDefaults {
     @Composable
     fun getAccentDefault(
-        contentColor: Color = colorResource(id = R.color.accent_cyan),
+        contentColor: Color = colorResource(id = R.color.accent_background_cyan),
         backgroundColor: Color = contentColor.copy(OPACITY_8),
         outLineColor: Color = contentColor
     ) = WantedContentBadgeDefault(

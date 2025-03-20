@@ -43,16 +43,28 @@
     <color name="status_cautionary">@color/orange_50</color>
     <color name="status_negative">@color/red_50</color>
 
-    <!-- Accent -->
-    <color name="accent_lime">@color/lime_50</color>
-    <color name="accent_cyan">@color/cyan_50</color>
-    <color name="accent_lightblue">@color/lightblue_50</color>
-    <color name="accent_lightblue_temp">#00AEFF</color>
-    <color name="accent_violet">@color/violet_50</color>
-    <color name="accent_violet_temp">#6541F2</color>
-    <color name="accent_purple">@color/purple_50</color>
-    <color name="accent_pink">@color/pink_50</color>
-    <color name="accent_redorange">@color/redorange_50</color>
+    <!-- Accent Background -->
+    <color name="accent_background_lime">@color/lime_50</color>
+    <color name="accent_background_cyan">@color/cyan_50</color>
+    <color name="accent_background_lightblue">@color/lightblue_50</color>
+    <color name="accent_background_violet">@color/violet_50</color>
+    <color name="accent_background_purple">@color/purple_50</color>
+    <color name="accent_background_pink">@color/pink_50</color>
+    <color name="accent_background_redorange">@color/redorange_50</color>
+
+    <!-- Accent Foreground -->
+    <color name="accent_foreground_red">@color/red_40</color>
+    <color name="accent_foreground_redorange">@color/redorange_48</color>
+    <color name="accent_foreground_orange">@color/orange_39</color>
+    <color name="accent_foreground_lime">@color/lime_37</color>
+    <color name="accent_foreground_green">@color/green_40</color>
+    <color name="accent_foreground_cyan">@color/cyan_40</color>
+    <color name="accent_foreground_lightblue">@color/lightblue_40</color>
+    <color name="accent_foreground_blue">@color/blue_45</color>
+    <color name="accent_foreground_violet">@color/violet_45</color>
+    <color name="accent_foreground_purple">@color/purple_40</color>
+    <color name="accent_foreground_pink">@color/pink_46</color>
+
 
     <!-- Inverse -->
     <color name="inverse_primary">@color/blue_60</color>
