@@ -68,12 +68,11 @@ fun WantedAutoCompleteTextField(
     bottomDirectInput: @Composable (() -> Unit)? = null,
     onExpandedChange: (Boolean) -> Unit
 ) {
-
     ExposedDropdownMenuBox(
         modifier = modifier,
         expanded = expended,
         onExpandedChange = {
-            onExpandedChange(it)
+            onExpandedChange(it && text.isNotEmpty())
         }
     ) {
         BoxWithConstraints(
@@ -83,7 +82,7 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .padding(vertical = anchorPadding)
                     .fillMaxWidth()
-                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = text.isNotEmpty()),
+                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
                 title = title,
                 text = text,
                 description = description,
@@ -175,7 +174,7 @@ fun WantedAutoCompleteTextField(
         modifier = modifier,
         expanded = expended,
         onExpandedChange = {
-            onExpandedChange(it)
+            onExpandedChange(it && value.text.isNotEmpty())
         }
     ) {
         BoxWithConstraints(
@@ -185,10 +184,7 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .padding(vertical = anchorPadding)
                     .fillMaxWidth()
-                    .menuAnchor(
-                        type = MenuAnchorType.PrimaryEditable,
-                        enabled = value.text.isNotEmpty()
-                    ),
+                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
                 title = title,
                 value = value,
                 description = description,
