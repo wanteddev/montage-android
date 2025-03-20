@@ -42,10 +42,10 @@ fun WantedTimePickerWheel(
     hour: Int,
     minute: Int,
     confirm: String,
-    modifier: Modifier = Modifier,
     onSelected: (isAm: Boolean, hour: Int, minute: Int) -> Unit,
-    default: WantedTimePickerWheelDefault = WantedTimePickerWheelDefaults.getDefault(),
-    onDismissRequest: () -> Unit = {}
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    default: WantedTimePickerWheelDefault = WantedTimePickerWheelDefaults.getDefault()
 ) {
     var isSelectAm by remember(isAm) { mutableStateOf(isAm) }
     var enablePeriod by remember(default) {
@@ -207,7 +207,8 @@ private fun WantedTimePickerWheelPreview() {
                     hour = 12,
                     minute = 0,
                     confirm = "확인",
-                    onSelected = { _, _, _ -> }
+                    onSelected = { _, _, _ -> },
+                    onDismissRequest = {}
                 )
             }
         }

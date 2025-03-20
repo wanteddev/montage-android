@@ -26,10 +26,18 @@ object WantedTimePickerWheelDefaults {
     ) = WantedTimePickerWheelDefault(
         enableAm = enableAm,
         enablePm = if (enableAm) enablePm else true,
-        enableMinHour = enableMinHour,
-        enableMaxHour = enableMaxHour,
-        enableMinMinute = enableMinMinute,
-        enableMaxMinute = enableMaxMinute,
+        enableMinHour = if (enableMinHour > 0) enableMinHour else 1,
+        enableMaxHour = when {
+            enableMinHour > 12 -> 12
+            enableMaxHour < enableMinHour -> enableMinHour
+            else -> enableMaxHour
+        },
+        enableMinMinute = if (enableMinMinute >= 0) enableMinMinute else 0,
+        enableMaxMinute = when {
+            enableMaxMinute > 59 -> 59
+            enableMaxMinute < enableMinMinute -> enableMinMinute
+            else -> enableMaxMinute
+        },
         isHideDisableTime = isHideDisableTime,
     )
 }
