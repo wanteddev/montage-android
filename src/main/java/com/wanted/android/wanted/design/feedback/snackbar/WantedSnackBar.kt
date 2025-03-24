@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -73,7 +73,7 @@ fun WantedSnackBar(
                     modifier = Modifier
                         .defaultMinSize(minWidth = 54.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .clickOnceForDesignSystem {
+                        .clickOnce {
                             onClick()
                             snackbarData?.performAction()
                         }

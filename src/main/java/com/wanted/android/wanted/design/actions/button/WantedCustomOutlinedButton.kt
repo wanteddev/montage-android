@@ -32,6 +32,7 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonStatus
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getButtonHeight
 import com.wanted.android.wanted.design.util.getButtonHorizontalPadding
@@ -95,7 +96,7 @@ fun WantedCustomOutlinedButton(
                 onClick = {
                     if (status == ButtonStatus.ENABLE) {
                         if (isClickOnce) {
-                            clickListener?.clickOnceForDesignSystem()
+                            clickListener?.clickOnce()
                         } else {
                             clickListener?.invoke()
                         }

@@ -20,8 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
@@ -77,7 +77,7 @@ fun WantedIconButtonOutlined(
                 color = if (enabled) outlineColor else disableOutlineColor,
                 shape = CircleShape
             )
-            .clickOnceForDesignSystem(enabled) { onClick() }
+            .clickOnce(enabled) { onClick() }
             .padding(padding),
         painter = painterResource(id = icon),
         contentDescription = "",

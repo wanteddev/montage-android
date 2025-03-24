@@ -19,6 +19,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.BottomSheetDialogType
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
+import com.wanted.android.wanted.design.presentation.modal.draggable.WantedDraggableModalBottomSheet
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
 import com.wanted.android.wanted.design.util.pxToDp
 
@@ -26,6 +27,7 @@ import com.wanted.android.wanted.design.util.pxToDp
 @Composable
 fun WantedModalBottomSheet(
     modifier: Modifier = Modifier,
+    isShow: Boolean,
     background: Color = colorResource(id = R.color.background_elevated_normal),
     type: BottomSheetDialogType = BottomSheetDialogType.Flexible,
     modalSize: ModalSize = ModalSize.Normal,
@@ -81,31 +83,55 @@ fun WantedModalBottomSheet(
         }
     }
 
+    if (!type.isSystemBottomSheet) {
+        WantedDraggableModalBottomSheet(
+            modifier = modifier.then(heightModifier),
+            isShow = isShow,
+            contentColor = background,
+            dragHandle = if (type.isCloseable) {
+                { WantedModalDefaults.DragHandle() }
+            } else {
+                null
+            },
+            content = {
+                WantedDialogLayout(
+                    modifier = Modifier.fillMaxWidth(),
+                    modalSize = modalSize,
+                    topBar = topBar,
+                    content = content,
+                    bottomBar = bottomBar
+                )
+            },
+            onDismissRequest = onDismissRequest
+        )
+    } else if (isShow) {
+        ModalBottomSheet(
+            modifier = modifier.fillMaxWidth(),
+            containerColor = background,
+            contentColor = background,
+            tonalElevation = 0.dp,
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            sheetMaxWidth = width,
+            sheetState = bottomSheetState,
+            dragHandle = if (type.isCloseable) {
+                { WantedModalDefaults.DragHandle() }
+            } else {
+                null
+            },
+            content = {
+                WantedDialogLayout(
+                    modifier = heightModifier.fillMaxWidth(),
+                    modalSize = modalSize,
+                    topBar = topBar,
+                    content = content,
+                    bottomBar = bottomBar
+                )
+            },
+            onDismissRequest = { onDismissRequest() }
+        )
 
-    ModalBottomSheet(
-        modifier = modifier.fillMaxWidth(),
-        containerColor = background,
-        contentColor = background,
-        tonalElevation = 0.dp,
-        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetMaxWidth = width,
-        sheetState = bottomSheetState,
-        dragHandle = if (type.isCloseable) {
-            { WantedModalDefaults.DragHandle() }
-        } else {
-            null
-        },
-        content = {
-            WantedDialogLayout(
-                modifier = heightModifier.fillMaxWidth(),
-                modalSize = modalSize,
-                topBar = topBar,
-                content = content,
-                bottomBar = bottomBar
-            )
-        },
-        onDismissRequest = { onDismissRequest() }
-    )
+
+    }
 }
 
 

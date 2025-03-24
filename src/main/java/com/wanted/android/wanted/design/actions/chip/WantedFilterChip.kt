@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipActive
@@ -167,7 +167,7 @@ private fun WantedFilterChip(
                 shape = RoundedCornerShape(getChipRadius(chipDefault.size)),
                 color = chipDefault.borderColor
             )
-            .clickOnceForDesignSystem(
+            .clickOnce(
                 interactionSource = interactionSource,
                 indication = if (chipDefault.variant == ChipActionVariant.FILLED) {
                     wantedRippleEffect(

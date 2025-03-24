@@ -20,6 +20,7 @@ import com.wanted.android.wanted.design.util.dp
 import com.wanted.android.wanted.design.util.makeDrawable
 import com.wanted.android.wanted.design.util.sp
 
+@Deprecated("")
 class OldButton(context: Context, private val attrs: AttributeSet? = null) :
     LinearLayout(context, attrs) {
 

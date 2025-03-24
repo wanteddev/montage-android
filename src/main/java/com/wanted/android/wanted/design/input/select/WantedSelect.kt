@@ -29,10 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
-import com.wanted.android.wanted.design.base.ComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
+import com.wanted.android.wanted.design.input.ComponentTitle
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectBottomSheet
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.input.select.view.WantedSelectBottomSheet
@@ -41,8 +39,10 @@ import com.wanted.android.wanted.design.input.select.view.WantedSelectLayout
 import com.wanted.android.wanted.design.input.select.view.WantedSelectPlaceHolder
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
@@ -55,7 +55,7 @@ fun WantedSelectWithString(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    valueList: List<String>,
+    selectedValueList: List<String>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negativeList: List<String> = emptyList(),
@@ -69,31 +69,31 @@ fun WantedSelectWithString(
     onDelete: (String) -> Unit = {},
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null,
-    onSelect: (itemList: List<String>) -> Unit = { },
+    onSelectList: (itemList: List<String>) -> Unit = { },
 ) {
     WantedSelect(
         modifier = modifier,
         title = title,
         description = description,
         confirmText = confirmText,
-        valueList = valueList.map { WantedSelectData(text = it) },
+        selectedDataList = selectedValueList.map { WantedSelectData(text = it) },
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
-        negativeList = negativeList.map { WantedSelectData(text = it) },
+        negativeDataList = negativeList.map { WantedSelectData(text = it) },
         focused = focused,
         enabled = enabled,
         overflow = overflow,
-        selectValueList = selectValueList.map { WantedSelectData(text = it) },
+        selectDataList = selectValueList.map { WantedSelectData(text = it) },
         selectType = selectType,
         render = render,
         background = background,
-        onDelete = {
+        onDeleteData = {
             onDelete(it.text)
         },
         onClick = onClick,
         leadingIcon = leadingIcon,
-        onSelect = { itemList ->
-            onSelect(itemList.map { it.text })
+        onSelectDataList = { itemList ->
+            onSelectList(itemList.map { it.text })
         }
     )
 }
@@ -104,21 +104,21 @@ fun WantedSelect(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    valueList: List<WantedSelectData>,
+    selectedDataList: List<WantedSelectData>,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
-    negativeList: List<WantedSelectData> = emptyList(),
+    negativeDataList: List<WantedSelectData> = emptyList(),
     focused: Boolean = false,
     enabled: Boolean = true,
     overflow: Boolean = false,
-    selectValueList: List<WantedSelectData> = emptyList(),
+    selectDataList: List<WantedSelectData> = emptyList(),
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
     render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
     background: Color = colorResource(id = R.color.background_normal_normal),
-    onDelete: (WantedSelectData) -> Unit = {},
+    onDeleteData: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null,
-    onSelect: (itemList: List<WantedSelectData>) -> Unit = { },
+    onSelectDataList: (itemList: List<WantedSelectData>) -> Unit = { },
 ) {
 
     val isShowBottomSheetDialog = remember { mutableStateOf(false) }
@@ -130,7 +130,7 @@ fun WantedSelect(
             title = title,
             description = description,
             isRequiredBadge = isRequiredBadge,
-            negative = negativeList.isNotEmpty(),
+            negative = negativeDataList.isNotEmpty(),
             focused = isFocus.value,
             enabled = enabled,
             background = background,
@@ -138,7 +138,7 @@ fun WantedSelect(
                 isFocus.value = true
                 onClick()
 
-                if (selectValueList.isNotEmpty()) {
+                if (selectDataList.isNotEmpty()) {
                     isShowBottomSheetDialog.value = true
                 }
             },
@@ -146,36 +146,35 @@ fun WantedSelect(
             contents = {
                 WantedMultiSelectContents(
                     modifier = Modifier.fillMaxWidth(),
-                    valueList = valueList,
+                    valueList = selectedDataList,
                     placeHolder = placeHolder,
-                    errorList = negativeList,
+                    errorList = negativeDataList,
                     overflow = overflow,
                     enabled = enabled,
                     render = render,
-                    onDelete = onDelete
+                    onDelete = onDeleteData
                 )
             }
         )
     }
 
-    if (selectValueList.isNotEmpty() && isShowBottomSheetDialog.value) {
-        WantedMultiSelectBottomSheet(
-            modifier = Modifier,
-            items = selectValueList,
-            confirmText = confirmText,
-            selectType = selectType,
-            selectedItemList = valueList,
-            onSelect = { itemList ->
-                isFocus.value = false
-                isShowBottomSheetDialog.value = false
-                onSelect(itemList)
-            },
-            onDismissRequest = {
-                isShowBottomSheetDialog.value = false
-                isFocus.value = false
-            }
-        )
-    }
+    WantedMultiSelectBottomSheet(
+        modifier = Modifier,
+        isShow = selectDataList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectDataList,
+        confirmText = confirmText,
+        selectType = selectType,
+        selectedItemList = selectedDataList,
+        onSelect = { itemList ->
+            isFocus.value = false
+            isShowBottomSheetDialog.value = false
+            onSelectDataList(itemList)
+        },
+        onDismissRequest = {
+            isShowBottomSheetDialog.value = false
+            isFocus.value = false
+        }
+    )
 }
 
 @Composable
@@ -191,9 +190,9 @@ fun WantedSelect(
     focused: Boolean = false,
     enabled: Boolean = true,
     selectValueList: List<String> = emptyList(),
+    selectedValue: String? = null,
     bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
-    selectedItem: String? = null,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onClick: () -> Unit = {},
     onSelect: (item: String) -> Unit = { },
@@ -204,20 +203,20 @@ fun WantedSelect(
         title = title,
         description = description,
         confirmText = confirmText,
-        value = WantedSelectData(text = value),
+        selectData = WantedSelectData(text = value),
         placeHolder = placeHolder,
         isRequiredBadge = isRequiredBadge,
         negative = negative,
         focused = focused,
         enabled = enabled,
         bottomSheetType = bottomSheetType,
-        selectValueList = selectValueList.map { WantedSelectData(text = it) },
+        selectDataList = selectValueList.map { WantedSelectData(text = it) },
+        selectedData = selectedValue?.let { WantedSelectData(text = it) },
         selectType = selectType,
-        selectedItem = WantedSelectData(text = selectedItem ?: ""),
         background = background,
         onClick = onClick,
         leadingIcon = leadingIcon,
-        onSelect = { item ->
+        onSelectData = { item ->
             onSelect(item.text)
         }
     )
@@ -230,19 +229,19 @@ fun WantedSelect(
     title: String? = null,
     description: String? = null,
     confirmText: String = "",
-    value: WantedSelectData,
+    selectData: WantedSelectData?,
     placeHolder: String = "",
     isRequiredBadge: Boolean = false,
     negative: Boolean = false,
     focused: Boolean = false,
     enabled: Boolean = true,
-    selectValueList: List<WantedSelectData> = emptyList(),
+    selectDataList: List<WantedSelectData> = emptyList(),
+    selectedData: WantedSelectData? = null,
     bottomSheetType: WantedModalContract.BottomSheetDialogType = WantedModalContract.BottomSheetDialogType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
-    selectedItem: WantedSelectData? = null,
     background: Color = colorResource(id = R.color.background_normal_normal),
     onClick: () -> Unit = {},
-    onSelect: (item: WantedSelectData) -> Unit = {},
+    onSelectData: (item: WantedSelectData) -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
 ) {
 
@@ -262,13 +261,13 @@ fun WantedSelect(
             isFocus.value = true
             onClick()
 
-            if (selectValueList.isNotEmpty()) {
+            if (selectDataList.isNotEmpty()) {
                 isShowBottomSheetDialog.value = true
             }
         },
         leadingIcon = leadingIcon,
         contents = {
-            if (value.text.isEmpty()) {
+            if (selectData?.text.isNullOrEmpty()) {
                 WantedSelectPlaceHolder(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = placeHolder,
@@ -279,7 +278,7 @@ fun WantedSelect(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp),
-                    text = value.text,
+                    text = selectData?.text ?: "",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = WantedTextStyle(
@@ -295,25 +294,24 @@ fun WantedSelect(
         }
     )
 
-    if (selectValueList.isNotEmpty() && isShowBottomSheetDialog.value) {
-        WantedSelectBottomSheet(
-            modifier = Modifier,
-            items = selectValueList,
-            confirmText = confirmText,
-            selectType = selectType,
-            bottomSheetType = bottomSheetType,
-            selectedItem = selectedItem,
-            onSelect = { item ->
-                isFocus.value = false
-                onSelect(item)
-                isShowBottomSheetDialog.value = false
-            },
-            onDismissRequest = {
-                isFocus.value = false
-                isShowBottomSheetDialog.value = false
-            }
-        )
-    }
+    WantedSelectBottomSheet(
+        modifier = Modifier,
+        isShow = selectDataList.isNotEmpty() && isShowBottomSheetDialog.value,
+        items = selectDataList,
+        confirmText = confirmText,
+        selectType = selectType,
+        bottomSheetType = bottomSheetType,
+        selectedItem = selectedData,
+        onSelect = { item ->
+            isFocus.value = false
+            onSelectData(item)
+            isShowBottomSheetDialog.value = false
+        },
+        onDismissRequest = {
+            isFocus.value = false
+            isShowBottomSheetDialog.value = false
+        }
+    )
 }
 
 
@@ -397,7 +395,7 @@ private fun WantedSelectImpl(
                                 colorResource(R.color.interaction_disable)
                             }
                         )
-                        .clickOnceForDesignSystem(
+                        .clickOnce(
                             enabled = enabled,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = getSelectRippleEffect(
@@ -557,11 +555,11 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     title = "주제",
                     isRequiredBadge = true,
-                    valueList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    onDelete = { },
+                    onDeleteData = { },
                     onClick = {}
                 )
 
@@ -569,28 +567,28 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     title = "주제",
                     isRequiredBadge = true,
-                    valueList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    negativeList = listOf(
+                    negativeDataList = listOf(
                         WantedSelectData(text = "선택값1")
                     ),
-                    onDelete = { },
+                    onDeleteData = { },
                     onClick = {}
                 )
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
-                    valueList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    negativeList = listOf(
+                    negativeDataList = listOf(
                         WantedSelectData(text = "선택값1")
                     ),
-                    onDelete = { },
+                    onDeleteData = { },
                     onClick = {}
                 )
 
@@ -598,14 +596,14 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
                     focused = true,
-                    valueList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    negativeList = listOf(
+                    negativeDataList = listOf(
                         WantedSelectData(text = "선택값1")
                     ),
-                    onDelete = { },
+                    onDeleteData = { },
                     onClick = {}
                 )
 
@@ -613,14 +611,14 @@ private fun WantedSelectPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     render = WantedSelectContract.MultiSelectRender.Chip,
                     enabled = false,
-                    valueList = listOf(
+                    selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
                     ),
-                    negativeList = listOf(
+                    negativeDataList = listOf(
                         WantedSelectData(text = "선택값2")
                     ),
-                    onDelete = { },
+                    onDeleteData = { },
                     onClick = {}
                 )
             }

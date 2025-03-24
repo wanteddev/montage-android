@@ -19,8 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.DevicePreviews
-import com.wanted.android.wanted.design.actions.button.clickOnceForDesignSystem
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
@@ -58,7 +58,7 @@ fun WantedIconButtonSolid(
         modifier = modifier
             .clip(CircleShape)
             .background(if (enabled) background else colorResource(id = R.color.fill_normal))
-            .clickOnceForDesignSystem(enabled) { onClick() }
+            .clickOnce(enabled) { onClick() }
             .padding(padding),
         painter = painterResource(id = icon),
         contentDescription = "",
