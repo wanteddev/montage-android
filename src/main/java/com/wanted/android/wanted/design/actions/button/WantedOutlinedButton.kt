@@ -166,7 +166,8 @@ internal fun WantedOutlinedButton(
             .border(
                 BorderStroke(1.dp, buttonDefault.borderColor),
                 RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, buttonDefault.size))
-            ),
+            )
+            .background(buttonDefault.backgroundColor),
         buttonShape = ButtonShape.OUTLINED,
         buttonSize = buttonDefault.size,
         leftDrawable = leadingDrawable?.let {
