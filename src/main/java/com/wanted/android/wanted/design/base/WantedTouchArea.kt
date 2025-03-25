@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
 fun WantedTouchArea(
@@ -60,11 +60,6 @@ fun WantedTouchArea(
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
-                .onGloballyPositioned { coordinates ->
-                    // Set column height using the LayoutCoordinates
-                    contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
-                    contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -74,12 +69,17 @@ fun WantedTouchArea(
         Layout(
             modifier = Modifier
                 .constrainAs(touch) {
-                    top.linkTo(box.top)
-                    start.linkTo(box.start)
-                    end.linkTo(box.end)
-                    bottom.linkTo(box.bottom)
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
                     width = Dimension.fillToConstraints  // Match width of text
                     height = Dimension.fillToConstraints // Match height of text
+                }
+                .onGloballyPositioned { coordinates ->
+                    // Set column height using the LayoutCoordinates
+                    contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
+                    contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
                 }
                 .clip(shape)
                 .clickOnce(
@@ -131,6 +131,8 @@ private fun WantedTouchAreaPreview() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 WantedTouchArea(
+                    horizontalPadding = 10.dp,
+                    verticalPadding = 10.dp,
                     content = {
                         Text(text = "텍스트")
                     },

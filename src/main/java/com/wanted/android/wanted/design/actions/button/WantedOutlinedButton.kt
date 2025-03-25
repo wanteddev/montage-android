@@ -172,16 +172,14 @@ internal fun WantedOutlinedButton(
         buttonSize = buttonDefault.size,
         leftDrawable = leadingDrawable?.let {
             {
-                if (!isLoading) {
-                    WantedButtonSideIcon(
-                        modifier = getButtonDrawableSize(
-                            shape = ButtonShape.OUTLINED,
-                            size = buttonDefault.size
-                        ),
-                        drawableRes = it,
-                        tint = buttonDefault.leftIconTintColor
-                    )
-                }
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.OUTLINED,
+                        size = buttonDefault.size
+                    ).alpha(if (isLoading) 0f else 1f),
+                    drawableRes = it,
+                    tint = buttonDefault.leftIconTintColor
+                )
             }
         },
         text = when {
@@ -211,16 +209,14 @@ internal fun WantedOutlinedButton(
         },
         rightDrawable = trailingDrawable?.let {
             {
-                if (!isLoading) {
-                    WantedButtonSideIcon(
-                        modifier = getButtonDrawableSize(
-                            shape = ButtonShape.OUTLINED,
-                            size = buttonDefault.size
-                        ),
-                        drawableRes = it,
-                        tint = buttonDefault.rightIconTintColor
-                    )
-                }
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.OUTLINED,
+                        size = buttonDefault.size
+                    ).alpha(if (isLoading) 0f else 1f),
+                    drawableRes = it,
+                    tint = buttonDefault.rightIconTintColor
+                )
             }
         }
     )
