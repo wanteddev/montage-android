@@ -151,16 +151,14 @@ internal fun WantedTextButton(
                 buttonSize = buttonDefault.size,
                 leftDrawable = leadingDrawable?.let {
                     {
-                        if (!isLoading) {
-                            WantedButtonSideIcon(
-                                modifier = getButtonDrawableSize(
-                                    shape = ButtonShape.TEXT,
-                                    size = buttonDefault.size
-                                ),
-                                drawableRes = it,
-                                tint = leftIconTintColor.value
-                            )
-                        }
+                        WantedButtonSideIcon(
+                            modifier = getButtonDrawableSize(
+                                shape = ButtonShape.TEXT,
+                                size = buttonDefault.size
+                            ).alpha(if (isLoading) 0f else 1f),
+                            drawableRes = it,
+                            tint = leftIconTintColor.value
+                        )
                     }
                 },
                 text =
@@ -186,16 +184,14 @@ internal fun WantedTextButton(
                 },
                 rightDrawable = trailingDrawable?.let {
                     {
-                        if (!isLoading) {
-                            WantedButtonSideIcon(
-                                modifier = getButtonDrawableSize(
-                                    shape = ButtonShape.TEXT,
-                                    size = buttonDefault.size
-                                ),
-                                drawableRes = it,
-                                tint = rightIconTintColor.value
-                            )
-                        }
+                        WantedButtonSideIcon(
+                            modifier = getButtonDrawableSize(
+                                shape = ButtonShape.TEXT,
+                                size = buttonDefault.size
+                            ).alpha(if (isLoading) 0f else 1f),
+                            drawableRes = it,
+                            tint = rightIconTintColor.value
+                        )
                     }
                 }
             )

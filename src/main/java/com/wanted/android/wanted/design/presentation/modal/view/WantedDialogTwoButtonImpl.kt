@@ -38,6 +38,7 @@ fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
     background: Color = colorResource(R.color.background_elevated_normal),
     modalSize: ModalSize,
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     positiveButtonType: ButtonType = ButtonType.PRIMARY,
     negativeButtonType: ButtonType = ButtonType.ASSISTIVE,
@@ -52,6 +53,7 @@ fun WantedDialogTwoButtonImpl(
             .clip(RoundedCornerShape(12.dp))
             .background(background),
         modalSize = modalSize,
+        shape = shape,
         topBar = topBar,
         content = {
             Box(modifier = Modifier.padding(horizontal = modalSize.contentPadding)) {
