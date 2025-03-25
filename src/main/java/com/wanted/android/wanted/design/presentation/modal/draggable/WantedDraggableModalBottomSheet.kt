@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.presentation.modal.draggable
 
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -30,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
@@ -96,37 +98,35 @@ internal fun WantedDraggableModalBottomSheet(
         )
     }
 
-    LaunchedEffect(isShow, dragState) {
-        val nextValue = when (isShow) {
-            true -> SheetValue.Expanded
-            false -> SheetValue.Hidden
-        }
+    var isDialogVisible by remember { mutableStateOf(false) }
 
-        if (dragState.currentValue != nextValue) {
-            dragState.animateTo(nextValue)
+    LaunchedEffect(isShow, coroutineScope) {
+        if (isShow) {
+            coroutineScope.launch {
+                isDialogVisible = true // 다이얼로그 표시
+                dragState.animateTo(SheetValue.Expanded)
+            }
+        } else {
+            coroutineScope.launch {
+                dragState.animateTo(SheetValue.Hidden)
+                currentDismissRequest()
+                isDialogVisible = false // 애니메이션 후 다이얼로그 닫기
+            }
         }
     }
 
-    LaunchedEffect(
-        dragState.isAnimationRunning,
-        dragState.currentValue
-    ) {
-        if (!isShow || dragState.isAnimationRunning) {
-            return@LaunchedEffect
-        }
-
-        if (dragState.currentValue == SheetValue.Hidden) {
+    LaunchedEffect(dragState.isAnimationRunning) {
+        if (dragState.isAnimationRunning) return@LaunchedEffect
+        if(isDialogVisible && dragState.currentValue == SheetValue.Hidden) {
             currentDismissRequest()
         }
     }
 
-    if (isShow) {
+    if (isDialogVisible) {
         Dialog(
             properties = properties,
             onDismissRequest = {
-                coroutineScope.launch {
-                    dragState.animateTo(SheetValue.Hidden)
-                }
+                currentDismissRequest()
             }
         ) {
             SetUpEdgeToEdgeDialog(dimAmount = 0.5f)
