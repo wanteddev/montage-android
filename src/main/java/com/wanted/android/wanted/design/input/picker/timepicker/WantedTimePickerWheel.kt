@@ -5,13 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -22,16 +24,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
+import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.picker.WantedNumberPicker
 import com.wanted.android.wanted.design.input.picker.WantedStringPicker
-import com.wanted.android.wanted.design.navigations.topbar.WantedDialogTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModal
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 
@@ -42,6 +47,7 @@ fun WantedTimePickerWheel(
     hour: Int,
     minute: Int,
     confirm: String,
+    cancel: String,
     onSelected: (isAm: Boolean, hour: Int, minute: Int) -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -75,10 +81,20 @@ fun WantedTimePickerWheel(
 
     WantedModal(
         modifier = modifier.padding(horizontal = 20.dp),
-        modalSize = WantedModalContract.ModalSize.Normal,
+        modalSize = WantedModalContract.ModalSize.Medium,
+        shape = RoundedCornerShape(28.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
         topBar = {
-            WantedDialogTopAppBar(title = title)
+            Text(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = WantedModalContract.ModalSize.Medium.contentPadding)
+                    .padding(horizontal = WantedModalContract.ModalSize.Medium.contentPadding),
+                text = title,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = colorResource(R.color.label_alternative)
+            )
         },
         content = {
             TimePickerLayout(
@@ -133,21 +149,32 @@ fun WantedTimePickerWheel(
             )
         },
         bottomBar = {
-            WantedActionArea(
-                modifier = Modifier.wrapContentHeight(),
-                safeArea = false,
-                positive = {
-                    WantedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = enablePeriod && enableHour && enableMinute,
-                        text = confirm,
-                        onClick = {
-                            onSelected(isSelectAm, selectHour, selectMinute)
-                            onDismissRequest()
-                        }
-                    )
-                },
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                WantedButton(
+                    modifier = Modifier.defaultMinSize(minWidth = 50.dp),
+                    text = cancel,
+                    buttonShape = ButtonShape.TEXT,
+                    size = ButtonSize.MEDIUM,
+                    onClick = onDismissRequest
+                )
+
+                WantedButton(
+                    modifier = Modifier.defaultMinSize(minWidth = 50.dp),
+                    text = confirm,
+                    enabled = enablePeriod && enableHour && enableMinute,
+                    buttonShape = ButtonShape.TEXT,
+                    size = ButtonSize.MEDIUM,
+                    onClick = {
+                        onSelected(isSelectAm, selectHour, selectMinute)
+                        onDismissRequest()
+                    }
+                )
+
+            }
         },
         onDismissRequest = onDismissRequest
     )
@@ -176,7 +203,7 @@ private fun TimePickerLayout(
         Box(
             Modifier
                 .background(
-                    color = colorResource(com.wanted.android.designsystem.R.color.fill_normal),
+                    color = colorResource(R.color.fill_normal),
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(vertical = 4.dp)
@@ -204,9 +231,11 @@ private fun WantedTimePickerWheelPreview() {
             ) {
                 WantedTimePickerWheel(
                     isAm = true,
+                    title = "시간",
                     hour = 12,
                     minute = 0,
                     confirm = "확인",
+                    cancel = "취소",
                     onSelected = { _, _, _ -> },
                     onDismissRequest = {}
                 )
