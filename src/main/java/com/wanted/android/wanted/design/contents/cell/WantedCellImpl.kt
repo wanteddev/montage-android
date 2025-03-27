@@ -81,7 +81,7 @@ fun WantedCellImpl(
                     overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
                     style = WantedTextStyle(
                         colorRes = if (isEnable) {
-                            R.color.label_alternative`
+                            R.color.label_alternative
                         } else {
                             R.color.label_disable
                         },
