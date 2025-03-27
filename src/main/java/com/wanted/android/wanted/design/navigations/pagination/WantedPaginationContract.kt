@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
 object WantedPaginationContract {
     enum class WantedDotIndicatorSize {
         Small,
-        Normal
+        Medium
     }
 
     enum class WantedDotIndicatorType {

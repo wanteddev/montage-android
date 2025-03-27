@@ -10,7 +10,7 @@ val LocalWantedChipVariant = WantedChipVariantCompositionLocal()
 
 @JvmInline
 value class WantedChipVariantCompositionLocal internal constructor(
-    private val delegate: ProvidableCompositionLocal<WantedActionContract.ChipActionVariant> = staticCompositionLocalOf { WantedActionContract.ChipActionVariant.FILLED }
+    private val delegate: ProvidableCompositionLocal<WantedActionContract.ChipActionVariant> = staticCompositionLocalOf { WantedActionContract.ChipActionVariant.Solid }
 ) {
     val current: WantedActionContract.ChipActionVariant
         @Composable get() = delegate.current

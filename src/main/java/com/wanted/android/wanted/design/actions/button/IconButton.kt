@@ -12,6 +12,7 @@ import com.wanted.android.wanted.design.util.makeDrawable
 import com.wanted.android.wanted.design.util.tint
 
 
+@Deprecated("use WantedIconButtonSolid, Outlined, Normal")
 class IconButton(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs) {
 
