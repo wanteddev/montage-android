@@ -43,7 +43,6 @@ fun WantedCell(
     ellipsis: Boolean = true,
     verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
-    contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null,
     onClick: (() -> Unit)? = null
@@ -62,7 +61,6 @@ fun WantedCell(
         ellipsis = ellipsis,
         verticalAlignCenter = verticalAlignCenter,
         chevrons = chevrons,
-        contentHeight = contentHeight,
         leftContent = leftContent,
         rightContent = rightContent,
         onClick = onClick
@@ -84,7 +82,6 @@ fun WantedCell(
     ellipsis: Boolean = true,
     verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
-    contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     textMaxLine: Int = 1,
     titleStyle: TextStyle? = null,
     captionStyle: TextStyle? = null,
@@ -111,7 +108,6 @@ fun WantedCell(
                     isActive = isActive,
                     ellipsis = ellipsis,
                     verticalAlignCenter = verticalAlignCenter,
-                    contentHeight = contentHeight,
                     chevrons = chevrons,
                     titleStyle = titleStyle,
                     captionStyle = captionStyle,
