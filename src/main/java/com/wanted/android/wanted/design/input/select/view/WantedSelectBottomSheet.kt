@@ -67,6 +67,7 @@ fun WantedSelectBottomSheet(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
                                         checked = true,
+                                        thick = false,
                                         onCheckedChange = { }
                                     )
                                 }

@@ -31,6 +31,7 @@ internal fun WantedCheckMark(
     checked: Boolean,
     enabled: Boolean = true,
     tight: Boolean = false,
+    thick: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onCheckedChange: ((Boolean) -> Unit)
 ) {
@@ -53,7 +54,12 @@ internal fun WantedCheckMark(
                     )
                     .padding(horizontal = if (tight) 1.dp else 3.dp)
                     .padding(vertical = 3.dp),
-                painter = painterResource(R.drawable.icon_normal_check_thick),
+                painter = if (thick) {
+                    painterResource(R.drawable.icon_normal_check_thick)
+                } else {
+                    painterResource(R.drawable.icon_normal_check)
+                },
+
                 contentDescription = "checkBox_check",
                 colorFilter = ColorFilter.tint(
                     color = if (checked) {
