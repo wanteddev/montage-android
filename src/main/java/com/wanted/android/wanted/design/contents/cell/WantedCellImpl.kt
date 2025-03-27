@@ -77,8 +77,8 @@ fun WantedCellImpl(
             {
                 Text(
                     text = caption,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    maxLines = if (ellipsis) 1 else Int.MAX_VALUE,
+                    overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
                     style = WantedTextStyle(
                         colorRes = if (isEnable) {
                             R.color.label_alternative

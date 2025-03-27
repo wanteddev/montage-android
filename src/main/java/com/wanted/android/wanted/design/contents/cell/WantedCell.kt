@@ -46,7 +46,7 @@ fun WantedCell(
     contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
     WantedCell(
         modifier = modifier,
@@ -90,7 +90,7 @@ fun WantedCell(
     captionStyle: TextStyle? = null,
     leftContent: (@Composable () -> Unit)? = null,
     rightContent: (@Composable () -> Unit)? = null,
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
     WantedTouchArea(
         shape = RoundedCornerShape(12.dp),
@@ -99,8 +99,8 @@ fun WantedCell(
                 WantedCellImpl(
                     modifier = modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .clickOnce(enabled = isEnable) {
-                            onClick()
+                        .clickOnce(enabled = isEnable && onClick != null) {
+                            onClick?.invoke()
                         }
                         .padding(horizontal = if (fillWidth) interactionPadding.padding else 0.dp)
                         .padding(vertical = verticalPadding.value),
@@ -129,7 +129,7 @@ fun WantedCell(
 
         }
     ) {
-        onClick()
+        onClick?.invoke()
     }
 }
 
