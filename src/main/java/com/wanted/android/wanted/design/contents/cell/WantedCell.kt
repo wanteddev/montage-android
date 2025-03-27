@@ -34,7 +34,7 @@ fun WantedCell(
     text: String,
     textMaxLine: Int = 1,
     caption: String = "",
-    verticalPadding: WantedCellContract.VerticalPadding = WantedCellContract.VerticalPadding.Padding12,
+    verticalPadding: WantedCellContract.VerticalPadding = WantedCellContract.VerticalPadding.Medium,
     interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default,
     fillWidth: Boolean = false,
     divider: Boolean = false,
@@ -73,7 +73,7 @@ fun WantedCell(
     modifier: Modifier = Modifier,
     annotatedString: AnnotatedString,
     annotatedCaption: AnnotatedString = AnnotatedString(""),
-    verticalPadding: WantedCellContract.VerticalPadding = WantedCellContract.VerticalPadding.Padding12,
+    verticalPadding: WantedCellContract.VerticalPadding = WantedCellContract.VerticalPadding.Medium,
     interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default,
     fillWidth: Boolean = false,
     divider: Boolean = false,
@@ -197,21 +197,21 @@ private fun WantedCellPreview() {
                 WantedCell(
                     text = "텍스트 padding Small",
                     caption = "캡션",
-                    verticalPadding = WantedCellContract.VerticalPadding.Padding8,
+                    verticalPadding = WantedCellContract.VerticalPadding.Small,
                     onClick = {}
                 )
 
                 WantedCell(
                     text = "텍스트 padding Normal",
                     caption = "캡션",
-                    verticalPadding = WantedCellContract.VerticalPadding.Padding12,
+                    verticalPadding = WantedCellContract.VerticalPadding.Medium,
                     onClick = {}
                 )
 
                 WantedCell(
                     text = "텍스트 padding Medium",
                     caption = "캡션",
-                    verticalPadding = WantedCellContract.VerticalPadding.Padding16,
+                    verticalPadding = WantedCellContract.VerticalPadding.Large,
                     onClick = {}
                 )
 
@@ -220,7 +220,7 @@ private fun WantedCellPreview() {
                     caption = "캡션",
                     fillWidth = true,
                     divider = true,
-                    verticalPadding = WantedCellContract.VerticalPadding.Padding16,
+                    verticalPadding = WantedCellContract.VerticalPadding.Large,
                     onClick = {}
                 )
 
