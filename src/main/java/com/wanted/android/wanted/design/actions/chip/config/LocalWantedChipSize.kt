@@ -10,7 +10,7 @@ val LocalWantedChipSize = WantedChipSizeCompositionLocal()
 
 @JvmInline
 value class WantedChipSizeCompositionLocal internal constructor(
-    private val delegate: ProvidableCompositionLocal<WantedActionContract.ChipActionSize> = staticCompositionLocalOf { WantedActionContract.ChipActionSize.NORMAL }
+    private val delegate: ProvidableCompositionLocal<WantedActionContract.ChipActionSize> = staticCompositionLocalOf { WantedActionContract.ChipActionSize.Medium }
 ) {
     val current: WantedActionContract.ChipActionSize
         @Composable get() = delegate.current

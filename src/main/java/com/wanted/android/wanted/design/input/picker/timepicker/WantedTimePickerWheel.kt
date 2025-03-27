@@ -82,15 +82,15 @@ fun WantedTimePickerWheel(
 
     WantedModal(
         modifier = modifier.padding(horizontal = 20.dp),
-        modalSize = WantedModalContract.ModalSize.Medium,
+        modalSize = WantedModalContract.ModalSize.Large,
         shape = RoundedCornerShape(28.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
         topBar = {
             Text(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(top = WantedModalContract.ModalSize.Medium.contentPadding)
-                    .padding(horizontal = WantedModalContract.ModalSize.Medium.contentPadding),
+                    .padding(top = WantedModalContract.ModalSize.Large.contentPadding)
+                    .padding(horizontal = WantedModalContract.ModalSize.Large.contentPadding),
                 text = title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,

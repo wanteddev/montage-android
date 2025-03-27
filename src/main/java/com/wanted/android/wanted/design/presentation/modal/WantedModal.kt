@@ -128,7 +128,7 @@ private fun WantedDialogPreview() {
         Scaffold {
             WantedModal(
                 modifier = Modifier.padding(it),
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedDialogTopAppBar(

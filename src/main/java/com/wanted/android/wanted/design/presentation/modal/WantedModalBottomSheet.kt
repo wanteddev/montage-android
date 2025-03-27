@@ -30,7 +30,7 @@ fun WantedModalBottomSheet(
     isShow: Boolean,
     background: Color = colorResource(id = R.color.background_elevated_normal),
     type: BottomSheetDialogType = BottomSheetDialogType.Flexible,
-    modalSize: ModalSize = ModalSize.Normal,
+    modalSize: ModalSize = ModalSize.Medium,
     onDismissRequest: () -> Unit,
     topBar: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
