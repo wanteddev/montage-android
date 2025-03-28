@@ -50,6 +50,8 @@ fun WantedModalBottomSheet(
     val configuration = LocalConfiguration.current
     val width = remember(configuration) { configuration.screenWidthDp.dp }
     val windowInset = WantedTopAppBarDefaults.windowInsets.getTop(LocalDensity.current).pxToDp()
+    val screenHeight = configuration.screenHeightDp.dp
+
     val heightModifier = remember(configuration) {
         when (type) {
             is BottomSheetDialogType.Fixed -> {
@@ -58,14 +60,14 @@ fun WantedModalBottomSheet(
 
             is BottomSheetDialogType.FixedFullScreen -> {
                 Modifier.height(
-                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                    screenHeight - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
                 )
             }
 
             is BottomSheetDialogType.FixedRatio -> {
                 val height =
-                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
-                val ratioHeight = (configuration.screenHeightDp * type.ratio).dp
+                    screenHeight - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                val ratioHeight = screenHeight * type.ratio
                 val result = if (ratioHeight > height) {
                     height
                 } else {
@@ -77,7 +79,7 @@ fun WantedModalBottomSheet(
 
             else -> {
                 val result =
-                    configuration.screenHeightDp.dp - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
+                    screenHeight - windowInset - 10.dp - WantedModalDefaults.DRAG_HANDLE_SIZE_DP.dp
                 Modifier.heightIn(max = result)
             }
         }
@@ -85,7 +87,6 @@ fun WantedModalBottomSheet(
 
     if (!type.isSystemBottomSheet) {
         WantedDraggableModalBottomSheet(
-            modifier = modifier.then(heightModifier),
             isShow = isShow,
             contentColor = background,
             dragHandle = if (type.isCloseable) {
@@ -95,7 +96,7 @@ fun WantedModalBottomSheet(
             },
             content = {
                 WantedDialogLayout(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = heightModifier.fillMaxWidth(),
                     modalSize = modalSize,
                     topBar = topBar,
                     content = content,
@@ -129,8 +130,6 @@ fun WantedModalBottomSheet(
             },
             onDismissRequest = { onDismissRequest() }
         )
-
-
     }
 }
 
