@@ -185,12 +185,6 @@ internal fun WantedOutlinedButton(
         text = when {
             text.isNotEmpty() -> {
                 {
-                    if (isLoading) {
-                        WantedCircularProgressIndicator(
-                            modifier = Modifier.size(buttonDefault.loadingSize),
-                            color = buttonDefault.loadingColor
-                        )
-                    }
                     Text(
                         text = text,
                         modifier = Modifier
@@ -218,7 +212,15 @@ internal fun WantedOutlinedButton(
                     tint = buttonDefault.rightIconTintColor
                 )
             }
-        }
+        },
+        loading = if (isLoading) {
+            {
+                WantedCircularProgressIndicator(
+                    modifier = Modifier.size(buttonDefault.loadingSize),
+                    color = buttonDefault.loadingColor
+                )
+            }
+        } else null
     )
 }
 
