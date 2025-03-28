@@ -53,8 +53,8 @@ fun WantedFilterChip(
     text: String,
     modifier: Modifier = Modifier,
     activeLabel: String = "",
-    size: ChipActionSize = ChipActionSize.SMALL,
-    variant: ChipActionVariant = ChipActionVariant.FILLED,
+    size: ChipActionSize = ChipActionSize.Small,
+    variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
     isExpend: Boolean = false,
@@ -143,8 +143,8 @@ fun WantedFilterChip(
 @Composable
 private fun WantedFilterChip(
     modifier: Modifier = Modifier,
-    size: ChipActionSize = ChipActionSize.SMALL,
-    variant: ChipActionVariant = ChipActionVariant.FILLED,
+    size: ChipActionSize = ChipActionSize.Small,
+    variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
     chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
@@ -169,7 +169,7 @@ private fun WantedFilterChip(
             )
             .clickOnce(
                 interactionSource = interactionSource,
-                indication = if (chipDefault.variant == ChipActionVariant.FILLED) {
+                indication = if (chipDefault.variant == ChipActionVariant.Solid) {
                     wantedRippleEffect(
                         color = colorResource(id = R.color.label_normal).copy(
                             OPACITY_12
@@ -250,25 +250,25 @@ private fun ActionChipPreView() {
                 ) {
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.FILLED,
-                        size = ChipActionSize.NORMAL
+                        variant = ChipActionVariant.Solid,
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.FILLED,
+                        variant = ChipActionVariant.Solid,
                         isEnable = false,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.OUTLINED,
-                        size = ChipActionSize.NORMAL
+                        variant = ChipActionVariant.Outlined,
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.OUTLINED,
+                        variant = ChipActionVariant.Outlined,
                         isEnable = false,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                 }
 
@@ -278,29 +278,29 @@ private fun ActionChipPreView() {
                 ) {
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.FILLED,
+                        variant = ChipActionVariant.Solid,
                         isExpend = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.FILLED,
+                        variant = ChipActionVariant.Solid,
                         isEnable = false,
                         isExpend = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.OUTLINED,
+                        variant = ChipActionVariant.Outlined,
                         isExpend = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.OUTLINED,
+                        variant = ChipActionVariant.Outlined,
                         isEnable = false,
                         isExpend = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                 }
 
@@ -310,33 +310,33 @@ private fun ActionChipPreView() {
                 ) {
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.FILLED,
+                        variant = ChipActionVariant.Solid,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.FILLED,
+                        variant = ChipActionVariant.Solid,
                         isEnable = false,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.OUTLINED,
+                        variant = ChipActionVariant.Outlined,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.OUTLINED,
+                        variant = ChipActionVariant.Outlined,
                         isEnable = false,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                 }
 
@@ -347,34 +347,34 @@ private fun ActionChipPreView() {
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "1",
-                        variant = ChipActionVariant.FILLED,
+                        variant = ChipActionVariant.Solid,
                         isExpend = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "2",
-                        variant = ChipActionVariant.OUTLINED,
+                        variant = ChipActionVariant.Outlined,
                         isEnable = false,
                         isActive = true,
-                        size = ChipActionSize.NORMAL
+                        size = ChipActionSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "일",
-                        variant = ChipActionVariant.FILLED,
+                        variant = ChipActionVariant.Solid,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.SMALL
+                        size = ChipActionSize.Small
                     )
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "이",
-                        variant = ChipActionVariant.OUTLINED,
+                        variant = ChipActionVariant.Outlined,
                         isEnable = false,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.SMALL
+                        size = ChipActionSize.Small
                     )
                 }
             }

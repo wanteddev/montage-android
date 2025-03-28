@@ -37,7 +37,7 @@ fun WantedAvatar(
     modifier: Modifier,
     model: Any? = null,
     @DrawableRes placeHolder: Int? = null,
-    size: WantedAvatarSize,
+    size: WantedAvatarSize = WantedAvatarSize.Small,
     type: WantedAvatarType,
     isIcon: Boolean = false,
     isDrawableRes: Boolean = false,

@@ -49,7 +49,7 @@ sealed class WantedToastVariant(
     @DrawableRes val resourceId: Int,
     @ColorRes val tinColor: Int
 ) {
-    data object Normal : WantedToastVariant(-1, -1)
+    data object Message : WantedToastVariant(-1, -1)
     data object Positive : WantedToastVariant(
         R.drawable.ic_normal_circle_check_fill_svg,
         R.color.green_60
@@ -72,7 +72,7 @@ fun WantedSnackBar(
     hostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Normal,
+    variant: WantedToastVariant = WantedToastVariant.Message,
     @DrawableRes icon: Int? = null,
     @ColorRes tintColor: Int? = null
 ) {
@@ -97,7 +97,7 @@ fun WantedSnackBar(
     hostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Normal,
+    variant: WantedToastVariant = WantedToastVariant.Message,
     icon: @Composable (() -> Unit)? = null
 ) {
     SnackbarHost(
@@ -134,7 +134,7 @@ fun WantedToast(
     @StringRes text: Int,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Normal,
+    variant: WantedToastVariant = WantedToastVariant.Message,
     @DrawableRes icon: Int? = null,
     @ColorRes tintColor: Int? = null
 ) {
@@ -176,11 +176,11 @@ fun WantedToast(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Normal,
+    variant: WantedToastVariant = WantedToastVariant.Message,
     icon: @Composable (() -> Unit)? = null
 ) {
     val iconSlot: @Composable (() -> Unit)? = when (variant) {
-        WantedToastVariant.Normal -> {
+        WantedToastVariant.Message -> {
             icon?.let {
                 {
                     icon()
@@ -269,12 +269,12 @@ private fun ToastNormalPreview() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WantedToast(
-                    variant = WantedToastVariant.Normal,
+                    variant = WantedToastVariant.Message,
                     text = "메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요."
                 )
 
                 WantedToast(
-                    variant = WantedToastVariant.Normal,
+                    variant = WantedToastVariant.Message,
                     text = "메시지에 마침표를 찍어요."
                 )
 

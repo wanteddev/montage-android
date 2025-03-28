@@ -107,7 +107,7 @@ private fun WantedDialogPreview() {
         ) {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 onClickPositive = {}
             ) {
@@ -116,7 +116,7 @@ private fun WantedDialogPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 negative = "취소",
                 onClickPositive = {},
@@ -128,7 +128,7 @@ private fun WantedDialogPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 negative = "취소",
                 onClickPositive = {},
@@ -163,16 +163,6 @@ private fun WantedDialogSizePreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
-                positive = "확인",
-                onClickPositive = {}
-            ) {
-
-                Text(text = "다이얼로그 내용")
-            }
-
-            WantedDialogTwoButtonImpl(
-                modifier = Modifier,
                 modalSize = ModalSize.Medium,
                 positive = "확인",
                 onClickPositive = {}
@@ -184,6 +174,16 @@ private fun WantedDialogSizePreview() {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Large,
+                positive = "확인",
+                onClickPositive = {}
+            ) {
+
+                Text(text = "다이얼로그 내용")
+            }
+
+            WantedDialogTwoButtonImpl(
+                modifier = Modifier,
+                modalSize = ModalSize.XLarge,
                 positive = "확인",
                 onClickPositive = {}
             ) {
@@ -208,7 +208,7 @@ private fun WantedDialogScrollablePreview() {
         ) {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 onClickPositive = {}
             ) {
@@ -239,7 +239,7 @@ private fun WantedDialogTopBarPreview() {
         ) {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedTopAppBar(
@@ -253,7 +253,7 @@ private fun WantedDialogTopBarPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedTopAppBar(
@@ -274,7 +274,7 @@ private fun WantedDialogTopBarPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedTopAppBar(

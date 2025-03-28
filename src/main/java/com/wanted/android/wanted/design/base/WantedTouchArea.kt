@@ -42,7 +42,7 @@ fun WantedTouchArea(
     isUseRipple: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable BoxScope.() -> Unit,
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
@@ -83,7 +83,7 @@ fun WantedTouchArea(
                 }
                 .clip(shape)
                 .clickOnce(
-                    enabled = enabled,
+                    enabled = onClick != null && enabled,
                     indication = if (isUseRipple) {
                         ripple(
                             bounded = true, // 확장된 영역에 리플 효과를 적용
@@ -97,7 +97,7 @@ fun WantedTouchArea(
                     } else null,
                     interactionSource = interactionSource
                 ) {
-                    onClick()
+                    onClick?.invoke()
                 },
             content = {
                 Box(modifier = Modifier.fillMaxSize())
