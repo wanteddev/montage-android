@@ -40,8 +40,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
+    background: Color = if (type == TopAppBarType.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -89,8 +89,8 @@ fun WantedTopAppBar(
 fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
+    background: Color = if (type == TopAppBarType.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
     scrollableState: ScrollableState? = null,
     titleAlignCenter: Boolean = false,
     title: String = "",
@@ -120,8 +120,8 @@ fun WantedBackTopAppBar(
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
+    background: Color = if (type == TopAppBarType.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
