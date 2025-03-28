@@ -147,23 +147,28 @@ private fun WantedCellLayout(
             caption?.invoke()
         }
 
-        Box(
-            modifier = Modifier
-                .size(contentHeight.height)
-                .wrapContentWidth()
-                .align(Alignment.CenterVertically),
-            contentAlignment = Alignment.Center
-        ) {
-            rightContent?.invoke()
+        rightContent?.let {
+            Box(
+                modifier = Modifier
+                    .size(contentHeight.height)
+                    .wrapContentWidth()
+                    .align(Alignment.CenterVertically),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                rightContent()
+            }
         }
 
-        Box(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterVertically),
-            contentAlignment = Alignment.Center
-        ) {
-            chevrons?.invoke()
+
+        chevrons?.let {
+            Box(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterVertically),
+                contentAlignment = Alignment.Center
+            ) {
+                chevrons()
+            }
         }
     }
 }
