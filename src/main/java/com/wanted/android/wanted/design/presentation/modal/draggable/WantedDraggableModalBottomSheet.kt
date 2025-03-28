@@ -100,25 +100,26 @@ internal fun WantedDraggableModalBottomSheet(
 
     var isDialogVisible by remember { mutableStateOf(false) }
 
-    LaunchedEffect(isShow, coroutineScope) {
-        if (isShow) {
+    LaunchedEffect(isShow) {
+        if (isShow && dragState.currentValue == SheetValue.Hidden) {
             coroutineScope.launch {
-                isDialogVisible = true // 다이얼로그 표시
+                isDialogVisible = true
                 dragState.animateTo(SheetValue.Expanded)
             }
-        } else {
+        } else if(!isShow && dragState.currentValue == SheetValue.Expanded){
             coroutineScope.launch {
                 dragState.animateTo(SheetValue.Hidden)
                 currentDismissRequest()
-                isDialogVisible = false // 애니메이션 후 다이얼로그 닫기
+                isDialogVisible = false
             }
         }
     }
 
-    LaunchedEffect(dragState.isAnimationRunning) {
+    LaunchedEffect(dragState.isAnimationRunning, isDialogVisible, dragState.currentValue) {
         if (dragState.isAnimationRunning) return@LaunchedEffect
         if(isDialogVisible && dragState.currentValue == SheetValue.Hidden) {
             currentDismissRequest()
+            isDialogVisible = false
         }
     }
 
@@ -263,7 +264,16 @@ private fun SetUpEdgeToEdgeDialog(
     window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     window.setDimAmount(dimAmount)
-    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+    //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+
+    window.setSoftInputMode(
+        if (Build.VERSION.SDK_INT >= 30) {
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+        } else {
+            @Suppress("DEPRECATION")
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        },
+    )
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         window.attributes.fitInsetsTypes = 0
