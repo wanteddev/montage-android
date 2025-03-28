@@ -162,26 +162,20 @@ internal fun WantedTextButton(
                     }
                 },
                 text =
-                {
-                    if (isLoading) {
-                        WantedCircularProgressIndicator(
-                            modifier = Modifier.size(buttonDefault.loadingSize),
-                            color = buttonDefault.loadingColor
+                    {
+                        Text(
+                            text = text,
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .alpha(if (isLoading) 0f else 1f),
+                            style = buttonDefault.textStyle,
+                            color = textColor.value,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center
                         )
-                    }
-                    Text(
-                        text = text,
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .alpha(if (isLoading) 0f else 1f),
-                        style = buttonDefault.textStyle,
-                        color = textColor.value,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center
-                    )
 
-                },
+                    },
                 rightDrawable = trailingDrawable?.let {
                     {
                         WantedButtonSideIcon(
@@ -193,7 +187,15 @@ internal fun WantedTextButton(
                             tint = rightIconTintColor.value
                         )
                     }
-                }
+                },
+                loading = if (isLoading) {
+                    {
+                        WantedCircularProgressIndicator(
+                            modifier = Modifier.size(buttonDefault.loadingSize),
+                            color = buttonDefault.loadingColor
+                        )
+                    }
+                } else null
             )
         },
         onClick = {
