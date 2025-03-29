@@ -106,7 +106,7 @@ internal fun WantedDraggableModalBottomSheet(
                 isDialogVisible = true
                 dragState.animateTo(SheetValue.Expanded)
             }
-        } else if(!isShow && dragState.currentValue == SheetValue.Expanded){
+        } else if (!isShow && dragState.currentValue == SheetValue.Expanded) {
             coroutineScope.launch {
                 dragState.animateTo(SheetValue.Hidden)
                 currentDismissRequest()
@@ -115,10 +115,12 @@ internal fun WantedDraggableModalBottomSheet(
         }
     }
 
-    LaunchedEffect(dragState.isAnimationRunning, isDialogVisible, dragState.currentValue) {
+    LaunchedEffect(dragState.isAnimationRunning, isDialogVisible, dragState.currentValue, isShow) {
         if (dragState.isAnimationRunning) return@LaunchedEffect
-        if(isDialogVisible && dragState.currentValue == SheetValue.Hidden) {
-            currentDismissRequest()
+        if (isDialogVisible && dragState.currentValue == SheetValue.Hidden) {
+            if (isShow) {
+                currentDismissRequest()
+            }
             isDialogVisible = false
         }
     }
