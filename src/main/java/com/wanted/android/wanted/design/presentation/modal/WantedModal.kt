@@ -7,18 +7,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.navigations.topbar.WantedDialogTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogTwoButtonImpl
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.navigations.topbar.WantedDialogTopAppBar
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 @Composable
@@ -26,6 +28,7 @@ fun WantedModal(
     modifier: Modifier = Modifier,
     modalSize: ModalSize,
     properties: DialogProperties = DialogProperties(),
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     positive: String? = null,
     negative: String? = null,
@@ -41,6 +44,7 @@ fun WantedModal(
         WantedDialogTwoButtonImpl(
             modifier = modifier,
             modalSize = modalSize,
+            shape = shape,
             topBar = topBar,
             positive = positive,
             negative = negative,
@@ -57,6 +61,7 @@ fun WantedModal(
     modifier: Modifier = Modifier,
     modalSize: ModalSize,
     properties: DialogProperties = DialogProperties(),
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: (@Composable () -> Unit)? = null,
     onDismissRequest: () -> Unit,
@@ -69,6 +74,7 @@ fun WantedModal(
         WantedDialogLayout(
             modifier = modifier,
             modalSize = modalSize,
+            shape = shape,
             topBar = topBar,
             content = {
                 Box(modifier = Modifier.padding(horizontal = modalSize.contentPadding)) {
@@ -86,6 +92,7 @@ fun WantedModal(
     modifier: Modifier = Modifier,
     modalSize: ModalSize,
     properties: DialogProperties = DialogProperties(),
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: (@Composable () -> Unit)? = null,
     onDismissRequest: () -> Unit,
@@ -98,6 +105,7 @@ fun WantedModal(
         WantedDialogLayout(
             modifier = modifier,
             modalSize = modalSize,
+            shape = shape,
             topBar = topBar,
             content = {
                 LazyColumn(
@@ -120,7 +128,7 @@ private fun WantedDialogPreview() {
         Scaffold {
             WantedModal(
                 modifier = Modifier.padding(it),
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedDialogTopAppBar(

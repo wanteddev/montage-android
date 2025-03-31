@@ -101,15 +101,15 @@ class WantedTextButton @JvmOverloads constructor(
             type = buttonType,
             size = size,
             enabled = buttonStatus,
-            leftDrawable = if (leftDrawable != 0) leftDrawable else null,
-            rightDrawable = if (rightDrawable != 0) rightDrawable else null,
+            leadingDrawable = if (leftDrawable != 0) leftDrawable else null,
+            trailingDrawable = if (rightDrawable != 0) rightDrawable else null,
             onClick = onClickListener
         )
     }
 }
 
 @Composable
-fun WantedTextButton(
+internal fun WantedTextButton(
     text: String,
     modifier: Modifier = Modifier,
     type: ButtonType = ButtonType.PRIMARY,
@@ -122,8 +122,8 @@ fun WantedTextButton(
         size = size,
         enabled = enabled
     ),
-    leftDrawable: Int? = null,
-    rightDrawable: Int? = null,
+    leadingDrawable: Int? = null,
+    trailingDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
     val textColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.contentColor) }
@@ -149,55 +149,53 @@ fun WantedTextButton(
                 modifier = Modifier,
                 buttonShape = ButtonShape.TEXT,
                 buttonSize = buttonDefault.size,
-                leftDrawable = leftDrawable?.let {
+                leftDrawable = leadingDrawable?.let {
                     {
-                        if (!isLoading) {
-                            WantedButtonSideIcon(
-                                modifier = getButtonDrawableSize(
-                                    shape = ButtonShape.TEXT,
-                                    size = buttonDefault.size
-                                ),
-                                drawableRes = it,
-                                tint = leftIconTintColor.value
-                            )
-                        }
+                        WantedButtonSideIcon(
+                            modifier = getButtonDrawableSize(
+                                shape = ButtonShape.TEXT,
+                                size = buttonDefault.size
+                            ).alpha(if (isLoading) 0f else 1f),
+                            drawableRes = it,
+                            tint = leftIconTintColor.value
+                        )
                     }
                 },
                 text =
-                {
-                    if (isLoading) {
+                    {
+                        Text(
+                            text = text,
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .alpha(if (isLoading) 0f else 1f),
+                            style = buttonDefault.textStyle,
+                            color = textColor.value,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center
+                        )
+
+                    },
+                rightDrawable = trailingDrawable?.let {
+                    {
+                        WantedButtonSideIcon(
+                            modifier = getButtonDrawableSize(
+                                shape = ButtonShape.TEXT,
+                                size = buttonDefault.size
+                            ).alpha(if (isLoading) 0f else 1f),
+                            drawableRes = it,
+                            tint = rightIconTintColor.value
+                        )
+                    }
+                },
+                loading = if (isLoading) {
+                    {
                         WantedCircularProgressIndicator(
                             modifier = Modifier.size(buttonDefault.loadingSize),
                             color = buttonDefault.loadingColor
                         )
                     }
-                    Text(
-                        text = text,
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .alpha(if (isLoading) 0f else 1f),
-                        style = buttonDefault.textStyle,
-                        color = textColor.value,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center
-                    )
-
-                },
-                rightDrawable = rightDrawable?.let {
-                    {
-                        if (!isLoading) {
-                            WantedButtonSideIcon(
-                                modifier = getButtonDrawableSize(
-                                    shape = ButtonShape.TEXT,
-                                    size = buttonDefault.size
-                                ),
-                                drawableRes = it,
-                                tint = rightIconTintColor.value
-                            )
-                        }
-                    }
-                }
+                } else null
             )
         },
         onClick = {
@@ -340,7 +338,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg
         )
 
         WantedTextButton(
@@ -348,7 +346,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
             size = ButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg
         )
     }
 }
@@ -367,7 +365,7 @@ private fun PreviewWantedTextButtonSmallRightDrawableEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
         WantedTextButton(
@@ -375,7 +373,7 @@ private fun PreviewWantedTextButtonSmallRightDrawableEnable() {
             size = ButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
     }
 }
@@ -394,8 +392,8 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg,
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
         WantedTextButton(
@@ -403,8 +401,8 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg,
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
     }
 }
@@ -526,7 +524,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg
         )
 
         WantedTextButton(
@@ -535,7 +533,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg
         )
     }
 }
@@ -555,7 +553,7 @@ private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
         WantedTextButton(
@@ -564,7 +562,7 @@ private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
     }
 }
@@ -584,8 +582,8 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg,
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
         WantedTextButton(
@@ -594,8 +592,8 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leftDrawable = R.drawable.ic_normal_bookmark_svg,
-            rightDrawable = R.drawable.ic_normal_heart_svg
+            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            trailingDrawable = R.drawable.ic_normal_heart_svg
         )
     }
 }

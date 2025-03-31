@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
 fun WantedTouchArea(
@@ -42,7 +42,7 @@ fun WantedTouchArea(
     isUseRipple: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable BoxScope.() -> Unit,
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
@@ -60,11 +60,6 @@ fun WantedTouchArea(
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
-                .onGloballyPositioned { coordinates ->
-                    // Set column height using the LayoutCoordinates
-                    contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
-                    contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -74,16 +69,21 @@ fun WantedTouchArea(
         Layout(
             modifier = Modifier
                 .constrainAs(touch) {
-                    top.linkTo(box.top)
-                    start.linkTo(box.start)
-                    end.linkTo(box.end)
-                    bottom.linkTo(box.bottom)
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
                     width = Dimension.fillToConstraints  // Match width of text
                     height = Dimension.fillToConstraints // Match height of text
                 }
+                .onGloballyPositioned { coordinates ->
+                    // Set column height using the LayoutCoordinates
+                    contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
+                    contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
+                }
                 .clip(shape)
                 .clickOnce(
-                    enabled = enabled,
+                    enabled = onClick != null && enabled,
                     indication = if (isUseRipple) {
                         ripple(
                             bounded = true, // 확장된 영역에 리플 효과를 적용
@@ -97,7 +97,7 @@ fun WantedTouchArea(
                     } else null,
                     interactionSource = interactionSource
                 ) {
-                    onClick()
+                    onClick?.invoke()
                 },
             content = {
                 Box(modifier = Modifier.fillMaxSize())
@@ -131,6 +131,8 @@ private fun WantedTouchAreaPreview() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 WantedTouchArea(
+                    horizontalPadding = 10.dp,
+                    verticalPadding = 10.dp,
                     content = {
                         Text(text = "텍스트")
                     },

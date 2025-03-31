@@ -11,7 +11,6 @@ import com.wanted.android.wanted.design.util.ButtonType
 enum class ActionAreaType {
     Strong,
     Neutral,
-    Compact,
     Cancel
 }
 

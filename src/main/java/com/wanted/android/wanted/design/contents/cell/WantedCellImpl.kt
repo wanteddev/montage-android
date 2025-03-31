@@ -43,8 +43,8 @@ fun WantedCellImpl(
     isEnable: Boolean = true,
     isActive: Boolean = false,
     ellipsis: Boolean = true,
+    verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
-    contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     titleStyle: TextStyle? = null,
     captionStyle: TextStyle? = null,
     leftContent: (@Composable () -> Unit)? = null,
@@ -52,8 +52,7 @@ fun WantedCellImpl(
 ) {
     WantedCellLayout(
         modifier = modifier.fillMaxWidth(),
-        contentHeight = contentHeight,
-        verticalAlignment = if (ellipsis) Alignment.CenterVertically else Alignment.Top,
+        verticalAlignment = if (verticalAlignCenter) Alignment.CenterVertically else Alignment.Top,
         text = {
             Text(
                 text = text,
@@ -76,8 +75,8 @@ fun WantedCellImpl(
             {
                 Text(
                     text = caption,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    maxLines = if (ellipsis) 1 else Int.MAX_VALUE,
+                    overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
                     style = WantedTextStyle(
                         colorRes = if (isEnable) {
                             R.color.label_alternative
@@ -112,7 +111,6 @@ fun WantedCellImpl(
 @Composable
 private fun WantedCellLayout(
     modifier: Modifier = Modifier,
-    contentHeight: WantedCellContract.ContentHeight = WantedCellContract.ContentHeight.ContentHeight24,
     verticalAlignment: Alignment.Vertical = Alignment.Top,
     text: @Composable () -> Unit,
     caption: @Composable (() -> Unit)?,
@@ -129,8 +127,7 @@ private fun WantedCellLayout(
         leftContent?.let {
             Box(
                 modifier = Modifier
-                    .size(contentHeight.height)
-                    .wrapContentWidth()
+                    .wrapContentSize()
                     .align(Alignment.CenterVertically)
             ) {
                 leftContent()
@@ -150,8 +147,7 @@ private fun WantedCellLayout(
         rightContent?.let {
             Box(
                 modifier = Modifier
-                    .size(contentHeight.height)
-                    .wrapContentWidth()
+                    .wrapContentSize()
                     .align(Alignment.CenterVertically),
                 contentAlignment = Alignment.CenterEnd
             ) {

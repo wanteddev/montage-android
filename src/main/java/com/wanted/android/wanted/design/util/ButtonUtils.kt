@@ -158,15 +158,15 @@ internal fun getContentBadgeDrawableSize(
     size: ContentBadgeSize
 ): Modifier =
     when (size) {
-        ContentBadgeSize.LARGE -> Modifier
+        ContentBadgeSize.Large -> Modifier
             .height(16.dp)
             .wrapContentWidth()
 
-        ContentBadgeSize.MEDIUM -> Modifier
+        ContentBadgeSize.Small -> Modifier
             .height(14.dp)
             .wrapContentWidth()
 
-        ContentBadgeSize.NORMAL -> Modifier
+        ContentBadgeSize.XSmall -> Modifier
             .size(12.dp)
             .wrapContentWidth()
     }

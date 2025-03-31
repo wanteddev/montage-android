@@ -13,7 +13,7 @@ data class SnackbarEvent(
     val action: SnackbarAction? = null,
     val duration: SnackbarDuration = SnackbarDuration.Short,
     val withDismissAction: Boolean = false,
-    val snackbarType: SnackbarType = SnackbarType.Toast(variant = WantedToastVariant.NORMAL),
+    val snackbarType: SnackbarType = SnackbarType.Toast(variant = WantedToastVariant.Message),
     val padding: PaddingValues = PaddingValues()
 )
 
@@ -28,13 +28,13 @@ class WantedSnackbarVisuals(
     override val message: String,
     override val duration: SnackbarDuration = SnackbarDuration.Short,
     override val withDismissAction: Boolean = false,
-    val snackbarType: SnackbarType = SnackbarType.Toast(variant = WantedToastVariant.NORMAL),
+    val snackbarType: SnackbarType = SnackbarType.Toast(variant = WantedToastVariant.Message),
     val padding: PaddingValues = PaddingValues()
 ) : SnackbarVisuals
 
 sealed interface SnackbarType {
     data class Toast(
-        val variant: WantedToastVariant = WantedToastVariant.NORMAL,
+        val variant: WantedToastVariant = WantedToastVariant.Message,
         val icon: @Composable (() -> Unit)? = null
     ) : SnackbarType
 

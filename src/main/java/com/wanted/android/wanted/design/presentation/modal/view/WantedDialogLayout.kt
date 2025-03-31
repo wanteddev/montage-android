@@ -23,13 +23,14 @@ fun WantedDialogLayout(
     modifier: Modifier = Modifier,
     backgroundColor: Color = colorResource(R.color.background_elevated_normal),
     modalSize: ModalSize,
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
     bottomBar: (@Composable () -> Unit)? = null
 ) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(shape)
             .background(backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

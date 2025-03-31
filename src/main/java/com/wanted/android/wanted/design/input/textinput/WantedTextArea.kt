@@ -449,6 +449,7 @@ private fun WantedTextArea(
                 } else {
                     value.text.length
                 },
+                error = value.text.length > maxWordCount,
                 maxWordCount = maxWordCount
             )
         },

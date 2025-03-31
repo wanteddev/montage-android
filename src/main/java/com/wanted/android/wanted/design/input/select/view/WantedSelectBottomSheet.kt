@@ -56,7 +56,7 @@ fun WantedSelectBottomSheet(
                 items(items) { item ->
                     WantedCell(
                         modifier = Modifier,
-                        verticalPadding = WantedCellContract.VerticalPadding.Padding12,
+                        verticalPadding = WantedCellContract.VerticalPadding.Medium,
                         text = item.text,
                         isActive = selectItem.value == item,
                         rightContent = when {
@@ -67,6 +67,7 @@ fun WantedSelectBottomSheet(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
                                         checked = true,
+                                        thick = false,
                                         onCheckedChange = { }
                                     )
                                 }
@@ -125,7 +126,7 @@ fun WantedSelectBottomSheet(
                         text = "",
                         buttonShape = ButtonShape.OUTLINED,
                         type = ButtonType.ASSISTIVE,
-                        leftDrawable = R.drawable.ic_normal_refresh_svg,
+                        leadingDrawable = R.drawable.ic_normal_refresh_svg,
                         onClick = {
                             selectItem.value = selectedItem
                         }

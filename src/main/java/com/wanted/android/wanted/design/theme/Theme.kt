@@ -27,10 +27,10 @@ fun DesignSystemTheme(
         LocalWantedTypography.provides(WantedTypography()),
         LocalWantedColor.provides(colorPalette),
         LocalOverscrollConfiguration provides null
-
     ) {
         MaterialTheme(
             colorScheme = colorPalette.getColor(isDarkTheme),
+            typography = pretendardTypography,
             shapes = OneIdShapes,
             content = content,
         )
@@ -57,6 +57,7 @@ fun DesignSystemBottomSheetTheme(
         MaterialTheme(
             colorScheme = colorPalette.getColor(isDarkTheme),
             shapes = OneIdShapes,
+            typography = pretendardTypography,
             content = content,
         )
     }
