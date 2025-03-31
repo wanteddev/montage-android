@@ -5,8 +5,8 @@ import extension.defaultKotlinOptions
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
-    id(libs.plugins.android.compose.get().pluginId)
     alias(libs.plugins.kotlin.plugin.compose)
+    id(libs.plugins.android.compose.get().pluginId)
 }
 
 android {
