@@ -126,9 +126,7 @@ private fun WantedCellLayout(
 
         leftContent?.let {
             Box(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .align(Alignment.CenterVertically)
+                modifier = Modifier.wrapContentSize()
             ) {
                 leftContent()
             }
@@ -146,15 +144,12 @@ private fun WantedCellLayout(
 
         rightContent?.let {
             Box(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .align(Alignment.CenterVertically),
+                modifier = Modifier.wrapContentSize(),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 rightContent()
             }
         }
-
 
         chevrons?.let {
             Box(
@@ -205,6 +200,7 @@ private fun WantedListPreview() {
                 WantedCellImpl(
                     text = "텍스트".toAnnotatedString(),
                     caption = "캡션".toAnnotatedString(),
+                    verticalAlignCenter = false,
                     leftContent = {
                         WantedRadioButton(checked = true, onCheckedChange = {})
                     }
