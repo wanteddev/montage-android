@@ -91,14 +91,12 @@ fun WantedCell(
 ) {
     WantedTouchArea(
         shape = RoundedCornerShape(12.dp),
+        isUseRipple = isEnable && onClick != null,
         content = {
             Column {
                 WantedCellImpl(
                     modifier = modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .clickOnce(enabled = isEnable && onClick != null) {
-                            onClick?.invoke()
-                        }
                         .padding(horizontal = if (fillWidth) interactionPadding.padding else 0.dp)
                         .padding(vertical = verticalPadding.value),
                     text = annotatedString,
