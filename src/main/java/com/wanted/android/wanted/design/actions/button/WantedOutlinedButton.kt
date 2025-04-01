@@ -172,27 +172,19 @@ internal fun WantedOutlinedButton(
         buttonSize = buttonDefault.size,
         leftDrawable = leadingDrawable?.let {
             {
-                if (!isLoading) {
-                    WantedButtonSideIcon(
-                        modifier = getButtonDrawableSize(
-                            shape = ButtonShape.OUTLINED,
-                            size = buttonDefault.size
-                        ),
-                        drawableRes = it,
-                        tint = buttonDefault.leftIconTintColor
-                    )
-                }
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.OUTLINED,
+                        size = buttonDefault.size
+                    ).alpha(if (isLoading) 0f else 1f),
+                    drawableRes = it,
+                    tint = buttonDefault.leftIconTintColor
+                )
             }
         },
         text = when {
             text.isNotEmpty() -> {
                 {
-                    if (isLoading) {
-                        WantedCircularProgressIndicator(
-                            modifier = Modifier.size(buttonDefault.loadingSize),
-                            color = buttonDefault.loadingColor
-                        )
-                    }
                     Text(
                         text = text,
                         modifier = Modifier
@@ -211,18 +203,24 @@ internal fun WantedOutlinedButton(
         },
         rightDrawable = trailingDrawable?.let {
             {
-                if (!isLoading) {
-                    WantedButtonSideIcon(
-                        modifier = getButtonDrawableSize(
-                            shape = ButtonShape.OUTLINED,
-                            size = buttonDefault.size
-                        ),
-                        drawableRes = it,
-                        tint = buttonDefault.rightIconTintColor
-                    )
-                }
+                WantedButtonSideIcon(
+                    modifier = getButtonDrawableSize(
+                        shape = ButtonShape.OUTLINED,
+                        size = buttonDefault.size
+                    ).alpha(if (isLoading) 0f else 1f),
+                    drawableRes = it,
+                    tint = buttonDefault.rightIconTintColor
+                )
             }
-        }
+        },
+        loading = if (isLoading) {
+            {
+                WantedCircularProgressIndicator(
+                    modifier = Modifier.size(buttonDefault.loadingSize),
+                    color = buttonDefault.loadingColor
+                )
+            }
+        } else null
     )
 }
 

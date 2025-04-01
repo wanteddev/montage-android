@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun WantedBottomSheetDialog(
     isVisible: Boolean,
-    modalSize: ModalSize = ModalSize.Normal,
+    modalSize: ModalSize = ModalSize.Medium,
     durationMillis: Long = 200,
     onDismissRequest: () -> Unit = {},
     topBar: @Composable () -> Unit,

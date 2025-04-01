@@ -52,11 +52,11 @@ internal fun WantedInputLayout(
                         .align(Alignment.CenterStart)
                         .width(
                             when (tight) {
-                                true -> if (size == WantedInputSize.Normal) 20.dp else 16.dp
-                                else -> if (size == WantedInputSize.Normal) 24.dp else 20.dp
+                                true -> if (size == WantedInputSize.Medium) 20.dp else 16.dp
+                                else -> if (size == WantedInputSize.Medium) 24.dp else 20.dp
                             }
                         )
-                        .height(if (size == WantedInputSize.Normal) 24.dp else 20.dp),
+                        .height(if (size == WantedInputSize.Medium) 24.dp else 20.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     leadingIcon()
@@ -81,7 +81,7 @@ private fun WantedInputLayoutPreview() {
             ) {
                 WantedInputLayout(
                     modifier = Modifier,
-                    size = WantedInputSize.Normal,
+                    size = WantedInputSize.Medium,
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },

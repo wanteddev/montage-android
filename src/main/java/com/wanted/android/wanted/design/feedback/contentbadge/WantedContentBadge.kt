@@ -55,15 +55,15 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45460&m=dev
  */
 enum class ContentBadgeSize {
-    NORMAL, MEDIUM, LARGE
+    XSmall, Small, Large
 }
 
 enum class ContentBadgeType {
-    FILLED, OUTLINED
+    Solid, Outlined
 }
 
 enum class ContentBadgeColor {
-    NEUTRAL, ACCENT
+    Neutral, Accent
 }
 
 class WantedContentBadge @JvmOverloads constructor(
@@ -74,7 +74,7 @@ class WantedContentBadge @JvmOverloads constructor(
 
     lateinit var size: ContentBadgeSize
     var text by mutableStateOf("")
-    var type by mutableStateOf(ContentBadgeType.FILLED)
+    var type by mutableStateOf(ContentBadgeType.Solid)
     var textColor by mutableStateOf(R.color.label_alternative)
     var backgroundColor by mutableStateOf<Int?>(null)
     var lineColor by mutableStateOf<Int?>(null)
@@ -130,10 +130,10 @@ class WantedContentBadge @JvmOverloads constructor(
 fun WantedContentBadge(
     modifier: Modifier = Modifier,
     text: String,
-    type: ContentBadgeType = ContentBadgeType.FILLED,
-    size: ContentBadgeSize = ContentBadgeSize.NORMAL,
-    color: ContentBadgeColor = ContentBadgeColor.NEUTRAL,
-    accentDefault: WantedContentBadgeDefault = if (color == ContentBadgeColor.ACCENT) {
+    type: ContentBadgeType = ContentBadgeType.Solid,
+    size: ContentBadgeSize = ContentBadgeSize.Small,
+    color: ContentBadgeColor = ContentBadgeColor.Neutral,
+    accentDefault: WantedContentBadgeDefault = if (color == ContentBadgeColor.Accent) {
         WantedContentBadgeDefaults.getAccentDefault()
     } else {
         WantedContentBadgeDefaults.getNeutralDefault()
@@ -153,7 +153,7 @@ fun WantedContentBadge(
             )
             .clickOnce(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = if (color == ContentBadgeColor.NEUTRAL) {
+                indication = if (color == ContentBadgeColor.Neutral) {
                     wantedRippleEffect(colorResource(id = R.color.label_normal).copy(OPACITY_12))
                 } else {
                     wantedRippleEffect(accentDefault.backgroundColor.copy(OPACITY_12))
@@ -195,8 +195,8 @@ fun WantedContentBadge(
 @Composable
 fun WantedContentBadgeOld(
     text: String,
-    type: ContentBadgeType = ContentBadgeType.FILLED,
-    size: ContentBadgeSize = ContentBadgeSize.NORMAL,
+    type: ContentBadgeType = ContentBadgeType.Solid,
+    size: ContentBadgeSize = ContentBadgeSize.XSmall,
     textColor: Color,
     backgroundColor: Color? = null,
     lineColor: Color? = null,
@@ -213,7 +213,7 @@ fun WantedContentBadgeOld(
             .wrapContentSize()
             .clip(roundedCornerShape)
             .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
-            .then(if (type == ContentBadgeType.FILLED) {
+            .then(if (type == ContentBadgeType.Solid) {
                 backgroundColor?.let {
                     Modifier.background(color = it, shape = roundedCornerShape)
                 } ?: Modifier
@@ -227,9 +227,9 @@ fun WantedContentBadgeOld(
             .padding(horizontal = getPadding(size).first, vertical = getPadding(size).second),
         horizontalArrangement = Arrangement.spacedBy(
             space = when (size) {
-                ContentBadgeSize.LARGE -> 4.dp
-                ContentBadgeSize.MEDIUM -> 3.dp
-                ContentBadgeSize.NORMAL -> 2.dp
+                ContentBadgeSize.Large -> 4.dp
+                ContentBadgeSize.Small -> 3.dp
+                ContentBadgeSize.XSmall -> 2.dp
             }
         ),
         verticalAlignment = Alignment.CenterVertically
@@ -314,37 +314,37 @@ fun WantedContentBadgeLayout(
 
 @Composable
 private fun getRadius(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.LARGE -> 8.dp
-    ContentBadgeSize.MEDIUM -> 6.dp
-    ContentBadgeSize.NORMAL -> 6.dp
+    ContentBadgeSize.Large -> 8.dp
+    ContentBadgeSize.Small -> 6.dp
+    ContentBadgeSize.XSmall -> 6.dp
 }
 
 @Composable
 private fun getHorizontalPadding(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.LARGE -> 8.dp
-    ContentBadgeSize.MEDIUM -> 6.dp
-    ContentBadgeSize.NORMAL -> 6.dp
+    ContentBadgeSize.XSmall -> 6.dp
+    ContentBadgeSize.Small -> 6.dp
+    ContentBadgeSize.Large -> 8.dp
 }
 
 @Composable
 private fun getVerticalPadding(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.LARGE -> 7.dp
-    ContentBadgeSize.MEDIUM -> 4.dp
-    ContentBadgeSize.NORMAL -> 3.dp
+    ContentBadgeSize.XSmall -> 3.dp
+    ContentBadgeSize.Small -> 4.dp
+    ContentBadgeSize.Large -> 7.dp
 }
 
 @Composable
 private fun getHorizontalAlimentSpace(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.LARGE -> 4.dp
-    ContentBadgeSize.MEDIUM -> 3.dp
-    ContentBadgeSize.NORMAL -> 1.dp
+    ContentBadgeSize.XSmall -> 1.dp
+    ContentBadgeSize.Small -> 3.dp
+    ContentBadgeSize.Large -> 4.dp
 }
 
 @Composable
 private fun getIconSize(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.LARGE -> 16.dp
-    ContentBadgeSize.MEDIUM -> 13.dp
-    ContentBadgeSize.NORMAL -> 12.dp
+    ContentBadgeSize.Large -> 16.dp
+    ContentBadgeSize.Small -> 13.dp
+    ContentBadgeSize.XSmall -> 12.dp
 }
 
 @Composable
@@ -352,7 +352,7 @@ private fun getBackground(
     type: ContentBadgeType,
     default: WantedContentBadgeDefault
 ): Color {
-    return if (type == ContentBadgeType.FILLED) {
+    return if (type == ContentBadgeType.Solid) {
         default.backgroundColor
     } else {
         colorResource(id = R.color.transparent)
@@ -365,7 +365,7 @@ private fun getOutlineColor(
     type: ContentBadgeType,
     default: WantedContentBadgeDefault
 ): Color {
-    return if (type == ContentBadgeType.FILLED) {
+    return if (type == ContentBadgeType.Solid) {
         colorResource(id = R.color.transparent)
     } else {
         default.outLineColor
@@ -382,9 +382,9 @@ private fun getContentColor(
 
 private fun getPadding(size: ContentBadgeSize): Pair<Dp, Dp> =
     when (size) {
-        ContentBadgeSize.NORMAL -> Pair(4.dp, 3.dp)
-        ContentBadgeSize.MEDIUM -> Pair(8.dp, 4.dp)
-        ContentBadgeSize.LARGE -> Pair(12.dp, 6.dp)
+        ContentBadgeSize.XSmall -> Pair(4.dp, 3.dp)
+        ContentBadgeSize.Small -> Pair(8.dp, 4.dp)
+        ContentBadgeSize.Large -> Pair(12.dp, 6.dp)
     }
 
 @Composable
@@ -393,9 +393,9 @@ private fun getContentBadgeTypography(
 ): TextStyle =
     getTextStyle(
         textStyle = when (size) {
-            ContentBadgeSize.LARGE -> WantedTextStyle.LABEL2_MEDIUM
-            ContentBadgeSize.MEDIUM -> WantedTextStyle.CAPTION1_MEDIUM
-            ContentBadgeSize.NORMAL -> WantedTextStyle.CAPTION2_MEDIUM
+            ContentBadgeSize.Large -> WantedTextStyle.LABEL2_MEDIUM
+            ContentBadgeSize.Small -> WantedTextStyle.CAPTION1_MEDIUM
+            ContentBadgeSize.XSmall -> WantedTextStyle.CAPTION2_MEDIUM
         }
     )
 
@@ -428,28 +428,28 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.NORMAL,
+                        size = ContentBadgeSize.XSmall,
                         onClick = {}
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.NORMAL,
+                        size = ContentBadgeSize.XSmall,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.NORMAL,
+                        size = ContentBadgeSize.XSmall,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.NORMAL,
+                        size = ContentBadgeSize.XSmall,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
@@ -462,8 +462,8 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.NORMAL,
-                        color = ContentBadgeColor.ACCENT,
+                        size = ContentBadgeSize.XSmall,
+                        color = ContentBadgeColor.Accent,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -471,8 +471,8 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.NORMAL,
-                        type = ContentBadgeType.OUTLINED,
+                        size = ContentBadgeSize.XSmall,
+                        type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -481,9 +481,9 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.NORMAL,
-                        color = ContentBadgeColor.ACCENT,
-                        type = ContentBadgeType.OUTLINED,
+                        size = ContentBadgeSize.XSmall,
+                        color = ContentBadgeColor.Accent,
+                        type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -501,28 +501,28 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.MEDIUM,
+                        size = ContentBadgeSize.Small,
                         onClick = {}
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.MEDIUM,
+                        size = ContentBadgeSize.Small,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.MEDIUM,
+                        size = ContentBadgeSize.Small,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.MEDIUM,
+                        size = ContentBadgeSize.Small,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
@@ -535,8 +535,8 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.MEDIUM,
-                        color = ContentBadgeColor.ACCENT,
+                        size = ContentBadgeSize.Small,
+                        color = ContentBadgeColor.Accent,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -544,8 +544,8 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.MEDIUM,
-                        type = ContentBadgeType.OUTLINED,
+                        size = ContentBadgeSize.Small,
+                        type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -554,9 +554,9 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.MEDIUM,
-                        color = ContentBadgeColor.ACCENT,
-                        type = ContentBadgeType.OUTLINED,
+                        size = ContentBadgeSize.Small,
+                        color = ContentBadgeColor.Accent,
+                        type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -574,28 +574,28 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.LARGE,
+                        size = ContentBadgeSize.Large,
                         onClick = {}
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.LARGE,
+                        size = ContentBadgeSize.Large,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.LARGE,
+                        size = ContentBadgeSize.Large,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.LARGE,
+                        size = ContentBadgeSize.Large,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg
                     )
@@ -608,8 +608,8 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.LARGE,
-                        color = ContentBadgeColor.ACCENT,
+                        size = ContentBadgeSize.Large,
+                        color = ContentBadgeColor.Accent,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -617,8 +617,8 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.LARGE,
-                        type = ContentBadgeType.OUTLINED,
+                        size = ContentBadgeSize.Large,
+                        type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}
@@ -627,9 +627,9 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.LARGE,
-                        color = ContentBadgeColor.ACCENT,
-                        type = ContentBadgeType.OUTLINED,
+                        size = ContentBadgeSize.Large,
+                        color = ContentBadgeColor.Accent,
+                        type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.ic_normal_bookmark_svg,
                         trailingDrawable = R.drawable.ic_normal_bookmark_svg,
                         onClick = {}

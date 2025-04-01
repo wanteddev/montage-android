@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.presentation.autocomplete
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -36,7 +37,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     modifier: Modifier = Modifier,
-    containerColor: Color = colorResource(R.color.background_normal_normal),
+    containerColor: Color = colorResource(R.color.background_elevated_normal),
     expended: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     sectionTitleHorizontalPadding: Dp = 20.dp,
@@ -77,12 +78,14 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     }
 
     ExposedDropdownMenu(
-        modifier = modifier.padding(horizontal = 8.dp),
+        modifier = modifier
+            .padding(horizontal = 8.dp),
         scrollState = scrollState,
         containerColor = containerColor,
         shape = RoundedCornerShape(16.dp),
         expanded = expended,
         shadowElevation = 1.dp,
+        border = BorderStroke(1.dp, colorResource(R.color.line_solid_normal)),
         onDismissRequest = {
             onExpandedChange(expended)
         }

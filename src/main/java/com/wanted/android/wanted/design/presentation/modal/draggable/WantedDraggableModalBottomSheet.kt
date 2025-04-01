@@ -59,7 +59,6 @@ import kotlin.math.roundToInt
 
 @Composable
 internal fun WantedDraggableModalBottomSheet(
-    modifier: Modifier,
     isShow: Boolean,
     properties: DialogProperties = remember {
         DialogProperties(
@@ -154,7 +153,7 @@ internal fun WantedDraggableModalBottomSheet(
 
                 Box(modifier = Modifier) {
                     Column(
-                        modifier = modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .imePadding()
                             .offset {

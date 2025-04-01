@@ -12,8 +12,8 @@ import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 data class WantedChipDefault(
-    val size: ChipActionSize = ChipActionSize.NORMAL,
-    val variant: ChipActionVariant = ChipActionVariant.FILLED,
+    val size: ChipActionSize = ChipActionSize.Medium,
+    val variant: ChipActionVariant = ChipActionVariant.Solid,
     val isActive: Boolean = false,
     val isEnable: Boolean = true,
     val iconColor: Color,
@@ -71,7 +71,7 @@ object WantedChipDefaults {
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Int {
         return when (variant) {
-            ChipActionVariant.FILLED -> {
+            ChipActionVariant.Solid -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.inverse_label
@@ -79,7 +79,7 @@ object WantedChipDefaults {
                 }
             }
 
-            ChipActionVariant.OUTLINED -> {
+            ChipActionVariant.Outlined -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.primary_normal
@@ -96,7 +96,7 @@ object WantedChipDefaults {
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Int {
         return when (variant) {
-            ChipActionVariant.FILLED -> {
+            ChipActionVariant.Solid -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.inverse_label
@@ -104,7 +104,7 @@ object WantedChipDefaults {
                 }
             }
 
-            ChipActionVariant.OUTLINED -> {
+            ChipActionVariant.Outlined -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.label_normal
@@ -120,7 +120,7 @@ object WantedChipDefaults {
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Color = when (variant) {
-        ChipActionVariant.FILLED -> {
+        ChipActionVariant.Solid -> {
             when {
                 !isEnable -> colorResource(id = R.color.interaction_disable)
                 isActive -> colorResource(id = R.color.inverse_background)
@@ -128,7 +128,7 @@ object WantedChipDefaults {
             }
         }
 
-        ChipActionVariant.OUTLINED -> {
+        ChipActionVariant.Outlined -> {
             when {
                 !isEnable -> colorResource(id = R.color.transparent)
                 isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
@@ -143,7 +143,7 @@ object WantedChipDefaults {
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Color = when (variant) {
-        ChipActionVariant.FILLED -> {
+        ChipActionVariant.Solid -> {
             when {
                 !isEnable -> colorResource(id = R.color.transparent)
                 isActive -> colorResource(id = R.color.transparent)
@@ -151,7 +151,7 @@ object WantedChipDefaults {
             }
         }
 
-        ChipActionVariant.OUTLINED -> {
+        ChipActionVariant.Outlined -> {
             when {
                 !isEnable -> colorResource(id = R.color.line_normal_neutral)
                 isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
@@ -179,7 +179,7 @@ object WantedChipDefaults {
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Int {
         return when (variant) {
-            ChipActionVariant.FILLED -> {
+            ChipActionVariant.Solid -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.inverse_label
@@ -187,7 +187,7 @@ object WantedChipDefaults {
                 }
             }
 
-            ChipActionVariant.OUTLINED -> {
+            ChipActionVariant.Outlined -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.primary_normal
@@ -201,9 +201,9 @@ object WantedChipDefaults {
     private fun getChipActionTextStyle(
         size: ChipActionSize = LocalWantedChipSize.current
     ): TextStyle = when (size) {
-        ChipActionSize.XSMALL -> DesignSystemTheme.typography.caption1Medium
-        ChipActionSize.SMALL -> DesignSystemTheme.typography.label1Medium
-        ChipActionSize.NORMAL -> DesignSystemTheme.typography.body2Medium
-        ChipActionSize.LARGE -> DesignSystemTheme.typography.body2Medium
+        ChipActionSize.XSmall -> DesignSystemTheme.typography.caption1Medium
+        ChipActionSize.Small -> DesignSystemTheme.typography.label1Medium
+        ChipActionSize.Medium -> DesignSystemTheme.typography.body2Medium
+        ChipActionSize.Large -> DesignSystemTheme.typography.body2Medium
     }
 }
