@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -68,18 +67,18 @@ fun WantedCategory(
                     text = item,
                     variant = if (selectedList.contains(item)) {
                         if (isAlternative) {
-                            ChipActionVariant.OUTLINED
+                            ChipActionVariant.Outlined
                         } else {
-                            ChipActionVariant.FILLED
+                            ChipActionVariant.Solid
                         }
                     } else {
-                        ChipActionVariant.OUTLINED
+                        ChipActionVariant.Outlined
                     },
                     size = when (size) {
-                        Size.Small -> ChipActionSize.XSMALL
-                        Size.Medium -> ChipActionSize.SMALL
-                        Size.Large -> ChipActionSize.NORMAL
-                        Size.XLarge -> ChipActionSize.LARGE
+                        Size.Small -> ChipActionSize.XSmall
+                        Size.Medium -> ChipActionSize.Small
+                        Size.Large -> ChipActionSize.Medium
+                        Size.XLarge -> ChipActionSize.Large
                     },
                     isActive = selectedList.contains(item),
                     onClick = {
@@ -257,11 +256,11 @@ private fun WantedCategoryPreview() {
                             WantedActionChip(
                                 text = item,
                                 variant = if (index == 0) {
-                                    ChipActionVariant.FILLED
+                                    ChipActionVariant.Solid
                                 } else {
-                                    ChipActionVariant.OUTLINED
+                                    ChipActionVariant.Outlined
                                 },
-                                size = ChipActionSize.SMALL,
+                                size = ChipActionSize.Small,
                                 isActive = index == 0
                             )
                         }

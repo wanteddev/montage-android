@@ -38,6 +38,7 @@ fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
     background: Color = colorResource(R.color.background_elevated_normal),
     modalSize: ModalSize,
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     positiveButtonType: ButtonType = ButtonType.PRIMARY,
     negativeButtonType: ButtonType = ButtonType.ASSISTIVE,
@@ -52,6 +53,7 @@ fun WantedDialogTwoButtonImpl(
             .clip(RoundedCornerShape(12.dp))
             .background(background),
         modalSize = modalSize,
+        shape = shape,
         topBar = topBar,
         content = {
             Box(modifier = Modifier.padding(horizontal = modalSize.contentPadding)) {
@@ -105,7 +107,7 @@ private fun WantedDialogPreview() {
         ) {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 onClickPositive = {}
             ) {
@@ -114,7 +116,7 @@ private fun WantedDialogPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 negative = "취소",
                 onClickPositive = {},
@@ -126,7 +128,7 @@ private fun WantedDialogPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 negative = "취소",
                 onClickPositive = {},
@@ -161,16 +163,6 @@ private fun WantedDialogSizePreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
-                positive = "확인",
-                onClickPositive = {}
-            ) {
-
-                Text(text = "다이얼로그 내용")
-            }
-
-            WantedDialogTwoButtonImpl(
-                modifier = Modifier,
                 modalSize = ModalSize.Medium,
                 positive = "확인",
                 onClickPositive = {}
@@ -182,6 +174,16 @@ private fun WantedDialogSizePreview() {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
                 modalSize = ModalSize.Large,
+                positive = "확인",
+                onClickPositive = {}
+            ) {
+
+                Text(text = "다이얼로그 내용")
+            }
+
+            WantedDialogTwoButtonImpl(
+                modifier = Modifier,
+                modalSize = ModalSize.XLarge,
                 positive = "확인",
                 onClickPositive = {}
             ) {
@@ -206,7 +208,7 @@ private fun WantedDialogScrollablePreview() {
         ) {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 onClickPositive = {}
             ) {
@@ -237,7 +239,7 @@ private fun WantedDialogTopBarPreview() {
         ) {
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedTopAppBar(
@@ -251,7 +253,7 @@ private fun WantedDialogTopBarPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedTopAppBar(
@@ -272,7 +274,7 @@ private fun WantedDialogTopBarPreview() {
 
             WantedDialogTwoButtonImpl(
                 modifier = Modifier,
-                modalSize = ModalSize.Normal,
+                modalSize = ModalSize.Medium,
                 positive = "확인",
                 topBar = {
                     WantedTopAppBar(

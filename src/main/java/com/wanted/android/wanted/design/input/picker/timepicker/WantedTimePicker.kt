@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.input.picker
+package com.wanted.android.wanted.design.input.picker.timepicker
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

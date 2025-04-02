@@ -23,38 +23,45 @@ fun WantedButtonLayout(
     text: @Composable (() -> Unit)? = null,
     leftDrawable: @Composable (() -> Unit)? = null,
     rightDrawable: @Composable (() -> Unit)? = null,
+    loading: @Composable (() -> Unit)? = null
 ) {
-    Row(
-        modifier = modifier
+    Box(
+        modifier
             .buttonHeight(buttonShape, buttonSize)
             .buttonWidth(buttonSize, text == null)
             .buttonVerticalPadding(buttonShape != ButtonShape.TEXT && text != null)
             .buttonHorizontalPadding(buttonShape, buttonSize, text == null),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = getButtonSpaceBetweenTextAndIcon(
-                buttonShape,
-                buttonSize
-            ),
-            alignment = Alignment.CenterHorizontally
-        ),
-        verticalAlignment = Alignment.CenterVertically
+        contentAlignment = Alignment.Center
     ) {
-        leftDrawable?.let {
-            leftDrawable()
-        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(
+                space = getButtonSpaceBetweenTextAndIcon(
+                    buttonShape,
+                    buttonSize
+                ),
+                alignment = Alignment.CenterHorizontally
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            leftDrawable?.let {
+                leftDrawable()
+            }
 
-        text?.let {
-            Box(
-                Modifier.wrapContentHeight(),
-                contentAlignment = Alignment.Center
-            ) {
-                text()
+            text?.let {
+                Box(
+                    Modifier.wrapContentHeight(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    text()
+                }
+            }
+
+            rightDrawable?.let {
+                rightDrawable()
             }
         }
 
-        rightDrawable?.let {
-            rightDrawable()
-        }
+        loading?.invoke()
     }
 }
 

@@ -48,7 +48,7 @@ import kotlin.math.floor
 @Composable
 fun WantedDotIndicator(
     modifier: Modifier = Modifier,
-    size: WantedDotIndicatorSize = WantedDotIndicatorSize.Normal,
+    size: WantedDotIndicatorSize = WantedDotIndicatorSize.Medium,
     type: WantedDotIndicatorType = WantedDotIndicatorType.Normal,
     totalPageCount: Int,
     visibleDotCount: Int,
@@ -369,7 +369,7 @@ private fun getDotSize(
     size: WantedDotIndicatorSize,
     dotSize: IndicatorDotSize
 ): Dp {
-    return if (size == WantedDotIndicatorSize.Normal) {
+    return if (size == WantedDotIndicatorSize.Medium) {
         when (dotSize) {
             IndicatorDotSize.Max -> 10
             IndicatorDotSize.Mid -> 8

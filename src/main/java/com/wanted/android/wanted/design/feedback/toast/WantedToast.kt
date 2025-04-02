@@ -19,6 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -46,7 +49,7 @@ sealed class WantedToastVariant(
     @DrawableRes val resourceId: Int,
     @ColorRes val tinColor: Int
 ) {
-    data object Normal : WantedToastVariant(-1, -1)
+    data object Message : WantedToastVariant(-1, -1)
     data object Positive : WantedToastVariant(
         R.drawable.ic_normal_circle_check_fill_svg,
         R.color.green_60
@@ -64,13 +67,76 @@ sealed class WantedToastVariant(
 }
 
 @Composable
+fun WantedSnackBar(
+    @StringRes text: Int,
+    hostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets(0),
+    variant: WantedToastVariant = WantedToastVariant.Message,
+    @DrawableRes icon: Int? = null,
+    @ColorRes tintColor: Int? = null
+) {
+    SnackbarHost(
+        modifier = modifier.zIndex(1000f),
+        hostState = hostState
+    ) {
+        WantedToast(
+            modifier = Modifier,
+            variant = variant,
+            windowInsets = windowInsets,
+            text = text,
+            icon = icon,
+            tintColor = tintColor
+        )
+    }
+}
+
+@Composable
+fun WantedSnackBar(
+    text: String,
+    hostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets(0),
+    variant: WantedToastVariant = WantedToastVariant.Message,
+    icon: @Composable (() -> Unit)? = null
+) {
+    SnackbarHost(
+        modifier = modifier.zIndex(1000f),
+        hostState = hostState
+    ) {
+        WantedToast(
+            modifier = Modifier,
+            variant = variant,
+            windowInsets = windowInsets,
+            text = text,
+            icon = icon
+        )
+    }
+}
+
+@Deprecated(
+    """
+    WantedSnackBar(
+        @StringRes text: Int,
+        hostState: SnackbarHostState,
+        modifier: Modifier = Modifier,
+        windowInsets: WindowInsets = WindowInsets(0),
+        variant: WantedToastVariant = WantedToastVariant.Normal,
+           @DrawableRes icon: Int? = null,
+        @ColorRes tintColor: Int? = null
+    )       
+    
+    hostState.show(coroutineScope)
+    """
+)
+@Composable
 fun WantedToast(
     @StringRes text: Int,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Normal,
+    variant: WantedToastVariant = WantedToastVariant.Message,
     @DrawableRes icon: Int? = null,
-    @ColorRes tintColor: Int? = null,
+    @ColorRes tintColor: Int? = null
 ) {
     WantedToast(
         modifier = modifier,
@@ -91,16 +157,30 @@ fun WantedToast(
     )
 }
 
+@Deprecated(
+    """
+    WantedSnackBar(
+        text: String,
+        hostState: SnackbarHostState,
+        modifier: Modifier = Modifier,
+        windowInsets: WindowInsets = WindowInsets(0),
+        variant: WantedToastVariant = WantedToastVariant.Normal,
+        icon: @Composable (() -> Unit)? = null
+    )       
+    
+    hostState.show(coroutineScope)
+    """
+)
 @Composable
 fun WantedToast(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Normal,
+    variant: WantedToastVariant = WantedToastVariant.Message,
     icon: @Composable (() -> Unit)? = null
 ) {
     val iconSlot: @Composable (() -> Unit)? = when (variant) {
-        WantedToastVariant.Normal -> {
+        WantedToastVariant.Message -> {
             icon?.let {
                 {
                     icon()
@@ -189,12 +269,12 @@ private fun ToastNormalPreview() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WantedToast(
-                    variant = WantedToastVariant.Normal,
+                    variant = WantedToastVariant.Message,
                     text = "메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요."
                 )
 
                 WantedToast(
-                    variant = WantedToastVariant.Normal,
+                    variant = WantedToastVariant.Message,
                     text = "메시지에 마침표를 찍어요."
                 )
 

@@ -2,7 +2,7 @@ package com.wanted.android.wanted.design.input.input
 
 object WantedInputContract {
     enum class WantedInputSize {
-        Normal,
+        Medium,
         Small
     }
 

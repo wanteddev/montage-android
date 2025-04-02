@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.wanted.android.wanted.design.feedback.toast.WantedToast
@@ -26,6 +27,7 @@ fun WantedSnackBarHost(
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
     SnackbarHost(
+        modifier = Modifier.zIndex(1000f),
         hostState = hostState,
         snackbar = {
             val visuals =

@@ -183,7 +183,7 @@ private fun WantedAccordionPreview() {
                             Modifier
                                 .fillMaxWidth()
                                 .height(100.dp)
-                                .background(colorResource(R.color.accent_violet).copy(OPACITY_8))
+                                .background(colorResource(R.color.accent_background_violet).copy(OPACITY_8))
                         )
                     },
                     onChangeExpanded = {}
@@ -200,7 +200,7 @@ private fun WantedAccordionPreview() {
                             Modifier
                                 .fillMaxWidth()
                                 .height(100.dp)
-                                .background(colorResource(R.color.accent_violet).copy(OPACITY_8))
+                                .background(colorResource(R.color.accent_background_violet).copy(OPACITY_8))
                         )
                     },
                     onChangeExpanded = {}
