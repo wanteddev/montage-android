@@ -26,7 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -63,6 +65,7 @@ internal fun WantedCustomTextField(
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
+    cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
     background: Color = colorResource(id = R.color.background_normal_normal),
     rightContent: @Composable ((size: Dp) -> Unit)? = null,
     rightButton: String? = null,
@@ -161,6 +164,7 @@ internal fun WantedCustomTextField(
                     minLines = minLines,
                     enabled = enabled,
                     singleLine = true,
+                    cursorBrush = cursorBrush,
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
