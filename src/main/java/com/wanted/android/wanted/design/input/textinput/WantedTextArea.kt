@@ -31,7 +31,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -40,16 +42,16 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedActionChip
-import com.wanted.android.wanted.design.input.ComponentTitle
 import com.wanted.android.wanted.design.base.WantedDropShadow
+import com.wanted.android.wanted.design.input.ComponentTitle
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaCharacterCount
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaLayout
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import java.text.BreakIterator
@@ -493,6 +495,7 @@ private fun WantedTextArea(
     maxWordCount: Int = 2000,
     enabledOverflowText: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
+    cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -569,6 +572,7 @@ private fun WantedTextArea(
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
+                    cursorBrush = cursorBrush,
                     textStyle = WantedTextStyle(
                         colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
                         style = DesignSystemTheme.typography.body1Regular

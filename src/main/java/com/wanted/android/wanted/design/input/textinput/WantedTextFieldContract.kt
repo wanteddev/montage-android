@@ -1,9 +1,14 @@
 package com.wanted.android.wanted.design.input.textinput
 
-object WantedTextInputContract {
+object WantedTextFieldContract {
     enum class Status {
         Normal,
         Positive,
         Negative
     }
+
+    enum class RightVariant {
+        Normal, Assistive
+    }
+
 }

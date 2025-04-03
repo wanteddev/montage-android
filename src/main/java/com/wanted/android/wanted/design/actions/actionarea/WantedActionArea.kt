@@ -6,12 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
@@ -87,7 +91,7 @@ fun WantedActionArea(
                     modifier = if (type == ActionAreaType.Strong) {
                         Modifier
                     } else {
-                        Modifier.fillMaxWidth()
+                        Modifier.wrapContentSize()
                     },
                     buttonShape = ButtonShape.OUTLINED,
                     type = ButtonType.ASSISTIVE,
@@ -225,7 +229,7 @@ private fun WantedActionAreaLayout(
     LaunchedEffect(key1 = scrollableState?.canScrollForward) {
         scrollableState?.canScrollForward?.let {
             isShowGradient.value = scrollableState.canScrollForward == true
-        } ?:run {
+        } ?: run {
             isShowGradient.value = true
         }
     }
@@ -427,8 +431,8 @@ private fun WantedActionNeutralAreaLayout(
             neutral?.let {
                 Box(
                     modifier = Modifier
-                        .width(84.dp)
-                        .wrapContentHeight()
+                        .defaultMinSize(84.dp)
+                        .wrapContentSize()
                 ) {
                     neutral()
                 }
@@ -539,7 +543,9 @@ private fun WantedActionAreaPreview() {
     DesignSystemTheme {
         Surface {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 WantedActionArea(
