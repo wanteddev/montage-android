@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -15,6 +16,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.SecureFlagPolicy
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.BottomSheetDialogType
@@ -31,6 +34,7 @@ fun WantedModalBottomSheet(
     background: Color = colorResource(id = R.color.background_elevated_normal),
     type: BottomSheetDialogType = BottomSheetDialogType.Flexible,
     modalSize: ModalSize = ModalSize.Medium,
+    dismissOnClickOutside: Boolean = true,
     onDismissRequest: () -> Unit,
     topBar: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
@@ -89,6 +93,13 @@ fun WantedModalBottomSheet(
         WantedDraggableModalBottomSheet(
             isShow = isShow,
             contentColor = background,
+            properties = remember {
+                DialogProperties(
+                    usePlatformDefaultWidth = true,
+                    decorFitsSystemWindows = false,
+                    dismissOnClickOutside = dismissOnClickOutside
+                )
+            },
             dragHandle = if (type.isCloseable) {
                 { WantedModalDefaults.DragHandle() }
             } else {
@@ -108,6 +119,10 @@ fun WantedModalBottomSheet(
     } else if (isShow) {
         ModalBottomSheet(
             modifier = modifier.fillMaxWidth(),
+            properties = ModalBottomSheetProperties(
+                SecureFlagPolicy.Inherit,
+                dismissOnClickOutside
+            ),
             containerColor = background,
             contentColor = background,
             tonalElevation = 0.dp,
@@ -128,7 +143,9 @@ fun WantedModalBottomSheet(
                     bottomBar = bottomBar
                 )
             },
-            onDismissRequest = { onDismissRequest() }
+            onDismissRequest = {
+                onDismissRequest()
+            }
         )
     }
 }
