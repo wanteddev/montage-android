@@ -192,22 +192,24 @@ internal fun WantedDraggableModalBottomSheet(
                         content()
                     }
 
-                    WantedHandleTouchArea(
-                        modifier = Modifier
-                            .height(58.dp)
-                            .width(116.dp)
-                            .align(Alignment.TopCenter)
-                            .offset {
-                                IntOffset(
-                                    x = 0,
-                                    y = dragState
-                                        .requireOffset()
-                                        .roundToInt()
-                                )
-                            },
-                        draggableState = dragState
+                    dragHandle?.let {
+                        WantedHandleTouchArea(
+                            modifier = Modifier
+                                .height(58.dp)
+                                .width(116.dp)
+                                .align(Alignment.TopCenter)
+                                .offset {
+                                    IntOffset(
+                                        x = 0,
+                                        y = dragState
+                                            .requireOffset()
+                                            .roundToInt()
+                                    )
+                                },
+                            draggableState = dragState
 
-                    )
+                        )
+                    }
                 }
             }
         }
