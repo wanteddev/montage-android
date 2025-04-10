@@ -31,8 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -76,7 +74,6 @@ fun WantedTextArea(
     enabledOverflowText: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     requiredBadge: Boolean = false,
-    focusRequester: FocusRequester = remember { FocusRequester() },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -122,7 +119,6 @@ fun WantedTextArea(
                     maxWordCount = maxWordCount,
                     enabledOverflowText = enabledOverflowText,
                     isGraphemeClusterCount = isGraphemeClusterCount,
-                    focusRequester = focusRequester,
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
@@ -154,7 +150,6 @@ fun WantedTextArea(
                     maxWordCount = maxWordCount,
                     enabledOverflowText = enabledOverflowText,
                     isGraphemeClusterCount = isGraphemeClusterCount,
-                    focusRequester = focusRequester,
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
@@ -213,7 +208,6 @@ fun WantedTextArea(
     enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
-    focusRequester: FocusRequester = remember { FocusRequester() },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -246,7 +240,6 @@ fun WantedTextArea(
                 maxWordCount = maxWordCount,
                 enabledOverflowText = enabledOverflowText,
                 isGraphemeClusterCount = isGraphemeClusterCount,
-                focusRequester = focusRequester,
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -293,7 +286,6 @@ fun WantedTextArea(
     maxWordCount: Int = 2000,
     enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
-    focusRequester: FocusRequester = remember { FocusRequester() },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -367,7 +359,6 @@ private fun WantedTextArea(
     minLines: Int = MIN_LINE,
     maxWordCount: Int = 2000,
     enabledOverflowText: Boolean = false,
-    focusRequester: FocusRequester = remember { FocusRequester() },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -388,7 +379,6 @@ private fun WantedTextArea(
         maxWordCount = maxWordCount,
         enabledOverflowText = enabledOverflowText,
         isGraphemeClusterCount = isGraphemeClusterCount,
-        focusRequester = focusRequester,
         interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
@@ -445,7 +435,6 @@ private fun WantedTextArea(
     enabledOverflowText: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
     cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
-    focusRequester: FocusRequester = remember { FocusRequester() },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -482,22 +471,21 @@ private fun WantedTextArea(
                 .border(
                     shape = RoundedCornerShape(12.dp),
                     color = when {
-                        negative || focused -> {
-                            colorResource(id = R.color.background_normal_normal)
-                                .copy(alpha = OPACITY_43)
-                        }
-
-                        else -> colorResource(R.color.transparent)
+                        !enabled -> colorResource(R.color.line_normal_neutral)
+                        negative -> colorResource(R.color.status_negative).copy(OPACITY_43)
+                        focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                        else -> colorResource(R.color.line_normal_neutral)
                     },
                     width = if (focused) 2.dp else 1.dp
                 )
                 .border(
                     shape = RoundedCornerShape(12.dp),
                     color = when {
-                        !enabled -> colorResource(R.color.line_normal_neutral)
-                        negative -> colorResource(R.color.status_negative).copy(OPACITY_43)
-                        focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
-                        else -> colorResource(R.color.line_normal_neutral)
+                        negative || focused -> {
+                            colorResource(id = R.color.background_normal_normal)
+                        }
+
+                        else -> colorResource(R.color.transparent)
                     },
                     width = if (focused) 2.dp else 1.dp
                 )
@@ -515,8 +503,7 @@ private fun WantedTextArea(
                     modifier = Modifier
                         .padding(horizontal = 12.dp)
                         .padding(vertical = 12.dp)
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester),
+                        .fillMaxWidth(),
                     maxLines = maxLines,
                     minLines = minLines,
                     enabled = enabled,

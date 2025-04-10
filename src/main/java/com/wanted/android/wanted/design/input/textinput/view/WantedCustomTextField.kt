@@ -99,13 +99,6 @@ internal fun WantedCustomTextField(
                     end.linkTo(parent.end)
                 }
                 .clip(RoundedCornerShape(12.dp))
-                .border(
-                    shape = RoundedCornerShape(12.dp),
-                    color = colorResource(
-                        if (enabled) R.color.line_normal_neutral else R.color.line_normal_alternative
-                    ),
-                    width = 1.dp
-                )
                 .background(
                     if (enabled) {
                         background
@@ -144,10 +137,10 @@ internal fun WantedCustomTextField(
                                 )
                             } ?: run { RoundedCornerShape(12.dp) },
                             color = when {
-                                !enabled -> colorResource(R.color.transparent)
+                                !enabled -> colorResource(R.color.line_normal_alternative)
                                 error -> colorResource(R.color.status_negative).copy(OPACITY_43)
                                 focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
-                                else -> colorResource(R.color.transparent)
+                                else -> colorResource(R.color.line_normal_neutral)
                             },
                             width = if (focused) 2.dp else 1.dp
                         )
