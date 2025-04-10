@@ -17,6 +17,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 internal fun WantedTextAreaCharacterCount(
     modifier: Modifier = Modifier,
+    error: Boolean = false,
     current: Int,
     maxWordCount: Int
 ) {
@@ -28,7 +29,7 @@ internal fun WantedTextAreaCharacterCount(
             modifier = Modifier.alpha(OPACITY_74),
             text = "$current",
             style = WantedTextStyle(
-                colorRes = R.color.label_alternative,
+                colorRes = if (error) R.color.status_negative else R.color.label_alternative,
                 style = DesignSystemTheme.typography.label2Medium
             )
         )

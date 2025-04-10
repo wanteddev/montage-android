@@ -50,6 +50,7 @@
     <color name="blue_90">#C9DEFE</color>
     <color name="blue_80">#9EC5FF</color>
     <color name="blue_70">#69A5FF</color>
+    <color name="blue_65">#4F95FF</color>
     <color name="blue_60">#3385FF</color>
     <color name="blue_55">#1A75FF</color>
     <color name="blue_50">#0066FF</color>
@@ -94,6 +95,7 @@
     <color name="orange_60">#FFA938</color>
     <color name="orange_50">#FF9200</color>
     <color name="orange_40">#D47800</color>
+    <color name="orange_39">#D17600</color>
     <color name="orange_30">#9C5800</color>
     <color name="orange_20">#663A00</color>
     <color name="orange_10">#361E00</color>
@@ -106,6 +108,7 @@
     <color name="redorange_70">#FF9B61</color>
     <color name="redorange_60">#FF7B2E</color>
     <color name="redorange_50">#FF5E00</color>
+    <color name="redorange_48">#F55A00</color>
     <color name="redorange_40">#C94A00</color>
     <color name="redorange_30">#913500</color>
     <color name="redorange_20">#592100</color>
@@ -120,6 +123,7 @@
     <color name="lime_60">#6BE016</color>
     <color name="lime_50">#58CF04</color>
     <color name="lime_40">#48AD00</color>
+    <color name="lime_37">#429E00</color>
     <color name="lime_30">#347D00</color>
     <color name="lime_20">#225200</color>
     <color name="lime_10">#112900</color>
@@ -158,6 +162,7 @@
     <color name="violet_70">#9E86FC</color>
     <color name="violet_60">#7D5EF7</color>
     <color name="violet_50">#6541F2</color>
+    <color name="violet_45">#5B37ED</color>
     <color name="violet_40">#4F29E5</color>
     <color name="violet_30">#3A16C9</color>
     <color name="violet_20">#23098F</color>
@@ -184,10 +189,13 @@
     <color name="pink_70">#FF94ED</color>
     <color name="pink_60">#FA73E3</color>
     <color name="pink_50">#F553DA</color>
+    <color name="pink_46">#E846CD</color>
     <color name="pink_40">#D331B8</color>
     <color name="pink_30">#A81690</color>
     <color name="pink_20">#730560</color>
     <color name="pink_10">#3D0133</color>
+
+
 
     <!-- Opacity Colors -->
     <color name="cool_neutral_90_opacity88">#E0C2C4C8</color>

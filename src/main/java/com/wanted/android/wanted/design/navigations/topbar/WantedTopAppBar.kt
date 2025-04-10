@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -27,6 +27,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.TopAppBarType
 import com.wanted.android.wanted.design.navigations.topbar.view.LocalWantedTopBarIconType
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedExtendedTopAppBarLayout
+import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayoutDivider
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -39,8 +40,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
+    background: Color = if (type == TopAppBarType.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -88,9 +89,10 @@ fun WantedTopAppBar(
 fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
+    background: Color = if (type == TopAppBarType.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
     scrollableState: ScrollableState? = null,
+    titleAlignCenter: Boolean = false,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null,
     onClickBack: () -> Unit
@@ -101,6 +103,7 @@ fun WantedBackTopAppBar(
         background = background,
         type = type,
         scrollableState = scrollableState,
+        titleAlignCenter = titleAlignCenter,
         navigationIcon = {
             WantedTopAppBarIconButton(
                 type = type,
@@ -117,30 +120,20 @@ fun WantedBackTopAppBar(
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
+    background: Color = if (type == TopAppBarType.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
-    val elevation = remember { mutableIntStateOf(0) }
+    val isShowDivider = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
-        if (scrollableState?.canScrollBackward == true) {
-            elevation.intValue = 4
-        } else {
-            elevation.intValue = 0
-        }
+        isShowDivider.value = scrollableState?.canScrollBackward == true
     }
 
-    Surface(
-        modifier = modifier,
-        shadowElevation = elevation.intValue.dp,
-        color = if (type == TopAppBarType.Floating) {
-            Color.Transparent
-        } else {
-            background
-        }
+    Box(
+        modifier = modifier.background(background)
     ) {
         CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
             when (type) {
@@ -172,6 +165,12 @@ fun WantedTopAppBar(
                     )
                 }
             }
+        }
+
+        if (isShowDivider.value) {
+            WantedOverLayoutDivider(
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
     }
 }

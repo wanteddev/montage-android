@@ -29,8 +29,8 @@ fun WantedButton(
     size: ButtonSize = ButtonSize.LARGE,
     enabled: Boolean = true,
     isLoading: Boolean = false,
-    leftDrawable: Int? = null,
-    rightDrawable: Int? = null,
+    leadingDrawable: Int? = null,
+    trailingDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
     when (buttonShape) {
@@ -48,8 +48,8 @@ fun WantedButton(
                     enabled = enabled,
                     size = size
                 ),
-                leftDrawable = leftDrawable,
-                rightDrawable = rightDrawable,
+                leadingDrawable = leadingDrawable,
+                trailingDrawable = trailingDrawable,
                 onClick = onClick,
             )
         }
@@ -68,8 +68,8 @@ fun WantedButton(
                     enabled = enabled,
                     size = size
                 ),
-                leftDrawable = leftDrawable,
-                rightDrawable = rightDrawable,
+                leadingDrawable = leadingDrawable,
+                trailingDrawable = trailingDrawable,
                 clickListener = onClick,
             )
         }
@@ -88,8 +88,8 @@ fun WantedButton(
                     enabled = enabled,
                     size = size
                 ),
-                leftDrawable = leftDrawable,
-                rightDrawable = rightDrawable,
+                leadingDrawable = leadingDrawable,
+                trailingDrawable = trailingDrawable,
                 onClick = onClick,
             )
         }
@@ -102,8 +102,8 @@ fun WantedButton(
     text: String,
     isLoading: Boolean = false,
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(),
-    leftDrawable: Int? = null,
-    rightDrawable: Int? = null,
+    leadingDrawable: Int? = null,
+    trailingDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
 
@@ -114,8 +114,8 @@ fun WantedButton(
                 text = text,
                 isLoading = isLoading,
                 buttonDefault = buttonDefault,
-                leftDrawable = leftDrawable,
-                rightDrawable = rightDrawable,
+                leadingDrawable = leadingDrawable,
+                trailingDrawable = trailingDrawable,
                 onClick = onClick,
             )
         }
@@ -126,8 +126,8 @@ fun WantedButton(
                 text = text,
                 isLoading = isLoading,
                 buttonDefault = buttonDefault,
-                leftDrawable = leftDrawable,
-                rightDrawable = rightDrawable,
+                leadingDrawable = leadingDrawable,
+                trailingDrawable = trailingDrawable,
                 clickListener = onClick,
             )
         }
@@ -138,8 +138,8 @@ fun WantedButton(
                 text = text,
                 isLoading = isLoading,
                 buttonDefault = buttonDefault,
-                leftDrawable = leftDrawable,
-                rightDrawable = rightDrawable,
+                leadingDrawable = leadingDrawable,
+                trailingDrawable = trailingDrawable,
                 onClick = onClick,
             )
         }

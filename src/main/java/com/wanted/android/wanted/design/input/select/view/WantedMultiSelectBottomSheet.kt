@@ -55,7 +55,7 @@ fun WantedMultiSelectBottomSheet(
                 itemsIndexed(items) { index, item ->
                     WantedCell(
                         modifier = Modifier,
-                        verticalPadding = WantedCellContract.VerticalPadding.Padding12,
+                        verticalPadding = WantedCellContract.VerticalPadding.Medium,
                         text = item.text,
                         rightContent = when {
                             selectItemList.value.contains(item)
@@ -65,6 +65,7 @@ fun WantedMultiSelectBottomSheet(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
                                         checked = true,
+                                        thick = false,
                                         onCheckedChange = { }
                                     )
                                 }
@@ -128,7 +129,7 @@ fun WantedMultiSelectBottomSheet(
                         text = "",
                         buttonShape = ButtonShape.OUTLINED,
                         type = ButtonType.ASSISTIVE,
-                        leftDrawable = R.drawable.ic_normal_refresh_svg,
+                        leadingDrawable = R.drawable.ic_normal_refresh_svg,
                         onClick = {
                             selectItemList.value = selectedItemList
                         }

@@ -43,16 +43,28 @@
     <color name="status_cautionary">@color/orange_60</color>
     <color name="status_negative">@color/red_60</color>
 
-    <!-- Accent -->
-    <color name="accent_lime">@color/lime_60</color>
-    <color name="accent_cyan">@color/cyan_60</color>
-    <color name="accent_lightblue">@color/lightblue_60</color>
-    <color name="accent_lightblue_temp">#3DC2FF</color>
-    <color name="accent_violet">@color/violet_60</color>
-    <color name="accent_violet_temp">#7D5EF7</color>
-    <color name="accent_purple">@color/purple_60</color>
-    <color name="accent_pink">@color/pink_60</color>
-    <color name="accent_redorange">@color/redorange_60</color>
+    <!-- Accent Background -->
+    <color name="accent_background_lime">@color/lime_60</color>
+    <color name="accent_background_cyan">@color/cyan_60</color>
+    <color name="accent_background_lightblue">@color/lightblue_60</color>
+    <color name="accent_background_violet">@color/violet_60</color>
+    <color name="accent_background_purple">@color/purple_60</color>
+    <color name="accent_background_pink">@color/pink_60</color>
+    <color name="accent_background_redorange">@color/redorange_60</color>
+
+    <!-- Accent Foreground -->
+    <color name="accent_foreground_red">@color/red_60</color>
+    <color name="accent_foreground_redorange">@color/redorange_60</color>
+    <color name="accent_foreground_orange">@color/orange_50</color>
+    <color name="accent_foreground_lime">@color/lime_50</color>
+    <color name="accent_foreground_green">@color/green_60</color>
+    <color name="accent_foreground_cyan">@color/cyan_50</color>
+    <color name="accent_foreground_lightblue">@color/lightblue_50</color>
+    <color name="accent_foreground_blue">@color/blue_65</color>
+    <color name="accent_foreground_violet">@color/violet_70</color>
+    <color name="accent_foreground_purple">@color/purple_60</color>
+    <color name="accent_foreground_pink">@color/pink_60</color>
+
 
     <!-- Inverse -->
     <color name="inverse_primary">@color/blue_50</color>

@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.actions.actionarea
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,9 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -25,9 +29,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
@@ -37,12 +43,13 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
-    sticky: Boolean = false,
+    background: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     type: ActionAreaType,
     positive: String,
     negative: String? = null,
     neutral: String? = null,
+    scrollableState: ScrollableState? = null,
     onClickPositive: () -> Unit,
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
@@ -53,8 +60,9 @@ fun WantedActionArea(
         modifier = modifier,
         type = type,
         safeArea = safeArea,
-        sticky = sticky,
+        background = background,
         gradationColor = gradationColor,
+        scrollableState = scrollableState,
         positive = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -66,6 +74,8 @@ fun WantedActionArea(
             {
                 WantedButton(
                     modifier = Modifier.fillMaxWidth(),
+                    buttonShape = ButtonShape.OUTLINED,
+                    type = ButtonType.SECONDARY,
                     text = negative.orEmpty(),
                     onClick = onClickNegative
                 )
@@ -79,6 +89,8 @@ fun WantedActionArea(
                     } else {
                         Modifier.fillMaxWidth()
                     },
+                    buttonShape = ButtonShape.OUTLINED,
+                    type = ButtonType.ASSISTIVE,
                     text = neutral.orEmpty(),
                     onClick = onClickNeutral
                 )
@@ -98,9 +110,10 @@ fun WantedActionArea(
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true, // dialog 에서는 false, 일반 screen  에서는 true
-    sticky: Boolean = false,
+    background: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     type: ActionAreaType = ActionAreaType.Strong,
+    scrollableState: ScrollableState? = null,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)? = null,
     neutral: @Composable (() -> Unit)? = null,
@@ -111,8 +124,9 @@ fun WantedActionArea(
         modifier = modifier,
         type = type,
         safeArea = safeArea,
-        sticky = sticky,
+        background = background,
         gradationColor = gradationColor,
+        scrollableState = scrollableState,
         positive = positive,
         negative = negative,
         neutral = neutral,
@@ -131,12 +145,13 @@ fun WantedActionArea(
 fun WantedActionArea(
     modifier: Modifier = Modifier,
     safeArea: Boolean = true,
-    sticky: Boolean = false,
+    background: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
     positive: String,
     negative: String? = null,
     neutral: String? = null,
+    scrollableState: ScrollableState? = null,
     onClickPositive: () -> Unit,
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
@@ -147,8 +162,9 @@ fun WantedActionArea(
         modifier = modifier,
         type = actionAreaDefault.type,
         safeArea = safeArea,
-        sticky = sticky,
+        background = background,
         gradationColor = gradationColor,
+        scrollableState = scrollableState,
         positive = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -195,19 +211,28 @@ fun WantedActionArea(
 private fun WantedActionAreaLayout(
     modifier: Modifier = Modifier,
     safeArea: Boolean,
-    sticky: Boolean,
+    background: Boolean,
     gradationColor: Color,
     type: ActionAreaType,
+    scrollableState: ScrollableState? = null,
     variant: @Composable (() -> Unit)?,
     caption: @Composable (() -> Unit)?,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)?,
     neutral: @Composable (() -> Unit)?
 ) {
+    val isShowGradient = remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = scrollableState?.canScrollForward) {
+        scrollableState?.canScrollForward?.let {
+            isShowGradient.value = scrollableState.canScrollForward == true
+        } ?:run {
+            isShowGradient.value = true
+        }
+    }
+
     Column(
         modifier = modifier,
     ) {
-
         variant?.let {
             HorizontalDivider(color = colorResource(id = R.color.line_normal_neutral))
 
@@ -235,7 +260,7 @@ private fun WantedActionAreaLayout(
                 Modifier
                     .padding(horizontal = 20.dp)
                     .padding(bottom = 20.dp)
-                    .padding(top = if (sticky && variant == null) 0.dp else 20.dp)
+                    .padding(top = if (background && variant == null) 0.dp else 20.dp)
                     .fillMaxWidth()
             } else {
                 Modifier.padding(top = if (variant == null) 0.dp else 20.dp)
@@ -246,7 +271,7 @@ private fun WantedActionAreaLayout(
                 bottom.linkTo(parent.bottom)
             }
 
-            if (sticky && variant == null) {
+            if (background && variant == null && isShowGradient.value) {
                 WantedActionAreaGradation(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -273,16 +298,6 @@ private fun WantedActionAreaLayout(
 
                 ActionAreaType.Neutral -> {
                     WantedActionNeutralAreaLayout(
-                        modifier = modifier.then(contentModifier),
-                        caption = caption,
-                        positive = positive,
-                        negative = negative,
-                        neutral = neutral
-                    )
-                }
-
-                ActionAreaType.Compact -> {
-                    WantedActionCompactAreaLayout(
                         modifier = modifier.then(contentModifier),
                         caption = caption,
                         positive = positive,
@@ -557,17 +572,6 @@ private fun WantedActionAreaPreview() {
                 )
 
                 WantedActionArea(
-                    type = ActionAreaType.Compact,
-                    caption = "캡션",
-                    positive = "메인 액션",
-                    negative = "대체 액션",
-                    neutral = "보조 액션",
-                    onClickPositive = {},
-                    onClickNegative = {},
-                    onClickNeutral = {}
-                )
-
-                WantedActionArea(
                     type = ActionAreaType.Cancel,
                     caption = "캡션",
                     positive = "메인 액션",
@@ -580,7 +584,7 @@ private fun WantedActionAreaPreview() {
 
                 WantedActionArea(
                     type = ActionAreaType.Cancel,
-                    sticky = true,
+                    background = true,
                     caption = "캡션",
                     positive = "메인 액션",
                     negative = "대체 액션",

@@ -52,19 +52,19 @@ object WantedModalContract {
             titleVerticalPadding = 0.dp,
             titleHorizontalPadding = 0.dp
         ),
-        Normal(
+        Medium(
             contentPadding = 20.dp,
             bottomBarPadding = 20.dp,
             titleVerticalPadding = 4.dp,
             titleHorizontalPadding = 0.dp
         ),
-        Medium(
+        Large(
             contentPadding = 24.dp,
             bottomBarPadding = 24.dp,
             titleVerticalPadding = 4.dp,
             titleHorizontalPadding = 0.dp
         ),
-        Large(
+        XLarge(
             contentPadding = 32.dp,
             bottomBarPadding = 32.dp,
             titleVerticalPadding = 8.dp,

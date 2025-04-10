@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.theme
 
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
@@ -621,4 +622,26 @@ data class WantedTypography(
     ),
 )
 
+internal val pretendardTypography = Typography().let {
+    it.copy(
+        displayLarge = it.displayLarge.copy(fontFamily = pretendard),
+        displayMedium = it.displayMedium.copy(fontFamily = pretendard),
+        displaySmall = it.displaySmall.copy(fontFamily = pretendard),
+        headlineLarge = it.headlineLarge.copy(fontFamily = pretendard),
+        headlineMedium = it.headlineMedium.copy(fontFamily = pretendard),
+        headlineSmall = it.headlineSmall.copy(fontFamily = pretendard),
+        titleLarge = it.titleLarge.copy(fontFamily = pretendard),
+        titleMedium = it.titleMedium.copy(fontFamily = pretendard),
+        titleSmall = it.titleSmall.copy(fontFamily = pretendard),
+        bodyLarge = it.bodyLarge.copy(fontFamily = pretendard),
+        bodyMedium = it.bodyMedium.copy(fontFamily = pretendard),
+        bodySmall = it.bodySmall.copy(fontFamily = pretendard),
+        labelLarge = it.labelLarge.copy(fontFamily = pretendard),
+        labelMedium = it.labelMedium.copy(fontFamily = pretendard),
+        labelSmall = it.labelSmall.copy(fontFamily = pretendard),
+    )
+}
+
+
 val LocalWantedTypography = staticCompositionLocalOf { WantedTypography() }
+

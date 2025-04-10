@@ -39,14 +39,14 @@ fun WantedInput(
     text: String,
     modifier: Modifier = Modifier,
     type: WantedInputType = WantedInputType.CheckBox,
-    size: WantedInputSize = WantedInputSize.Normal,
+    size: WantedInputSize = WantedInputSize.Medium,
     checkBoxState: CheckBoxState = CheckBoxState.Unchecked,
     bold: Boolean = false,
     enabled: Boolean = true,
     tight: Boolean = false,
     textStyle: TextStyle = WantedTextStyle(
         colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
-        style = if (size == WantedInputSize.Normal) {
+        style = if (size == WantedInputSize.Medium) {
             if (bold) {
                 DesignSystemTheme.typography.body2Bold
             } else {
@@ -83,7 +83,7 @@ fun WantedInput(
                     }
 
                     val offset = with(density) {
-                        (if (size == WantedInputSize.Normal) 16.dp else 12.dp).toPx()
+                        (if (size == WantedInputSize.Medium) 16.dp else 12.dp).toPx()
                     }
 
                     val press = PressInteraction.Press(Offset(offset, offset))
@@ -95,7 +95,7 @@ fun WantedInput(
             leadingIcon = {
                 WantedCheckBox(
                     modifier = Modifier,
-                    size = if (size == WantedInputSize.Normal) {
+                    size = if (size == WantedInputSize.Medium) {
                         CheckBoxSize.Normal
                     } else {
                         CheckBoxSize.Small
@@ -137,19 +137,19 @@ private fun WantedInputPreview() {
                 WantedInput(WantedInputSize.Small, WantedInputType.CheckBox)
 
                 Text(text = "CheckBox Normal")
-                WantedInput(WantedInputSize.Normal, WantedInputType.CheckBox)
+                WantedInput(WantedInputSize.Medium, WantedInputType.CheckBox)
 
                 Text(text = "Radio Small")
                 WantedInput(WantedInputSize.Small, WantedInputType.Radio)
 
                 Text(text = "Radio Normal")
-                WantedInput(WantedInputSize.Normal, WantedInputType.Radio)
+                WantedInput(WantedInputSize.Medium, WantedInputType.Radio)
 
                 Text(text = "NestedCheckBox Small")
                 WantedInput(WantedInputSize.Small, WantedInputType.CheckMark)
 
                 Text(text = "NestedCheckBox Normal")
-                WantedInput(WantedInputSize.Normal, WantedInputType.CheckMark)
+                WantedInput(WantedInputSize.Medium, WantedInputType.CheckMark)
             }
         }
     }
