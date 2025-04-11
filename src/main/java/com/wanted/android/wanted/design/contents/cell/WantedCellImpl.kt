@@ -7,15 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
@@ -27,6 +26,7 @@ import com.wanted.android.wanted.design.actions.chip.WantedActionChip
 import com.wanted.android.wanted.design.input.control.WantedRadioButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.toAnnotatedString
 
@@ -51,7 +51,9 @@ fun WantedCellImpl(
     rightContent: (@Composable () -> Unit)? = null
 ) {
     WantedCellLayout(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .alpha(if (isEnable) 1f else OPACITY_43),
         verticalAlignment = if (verticalAlignCenter) Alignment.CenterVertically else Alignment.Top,
         text = {
             Text(
@@ -60,7 +62,6 @@ fun WantedCellImpl(
                 overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
                 style = WantedTextStyle(
                     colorRes = when {
-                        !isEnable -> R.color.label_disable
                         isActive -> R.color.primary_normal
                         else -> R.color.label_normal
                     },
@@ -78,11 +79,7 @@ fun WantedCellImpl(
                     maxLines = if (ellipsis) 1 else Int.MAX_VALUE,
                     overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
                     style = WantedTextStyle(
-                        colorRes = if (isEnable) {
-                            R.color.label_alternative
-                        } else {
-                            R.color.label_disable
-                        },
+                        colorRes = R.color.label_alternative,
                         style = when {
                             captionStyle != null -> captionStyle
                             else -> DesignSystemTheme.typography.label2Regular
@@ -208,6 +205,16 @@ private fun WantedListPreview() {
 
                 WantedCellImpl(
                     text = "텍스트".toAnnotatedString(),
+                    caption = "캡션".toAnnotatedString(),
+                    verticalAlignCenter = false,
+                    isEnable = false,
+                    leftContent = {
+                        WantedRadioButton(checked = true, onCheckedChange = {})
+                    }
+                )
+
+                WantedCellImpl(
+                    text = "텍스트".toAnnotatedString(),
                     rightContent = {
                         WantedActionChip(text = "Chip")
                     }
@@ -224,6 +231,25 @@ private fun WantedListPreview() {
                 WantedCellImpl(
                     text = "텍스트".toAnnotatedString(),
                     caption = "캡션".toAnnotatedString(),
+                    isEnable = false,
+                    rightContent = {
+                        WantedActionChip(text = "Chip")
+                    }
+                )
+
+                WantedCellImpl(
+                    text = "텍스트".toAnnotatedString(),
+                    caption = "캡션".toAnnotatedString(),
+                    rightContent = {
+                        WantedActionChip(text = "Chip")
+                    },
+                    chevrons = true
+                )
+
+                WantedCellImpl(
+                    text = "텍스트".toAnnotatedString(),
+                    caption = "캡션".toAnnotatedString(),
+                    isEnable = false,
                     rightContent = {
                         WantedActionChip(text = "Chip")
                     },
