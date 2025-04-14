@@ -3,6 +3,7 @@ package com.wanted.android.wanted.design.input.textinput.view
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
@@ -32,12 +33,19 @@ internal fun WantedTextAreaLayout(
                     .padding(bottom = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(modifier = Modifier.weight(weight = 1f)) {
-                    leftContent?.invoke()
+                leftContent?.let {
+                    Box(modifier = Modifier.wrapContentSize()) {
+                        leftContent()
+                    }
                 }
 
-                Box(modifier = Modifier.wrapContentSize()) {
-                    rightContent?.invoke()
+
+                Spacer(Modifier.weight(1f))
+
+                rightContent?.let {
+                    Box(modifier = Modifier.wrapContentSize()) {
+                        rightContent()
+                    }
                 }
             }
         }
