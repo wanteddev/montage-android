@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wanted.android.wanted.design.feedback.contentbadge.ContentBadgeSize
+import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeSize
 
 enum class ButtonShape {
     SOLID, OUTLINED, TEXT
