@@ -1,8 +1,11 @@
 package com.wanted.android.wanted.design.feedback.snackbar
 
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -21,9 +24,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+object WantedSnackBarHostDefaults  {
+    val windowInsets: WindowInsets
+        @Composable
+        get() {
+            return WindowInsets.safeDrawing
+                .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+        }
+}
+
 @Composable
 fun WantedSnackBarHost(
     hostState: SnackbarHostState,
+    windowInsets: WindowInsets = WantedSnackBarHostDefaults.windowInsets,
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
     SnackbarHost(
@@ -37,8 +50,7 @@ fun WantedSnackBarHost(
                     WantedSnackBar(
                         modifier = Modifier
                             .padding(paddingValues = visuals.padding)
-                            .navigationBarsPadding()
-                            .imePadding(),
+                            .windowInsetsPadding(windowInsets),
                         text = visuals.message,
                         snackbarData = it,
                         description = type.description,
@@ -52,8 +64,7 @@ fun WantedSnackBarHost(
                     WantedToast(
                         modifier = Modifier
                             .padding(paddingValues = visuals.padding)
-                            .navigationBarsPadding()
-                            .imePadding(),
+                            .windowInsetsPadding(windowInsets),
                         text = visuals.message,
                         variant = type.variant,
                         icon = type.icon
