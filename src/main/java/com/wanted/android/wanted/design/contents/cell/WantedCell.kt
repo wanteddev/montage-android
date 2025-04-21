@@ -18,7 +18,6 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.toAnnotatedString
 
 /**
@@ -92,6 +91,7 @@ fun WantedCell(
     WantedTouchArea(
         shape = RoundedCornerShape(12.dp),
         isUseRipple = isEnable && onClick != null,
+        horizontalPadding = if (fillWidth) 0.dp else interactionPadding.padding,
         content = {
             Column {
                 WantedCellImpl(
@@ -146,7 +146,7 @@ private fun WantedCellPreview() {
 
                 WantedCell(
                     text = "텍스트",
-                    fillWidth = true,
+                    fillWidth = false,
                     interactionPadding = WantedCellContract.InteractionPadding.Custom(30.dp),
                     onClick = {}
                 )
