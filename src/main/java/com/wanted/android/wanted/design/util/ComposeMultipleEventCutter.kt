@@ -3,10 +3,33 @@ package com.wanted.android.wanted.design.util
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material3.ripple
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Dp
+
+@Composable
+@Stable
+internal fun Modifier.clickOnce(
+    verticalPadding: Dp,
+    horizontalPadding: Dp,
+    enabled: Boolean = true,
+    rippleColor: Color = Color.Unspecified,
+    isUseRipple: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: (() -> Unit)
+): Modifier = this
+    .clickOnce(
+        interactionSource = interactionSource,
+        indication = if (isUseRipple) ripple(bounded = true, color = rippleColor) else null,
+        enabled = enabled,
+    ) { onClick() }
+    .then(MinimumInteractiveModifier(verticalPadding, horizontalPadding))
 
 
 internal fun Modifier.clickOnce(
