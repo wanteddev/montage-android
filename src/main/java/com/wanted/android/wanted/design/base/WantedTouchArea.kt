@@ -44,6 +44,7 @@ fun WantedTouchArea(
     content: @Composable BoxScope.() -> Unit,
     onClick: (() -> Unit)? = null
 ) {
+
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
 

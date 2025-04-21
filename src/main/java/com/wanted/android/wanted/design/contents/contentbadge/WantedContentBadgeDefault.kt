@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.feedback.contentbadge
+package com.wanted.android.wanted.design.contents.contentbadge
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
