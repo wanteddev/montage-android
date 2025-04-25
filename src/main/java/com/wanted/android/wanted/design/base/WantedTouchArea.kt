@@ -1,22 +1,23 @@
 package com.wanted.android.wanted.design.base
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -24,17 +25,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.clickOnce
-
-val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
 
 @Composable
 fun WantedTouchArea(
@@ -43,24 +45,42 @@ fun WantedTouchArea(
     horizontalPadding: Dp = 0.dp,
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
-    enabledInnerTouch: Boolean = LocalWantedTouchArea.current.getEnableInnerTouch(),
     rippleColor: Color = Color.Unspecified,
     isUseRipple: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable BoxScope.() -> Unit,
     onClick: (() -> Unit)? = null
 ) {
-
+    val isPreview = LocalInspectionMode.current
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
 
     val localDensity = LocalDensity.current
+
+
     ConstraintLayout(
         modifier = modifier
     ) {
         val (box, touch) = createRefs()
-        val alphaModifier = if (enabledInnerTouch) {
-            Modifier.alpha(0f)
+
+        if (!isPreview) {
+            MeasureOnly(
+                Modifier
+                    .wrapContentSize(),
+                content = {
+                    Box { content() }
+                },
+                onSizeCalculated = { size ->
+                    contentHeight.value = with(localDensity) { size.height.toDp() }
+                    contentWidth.value = with(localDensity) { size.width.toDp() }
+                }
+            )
+        }
+
+        val sizeModifier = if (!isPreview) {
+            Modifier
+                .width(contentWidth.value)
+                .height(contentHeight.value)
         } else {
             Modifier
         }
@@ -68,16 +88,18 @@ fun WantedTouchArea(
         Box(
             modifier = Modifier
                 .wrapContentSize()
-                .then(alphaModifier)
                 .constrainAs(box) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                },
+                }
+                .then(sizeModifier),
             contentAlignment = Alignment.Center
         ) {
-            content()
+            if (isPreview) {
+                content()
+            }
         }
 
         Layout(
@@ -91,9 +113,11 @@ fun WantedTouchArea(
                     height = Dimension.fillToConstraints // Match height of text
                 }
                 .onGloballyPositioned { coordinates ->
-                    // Set column height using the LayoutCoordinates
-                    contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
-                    contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
+                    if (isPreview) {
+                        // Set column height using the LayoutCoordinates
+                        contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
+                        contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
+                    }
                 }
                 .clip(shape)
                 .clickOnce(
@@ -118,9 +142,7 @@ fun WantedTouchArea(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (enabledInnerTouch) {
-                        content()
-                    }
+                    content()
                 }
             }
         ) { measurables, constraints ->
@@ -140,26 +162,25 @@ fun WantedTouchArea(
     }
 }
 
-
-
-interface WantedTouchAreaLoader {
-    fun getEnableInnerTouch(): Boolean
-}
-
-private class WantedTouchAreaLoaderImpl() : WantedTouchAreaLoader {
-    override fun getEnableInnerTouch(): Boolean = false
-}
-
-@JvmInline
-value class WantedButtonContentCompositionLocal internal constructor(
-    private val delegate: ProvidableCompositionLocal<WantedTouchAreaLoader> = staticCompositionLocalOf { WantedTouchAreaLoaderImpl() }
+@Composable
+private fun MeasureOnly(
+    modifier: Modifier,
+    content: @Composable () -> Unit,
+    onSizeCalculated: (IntSize) -> Unit
 ) {
-    val current: WantedTouchAreaLoader
-        @Composable get() = delegate.current
+    SubcomposeLayout(modifier.alpha(0f)) { constraints ->
+        // 1) "measure" 키로 content만 subcompose
+        val measurables = subcompose("measure", content)
+        // 2) constraints의 최소 크기를 0으로 열어 두고 실제 크기만 측정
+        val placeable = measurables.first()
+            .measure(constraints.copy(minWidth = 0, minHeight = 0))
+        // 3) 측정된 size 콜백으로 전달
 
-    infix fun provides(value: WantedTouchAreaLoader) = delegate provides value
+        onSizeCalculated(IntSize(placeable.width, placeable.height))
+        // 4) layout 단계에서는 보이지 않게 0×0 크기로 설정
+        layout(width = 0, height = 0) { /* no placement → draw pass에서 skip */ }
+    }
 }
-
 
 @Preview
 @Composable
@@ -170,17 +191,62 @@ private fun WantedTouchAreaPreview() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(0.dp),
             ) {
+
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .background(Color.Green),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .background(Color.Red)
+                            .clickOnce {
+                            }
+                    )
+                }
+
                 WantedTouchArea(
-                    horizontalPadding = 10.dp,
-                    verticalPadding = 10.dp,
+                    horizontalPadding = 20.dp,
+                    verticalPadding = 20.dp,
                     content = {
-                        Text(text = "텍스트")
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .background(Color.Red),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .background(Color.Green)
+                                    .clickOnce {
+                                    }
+                            )
+                        }
                     },
                     onClick = {
+
                     }
                 )
+
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .background(Color.Green),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .background(Color.Red)
+                            .clickOnce {
+                            }
+                    )
+                }
             }
         }
     }
