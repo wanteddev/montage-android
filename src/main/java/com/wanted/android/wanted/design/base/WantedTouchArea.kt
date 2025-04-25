@@ -20,7 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -57,6 +56,32 @@ fun WantedTouchArea(
 
     val localDensity = LocalDensity.current
 
+    val sizeModifier = if (!isPreview) {
+        Modifier
+            .width(contentWidth.value)
+            .height(contentHeight.value)
+    } else {
+        Modifier
+    }
+
+    val clickModifier = Modifier.clickOnce(
+        enabled = onClick != null && enabled,
+        indication = if (isUseRipple) {
+            ripple(
+                bounded = true, // 확장된 영역에 리플 효과를 적용
+                radius = if (contentWidth.value > contentHeight.value) {
+                    contentWidth.value
+                } else {
+                    contentHeight.value
+                }, // 리플의 크기를 확장된 터치 영역에 맞춤
+                color = rippleColor
+            )
+        } else null,
+        interactionSource = interactionSource
+    ) {
+        onClick?.invoke()
+    }
+
 
     ConstraintLayout(
         modifier = modifier
@@ -65,8 +90,6 @@ fun WantedTouchArea(
 
         if (!isPreview) {
             MeasureOnly(
-                Modifier
-                    .wrapContentSize(),
                 content = {
                     Box { content() }
                 },
@@ -75,14 +98,6 @@ fun WantedTouchArea(
                     contentWidth.value = with(localDensity) { size.width.toDp() }
                 }
             )
-        }
-
-        val sizeModifier = if (!isPreview) {
-            Modifier
-                .width(contentWidth.value)
-                .height(contentHeight.value)
-        } else {
-            Modifier
         }
 
         Box(
@@ -114,35 +129,20 @@ fun WantedTouchArea(
                 }
                 .onGloballyPositioned { coordinates ->
                     if (isPreview) {
-                        // Set column height using the LayoutCoordinates
                         contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
                         contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
                     }
                 }
                 .clip(shape)
-                .clickOnce(
-                    enabled = onClick != null && enabled,
-                    indication = if (isUseRipple) {
-                        ripple(
-                            bounded = true, // 확장된 영역에 리플 효과를 적용
-                            radius = if (contentWidth.value > contentHeight.value) {
-                                contentWidth.value
-                            } else {
-                                contentHeight.value
-                            }, // 리플의 크기를 확장된 터치 영역에 맞춤
-                            color = rippleColor
-                        )
-                    } else null,
-                    interactionSource = interactionSource
-                ) {
-                    onClick?.invoke()
-                },
+                .then(clickModifier),
             content = {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    content()
+                    if (!isPreview) {
+                        content()
+                    }
                 }
             }
         ) { measurables, constraints ->
@@ -164,11 +164,10 @@ fun WantedTouchArea(
 
 @Composable
 private fun MeasureOnly(
-    modifier: Modifier,
     content: @Composable () -> Unit,
     onSizeCalculated: (IntSize) -> Unit
 ) {
-    SubcomposeLayout(modifier.alpha(0f)) { constraints ->
+    SubcomposeLayout { constraints ->
         // 1) "measure" 키로 content만 subcompose
         val measurables = subcompose("measure", content)
         // 2) constraints의 최소 크기를 0으로 열어 두고 실제 크기만 측정
