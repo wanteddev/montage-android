@@ -106,6 +106,7 @@ fun WantedCardVertical(
             },
             verticalPadding = 8.dp,
             horizontalPadding = 8.dp,
+            enabledInnerTouch = true,
             shape = RoundedCornerShape(
                 topStart = 20.dp,
                 topEnd = 20.dp,

@@ -16,8 +16,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +39,9 @@ import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.clickOnce
 
+
+val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
+
 @Composable
 fun WantedTouchArea(
     modifier: Modifier = Modifier,
@@ -44,19 +49,25 @@ fun WantedTouchArea(
     horizontalPadding: Dp = 0.dp,
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
+    enabledInnerTouch: Boolean = LocalWantedTouchArea.current.getEnableInnerTouch(),
     rippleColor: Color = Color.Unspecified,
     isUseRipple: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable BoxScope.() -> Unit,
     onClick: (() -> Unit)? = null
 ) {
-    val isPreview = LocalInspectionMode.current
+    /**
+     * preview가 아니고 innerTouch가 되어야 할경우만 계산한다.
+     * view를 계산하게되면 간혹 IllegalStateException 발생
+     * java.lang.IllegalStateException: Asking for intrinsic measurements of SubcomposeLayout layouts is not supported.
+     */
+    val calculateContentSize = !LocalInspectionMode.current && enabledInnerTouch
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
 
     val localDensity = LocalDensity.current
 
-    val sizeModifier = if (!isPreview) {
+    val sizeModifier = if (calculateContentSize) {
         Modifier
             .width(contentWidth.value)
             .height(contentHeight.value)
@@ -88,7 +99,7 @@ fun WantedTouchArea(
     ) {
         val (box, touch) = createRefs()
 
-        if (!isPreview) {
+        if (calculateContentSize) {
             MeasureOnly(
                 content = {
                     Box { content() }
@@ -112,7 +123,7 @@ fun WantedTouchArea(
                 .then(sizeModifier),
             contentAlignment = Alignment.Center
         ) {
-            if (isPreview) {
+            if (!calculateContentSize) {
                 content()
             }
         }
@@ -128,7 +139,7 @@ fun WantedTouchArea(
                     height = Dimension.fillToConstraints // Match height of text
                 }
                 .onGloballyPositioned { coordinates ->
-                    if (isPreview) {
+                    if (!calculateContentSize) {
                         contentHeight.value = with(localDensity) { coordinates.size.height.toDp() }
                         contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
                     }
@@ -140,7 +151,7 @@ fun WantedTouchArea(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (!isPreview) {
+                    if (calculateContentSize) {
                         content()
                     }
                 }
@@ -180,6 +191,26 @@ private fun MeasureOnly(
         layout(width = 0, height = 0) { /* no placement → draw pass에서 skip */ }
     }
 }
+
+
+interface WantedTouchAreaLoader {
+    fun getEnableInnerTouch(): Boolean
+}
+
+private class WantedTouchAreaLoaderImpl() : WantedTouchAreaLoader {
+    override fun getEnableInnerTouch(): Boolean = false
+}
+
+@JvmInline
+value class WantedButtonContentCompositionLocal internal constructor(
+    private val delegate: ProvidableCompositionLocal<WantedTouchAreaLoader> = staticCompositionLocalOf { WantedTouchAreaLoaderImpl() }
+) {
+    val current: WantedTouchAreaLoader
+        @Composable get() = delegate.current
+
+    infix fun provides(value: WantedTouchAreaLoader) = delegate provides value
+}
+
 
 @Preview
 @Composable
