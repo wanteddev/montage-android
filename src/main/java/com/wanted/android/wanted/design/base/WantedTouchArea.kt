@@ -13,10 +13,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -31,6 +34,8 @@ import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.clickOnce
 
+val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
+
 @Composable
 fun WantedTouchArea(
     modifier: Modifier = Modifier,
@@ -38,6 +43,7 @@ fun WantedTouchArea(
     horizontalPadding: Dp = 0.dp,
     shape: Shape = RoundedCornerShape(6.dp),
     enabled: Boolean = true,
+    enabledInnerTouch: Boolean = LocalWantedTouchArea.current.getEnableInnerTouch(),
     rippleColor: Color = Color.Unspecified,
     isUseRipple: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -53,9 +59,16 @@ fun WantedTouchArea(
         modifier = modifier
     ) {
         val (box, touch) = createRefs()
+        val alphaModifier = if (enabledInnerTouch) {
+            Modifier.alpha(0f)
+        } else {
+            Modifier
+        }
+
         Box(
             modifier = Modifier
                 .wrapContentSize()
+                .then(alphaModifier)
                 .constrainAs(box) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
@@ -101,7 +114,14 @@ fun WantedTouchArea(
                     onClick?.invoke()
                 },
             content = {
-                Box(modifier = Modifier.fillMaxSize())
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (enabledInnerTouch) {
+                        content()
+                    }
+                }
             }
         ) { measurables, constraints ->
             val textPlaceable = measurables[0].measure(constraints)
@@ -119,6 +139,27 @@ fun WantedTouchArea(
         }
     }
 }
+
+
+
+interface WantedTouchAreaLoader {
+    fun getEnableInnerTouch(): Boolean
+}
+
+private class WantedTouchAreaLoaderImpl() : WantedTouchAreaLoader {
+    override fun getEnableInnerTouch(): Boolean = false
+}
+
+@JvmInline
+value class WantedButtonContentCompositionLocal internal constructor(
+    private val delegate: ProvidableCompositionLocal<WantedTouchAreaLoader> = staticCompositionLocalOf { WantedTouchAreaLoaderImpl() }
+) {
+    val current: WantedTouchAreaLoader
+        @Composable get() = delegate.current
+
+    infix fun provides(value: WantedTouchAreaLoader) = delegate provides value
+}
+
 
 @Preview
 @Composable

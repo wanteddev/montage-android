@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -59,68 +60,61 @@ fun WantedCardVertical(
             bottomContent = cardDefault.bottomContentSkeleton,
         )
     } else {
-        WantedCardVerticalLayout(
-            modifier = modifier
-                .clip(
-                    shape = RoundedCornerShape(
-                        topStart = 20.dp,
-                        topEnd = 20.dp,
-                        bottomStart = 12.dp,
-                        bottomEnd = 12.dp
-                    )
-                )
-                .clickOnce(
-                    verticalPadding = 8.dp,
-                    horizontalPadding = 8.dp,
-                    onClick = { onClick() }
-                ),
-            thumbnail = { width: Dp, height: Dp ->
-                GlideImage(
-                    modifier = Modifier.size(width, height),
-                    model = thumbnail,
-                    contentScale = ContentScale.Crop,
-                    contentDescription = ""
+        WantedTouchArea(
+            content = {
+                WantedCardVerticalLayout(
+                    modifier = modifier,
+                    thumbnail = { width: Dp, height: Dp ->
+                        GlideImage(
+                            modifier = Modifier.size(width, height),
+                            model = thumbnail,
+                            contentDescription = ""
+                        )
+                    },
+                    thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
+                        {
+                            WantedThumbnailOverly(
+                                modifier = Modifier,
+                                title = overlayCaption,
+                                toggleIcon = overlayToggleIcon?.let {
+                                    {
+                                        WantedTouchArea(
+                                            content = {
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.button_bookmark_line_svg),
+                                                    contentDescription = ""
+                                                )
+                                            },
+                                            onClick = {}
+                                        )
+                                    }
+                                }
+                            )
+                        }
+                    } else null,
+                    description = {
+                        WantedCardDescription(
+                            modifier = Modifier,
+                            title = title,
+                            caption = caption,
+                            extraCaption = extraCaption,
+                            bottomContent = bottomContent,
+                            topContent = topContent
+                        )
+                    }
                 )
             },
-            thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
-                {
-                    WantedThumbnailOverly(
-                        modifier = Modifier,
-                        title = overlayCaption,
-                        toggleIcon = overlayToggleIcon?.let {
-                            {
-                                overlayToggleIcon()
-                            }
-                        }
-                    )
-                }
-            } else null,
-            description = {
-                WantedCardDescription(
-                    modifier = Modifier,
-                    title = title,
-                    caption = caption,
-                    extraCaption = extraCaption,
-                    bottomContent = bottomContent,
-                    topContent = topContent
-                )
-            }
+            verticalPadding = 8.dp,
+            horizontalPadding = 8.dp,
+            enabledInnerTouch = true,
+            shape = RoundedCornerShape(
+                topStart = 20.dp,
+                topEnd = 20.dp,
+                bottomStart = 12.dp,
+                bottomEnd = 12.dp
+            ),
+            onClick = onClick
         )
-
-//        WantedTouchArea(
-//            content = {
-//
-//            },
-//            verticalPadding = 8.dp,
-//            horizontalPadding = 8.dp,
-//            shape = RoundedCornerShape(
-//                topStart = 20.dp,
-//                topEnd = 20.dp,
-//                bottomStart = 12.dp,
-//                bottomEnd = 12.dp
-//            ),
-//            onClick = onClick
-//        )
     }
 }
 
