@@ -11,6 +11,33 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
+/**
+ * WantedActionChip 기본 스타일을 정의하는 데이터 클래스입니다.
+ * 크기, 스타일 변형, 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val chipDefault = WantedChipDefault(
+ *     size = ChipActionSize.Medium,
+ *     variant = ChipActionVariant.Solid,
+ *     isActive = true,
+ *     isEnable = true,
+ *     iconColor = Color.Black,
+ *     backgroundColor = Color.White,
+ *     borderColor = Color.Gray,
+ *     textStyle = TextStyle.Default
+ * )
+ * ```
+ *
+ * @param size Chip 크기 설정
+ * @param variant Chip 스타일 변형 (Solid, Outlined)
+ * @param isActive Chip 활성화 여부
+ * @param isEnable Chip 사용 가능 여부
+ * @param iconColor 아이콘 색상
+ * @param backgroundColor 배경 색상
+ * @param borderColor 테두리 색상
+ * @param textStyle 텍스트 스타일
+ */
 data class WantedChipDefault(
     val size: ChipActionSize = ChipActionSize.Medium,
     val variant: ChipActionVariant = ChipActionVariant.Solid,
@@ -24,6 +51,25 @@ data class WantedChipDefault(
 
 
 object WantedChipDefaults {
+    /**
+     * 기본 스타일에 맞춰 WantedChipDefault 객체를 생성합니다.
+     * 컴포즈 환경에 따라 Chip의 스타일을 동적으로 결정합니다.
+     *
+     * 사용 예시:
+     * ```kotlin
+     * val chipDefault = WantedChipDefaults.getDefault()
+     * ```
+     *
+     * @param size Chip 크기 설정
+     * @param variant Chip 스타일 변형 (Solid, Outlined)
+     * @param isActive 활성화 여부
+     * @param isEnable 사용 가능 여부
+     * @param iconColor 아이콘 색상
+     * @param backgroundColor 배경 색상
+     * @param borderColor 테두리 색상
+     * @param textStyle 텍스트 스타일
+     * @return 설정된 WantedChipDefault 객체 반환
+     */
     @Composable
     fun getDefault(
         size: ChipActionSize = LocalWantedChipSize.current,
@@ -64,6 +110,7 @@ object WantedChipDefaults {
         textStyle = textStyle
     )
 
+
     @Composable
     private fun getIconColor(
         variant: ChipActionVariant = LocalWantedChipVariant.current,
@@ -89,6 +136,20 @@ object WantedChipDefaults {
         }
     }
 
+    /**
+     * 필터 Chip 전용으로 아이콘 색상을 반환합니다.
+     * Chip의 variant, 활성화 여부, 사용 가능 여부에 따라 색상이 결정됩니다.
+     *
+     * 사용 예시:
+     * ```kotlin
+     * val iconColor = WantedChipDefaults.getFilterIconColor()
+     * ```
+     *
+     * @param variant Chip 스타일 변형 (Solid, Outlined)
+     * @param isActive 활성화 여부
+     * @param isEnable 사용 가능 여부
+     * @return 아이콘 색상에 해당하는 리소스 ID 반환
+     */
     @Composable
     fun getFilterIconColor(
         variant: ChipActionVariant = LocalWantedChipVariant.current,

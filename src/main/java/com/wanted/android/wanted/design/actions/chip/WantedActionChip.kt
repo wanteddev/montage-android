@@ -50,9 +50,30 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40136&m=dev
+ * 사용자가 선택할 수 있는 Chip 컴포넌트를 생성합니다.
+ * 텍스트, 아이콘, 크기, 활성화 여부 등의 다양한 설정을 지원합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedActionChip(
+ *     text = "텍스트",
+ *     leftIcon = R.drawable.ic_sample_icon,
+ *     rightIcon = R.drawable.ic_sample_icon,
+ *     onClick = { /* 클릭 처리 */ }
+ * )
+ * ```
+ *
+ * @param text 표시할 텍스트
+ * @param modifier Modifier를 통한 스타일링
+ * @param leftIcon 왼쪽 아이콘 리소스 ID
+ * @param rightIcon 오른쪽 아이콘 리소스 ID
+ * @param size Chip 크기 설정
+ * @param variant Chip 스타일 변형 (Solid, Outlined)
+ * @param isActive 활성화 여부
+ * @param isEnable 사용 가능 여부
+ * @param interactionSource 터치 인터랙션 제어용 객체
+ * @param onClick 클릭 시 실행할 콜백
  */
-
 @Composable
 fun WantedActionChip(
     text: String,
@@ -84,6 +105,27 @@ fun WantedActionChip(
     }
 }
 
+/**
+ * 커스텀 스타일을 적용할 수 있는 Chip 컴포넌트를 생성합니다.
+ * 기본 스타일 외에 chipDefault를 통한 직접 설정이 가능합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedActionChip(
+ *     text = "커스텀 텍스트",
+ *     chipDefault = customChipDefault,
+ *     onClick = { /* 클릭 처리 */ }
+ * )
+ * ```
+ *
+ * @param text 표시할 텍스트
+ * @param modifier Modifier를 통한 스타일링
+ * @param leftIcon 왼쪽 아이콘 리소스 ID
+ * @param rightIcon 오른쪽 아이콘 리소스 ID
+ * @param chipDefault 직접 설정한 Chip 기본 스타일
+ * @param interactionSource 터치 인터랙션 제어용 객체
+ * @param onClick 클릭 시 실행할 콜백
+ */
 @Composable
 fun WantedActionChip(
     text: String,
@@ -136,6 +178,31 @@ fun WantedActionChip(
     )
 }
 
+/**
+ * 좌우 아이콘과 텍스트 Content를 포함한 Chip Layout을 구성합니다.
+ * 직접 Chip 기본 스타일 및 구성요소를 입력할 수 있습니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedActionChip(
+ *     content = { Text("Content") },
+ *     leftIcon = { Icon(...) },
+ *     rightIcon = { Icon(...) }
+ * )
+ * ```
+ *
+ * @param modifier Modifier를 통한 스타일링
+ * @param size Chip 크기 설정
+ * @param variant Chip 스타일 변형 (Solid, Outlined)
+ * @param isActive 활성화 여부
+ * @param isEnable 사용 가능 여부
+ * @param chipDefault Chip 기본 스타일 객체
+ * @param interactionSource 터치 인터랙션 제어용 객체
+ * @param leftIcon 좌측 아이콘 Composable
+ * @param content 텍스트 또는 콘텐츠 Composable
+ * @param rightIcon 우측 아이콘 Composable
+ * @param onClick 클릭 시 실행할 콜백
+ */
 @Composable
 fun WantedActionChip(
     modifier: Modifier = Modifier,
