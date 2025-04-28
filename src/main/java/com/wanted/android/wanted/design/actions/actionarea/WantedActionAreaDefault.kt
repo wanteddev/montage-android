@@ -7,13 +7,25 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 
-
+/**
+ * 액션 영역의 타입을 정의하는 Enum 클래스입니다.
+ * Strong, Neutral, Cancel 세 가지 타입이 존재합니다.
+ */
 enum class ActionAreaType {
     Strong,
     Neutral,
     Cancel
 }
 
+/**
+ * ActionArea에 필요한 버튼 기본 스타일을 묶어둔 데이터 클래스입니다.
+ * 각 버튼의 WantedButtonDefault를 개별 설정할 수 있습니다.
+ *
+ * @param type 액션 영역 타입
+ * @param positiveButtonDefault 메인 액션 버튼 스타일 설정
+ * @param negativeButtonDefault 서브 액션 버튼 스타일 설정
+ * @param neutralButtonDefault 추가 액션 버튼 스타일 설정
+ */
 data class WantedActionAreaDefault(
     val type: ActionAreaType = ActionAreaType.Strong,
     val positiveButtonDefault: WantedButtonDefault,

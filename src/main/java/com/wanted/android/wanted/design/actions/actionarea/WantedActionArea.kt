@@ -41,7 +41,23 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45079&m=dev
+ * 화면 하단에 액션 버튼 영역을 생성하는 Compose 함수입니다.
+ * SafeArea 처리, 배경 그라데이션, 스크롤 상태 반영 등을 지원합니다.
+ *
+ * @param modifier Modifier를 설정합니다.
+ * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
+ * @param background 배경 그라데이션 표시 여부를 지정합니다.
+ * @param gradationColor 배경 그라데이션 색상을 설정합니다.
+ * @param type 액션 영역의 타입을 설정합니다.
+ * @param positive 메인(긍정) 액션 버튼 텍스트입니다.
+ * @param negative 서브(부정) 액션 버튼 텍스트입니다.
+ * @param neutral 추가(중립) 액션 버튼 텍스트입니다.
+ * @param scrollableState 스크롤 가능한 경우 상태를 전달합니다.
+ * @param onClickPositive 메인 액션 버튼 클릭 콜백입니다.
+ * @param onClickNegative 서브 액션 버튼 클릭 콜백입니다.
+ * @param onClickNeutral 추가 액션 버튼 클릭 콜백입니다.
+ * @param caption 액션 영역 상단에 표시할 캡션입니다.
+ * @param variant 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
 fun WantedActionArea(
@@ -110,6 +126,22 @@ fun WantedActionArea(
 }
 
 
+/**
+ * 직접 Composable Slot으로 액션 버튼을 구성하는 Compose 함수입니다.
+ * 다양한 커스터마이징이 필요한 경우 사용합니다.
+ *
+ * @param modifier Modifier를 설정합니다.
+ * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
+ * @param background 배경 그라데이션 표시 여부를 지정합니다.
+ * @param gradationColor 배경 그라데이션 색상을 설정합니다.
+ * @param type 액션 영역의 타입을 설정합니다.
+ * @param scrollableState 스크롤 가능한 경우 상태를 전달합니다.
+ * @param positive 메인(긍정) 액션 버튼 Slot입니다.
+ * @param negative 서브(부정) 액션 버튼 Slot입니다.
+ * @param neutral 추가(중립) 액션 버튼 Slot입니다.
+ * @param caption 액션 영역 상단에 표시할 캡션입니다.
+ * @param variant 추가적으로 표시할 컴포넌트입니다.
+ */
 @Composable
 fun WantedActionArea(
     modifier: Modifier = Modifier,
@@ -143,8 +175,26 @@ fun WantedActionArea(
     )
 }
 
-
-@Deprecated("", level = DeprecationLevel.ERROR)
+/**
+ * Warning: Deprecated API - 더 이상 사용되지 않습니다.
+ * 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.
+ *
+ * @param modifier Modifier를 설정합니다.
+ * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
+ * @param background 배경 그라데이션 표시 여부를 지정합니다.
+ * @param gradationColor 배경 그라데이션 색상을 설정합니다.
+ * @param actionAreaDefault 버튼 스타일 기본값을 설정합니다.
+ * @param positive 메인 액션 버튼 텍스트입니다.
+ * @param negative 서브 액션 버튼 텍스트입니다.
+ * @param neutral 추가 액션 버튼 텍스트입니다.
+ * @param scrollableState 스크롤 가능한 경우 상태를 전달합니다.
+ * @param onClickPositive 메인 액션 버튼 클릭 콜백입니다.
+ * @param onClickNegative 서브 액션 버튼 클릭 콜백입니다.
+ * @param onClickNeutral 추가 액션 버튼 클릭 콜백입니다.
+ * @param caption 액션 영역 상단에 표시할 캡션입니다.
+ * @param variant 추가적으로 표시할 컴포넌트입니다.
+ */
+@Deprecated("Slot 방식을 사용하는 WantedActionArea를 사용하세요", level = DeprecationLevel.ERROR)
 @Composable
 fun WantedActionArea(
     modifier: Modifier = Modifier,
