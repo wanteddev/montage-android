@@ -226,7 +226,7 @@ internal fun WantedOutlinedButton(
 
 @Preview
 @Composable
-fun PreviewOutlinedButtons() {
+private fun PreviewOutlinedButtons() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -301,7 +301,7 @@ fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonLoading() {
+private fun PreviewWantedOutlinedButtonLoading() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -339,7 +339,7 @@ fun PreviewWantedOutlinedButtonLoading() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
+private fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -382,7 +382,7 @@ fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
+private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -425,7 +425,7 @@ fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
+private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -468,7 +468,7 @@ fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
+private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -515,7 +515,7 @@ fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonMediumEnable() {
+private fun PreviewWantedOutlinedButtonMediumEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -554,7 +554,7 @@ fun PreviewWantedOutlinedButtonMediumEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonLargeEnable() {
+private fun PreviewWantedOutlinedButtonLargeEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -593,7 +593,7 @@ fun PreviewWantedOutlinedButtonLargeEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
+private fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -632,7 +632,7 @@ fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
+private fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -675,7 +675,7 @@ fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
+private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -722,7 +722,7 @@ fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
+private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -769,7 +769,7 @@ fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
+private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -820,7 +820,7 @@ fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonMediumDisable() {
+private fun PreviewWantedOutlinedButtonMediumDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -863,7 +863,7 @@ fun PreviewWantedOutlinedButtonMediumDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonLargeDisable() {
+private fun PreviewWantedOutlinedButtonLargeDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
@@ -906,7 +906,7 @@ fun PreviewWantedOutlinedButtonLargeDisable() {
 
 @Preview
 @Composable
-fun PreviewWantedOutlinedButtonLargeMaxWidthDisable() {
+private fun PreviewWantedOutlinedButtonLargeMaxWidthDisable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))

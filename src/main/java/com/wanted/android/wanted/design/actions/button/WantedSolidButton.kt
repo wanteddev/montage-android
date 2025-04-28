@@ -216,7 +216,7 @@ internal fun WantedSolidButton(
 
 @Preview
 @Composable
-fun PreviewSolidButtons() {
+private fun PreviewSolidButtons() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -260,7 +260,7 @@ fun PreviewSolidButtons() {
 
 @Preview
 @Composable
-fun PreviewWantedSolidButtonIconOnlySmallNoDrawableEnable() {
+private fun PreviewWantedSolidButtonIconOnlySmallNoDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))
