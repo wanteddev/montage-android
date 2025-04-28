@@ -1,4 +1,6 @@
-# WantedButton
+# Button
+
+## WantedButton
 
 ### 개요
 WantedButton은 다양한 스타일(SOLID, OUTLINED, TEXT)의 버튼을 생성하는 Compose 함수입니다.
