@@ -121,7 +121,7 @@ internal fun WantedCardDescriptionLayout(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         topContent?.let {
             Box(modifier = Modifier.padding(bottom = 4.dp)) {

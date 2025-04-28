@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.contents.card
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -78,15 +79,7 @@ fun WantedCardVertical(
                                 title = overlayCaption,
                                 toggleIcon = overlayToggleIcon?.let {
                                     {
-                                        WantedTouchArea(
-                                            content = {
-                                                Icon(
-                                                    painter = painterResource(id = R.drawable.button_bookmark_line_svg),
-                                                    contentDescription = ""
-                                                )
-                                            },
-                                            onClick = {}
-                                        )
+                                        overlayToggleIcon()
                                     }
                                 }
                             )
@@ -144,6 +137,7 @@ private fun WantedCardVerticalSkeleton(
     )
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedCardVerticalLayout(
     modifier: Modifier = Modifier,
@@ -153,7 +147,7 @@ private fun WantedCardVerticalLayout(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         BoxWithConstraints(
             modifier = Modifier
