@@ -32,6 +32,7 @@ fun WantedCardDescription(
     title: String,
     maxLines: Int = 2,
     caption: String = "",
+    subCaption: String = "",
     extraCaption: String = "",
     topContent: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null
@@ -50,6 +51,15 @@ fun WantedCardDescription(
             {
                 Text(
                     text = caption,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        },
+        subCaption = subCaption.ifEmpty { null }?.let {
+            {
+                Text(
+                    text = subCaption,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -96,7 +106,7 @@ internal fun WantedCardDescriptionSkeleton(
                 )
             }
         } else null,
-        extraCaption = if (extraCaption) {
+        subCaption = if (extraCaption) {
             {
                 WantedSkeletonText(
                     modifier = Modifier.height(18.dp),
@@ -117,6 +127,7 @@ internal fun WantedCardDescriptionLayout(
     topContent: @Composable (() -> Unit)? = null,
     title: @Composable () -> Unit,
     cation: @Composable (() -> Unit)? = null,
+    subCaption: @Composable (() -> Unit)? = null,
     extraCaption: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null
 ) {
@@ -148,9 +159,16 @@ internal fun WantedCardDescriptionLayout(
             )
         ) {
             cation?.invoke()
-            Spacer(Modifier.size(2.dp))
 
-            extraCaption?.invoke()
+            subCaption?.let {
+                Spacer(Modifier.size(2.dp))
+                subCaption()
+            }
+
+            extraCaption?.let {
+                Spacer(Modifier.size(2.dp))
+                extraCaption()
+            }
         }
 
         bottomContent?.let {
@@ -188,14 +206,14 @@ private fun WantedCardDescriptionPreview() {
                     modifier = Modifier,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션"
+                    subCaption = "추가 캡션"
                 )
 
                 WantedCardDescription(
                     modifier = Modifier,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     topContent = {
                         WantedContentBadge(text = "텍스트")
                     }
@@ -205,7 +223,7 @@ private fun WantedCardDescriptionPreview() {
                     modifier = Modifier,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     bottomContent = {
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             WantedContentBadge(text = "텍스트")
