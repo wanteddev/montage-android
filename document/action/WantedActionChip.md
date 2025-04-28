@@ -108,8 +108,6 @@ WantedActionChip(
 
 ---
 
----
-
 ## WantedChipDefault
 
 **WantedActionChip 기본 스타일을 정의하는 데이터 클래스**
