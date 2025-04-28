@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -120,13 +121,14 @@ internal fun WantedCardDescriptionLayout(
     bottomContent: @Composable (() -> Unit)? = null
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(2.dp)
+        modifier = modifier.padding(horizontal = 2.dp),
     ) {
         topContent?.let {
             Box(modifier = Modifier.padding(bottom = 4.dp)) {
                 topContent()
             }
+
+            Spacer(Modifier.size(4.dp))
         }
 
         ProvideTextStyle(
@@ -136,6 +138,7 @@ internal fun WantedCardDescriptionLayout(
             )
         ) {
             title()
+            Spacer(Modifier.size(4.dp))
         }
 
         ProvideTextStyle(
@@ -145,12 +148,13 @@ internal fun WantedCardDescriptionLayout(
             )
         ) {
             cation?.invoke()
+            Spacer(Modifier.size(2.dp))
 
             extraCaption?.invoke()
         }
 
         bottomContent?.let {
-            Box(modifier = Modifier.padding(top = 4.dp)) {
+            Box(modifier = Modifier.padding(top = 8.dp)) {
                 bottomContent()
             }
         }
