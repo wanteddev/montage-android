@@ -13,24 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 
-@Composable
-@Stable
-internal fun Modifier.clickOnce(
-    verticalPadding: Dp,
-    horizontalPadding: Dp,
-    enabled: Boolean = true,
-    rippleColor: Color = Color.Unspecified,
-    isUseRipple: Boolean = true,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: (() -> Unit)
-): Modifier = this
-    .clickOnce(
-        interactionSource = interactionSource,
-        indication = if (isUseRipple) ripple(bounded = true, color = rippleColor) else null,
-        enabled = enabled,
-    ) { onClick() }
-    .then(MinimumInteractiveModifier(verticalPadding, horizontalPadding))
-
 internal fun Modifier.clickOnce(
     enabled: Boolean = true,
     onClickLabel: String? = null,

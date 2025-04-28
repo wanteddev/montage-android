@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.contents.card
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,18 +18,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=23188-76308&m=dev
@@ -42,6 +42,7 @@ fun WantedCardVertical(
     overlayCaption: String = "",
     title: String = "",
     caption: String = "",
+    subCaption: String = "",
     extraCaption: String = "",
     isLoading: Boolean = false,
     cardDefault: WantedCardDefault = WantedCardDefaults.getDefault(),
@@ -59,68 +60,54 @@ fun WantedCardVertical(
             bottomContent = cardDefault.bottomContentSkeleton,
         )
     } else {
-        WantedCardVerticalLayout(
-            modifier = modifier
-                .clip(
-                    shape = RoundedCornerShape(
-                        topStart = 20.dp,
-                        topEnd = 20.dp,
-                        bottomStart = 12.dp,
-                        bottomEnd = 12.dp
-                    )
-                )
-                .clickOnce(
-                    verticalPadding = 8.dp,
-                    horizontalPadding = 8.dp,
-                    onClick = { onClick() }
-                ),
-            thumbnail = { width: Dp, height: Dp ->
-                GlideImage(
-                    modifier = Modifier.size(width, height),
-                    model = thumbnail,
-                    contentScale = ContentScale.Crop,
-                    contentDescription = ""
+        WantedTouchArea(
+            content = {
+                WantedCardVerticalLayout(
+                    modifier = modifier,
+                    thumbnail = { width: Dp, height: Dp ->
+                        GlideImage(
+                            modifier = Modifier.size(width, height),
+                            model = thumbnail,
+                            contentDescription = ""
+                        )
+                    },
+                    thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
+                        {
+                            WantedThumbnailOverly(
+                                modifier = Modifier,
+                                title = overlayCaption,
+                                toggleIcon = overlayToggleIcon?.let {
+                                    {
+                                        overlayToggleIcon()
+                                    }
+                                }
+                            )
+                        }
+                    } else null,
+                    description = {
+                        WantedCardDescription(
+                            modifier = Modifier,
+                            title = title,
+                            caption = caption,
+                            subCaption = subCaption,
+                            extraCaption = extraCaption,
+                            bottomContent = bottomContent,
+                            topContent = topContent
+                        )
+                    }
                 )
             },
-            thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
-                {
-                    WantedThumbnailOverly(
-                        modifier = Modifier,
-                        title = overlayCaption,
-                        toggleIcon = overlayToggleIcon?.let {
-                            {
-                                overlayToggleIcon()
-                            }
-                        }
-                    )
-                }
-            } else null,
-            description = {
-                WantedCardDescription(
-                    modifier = Modifier,
-                    title = title,
-                    caption = caption,
-                    extraCaption = extraCaption,
-                    bottomContent = bottomContent,
-                    topContent = topContent
-                )
-            }
+            verticalPadding = 8.dp,
+            horizontalPadding = 8.dp,
+            enabledInnerTouch = true,
+            shape = RoundedCornerShape(
+                topStart = 20.dp,
+                topEnd = 20.dp,
+                bottomStart = 12.dp,
+                bottomEnd = 12.dp
+            ),
+            onClick = onClick
         )
-
-//        WantedTouchArea(
-//            content = {
-//
-//            },
-//            verticalPadding = 8.dp,
-//            horizontalPadding = 8.dp,
-//            shape = RoundedCornerShape(
-//                topStart = 20.dp,
-//                topEnd = 20.dp,
-//                bottomStart = 12.dp,
-//                bottomEnd = 12.dp
-//            ),
-//            onClick = onClick
-//        )
     }
 }
 
@@ -150,6 +137,7 @@ private fun WantedCardVerticalSkeleton(
     )
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedCardVerticalLayout(
     modifier: Modifier = Modifier,
@@ -159,7 +147,7 @@ private fun WantedCardVerticalLayout(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         BoxWithConstraints(
             modifier = Modifier
@@ -204,7 +192,7 @@ private fun WantedCardPreview() {
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     overlayCaption = "overlayCaption",
                     overlayToggleIcon = {
                         Icon(
@@ -219,7 +207,7 @@ private fun WantedCardPreview() {
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     topContent = {
                         WantedContentBadge(text = "텍스트")
                     }
@@ -229,7 +217,7 @@ private fun WantedCardPreview() {
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     bottomContent = {
                         WantedContentBadge(text = "텍스트")
                     }
@@ -239,7 +227,7 @@ private fun WantedCardPreview() {
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     bottomContent = {
                         WantedContentBadge(text = "텍스트")
                     },
@@ -275,7 +263,7 @@ private fun WantedCardSkeletonPreview() {
                     isLoading = true,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     overlayCaption = "overlayCaption",
                     cardDefault = WantedCardDefault(
                         topContentSkeleton = true
@@ -294,7 +282,7 @@ private fun WantedCardSkeletonPreview() {
                     isLoading = true,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     cardDefault = WantedCardDefault(
                         topContentSkeleton = true,
                         bottomContentSkeleton = true
