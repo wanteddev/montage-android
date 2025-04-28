@@ -1,142 +1,97 @@
+# WantedButton Documentation
 
-# WantedButton.md
+## WantedButton 함수 설명
 
-## 📌 WantedButton
+### 개요
+WantedButton은 다양한 스타일(SOLID, OUTLINED, TEXT)의 버튼을 생성하는 Compose 함수입니다.
+버튼의 형태, 타입, 크기 등을 손쉽게 설정할 수 있습니다.
 
+### 사용 예시
 ```kotlin
-/**
- * 다양한 스타일과 상태를 지원하는 범용 버튼 컴포저블입니다.
- *
- * `WantedButton`은 Solid, Outlined, Text 등의 다양한 버튼 스타일을 지원하며,
- * 버튼의 크기, 색상, 아이콘 등을 세부적으로 커스터마이징할 수 있습니다.
- * 주로 사용자 인터랙션을 유도하거나 특정 동작을 트리거할 때 사용합니다.
- *
- * 사용 예시:
- * ```
- * @Composable
- * fun ExampleUsage() {
- *     WantedButton(
- *         text = "확인",
- *         onClick = { /* 클릭 시 동작 */ }
- *     )
- * }
- * ```
- *
- * @param text 버튼에 표시될 텍스트입니다. 사용자가 버튼의 목적을 쉽게 이해할 수 있도록 명확하게 작성해야 합니다.
- * @param onClick 버튼이 클릭될 때 호출되는 콜백 함수입니다.
- * @param modifier 외부에서 버튼의 레이아웃이나 스타일을 조정할 때 사용하는 Modifier입니다.
- * @param enabled 버튼의 활성화 여부를 설정합니다. `false`로 설정하면 버튼이 비활성화되며 클릭할 수 없습니다.
- * @param style 버튼의 스타일을 지정합니다. Solid, Outlined, Text 등의 옵션이 있습니다.
- * @param size 버튼의 크기를 지정합니다. Small, Medium, Large 등 다양한 사이즈를 지원합니다.
- * @param leftIcon 버튼 텍스트 왼쪽에 표시될 아이콘입니다. 선택적으로 사용할 수 있습니다.
- * @param rightIcon 버튼 텍스트 오른쪽에 표시될 아이콘입니다. 선택적으로 사용할 수 있습니다.
- *
- * Note: 이 컴포저블은 Wanted Design System의 일관된 스타일 가이드를 따릅니다.
- * Important: 버튼에 너무 많은 텍스트나 아이콘을 추가하면 가독성이 떨어질 수 있습니다. 필요한 요소만 추가하는 것을 권장합니다.
- * SeeAlso: [WantedSolidButton], [WantedOutlinedButton], [WantedTextButton]
- */
+WantedButton(
+    text = "확인",
+    buttonShape = ButtonShape.SOLID,
+    type = ButtonType.PRIMARY,
+    size = ButtonSize.LARGE,
+    onClick = { /* 클릭 이벤트 처리 */ }
+)
 ```
 
-## 📌 ButtonStyle
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 버튼의 외형을 조정합니다. |
+| text | String | 버튼에 표시할 텍스트입니다. |
+| buttonShape | ButtonShape | 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다. |
+| type | ButtonType | 버튼의 타입(PRIMARY, SECONDARY, ASSISTIVE)을 지정합니다. |
+| size | ButtonSize | 버튼의 크기(LARGE, MEDIUM, SMALL)를 지정합니다. |
+| enabled | Boolean | 버튼의 활성화 여부입니다. (기본값: true) |
+| isLoading | Boolean | 로딩 상태를 표시할지 여부입니다. (기본값: false) |
+| leadingDrawable | Int? | 버튼 왼쪽에 표시할 Drawable 리소스 ID입니다. (선택사항) |
+| trailingDrawable | Int? | 버튼 오른쪽에 표시할 Drawable 리소스 ID입니다. (선택사항) |
+| onClick | () -> Unit | 버튼 클릭 시 호출되는 콜백 함수입니다. |
 
+---
+
+## WantedButton (ButtonDefault 사용) 함수 설명
+
+### 개요
+버튼의 스타일 및 상태를 세밀하게 제어할 수 있는 Compose 함수입니다.
+ButtonDefault 객체를 사용하여 기본 스타일을 설정할 수 있습니다.
+
+### 사용 예시
 ```kotlin
-/**
- * 버튼의 외형 스타일을 정의하는 열거형(enum)입니다.
- *
- * Solid, Outlined, Text 등의 다양한 스타일을 통해 버튼의 용도와 우선순위를 구분할 수 있습니다.
- *
- * 사용 예시:
- * ```
- * WantedButton(
- *     text = "확인",
- *     style = ButtonStyle.Solid,
- *     onClick = { /* 클릭 동작 */ }
- * )
- * ```
- *
- * SeeAlso: [WantedButton]
- */
-enum class ButtonStyle {
-    Solid,
-    Outlined,
-    Text
-}
+WantedButton(
+    text = "삭제",
+    buttonDefault = WantedButtonDefaults.getDefault(ButtonShape.OUTLINED),
+    onClick = { /* 클릭 처리 */ }
+)
 ```
 
-## 📌 ButtonSize
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 버튼의 외형을 조정합니다. |
+| text | String | 버튼에 표시할 텍스트입니다. |
+| isLoading | Boolean | 로딩 상태를 표시할지 여부입니다. (기본값: false) |
+| buttonDefault | WantedButtonDefault | 버튼 기본 스타일 설정 객체입니다. |
+| leadingDrawable | Int? | 버튼 왼쪽에 표시할 Drawable 리소스 ID입니다. (선택사항) |
+| trailingDrawable | Int? | 버튼 오른쪽에 표시할 Drawable 리소스 ID입니다. (선택사항) |
+| onClick | () -> Unit | 버튼 클릭 시 호출되는 콜백 함수입니다. |
 
-```kotlin
-/**
- * 버튼의 크기를 정의하는 열거형(enum)입니다.
- *
- * 버튼이 표시되는 공간이나 사용 목적에 따라 Small, Medium, Large 크기를 선택할 수 있습니다.
- *
- * 사용 예시:
- * ```
- * WantedButton(
- *     text = "확인",
- *     size = ButtonSize.Large,
- *     onClick = { /* 클릭 동작 */ }
- * )
- * ```
- *
- * SeeAlso: [WantedButton]
- */
-enum class ButtonSize {
-    Small,
-    Medium,
-    Large
-}
-```
+---
 
-## 📌 ButtonColor
+## Enum 설명
 
-```kotlin
-/**
- * 버튼의 색상 테마를 정의하는 열거형(enum)입니다.
- *
- * 버튼의 용도와 중요도에 따라 다양한 색상을 선택할 수 있으며, 브랜드 컬러와 일관성을 유지합니다.
- *
- * 사용 예시:
- * ```
- * WantedButton(
- *     text = "제출",
- *     onClick = { /* 클릭 동작 */ },
- *     color = ButtonColor.Primary
- * )
- * ```
- *
- * SeeAlso: [WantedButton]
- */
-enum class ButtonColor {
-    Primary,
-    Secondary,
-    Danger
-}
-```
+### ButtonShape
+| 값 | 설명 |
+|:---|:---|
+| SOLID | 배경이 채워진 기본형 버튼 |
+| OUTLINED | 테두리만 있는 버튼 |
+| TEXT | 텍스트만 표시되는 버튼 |
 
-## 📌 ButtonState
+### ButtonStatus
+| 값 | 설명 |
+|:---|:---|
+| ENABLE | 활성 상태 |
+| DISABLE | 비활성 상태 |
 
-```kotlin
-/**
- * 버튼의 시각적/논리적 상태를 정의하는 열거형(enum)입니다.
- *
- * 사용자의 상호작용 및 비즈니스 로직에 따라 버튼의 상태를 변경할 수 있습니다.
- *
- * 사용 예시:
- * ```
- * WantedButton(
- *     text = "로딩 중",
- *     onClick = { /* 클릭 동작 */ },
- *     state = ButtonState.Loading
- * )
- * ```
- *
- * SeeAlso: [WantedButton]
- */
-enum class ButtonState {
-    Enabled,
-    Disabled,
-    Loading
-}
-```
+### ButtonType
+| 값 | 설명 |
+|:---|:---|
+| PRIMARY | 주요 액션에 사용 |
+| SECONDARY | 보조 액션에 사용 |
+| ASSISTIVE | 보조 정보나 옵션에 사용 |
+
+### ButtonSize
+| 값 | 설명 |
+|:---|:---|
+| LARGE | 큰 버튼 |
+| MEDIUM | 중간 크기 버튼 |
+| SMALL | 작은 버튼 |
+
+---
+
+## Note
+- `ButtonShape`, `ButtonType`, `ButtonSize` 설정에 따라 자동으로 시각적 스타일이 적용됩니다.
+- `enabled`와 `isLoading` 조합에 따라 버튼의 클릭 가능 여부와 로딩 인디케이터가 다르게 동작합니다.
