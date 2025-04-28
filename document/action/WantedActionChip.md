@@ -36,6 +36,8 @@ WantedActionChip(
 | interactionSource | MutableInteractionSource | 사용자 터치 이벤트 관리 객체 |
 | onClick | (() -> Unit)? | 클릭 이벤트 콜백 |
 
+---
+
 ### 커스텀 스타일 적용형
 
 **chipDefault를 통해 직접 스타일을 지정할 수 있습니다.**
@@ -58,6 +60,8 @@ WantedActionChip(
 | chipDefault | WantedChipDefault | 기본 스타일 직접 지정 |
 | interactionSource | MutableInteractionSource | 사용자 터치 이벤트 관리 객체 |
 | onClick | (() -> Unit)? | 클릭 이벤트 콜백 |
+
+---
 
 ### Composable Slot 사용형
 
