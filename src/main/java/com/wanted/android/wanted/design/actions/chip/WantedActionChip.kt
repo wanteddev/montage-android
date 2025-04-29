@@ -129,11 +129,11 @@ fun WantedActionChip(
 @Composable
 fun WantedActionChip(
     text: String,
-    modifier: Modifier = Modifier,
     leftIcon: Int? = null,
     rightIcon: Int? = null,
     chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     WantedActionChip(
@@ -205,7 +205,6 @@ fun WantedActionChip(
  */
 @Composable
 fun WantedActionChip(
-    modifier: Modifier = Modifier,
     size: ChipActionSize = ChipActionSize.Small,
     variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
@@ -220,7 +219,8 @@ fun WantedActionChip(
     leftIcon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null,
-    onClick: (() -> Unit)? = null
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
     WantedActionChipLayout(
         modifier = modifier
@@ -257,11 +257,11 @@ fun WantedActionChip(
 
 @Composable
 private fun WantedActionChipLayout(
-    modifier: Modifier,
     chipDefault: WantedChipDefault,
     leftIcon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
-    rightIcon: @Composable (() -> Unit)? = null
+    rightIcon: @Composable (() -> Unit)? = null,
+    modifier: Modifier
 ) {
     Row(
         modifier = modifier

@@ -46,14 +46,14 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedButton(
     text: String,
+    type: ButtonType = ButtonType.PRIMARY,
+    size: ButtonSize = ButtonSize.LARGE,
+    buttonShape: ButtonShape = ButtonShape.SOLID,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
     modifier: Modifier = Modifier,
-    buttonShape: ButtonShape = ButtonShape.SOLID,
-    type: ButtonType = ButtonType.PRIMARY,
-    size: ButtonSize = ButtonSize.LARGE,
-    enabled: Boolean = true,
-    isLoading: Boolean = false,
     onClick: () -> Unit = {}
 ) {
     when (buttonShape) {
@@ -142,12 +142,12 @@ fun WantedButton(
  */
 @Composable
 fun WantedButton(
-    modifier: Modifier = Modifier,
     text: String,
     isLoading: Boolean = false,
-    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(),
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
+    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(),
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
 

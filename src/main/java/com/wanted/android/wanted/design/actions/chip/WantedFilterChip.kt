@@ -96,7 +96,7 @@ fun WantedFilterChip(
             chipDefault = WantedChipDefaults
                 .getDefault()
                 .copy(iconColor = colorResource(id = WantedChipDefaults.getFilterIconColor())),
-            isExpend = isExpend,
+            isExpanded = isExpend,
             interactionSource = interactionSource,
             onClick = onClick
         )
@@ -121,18 +121,18 @@ fun WantedFilterChip(
  * @param modifier Modifier를 통한 스타일 조정
  * @param activeLabel 활성화 상태일 때 표시할 라벨 텍스트
  * @param chipDefault 직접 설정한 기본 스타일
- * @param isExpend 확장 여부 (true면 위 화살표 표시)
+ * @param isExpanded 확장 여부 (true면 위 화살표 표시)
  * @param interactionSource 터치 인터랙션 제어용 객체
  * @param onClick 클릭 시 실행할 콜백 함수
  */
 @Composable
 fun WantedFilterChip(
     text: String,
-    modifier: Modifier = Modifier,
     activeLabel: String = "",
+    isExpanded: Boolean = false,
     chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
-    isExpend: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     WantedFilterChip(
@@ -169,7 +169,7 @@ fun WantedFilterChip(
         rightIcon = {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = if (isExpend) {
+                painter = if (isExpanded) {
                     painterResource(id = R.drawable.ic_normal_caret_up_svg)
                 } else {
                     painterResource(id = R.drawable.ic_normal_caret_down_svg)
@@ -185,7 +185,6 @@ fun WantedFilterChip(
 
 @Composable
 private fun WantedFilterChip(
-    modifier: Modifier = Modifier,
     size: ChipActionSize = ChipActionSize.Small,
     variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
@@ -199,6 +198,7 @@ private fun WantedFilterChip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     WantedFilterChipLayout(
@@ -236,10 +236,10 @@ private fun WantedFilterChip(
 
 @Composable
 private fun WantedFilterChipLayout(
-    modifier: Modifier,
     chipDefault: WantedChipDefault,
     content: @Composable () -> Unit,
-    rightIcon: @Composable (() -> Unit)? = null
+    rightIcon: @Composable (() -> Unit)? = null,
+    modifier: Modifier
 ) {
     Row(
         modifier = modifier
