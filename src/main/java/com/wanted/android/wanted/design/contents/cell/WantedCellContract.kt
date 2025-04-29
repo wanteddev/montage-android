@@ -11,8 +11,10 @@ object WantedCellContract {
         Large(16.dp)
     }
 
-    sealed class InteractionPadding(open val padding: Dp = 20.dp) {
-        data object Default : InteractionPadding()
-        data class Custom(override val padding: Dp = 0.dp) : InteractionPadding()
+    sealed class InteractionPadding(open val padding: Dp) {
+        data class Default(
+            val fillWidth: Boolean = false
+        ) : InteractionPadding(if (fillWidth) 20.dp else 12.dp)
+        data class Custom(override val padding: Dp = 0.dp) : InteractionPadding(padding)
     }
 }

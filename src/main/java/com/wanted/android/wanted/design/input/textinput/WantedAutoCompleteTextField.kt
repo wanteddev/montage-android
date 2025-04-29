@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.input.textinput.WantedTextFieldContract.RightVariant
 import com.wanted.android.wanted.design.presentation.autocomplete.WantedAutoComplete
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -41,8 +42,8 @@ fun WantedAutoCompleteTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     rightContent: @Composable ((Dp) -> Unit)? = null,
-    rightButtonVariant: WantedTextInputRightVariant = WantedTextInputRightVariant.Normal,
-    status: WantedTextInputContract.Status = WantedTextInputContract.Status.Normal,
+    rightButtonVariant: RightVariant = RightVariant.Normal,
+    status: WantedTextFieldContract.Status = WantedTextFieldContract.Status.Normal,
     enabled: Boolean = true,
     rightButtonEnabled: Boolean = true,
     maxLines: Int = 1,
@@ -68,12 +69,11 @@ fun WantedAutoCompleteTextField(
     bottomDirectInput: @Composable (() -> Unit)? = null,
     onExpandedChange: (Boolean) -> Unit
 ) {
-
     ExposedDropdownMenuBox(
         modifier = modifier,
         expanded = expended,
         onExpandedChange = {
-            onExpandedChange(it)
+            onExpandedChange(it && text.isNotEmpty())
         }
     ) {
         BoxWithConstraints(
@@ -83,7 +83,7 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .padding(vertical = anchorPadding)
                     .fillMaxWidth()
-                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = text.isNotEmpty()),
+                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
                 title = title,
                 text = text,
                 description = description,
@@ -144,8 +144,8 @@ fun WantedAutoCompleteTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     rightContent: @Composable ((Dp) -> Unit)? = null,
-    rightButtonVariant: WantedTextInputRightVariant = WantedTextInputRightVariant.Normal,
-    status: WantedTextInputContract.Status = WantedTextInputContract.Status.Normal,
+    rightButtonVariant: RightVariant = RightVariant.Normal,
+    status: WantedTextFieldContract.Status = WantedTextFieldContract.Status.Normal,
     enabled: Boolean = true,
     rightButtonEnabled: Boolean = true,
     maxLines: Int = 1,
@@ -175,7 +175,7 @@ fun WantedAutoCompleteTextField(
         modifier = modifier,
         expanded = expended,
         onExpandedChange = {
-            onExpandedChange(it)
+            onExpandedChange(it && value.text.isNotEmpty())
         }
     ) {
         BoxWithConstraints(
@@ -185,10 +185,7 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .padding(vertical = anchorPadding)
                     .fillMaxWidth()
-                    .menuAnchor(
-                        type = MenuAnchorType.PrimaryEditable,
-                        enabled = value.text.isNotEmpty()
-                    ),
+                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
                 title = title,
                 value = value,
                 description = description,

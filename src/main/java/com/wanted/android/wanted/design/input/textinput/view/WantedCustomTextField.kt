@@ -26,7 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -38,12 +40,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedDropShadow
-import com.wanted.android.wanted.design.input.textinput.WantedTextInputRightVariant
+import com.wanted.android.wanted.design.input.textinput.WantedTextFieldContract.RightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
@@ -63,10 +65,11 @@ internal fun WantedCustomTextField(
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
+    cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
     background: Color = colorResource(id = R.color.background_normal_normal),
     rightContent: @Composable ((size: Dp) -> Unit)? = null,
     rightButton: String? = null,
-    rightButtonVariant: WantedTextInputRightVariant,
+    rightButtonVariant: RightVariant,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
@@ -96,13 +99,6 @@ internal fun WantedCustomTextField(
                     end.linkTo(parent.end)
                 }
                 .clip(RoundedCornerShape(12.dp))
-                .border(
-                    shape = RoundedCornerShape(12.dp),
-                    color = colorResource(
-                        if (enabled) R.color.line_normal_neutral else R.color.line_normal_alternative
-                    ),
-                    width = 1.dp
-                )
                 .background(
                     if (enabled) {
                         background
@@ -141,10 +137,10 @@ internal fun WantedCustomTextField(
                                 )
                             } ?: run { RoundedCornerShape(12.dp) },
                             color = when {
-                                !enabled -> colorResource(R.color.transparent)
+                                !enabled -> colorResource(R.color.line_normal_alternative)
                                 error -> colorResource(R.color.status_negative).copy(OPACITY_43)
                                 focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
-                                else -> colorResource(R.color.transparent)
+                                else -> colorResource(R.color.line_normal_neutral)
                             },
                             width = if (focused) 2.dp else 1.dp
                         )
@@ -161,6 +157,7 @@ internal fun WantedCustomTextField(
                     minLines = minLines,
                     enabled = enabled,
                     singleLine = true,
+                    cursorBrush = cursorBrush,
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
@@ -371,7 +368,7 @@ private fun DecorationBox(
 @Composable
 private fun WantedTextFieldButton(
     modifier: Modifier = Modifier,
-    rightButtonVariant: WantedTextInputRightVariant,
+    rightButtonVariant: RightVariant,
     title: String,
     enable: Boolean
 ) {
@@ -386,7 +383,7 @@ private fun WantedTextFieldButton(
         style = WantedTextStyle(
             colorRes = when {
                 !enable -> R.color.label_assistive
-                rightButtonVariant == WantedTextInputRightVariant.Assistive -> R.color.label_normal
+                rightButtonVariant == RightVariant.Assistive -> R.color.label_normal
                 else -> R.color.primary_normal
             },
             style = DesignSystemTheme.typography.body1Bold

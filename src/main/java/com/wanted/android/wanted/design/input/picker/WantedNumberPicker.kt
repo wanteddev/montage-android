@@ -27,11 +27,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -69,6 +72,7 @@ fun WantedNumberPicker(
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
+    userScrollEnabled: Boolean = true,
     onSelect: (index: Int, value: Int, enabled: Boolean) -> Unit = { _, _, _ -> }
 ) {
 
@@ -99,6 +103,7 @@ fun WantedNumberPicker(
         textStyle = textStyle,
         itemSize = itemSize,
         visibleCount = visibleCount,
+        userScrollEnabled = userScrollEnabled,
         onSelect = { index, enabled ->
             onSelect(index, itemList[index], enabled)
         }
@@ -159,9 +164,9 @@ fun WantedStringPicker(
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
+    userScrollEnabled: Boolean = true,
     onSelect: (index: Int, enabled: Boolean) -> Unit = { _, _ -> }
 ) {
-
     LaunchedEffect(selectedIndex) {
         if (pagerState.currentPage != selectedIndex) {
             pagerState.scrollToPage(selectedIndex)
@@ -174,6 +179,13 @@ fun WantedStringPicker(
                 pagerState.currentPage,
                 pagerState.currentPage in enableStartIndex..enableEndIndex
             )
+        }
+    }
+
+    val haptic = LocalHapticFeedback.current
+    LaunchedEffect(haptic, pagerState.currentPage) {
+        snapshotFlow { pagerState.currentPage }.collect {
+            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
         }
     }
 
@@ -203,9 +215,10 @@ fun WantedStringPicker(
                     page = page,
                     visibleCount = visibleCount + 2,
                     title = itemList.get(index = page),
-                    enabled = page in enableStartIndex..enableEndIndex
+                    enabled = if (userScrollEnabled) page in enableStartIndex..enableEndIndex else false
                 )
-            }
+            },
+            userScrollEnabled = userScrollEnabled
         )
     }
 }
