@@ -83,7 +83,7 @@ fun WantedDialogTwoButtonImpl(
                         modifier = Modifier.fillMaxWidth(),
                         text = negative.orEmpty(),
                         type = ButtonType.SECONDARY,
-                        clickListener = {
+                        onClick = {
                             onClickNegative()
                         }
                     )

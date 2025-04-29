@@ -72,13 +72,13 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
 @Composable
 fun WantedFilterChip(
     text: String,
-    modifier: Modifier = Modifier,
     activeLabel: String = "",
     size: ChipActionSize = ChipActionSize.Small,
     variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
     isExpend: Boolean = false,
+    modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {

@@ -69,7 +69,6 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  */
 @Composable
 fun WantedAccordion(
-    modifier: Modifier = Modifier,
     title: String,
     titleMaxLine: Int = Int.MAX_VALUE,
     description: String? = null,
@@ -85,15 +84,16 @@ fun WantedAccordion(
     fillWidth: Boolean = false,
     divider: Boolean = true,
     verticalPadding: VerticalPadding = VerticalPadding.Padding12,
-    content: @Composable (() -> Unit)? = null,
-    onChangeExpanded: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
     leadingIcon: (@Composable () -> Unit)? = null,
     trail: @Composable () -> Unit = {
         WantedAccordionTrailArrowIcon(
             isExpanded = isExpanded,
             tint = titleStyle.color
         )
-    }
+    },
+    content: @Composable (() -> Unit)? = null,
+    onChangeExpanded: (Boolean) -> Unit
 ) {
     AccordionLayout(
         modifier = modifier.animateContentSize(),

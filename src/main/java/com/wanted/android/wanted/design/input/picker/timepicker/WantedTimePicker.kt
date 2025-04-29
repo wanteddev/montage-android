@@ -252,7 +252,7 @@ private fun getWantedTimePickerDefaults(
     selectorColor = colorResource(R.color.primary_normal),
     // 시간 선택기의 배경 색상.
     containerColor = colorResource(R.color.background_elevated_normal),
-    // 오전 / 오후 boarder 색상
+    // 오전 / 오후 barder 색상
     periodSelectorBorderColor = colorResource(R.color.line_normal_normal),
     // 오전 / 오후 select 배경
     periodSelectorSelectedContainerColor = colorResource(R.color.fill_normal),

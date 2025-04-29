@@ -19,9 +19,9 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.BoarderType
+import com.wanted.android.wanted.design.base.BorderType
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.base.getBoarderModifier
+import com.wanted.android.wanted.design.base.getBorderModifier
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarContract.WantedAvatarSize
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarContract.WantedAvatarType
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgeSize
@@ -57,7 +57,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param isIcon Boolean: 아바타 안쪽에 추가 보더를 적용할지 여부를 설정합니다.
  * @param isDrawableRes Boolean: model이 Drawable 리소스 ID일 경우 true로 설정합니다.
  * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
- * @param boarderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
+ * @param borderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
  * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
  * @param onClick (() -> Unit)?: 아바타 클릭 시 호출될 콜백 함수입니다.
  *
@@ -70,16 +70,16 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  */
 @Composable
 fun WantedAvatar(
-    modifier: Modifier,
+    type: WantedAvatarType,
+    size: WantedAvatarSize = WantedAvatarSize.Small,
     model: Any? = null,
     @DrawableRes placeHolder: Int? = null,
-    size: WantedAvatarSize = WantedAvatarSize.Small,
-    type: WantedAvatarType,
     isIcon: Boolean = false,
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
-    boarderColor: Color = colorResource(id = R.color.background_normal_normal),
     pushBadge: Boolean = false,
+    borderColor: Color = colorResource(id = R.color.background_normal_normal),
+    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     when (type) {
@@ -92,7 +92,7 @@ fun WantedAvatar(
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
                 isGroup = isGroup,
-                boarderColor = boarderColor,
+                borderColor = borderColor,
                 pushBadge = pushBadge,
                 onClick = onClick
             )
@@ -107,7 +107,7 @@ fun WantedAvatar(
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
                 isGroup = isGroup,
-                boarderColor = boarderColor,
+                borderColor = borderColor,
                 pushBadge = pushBadge,
                 onClick = onClick
             )
@@ -122,7 +122,7 @@ fun WantedAvatar(
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
                 isGroup = isGroup,
-                boarderColor = boarderColor,
+                borderColor = borderColor,
                 pushBadge = pushBadge,
                 onClick = onClick
             )
@@ -140,28 +140,28 @@ internal fun WantedAvatarPerson(
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
     isIcon: Boolean = false,
-    boarderColor: Color = colorResource(id = R.color.background_normal_normal),
+    borderColor: Color = colorResource(id = R.color.background_normal_normal),
     pushBadge: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     WantedAvatarLayout(
         modifier = modifier
-            .getBoarderModifier(
+            .getBorderModifier(
                 size = size.size,
                 isCircleShape = true,
-                boarderType = if (isGroup) BoarderType.OutLine else BoarderType.None,
-                boarderWidth = 2.dp,
-                boarderColor = boarderColor
+                borderType = if (isGroup) BorderType.OutLine else BorderType.None,
+                borderWidth = 2.dp,
+                borderColor = borderColor
             )
             .size(size.size),
         content = {
             WantedAvatarContent(
                 modifier = Modifier
                     .size(size.size)
-                    .getBoarderModifier(
+                    .getBorderModifier(
                         size = size.size,
                         isCircleShape = true,
-                        boarderType = if (isIcon) BoarderType.InnerLine else BoarderType.None
+                        borderType = if (isIcon) BorderType.InnerLine else BorderType.None
                     ),
                 model = model,
                 placeHolder = placeHolder,
@@ -194,31 +194,31 @@ private fun WantedAvatar(
     isDrawableRes: Boolean = false,
     isIcon: Boolean = false,
     isGroup: Boolean = false,
-    boarderColor: Color = colorResource(id = R.color.background_normal_normal),
+    borderColor: Color = colorResource(id = R.color.background_normal_normal),
     pushBadge: Boolean,
     onClick: (() -> Unit)? = null
 ) {
     WantedAvatarLayout(
         modifier = modifier
             .size(size.size)
-            .getBoarderModifier(
+            .getBorderModifier(
                 size = size.size,
                 isCircleShape = false,
                 cornerRadius = size.cornerRadius,
-                boarderType = if (isGroup) BoarderType.OutLine else BoarderType.None,
-                boarderWidth = 2.dp,
-                boarderColor = boarderColor
+                borderType = if (isGroup) BorderType.OutLine else BorderType.None,
+                borderWidth = 2.dp,
+                borderColor = borderColor
             ),
         interactionShape = RoundedCornerShape(size.size / 4),
         content = {
             WantedAvatarContent(
                 modifier = Modifier
                     .size(size.size)
-                    .getBoarderModifier(
+                    .getBorderModifier(
                         size = size.size,
                         isCircleShape = false,
                         cornerRadius = size.cornerRadius,
-                        boarderType = if (isIcon) BoarderType.InnerLine else BoarderType.None
+                        borderType = if (isIcon) BorderType.InnerLine else BorderType.None
                     ),
                 model = model,
                 placeHolder = placeHolder,

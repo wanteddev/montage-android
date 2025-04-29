@@ -32,7 +32,7 @@ WantedAvatar(
 | isIcon | Boolean | 아바타 내부에 아이콘 스타일 보더를 적용할지 여부를 설정합니다. 기본값은 false입니다. |
 | isDrawableRes | Boolean | 모델이 Drawable 리소스인지 여부를 설정합니다. 기본값은 false입니다. |
 | isGroup | Boolean | 그룹 아바타 스타일을 적용할지 여부를 설정합니다. 기본값은 false입니다. |
-| boarderColor | Color | 외곽선(Border)의 색상을 지정합니다. 기본은 배경색입니다. |
+| barderColor | Color | 외곽선(Border)의 색상을 지정합니다. 기본은 배경색입니다. |
 | pushBadge | Boolean | 푸시 뱃지를 표시할지 여부를 설정합니다. 기본값은 false입니다. |
 | onClick | (() -> Unit)? | 클릭 이벤트 콜백입니다. 선택 사항입니다. |
 

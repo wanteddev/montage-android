@@ -77,13 +77,13 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
 @Composable
 fun WantedActionChip(
     text: String,
-    modifier: Modifier = Modifier,
-    leftIcon: Int? = null,
-    rightIcon: Int? = null,
     size: ChipActionSize = ChipActionSize.Medium,
     variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
+    leftIcon: Int? = null,
+    rightIcon: Int? = null,
+    modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {

@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.base.BoarderType
-import com.wanted.android.wanted.design.base.getBoarderModifier
+import com.wanted.android.wanted.design.base.BorderType
+import com.wanted.android.wanted.design.base.getBorderModifier
 import com.wanted.android.wanted.design.navigations.pagination.WantedPaginationContract.IndicatorDotSize
 import com.wanted.android.wanted.design.navigations.pagination.WantedPaginationContract.WantedDotIndicatorSize
 import com.wanted.android.wanted.design.navigations.pagination.WantedPaginationContract.WantedDotIndicatorType
@@ -83,7 +83,7 @@ fun WantedDotIndicator(
                     currentIndex = currentIndex
                 )
             } else {
-                IndicatorBoarder(
+                IndicatorBorder(
                     indicatorSize = size,
                     index = index,
                     visibleArea = visibleArea,
@@ -202,7 +202,7 @@ private fun IndicatorDot(
 
 
 @Composable
-private fun IndicatorBoarder(
+private fun IndicatorBorder(
     modifier: Modifier = Modifier,
     indicatorSize: WantedDotIndicatorSize,
     index: Int,
@@ -248,7 +248,7 @@ private fun IndicatorBoarder(
         label = ""
     )
 
-    val boarderColor by animateColorAsState(
+    val borderColor by animateColorAsState(
         targetValue = if (currentIndex == index) {
             colorResource(id = R.color.line_normal_neutral)
         } else {
@@ -306,12 +306,12 @@ private fun IndicatorBoarder(
                     color = backgroundColor,
                     shape = CircleShape
                 )
-                .getBoarderModifier(
+                .getBorderModifier(
                     size = indicatorDotSize,
                     isCircleShape = true,
-                    boarderType = BoarderType.OutLine,
-                    boarderWidth = 1.dp,
-                    boarderColor = boarderColor,
+                    borderType = BorderType.OutLine,
+                    borderWidth = 1.dp,
+                    borderColor = borderColor,
                     backgroundColor = backgroundColor
                 )
                 .animateContentSize(

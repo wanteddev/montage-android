@@ -59,13 +59,13 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun WantedAvatarGroup(
-    modifier: Modifier = Modifier,
     modelList: List<Any>,
-    @DrawableRes placeHolder: Int? = null,
     size: WantedAvatarSize,
     type: WantedAvatarType,
+    @DrawableRes placeHolder: Int? = null,
     isIcon: Boolean = false,
     isDrawableRes: Boolean = false,
+    modifier: Modifier = Modifier,
     trailingContent: @Composable ((Dp) -> Unit)? = null
 ) {
     Row(

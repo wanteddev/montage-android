@@ -47,7 +47,7 @@ fun WantedSliderThumb(
     enabled: Boolean = true,
     thumbSize: Dp,
     contentColor: Color = colorResource(id = R.color.primary_normal),
-    boarderColor: Color = colorResource(id = R.color.background_normal_normal),
+    borderColor: Color = colorResource(id = R.color.background_normal_normal),
     onDragStart: (Offset) -> Unit = { },
     onDragEnd: () -> Unit = { },
     onDragCancel: () -> Unit = { },
@@ -62,7 +62,7 @@ fun WantedSliderThumb(
                 )
             )
             .then(modifier),
-        boarderColor = boarderColor,
+        borderColor = borderColor,
         enabled = enabled,
         onDragStart = onDragStart,
         onDragEnd = onDragEnd,
@@ -82,7 +82,7 @@ fun WantedSliderThumb(
 @Composable
 fun WantedSliderThumbArea(
     modifier: Modifier = Modifier,
-    boarderColor: Color,
+    borderColor: Color,
     enabled: Boolean = true,
     onDragStart: (Offset) -> Unit = { },
     onDragEnd: () -> Unit = { },
@@ -111,7 +111,7 @@ fun WantedSliderThumbArea(
                 }
                 .drawBehind {
                     drawCircle(
-                        color = boarderColor,
+                        color = borderColor,
                         radius = with(localDensity) { (contentWidth.value + 4.dp).toPx() } / 2,
                         center = center,
                         style = Fill

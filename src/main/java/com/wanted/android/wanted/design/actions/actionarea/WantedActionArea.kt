@@ -61,19 +61,19 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  */
 @Composable
 fun WantedActionArea(
-    modifier: Modifier = Modifier,
-    safeArea: Boolean = true,
-    background: Boolean = false,
-    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     type: ActionAreaType,
     positive: String,
+    onClickPositive: () -> Unit,
     negative: String? = null,
     neutral: String? = null,
+    caption: String? = null,
     scrollableState: ScrollableState? = null,
-    onClickPositive: () -> Unit,
+    modifier: Modifier = Modifier,
+    background: Boolean = false,
+    safeArea: Boolean = true,
+    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
-    caption: String? = null,
     variant: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
