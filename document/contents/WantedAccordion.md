@@ -2,6 +2,11 @@
 
 ## WantedAccordion
 
+### 개요
+WantedAccordion은 제목을 클릭하여 내용을 펼치거나 접을 수 있는 아코디언(Accordion) 컴포넌트입니다. 
+주로 FAQ, 설정 화면, 리스트형 UI에서 제목과 추가 설명 또는 콘텐츠를 함께 보여주고 싶을 때 유용합니다.
+확장/축소 상태는 외부에서 제어하며, 사용자는 제목 옆에 아이콘(leadingIcon, trailIcon)도 추가할 수 있습니다.
+
 ### 사용 예시
 ```kotlin
 WantedAccordion(
