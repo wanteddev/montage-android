@@ -45,9 +45,30 @@ import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-40136&m=dev
+ * WantedFilterChip을 생성합니다.
+ * 텍스트와 활성화 라벨, 확장 여부, 아이콘 등을 설정할 수 있으며 클릭 이벤트를 지원합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedFilterChip(
+ *     text = "필터 텍스트",
+ *     activeLabel = "활성 라벨",
+ *     isExpend = true,
+ *     onClick = { /* 클릭 처리 */ }
+ * )
+ * ```
+ *
+ * @param text 표시할 필터 텍스트
+ * @param modifier Modifier를 통한 스타일 조정
+ * @param activeLabel 활성화 상태일 때 표시할 라벨 텍스트
+ * @param size Chip 크기 설정 (Small, Medium 등)
+ * @param variant Chip 스타일 변형 (Solid, Outlined)
+ * @param isActive 활성화 여부
+ * @param isEnable 사용 가능 여부
+ * @param isExpend 확장 여부 (true면 위 화살표 표시)
+ * @param interactionSource 터치 인터랙션 제어용 객체
+ * @param onClick 클릭 시 실행할 콜백 함수
  */
-
 @Composable
 fun WantedFilterChip(
     text: String,
@@ -82,6 +103,28 @@ fun WantedFilterChip(
     }
 }
 
+/**
+ * 직접 ChipDefault를 주입하여 필터 Chip을 생성합니다.
+ * 기본 스타일 커스터마이징이 가능합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedFilterChip(
+ *     text = "필터",
+ *     activeLabel = "3",
+ *     chipDefault = customDefault,
+ *     onClick = { /* 클릭 처리 */ }
+ * )
+ * ```
+ *
+ * @param text 표시할 필터 텍스트
+ * @param modifier Modifier를 통한 스타일 조정
+ * @param activeLabel 활성화 상태일 때 표시할 라벨 텍스트
+ * @param chipDefault 직접 설정한 기본 스타일
+ * @param isExpend 확장 여부 (true면 위 화살표 표시)
+ * @param interactionSource 터치 인터랙션 제어용 객체
+ * @param onClick 클릭 시 실행할 콜백 함수
+ */
 @Composable
 fun WantedFilterChip(
     text: String,

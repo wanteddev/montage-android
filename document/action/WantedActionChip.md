@@ -13,7 +13,7 @@ WantedActionChip은 사용자가 선택할 수 있는 다양한 스타일의 Chi
 
 **텍스트, 아이콘 등을 지정하여 기본 Chip을 생성합니다.**
 
-**사용 예시:**
+### 사용 예시
 ```kotlin
 WantedActionChip(
     text = "텍스트",
@@ -42,7 +42,7 @@ WantedActionChip(
 
 **chipDefault를 통해 직접 스타일을 지정할 수 있습니다.**
 
-**사용 예시:**
+### 사용 예시
 ```kotlin
 WantedActionChip(
     text = "커스텀 텍스트",
@@ -67,7 +67,7 @@ WantedActionChip(
 
 **아이콘 및 콘텐츠를 Composable 형태로 직접 정의합니다.**
 
-**사용 예시:**
+### 사용 예시
 ```kotlin
 WantedActionChip(
     leftIcon = { Icon(...) },
@@ -116,7 +116,7 @@ WantedActionChip(
 
 **WantedActionChip 기본 스타일을 정의하는 데이터 클래스**
 
-**사용 예시:**
+### 사용 예시
 ```kotlin
 val chipDefault = WantedChipDefault(
     size = ChipActionSize.Medium,
@@ -149,7 +149,7 @@ val chipDefault = WantedChipDefault(
 
 **컴포즈 환경(Context)에 따라 기본 스타일을 반환합니다.**
 
-**사용 예시:**
+### 사용 예시
 ```kotlin
 val chipDefault = WantedChipDefaults.getDefault()
 ```
@@ -171,7 +171,7 @@ val chipDefault = WantedChipDefaults.getDefault()
 
 **필터 Chip 전용 아이콘 색상을 반환합니다.**
 
-**사용 예시:**
+### 사용 예시
 ```kotlin
 val iconColor = WantedChipDefaults.getFilterIconColor()
 ```
