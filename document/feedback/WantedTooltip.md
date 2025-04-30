@@ -1,0 +1,43 @@
+# Tooltip
+
+## WantedTooltip
+
+### 개요
+텍스트와 버튼, 닫기 아이콘, 화살표 등을 포함할 수 있는 사용자 정의 Tooltip 컴포저블입니다.  
+머터리얼 `TooltipBox`를 기반으로 하며, 텍스트 설명과 함께 선택적으로 "더 알아보기" 버튼과 닫기 아이콘을 추가할 수 있습니다.  
+툴팁에 화살표 표시 여부도 설정할 수 있으며, 상태 관리를 위해 `TooltipState`를 사용합니다.
+
+### 사용 예시
+```kotlin
+WantedTooltip(
+    text = "툴팁 내용입니다.",
+    action = "더 보기",
+    isShowCloseButton = true,
+    content = {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_info),
+            contentDescription = null
+        )
+    },
+    state = remember { TooltipState(true) }
+)
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| text | String | 툴팁에 표시할 텍스트입니다. 최대 3줄까지 표시됩니다. |
+| modifier | Modifier | 툴팁 외형 및 배치 제어를 위한 Modifier입니다. |
+| action | String? | 우측 하단에 표시할 보조 액션 버튼 텍스트입니다. null일 경우 표시되지 않습니다. |
+| isShowCloseButton | Boolean | true일 경우 닫기 아이콘을 표시합니다. |
+| isShowArrow | Boolean | true일 경우 앵커를 가리키는 화살표를 표시합니다. |
+| state | TooltipState | 툴팁의 상태를 제어하는 객체입니다. |
+| onClickAction | (() -> Unit)? | 보조 액션 버튼 클릭 시 호출되는 콜백입니다. |
+| content | () -> Unit | 툴팁을 보여줄 기준 콘텐츠입니다. 클릭 시 툴팁이 열립니다. |
+
+---
+
+## Note
+- `TooltipState`의 `show()` 또는 `dismiss()`를 통해 툴팁 표시 상태를 제어할 수 있습니다.
+- 툴팁 내 텍스트는 `Ellipsis` 처리되어 세 줄을 초과할 경우 생략됩니다.
+- 기본 배경 및 텍스트 색상은 디자인 시스템의 inverse 스타일을 따릅니다.
