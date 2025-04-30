@@ -26,14 +26,14 @@ import com.wanted.android.wanted.design.util.OPACITY_43
 
 @Composable
 internal fun WantedCheckMark(
-    modifier: Modifier,
     size: CheckBoxSize,
     checked: Boolean,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     tight: Boolean = false,
     thick: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onCheckedChange: ((Boolean) -> Unit)
+    onCheckedChange: (Boolean) -> Unit = {}
 ) {
     WantedTouchArea(
         modifier = modifier,
