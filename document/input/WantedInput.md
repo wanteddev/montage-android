@@ -1,7 +1,7 @@
 ---
 title: Input
 description: 체크박스, 라디오 버튼, 체크마크 형태의 입력용 컴포넌트입니다.
-image: /components/base/input/design/thumbnail.png
+image: /components/input/design/thumbnail.png
 createdAt: 2025-04-30
 ---
 
