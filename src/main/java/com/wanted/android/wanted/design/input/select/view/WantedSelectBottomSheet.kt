@@ -30,7 +30,7 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonType
 
 @Composable
-fun WantedSelectBottomSheet(
+internal fun WantedSelectBottomSheet(
     modifier: Modifier = Modifier,
     isShow: Boolean,
     items: List<WantedSelectData>,

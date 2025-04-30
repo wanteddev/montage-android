@@ -29,16 +29,16 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonType
 
 @Composable
-fun WantedMultiSelectBottomSheet(
-    modifier: Modifier = Modifier,
+internal fun WantedMultiSelectBottomSheet(
     isShow: Boolean,
     items: List<WantedSelectData>,
     confirmText: String,
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
-    dialogType: BottomSheetDialogType = BottomSheetDialogType.Flexible,
     selectedItemList: List<WantedSelectData>,
     onSelect: (itemList: List<WantedSelectData>) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
+    dialogType: BottomSheetDialogType = BottomSheetDialogType.Flexible
 ) {
     val selectItemList = remember(selectedItemList) { mutableStateOf(selectedItemList) }
 

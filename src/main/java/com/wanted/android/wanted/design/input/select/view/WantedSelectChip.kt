@@ -35,12 +35,12 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedSelectChip(
-    modifier: Modifier = Modifier,
     text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enable: Boolean = true,
     error: Boolean = false,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit
+    leadingIcon: @Composable (() -> Unit)? = null
 ) {
     WantedSelectChipLayout(
         modifier = modifier
