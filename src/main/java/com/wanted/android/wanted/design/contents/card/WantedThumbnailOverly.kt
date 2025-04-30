@@ -61,7 +61,7 @@ internal fun WantedThumbnailOverly(
                     overflow = TextOverflow.Ellipsis,
                     style = WantedTextStyle(
                         colorRes = R.color.static_white,
-                        style = DesignSystemTheme.typography.label2Bold
+                        style = DesignSystemTheme.typography.caption2Bold
                     )
                 )
             }

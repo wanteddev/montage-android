@@ -1,6 +1,6 @@
 package com.wanted.android.wanted.design.contents.card
 
-import androidx.annotation.DrawableRes
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=23188-76308&m=dev
@@ -42,10 +42,11 @@ fun WantedCardVertical(
     overlayCaption: String = "",
     title: String = "",
     caption: String = "",
+    subCaption: String = "",
     extraCaption: String = "",
     isLoading: Boolean = false,
     cardDefault: WantedCardDefault = WantedCardDefaults.getDefault(),
-    @DrawableRes overlayToggleIcon: Int? = null,
+    overlayToggleIcon: @Composable (() -> Unit)? = null,
     topContent: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null,
     onClick: () -> Unit = {}
@@ -77,15 +78,7 @@ fun WantedCardVertical(
                                 title = overlayCaption,
                                 toggleIcon = overlayToggleIcon?.let {
                                     {
-                                        WantedTouchArea(
-                                            content = {
-                                                Icon(
-                                                    painter = painterResource(id = R.drawable.button_bookmark_line_svg),
-                                                    contentDescription = ""
-                                                )
-                                            },
-                                            onClick = {}
-                                        )
+                                        overlayToggleIcon()
                                     }
                                 }
                             )
@@ -96,6 +89,7 @@ fun WantedCardVertical(
                             modifier = Modifier,
                             title = title,
                             caption = caption,
+                            subCaption = subCaption,
                             extraCaption = extraCaption,
                             bottomContent = bottomContent,
                             topContent = topContent
@@ -105,6 +99,7 @@ fun WantedCardVertical(
             },
             verticalPadding = 8.dp,
             horizontalPadding = 8.dp,
+            enabledInnerTouch = true,
             shape = RoundedCornerShape(
                 topStart = 20.dp,
                 topEnd = 20.dp,
@@ -142,6 +137,7 @@ private fun WantedCardVerticalSkeleton(
     )
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedCardVerticalLayout(
     modifier: Modifier = Modifier,
@@ -151,7 +147,7 @@ private fun WantedCardVerticalLayout(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         BoxWithConstraints(
             modifier = Modifier
@@ -196,16 +192,22 @@ private fun WantedCardPreview() {
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     overlayCaption = "overlayCaption",
-                    overlayToggleIcon = R.drawable.button_bookmark_line_svg
+                    overlayToggleIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.button_bookmark_fill_svg),
+                            tint = colorResource(R.color.primary_normal),
+                            contentDescription = ""
+                        )
+                    }
                 )
 
                 WantedCardVertical(
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     topContent = {
                         WantedContentBadge(text = "텍스트")
                     }
@@ -215,7 +217,7 @@ private fun WantedCardPreview() {
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     bottomContent = {
                         WantedContentBadge(text = "텍스트")
                     }
@@ -225,7 +227,7 @@ private fun WantedCardPreview() {
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     bottomContent = {
                         WantedContentBadge(text = "텍스트")
                     },
@@ -261,12 +263,18 @@ private fun WantedCardSkeletonPreview() {
                     isLoading = true,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     overlayCaption = "overlayCaption",
                     cardDefault = WantedCardDefault(
                         topContentSkeleton = true
                     ),
-                    overlayToggleIcon = R.drawable.button_bookmark_line_svg
+                    overlayToggleIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.button_bookmark_fill_svg),
+                            tint = colorResource(R.color.primary_normal),
+                            contentDescription = ""
+                        )
+                    }
                 )
 
                 WantedCardVertical(
@@ -274,7 +282,7 @@ private fun WantedCardSkeletonPreview() {
                     isLoading = true,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     cardDefault = WantedCardDefault(
                         topContentSkeleton = true,
                         bottomContentSkeleton = true

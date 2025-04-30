@@ -83,7 +83,7 @@ fun WantedCardHorizontal(
                             modifier = Modifier,
                             title = title,
                             caption = caption,
-                            extraCaption = extraCaption,
+                            subCaption = extraCaption,
                             bottomContent = bottomContent,
                             topContent = topContent
                         )
@@ -94,6 +94,7 @@ fun WantedCardHorizontal(
             },
             verticalPadding = 8.dp,
             horizontalPadding = 8.dp,
+            enabledInnerTouch = true,
             shape = RoundedCornerShape(
                 topStart = 20.dp,
                 topEnd = 12.dp,
