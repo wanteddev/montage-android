@@ -54,22 +54,12 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
 /**
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45460&m=dev
  */
-enum class ContentBadgeSize {
-    XSmall, Small, Large
-}
 
-enum class ContentBadgeType {
-    Solid, Outlined
-}
-
-enum class ContentBadgeColor {
-    Neutral, Accent
-}
 
 class WantedContentBadge @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
 
     lateinit var size: ContentBadgeSize
@@ -125,11 +115,38 @@ class WantedContentBadge @JvmOverloads constructor(
         )
     }
 }
-
+/**
+ * 텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 뱃지를 구성하는 컴포저블입니다.
+ *
+ * `Accent` 또는 `Neutral` 컬러 테마를 선택할 수 있으며, 크기와 테두리 스타일을 설정할 수 있습니다.
+ * 클릭 이벤트, 좌우 아이콘 표시 등 다양한 커스터마이징이 가능합니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedContentBadge(
+ *     text = "Badge",
+ *     size = ContentBadgeSize.Small,
+ *     color = ContentBadgeColor.Accent,
+ *     leadingDrawable = R.drawable.ic_icon,
+ *     trailingDrawable = R.drawable.ic_icon,
+ *     onClick = { /* 클릭 처리 */ }
+ * )
+ * ```
+ *
+ * @param text String: 뱃지에 표시할 텍스트입니다.
+ * @param modifier Modifier: 배지 외형과 배치를 설정합니다.
+ * @param type ContentBadgeType: Solid 또는 Outlined 형식의 배지 스타일입니다.
+ * @param size ContentBadgeSize: 뱃지 크기를 지정합니다 (XSmall, Small, Large).
+ * @param color ContentBadgeColor: 컬러 테마를 지정합니다 (Neutral, Accent).
+ * @param accentDefault WantedContentBadgeDefault: Accent 또는 Neutral 컬러 설정의 기본값을 지정합니다.
+ * @param leadingDrawable Int?: 텍스트 왼쪽에 표시할 아이콘 리소스 ID입니다.
+ * @param trailingDrawable Int?: 텍스트 오른쪽에 표시할 아이콘 리소스 ID입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
+ */
 @Composable
 fun WantedContentBadge(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     type: ContentBadgeType = ContentBadgeType.Solid,
     size: ContentBadgeSize = ContentBadgeSize.Small,
     color: ContentBadgeColor = ContentBadgeColor.Neutral,
@@ -140,7 +157,7 @@ fun WantedContentBadge(
     },
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     WantedContentBadgeLayout(
         modifier = modifier
@@ -192,6 +209,7 @@ fun WantedContentBadge(
     )
 }
 
+@Deprecated("WantedContentBadge 사용")
 @Composable
 fun WantedContentBadgeOld(
     text: String,
@@ -278,12 +296,12 @@ fun WantedContentBadgeOld(
 
 
 @Composable
-fun WantedContentBadgeLayout(
-    modifier: Modifier = Modifier,
+private fun WantedContentBadgeLayout(
     size: ContentBadgeSize,
+    modifier: Modifier = Modifier,
     leadingContent: @Composable (BoxScope.() -> Unit)? = null,
     text: @Composable () -> Unit,
-    trailingContent: @Composable (BoxScope.() -> Unit)? = null,
+    trailingContent: @Composable (BoxScope.() -> Unit)? = null
 ) {
     Row(
         modifier = modifier
@@ -350,7 +368,7 @@ private fun getIconSize(size: ContentBadgeSize) = when (size) {
 @Composable
 private fun getBackground(
     type: ContentBadgeType,
-    default: WantedContentBadgeDefault
+    default: WantedContentBadgeDefault,
 ): Color {
     return if (type == ContentBadgeType.Solid) {
         default.backgroundColor
@@ -363,7 +381,7 @@ private fun getBackground(
 @Composable
 private fun getOutlineColor(
     type: ContentBadgeType,
-    default: WantedContentBadgeDefault
+    default: WantedContentBadgeDefault,
 ): Color {
     return if (type == ContentBadgeType.Solid) {
         colorResource(id = R.color.transparent)
@@ -374,30 +392,42 @@ private fun getOutlineColor(
 
 @Composable
 private fun getContentColor(
-    default: WantedContentBadgeDefault
+    default: WantedContentBadgeDefault,
 ): Color {
     return default.contentColor
 }
 
 
 private fun getPadding(size: ContentBadgeSize): Pair<Dp, Dp> =
-    when (size) {
-        ContentBadgeSize.XSmall -> Pair(4.dp, 3.dp)
-        ContentBadgeSize.Small -> Pair(8.dp, 4.dp)
-        ContentBadgeSize.Large -> Pair(12.dp, 6.dp)
-    }
+        when (size) {
+            ContentBadgeSize.XSmall -> Pair(4.dp, 3.dp)
+            ContentBadgeSize.Small -> Pair(8.dp, 4.dp)
+            ContentBadgeSize.Large -> Pair(12.dp, 6.dp)
+        }
 
 @Composable
 private fun getContentBadgeTypography(
-    size: ContentBadgeSize
+    size: ContentBadgeSize,
 ): TextStyle =
-    getTextStyle(
-        textStyle = when (size) {
-            ContentBadgeSize.Large -> WantedTextStyle.LABEL2_MEDIUM
-            ContentBadgeSize.Small -> WantedTextStyle.CAPTION1_MEDIUM
-            ContentBadgeSize.XSmall -> WantedTextStyle.CAPTION2_MEDIUM
-        }
-    )
+        getTextStyle(
+            textStyle = when (size) {
+                ContentBadgeSize.Large -> WantedTextStyle.LABEL2_MEDIUM
+                ContentBadgeSize.Small -> WantedTextStyle.CAPTION1_MEDIUM
+                ContentBadgeSize.XSmall -> WantedTextStyle.CAPTION2_MEDIUM
+            }
+        )
+
+enum class ContentBadgeSize {
+    XSmall, Small, Large
+}
+
+enum class ContentBadgeType {
+    Solid, Outlined
+}
+
+enum class ContentBadgeColor {
+    Neutral, Accent
+}
 
 @Preview
 @Composable

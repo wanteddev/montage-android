@@ -1,0 +1,73 @@
+# Badge
+
+## WantedContentBadge
+
+### 개요
+텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 뱃지를 구성하는 컴포저블입니다. 
+크기, 컬러 스타일, 테두리 스타일, 아이콘 등의 다양한 요소를 설정하여 강조 UI 컴포넌트로 사용됩니다. 
+`Accent`, `Neutral` 색상 테마를 지원하며 클릭 이벤트도 처리할 수 있습니다.
+
+### 사용 예시
+```kotlin
+WantedContentBadge(
+    text = "Badge",
+    size = ContentBadgeSize.Small,
+    color = ContentBadgeColor.Accent,
+    leadingDrawable = R.drawable.ic_icon,
+    trailingDrawable = R.drawable.ic_icon,
+    onClick = { /* 클릭 처리 */ }
+)
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| text | String | 뱃지에 표시할 텍스트입니다. |
+| modifier | Modifier | 배지 외형과 배치를 설정합니다. |
+| type | ContentBadgeType | Solid 또는 Outlined 형식의 배지 스타일입니다. |
+| size | ContentBadgeSize | 뱃지 크기를 지정합니다 (XSmall, Small, Large). |
+| color | ContentBadgeColor | 컬러 테마를 지정합니다 (Neutral, Accent). |
+| accentDefault | WantedContentBadgeDefault | Accent 또는 Neutral 컬러 설정의 기본값을 지정합니다. |
+| leadingDrawable | Int? | 텍스트 왼쪽에 표시할 아이콘 리소스 ID입니다. |
+| trailingDrawable | Int? | 텍스트 오른쪽에 표시할 아이콘 리소스 ID입니다. |
+| onClick | (() -> Unit)? | 클릭 시 호출되는 콜백 함수입니다. |
+
+---
+
+## Enum 설명
+
+### ContentBadgeSize
+| 값 | 설명 |
+|:---|:---|
+| XSmall | 가장 작은 크기의 뱃지입니다. 12~13dp 아이콘 크기를 갖습니다. |
+| Small | 기본 사이즈로 널리 사용되는 크기입니다. |
+| Large | 가장 큰 뱃지로 큰 텍스트 및 아이콘에 적합합니다. |
+
+### ContentBadgeType
+| 값 | 설명 |
+|:---|:---|
+| Solid | 배경이 채워진 스타일의 뱃지입니다. |
+| Outlined | 외곽선만 표시되는 스타일의 뱃지입니다. |
+
+### ContentBadgeColor
+| 값 | 설명 |
+|:---|:---|
+| Neutral | 일반 텍스트 기반 회색 배경 테마입니다. |
+| Accent | 포인트 색상 테마로 강조 목적에 적합합니다. |
+
+---
+
+## 클래스 설명
+
+### WantedContentBadgeDefault
+| 프로퍼티 | 타입 | 설명 |
+|:---|:---|:---|
+| contentColor | Color | 텍스트 및 아이콘 등 주요 콘텐츠 색상입니다. |
+| backgroundColor | Color | 배경색이며 contentColor에 투명도 설정이 적용됩니다. |
+| outLineColor | Color | Outlined 타입일 경우 외곽선 색상입니다. |
+
+---
+
+## Note
+- `WantedContentBadgeDefaults.getAccentDefault()` 또는 `getNeutralDefault()`를 통해 기본 컬러 스타일을 쉽게 가져올 수 있습니다.
+- 클릭 이벤트는 `onClick` 파라미터 설정으로 적용되며, ripple 효과가 자동 적용됩니다.
