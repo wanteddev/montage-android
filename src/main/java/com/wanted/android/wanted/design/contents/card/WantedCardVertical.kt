@@ -49,7 +49,7 @@ fun WantedCardVertical(
     overlayToggleIcon: @Composable (() -> Unit)? = null,
     topContent: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     if (isLoading) {
         WantedCardVerticalSkeleton(
@@ -117,7 +117,7 @@ private fun WantedCardVerticalSkeleton(
     topContent: Boolean = false,
     caption: Boolean = true,
     extraCaption: Boolean = true,
-    bottomContent: Boolean = false
+    bottomContent: Boolean = false,
 ) {
     WantedCardVerticalLayout(
         modifier = modifier,
@@ -143,7 +143,7 @@ private fun WantedCardVerticalLayout(
     modifier: Modifier = Modifier,
     thumbnail: @Composable (width: Dp, height: Dp) -> Unit,
     thumbnailOverlay: @Composable (() -> Unit)? = null,
-    description: @Composable (() -> Unit)? = null
+    description: @Composable (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier,
@@ -196,7 +196,7 @@ private fun WantedCardPreview() {
                     overlayCaption = "overlayCaption",
                     overlayToggleIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.button_bookmark_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_bookmark_fill_svg),
                             tint = colorResource(R.color.primary_normal),
                             contentDescription = ""
                         )
