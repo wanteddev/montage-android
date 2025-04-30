@@ -135,11 +135,10 @@ internal fun WantedCardDescriptionLayout(
         modifier = modifier.padding(horizontal = 2.dp),
     ) {
         topContent?.let {
-            Box(modifier = Modifier.padding(bottom = 4.dp)) {
+            Spacer(Modifier.size(2.dp))
+            Box(modifier = Modifier.padding(bottom = 6.dp)) {
                 topContent()
             }
-
-            Spacer(Modifier.size(4.dp))
         }
 
         ProvideTextStyle(
