@@ -64,8 +64,8 @@ fun WantedTextArea(
     title: String = "",
     description: String? = null,
     rightButton: String? = null,
-    leftContent: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null,
+    leadingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
     negative: Boolean = false,
     maxLines: Int = MAX_LINE,
@@ -107,7 +107,7 @@ fun WantedTextArea(
             null
         },
         textField = {
-            if (leftContent == null && rightContent == null) {
+            if (leadingContent == null && trailingContent == null) {
                 WantedTextArea(
                     modifier = Modifier,
                     value = textFieldValue,
@@ -130,7 +130,7 @@ fun WantedTextArea(
                         textFieldValueState = newTextFieldValueState
 
                         val stringChangedSinceLastInvocation =
-                                lastTextValue != newTextFieldValueState.text
+                            lastTextValue != newTextFieldValueState.text
                         lastTextValue = newTextFieldValueState.text
 
                         if (stringChangedSinceLastInvocation) {
@@ -153,15 +153,15 @@ fun WantedTextArea(
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
-                    rightContent = rightContent,
-                    leftContent = leftContent,
+                    rightContent = trailingContent,
+                    leftContent = leadingContent,
                     placeholder = placeholder,
                     background = background,
                     onValueChange = { newTextFieldValueState ->
                         textFieldValueState = newTextFieldValueState
 
                         val stringChangedSinceLastInvocation =
-                                lastTextValue != newTextFieldValueState.text
+                            lastTextValue != newTextFieldValueState.text
                         lastTextValue = newTextFieldValueState.text
 
                         if (stringChangedSinceLastInvocation) {
@@ -654,7 +654,7 @@ private fun WantedTextAreaPreview() {
                     text = "",
                     placeholder = "텍스트를 입력해 주세요.",
                     minLines = 4,
-                    rightContent = {
+                    trailingContent = {
                         WantedActionChip(text = "WantedActionChip")
                     }
                 )
@@ -662,7 +662,7 @@ private fun WantedTextAreaPreview() {
                 WantedTextArea(
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
-                    leftContent = {
+                    leadingContent = {
                         WantedActionChip(text = "WantedActionChip")
                     }
                 )

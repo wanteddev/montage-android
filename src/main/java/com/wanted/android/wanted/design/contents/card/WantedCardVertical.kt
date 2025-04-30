@@ -26,7 +26,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.feedback.contentbadge.WantedContentBadge
+import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
