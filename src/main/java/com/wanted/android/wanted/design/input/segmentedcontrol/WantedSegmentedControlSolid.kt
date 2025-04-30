@@ -50,17 +50,35 @@ import kotlinx.coroutines.launch
 
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=22610-72534&m=dev
+ * 문자열 리스트 기반의 Solid 스타일 Segmented Control 컴포넌트입니다.
  *
- * icon의 색상은 text color와 동일하게 적용된다.
- * tint를 적용하면 tint color가 적용된다.
+ * 선택된 항목을 강조 표시하며, 내부적으로 애니메이션 되는 Knob과 함께 사용됩니다.
+ * 항목은 텍스트 기반으로 자동 생성되며, 클릭 시 인덱스가 콜백으로 반환됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val items = listOf("전체", "읽음", "안읽음")
+ * var selectedIndex by remember { mutableIntStateOf(0) }
+ *
+ * WantedSegmentedControlSolid(
+ *     items = items,
+ *     selectedIndex = selectedIndex,
+ *     onClick = { selectedIndex = it }
+ * )
+ * ```
+ *
+ * @param items List<String>: 표시할 항목 텍스트 리스트입니다.
+ * @param selectedIndex Int: 현재 선택된 항목의 인덱스입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param size SegmentedSize: 항목의 사이즈 설정입니다 (Small, Medium, Large).
+ * @param onClick (index: Int) -> Unit: 항목 클릭 시 선택 인덱스를 반환하는 콜백입니다.
  */
 @Composable
 fun WantedSegmentedControlSolid(
-    modifier: Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     items: List<String>,
     selectedIndex: Int,
+    modifier: Modifier = Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     onClick: (index: Int) -> Unit = {}
 ) {
     CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
@@ -80,13 +98,41 @@ fun WantedSegmentedControlSolid(
     }
 }
 
+
+/**
+ * 사용자 정의 항목(item slot)과 애니메이션 Knob이 포함된 Solid 스타일 Segmented Control 컴포넌트입니다.
+ *
+ * 각 항목을 커스텀 Composable로 구성할 수 있으며, 선택 애니메이션은 Knob 위치 이동으로 표현됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedSegmentedControlSolid(
+ *     itemCount = 3,
+ *     selectedIndex = selectedIndex,
+ *     item = { index ->
+ *         WantedSegmentedControlSolidItem(
+ *             title = "옵션 $index",
+ *             isSelected = index == selectedIndex
+ *         )
+ *     },
+ *     onClick = { selectedIndex = it }
+ * )
+ * ```
+ *
+ * @param itemCount Int: 표시할 항목 개수입니다.
+ * @param selectedIndex Int: 현재 선택된 항목 인덱스입니다.
+ * @param item (index: Int) -> Unit: 항목 렌더링을 위한 Composable 슬롯입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param size SegmentedSize: 항목 크기 설정입니다.
+ * @param onClick (index: Int) -> Unit: 클릭 시 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedSegmentedControlSolid(
-    modifier: Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     itemCount: Int,
     selectedIndex: Int,
     item: @Composable (index: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     onClick: (index: Int) -> Unit = {}
 ) {
     val localDensity = LocalDensity.current
