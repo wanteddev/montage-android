@@ -14,6 +14,34 @@ data class WantedDatePickerWheelDefault(
 )
 
 object WantedDatePickerWheelDefaults {
+    /**
+     * 날짜 선택 휠 기본 설정 값을 반환합니다.
+     *
+     * 연도 및 월 범위 설정, 비활성 날짜 숨김 여부 등을 지정할 수 있으며, 유효하지 않은 값은 자동으로 보정됩니다.
+     * 날짜 선택 휠에서 사용되는 기본 설정 객체인 `WantedDatePickerWheelDefault`를 생성합니다.
+     *
+     * 사용 예시:
+     * ```kotlin
+     * val default = WantedDatePickerWheelDefaults.getDefault(
+     *     startYear = 2000,
+     *     endYear = 2030,
+     *     enableMinYear = 2010,
+     *     enableMaxYear = 2025,
+     *     enableMinMonth = 3,
+     *     enableMaxMonth = 11,
+     *     isHideDisableDate = true
+     * )
+     * ```
+     *
+     * @param startYear Int: 휠 선택기에서 표시할 시작 연도입니다. 기본값은 1900입니다.
+     * @param endYear Int: 휠 선택기에서 표시할 종료 연도입니다. 기본값은 2100입니다. `startYear`보다 작으면 자동으로 `startYear`로 보정됩니다.
+     * @param enableMinYear Int: 선택 가능한 최소 연도입니다. 기본값은 1900입니다.
+     * @param enableMaxYear Int: 선택 가능한 최대 연도입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다.
+     * @param enableMinMonth Int: 선택 가능한 최소 월입니다. 기본값은 1월입니다.
+     * @param enableMaxMonth Int: 선택 가능한 최대 월입니다. `enableMinMonth`보다 작으면 자동으로 `enableMinMonth`로 보정됩니다.
+     * @param isHideDisableDate Boolean: 선택 불가능한 날짜를 숨길지 여부를 설정합니다. 기본값은 false입니다.
+     * @return WantedDatePickerWheelDefault: 설정된 날짜 선택 휠 기본값 객체입니다.
+     */
     @Composable
     fun getDefault(
         startYear: Int = 1900,

@@ -14,6 +14,36 @@ data class WantedTimePickerWheelDefault(
 )
 
 object WantedTimePickerWheelDefaults {
+
+    /**
+     * 시간 선택 휠 기본 설정 값을 반환합니다.
+     *
+     * 시간 선택 시 사용할 수 있는 시, 분, AM/PM 범위를 설정할 수 있으며,
+     * 비활성 시간 숨김 여부도 조정 가능합니다. 잘못된 값은 자동으로 보정됩니다.
+     * 반환 값은 `WantedTimePickerWheelDefault` 객체입니다.
+     *
+     * 사용 예시:
+     * ```kotlin
+     * val timeDefault = WantedTimePickerWheelDefaults.getDefault(
+     *     enableAm = true,
+     *     enablePm = true,
+     *     enableMinHour = 9,
+     *     enableMaxHour = 18,
+     *     enableMinMinute = 0,
+     *     enableMaxMinute = 45,
+     *     isHideDisableTime = true
+     * )
+     * ```
+     *
+     * @param enableAm Boolean: 오전(AM) 선택을 허용할지 여부입니다. 기본값은 true입니다.
+     * @param enablePm Boolean: 오후(PM) 선택을 허용할지 여부입니다. 기본값은 true입니다. 단, AM이 false인 경우 자동으로 true로 설정됩니다.
+     * @param enableMinHour Int: 선택 가능한 최소 시(hour)입니다. 1 이상이어야 하며, 기본값은 1입니다.
+     * @param enableMaxHour Int: 선택 가능한 최대 시(hour)입니다. 12 이하이어야 하며, `enableMinHour`보다 작으면 자동 보정됩니다. 기본값은 12입니다.
+     * @param enableMinMinute Int: 선택 가능한 최소 분(minute)입니다. 0 이상이어야 하며, 기본값은 0입니다.
+     * @param enableMaxMinute Int: 선택 가능한 최대 분(minute)입니다. 59 이하이며, `enableMinMinute`보다 작으면 자동 보정됩니다. 기본값은 59입니다.
+     * @param isHideDisableTime Boolean: 비활성 시간대를 숨길지 여부입니다. 기본값은 false입니다.
+     * @return WantedTimePickerWheelDefault: 설정된 시간 선택 휠 기본값 객체입니다.
+     */
     @Composable
     fun getDefault(
         enableAm: Boolean = true,
