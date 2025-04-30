@@ -49,24 +49,20 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param modifier Modifier: 아바타의 크기, 외형, 배치를 조정하는 Modifier입니다.
+ * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
+ * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
  * @param model Any?: 표시할 이미지 모델 (URL 또는 Drawable ID)입니다.
  * @param placeHolder Int?: 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다.
- * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
- * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
  * @param isIcon Boolean: 아바타 안쪽에 추가 보더를 적용할지 여부를 설정합니다.
  * @param isDrawableRes Boolean: model이 Drawable 리소스 ID일 경우 true로 설정합니다.
  * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
- * @param borderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
  * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
+ * @param borderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
+ * @param modifier Modifier: 아바타의 크기, 외형, 배치를 조정하는 Modifier입니다.
  * @param onClick (() -> Unit)?: 아바타 클릭 시 호출될 콜백 함수입니다.
- *
- * @return Unit
  *
  * @see WantedAvatarType
  * @see WantedAvatarSize
- * @see WantedAvatarPerson
- * @see WantedAvatarContent
  */
 @Composable
 fun WantedAvatar(

@@ -111,11 +111,11 @@ class WantedTextButton @JvmOverloads constructor(
 @Composable
 internal fun WantedTextButton(
     text: String,
+    modifier: Modifier = Modifier,
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.MEDIUM,
     enabled: Boolean = true,
     isLoading: Boolean = false,
-    modifier: Modifier = Modifier,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
     onClick: () -> Unit = {},

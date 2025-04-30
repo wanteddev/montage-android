@@ -20,8 +20,8 @@ WantedButton(
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| modifier | Modifier | 버튼의 외형을 조정합니다. |
 | text | String | 버튼에 표시할 텍스트입니다. |
+| modifier | Modifier | 버튼의 외형을 조정합니다. |
 | buttonShape | ButtonShape | 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다. |
 | type | ButtonType | 버튼의 타입(PRIMARY, SECONDARY, ASSISTIVE)을 지정합니다. |
 | size | ButtonSize | 버튼의 크기(LARGE, MEDIUM, SMALL)를 지정합니다. |
@@ -51,8 +51,8 @@ WantedButton(
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| modifier | Modifier | 버튼의 외형을 조정합니다. |
 | text | String | 버튼에 표시할 텍스트입니다. |
+| modifier | Modifier | 버튼의 외형을 조정합니다. |
 | isLoading | Boolean | 로딩 상태를 표시할지 여부입니다. (기본값: false) |
 | buttonDefault | WantedButtonDefault | 버튼 기본 스타일 설정 객체입니다. |
 | leadingDrawable | Int? | 버튼 왼쪽에 표시할 Drawable 리소스 ID입니다. (선택사항) |

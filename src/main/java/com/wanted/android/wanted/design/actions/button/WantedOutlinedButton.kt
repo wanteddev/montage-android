@@ -121,12 +121,12 @@ class WantedOutlinedButton @JvmOverloads constructor(
 
 @Composable
 internal fun WantedOutlinedButton(
+    modifier: Modifier = Modifier,
     text: String = "",
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     enabled: Boolean = true,
     isLoading: Boolean = false,
-    modifier: Modifier = Modifier,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
     onClick: () -> Unit = {},

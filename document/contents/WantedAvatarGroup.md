@@ -11,15 +11,15 @@
 ### 사용 예시
 ```kotlin
 WantedAvatarGroup(
-    modifier = Modifier,
     modelList = listOf(
         R.drawable.ic_avatar_placeholder_person,
         R.drawable.ic_avatar_placeholder_person,
         R.drawable.ic_avatar_placeholder_person
     ),
-    placeHolder = R.drawable.ic_avatar_placeholder_person,
     size = WantedAvatarSize.XLarge,
     type = WantedAvatarType.Person,
+    modifier = Modifier,
+    placeHolder = R.drawable.ic_avatar_placeholder_person,
     isDrawableRes = true,
     isIcon = false
 )
@@ -28,8 +28,8 @@ WantedAvatarGroup(
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| modifier | Modifier | 외부에서 전달받는 Modifier로 레이아웃 커스터마이징에 사용됩니다. |
 | modelList | List<Any> | 표시할 아바타 모델 리스트입니다. (URL 또는 Drawable ID) |
+| modifier | Modifier | 외부에서 전달받는 Modifier로 레이아웃 커스터마이징에 사용됩니다. |
 | placeHolder | Int? | 이미지 로딩 실패 시 표시할 Drawable 리소스 ID입니다. |
 | size | WantedAvatarSize | 아바타 크기 및 모서리 반경을 정의합니다. |
 | type | WantedAvatarType | 아바타의 유형(Person, Company, Academic)을 지정합니다. |

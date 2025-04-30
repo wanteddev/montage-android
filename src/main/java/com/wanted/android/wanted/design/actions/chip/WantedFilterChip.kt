@@ -45,40 +45,40 @@ import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
- * WantedFilterChip을 생성합니다.
- * 텍스트와 활성화 라벨, 확장 여부, 아이콘 등을 설정할 수 있으며 클릭 이벤트를 지원합니다.
+ * 사용 편의성을 위한 필터 Chip 컴포저블입니다.
+ * 간단한 설정만으로 기본 스타일의 필터 Chip을 사용할 수 있으며,
+ * 내부적으로 CompositionLocal을 활용하여 관련 상태를 주입합니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedFilterChip(
- *     text = "필터 텍스트",
- *     activeLabel = "활성 라벨",
- *     isExpend = true,
- *     onClick = { /* 클릭 처리 */ }
+ *     text = "필터",
+ *     activeLabel = "3",
+ *     onClick = { /* 클릭 동작 */ }
  * )
  * ```
  *
- * @param text 표시할 필터 텍스트
- * @param modifier Modifier를 통한 스타일 조정
- * @param activeLabel 활성화 상태일 때 표시할 라벨 텍스트
- * @param size Chip 크기 설정 (Small, Medium 등)
- * @param variant Chip 스타일 변형 (Solid, Outlined)
- * @param isActive 활성화 여부
- * @param isEnable 사용 가능 여부
- * @param isExpend 확장 여부 (true면 위 화살표 표시)
- * @param interactionSource 터치 인터랙션 제어용 객체
- * @param onClick 클릭 시 실행할 콜백 함수
+ * @param text: Chip에 표시될 텍스트
+ * @param modifier: Modifier를 통해 스타일을 조정할 수 있음
+ * @param activeLabel: Chip이 활성화되었을 때 표시할 라벨 텍스트
+ * @param size: Chip의 크기를 정의하는 enum 값 (기본값: Small)
+ * @param variant: Chip의 스타일 (기본값: Solid)
+ * @param isActive: Chip의 활성화 상태
+ * @param isEnable: Chip의 사용 가능 상태
+ * @param isExpend: 확장 가능 상태 (아이콘 변경 목적)
+ * @param interactionSource: 사용자 인터랙션 처리를 위한 객체
+ * @param onClick: 클릭 시 호출되는 콜백 함수
  */
 @Composable
 fun WantedFilterChip(
     text: String,
+    modifier: Modifier = Modifier,
     activeLabel: String = "",
     size: ChipActionSize = ChipActionSize.Small,
     variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
     isExpend: Boolean = false,
-    modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {
@@ -104,8 +104,9 @@ fun WantedFilterChip(
 }
 
 /**
- * 직접 ChipDefault를 주입하여 필터 Chip을 생성합니다.
- * 기본 스타일 커스터마이징이 가능합니다.
+ * Chip 기본 설정을 외부에서 주입할 수 있는 커스터마이징 버전의 필터 Chip 컴포저블입니다.
+ * 기본 스타일뿐만 아니라 텍스트 스타일, 색상 등 세부 속성을 설정 가능하며
+ * 내부적으로 주어진 chipDefault 설정값을 기반으로 Chip을 구성합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -117,22 +118,22 @@ fun WantedFilterChip(
  * )
  * ```
  *
- * @param text 표시할 필터 텍스트
- * @param modifier Modifier를 통한 스타일 조정
- * @param activeLabel 활성화 상태일 때 표시할 라벨 텍스트
- * @param chipDefault 직접 설정한 기본 스타일
- * @param isExpanded 확장 여부 (true면 위 화살표 표시)
- * @param interactionSource 터치 인터랙션 제어용 객체
- * @param onClick 클릭 시 실행할 콜백 함수
+ * @param text: Chip에 표시될 텍스트
+ * @param modifier: Modifier를 통해 스타일을 조정할 수 있음
+ * @param activeLabel: Chip이 활성화되었을 때 표시할 라벨 텍스트
+ * @param isExpanded: Chip이 확장 상태인지 여부 (화살표 아이콘에 반영됨)
+ * @param chipDefault: 외부에서 주입하는 Chip의 기본 설정값
+ * @param interactionSource: 사용자 인터랙션 처리를 위한 객체
+ * @param onClick: 클릭 시 호출되는 콜백 함수
  */
 @Composable
 fun WantedFilterChip(
     text: String,
+    modifier: Modifier = Modifier,
     activeLabel: String = "",
     isExpanded: Boolean = false,
     chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     WantedFilterChip(
@@ -185,6 +186,7 @@ fun WantedFilterChip(
 
 @Composable
 private fun WantedFilterChip(
+    modifier: Modifier = Modifier,
     size: ChipActionSize = ChipActionSize.Small,
     variant: ChipActionVariant = ChipActionVariant.Solid,
     isActive: Boolean = false,
@@ -198,7 +200,6 @@ private fun WantedFilterChip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     WantedFilterChipLayout(

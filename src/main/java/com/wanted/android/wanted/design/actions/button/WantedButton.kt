@@ -32,8 +32,8 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param modifier Modifier를 통해 버튼 외형을 조정합니다.
  * @param text 버튼에 표시할 텍스트입니다.
+ * @param modifier Modifier를 통해 버튼 외형을 조정합니다.
  * @param buttonShape 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다.
  * @param type 버튼의 타입(PRIMARY, SECONDARY, ASSISTIVE)을 지정합니다.
  * @param size 버튼의 크기(LARGE, MEDIUM, SMALL)를 지정합니다.
@@ -46,6 +46,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedButton(
     text: String,
+    modifier: Modifier = Modifier,
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     buttonShape: ButtonShape = ButtonShape.SOLID,
@@ -53,7 +54,6 @@ fun WantedButton(
     isLoading: Boolean = false,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     when (buttonShape) {
@@ -143,11 +143,11 @@ fun WantedButton(
 @Composable
 fun WantedButton(
     text: String,
+    modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(),
-    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
 

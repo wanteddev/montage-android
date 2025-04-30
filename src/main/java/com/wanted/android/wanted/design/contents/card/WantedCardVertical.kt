@@ -147,7 +147,7 @@ private fun WantedCardVerticalLayout(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         BoxWithConstraints(
             modifier = Modifier

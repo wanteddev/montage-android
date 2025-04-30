@@ -8,10 +8,21 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
 
 object WantedActionContract {
+    /**
+     * ChipAction의 시각적 스타일을 정의하는 enum 클래스입니다.
+     *
+     * Solid와 Outlined 두 가지 변형을 제공합니다.
+     *
+     * - Solid: 배경이 채워진 형태
+     * - Outlined: 테두리만 있는 형태
+     */
     enum class ChipActionVariant {
         Solid, Outlined
     }
 
+    /**
+     * ChipAction의 크기를 정의하는 enum 클래스입니다.
+     */
     enum class ChipActionSize {
         Large, Medium, Small, XSmall
     }

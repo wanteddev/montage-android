@@ -3,9 +3,7 @@
 ## WantedAvatar
 
 ### 개요
-WantedAvatar 컴포넌트는 사람, 회사, 학력 등 다양한 유형의 프로필 이미지를 표시하기 위해 사용됩니다.
-이미지 또는 아이콘 형태로 표시할 수 있으며, 다양한 크기와 스타일 조합이 가능합니다.
-또한, 알림 뱃지(PushBadge)를 표시하거나 클릭 이벤트를 받을 수 있어 유저 인터랙션 요소로도 활용됩니다.
+`WantedAvatar`는 사용자, 회사, 학교 등 다양한 유형의 아바타(Avatar)를 시각적으로 표시하기 위한 Compose 컴포넌트입니다. 아바타는 이미지, 아이콘, 플레이스홀더, 그룹 스타일, 푸시 뱃지(PushBadge) 등 다양한 요소와 함께 커스터마이징이 가능합니다. 아바타는 클릭 이벤트 핸들링을 지원하며, 리소스 ID 또는 URL 이미지 모델을 사용할 수 있습니다.
 
 ### 사용 예시
 ```kotlin
@@ -13,28 +11,28 @@ WantedAvatar(
     modifier = Modifier,
     model = R.drawable.ic_avatar_placeholder_person,
     placeHolder = R.drawable.ic_avatar_placeholder_person,
-    size = WantedAvatarSize.XLarge,
+    size = WantedAvatarSize.Medium,
     type = WantedAvatarType.Person,
     isDrawableRes = true,
     pushBadge = true,
-    onClick = {}
+    onClick = { /* 클릭 동작 */ }
 )
 ```
 
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| modifier | Modifier | 아바타 컴포넌트의 크기 및 배치를 조정합니다. |
-| model | Any? | 표시할 이미지 또는 리소스입니다. URL 또는 Drawable ID를 받을 수 있습니다. |
-| placeHolder | Int? | 이미지를 불러오는 동안 또는 실패했을 때 표시할 플레이스홀더 리소스 ID입니다. |
-| size | WantedAvatarSize | 아바타의 크기 및 모양을 정의합니다. 기본값은 Small입니다. |
-| type | WantedAvatarType | 아바타의 타입(사람, 회사, 학력)을 지정합니다. |
-| isIcon | Boolean | 아바타 내부에 아이콘 스타일 보더를 적용할지 여부를 설정합니다. 기본값은 false입니다. |
-| isDrawableRes | Boolean | 모델이 Drawable 리소스인지 여부를 설정합니다. 기본값은 false입니다. |
-| isGroup | Boolean | 그룹 아바타 스타일을 적용할지 여부를 설정합니다. 기본값은 false입니다. |
-| barderColor | Color | 외곽선(Border)의 색상을 지정합니다. 기본은 배경색입니다. |
-| pushBadge | Boolean | 푸시 뱃지를 표시할지 여부를 설정합니다. 기본값은 false입니다. |
-| onClick | (() -> Unit)? | 클릭 이벤트 콜백입니다. 선택 사항입니다. |
+| type | WantedAvatarType | 아바타의 유형(Person, Company, Academic)을 지정합니다. |
+| size | WantedAvatarSize | 아바타의 크기 및 모서리 반경을 설정합니다. 기본값은 Small입니다. |
+| model | Any? | 표시할 이미지 모델로 URL 또는 Drawable ID를 전달합니다. |
+| placeHolder | Int? | 이미지 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다. |
+| isIcon | Boolean | 내부에 Inner 보더를 추가할지 여부입니다. |
+| isDrawableRes | Boolean | `model`이 Drawable 리소스 ID일 경우 true로 설정합니다. |
+| isGroup | Boolean | 그룹 스타일 보더를 적용할지 여부입니다. |
+| pushBadge | Boolean | 우측 상단에 PushBadge를 표시할지 여부입니다. |
+| borderColor | Color | 아바타 외곽선 색상입니다. 기본값은 배경색입니다. |
+| modifier | Modifier | 외형 및 배치를 제어하는 Modifier입니다. |
+| onClick | (() -> Unit)? | 아바타 클릭 시 호출되는 콜백입니다. |
 
 ---
 
@@ -43,28 +41,23 @@ WantedAvatar(
 ### WantedAvatarType
 | 값 | 설명 |
 |:---|:---|
-| Person | 개인(사람) 아바타 타입입니다. |
-| Company | 회사 아바타 타입입니다. |
-| Academic | 학력/학교 아바타 타입입니다. |
+| Person | 사람(개인) 아바타 |
+| Company | 회사 아바타 |
+| Academic | 학력/학교 아바타 |
 
 ### WantedAvatarSize
 | 값 | 설명 |
 |:---|:---|
-| XSmall | 24dp 크기, 6dp 반경을 가진 매우 작은 아바타입니다. |
-| Small | 32dp 크기, 6dp 반경을 가진 작은 아바타입니다. |
-| Medium | 40dp 크기, 8dp 반경을 가진 중간 크기 아바타입니다. |
-| Large | 48dp 크기, 10dp 반경을 가진 큰 아바타입니다. |
-| XLarge | 56dp 크기, 12dp 반경을 가진 매우 큰 아바타입니다. |
+| XSmall | 크기 24dp, 모서리 반경 6dp |
+| Small | 크기 32dp, 모서리 반경 6dp |
+| Medium | 크기 40dp, 모서리 반경 8dp |
+| Large | 크기 48dp, 모서리 반경 10dp |
+| XLarge | 크기 56dp, 모서리 반경 12dp |
 
 ---
 
 ## Note
-- 기본적으로 사람(Person) 타입은 원형, 회사(Company) 및 학력(Academic) 타입은 모서리가 둥근 사각형 형태로 표시됩니다.
-- `pushBadge` 옵션을 사용하면 우측 상단에 작은 알림 뱃지를 표시할 수 있습니다.
-- 다양한 스타일 조합을 통해 아이콘 아바타, 그룹 아바타 등으로 확장 가능합니다.
-
-## SeeAlso
-- [WantedAvatarPerson](#)
-- [WantedAvatarContent](#)
-- [WantedAvatarContract.WantedAvatarType](#)
-- [WantedAvatarContract.WantedAvatarSize](#)
+- `pushBadge` 옵션은 푸시 알림 상태를 표시할 때 유용합니다.
+- `isIcon` 및 `isGroup`은 추가 보더 스타일 적용에 사용됩니다.
+- `placeHolder`가 없을 경우 회색 배경 박스로 대체됩니다.
+- 내부 이미지 로딩은 Glide 기반이며, `model`이 URL 또는 리소스 ID에 따라 자동 처리됩니다.

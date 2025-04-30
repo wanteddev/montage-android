@@ -145,7 +145,7 @@ internal fun WantedCardDescriptionLayout(
         ProvideTextStyle(
             value = WantedTextStyle(
                 colorRes = R.color.label_normal,
-                style = DesignSystemTheme.typography.body1Bold
+                style = DesignSystemTheme.typography.body2Bold
             )
         ) {
             title()
