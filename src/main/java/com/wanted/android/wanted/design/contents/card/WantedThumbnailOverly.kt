@@ -22,9 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_35
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -61,7 +61,7 @@ internal fun WantedThumbnailOverly(
                     overflow = TextOverflow.Ellipsis,
                     style = WantedTextStyle(
                         colorRes = R.color.static_white,
-                        style = DesignSystemTheme.typography.caption2Bold
+                        style = DesignSystemTheme.typography.caption1Bold
                     )
                 )
             }
@@ -69,7 +69,7 @@ internal fun WantedThumbnailOverly(
 
         toggleIcon?.let {
             Box(
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(20.dp),
                 contentAlignment = Alignment.Center
             ) {
                 toggleIcon()
