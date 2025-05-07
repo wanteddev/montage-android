@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ fun WantedCardDescription(
     title: String,
     maxLines: Int = 2,
     caption: String = "",
+    subCaption: String = "",
     extraCaption: String = "",
     topContent: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null
@@ -49,6 +51,15 @@ fun WantedCardDescription(
             {
                 Text(
                     text = caption,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        },
+        subCaption = subCaption.ifEmpty { null }?.let {
+            {
+                Text(
+                    text = subCaption,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -95,7 +106,7 @@ internal fun WantedCardDescriptionSkeleton(
                 )
             }
         } else null,
-        extraCaption = if (extraCaption) {
+        subCaption = if (extraCaption) {
             {
                 WantedSkeletonText(
                     modifier = Modifier.height(18.dp),
@@ -116,15 +127,16 @@ internal fun WantedCardDescriptionLayout(
     topContent: @Composable (() -> Unit)? = null,
     title: @Composable () -> Unit,
     cation: @Composable (() -> Unit)? = null,
+    subCaption: @Composable (() -> Unit)? = null,
     extraCaption: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = modifier.padding(horizontal = 2.dp),
     ) {
         topContent?.let {
-            Box(modifier = Modifier.padding(bottom = 4.dp)) {
+            Spacer(Modifier.size(2.dp))
+            Box(modifier = Modifier.padding(bottom = 6.dp)) {
                 topContent()
             }
         }
@@ -132,10 +144,11 @@ internal fun WantedCardDescriptionLayout(
         ProvideTextStyle(
             value = WantedTextStyle(
                 colorRes = R.color.label_normal,
-                style = DesignSystemTheme.typography.body1Bold
+                style = DesignSystemTheme.typography.body2Bold
             )
         ) {
             title()
+            Spacer(Modifier.size(4.dp))
         }
 
         ProvideTextStyle(
@@ -146,11 +159,19 @@ internal fun WantedCardDescriptionLayout(
         ) {
             cation?.invoke()
 
-            extraCaption?.invoke()
+            subCaption?.let {
+                Spacer(Modifier.size(2.dp))
+                subCaption()
+            }
+
+            extraCaption?.let {
+                Spacer(Modifier.size(2.dp))
+                extraCaption()
+            }
         }
 
         bottomContent?.let {
-            Box(modifier = Modifier.padding(top = 4.dp)) {
+            Box(modifier = Modifier.padding(top = 8.dp)) {
                 bottomContent()
             }
         }
@@ -184,14 +205,14 @@ private fun WantedCardDescriptionPreview() {
                     modifier = Modifier,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션"
+                    subCaption = "추가 캡션"
                 )
 
                 WantedCardDescription(
                     modifier = Modifier,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     topContent = {
                         WantedContentBadge(text = "텍스트")
                     }
@@ -201,7 +222,7 @@ private fun WantedCardDescriptionPreview() {
                     modifier = Modifier,
                     title = "제목",
                     caption = "캡션",
-                    extraCaption = "추가 캡션",
+                    subCaption = "추가 캡션",
                     bottomContent = {
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             WantedContentBadge(text = "텍스트")
