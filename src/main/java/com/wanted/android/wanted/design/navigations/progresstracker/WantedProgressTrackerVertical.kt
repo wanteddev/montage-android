@@ -28,11 +28,34 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
+/**
+ * 수직형 단계 진행 표시 컴포저블입니다.
+ *
+ * 각 단계마다 텍스트 또는 커스텀 콘텐츠를 함께 배치할 수 있으며, 단계별 진행 상태에 따라 스타일이 달라집니다.
+ * 세로 레이아웃으로 복잡한 정보 구조에 적합합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedProgressTrackerVertical(
+ *     stepCount = 4,
+ *     currentStep = 3,
+ *     label = { index -> "Step ${index + 1}" },
+ *     content = { index -> Text("내용 $index") }
+ * )
+ * ```
+ *
+ * @param stepCount Int: 총 단계 수입니다.
+ * @param currentStep Int: 현재 진행 중인 단계입니다.
+ * @param modifier Modifier: 외형 및 배치 조정을 위한 Modifier입니다.
+ * @param label ((Int) -> String)?: 각 단계의 텍스트 라벨 함수입니다.
+ * @param labelContent @Composable ((Int) -> Unit)?: 텍스트 라벨 대신 사용할 커스텀 UI 슬롯입니다.
+ * @param content @Composable (Int) -> Unit: 단계별 본문 콘텐츠입니다.
+ */
 @Composable
 fun WantedProgressTrackerVertical(
-    modifier: Modifier = Modifier,
     stepCount: Int,
     currentStep: Int,
+    modifier: Modifier = Modifier,
     label: ((index: Int) -> String)? = null,
     labelContent: @Composable ((index: Int) -> Unit)? = null,
     content: @Composable (index: Int) -> Unit
@@ -85,12 +108,12 @@ fun WantedProgressTrackerVertical(
 
 @Composable
 private fun WantedProgressTrackerLabel(
-    modifier: Modifier = Modifier,
     index: Int,
     labelText: String,
-    labelContent: @Composable ((index: Int) -> Unit)? = null,
     enabled: Boolean,
-    completed: Boolean
+    completed: Boolean,
+    modifier: Modifier = Modifier,
+    labelContent: @Composable ((index: Int) -> Unit)? = null
 ) {
     if (labelText.isNotEmpty() || labelContent != null) {
         Row(
@@ -119,10 +142,10 @@ private fun WantedProgressTrackerLabel(
 
 @Composable
 private fun WantedProgressTrackerVerticalLayout(
-    modifier: Modifier = Modifier,
     stepCount: Int,
     step: @Composable (index: Int) -> Unit,
     progress: @Composable (index: Int) -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable (index: Int) -> Unit
 ) {
     Column(
