@@ -1,6 +1,6 @@
 ---
 title: ProgressTracker
-description: 단계 기반 진행 상황을 수평/수직으로 표시하는 컴포넌트
+description: 단계 기반 진행 상황을 수직으로 표시하는 컴포넌트
 image: /components/progress-tracker/design/thumbnail.png
 createdAt: 2025-05-07
 ---
