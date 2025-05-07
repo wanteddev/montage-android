@@ -42,15 +42,15 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
 
 @Composable
-fun WantedSliderThumb(
+internal fun WantedSliderThumb(
+    thumbSize: Dp,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    thumbSize: Dp,
     contentColor: Color = colorResource(id = R.color.primary_normal),
     borderColor: Color = colorResource(id = R.color.background_normal_normal),
-    onDragStart: (Offset) -> Unit = { },
-    onDragEnd: () -> Unit = { },
-    onDragCancel: () -> Unit = { },
+    onDragStart: (Offset) -> Unit = {},
+    onDragEnd: () -> Unit = {},
+    onDragCancel: () -> Unit = {},
     onDrag: (dragAmount: Offset) -> Unit = {}
 ) {
     WantedSliderThumbArea(
@@ -80,15 +80,15 @@ fun WantedSliderThumb(
 }
 
 @Composable
-fun WantedSliderThumbArea(
-    modifier: Modifier = Modifier,
+private fun WantedSliderThumbArea(
     borderColor: Color,
-    enabled: Boolean = true,
-    onDragStart: (Offset) -> Unit = { },
-    onDragEnd: () -> Unit = { },
-    onDragCancel: () -> Unit = { },
     onDrag: (dragAmount: Offset) -> Unit,
-    content: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onDragStart: (Offset) -> Unit = {},
+    onDragEnd: () -> Unit = {},
+    onDragCancel: () -> Unit = {},
+    content: @Composable () -> Unit
 ) {
     val contentWidth = remember { mutableStateOf(0.dp) }
     val interactionSource = remember { MutableInteractionSource() }
