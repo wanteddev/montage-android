@@ -16,9 +16,9 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun ComponentTitle(
-    modifier: Modifier = Modifier,
     title: String,
-    isRequiredBadge: Boolean
+    isRequiredBadge: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,

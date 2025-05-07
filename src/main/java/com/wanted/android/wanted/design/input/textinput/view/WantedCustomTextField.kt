@@ -50,7 +50,6 @@ import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
 internal fun WantedCustomTextField(
-    modifier: Modifier,
     value: TextFieldValue,
     placeholder: String,
     error: Boolean,
@@ -65,11 +64,12 @@ internal fun WantedCustomTextField(
     interactionSource: MutableInteractionSource,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
+    rightButtonVariant: RightVariant,
+    modifier: Modifier = Modifier,
     cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
     background: Color = colorResource(id = R.color.background_normal_normal),
-    rightContent: @Composable ((size: Dp) -> Unit)? = null,
     rightButton: String? = null,
-    rightButtonVariant: RightVariant,
+    rightContent: @Composable ((size: Dp) -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
@@ -306,8 +306,8 @@ private fun isVisibleVerticalDivider(
 
 @Composable
 private fun DecorationBox(
-    modifier: Modifier = Modifier,
     innerTextField: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -367,10 +367,10 @@ private fun DecorationBox(
 
 @Composable
 private fun WantedTextFieldButton(
-    modifier: Modifier = Modifier,
     rightButtonVariant: RightVariant,
     title: String,
-    enable: Boolean
+    enable: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Text(
         modifier = modifier
@@ -394,8 +394,8 @@ private fun WantedTextFieldButton(
 
 @Composable
 private fun WantedCustomTextFieldLayout(
-    modifier: Modifier = Modifier,
     textField: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     rightButton: @Composable (() -> Unit)? = null
 ) {
     Row(
