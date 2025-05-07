@@ -1,0 +1,46 @@
+---
+title: LogoLoading
+description: Wanted 로고 기반의 로딩 애니메이션 컴포넌트
+image: /components/logo-loading/design/thumbnail.png
+createdAt: 2025-05-07
+---
+
+## WantedLogoLoading
+
+### 개요
+`WantedLogoLoading`은 Wanted 브랜드 로고를 활용한 로딩 컴포넌트입니다. 일반 화면 내 배치와 다이얼로그 형태로의 표시 모두 지원하며, 필요에 따라 dim 처리를 통해 로딩 상태를 강조할 수 있습니다.
+
+### 사용 예시
+```kotlin
+WantedLogoLoading(isUseDim = true)
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 외형 및 배치 설정입니다. 기본값은 Modifier 입니다. |
+| isUseDim | Boolean | dim 배경과 함께 Dialog 형태로 로딩을 표시할지 여부입니다. 기본값은 false입니다. |
+
+---
+
+## WantedLogoProgressIndicator
+
+### 개요
+`WantedLogoProgressIndicator`는 Wanted 로고 기반의 Lottie 애니메이션 로딩 인디케이터입니다. 시스템 다크 모드 여부에 따라 자동으로 light/dark 애셋을 선택하여 출력합니다.
+
+### 사용 예시
+```kotlin
+WantedLogoProgressIndicator(modifier = Modifier.size(48.dp))
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 로딩 인디케이터의 크기 및 레이아웃 조정용입니다. 기본값은 Modifier.defaultMinSize(32.dp)입니다. |
+
+---
+
+## Note
+- `WantedLogoLoading`은 내부적으로 `WantedLogoProgressIndicator`를 포함합니다.
+- 다이얼로그 기반 표시 시에는 `WantedLogoLoadingDialog`를 통해 플랫폼 기본 스타일 없이 dim 처리된 로딩 레이어를 제공합니다.
+- 시스템 다크 모드 여부에 따라 `loading-wanted-dark.json` 또는 `loading-wanted-light.json`이 자동 선택됩니다.
