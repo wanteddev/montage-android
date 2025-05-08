@@ -33,7 +33,7 @@ internal fun WantedTopAppBarLayout(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
-    actions: @Composable (RowScope.() -> Unit)? = null,
+    actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     Row(
         modifier = modifier

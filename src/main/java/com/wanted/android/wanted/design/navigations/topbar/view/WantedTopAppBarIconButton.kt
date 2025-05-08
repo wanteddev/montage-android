@@ -23,15 +23,15 @@ import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContra
 
 @Composable
 fun WantedTopAppBarIconButton(
+    painter: Painter,
     modifier: Modifier = Modifier,
     type: TopAppBarType = LocalWantedTopBarIconType.current,
-    painter: Painter,
     enabled: Boolean = true,
     floatingStyleAlternative: Boolean = false,
     floatingStyleBackground: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tint: Color = colorResource(id = R.color.label_normal),
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     /**
      * 시스템에 정의되어 있는 IconButton의 default size 56.dp

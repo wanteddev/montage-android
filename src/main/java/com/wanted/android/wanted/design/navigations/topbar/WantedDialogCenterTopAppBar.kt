@@ -26,12 +26,12 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedDialogCenterCloseTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_elevated_normal),
+    background: Color = colorResource(id = R.color.background_elevated_normal),
     type: WantedTopAppBarContract.TopAppBarType = WantedTopAppBarContract.TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
-    onClickBack: () -> Unit
+    navigationIcon: @Composable (() -> Unit)? = null,
+    onClickBack: () -> Unit = {}
 ) {
     WantedCenterTopAppBar(
         modifier = modifier,
@@ -73,11 +73,11 @@ fun WantedDialogCenterCloseTopAppBar(
 fun WantedDialogCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_elevated_normal),
+    background: Color = colorResource(id = R.color.background_elevated_normal),
     type: WantedTopAppBarContract.TopAppBarType = WantedTopAppBarContract.TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
+    navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     WantedCenterTopAppBar(

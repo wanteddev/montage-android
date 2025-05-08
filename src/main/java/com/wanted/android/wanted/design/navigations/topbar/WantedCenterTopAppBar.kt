@@ -40,11 +40,11 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_normal_normal),
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
+    navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
 
@@ -70,12 +70,12 @@ private fun WantedCenterTopAppBar(
 private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_elevated_normal),
+    background: Color = colorResource(id = R.color.background_elevated_normal),
     type: TopAppBarType = TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null,
-    onClickBack: () -> Unit
+    onClickBack: () -> Unit = {}
 ) {
     WantedCenterTopAppBar(
         modifier = modifier,

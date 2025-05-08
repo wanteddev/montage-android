@@ -44,8 +44,8 @@ fun WantedTopAppBar(
     background: Color = if (type == TopAppBarType.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
+    navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     if (titleAlignCenter) {
@@ -95,7 +95,7 @@ fun WantedBackTopAppBar(
     titleAlignCenter: Boolean = false,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null,
-    onClickBack: () -> Unit
+    onClickBack: () -> Unit = {}
 ) {
     WantedTopAppBar(
         modifier = modifier,

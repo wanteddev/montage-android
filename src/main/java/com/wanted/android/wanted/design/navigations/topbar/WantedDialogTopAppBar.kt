@@ -31,7 +31,7 @@ fun WantedDialogCloseTopAppBar(
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
-    onClickBack: () -> Unit
+    onClickBack: () -> Unit = {}
 ) {
     WantedTopAppBar(
         modifier = modifier,
@@ -76,8 +76,8 @@ fun WantedDialogTopAppBar(
     background: Color = colorResource(R.color.background_elevated_normal),
     type: WantedTopAppBarContract.TopAppBarType = WantedTopAppBarContract.TopAppBarType.Normal,
     scrollableState: ScrollableState? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
+    navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     WantedTopAppBar(
