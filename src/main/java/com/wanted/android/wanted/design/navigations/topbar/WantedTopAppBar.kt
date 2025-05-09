@@ -33,8 +33,28 @@ import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarL
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
- * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-43366&m=dev
- * 설명 figma : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1330-37845&t=KJWIkEkkcHKMDAcN-4
+ * 통합 상단 앱바 컴포저블로, 일반형, Floating형, Extended형을 포함합니다.
+ *
+ * 타이틀 정렬, 배경, 스크롤 상태, 좌우 아이콘 등을 설정할 수 있습니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedTopAppBar(
+ *     title = "타이틀",
+ *     navigationIcon = { Icon(...) },
+ *     actions = { IconButton(...) }
+ * )
+ * ```
+ *
+ * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
+ * @param windowInsets WindowInsets: 인셋을 적용합니다.
+ * @param type TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param background Color: 앱바 배경 색상입니다.
+ * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
+ * @param title String: 타이틀로 표시할 텍스트입니다.
+ * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
+ * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
  */
 @Composable
 fun WantedTopAppBar(
@@ -85,6 +105,28 @@ fun WantedTopAppBar(
     }
 }
 
+/**
+ * 뒤로 가기 아이콘이 포함된 앱바를 제공합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedBackTopAppBar(
+ *     title = "타이틀",
+ *     onClickBack = { /* 뒤로가기 처리 */ }
+ * )
+ * ```
+ *
+ * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
+ * @param windowInsets WindowInsets: 인셋을 적용합니다.
+ * @param type TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param background Color: 앱바 배경 색상입니다.
+ * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
+ * @param title String: 타이틀로 표시할 텍스트입니다.
+ * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
+ * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
+ * @param onClickBack () -> Unit: 뒤로가기 아이콘 클릭 시 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
@@ -116,6 +158,18 @@ fun WantedBackTopAppBar(
     )
 }
 
+/**
+ * 일반 TopAppBar 형식을 제공합니다. 정렬/타입에 따라 내부 레이아웃이 달라집니다.
+ *
+ * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
+ * @param windowInsets WindowInsets: 인셋을 적용합니다.
+ * @param type TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param background Color: 앱바 배경 색상입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
+ * @param title @Composable (() -> Unit)?: 타이틀 컴포저블입니다.
+ * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
+ * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
+ */
 @Composable
 fun WantedTopAppBar(
     modifier: Modifier = Modifier,
