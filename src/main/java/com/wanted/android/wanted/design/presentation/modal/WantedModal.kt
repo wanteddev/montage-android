@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -18,6 +17,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.wanted.design.navigations.topbar.WantedDialogTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
+import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
+import com.wanted.android.wanted.design.presentation.modal.WantedModalDefaults.heightModifier
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogTwoButtonImpl
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -27,7 +28,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedModal(
     modifier: Modifier = Modifier,
-    modalSize: ModalSize,
+    type: ModalType = ModalType.Flexible,
     properties: DialogProperties = DialogProperties(),
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
@@ -43,16 +44,7 @@ fun WantedModal(
         properties = properties
     ) {
         WantedDialogTwoButtonImpl(
-            modifier = modifier.heightIn(
-                max = when (modalSize) {
-                    ModalSize.Small,
-                    ModalSize.Medium -> 460.dp
-                    ModalSize.Large -> 560.dp
-                    ModalSize.XLarge -> 640.dp
-                    ModalSize.Custom -> 760.dp
-                }
-            ),
-            modalSize = modalSize,
+            modifier = modifier.then(heightModifier(type, WantedModalContract.MAX_MODAL_SIZE.dp)),
             shape = shape,
             topBar = topBar,
             positive = positive,
@@ -68,7 +60,7 @@ fun WantedModal(
 @Composable
 fun WantedModal(
     modifier: Modifier = Modifier,
-    modalSize: ModalSize,
+    type: ModalType = ModalType.Flexible,
     properties: DialogProperties = DialogProperties(),
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
@@ -81,12 +73,12 @@ fun WantedModal(
         properties = properties
     ) {
         WantedDialogLayout(
-            modifier = modifier,
-            modalSize = modalSize,
+            modifier = modifier.then(heightModifier(type, WantedModalContract.MAX_MODAL_SIZE.dp)),
+            modalSize = ModalSize.Medium,
             shape = shape,
             topBar = topBar,
             content = {
-                Box(modifier = Modifier.padding(horizontal = modalSize.contentPadding)) {
+                Box(modifier = Modifier.padding(horizontal = ModalSize.Medium.contentPadding)) {
                     content()
                 }
             },
@@ -99,7 +91,7 @@ fun WantedModal(
 @Composable
 fun WantedModal(
     modifier: Modifier = Modifier,
-    modalSize: ModalSize,
+    type: ModalType = ModalType.Flexible,
     properties: DialogProperties = DialogProperties(),
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
@@ -112,14 +104,14 @@ fun WantedModal(
         properties = properties
     ) {
         WantedDialogLayout(
-            modifier = modifier,
-            modalSize = modalSize,
+            modifier = modifier.then(heightModifier(type, WantedModalContract.MAX_MODAL_SIZE.dp)),
+            modalSize = ModalSize.Medium,
             shape = shape,
             topBar = topBar,
             content = {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(modalSize.contentPadding)
+                    contentPadding = PaddingValues(ModalSize.Medium.contentPadding)
                 ) {
                     lazyContent()
                 }
@@ -137,18 +129,18 @@ private fun WantedDialogPreview() {
         Scaffold {
             WantedModal(
                 modifier = Modifier.padding(it),
-                modalSize = ModalSize.Medium,
-                positive = "확인",
                 topBar = {
                     WantedDialogTopAppBar(
                         title = "다이얼로그 타이틀",
                     )
                 },
+                positive = "확인",
                 onClickPositive = {},
-                onDismissRequest = {}
-            ) {
-                Text(text = "다이얼로그 내용")
-            }
+                onDismissRequest = {},
+                content = {
+                    Text(text = "다이얼로그 내용")
+                }
+            )
         }
     }
 }

@@ -24,21 +24,21 @@ import com.wanted.android.wanted.design.input.control.WantedRadioButton
 import com.wanted.android.wanted.design.input.select.WantedSelectContract
 import com.wanted.android.wanted.design.input.select.WantedSelectData
 import com.wanted.android.wanted.design.presentation.modal.WantedModalBottomSheet
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.BottomSheetDialogType
+import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonType
 
 @Composable
-internal fun WantedMultiSelectBottomSheet(
+fun WantedMultiSelectBottomSheet(
+    modifier: Modifier = Modifier,
     isShow: Boolean,
     items: List<WantedSelectData>,
     confirmText: String,
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
+    dialogType: ModalType = ModalType.Flexible,
     selectedItemList: List<WantedSelectData>,
     onSelect: (itemList: List<WantedSelectData>) -> Unit,
-    onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
-    dialogType: BottomSheetDialogType = BottomSheetDialogType.Flexible
+    onDismissRequest: () -> Unit
 ) {
     val selectItemList = remember(selectedItemList) { mutableStateOf(selectedItemList) }
 

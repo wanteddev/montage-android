@@ -24,11 +24,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.WantedOutlinedButton
 import com.wanted.android.wanted.design.actions.button.WantedSolidButton
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.clickOnce
 
@@ -37,11 +39,10 @@ import com.wanted.android.wanted.design.util.clickOnce
 fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
     background: Color = colorResource(R.color.background_elevated_normal),
-    modalSize: ModalSize,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     positiveButtonType: ButtonType = ButtonType.PRIMARY,
-    negativeButtonType: ButtonType = ButtonType.ASSISTIVE,
+    negativeButtonType: ButtonType = ButtonType.SECONDARY,
     positive: String? = null,
     negative: String? = null,
     onClickPositive: (() -> Unit)? = null,
@@ -52,11 +53,11 @@ fun WantedDialogTwoButtonImpl(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(background),
-        modalSize = modalSize,
+        modalSize = ModalSize.Medium,
         shape = shape,
         topBar = topBar,
         content = {
-            Box(modifier = Modifier.padding(horizontal = modalSize.contentPadding)) {
+            Box(modifier = Modifier.padding(horizontal = ModalSize.Medium.contentPadding)) {
                 content()
             }
         },
@@ -69,9 +70,10 @@ fun WantedDialogTwoButtonImpl(
             ) {
 
                 onClickPositive?.let {
-                    WantedSolidButton(
+                    WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = positive.orEmpty(),
+                        type = positiveButtonType,
                         onClick = {
                             onClickPositive()
                         }
@@ -79,10 +81,11 @@ fun WantedDialogTwoButtonImpl(
                 }
 
                 onClickNegative?.let {
-                    WantedOutlinedButton(
+                    WantedButton(
                         modifier = Modifier.fillMaxWidth(),
+                        buttonShape = ButtonShape.OUTLINED,
                         text = negative.orEmpty(),
-                        type = ButtonType.SECONDARY,
+                        type = negativeButtonType,
                         onClick = {
                             onClickNegative()
                         }
@@ -106,37 +109,34 @@ private fun WantedDialogPreview() {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
                 positive = "확인",
-                onClickPositive = {}
-            ) {
-                Text(text = "다이얼로그 내용")
-            }
+                onClickPositive = {},
+                content = {
+                    Text(text = "다이얼로그 내용")
+                }
+            )
 
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
                 positive = "확인",
                 negative = "취소",
                 onClickPositive = {},
                 onClickNegative = {},
-            ) {
+                content = {
 
-                Text(text = "다이얼로그 내용")
-            }
+                    Text(text = "다이얼로그 내용")
+                },
+            )
 
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
                 positive = "확인",
                 negative = "취소",
                 onClickPositive = {},
                 onClickNegative = {},
-            ) {
+                content = {
 
-                Text(text = "다이얼로그 내용")
-            }
+                    Text(text = "다이얼로그 내용")
+                },
+            )
         }
     }
 }
@@ -153,43 +153,39 @@ private fun WantedDialogSizePreview() {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Small,
                 positive = "확인",
-                onClickPositive = {}
-            ) {
-                Text(text = "다이얼로그 내용")
-            }
+                onClickPositive = {},
+                content = {
+                    Text(text = "다이얼로그 내용")
+                }
+            )
 
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
                 positive = "확인",
-                onClickPositive = {}
-            ) {
+                onClickPositive = {},
+                content = {
 
-                Text(text = "다이얼로그 내용")
-            }
+                    Text(text = "다이얼로그 내용")
+                }
+            )
 
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Large,
                 positive = "확인",
-                onClickPositive = {}
-            ) {
+                onClickPositive = {},
+                content = {
 
-                Text(text = "다이얼로그 내용")
-            }
+                    Text(text = "다이얼로그 내용")
+                }
+            )
 
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.XLarge,
                 positive = "확인",
-                onClickPositive = {}
-            ) {
+                onClickPositive = {},
+                content = {
 
-                Text(text = "다이얼로그 내용")
-            }
+                    Text(text = "다이얼로그 내용")
+                }
+            )
         }
     }
 }
@@ -207,20 +203,19 @@ private fun WantedDialogScrollablePreview() {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
                 positive = "확인",
-                onClickPositive = {}
-            ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(20.dp)
-                ) {
-                    items(10) {
-                        Text(text = "다이얼로그 내용")
+                onClickPositive = {},
+                content = {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(20.dp)
+                    ) {
+                        items(10) {
+                            Text(text = "다이얼로그 내용")
+                        }
                     }
                 }
-            }
+            )
         }
     }
 }
@@ -238,23 +233,19 @@ private fun WantedDialogTopBarPreview() {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
-                positive = "확인",
                 topBar = {
                     WantedTopAppBar(
                         title = { Text(text = "다이얼로그 타이틀") },
                     )
                 },
-                onClickPositive = {}
-            ) {
-                Text(text = "다이얼로그 내용")
-            }
+                positive = "확인",
+                onClickPositive = {},
+                content = {
+                    Text(text = "다이얼로그 내용")
+                }
+            )
 
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
-                positive = "확인",
                 topBar = {
                     WantedTopAppBar(
                         title = { Text(text = "다이얼로그 타이틀") },
@@ -267,15 +258,14 @@ private fun WantedDialogTopBarPreview() {
                         }
                     )
                 },
-                onClickPositive = {}
-            ) {
-                Text(text = "다이얼로그 내용")
-            }
+                positive = "확인",
+                onClickPositive = {},
+                content = {
+                    Text(text = "다이얼로그 내용")
+                }
+            )
 
             WantedDialogTwoButtonImpl(
-                modifier = Modifier,
-                modalSize = ModalSize.Medium,
-                positive = "확인",
                 topBar = {
                     WantedTopAppBar(
                         navigationIcon = {
@@ -288,10 +278,12 @@ private fun WantedDialogTopBarPreview() {
                         title = { Text(text = "다이얼로그 타이틀") },
                     )
                 },
-                onClickPositive = {}
-            ) {
-                Text(text = "다이얼로그 내용")
-            }
+                positive = "확인",
+                onClickPositive = {},
+                content = {
+                    Text(text = "다이얼로그 내용")
+                }
+            )
         }
     }
 }

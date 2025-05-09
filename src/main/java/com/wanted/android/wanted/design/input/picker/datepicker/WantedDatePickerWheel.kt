@@ -100,9 +100,8 @@ fun WantedDatePickerWheel(
 
     WantedModal(
         modifier = modifier.padding(horizontal = 20.dp),
-        modalSize = WantedModalContract.ModalSize.Large,
-        shape = RoundedCornerShape(28.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
+        shape = RoundedCornerShape(28.dp),
         topBar = {
             Text(
                 modifier = Modifier
@@ -115,6 +114,40 @@ fun WantedDatePickerWheel(
                 color = colorResource(R.color.label_alternative)
             )
         },
+        bottomBar = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                WantedButton(
+                    modifier = Modifier.wrapContentSize(),
+                    text = cancel,
+                    buttonDefault = WantedButtonDefaults.getDefault(
+                        shape = ButtonShape.OUTLINED,
+                        size = ButtonSize.MEDIUM,
+                        borderColor = Color.Transparent
+                    ),
+                    onClick = onDismissRequest
+                )
+
+                WantedButton(
+                    modifier = Modifier.wrapContentSize(),
+                    text = confirm,
+                    buttonDefault = WantedButtonDefaults.getDefault(
+                        shape = ButtonShape.OUTLINED,
+                        size = ButtonSize.MEDIUM,
+                        borderColor = Color.Transparent,
+                        enabled = enabledYear && enabledMonth,
+                    ),
+                    onClick = {
+                        onSelect(selectYear, selectMonth)
+                        onDismissRequest()
+                    }
+                )
+            }
+        },
+        onDismissRequest = onDismissRequest,
         content = {
             Box(
                 modifier = Modifier.fillMaxWidth(),
@@ -169,41 +202,7 @@ fun WantedDatePickerWheel(
 
                 )
             }
-        },
-        bottomBar = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                WantedButton(
-                    modifier = Modifier.wrapContentSize(),
-                    text = cancel,
-                    buttonDefault = WantedButtonDefaults.getDefault(
-                        shape = ButtonShape.OUTLINED,
-                        size = ButtonSize.MEDIUM,
-                        borderColor = Color.Transparent
-                    ),
-                    onClick = onDismissRequest
-                )
-
-                WantedButton(
-                    modifier = Modifier.wrapContentSize(),
-                    text = confirm,
-                    buttonDefault = WantedButtonDefaults.getDefault(
-                        shape = ButtonShape.OUTLINED,
-                        size = ButtonSize.MEDIUM,
-                        borderColor = Color.Transparent,
-                        enabled = enabledYear && enabledMonth,
-                    ),
-                    onClick = {
-                        onSelect(selectYear, selectMonth)
-                        onDismissRequest()
-                    }
-                )
-            }
-        },
-        onDismissRequest = onDismissRequest
+        }
     )
 }
 
