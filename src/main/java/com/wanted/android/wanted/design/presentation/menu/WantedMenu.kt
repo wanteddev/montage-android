@@ -25,15 +25,33 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=16784-140137&m=dev
+ * 섹션 타이틀과 아이템으로 구성된 기본 메뉴 컴포저블입니다.
+ *
+ * 각 섹션별로 타이틀과 아이템을 바인딩할 수 있으며, 최대 높이 및 패딩, 배경이 설정된 리스트 형태로 표시됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedMenu(
+ *     sectionCount = 2,
+ *     itemCount = { 3 },
+ *     onBindSectionTitle = { Text("Section Title") },
+ *     onBindSectionItem = { section, index -> Text("Item $index") }
+ * )
+ * ```
+ *
+ * @param sectionCount Int: 섹션의 총 개수입니다.
+ * @param itemCount (section: Int) -> Int: 각 섹션의 아이템 개수를 반환합니다.
+ * @param onBindSectionItem @Composable (section: Int, index: Int) -> Unit: 각 아이템에 대한 컴포저블입니다.
+ * @param modifier Modifier: 메뉴 전체에 적용할 Modifier입니다.
+ * @param onBindSectionTitle @Composable ((section: Int) -> Unit)?: 섹션 타이틀 컴포저블입니다.
  */
 @Composable
 fun WantedMenu(
-    modifier: Modifier = Modifier,
     sectionCount: Int,
     itemCount: (section: Int) -> Int,
-    onBindSectionTitle: @Composable ((section: Int) -> Unit)? = null,
     onBindSectionItem: @Composable (section: Int, index: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    onBindSectionTitle: @Composable ((section: Int) -> Unit)? = null
 ) {
     LazyColumn(
         modifier = modifier
