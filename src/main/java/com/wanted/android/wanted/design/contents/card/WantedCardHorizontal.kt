@@ -30,7 +30,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.feedback.contentbadge.WantedContentBadge
+import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
@@ -83,7 +83,7 @@ fun WantedCardHorizontal(
                             modifier = Modifier,
                             title = title,
                             caption = caption,
-                            extraCaption = extraCaption,
+                            subCaption = extraCaption,
                             bottomContent = bottomContent,
                             topContent = topContent
                         )
@@ -94,6 +94,7 @@ fun WantedCardHorizontal(
             },
             verticalPadding = 8.dp,
             horizontalPadding = 8.dp,
+            enabledInnerTouch = true,
             shape = RoundedCornerShape(
                 topStart = 20.dp,
                 topEnd = 12.dp,
