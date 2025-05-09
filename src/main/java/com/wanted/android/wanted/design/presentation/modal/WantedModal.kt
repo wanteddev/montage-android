@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -42,7 +43,15 @@ fun WantedModal(
         properties = properties
     ) {
         WantedDialogTwoButtonImpl(
-            modifier = modifier,
+            modifier = modifier.heightIn(
+                max = when (modalSize) {
+                    ModalSize.Small,
+                    ModalSize.Medium -> 460.dp
+                    ModalSize.Large -> 560.dp
+                    ModalSize.XLarge -> 640.dp
+                    ModalSize.Custom -> 760.dp
+                }
+            ),
             modalSize = modalSize,
             shape = shape,
             topBar = topBar,
