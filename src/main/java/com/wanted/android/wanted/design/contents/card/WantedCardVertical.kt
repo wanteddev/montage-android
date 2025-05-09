@@ -31,10 +31,38 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=23188-76308&m=dev
- * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3295-855&m=dev
+ * 세로형 카드 컴포저블입니다.
+ *
+ * 로딩 상태(`isLoading`)에 따라 Skeleton 또는 실제 콘텐츠를 렌더링하며,
+ * 썸네일, 오버레이 캡션, 타이틀, 캡션, 서브캡션, 추가 캡션, 상/하단 커스텀 콘텐츠를 지원합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedCardVertical(
+ *     title = "제목",
+ *     caption = "캡션",
+ *     overlayCaption = "Overlay",
+ *     overlayToggleIcon = {
+ *         Icon(painter = painterResource(id = R.drawable.icon), contentDescription = null)
+ *     },
+ *     onClick = { /* 클릭 이벤트 */ }
+ * )
+ * ```
+ *
+ * @param modifier Modifier: 레이아웃 및 스타일을 지정하는 Modifier입니다.
+ * @param thumbnail Any?: 썸네일 이미지 리소스 또는 URL입니다. null일 경우 표시되지 않습니다.
+ * @param overlayCaption String: 썸네일 위에 오버레이로 표시할 텍스트입니다.
+ * @param title String: 카드 타이틀 텍스트입니다.
+ * @param caption String: 보조 캡션 텍스트입니다.
+ * @param subCaption String: 추가 보조 캡션 텍스트입니다.
+ * @param extraCaption String: 하단 추가 설명 텍스트입니다.
+ * @param isLoading Boolean: 로딩 상태 여부입니다. true이면 skeleton UI가 렌더링됩니다.
+ * @param cardDefault WantedCardDefault: skeleton 모드에서 사용할 설정값입니다.
+ * @param overlayToggleIcon @Composable (() -> Unit)?: 썸네일 오버레이에 포함될 토글 아이콘입니다.
+ * @param topContent @Composable (() -> Unit)?: 카드 상단 타이틀 위에 추가 표시할 컴포저블입니다.
+ * @param bottomContent @Composable (() -> Unit)?: 카드 하단에 추가 표시할 컴포저블입니다.
+ * @param onClick () -> Unit: 카드 전체 클릭 시 호출되는 콜백입니다.
  */
-
 @Composable
 fun WantedCardVertical(
     modifier: Modifier = Modifier,
@@ -141,7 +169,7 @@ private fun WantedCardVerticalSkeleton(
 @Composable
 private fun WantedCardVerticalLayout(
     modifier: Modifier = Modifier,
-    thumbnail: @Composable (width: Dp, height: Dp) -> Unit,
+    thumbnail: @Composable (width: Dp, height: Dp) -> Unit = { _, _ -> },
     thumbnailOverlay: @Composable (() -> Unit)? = null,
     description: @Composable (() -> Unit)? = null,
 ) {

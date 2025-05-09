@@ -1,0 +1,87 @@
+---
+title: CardVertical
+description: 썸네일과 설명이 포함된 세로형 카드 컴포넌트입니다.
+image: /components/card-vertical/design/thumbnail.png
+createdAt: 2025-05-09
+---
+
+## WantedCardVertical
+
+### 개요
+`WantedCardVertical`은 썸네일 이미지와 설명 텍스트가 포함된 세로형 카드 컴포넌트입니다.  
+로딩 상태에서는 Skeleton UI로 대체되어, 네트워크 지연 시에도 자연스러운 사용자 경험을 제공합니다.  
+썸네일 오버레이, 타이틀, 캡션, 상/하단 커스텀 콘텐츠 등을 자유롭게 조합할 수 있습니다.
+
+### 사용 예시
+```kotlin
+WantedCardVertical(
+    modifier = Modifier.width(152.dp),
+    title = "제목",
+    caption = "캡션",
+    subCaption = "추가 캡션",
+    overlayCaption = "오버레이 텍스트",
+    overlayToggleIcon = {
+        Icon(
+            painter = painterResource(id = R.drawable.icon_bookmark_fill_svg),
+            contentDescription = ""
+        )
+    },
+    topContent = {
+        WantedContentBadge(text = "상단 배지")
+    },
+    bottomContent = {
+        WantedContentBadge(text = "하단 배지")
+    },
+    onClick = { /* 클릭 동작 */ }
+)
+```
+
+### 파라미터
+
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 카드 외형을 조절합니다. |
+| thumbnail | Any? | Glide를 이용해 렌더링할 썸네일 이미지입니다. URL 또는 리소스 객체로 지정합니다. |
+| overlayCaption | String | 썸네일 상단에 반투명 배경으로 표시될 텍스트입니다. |
+| title | String | 카드 타이틀입니다. 주요 정보 제목으로 사용됩니다. |
+| caption | String | 타이틀 아래 위치하는 첫 번째 설명 텍스트입니다. |
+| subCaption | String | caption 아래에 위치하는 보조 설명 텍스트입니다. |
+| extraCaption | String | 가장 하단의 추가 설명 텍스트입니다. |
+| isLoading | Boolean | 로딩 중 여부입니다. true일 경우 스켈레톤 컴포넌트가 표시됩니다. |
+| cardDefault | WantedCardDefault | 스켈레톤 모드에서 사용할 각 항목 표시 설정입니다. |
+| overlayToggleIcon | @Composable (() -> Unit)? | 오버레이 영역에 표시할 토글 아이콘입니다. 북마크 버튼 등으로 활용됩니다. |
+| topContent | @Composable (() -> Unit)? | 타이틀 위 영역에 표시될 커스텀 콘텐츠입니다. 예: 배지, 라벨 등 |
+| bottomContent | @Composable (() -> Unit)? | 카드 하단에 표시될 커스텀 콘텐츠입니다. 예: 뱃지, 버튼 등 |
+| onClick | () -> Unit | 카드 클릭 시 호출되는 콜백입니다. |
+
+---
+
+## WantedCardDefault
+
+### 개요
+스켈레톤 렌더링 시 어떤 요소를 보여줄지 설정하는 구성 객체입니다.  
+로딩 중에 보여질 콘텐츠를 유연하게 제어할 수 있도록 설계되었습니다.
+
+### 사용 예시
+```kotlin
+val config = WantedCardDefaults.getDefault(
+    topContentSkeleton = true,
+    bottomContentSkeleton = true
+)
+```
+
+### 프로퍼티
+
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| topContentSkeleton | Boolean | 상단 커스텀 콘텐츠에 스켈레톤을 표시할지 여부 |
+| captionSkeleton | Boolean | 메인 캡션에 스켈레톤을 표시할지 여부 |
+| extraCaptionSkeleton | Boolean | 추가 캡션에 스켈레톤을 표시할지 여부 |
+| bottomContentSkeleton | Boolean | 하단 콘텐츠에 스켈레톤을 표시할지 여부 |
+
+---
+
+## Note
+- `thumbnail`은 필수가 아니며, 없을 경우 색상 배경과 테두리가 있는 영역만 표시됩니다.
+- `overlayToggleIcon`을 통해 카드 썸네일에 기능성 아이콘(예: 북마크)을 추가할 수 있습니다.
+- `isLoading` 속성 사용 시 `cardDefault`로 각 항목별 Skeleton 렌더링 여부를 세밀하게 조정 가능합니다.
