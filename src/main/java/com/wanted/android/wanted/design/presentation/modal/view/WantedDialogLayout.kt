@@ -19,14 +19,14 @@ import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.M
 
 
 @Composable
-fun WantedDialogLayout(
+internal fun WantedDialogLayout(
+    modalSize: ModalSize,
     modifier: Modifier = Modifier,
     backgroundColor: Color = colorResource(R.color.background_elevated_normal),
-    modalSize: ModalSize,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit,
-    bottomBar: (@Composable () -> Unit)? = null
+    bottomBar: (@Composable () -> Unit)? = null,
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier

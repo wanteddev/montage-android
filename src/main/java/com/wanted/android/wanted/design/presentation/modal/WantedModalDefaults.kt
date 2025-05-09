@@ -29,6 +29,20 @@ import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.M
 import com.wanted.android.wanted.design.util.pxToDp
 
 object WantedModalDefaults {
+    /**
+     * 드래그 가능한 핸들 표시를 위한 컴포저블입니다.
+     *
+     * 시트 상단에 표시되는 손잡이 UI로, 색상 및 모양을 커스터마이징 할 수 있습니다.
+     *
+     * 사용 예시:
+     * ```kotlin
+     * WantedModalDefaults.DragHandle()
+     * ```
+     *
+     * @param modifier Modifier: 외형을 조정하는 Modifier입니다.
+     * @param color Color: 핸들의 배경 색상입니다.
+     * @param shape Shape: 핸들의 형태입니다. 기본은 MaterialTheme.shapes.extraLarge입니다.
+     */
     @Composable
     fun DragHandle(
         modifier: Modifier = Modifier,

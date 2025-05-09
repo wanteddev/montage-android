@@ -36,7 +36,7 @@ import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
-fun WantedDialogTwoButtonImpl(
+internal fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
     background: Color = colorResource(R.color.background_elevated_normal),
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
