@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.wanted.android.wanted.design.feedback.toast.WantedToast
+import com.wanted.android.wanted.design.feedback.toast.WantedToastImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -43,34 +43,34 @@ fun WantedSnackBarHost(
         modifier = Modifier.zIndex(1000f),
         hostState = hostState,
         snackbar = {
-            val visuals =
-                it.visuals as? WantedSnackbarVisuals ?: return@SnackbarHost
-            when (val type = visuals.snackbarType) {
-                is SnackbarType.Snackbar -> {
-                    WantedSnackBar(
-                        modifier = Modifier
-                            .padding(paddingValues = visuals.padding)
-                            .windowInsetsPadding(windowInsets),
-                        text = visuals.message,
-                        snackbarData = it,
-                        description = type.description,
-                        buttonText = visuals.actionLabel ?: "",
-                        icon = type.icon,
-                        onClick = {}
-                    )
-                }
-
-                is SnackbarType.Toast -> {
-                    WantedToast(
-                        modifier = Modifier
-                            .padding(paddingValues = visuals.padding)
-                            .windowInsetsPadding(windowInsets),
-                        text = visuals.message,
-                        variant = type.variant,
-                        icon = type.icon
-                    )
-                }
-            }
+//            val visuals =
+//                it.visuals as? WantedSnackbarVisuals ?: return@SnackbarHost
+//            when (val type = visuals.snackbarType) {
+//                is SnackbarType.Snackbar -> {
+//                    WantedSnackBar(
+//                        modifier = Modifier
+//                            .padding(paddingValues = visuals.padding)
+//                            .windowInsetsPadding(windowInsets),
+//                        text = visuals.message,
+//                        snackbarData = it,
+//                        description = type.description,
+//                        buttonText = visuals.actionLabel ?: "",
+//                        icon = type.icon,
+//                        onClick = {}
+//                    )
+//                }
+//
+//                is SnackbarType.Toast -> {
+//                    WantedToastImpl(
+//                        modifier = Modifier
+//                            .padding(paddingValues = visuals.padding)
+//                            .windowInsetsPadding(windowInsets),
+//                        text = visuals.message,
+//                        variant = type.variant,
+//                        icon = type.icon
+//                    )
+//                }
+//            }
         }
     )
 
@@ -88,7 +88,7 @@ fun WantedSnackBarHost(
                     actionLabel = event.action?.name,
                     duration = event.duration,
                     withDismissAction = event.withDismissAction,
-                    snackbarType = event.snackbarType,
+//                    snackbarType = event.snackbarType,
                     padding = event.padding
                 )
             )

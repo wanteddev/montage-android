@@ -22,6 +22,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.feedback.snackbar.WantedSnackBarHost
 import com.wanted.android.wanted.design.feedback.snackbar.WantedSnackBarHostDefaults
 
+@Deprecated("Scaffold 사용해주세요.")
 @Composable
 fun WantedScaffold(
     modifier: Modifier = Modifier,
