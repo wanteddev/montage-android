@@ -1,6 +1,10 @@
 package com.wanted.android.wanted.design.feedback.snackbar
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.runtime.Composable
@@ -30,4 +34,13 @@ sealed interface SnackbarType {
         val buttonText: String = "",
         override val icon: @Composable (() -> Unit)? = null
     ) : SnackbarType
+}
+
+object WantedSnackBarHostDefaults  {
+    val windowInsets: WindowInsets
+        @Composable
+        get() {
+            return WindowInsets.safeDrawing
+                .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+        }
 }

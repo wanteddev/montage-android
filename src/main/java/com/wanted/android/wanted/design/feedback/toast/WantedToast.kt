@@ -20,10 +20,8 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -71,13 +69,13 @@ sealed class WantedToastVariant(
 
 @Composable
 fun WantedToast(
-    hostState: SnackbarHostState,
+    snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
 ) {
     SnackbarHost(
         modifier = modifier.zIndex(1000f),
-        hostState = hostState
+        hostState = snackBarHostState
     ) {
         val visuals = it.visuals
         if (visuals is WantedToastVisuals) {
