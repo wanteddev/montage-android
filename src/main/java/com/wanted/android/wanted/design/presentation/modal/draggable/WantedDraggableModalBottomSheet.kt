@@ -154,6 +154,7 @@ internal fun WantedDraggableModalBottomSheet(
                 Box(modifier = Modifier) {
                     Column(
                         modifier = Modifier
+                            .noRippleClickable {}
                             .fillMaxWidth()
                             .imePadding()
                             .offset {
