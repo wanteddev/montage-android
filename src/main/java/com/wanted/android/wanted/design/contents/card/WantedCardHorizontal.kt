@@ -111,6 +111,7 @@ fun WantedCardHorizontal(
                     description = {
                         WantedCardDescription(
                             modifier = Modifier,
+                            maxLines = 1,
                             title = title,
                             caption = caption,
                             subCaption = extraCaption,
