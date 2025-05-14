@@ -45,7 +45,6 @@ import com.wanted.android.wanted.design.util.clickOnce
 fun WantedSnackBar(
     modifier: Modifier = Modifier,
     hostState: SnackbarHostState,
-    snackbarData: SnackbarData? = null,
     text: String = "",
     description: String = "",
     buttonText: String,
@@ -58,7 +57,6 @@ fun WantedSnackBar(
     ) { data ->
         WantedSnackBarImpl(
             modifier = modifier,
-            snackbarData = snackbarData,
             text = text,
             description = description,
             buttonText = buttonText,
@@ -68,6 +66,37 @@ fun WantedSnackBar(
     }
 }
 
+
+@Composable
+fun WantedSnackBar(
+    hostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+) {
+    SnackbarHost(
+        modifier = Modifier.zIndex(1000f),
+        hostState = hostState
+    ) { data ->
+        val visuals = data.visuals
+        if (visuals is WantedSnackbarVisuals) {
+            WantedSnackBarImpl(
+                modifier = modifier,
+                text = visuals.message,
+                description = visuals.description,
+                buttonText = visuals.actionLabel.orEmpty(),
+                icon = visuals.icon,
+                onClick = { data.performAction() }
+            )
+        } else {
+            WantedSnackBarImpl(
+                modifier = modifier,
+                text = data.visuals.message,
+                buttonText = "",
+                icon = null,
+                onClick = { data.performAction() }
+            )
+        }
+    }
+}
 
 @Deprecated(
     """
@@ -97,19 +126,20 @@ fun WantedSnackBar(
 ) {
     WantedSnackBarImpl(
         modifier = modifier,
-        snackbarData = snackbarData,
         text = text,
         description = description,
         buttonText = buttonText,
         icon = icon,
-        onClick = onClick
+        onClick = {
+            onClick()
+            snackbarData?.performAction()
+        }
     )
 }
 
 @Composable
 private fun WantedSnackBarImpl(
     modifier: Modifier = Modifier,
-    snackbarData: SnackbarData? = null,
     text: String = "",
     description: String = "",
     buttonText: String,
@@ -145,7 +175,6 @@ private fun WantedSnackBarImpl(
                         .clip(RoundedCornerShape(8.dp))
                         .clickOnce {
                             onClick()
-                            snackbarData?.performAction()
                         }
                         .padding(vertical = 4.dp, horizontal = 7.dp),
 

@@ -2,7 +2,6 @@ package com.wanted.android.wanted.design.feedback.toast
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,27 +16,29 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import kotlinx.coroutines.launch
 
 
 /**
@@ -67,112 +68,34 @@ sealed class WantedToastVariant(
 }
 
 @Composable
-fun WantedSnackBar(
-    @StringRes text: Int,
-    hostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Message,
-    @DrawableRes icon: Int? = null,
-    @ColorRes tintColor: Int? = null
-) {
-    SnackbarHost(
-        modifier = modifier.zIndex(1000f),
-        hostState = hostState
-    ) {
-        WantedToast(
-            modifier = Modifier,
-            variant = variant,
-            windowInsets = windowInsets,
-            text = text,
-            icon = icon,
-            tintColor = tintColor
-        )
-    }
-}
-
-@Composable
-fun WantedSnackBar(
-    text: String,
-    hostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Message,
-    icon: @Composable (() -> Unit)? = null
-) {
-    SnackbarHost(
-        modifier = modifier.zIndex(1000f),
-        hostState = hostState
-    ) {
-        WantedToast(
-            modifier = Modifier,
-            variant = variant,
-            windowInsets = windowInsets,
-            text = text,
-            icon = icon
-        )
-    }
-}
-
-@Deprecated(
-    """
-    WantedSnackBar(
-        @StringRes text: Int,
-        hostState: SnackbarHostState,
-        modifier: Modifier = Modifier,
-        windowInsets: WindowInsets = WindowInsets(0),
-        variant: WantedToastVariant = WantedToastVariant.Normal,
-           @DrawableRes icon: Int? = null,
-        @ColorRes tintColor: Int? = null
-    )       
-    
-    hostState.show(coroutineScope)
-    """
-)
-@Composable
 fun WantedToast(
-    @StringRes text: Int,
+    snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Message,
-    @DrawableRes icon: Int? = null,
-    @ColorRes tintColor: Int? = null
 ) {
-    WantedToast(
-        modifier = modifier,
-        variant = variant,
-        windowInsets = windowInsets,
-        text = stringResource(id = text),
-        icon = icon?.let {
-            {
-                WantedToastIcon(
-                    resourceId = icon,
-                    modifier = Modifier.fillMaxSize(),
-                    tint = tintColor?.let {
-                        colorResource(id = tintColor)
-                    } ?: LocalContentColor.current
-                )
-            }
+    SnackbarHost(
+        modifier = modifier.zIndex(1000f),
+        hostState = snackBarHostState
+    ) {
+        val visuals = it.visuals
+        if (visuals is WantedToastVisuals) {
+            WantedToastImpl(
+                variant = visuals.variant,
+                windowInsets = windowInsets,
+                text = visuals.message,
+                icon = visuals.icon
+            )
+        } else {
+            WantedToastImpl(
+                windowInsets = windowInsets,
+                text = visuals.message,
+            )
         }
-    )
+    }
 }
 
-@Deprecated(
-    """
-    WantedSnackBar(
-        text: String,
-        hostState: SnackbarHostState,
-        modifier: Modifier = Modifier,
-        windowInsets: WindowInsets = WindowInsets(0),
-        variant: WantedToastVariant = WantedToastVariant.Normal,
-        icon: @Composable (() -> Unit)? = null
-    )       
-    
-    hostState.show(coroutineScope)
-    """
-)
 @Composable
-fun WantedToast(
+internal fun WantedToastImpl(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
@@ -263,32 +186,52 @@ private fun WantedToastLayout(
 @Composable
 private fun ToastNormalPreview() {
     DesignSystemTheme {
-        Surface(Modifier.fillMaxSize()) {
+        val hostState: SnackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = {
+                WantedToast(hostState)
+            }
+        )  {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WantedToast(
-                    variant = WantedToastVariant.Message,
-                    text = "메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요."
-                )
 
-                WantedToast(
+                WantedButton(text = "toast") {
+                    coroutineScope.launch {
+                        hostState.showSnackbar(message = "메시지에 마침표를 찍어요.")
+                    }
+                }
+
+                WantedButton(text = "toast Visuals") {
+                    coroutineScope.launch {
+                        hostState.showSnackbar(
+                            visuals = WantedToastVisuals(
+                                variant = WantedToastVariant.Positive,
+                                message = "메시지에 마침표를 찍어요."
+                            )
+                        )
+                    }
+                }
+
+                WantedToastImpl(
                     variant = WantedToastVariant.Message,
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     variant = WantedToastVariant.Positive,
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     variant = WantedToastVariant.Cautionary,
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     icon = {
                         Icon(
                             contentDescription = "icon",
@@ -300,7 +243,7 @@ private fun ToastNormalPreview() {
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     text = "메시지에 마침표를 찍어요."
                 )
             }

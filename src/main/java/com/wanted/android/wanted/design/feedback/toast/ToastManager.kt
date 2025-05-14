@@ -107,7 +107,7 @@ object ToastManager {
         icon: @Composable (() -> Unit)? = null
     ) {
         showToast(duration) {
-            WantedToast(
+            WantedToastImpl(
                 text = text,
                 modifier = Modifier.padding(padding),
                 variant = variant,
@@ -198,7 +198,7 @@ object ToastManager {
 }
 
 
-enum class ToastDuration(val mills: kotlin.Long) {
+enum class ToastDuration(val mills: Long) {
     Short(3000L),
     Long(10000L);
 }
