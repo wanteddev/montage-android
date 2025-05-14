@@ -21,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat
 
 
 @SuppressLint("StaticFieldLeak")
-object ToastManager {
+object WantedGlobalToastManager {
     private var isInitialized: Boolean = false
     private var currentActivity: Activity? = null
     private var toastView: ComposeView? = null
