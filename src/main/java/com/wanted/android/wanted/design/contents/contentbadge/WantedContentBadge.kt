@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.feedback.contentbadge
+package com.wanted.android.wanted.design.contents.contentbadge
 
 import android.content.Context
 import android.util.AttributeSet

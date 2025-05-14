@@ -82,9 +82,8 @@ fun WantedTimePickerWheel(
 
     WantedModal(
         modifier = modifier.padding(horizontal = 20.dp),
-        modalSize = WantedModalContract.ModalSize.Large,
-        shape = RoundedCornerShape(28.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
+        shape = RoundedCornerShape(28.dp),
         topBar = {
             Text(
                 modifier = Modifier
@@ -97,6 +96,40 @@ fun WantedTimePickerWheel(
                 color = colorResource(R.color.label_alternative)
             )
         },
+        bottomBar = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                WantedButton(
+                    modifier = Modifier.wrapContentSize(),
+                    text = cancel,
+                    buttonDefault = WantedButtonDefaults.getDefault(
+                        shape = ButtonShape.OUTLINED,
+                        size = ButtonSize.MEDIUM,
+                        borderColor = Color.Transparent
+                    ),
+                    onClick = onDismissRequest
+                )
+
+                WantedButton(
+                    modifier = Modifier.wrapContentSize(),
+                    text = confirm,
+                    buttonDefault = WantedButtonDefaults.getDefault(
+                        shape = ButtonShape.OUTLINED,
+                        size = ButtonSize.MEDIUM,
+                        borderColor = Color.Transparent,
+                        enabled = enablePeriod && enableHour && enableMinute,
+                    ),
+                    onClick = {
+                        onSelected(isSelectAm, selectHour, selectMinute)
+                        onDismissRequest()
+                    }
+                )
+            }
+        },
+        onDismissRequest = onDismissRequest,
         content = {
             TimePickerLayout(
                 modifier = Modifier.fillMaxWidth(),
@@ -148,41 +181,7 @@ fun WantedTimePickerWheel(
                     )
                 }
             )
-        },
-        bottomBar = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                WantedButton(
-                    modifier = Modifier.wrapContentSize(),
-                    text = cancel,
-                    buttonDefault = WantedButtonDefaults.getDefault(
-                        shape = ButtonShape.OUTLINED,
-                        size = ButtonSize.MEDIUM,
-                        borderColor = Color.Transparent
-                    ),
-                    onClick = onDismissRequest
-                )
-
-                WantedButton(
-                    modifier = Modifier.wrapContentSize(),
-                    text = confirm,
-                    buttonDefault = WantedButtonDefaults.getDefault(
-                        shape = ButtonShape.OUTLINED,
-                        size = ButtonSize.MEDIUM,
-                        borderColor = Color.Transparent,
-                        enabled = enablePeriod && enableHour && enableMinute,
-                    ),
-                    onClick = {
-                        onSelected(isSelectAm, selectHour, selectMinute)
-                        onDismissRequest()
-                    }
-                )
-            }
-        },
-        onDismissRequest = onDismissRequest
+        }
     )
 }
 

@@ -25,7 +25,7 @@ import com.wanted.android.wanted.design.input.control.WantedRadioButton
 import com.wanted.android.wanted.design.input.select.WantedSelectContract
 import com.wanted.android.wanted.design.input.select.WantedSelectData
 import com.wanted.android.wanted.design.presentation.modal.WantedModalBottomSheet
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.BottomSheetDialogType
+import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonType
 
@@ -36,7 +36,7 @@ fun WantedSelectBottomSheet(
     items: List<WantedSelectData>,
     confirmText: String,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
-    bottomSheetType: BottomSheetDialogType = BottomSheetDialogType.Flexible,
+    bottomSheetType: ModalType = ModalType.Flexible,
     selectedItem: WantedSelectData? = null,
     onSelect: (item: WantedSelectData) -> Unit,
     onDismissRequest: () -> Unit
