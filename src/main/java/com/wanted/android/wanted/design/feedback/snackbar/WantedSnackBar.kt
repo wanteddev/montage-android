@@ -72,12 +72,12 @@ fun WantedSnackBar(
 
 @Composable
 private fun WantedSnackBarImpl(
-    modifier: Modifier = Modifier,
-    text: String = "",
-    description: String = "",
+    text: String,
     buttonText: String,
+    modifier: Modifier = Modifier,
+    description: String = "",
     icon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit,
+    onClick: () -> Unit = {},
 ) {
     WantedSnackBarLayout(
         modifier = modifier,
@@ -216,6 +216,7 @@ fun WantedSnackBarDescriptionExtraContentPreview() {
                 )
 
                 WantedSnackBarImpl(
+                    text = "",
                     description = "설명은 필요할 때만 써요, 설명은 필요할 때만 써요, 설명은 필요할 때만 써요",
                     buttonText = "텍스트",
                     icon = {
@@ -230,6 +231,7 @@ fun WantedSnackBarDescriptionExtraContentPreview() {
                 )
 
                 WantedSnackBarImpl(
+                    text = "",
                     description = "설명은 필요할 때만 써요, 설명은 필요할 때만 써요, 설명은 필요할 때만 써요",
                     buttonText = "텍스트",
                     onClick = {}

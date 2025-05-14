@@ -13,8 +13,8 @@ import com.wanted.android.wanted.design.feedback.toast.WantedToastVariant
 
 @Stable
 class WantedSnackbarVisuals(
-    override val actionLabel: String? = null,
     override val message: String,
+    override val actionLabel: String? = null,
     override val duration: SnackbarDuration = SnackbarDuration.Short,
     override val withDismissAction: Boolean = false,
     val description: String = "",

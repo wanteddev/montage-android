@@ -40,33 +40,11 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.launch
 
-
 /**
  *
  * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-42415&m=dev
  * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
  **/
-sealed class WantedToastVariant(
-    @DrawableRes val resourceId: Int,
-    @ColorRes val tinColor: Int
-) {
-    data object Message : WantedToastVariant(-1, -1)
-    data object Positive : WantedToastVariant(
-        R.drawable.ic_normal_circle_check_fill_svg,
-        R.color.green_60
-    )
-
-    data object Cautionary : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.orange_60
-    )
-
-    data object Negative : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.red_60
-    )
-}
-
 @Composable
 fun WantedToast(
     snackBarHostState: SnackbarHostState,
@@ -180,6 +158,27 @@ private fun WantedToastLayout(
             }
         }
     }
+}
+
+sealed class WantedToastVariant(
+    @DrawableRes val resourceId: Int,
+    @ColorRes val tinColor: Int
+) {
+    data object Message : WantedToastVariant(-1, -1)
+    data object Positive : WantedToastVariant(
+        R.drawable.ic_normal_circle_check_fill_svg,
+        R.color.green_60
+    )
+
+    data object Cautionary : WantedToastVariant(
+        R.drawable.ic_normal_circle_exclamation_fill_svg,
+        R.color.orange_60
+    )
+
+    data object Negative : WantedToastVariant(
+        R.drawable.ic_normal_circle_exclamation_fill_svg,
+        R.color.red_60
+    )
 }
 
 @DevicePreviews
