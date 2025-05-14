@@ -1,7 +1,5 @@
 package com.wanted.android.wanted.design.feedback.toast
 
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,10 +39,21 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.launch
 
 /**
+ * SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
  *
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-42415&m=dev
- * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
- **/
+ * `SnackbarData.visuals` 타입이 `WantedToastVisuals`인 경우 variant와 아이콘을 사용한 토스트를 표시하며,
+ * 일반 메시지 타입일 경우 기본 메시지 출력만 합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val snackbarHostState = remember { SnackbarHostState() }
+ * WantedToast(snackBarHostState = snackbarHostState)
+ * ```
+ *
+ * @param snackBarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
+ * @param modifier Modifier: 외형을 조정합니다.
+ * @param windowInsets WindowInsets: 시스템 인셋 대응을 위한 설정입니다.
+ */
 @Composable
 fun WantedToast(
     snackBarHostState: SnackbarHostState,
@@ -158,27 +167,6 @@ private fun WantedToastLayout(
             }
         }
     }
-}
-
-sealed class WantedToastVariant(
-    @DrawableRes val resourceId: Int,
-    @ColorRes val tinColor: Int
-) {
-    data object Message : WantedToastVariant(-1, -1)
-    data object Positive : WantedToastVariant(
-        R.drawable.ic_normal_circle_check_fill_svg,
-        R.color.green_60
-    )
-
-    data object Cautionary : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.orange_60
-    )
-
-    data object Negative : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.red_60
-    )
 }
 
 @DevicePreviews

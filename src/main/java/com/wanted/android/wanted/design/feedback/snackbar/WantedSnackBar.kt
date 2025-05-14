@@ -36,9 +36,20 @@ import com.wanted.android.wanted.design.util.clickOnce
 
 
 /**
- * https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
+ * 앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다.
+ *
+ * `SnackbarHostState`를 받아 `SnackbarData.visuals`가 `WantedSnackbarVisuals`인 경우 커스텀 레이아웃으로,
+ * 아닌 경우 기본 스낵바 텍스트와 버튼만 사용해 표시합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val snackbarHostState = remember { SnackbarHostState() }
+ * WantedSnackBar(snackbarHostState = snackbarHostState)
+ * ```
+ *
+ * @param snackbarHostState SnackbarHostState: 스낵바 표시 상태를 제어합니다.
+ * @param modifier Modifier: 스낵바 전체 레이아웃 조정 Modifier입니다.
  */
-
 @Composable
 fun WantedSnackBar(
     snackbarHostState: SnackbarHostState,
@@ -191,7 +202,7 @@ private fun WantedSnackBarLayout(
 
 @DevicePreviews
 @Composable
-fun WantedSnackBarDescriptionExtraContentPreview() {
+private fun WantedSnackBarDescriptionExtraContentPreview() {
     DesignSystemTheme {
         Surface(Modifier.fillMaxSize()) {
             Column(
