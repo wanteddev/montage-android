@@ -6,10 +6,14 @@ createdAt: 2025-04-28
 ---
 
 ## WantedButton
+<br />
 
 ### 개요
 WantedButton은 다양한 스타일(SOLID, OUTLINED, TEXT)의 버튼을 생성하는 Compose 함수입니다.
 버튼의 형태, 타입, 크기 등을 손쉽게 설정할 수 있습니다.
+
+<br />
+<br />
 
 ### 사용 예시
 ```kotlin
@@ -21,6 +25,9 @@ WantedButton(
     onClick = { /* 클릭 이벤트 처리 */ }
 )
 ```
+
+<br />
+<br />
 
 ### 파라미터
 | 이름 | 타입 | 설명 |
@@ -79,11 +86,15 @@ WantedButton(
 | OUTLINED | 테두리만 있는 버튼 |
 | TEXT | 텍스트만 표시되는 버튼 |
 
+<br />
+
 ### ButtonStatus
 | 값 | 설명 |
 |:---|:---|
 | ENABLE | 활성 상태 |
 | DISABLE | 비활성 상태 |
+
+<br />
 
 ### ButtonType
 | 값 | 설명 |
@@ -91,6 +102,8 @@ WantedButton(
 | PRIMARY | 주요 액션에 사용 |
 | SECONDARY | 보조 액션에 사용 |
 | ASSISTIVE | 보조 정보나 옵션에 사용 |
+
+<br />
 
 ### ButtonSize
 | 값 | 설명 |
