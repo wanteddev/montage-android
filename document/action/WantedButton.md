@@ -26,9 +26,6 @@ WantedButton(
 )
 ```
 
-<br />
-<br />
-
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
@@ -86,15 +83,11 @@ WantedButton(
 | OUTLINED | 테두리만 있는 버튼 |
 | TEXT | 텍스트만 표시되는 버튼 |
 
-<br />
-
 ### ButtonStatus
 | 값 | 설명 |
 |:---|:---|
 | ENABLE | 활성 상태 |
 | DISABLE | 비활성 상태 |
-
-<br />
 
 ### ButtonType
 | 값 | 설명 |
@@ -102,8 +95,6 @@ WantedButton(
 | PRIMARY | 주요 액션에 사용 |
 | SECONDARY | 보조 액션에 사용 |
 | ASSISTIVE | 보조 정보나 옵션에 사용 |
-
-<br />
 
 ### ButtonSize
 | 값 | 설명 |
