@@ -1,4 +1,11 @@
-# Button
+---
+title: Toast
+description: 사용자 피드백을 위한 커스텀 토스트 컴포저블
+image: /components/toast/design/thumbnail.png
+createdAt: 2025-04-28
+---
+<br />
+<br />
 
 ## WantedButton
 
@@ -32,8 +39,10 @@ WantedButton(
 | onClick | () -> Unit | 버튼 클릭 시 호출되는 콜백 함수입니다. |
 
 ---
+<br />
+<br />
 
-## WantedButton (ButtonDefault 사용) 함수 설명
+##WantedButton (ButtonDefault 사용) 함수 설명
 
 ### 개요
 버튼의 스타일 및 상태를 세밀하게 제어할 수 있는 Compose 함수입니다.
@@ -60,8 +69,10 @@ WantedButton(
 | onClick | () -> Unit | 버튼 클릭 시 호출되는 콜백 함수입니다. |
 
 ---
+<br />
+<br />
 
-## Enum 설명
+##Enum 설명
 
 ### ButtonShape
 | 값 | 설명 |
@@ -91,7 +102,9 @@ WantedButton(
 | SMALL | 작은 버튼 |
 
 ---
+<br />
+<br />
 
-## Note
+##Note
 - `ButtonShape`, `ButtonType`, `ButtonSize` 설정에 따라 자동으로 시각적 스타일이 적용됩니다.
 - `enabled`와 `isLoading` 조합에 따라 버튼의 클릭 가능 여부와 로딩 인디케이터가 다르게 동작합니다.
