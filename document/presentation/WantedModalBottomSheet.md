@@ -36,6 +36,8 @@ WantedModalBottomSheet(
 | content | @Composable () -> Unit | 본문 콘텐츠 Slot입니다. |
 
 ---
+<br />
+<br />
 
 ## DragHandle
 
@@ -55,6 +57,8 @@ WantedModalDefaults.DragHandle()
 | shape | Shape | 핸들의 형태입니다. 기본은 extraLarge입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 

@@ -38,6 +38,8 @@ WantedDatePicker(
 | onDismiss | () -> Unit | 다이얼로그가 닫힐 때 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 날짜는 Long 타입의 Unix 타임스탬프로 반환되며, 필요 시 `java.util.Date`, `java.time`으로 변환하여 사용하세요.

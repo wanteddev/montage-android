@@ -55,6 +55,8 @@ WantedCardVertical(
 | onClick | () -> Unit | 카드 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedCardDefault
 
@@ -80,6 +82,8 @@ val config = WantedCardDefaults.getDefault(
 | bottomContentSkeleton | Boolean | 하단 콘텐츠에 스켈레톤을 표시할지 여부 |
 
 ---
+<br />
+<br />
 
 ## Note
 - `thumbnail`은 필수가 아니며, 없을 경우 색상 배경과 테두리가 있는 영역만 표시됩니다.

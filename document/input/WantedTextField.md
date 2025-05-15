@@ -24,7 +24,7 @@ WantedTextField(
 
 ### 파라미터
 
-#### WantedTextField (String 기반)
+### WantedTextField (String 기반)
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | text | String | 현재 입력된 텍스트입니다. |
@@ -82,6 +82,8 @@ WantedTextField(
 | onClickRightButton | () -> Unit | 우측 버튼 클릭 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -99,6 +101,8 @@ WantedTextField(
 | Assistive | 보조적이고 약한 버튼 스타일입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `TextFieldValue`를 사용할 경우 커서 및 선택 영역 제어가 가능합니다.

@@ -44,6 +44,8 @@ WantedDatePickerWheel(
 | onDismissRequest | () -> Unit | 다이얼로그가 닫힐 때 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedDatePickerWheelDefaults.getDefault
 
@@ -77,6 +79,8 @@ val wheelDefault = WantedDatePickerWheelDefaults.getDefault(
 | isHideDisableDate | Boolean | 선택 불가능한 날짜를 숨길지 여부입니다. 기본값은 false입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedDatePickerWheelDefault`를 통해 사용 가능한 연도/월 범위, 비활성 날짜 숨김 여부 등을 세부 설정할 수 있습니다.

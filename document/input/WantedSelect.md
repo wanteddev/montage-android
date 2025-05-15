@@ -44,6 +44,8 @@ WantedSelect(
 | leadingIcon | @Composable (() -> Unit)? | 왼쪽 아이콘 Slot입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedSelect (SelectData 기반)
 
@@ -70,6 +72,8 @@ WantedSelect(
 | 기타 | 동일 | 일반 `WantedSelect` 파라미터와 동일 |
 
 ---
+<br />
+<br />
 
 ## WantedSelect (다중 선택용)
 
@@ -95,6 +99,8 @@ WantedSelect(
 | 기타 | 동일 | 일반 `WantedSelect` 파라미터와 동일 |
 
 ---
+<br />
+<br />
 
 ## WantedSelectWithString
 
@@ -118,6 +124,8 @@ WantedSelectWithString(
 | 기타 | 동일 | `WantedSelect`의 다중 선택 파라미터와 동일 |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -137,6 +145,8 @@ WantedSelectWithString(
 | Text | 선택된 항목을 텍스트로 나열 |
 
 ---
+<br />
+<br />
 
 ## WantedSelectData 설명
 
@@ -162,6 +172,8 @@ val item = WantedSelectData(
 ```
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedSelect`는 단일 선택/다중 선택 및 플레이스홀더, 오류, 포커스, 아이콘 등을 유연하게 커스터마이징할 수 있습니다.

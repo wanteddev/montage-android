@@ -29,7 +29,7 @@ WantedSlider(
 
 ### 파라미터
 
-#### WantedSlider (단일 값)
+### WantedSlider (단일 값)
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | value | Float | 현재 선택된 값입니다. |
@@ -40,7 +40,7 @@ WantedSlider(
 | enabled | Boolean | 슬라이더 활성화 여부입니다. |
 | onValueChange | (Float) -> Unit | 값이 변경될 때 호출되는 콜백입니다. |
 
-#### WantedSlider (범위 값)
+### WantedSlider (범위 값)
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | value | ClosedFloatingPointRange<Float> | 현재 선택된 값의 범위입니다. |
@@ -53,6 +53,8 @@ WantedSlider(
 | onValueChange | (ClosedFloatingPointRange<Float>) -> Unit | 범위가 변경될 때 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 내부적으로 `WantedRangeSlider`를 사용하여 UI와 동작을 구성합니다.

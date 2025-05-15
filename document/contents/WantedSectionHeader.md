@@ -1,4 +1,9 @@
-# SectionHeader
+---
+title: SectionHeader
+description: 섹션 타이틀 및 부가 아이콘, 행동 요소를 포함하는 섹션 헤더 컴포저블
+image: /components/section-header/design/thumbnail.png
+createdAt: 2025-04-30
+---
 
 ## WantedSectionHeader
 
@@ -33,6 +38,9 @@ WantedSectionHeader(
 | trailingContent | (RowScope.() -> Unit)? | 오른쪽 끝에 배치되는 행동 버튼 또는 아이콘입니다. |
 
 ---
+<br />
+<br />
+
 
 ## Enum 설명
 
@@ -45,6 +53,9 @@ WantedSectionHeader(
 | Large | 가장 큰 타이틀로 title3Bold 스타일이 적용됩니다. 대제목 등에 적합합니다. |
 
 ---
+<br />
+<br />
+
 
 ## Note
 - `textStyle`을 직접 설정하지 않으면 `size`에 따라 자동 스타일이 설정됩니다.

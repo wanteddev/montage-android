@@ -38,6 +38,8 @@ WantedCell(
 | onClick | (() -> Unit)? | 셀 클릭 시 호출되는 콜백 함수입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedCell 함수 설명
 
@@ -73,6 +75,8 @@ WantedCell(
 | onClick | (() -> Unit)? | 셀 클릭 시 호출되는 콜백 함수입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -85,6 +89,8 @@ WantedCell(
 | Large | 큰 여백 (16dp) |
 
 ---
+<br />
+<br />
 
 ## Sealed Class 설명
 
@@ -95,6 +101,8 @@ WantedCell(
 | Custom(padding: Dp) | 직접 지정한 Dp 값으로 패딩을 설정할 수 있습니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `fillWidth = true`로 설정할 경우 텍스트 정렬이나 터치 영역 설정에 영향을 줄 수 있습니다.

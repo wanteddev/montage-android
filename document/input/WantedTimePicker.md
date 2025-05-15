@@ -40,6 +40,8 @@ WantedTimePicker(
 | onDismissRequest | () -> Unit | 다이얼로그가 외부 클릭 또는 닫힘 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 내부적으로 Material3의 `TimePicker` 및 `TimeInput` 컴포넌트를 사용합니다.

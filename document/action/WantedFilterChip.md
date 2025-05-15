@@ -1,4 +1,9 @@
-# FilterChip
+---
+title: FilterChip
+description: 기본 필터 Chip 컴포저블
+image: /components/filter-chip/design/thumbnail.png
+createdAt: 2025-04-28
+---
 
 ## WantedFilterChip
 
@@ -30,6 +35,8 @@ WantedFilterChip(
 | onClick | (() -> Unit)? | Chip 클릭 시 실행될 콜백 함수입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedFilterChip 커스터마이징
 
@@ -59,6 +66,8 @@ WantedFilterChip(
 | onClick | (() -> Unit)? | Chip 클릭 시 실행될 콜백 함수입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -70,6 +79,8 @@ WantedFilterChip(
 | Outlined | 외곽선만 있는 테두리형 Chip 스타일입니다. |
 
 ---
+<br />
+<br />
 
 ### ChipActionSize
 

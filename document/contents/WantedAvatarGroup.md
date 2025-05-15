@@ -1,4 +1,10 @@
-# AvatarGroup
+---
+title: AvatarGroup
+description: 다양한 유형의 아바타(Avatar)를 그룹으로 표시하기 위한 컴포저블
+image: /components/avatar-group/design/thumbnail.png
+createdAt: 2025-04-29
+---
+
 
 ## WantedAvatarGroup
 
@@ -38,6 +44,8 @@ WantedAvatarGroup(
 | trailingContent | (@Composable (Dp) -> Unit)? | 아바타 그룹 우측에 추가적으로 표시할 컴포저블 콘텐츠입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -58,6 +66,8 @@ WantedAvatarGroup(
 | XLarge | 56dp 크기, 12dp 반경을 가진 매우 큰 아바타입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 아바타를 겹쳐서 표현할 때 zIndex를 이용해 뒤쪽 아바타가 가려지지 않도록 처리합니다.

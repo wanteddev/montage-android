@@ -32,6 +32,8 @@ WantedDotIndicator(
 | type | WantedDotIndicatorType | dot의 스타일입니다. Normal 또는 White 중 선택합니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -48,6 +50,8 @@ WantedDotIndicator(
 | White | 흰색 테두리와 반투명 배경이 적용된 스타일입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `visibleDotCount`는 중앙 중심으로 표시되며 양끝이 생략(...)될 수 있습니다.

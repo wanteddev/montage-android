@@ -5,6 +5,7 @@ image: /components/icon-button/design/thumbnail.png
 createdAt: 2025-04-30
 ---
 
+
 ## WantedIconButtonNormal
 
 ### 개요
@@ -35,6 +36,8 @@ WantedIconButtonNormal(
 | onClick | () -> Unit | 버튼 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -47,12 +50,16 @@ WantedIconButtonNormal(
 각 값은 버튼의 전체 크기(`size`)와 아이콘과 배경 간의 간격을 나타내는 `padding`을 제공합니다.
 
 ---
+<br />
+<br />
 
 ## Note
 - pushBadge는 선택적이며 알림 숫자나 표시용으로 활용할 수 있습니다.
 - 클릭 영역은 아이콘보다 넓게 설정되어 있어 UX를 고려한 설계입니다.
 
 ---
+<br />
+<br />
 
 ## WantedIconButtonSolid
 
@@ -90,6 +97,8 @@ WantedIconButtonSolid(
 | onClick | () -> Unit | 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -102,12 +111,16 @@ WantedIconButtonSolid(
 각 값은 버튼의 전체 크기(`size`)와 아이콘과 배경 간의 간격을 나타내는 `padding`을 제공합니다.
 
 ---
+<br />
+<br />
 
 ## Note
 - Solid 버튼은 강조 목적에 적합하며, 배경이 있어 시각적으로 두드러집니다.
 - 비활성 상태일 경우 fill_normal 배경과 label_disable 색상이 자동 적용됩니다.
 
 ---
+<br />
+<br />
 
 ## WantedIconButtonOutlined
 
@@ -149,6 +162,8 @@ WantedIconButtonOutlined(
 | onClick | () -> Unit | 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -161,12 +176,16 @@ WantedIconButtonOutlined(
 각 값은 버튼의 전체 크기(`size`)와 아이콘과 배경 간의 간격을 나타내는 `padding`을 제공합니다.
 
 ---
+<br />
+<br />
 
 ## Note
 - `size`를 사용할 경우 enum에서 제공하는 크기 및 패딩이 자동 설정되며 일관된 디자인 유지에 유리합니다.
 - `modifier.size()`와 `padding`을 조합하면 커스터마이징된 형태로 사용할 수 있습니다.
 
 ---
+<br />
+<br />
 
 ## WantedIconButtonBackground
 
@@ -197,6 +216,8 @@ WantedIconButtonBackground(
 | onClick | () -> Unit | 버튼 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -209,6 +230,8 @@ WantedIconButtonBackground(
 각 값은 버튼의 전체 크기(`size`)와 아이콘과 배경 간의 간격을 나타내는 `padding`을 제공합니다.
 
 ---
+<br />
+<br />
 
 ## Note
 - `alternative = true`로 설정하면 dark background에 적합한 색상이 적용됩니다.

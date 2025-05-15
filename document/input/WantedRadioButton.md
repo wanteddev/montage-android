@@ -1,4 +1,10 @@
-# RadioButton
+---
+title: RadioButton
+description: 머터리얼 스타일의 원형 라디오 버튼 컴포저블
+image: /components/radio-button/design/thumbnail.png
+createdAt: 2025-04-30
+---
+
 
 ## WantedRadioButton
 
@@ -29,6 +35,8 @@ WantedRadioButton(
 | onCheckedChange | (Boolean) -> Unit | 선택 상태 변경 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -39,6 +47,8 @@ WantedRadioButton(
 | Small | 소형 사이즈 (보통 20dp) |
 
 ---
+<br />
+<br />
 
 ## Note
 - tight 모드는 공간이 제한적인 레이아웃에서 컴팩트한 라디오 버튼을 만들 때 유용합니다.

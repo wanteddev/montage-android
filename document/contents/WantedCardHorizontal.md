@@ -60,6 +60,8 @@ WantedCardHorizontal(
 | onClick | () -> Unit | 카드 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedCardDefault
 
@@ -85,6 +87,8 @@ val config = WantedCardDefaults.getDefault(
 | bottomContentSkeleton | Boolean | 하단 콘텐츠 스켈레톤 표시 여부 |
 
 ---
+<br />
+<br />
 
 ## Note
 - `thumbnail`이 null일 경우 회색 배경 Placeholder로 대체됩니다.

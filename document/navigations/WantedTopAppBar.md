@@ -34,6 +34,8 @@ WantedTopAppBar(
 | actions | @Composable RowScope.() -> Unit | 우측 액션 영역입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedBackTopAppBar
 
@@ -62,6 +64,8 @@ WantedBackTopAppBar(
 | onClickBack | () -> Unit | 뒤로가기 버튼 클릭 시 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedCenterTopAppBar
 
@@ -96,6 +100,8 @@ WantedCenterTopAppBar(
 | actions | @Composable RowScope.() -> Unit | 우측 액션 영역입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedTopAppBarIconButton
 
@@ -124,6 +130,8 @@ WantedTopAppBarIconButton(
 | onClick | () -> Unit | 클릭 시 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -135,6 +143,8 @@ WantedTopAppBarIconButton(
 | Floating | 배경이 투명하거나 공중에 떠 있는 형식입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 모든 앱바는 `WantedTopAppBarDefaults.windowInsets`로 시스템 인셋 처리를 통일합니다.

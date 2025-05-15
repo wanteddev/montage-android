@@ -22,6 +22,8 @@ WantedSkeletonCircle(modifier = Modifier.size(80.dp))
 | color | Color | 배경 색상입니다. 기본값은 fill_normal 색상입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedSkeletonRectangle
 
@@ -41,6 +43,8 @@ WantedSkeletonRectangle(modifier = Modifier.size(200.dp))
 | color | Color | 배경 색상입니다. 기본값은 fill_normal입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedSkeletonText
 
@@ -77,6 +81,8 @@ WantedSkeletonText(length = WantedSkeletonLength.Ratio75, align = WantedSkeAlign
 | Right | 우측 정렬 |
 
 ---
+<br />
+<br />
 
 ## Modifier.shimmer
 
@@ -94,6 +100,8 @@ Modifier.shimmer()
 | Modifier | shimmer 애니메이션이 적용된 Modifier입니다. |
 
 ---
+<br />
+<br />
 
 ## Modifier.shimmerLinear
 
@@ -117,6 +125,8 @@ Modifier.shimmerLinear(colorRes = R.color.fill_alternative, alpha = 0.16f)
 | Modifier | shimmerLinear 효과가 적용된 Modifier입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 모든 스켈레톤 컴포넌트는 shimmer 또는 shimmerLinear 효과와 함께 사용하여 시각적 피드백을 제공합니다.

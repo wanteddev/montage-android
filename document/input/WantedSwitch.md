@@ -1,4 +1,9 @@
-# Switch
+---
+title: Switch
+description: 머터리얼 스타일의 원형 라디오 버튼 컴포저블
+image: /components/switch/design/thumbnail.png
+createdAt: 2025-04-30
+---
 
 ## WantedSwitch
 
@@ -28,6 +33,8 @@ WantedSwitch(
 | onCheckedChange | (Boolean) -> Unit | 상태가 변경될 때 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -38,6 +45,8 @@ WantedSwitch(
 | Small | 소형 사이즈 (보통 20dp) |
 
 ---
+<br />
+<br />
 
 ## Note
 - 체크 상태에 따라 슬라이더 위치가 자연스럽게 이동하며 색상이 바뀝니다.

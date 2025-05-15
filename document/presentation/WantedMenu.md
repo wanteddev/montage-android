@@ -1,4 +1,3 @@
-
 ---
 title: Menu
 description: 다양한 섹션과 스타일을 지원하는 메뉴 및 메뉴 다이얼로그 컴포저블 모음
@@ -32,6 +31,8 @@ WantedMenu(
 | onBindSectionTitle | @Composable ((Int) -> Unit)? | 섹션 타이틀을 그리는 컴포저블입니다. nullable. |
 
 ---
+<br />
+<br />
 
 ## WantedMenuModal (단순 리스트)
 
@@ -56,6 +57,8 @@ WantedMenuModal(
 | onClick | (Int, String) -> Unit | 항목 클릭 시 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedMenuModal (ListType 버전)
 
@@ -82,6 +85,8 @@ WantedMenuModal(
 | onClick | (Int, String) -> Unit | 항목 클릭 시 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedMenuModal (커스텀 섹션)
 
@@ -109,6 +114,8 @@ WantedMenuModal(
 | onDismissRequest | () -> Unit | 닫힘 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -120,6 +127,8 @@ WantedMenuModal(
 | Check | 좌측 체크박스가 포함된 항목입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedCell`, `WantedRadioButton`, `WantedCheckBox` 컴포저블과 조합하여 사용됩니다.

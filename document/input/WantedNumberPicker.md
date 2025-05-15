@@ -13,6 +13,8 @@ createdAt: 2025-04-30
 선택된 항목은 콜백으로 전달됩니다. 내부적으로 `WantedStringPicker`를 사용하여 시각적 효과와 함께 작동합니다.
 
 ---
+<br />
+<br />
 
 ## 기본형 - start~end 범위 기반
 
@@ -49,6 +51,8 @@ WantedNumberPicker(
 | onSelect | (Int, Int, Boolean) -> Unit | 선택 시 호출되는 콜백입니다. (index, value, enabled) |
 
 ---
+<br />
+<br />
 
 ## 오버로드형 - List<Int> 직접 지정
 
@@ -79,6 +83,8 @@ WantedNumberPicker(
 | onSelect | (Int, Boolean) -> Unit | 선택 시 호출되는 콜백입니다. (index, enabled) |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedStringPicker`를 내부적으로 활용하여 3D 회전, 크기 변화, 햅틱 피드백 등 시각적 효과를 제공합니다.

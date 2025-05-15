@@ -1,4 +1,9 @@
-# EmptyState
+---
+title: EmptyState
+description: 비어 있는 상태(Empty State)를 안내하는 컴포저블
+image: /components/empty-state/design/thumbnail.png
+createdAt: 2025-04-30
+---
 
 ## WantedEmptyState
 
@@ -28,6 +33,8 @@ WantedEmptyState(
 | onClick | () -> Unit | 버튼 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - heading, description, button, image 모두 null 허용으로 필요한 구성만 사용할 수 있습니다.

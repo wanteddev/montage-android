@@ -22,6 +22,8 @@ WantedLogoLoading(isUseDim = true)
 | isUseDim | Boolean | dim 배경과 함께 Dialog 형태로 로딩을 표시할지 여부입니다. 기본값은 false입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedLogoProgressIndicator
 
@@ -39,6 +41,8 @@ WantedLogoProgressIndicator(modifier = Modifier.size(48.dp))
 | modifier | Modifier | 로딩 인디케이터의 크기 및 레이아웃 조정용입니다. 기본값은 Modifier.defaultMinSize(32.dp)입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedLogoLoading`은 내부적으로 `WantedLogoProgressIndicator`를 포함합니다.

@@ -44,6 +44,8 @@ WantedTimePickerWheel(
 | onDismissRequest | () -> Unit | 다이얼로그 닫기 요청 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedTimePickerWheelDefaults.getDefault
 
@@ -77,6 +79,8 @@ val default = WantedTimePickerWheelDefaults.getDefault(
 | isHideDisableTime | Boolean | 비활성 시간대를 숨길지 여부입니다. 기본값은 false입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 오전/오후(AM/PM), 시(hour), 분(minute)을 개별 휠로 선택 가능하며, 유효성 검증과 활성화 여부에 따라 확인 버튼이 제어됩니다.

@@ -28,6 +28,8 @@ WantedCircularLoading(
 | size | Dp | 로딩 인디케이터의 크기입니다. 기본값은 24.dp입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedCircularProgressIndicator
 
@@ -49,6 +51,8 @@ WantedCircularProgressIndicator(
 | color | Color | 인디케이터 색상입니다. 기본값은 theme의 line_solid_normal입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedCircularLoading`은 `WantedCircularProgressIndicator`를 포함하여 사용되며, 배경 dim 처리가 가능합니다.

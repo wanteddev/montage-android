@@ -36,6 +36,8 @@ WantedTooltip(
 | content | () -> Unit | 툴팁을 보여줄 기준 콘텐츠입니다. 클릭 시 툴팁이 열립니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `TooltipState`의 `show()` 또는 `dismiss()`를 통해 툴팁 표시 상태를 제어할 수 있습니다.

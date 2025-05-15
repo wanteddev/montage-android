@@ -1,4 +1,9 @@
-# Alert
+---
+title: Alert
+description: 확인 및 취소 버튼이 있는 기본 알림 다이얼로그
+image: /components/alert/design/thumbnail.png
+createdAt: 2025-04-30
+---
 
 ## WantedAlert
 
@@ -34,6 +39,8 @@ WantedAlert(
 | onDismissRequest | () -> Unit | 다이얼로그 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `title`, `cancel`, `onClickCancel`은 모두 optional이며, 간단한 메시지 알림 용도로도 사용할 수 있습니다.

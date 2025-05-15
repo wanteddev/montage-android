@@ -23,7 +23,7 @@ WantedTextArea(
 
 ### 파라미터
 
-#### WantedTextArea (String 기반)
+### WantedTextArea (String 기반)
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | text | String | 입력된 텍스트입니다. |
@@ -50,7 +50,7 @@ WantedTextArea(
 | onClickRightButton | () -> Unit | 우측 버튼 클릭 콜백입니다. |
 | onValueChange | (String) -> Unit | 텍스트 변경 시 호출됩니다. |
 
-#### WantedTextArea (TextFieldValue 기반)
+### WantedTextArea (TextFieldValue 기반)
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | value | TextFieldValue | 커서 및 선택 상태 포함한 입력 값입니다. |
@@ -77,6 +77,8 @@ WantedTextArea(
 | rightContent | (() -> Unit)? | 오른쪽 슬롯 콘텐츠입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `isGraphemeClusterCount = true`인 경우 이모지 등을 포함한 실제 사용자 인식 단위로 글자 수를 계산합니다.

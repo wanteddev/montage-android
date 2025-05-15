@@ -33,6 +33,8 @@ WantedDialogTopAppBar(
 | actions | @Composable RowScope.() -> Unit? | 우측 액션 아이콘 영역입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedDialogCloseTopAppBar
 
@@ -60,6 +62,8 @@ WantedDialogCloseTopAppBar(
 | onClickBack | () -> Unit | 닫기 아이콘 클릭 시 실행되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedDialogCenterTopAppBar
 
@@ -87,6 +91,8 @@ WantedDialogCenterTopAppBar(
 | actions | @Composable RowScope.() -> Unit? | 우측 액션 컴포저블입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedDialogCenterCloseTopAppBar
 
@@ -114,6 +120,8 @@ WantedDialogCenterCloseTopAppBar(
 | onClickBack | () -> Unit | 닫기 버튼 클릭 시 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -125,6 +133,8 @@ WantedDialogCenterCloseTopAppBar(
 | Floating | 배경이 투명한 공중형 앱바입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 닫기 버튼은 항상 우측 정렬되며 스타일은 앱바 타입에 따라 자동 적용됩니다.

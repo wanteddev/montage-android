@@ -31,6 +31,8 @@ WantedProgressTrackerVertical(
 | content | @Composable (Int) -> Unit | 단계별 콘텐츠 슬롯입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `currentStep`은 1부터 시작하는 index이며, 강조 색상 및 연결선 렌더링 기준입니다.

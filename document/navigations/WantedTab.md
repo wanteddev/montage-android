@@ -31,6 +31,8 @@ WantedTabRow(
 | content | (Int) -> String | 각 탭의 텍스트를 반환하는 함수입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedScrollableTabRow
 
@@ -63,6 +65,8 @@ WantedScrollableTabRow(
 | content | (Int) -> String | 탭 라벨 텍스트입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedTabItem
 
@@ -80,6 +84,8 @@ WantedScrollableTabRow(
 | onClick | () -> Unit | 탭 클릭 시 호출됩니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -91,6 +97,8 @@ WantedScrollableTabRow(
 | Large | heading2Bold 스타일의 큰 탭입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedTabGradationColorCompositionLocal
 
@@ -110,6 +118,8 @@ CompositionLocalProvider(LocalTabGradationColor provides Color.Red) {
 | current | Color | 현재 설정된 그라디언트 색상입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `tabSize`에 따라 글자 크기 및 패딩이 자동 조절됩니다.

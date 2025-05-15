@@ -41,6 +41,8 @@ WantedModal(
 | content | @Composable BoxScope.() -> Unit | 본문 콘텐츠 영역입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedModal 확인/취소 버튼 없이 Slot 제공
 
@@ -75,6 +77,8 @@ WantedModal(
 | content | @Composable BoxScope.() -> Unit | 본문 콘텐츠 Slot입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedModal LazyColumn 콘텐츠 제공
 
@@ -108,6 +112,8 @@ WantedModal(
 | lazyContent | LazyListScope.() -> Unit | LazyColumn 기반 콘텐츠 Slot입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -130,6 +136,8 @@ WantedModal(
 | Custom | (Deprecated) 패딩 값 없이 구성된 커스텀 사이즈입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedModal`은 topBar와 bottomBar, 버튼 유무 등 다양한 형태의 레이아웃으로 확장 가능합니다.

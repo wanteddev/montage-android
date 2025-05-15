@@ -1,4 +1,9 @@
-# Badge
+---
+title: ContentBadge
+description: 텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 뱃지를 구성하는 컴포저블
+image: /components/content-badge/design/thumbnail.png
+createdAt: 2025-04-30
+---
 
 ## WantedContentBadge
 
@@ -33,6 +38,8 @@ WantedContentBadge(
 | onClick | (() -> Unit)? | 클릭 시 호출되는 콜백 함수입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -56,6 +63,8 @@ WantedContentBadge(
 | Accent | 포인트 색상 테마로 강조 목적에 적합합니다. |
 
 ---
+<br />
+<br />
 
 ## 클래스 설명
 
@@ -67,6 +76,8 @@ WantedContentBadge(
 | outLineColor | Color | Outlined 타입일 경우 외곽선 색상입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedContentBadgeDefaults.getAccentDefault()` 또는 `getNeutralDefault()`를 통해 기본 컬러 스타일을 쉽게 가져올 수 있습니다.

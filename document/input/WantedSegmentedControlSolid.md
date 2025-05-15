@@ -13,6 +13,8 @@ createdAt: 2025-04-30
 선택된 항목은 `Knob`이 슬라이딩되며 강조되며, 선택 인덱스는 콜백으로 반환됩니다.
 
 ---
+<br />
+<br />
 
 ## 텍스트 리스트 기반 사용
 
@@ -39,6 +41,8 @@ WantedSegmentedControlSolid(
 | onClick | (Int) -> Unit | 항목 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## 슬롯 기반 커스텀 항목 사용
 
@@ -69,6 +73,8 @@ WantedSegmentedControlSolid(
 | onClick | (Int) -> Unit | 항목 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedSegmentedControlSolidItem
 
@@ -100,6 +106,8 @@ WantedSegmentedControlSolidItem(
 | icon | (() -> Unit)? | 항목 왼쪽에 표시할 선택적 아이콘 Composable입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - Knob은 선택 인덱스에 따라 부드럽게 애니메이션 되며, 그림자와 배경 색상이 함께 적용됩니다.

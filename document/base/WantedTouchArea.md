@@ -1,4 +1,9 @@
-# TouchArea
+---
+title: TouchArea
+description: 터치 영역을 확장하고 클릭 가능하도록 만드는 래퍼 컴포저블
+image: /components/touch-area/design/thumbnail.png
+createdAt: 2025-04-28
+---
 
 ## WantedTouchArea
 
@@ -36,6 +41,8 @@ WantedTouchArea(
 | onClick | (() -> Unit)? | 클릭 이벤트가 발생할 경우 호출되는 콜백입니다. null일 경우 클릭 비활성. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `enabledInnerTouch = true`일 경우 `SubcomposeLayout`을 통해 실제 콘텐츠의 크기를 계산하여 터치 영역을 맞춥니다.

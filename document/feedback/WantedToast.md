@@ -24,6 +24,8 @@ WantedToast(snackBarHostState = hostState)
 | windowInsets | WindowInsets | 시스템 인셋 대응용 설정입니다. 기본값은 0입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedToastVisuals
 
@@ -41,6 +43,8 @@ SnackbarVisuals를 확장한 토스트 전용 시각 구성 객체입니다. 메
 | icon | @Composable (() -> Unit)? | 커스텀 아이콘을 표시할 수 있는 Slot입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedToastVariant
 
@@ -56,6 +60,8 @@ SnackbarVisuals를 확장한 토스트 전용 시각 구성 객체입니다. 메
 | Negative | 오류/부정 메시지. 느낌표 아이콘, 빨간색 계열. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `WantedToast`는 내부적으로 `WantedToastImpl`과 `WantedToastLayout`으로 분리되어 구성됩니다.

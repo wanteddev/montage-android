@@ -1,4 +1,9 @@
-# Avatar
+---
+title: Avatar
+description: 다양한 유형의 아바타(Avatar)를 시각적으로 표시하기 위한 컴포저블
+image: /components/avatar/design/thumbnail.png
+createdAt: 2025-04-29
+---
 
 ## WantedAvatar
 
@@ -35,6 +40,8 @@ WantedAvatar(
 | onClick | (() -> Unit)? | 아바타 클릭 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -55,6 +62,8 @@ WantedAvatar(
 | XLarge | 크기 56dp, 모서리 반경 12dp |
 
 ---
+<br />
+<br />
 
 ## Note
 - `pushBadge` 옵션은 푸시 알림 상태를 표시할 때 유용합니다.

@@ -13,6 +13,8 @@ createdAt: 2025-04-30
 `title` 기반 리스트 방식과 커스텀 아이템 슬롯 방식을 모두 지원합니다.
 
 ---
+<br />
+<br />
 
 ## 텍스트 리스트 기반 사용
 
@@ -39,6 +41,8 @@ WantedSegmentedControlOutlined(
 | onClick | (Int) -> Unit | 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## 슬롯 기반 사용
 
@@ -67,6 +71,8 @@ WantedSegmentedControlOutlined(
 | onClick | (Int) -> Unit | 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedSegmentedControlOutlinedItem
 
@@ -102,6 +108,8 @@ WantedSegmentedControlOutlinedItem(
 | icon | (() -> Unit)? | 항목 왼쪽에 표시할 아이콘 슬롯입니다. 선택 사항입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 선택된 항목은 `primary_normal` 색상으로 강조되며, 테두리와 배경 색상이 애니메이션 처리됩니다.

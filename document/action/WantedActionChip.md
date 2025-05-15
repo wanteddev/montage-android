@@ -1,5 +1,9 @@
-
-# ActionChip
+---
+title: ActionChip
+description: 사용자가 선택할 수 있는 Chip 컴포넌트
+image: /components/action-chip/design/thumbnail.png
+createdAt: 2025-04-28
+---
 
 ## WantedActionChip 기본형
 
@@ -34,6 +38,8 @@ WantedActionChip(
 | onClick | (() -> Unit)? | 클릭 시 실행할 콜백입니다. 생략 가능. |
 
 ---
+<br />
+<br />
 
 ## WantedActionChip 스타일 지정형
 
@@ -66,6 +72,8 @@ WantedActionChip(
 | onClick | (() -> Unit)? | 클릭 시 실행되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedActionChip Slot 기반
 
@@ -100,6 +108,8 @@ WantedActionChip(
 | onClick | (() -> Unit)? | 클릭 시 실행되는 콜백입니다. 생략 가능. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -118,6 +128,8 @@ WantedActionChip(
 | Outlined | 테두리만 표시되는 스타일 |
 
 ---
+<br />
+<br />
 
 ## Note
 - 클릭 시 `clickOnce()` 및 `wantedRippleEffect()`를 통해 Ripple 효과와 중복 클릭 방지가 적용됩니다.

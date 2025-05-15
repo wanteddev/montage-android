@@ -1,5 +1,9 @@
-
-# Accordion
+---
+title: Accordion
+description: 아코디언 형태로 확장 및 축소가 가능한 컴포저블
+image: /components/accordion/design/thumbnail.png
+createdAt: 2025-04-29
+---
 
 ## WantedAccordion
 
@@ -41,6 +45,8 @@ WantedAccordion(
 | onChangeExpanded | (Boolean) -> Unit | 확장/축소 상태 변경 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -53,6 +59,8 @@ WantedAccordion(
 | Padding8 | 헤더 영역에 8dp의 수직 패딩을 적용합니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 아코디언 형태로 콘텐츠를 접거나 펼칠 수 있어 리스트, FAQ, 설정 화면 등 다양한 UI에 활용할 수 있습니다.

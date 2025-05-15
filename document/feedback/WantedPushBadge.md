@@ -1,4 +1,10 @@
-# PushBadge
+---
+title: PushBadge
+description: 아이콘이나 UI 요소에 붙여 표시되는 푸시 뱃지 컴포저블
+image: /components/push-badge/design/thumbnail.png
+createdAt: 2025-04-30
+---
+
 
 ## WantedPushBadge
 
@@ -30,6 +36,8 @@ WantedPushBadge(
 | contentColor | Color | 텍스트(숫자, "N")의 색상입니다. 기본값은 static_white입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -61,6 +69,8 @@ WantedPushBadge(
 | BottomEnd | 하단 우측에 배치됩니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - Dot 타입은 색상만으로 상태를 표시할 때 사용하며, 사이즈에 따라 여백이 달라집니다.

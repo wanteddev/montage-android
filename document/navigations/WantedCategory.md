@@ -56,6 +56,8 @@ WantedCategory {
 | rightIcon | (@Composable (Dp) -> Unit)? | 우측 아이콘 슬롯입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -67,6 +69,8 @@ WantedCategory {
 | Large | 세로 패딩이 8.dp, 수평 간격이 12.dp인 큰 칩입니다. |
 
 ---
+<br />
+<br />
 
 ## WantedCategoryGradationColorCompositionLocal
 
@@ -86,6 +90,8 @@ CompositionLocalProvider(LocalCategoryGradationColor provides Color.Red) {
 | current | Color | 현재 CompositionLocal에 설정된 색상 값입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `onClick` 콜백은 선택 상태를 Boolean 값으로 함께 전달하므로 단일/다중 선택 처리가 모두 가능합니다.

@@ -1,4 +1,3 @@
-
 ---
 title: AutoComplete
 description: 섹션별 항목 및 직접 입력 영역을 포함한 자동완성 드롭다운 컴포저블
@@ -46,6 +45,8 @@ ExposedDropdownMenuBox {
 | bottomDirectInput | @Composable (() -> Unit)? | 드롭다운 하단 영역입니다. nullable. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `sectionOffsets`를 활용해 스크롤 위치에 따라 현재 섹션을 추적합니다.

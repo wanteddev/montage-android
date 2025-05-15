@@ -1,11 +1,9 @@
 ---
-title: Toast
-description: 사용자 피드백을 위한 커스텀 토스트 컴포저블
-image: /components/toast/design/thumbnail.png
+title: ActionArea
+description: 화면 하단에 액션 버튼 영역을 생성하는 컴포저블
+image: /components/action-area/design/thumbnail.png
 createdAt: 2025-04-28
 ---
-<br>
-<br>
 
 ## WantedActionArea
 
@@ -47,9 +45,8 @@ WantedActionArea(
 | variant | @Composable (() -> Unit)? | 액션 영역 위에 표시할 커스텀 컴포넌트입니다. (nullable) |
 
 ---
-
-<br>
-<br>
+<br />
+<br />
 
 ## WantedActionArea Slot 기반
 
@@ -83,9 +80,8 @@ WantedActionArea(
 | variant | @Composable (() -> Unit)? | 액션 영역 위에 표시할 커스텀 컴포넌트입니다. (nullable) |
 
 ---
-
-<br>
-<br>
+<br />
+<br />
 
 ## WantedActionArea Deprecated
 
@@ -116,9 +112,8 @@ WantedActionArea(
 | modifier | Modifier | Modifier를 설정합니다. |
 
 ---
-
-<br>
-<br>
+<br />
+<br />
 
 ## Enum 설명
 
@@ -130,16 +125,15 @@ WantedActionArea(
 | Cancel | 취소 동작을 단독으로 처리하는 레이아웃입니다. |
 
 ---
-
-<br>
-<br>
+<br />
+<br />
 
 ## Note
 - 배경 그라데이션은 `background = true`로 활성화되며 `gradationColor`로 색상 설정이 가능합니다.
 - Variant 영역은 액션 버튼 상단에 추가적으로 표시되는 커스텀 콘텐츠입니다.
 
-<br>
-<br>
+<br />
+<br />
 
 ## Warning
 - Deprecated API는 향후 제거될 수 있으므로 Slot 기반 함수를 사용하세요.

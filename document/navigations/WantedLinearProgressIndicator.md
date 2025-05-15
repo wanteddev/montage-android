@@ -24,6 +24,8 @@ WantedLinearProgressIndicator(
 | modifier | Modifier | 외형 및 배치 조정을 위한 Modifier입니다. 기본값은 Modifier입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 배경 색상은 `fill_normal`, 진행 색상은 `primary_normal`로 설정되어 있습니다.

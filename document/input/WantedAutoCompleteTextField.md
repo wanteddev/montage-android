@@ -23,7 +23,7 @@ WantedAutoCompleteTextField(
 
 ### 파라미터
 
-#### WantedAutoCompleteTextField (String 기반)
+### WantedAutoCompleteTextField (String 기반)
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | text | String | 입력된 텍스트입니다. |
@@ -62,7 +62,7 @@ WantedAutoCompleteTextField(
 | bottomDirectInput | (() -> Unit)? | 드롭다운 하단 직접 입력 슬롯입니다. |
 | sectionItem | @Composable (Int, Int) -> Unit | 드롭다운 항목 UI 입니다. |
 
-#### WantedAutoCompleteTextField (TextFieldValue 기반)
+### WantedAutoCompleteTextField (TextFieldValue 기반)
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | value | TextFieldValue | 커서 및 선택 포함한 입력 값입니다. |
@@ -73,6 +73,8 @@ WantedAutoCompleteTextField(
 | 나머지 파라미터는 String 버전과 동일합니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -90,6 +92,8 @@ WantedAutoCompleteTextField(
 | Assistive | 보조적인 약한 버튼 스타일입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `text.isNotEmpty()` 조건에 따라 드롭다운이 자동 확장됩니다.

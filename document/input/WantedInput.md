@@ -40,6 +40,8 @@ WantedInput(
 | onCheckedChange | (Boolean) -> Unit | 체크 상태 변경 시 호출되는 콜백입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -57,6 +59,8 @@ WantedInput(
 | Small | 컴팩트한 높이의 입력 항목입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `interactionSource`를 통해 Ripple 효과 및 클릭 이벤트를 조절할 수 있습니다.

@@ -31,6 +31,8 @@ WantedPullToRefreshBox(
 | content | @Composable () -> Unit | 새로고침 박스 내부 콘텐츠입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - 다크모드에 따라 Lottie 애셋(`pullToRefresh-pull-dark.json` 또는 `pullToRefresh-pull.json`)이 자동으로 선택됩니다.

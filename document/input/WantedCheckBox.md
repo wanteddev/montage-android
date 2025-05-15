@@ -1,4 +1,10 @@
-# CheckBox
+---
+title: CheckBox
+description: 체크박스 컴포저블
+image: /components/check-box/design/thumbnail.png
+createdAt: 2025-04-30
+---
+
 
 ## WantedCheckBox
 
@@ -31,6 +37,8 @@ WantedCheckBox(
 | interactionSource | MutableInteractionSource | 커스텀 인터랙션 처리를 위한 InteractionSource입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -57,6 +65,8 @@ WantedCheckBox(
 | Indeterminate | 중간 상태 (예: 일부만 선택된 그룹 등) |
 
 ---
+<br />
+<br />
 
 ## Note
 - CheckBox는 선택 상태가 필요한 모든 UI 상황에서 활용할 수 있습니다.

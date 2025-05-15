@@ -1,4 +1,9 @@
-# PlayBadge
+---
+title: PlayBadge
+description: 재생(Play) 아이콘을 원형 배지로 감싸서 표시하는 컴포저블
+image: /components/play-badge/design/thumbnail.png
+createdAt: 2025-04-30
+---
 
 ## WantedPlayBadge
 
@@ -24,6 +29,8 @@ WantedPlayBadge(
 | modifier | Modifier | 배지의 외형, 정렬, 패딩 등을 제어하는 Modifier입니다. |
 
 ---
+<br />
+<br />
 
 ## Enum 설명
 
@@ -35,6 +42,8 @@ WantedPlayBadge(
 | Large | 큰 크기의 배지로, 80dp 배경과 56dp 아이콘 크기를 가집니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `isAlternative` 설정은 `cool_neutral_30` 또는 `cool_neutral_40` 색상 차이를 통해 재생 상태에 대한 시각적 대비를 제공합니다.

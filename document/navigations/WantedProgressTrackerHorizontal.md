@@ -28,6 +28,8 @@ WantedProgressTrackerHorizontal(
 | label | ((Int) -> String)? | 각 단계에 표시할 텍스트를 반환하는 함수입니다. |
 
 ---
+<br />
+<br />
 
 ## Note
 - `currentStep`은 1부터 시작하는 index이며, 강조 색상 및 연결선 렌더링 기준입니다.
