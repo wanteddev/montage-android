@@ -138,5 +138,8 @@ WantedActionArea(
 - 배경 그라데이션은 `background = true`로 활성화되며 `gradationColor`로 색상 설정이 가능합니다.
 - Variant 영역은 액션 버튼 상단에 추가적으로 표시되는 커스텀 콘텐츠입니다.
 
+<br>
+<br>
+
 ## Warning
 - Deprecated API는 향후 제거될 수 있으므로 Slot 기반 함수를 사용하세요.
