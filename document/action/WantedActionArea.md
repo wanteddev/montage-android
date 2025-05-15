@@ -4,6 +4,8 @@ description: 사용자 피드백을 위한 커스텀 토스트 컴포저블
 image: /components/toast/design/thumbnail.png
 createdAt: 2025-04-28
 ---
+<br>
+<br>
 
 ## WantedActionArea
 
@@ -44,9 +46,10 @@ WantedActionArea(
 | onClickNeutral | (() -> Unit)? | 추가 액션 버튼 클릭 시 호출되는 콜백입니다. (nullable) |
 | variant | @Composable (() -> Unit)? | 액션 영역 위에 표시할 커스텀 컴포넌트입니다. (nullable) |
 
-
-
 ---
+
+<br>
+<br>
 
 ## WantedActionArea Slot 기반
 
@@ -81,7 +84,8 @@ WantedActionArea(
 
 ---
 
-
+<br>
+<br>
 
 ## WantedActionArea Deprecated
 
@@ -113,7 +117,8 @@ WantedActionArea(
 
 ---
 
-
+<br>
+<br>
 
 ## Enum 설명
 
@@ -126,7 +131,8 @@ WantedActionArea(
 
 ---
 
-
+<br>
+<br>
 
 ## Note
 - 배경 그라데이션은 `background = true`로 활성화되며 `gradationColor`로 색상 설정이 가능합니다.
