@@ -148,14 +148,17 @@ val mergeDesignSystemJavadocByPackage by tasks.registering {
 
     // 합친 결과는 같은 destDir에 저장
     val destDir = layout.buildDirectory.dir("docs/designsystem-javadoc-md").get().asFile
-    val mergeDir = layout.buildDirectory.dir("docs/merge")
+//    val mergeDir = layout.buildDirectory.dir("docs/merge")
+
     inputs.dir(destDir)
-    outputs.dir(mergeDir)
+
+    val outputDir =  layout.projectDirectory.dir("document/source")
+    outputs.dir(outputDir)
 
     doLast {
         // root package folder
         val rootPkgDir = File(destDir, "com/wanted/android/")
-        val outputBase = mergeDir.get().asFile
+        val outputBase = outputDir.asFile
         if (!rootPkgDir.exists()) {
             println("⚠️ No extracted docs found in $rootPkgDir")
             return@doLast
