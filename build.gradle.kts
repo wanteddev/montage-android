@@ -137,3 +137,59 @@ val extractDesignSystemJavadocToMd by tasks.registering {
         }
     }
 }
+
+// 2) 신규: 패키지별로 합치기
+val mergeDesignSystemJavadocByPackage by tasks.registering {
+    group = "documentation"
+    description = "Merge extracted .md files into one per package"
+
+    // 이 태스크는 반드시 extract 후에 실행되어야 함
+    dependsOn(extractDesignSystemJavadocToMd)
+
+    // 합친 결과는 같은 destDir에 저장
+    val destDir = layout.buildDirectory.dir("docs/designsystem-javadoc-md").get().asFile
+    val mergeDir = layout.buildDirectory.dir("docs/merge")
+    inputs.dir(destDir)
+    outputs.dir(mergeDir)
+
+    doLast {
+        // root package folder
+        val rootPkgDir = File(destDir, "com/wanted/android/")
+        val outputBase = mergeDir.get().asFile
+        if (!rootPkgDir.exists()) {
+            println("⚠️ No extracted docs found in $rootPkgDir")
+            return@doLast
+        }
+
+        // for each package directory (including rootPkgDir itself)
+        rootPkgDir.walkTopDown()
+            .filter { it.isDirectory }
+            .forEach { pkgDir ->
+                // find all .md files directly under this dir
+                val mdFiles = pkgDir.listFiles { f -> f.isFile && f.extension == "md" }?.sortedBy { it.name }
+                if (mdFiles.isNullOrEmpty()) return@forEach
+
+                // build package name: convert relative path to dots
+                val rel = pkgDir.relativeTo(rootPkgDir).invariantSeparatorsPath
+                val pkgName = if (rel.isEmpty())
+                    "com.wanted.android.wanted.design"
+                else
+                    rel.replace('/','.').split('.').last()
+
+                // merged file path: <destDir>/<pkgName>.md
+                val merged = File(outputBase, "$pkgName.md")
+                merged.parentFile.mkdirs()
+
+                // concat all
+                merged.writeText(mdFiles.joinToString("\n\n") { it.readText() })
+                println("🔗 Merged ${mdFiles.size} → ${merged.path}")
+            }
+    }
+}
+
+
+/**
+ * 실행 커멘드
+ * ./gradlew :core:wanted-library-design-system:extractDesignSystemJavadocToMd
+ * ./gradlew :core:wanted-library-design-system:mergeDesignSystemJavadocByPackage
+ */
