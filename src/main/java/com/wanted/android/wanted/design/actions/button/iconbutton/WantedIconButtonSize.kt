@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.button.icon
+package com.wanted.android.wanted.design.actions.button.iconbutton
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp

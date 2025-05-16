@@ -24,11 +24,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.TopAppBarType
-import com.wanted.android.wanted.design.navigations.topbar.view.LocalWantedTopBarIconType
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedCenterTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedExtendedTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayoutDivider
-import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 

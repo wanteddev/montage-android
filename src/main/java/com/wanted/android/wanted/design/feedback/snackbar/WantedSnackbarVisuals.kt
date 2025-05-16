@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 
 /**
+ * class WantedSnackbarVisuals
+ *
  * Wanted 전용 스낵바 메시지와 UI 요소를 지정하는 클래스입니다.
  *
  * 기본 메시지 외에 부가 설명, 아이콘, 패딩 등을 커스터마이징할 수 있습니다.

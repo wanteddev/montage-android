@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.chip.config
+package com.wanted.android.wanted.design.actions.chip
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -7,6 +7,10 @@ import androidx.compose.ui.text.TextStyle
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
 import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipActive
+import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipEnable
+import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipSize
+import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle

@@ -2,7 +2,21 @@ package com.wanted.android.wanted.design.input.picker.timepicker
 
 import androidx.compose.runtime.Composable
 
-
+/**
+ * data class WantedTimePickerWheelDefault
+ *
+ * 시간 선택 휠(TimePickerWheel)의 기본 설정 값을 담는 데이터 클래스입니다.
+ *
+ * 시(hour), 분(minute), AM/PM 설정과 비활성 시간 표시 여부를 지정할 수 있습니다.
+ *
+ * @param enableMinHour `Int`: 선택 가능한 최소 시(hour)입니다.
+ * @param enableMaxHour `Int`: 선택 가능한 최대 시(hour)입니다.
+ * @param enableMinMinute `Int`: 선택 가능한 최소 분(minute)입니다.
+ * @param enableMaxMinute `Int`: 선택 가능한 최대 분(minute)입니다.
+ * @param enableAm `Boolean`: 오전(AM) 선택 허용 여부입니다.
+ * @param enablePm `Boolean`: 오후(PM) 선택 허용 여부입니다.
+ * @param isHideDisableTime `Boolean`: 비활성 시간 숨김 여부입니다.
+ */
 data class WantedTimePickerWheelDefault(
     val enableMinHour: Int,
     val enableMaxHour: Int,
@@ -13,6 +27,15 @@ data class WantedTimePickerWheelDefault(
     val isHideDisableTime: Boolean,
 )
 
+
+/**
+ * object WantedTimePickerWheelDefaults
+ *
+ * 시간 선택 휠의 기본 설정을 제공하는 객체입니다.
+ *
+ * 시간과 분의 선택 가능 범위, AM/PM 허용 여부, 비활성 시간 숨김 옵션 등을 포함하며,
+ * 유효하지 않은 값은 내부적으로 자동 보정됩니다.
+ */
 object WantedTimePickerWheelDefaults {
 
     /**

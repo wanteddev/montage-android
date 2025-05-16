@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.WantedButton
+import com.wanted.android.wanted.design.actions.button.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedActionChip
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.ComponentTitle

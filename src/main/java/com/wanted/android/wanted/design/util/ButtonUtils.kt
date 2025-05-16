@@ -15,41 +15,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeSize
 
-/**
- * 버튼의 형태를 정의하는 enum 클래스입니다.
- * - SOLID : 배경이 채워진 기본형 버튼
- * - OUTLINED : 테두리만 있는 버튼
- * - TEXT : 텍스트만 표시되는 버튼
- */
 enum class ButtonShape {
     SOLID, OUTLINED, TEXT
 }
 
-/**
- * 버튼의 활성화 상태를 정의하는 enum 클래스입니다.
- * - ENABLE : 활성 상태
- * - DISABLE : 비활성 상태
- */
 enum class ButtonStatus {
     ENABLE, DISABLE
 }
 
-/**
- * 버튼의 유형을 정의하는 enum 클래스입니다.
- * - PRIMARY : 주요 액션에 사용
- * - SECONDARY : 보조 액션에 사용
- * - ASSISTIVE : 보조 정보나 옵션에 사용
- */
 enum class ButtonType {
     PRIMARY, SECONDARY, ASSISTIVE
 }
 
-/**
- * 버튼의 크기를 정의하는 enum 클래스입니다.
- * - LARGE : 큰 버튼
- * - MEDIUM : 중간 크기 버튼
- * - SMALL : 작은 버튼
- */
 enum class ButtonSize {
     LARGE, MEDIUM, SMALL
 }
@@ -114,26 +91,26 @@ internal fun getButtonTypography(
 ): TextStyle =
     getTextStyle(
         textStyle =
-        when (shape) {
-            ButtonShape.TEXT -> when (size) {
-                ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
-                else -> WantedTextStyle.BODY1_BOLD
-            }
+            when (shape) {
+                ButtonShape.TEXT -> when (size) {
+                    ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
+                    else -> WantedTextStyle.BODY1_BOLD
+                }
 
-            else -> if (type == ButtonType.ASSISTIVE) {
-                when (size) {
-                    ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
-                    ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
-                    ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
-                }
-            } else {
-                when (size) {
-                    ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
-                    ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
-                    ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                else -> if (type == ButtonType.ASSISTIVE) {
+                    when (size) {
+                        ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
+                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
+                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
+                    }
+                } else {
+                    when (size) {
+                        ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
+                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
+                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                    }
                 }
             }
-        }
     )
 
 @Composable

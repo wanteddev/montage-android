@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.navigations.topbar.view
+package com.wanted.android.wanted.design.navigations.topbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource

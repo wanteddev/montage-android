@@ -43,47 +43,6 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 
-/**
- * 체크박스의 크기를 정의하는 enum 클래스입니다.
- *
- * Normal - 일반 사이즈 (보통 24dp)
- * Small - 소형 사이즈 (보통 20dp)
- */
-enum class CheckBoxSize {
-    Normal, Small
-}
-
-/**
- * 다양한 형태의 체크박스 스타일을 정의하는 enum 클래스입니다.
- *
- * CheckBox - 기본 사각형 체크박스
- * RoundCheckBox - 원형 배경을 가진 체크박스
- * Check - 체크 마크만 표시되는 스타일
- * Radio - 라디오 버튼 형식
- * Switch - 토글 스위치 형식
- */
-enum class CheckBoxStyle {
-    CheckBox,
-    RoundCheckBox,
-    Check,
-    Radio,
-    Switch
-}
-
-/**
- * 체크박스의 현재 상태를 나타내는 enum 클래스입니다.
- *
- * Unchecked - 선택되지 않음
- * Checked - 선택됨
- * Indeterminate - 중간 상태 (예: 일부만 선택된 그룹 등)
- */
-enum class CheckBoxState {
-    Unchecked,
-    Checked,
-    Indeterminate
-}
-
-
 class WantedCheckBox : MaterialCheckBox {
 
     constructor(context: Context) : super(context)

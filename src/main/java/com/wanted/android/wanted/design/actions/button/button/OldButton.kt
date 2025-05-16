@@ -1,7 +1,8 @@
-package com.wanted.android.wanted.design.actions.button
+package com.wanted.android.wanted.design.actions.button.button
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
 import android.text.TextUtils
@@ -198,8 +199,8 @@ class OldButton(context: Context, private val attrs: AttributeSet? = null) :
         getTextColor().apply {
             val color = ContextCompat.getColor(context, if (isEnabled) normal else disable)
             textView.setTextColor(color)
-            iconViewLeft?.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN)
-            iconViewRight?.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN)
+            iconViewLeft?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            iconViewRight?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
         }
     }
 
@@ -223,8 +224,8 @@ class OldButton(context: Context, private val attrs: AttributeSet? = null) :
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
                 val pressed = ContextCompat.getColor(context, getTextColor().pressed)
                 textView.setTextColor(pressed)
-                iconViewLeft?.setColorFilter(pressed, android.graphics.PorterDuff.Mode.SRC_IN)
-                iconViewRight?.setColorFilter(pressed, android.graphics.PorterDuff.Mode.SRC_IN)
+                iconViewLeft?.setColorFilter(pressed, PorterDuff.Mode.SRC_IN)
+                iconViewRight?.setColorFilter(pressed, PorterDuff.Mode.SRC_IN)
             }
             else -> setTextColor()
         }

@@ -33,7 +33,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.WantedButton
+import com.wanted.android.wanted.design.actions.button.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonType
@@ -41,8 +41,23 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * 화면 하단에 액션 버튼 영역을 생성하는 Compose 함수입니다.
- * SafeArea 처리, 배경 그라데이션, 스크롤 상태 반영 등을 지원합니다.
+ * 하단에 위치한 액션 버튼 영역을 생성합니다.
+ *
+ * positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달합니다.
+ * variant 영역을 통해 상단에 부가 요소를 렌더링할 수 있습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedActionArea(
+ *     type = ActionAreaType.Strong,
+ *     positive = "확인",
+ *     onClickPositive = { /* 처리 */ },
+ *     negative = "취소",
+ *     onClickNegative = { /* 처리 */ },
+ *     neutral = "건너뛰기",
+ *     onClickNeutral = { /* 처리 */ }
+ * )
+ * ```
  *
  * @param type 액션 영역의 타입을 설정합니다.
  * @param positive 메인(긍정) 액션 버튼 텍스트입니다.
@@ -127,8 +142,21 @@ fun WantedActionArea(
 
 
 /**
- * 직접 Composable Slot으로 액션 버튼을 구성하는 Compose 함수입니다.
- * 다양한 커스터마이징이 필요한 경우 사용합니다.
+ * Slot을 활용하여 커스텀 버튼을 직접 전달하는 방식의 액션 영역입니다.
+ * 버튼 스타일, 배치 등을 완전히 제어할 수 있습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedActionArea(
+ *     type = ActionAreaType.Strong,
+ *     positive = {
+ *         CustomMainButton(onClick = { ... })
+ *     },
+ *     negative = {
+ *         CustomSecondaryButton(onClick = { ... })
+ *     }
+ * )
+ * ```
  *
  * @param type 액션 영역의 타입을 설정합니다.
  * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
@@ -176,8 +204,19 @@ fun WantedActionArea(
 }
 
 /**
- * Warning: Deprecated API - 더 이상 사용되지 않습니다.
+ * - Warning: Deprecated - 더 이상 사용되지 않음.
  * 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.
+ *
+ * 텍스트 기반 버튼을 생성하며, 버튼의 기본 스타일(WantedActionAreaDefault)을 함께 지정할 수 있습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedActionArea(
+ *     positive = "확인",
+ *     onClickPositive = { ... },
+ *     actionAreaDefault = WantedActionAreaDefaults.getDefault()
+ * )
+ * ```
  *
  * @param positive 메인 액션 버튼 텍스트입니다.
  * @param onClickPositive 메인 액션 버튼 클릭 콜백입니다.

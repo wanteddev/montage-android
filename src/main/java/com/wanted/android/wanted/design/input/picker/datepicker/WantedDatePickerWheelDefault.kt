@@ -2,7 +2,21 @@ package com.wanted.android.wanted.design.input.picker.datepicker
 
 import androidx.compose.runtime.Composable
 
-
+/**
+ * data class WantedDatePickerWheelDefault
+ *
+ * 날짜 선택 휠(DatePickerWheel)의 기본 설정 값을 담는 데이터 클래스입니다.
+ *
+ * 연도와 월 범위, 사용 가능한 최소/최대 값, 비활성 날짜 표시 여부를 지정할 수 있습니다.
+ *
+ * @param startYear `Int`: 휠에 표시할 시작 연도입니다.
+ * @param endYear `Int`: 휠에 표시할 종료 연도입니다.
+ * @param enableMinYear `Int`: 선택 가능한 최소 연도입니다.
+ * @param enableMaxYear `Int`: 선택 가능한 최대 연도입니다.
+ * @param enableMinMonth `Int`: 선택 가능한 최소 월입니다.
+ * @param enableMaxMonth `Int`: 선택 가능한 최대 월입니다.
+ * @param isHideDisableDate `Boolean`: 비활성 날짜를 숨길지 여부입니다.
+ */
 data class WantedDatePickerWheelDefault(
     val startYear: Int = 1900,
     val endYear: Int = 2100,
@@ -13,6 +27,14 @@ data class WantedDatePickerWheelDefault(
     val isHideDisableDate: Boolean,
 )
 
+
+/**
+ * object WantedDatePickerWheelDefaults
+ *
+ * 날짜 선택 휠의 기본 설정을 제공하는 객체입니다.
+ *
+ * 유효하지 않은 값은 자동으로 보정되며, `WantedDatePickerWheelDefault` 객체를 생성합니다.
+ */
 object WantedDatePickerWheelDefaults {
     /**
      * 날짜 선택 휠 기본 설정 값을 반환합니다.

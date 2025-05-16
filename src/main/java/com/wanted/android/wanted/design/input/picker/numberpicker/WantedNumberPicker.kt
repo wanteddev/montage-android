@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.input.picker
+package com.wanted.android.wanted.design.input.picker.numberpicker
 
 import android.annotation.SuppressLint
 import android.util.Log

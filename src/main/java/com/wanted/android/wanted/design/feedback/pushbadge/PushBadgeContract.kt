@@ -2,6 +2,8 @@ package com.wanted.android.wanted.design.feedback.pushbadge
 
 class PushBadgeContract {
     /**
+     * enum class PushBadgeVariant
+     *
      * Push 뱃지의 표시 유형을 정의합니다.
      *
      * Dot - 작은 점 형태의 뱃지를 표시합니다.
@@ -15,6 +17,8 @@ class PushBadgeContract {
     }
 
     /**
+     * enum class PushBadgeSize
+     *
      * Push 뱃지의 크기를 정의합니다.
      *
      * XSmall - 가장 작은 크기로 텍스트가 작게 표시됩니다.
@@ -28,6 +32,8 @@ class PushBadgeContract {
     }
 
     /**
+     * enum class PushBadgePosition
+     *
      * Push 뱃지를 배치할 위치를 정의합니다.
      *
      * TopStart, TopCenter, TopEnd - 상단의 좌측/중앙/우측 위치

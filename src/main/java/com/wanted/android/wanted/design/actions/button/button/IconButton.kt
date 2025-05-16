@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.button
+package com.wanted.android.wanted.design.actions.button.button
 
 import android.content.Context
 import android.util.AttributeSet

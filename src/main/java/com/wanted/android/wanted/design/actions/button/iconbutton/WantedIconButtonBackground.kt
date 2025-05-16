@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.button.icon
+package com.wanted.android.wanted.design.actions.button.iconbutton
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +34,7 @@ import com.wanted.android.wanted.design.util.OPACITY_61
 import com.wanted.android.wanted.design.util.OPACITY_88
 
 /**
+ *
  * 아이콘에 배경 원형 효과와 터치 영역을 추가한 아이콘 버튼 컴포저블입니다.
  *
  * 활성/비활성 상태, 대체 배경 여부, 아이콘 색상 등 시각적 스타일을 지정할 수 있으며,

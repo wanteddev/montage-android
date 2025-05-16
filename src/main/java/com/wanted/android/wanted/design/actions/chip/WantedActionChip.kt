@@ -40,8 +40,6 @@ import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipActiv
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipEnable
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipSize
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipVariant
-import com.wanted.android.wanted.design.actions.chip.config.WantedChipDefault
-import com.wanted.android.wanted.design.actions.chip.config.WantedChipDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.OPACITY_22

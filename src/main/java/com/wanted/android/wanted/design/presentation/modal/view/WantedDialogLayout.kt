@@ -35,9 +35,6 @@ internal fun WantedDialogLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        /**
-         * topBar
-         */
         topBar?.let {
             Box(
                 modifier = Modifier
@@ -50,9 +47,6 @@ internal fun WantedDialogLayout(
 
         }
 
-        /**
-         * content
-         */
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,9 +55,6 @@ internal fun WantedDialogLayout(
             content()
         }
 
-        /**
-         * bottomBar
-         */
         bottomBar?.let {
             // bottomBar
             Box(

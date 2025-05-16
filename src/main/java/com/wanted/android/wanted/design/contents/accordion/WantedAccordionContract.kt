@@ -4,23 +4,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * 아코디언 헤더 영역의 수직 패딩 크기를 정의하는 Enum 클래스입니다.
+ * object WantedAccordionContract
  *
- * 아코디언 헤더의 콘텐츠(Title, Icon 등) 간격을 조정할 때 사용됩니다.
- * 다양한 UI 요구사항에 맞춰 3가지 패딩 옵션을 제공합니다.
+ * 아코디언 컴포넌트에서 사용되는 상수 및 설정 값을 정의하는 객체입니다.
  *
- * 사용 예시:
- * ```kotlin
- * verticalPadding = VerticalPadding.Padding12
- * ```
- *
- * @property value Dp: 실제 적용될 DP 단위의 패딩 값입니다.
- *
- * @see WantedAccordion
+ * 이 객체는 주로 아코디언 헤더의 시각적 구성 요소 중 패딩 관련 값을 제공합니다.
  */
 object WantedAccordionContract {
+
     /**
-     * header vertical padding
+     * enum class VerticalPadding
+     *
+     * 아코디언 헤더 영역의 수직 패딩 크기를 정의하는 enum 클래스입니다.
+     *
+     * 아코디언 헤더 내 콘텐츠 간 간격을 조정할 때 사용됩니다. UI 요구사항에 따라 다음의 세 가지 옵션을 제공합니다:
+     * - Padding16: 16dp 수직 패딩
+     * - Padding12: 12dp 수직 패딩
+     * - Padding8: 8dp 수직 패딩
+     *
+     * @property value `Dp`: 실제 적용되는 패딩 값입니다.
+     *
+     * @see WantedAccordion
      */
     enum class VerticalPadding(val value: Dp) {
         Padding16(16.dp),

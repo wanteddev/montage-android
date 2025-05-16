@@ -16,7 +16,7 @@ import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.getButtonSpaceBetweenTextAndIcon
 
 @Composable
-fun WantedButtonLayout(
+internal fun WantedButtonLayout(
     modifier: Modifier,
     buttonShape: ButtonShape = ButtonShape.SOLID,
     buttonSize: ButtonSize = ButtonSize.LARGE,
