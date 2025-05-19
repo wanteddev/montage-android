@@ -1,9 +1,21 @@
 ```mdx
 ---
 title: category
-description: 다양한 스타일의 버튼을 생성하는 공통 Compose 함수입니다.
+description: 카테고리 컴포넌트에 대한 설명입니다.
 image: /components/category/design/thumbnail.png
 createdAt: 2023-10-17
+---
+
+## LocalCategoryGradationColor
+카테고리 좌우 그라디언트 배경 색상 지정을 위한 CompositionLocal 래퍼입니다. `CompositionLocalProvider`를 통해 원하는 색상을 주입하여 내부 그라디언트 표현에 사용됩니다.
+
+## 사용 예시
+```kotlin
+CompositionLocalProvider(LocalCategoryGradationColor provides Color.Red) {
+    ...
+}
+```
+
 ---
 
 ## WantedCategory
@@ -37,7 +49,7 @@ WantedCategory(
 ## WantedCategory (사용자 정의 콘텐츠로 구성할 수 있는 카테고리 컴포넌트입니다.)
 LazyListScope 기반으로 직접 항목을 구성할 수 있으며, 좌우 그라디언트 및 아이콘 슬롯도 제공합니다.
 
-### 사용 예시
+## 사용 예시
 ```kotlin
 WantedCategory {
     items(10) {
