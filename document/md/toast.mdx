@@ -1,0 +1,40 @@
+```mdx
+---
+title: toast
+description: SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
+image: /components/toast/design/thumbnail.png
+createdAt: 2023-10-17
+---
+
+## WantedToast
+SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다. `SnackbarData.visuals` 타입이 `WantedToastVisuals`인 경우 variant와 아이콘을 사용한 토스트를 표시하며, 일반 메시지 타입일 경우 기본 메시지 출력만 합니다.
+
+## 사용 예시
+```kotlin
+val snackbarHostState = remember { SnackbarHostState() }
+WantedToast(snackBarHostState = snackbarHostState)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| snackBarHostState | `SnackbarHostState` | Snackbar 상태를 관리합니다. |
+| modifier | Modifier | 외형을 조정합니다. |
+| windowInsets | `WindowInsets` | 시스템 인셋 대응을 위한 설정입니다. |
+
+---
+
+## Enum 설명
+
+### WantedToastVariant
+| 값 | 설명 |
+|:---|:---|
+| Message | 일반 메시지 (아이콘 없음) |
+| Positive | 긍정적인 메시지 (체크 아이콘, 초록색) |
+| Cautionary | 주의 메시지 (느낌표 아이콘, 주황색) |
+| Negative | 부정적인 메시지 (느낌표 아이콘, 빨간색) |
+
+---
+
+## Note
+커스텀 Toast를 위한 시각적 구성 클래스입니다. 메시지, 아이콘, variant 설정 등을 포함하며 SnackbarVisuals를 확장합니다.
+```
