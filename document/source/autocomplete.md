@@ -1,0 +1,36 @@
+/**
+* 섹션별 아이템 및 입력 컴포저블을 구성할 수 있는 자동완성 드롭다운 컴포저블입니다.
+*
+* 드롭다운 내부에서 섹션 타이틀 및 아이템을 표시하고,
+* 상단 및 하단에 커스텀 입력 필드를 배치할 수 있습니다.
+* 스크롤 상태에 따라 현재 섹션의 타이틀을 상단에 고정하여 보여줍니다.
+*
+* 사용 예시:
+* ```kotlin
+* ExposedDropdownMenuBox {
+*     WantedAutoComplete(
+*         expended = true,
+*         onExpandedChange = { /* 확장 상태 변경 */ },
+*         sectionCount = 2,
+*         sectionTitle = { section -> "섹션 $section" },
+*         sectionItemCount = { section -> 3 },
+*         sectionItem = { section, index ->
+*             Text("아이템 $index")
+*         }
+*     )
+* }
+* ```
+*
+* @receiver ExposedDropdownMenuBoxScope: 드롭다운 메뉴 범위 내에서 호출되어야 합니다.
+* @param expended Boolean: 드롭다운 확장 여부입니다.
+* @param onExpandedChange (Boolean) -> Unit: 확장 상태가 변경될 때 호출되는 콜백입니다.
+* @param sectionCount Int: 표시할 섹션의 총 개수입니다.
+* @param sectionItemCount (section: Int) -> Int: 각 섹션별 아이템 수를 반환하는 함수입니다.
+* @param sectionItem @Composable (section: Int, index: Int) -> Unit: 섹션별 아이템 컴포저블입니다.
+* @param modifier Modifier: 드롭다운 전체에 적용할 Modifier입니다.
+* @param containerColor Color: 드롭다운 배경 색상입니다.
+* @param sectionTitleHorizontalPadding Dp: 섹션 타이틀 좌우 패딩입니다.
+* @param sectionTitle ((section: Int) -> String)?: 섹션별 타이틀 텍스트를 반환하는 함수입니다. nullable.
+* @param topDirectInput @Composable (() -> Unit)?: 드롭다운 상단 고정 영역입니다. nullable.
+* @param bottomDirectInput @Composable (() -> Unit)?: 드롭다운 하단 영역입니다. nullable.
+*/
