@@ -1,0 +1,63 @@
+```mdx
+---
+title: content-badge
+description: 텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 뱃지를 구성하는 컴포저블입니다.
+image: /components/content-badge/design/thumbnail.png
+createdAt: 2023-10-17
+---
+
+## WantedContentBadge
+텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 뱃지를 구성하는 컴포저블입니다. `Accent` 또는 `Neutral` 컬러 테마를 선택할 수 있으며, 크기와 테두리 스타일을 설정할 수 있습니다. 클릭 이벤트, 좌우 아이콘 표시 등 다양한 커스터마이징이 가능합니다.
+
+## 사용 예시
+```kotlin
+WantedContentBadge(
+    text = "Badge",
+    size = ContentBadgeSize.Small,
+    color = ContentBadgeColor.Accent,
+    leadingDrawable = R.drawable.ic_icon,
+    trailingDrawable = R.drawable.ic_icon,
+    onClick = { /* 클릭 처리 */ }
+)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| text | `String` | 뱃지에 표시할 텍스트입니다. |
+| modifier | Modifier | 배지 외형과 배치를 설정합니다. |
+| type | `ContentBadgeType` | Solid 또는 Outlined 형식의 배지 스타일입니다. |
+| size | `ContentBadgeSize` | 뱃지 크기를 지정합니다 (XSmall, Small, Large). |
+| color | `ContentBadgeColor` | 컬러 테마를 지정합니다 (Neutral, Accent). |
+| accentDefault | `WantedContentBadgeDefault` | Accent 또는 Neutral 컬러 설정의 기본값을 지정합니다. |
+| leadingDrawable | `Int?` | 텍스트 왼쪽에 표시할 아이콘 리소스 ID입니다. |
+| trailingDrawable | `Int?` | 텍스트 오른쪽에 표시할 아이콘 리소스 ID입니다. |
+| onClick | `(() -> Unit)?` | 클릭 시 호출되는 콜백 함수입니다. |
+
+---
+
+## Enum 설명
+
+### ContentBadgeType
+| 값 | 설명 |
+|:---|:---|
+| SOLID | 배경이 채워진 기본형 배지 |
+| OUTLINED | 외곽선만 있는 배지 |
+
+### ContentBadgeSize
+| 값 | 설명 |
+|:---|:---|
+| XSmall | 매우 작은 배지 |
+| Small | 작은 배지 |
+| Large | 큰 배지 |
+
+### ContentBadgeColor
+| 값 | 설명 |
+|:---|:---|
+| NEUTRAL | 중립적인 색상 테마 |
+| ACCENT | 강조된 색상 테마 |
+
+---
+
+## Note
+이 컴포저블은 다양한 스타일의 콘텐츠 뱃지를 쉽게 구현할 수 있도록 도와줍니다.
+```

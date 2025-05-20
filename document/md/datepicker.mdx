@@ -1,0 +1,82 @@
+```mdx
+---
+title: date-picker
+description: 날짜를 선택할 수 있는 DatePicker 다이얼로그를 제공합니다.
+image: /components/date-picker/design/thumbnail.png
+createdAt: 2023-10-17
+---
+
+## WantedDatePicker
+날짜를 선택할 수 있는 DatePicker 다이얼로그를 제공합니다. 사용자는 날짜를 선택하고 확인 또는 취소할 수 있으며, 선택된 날짜는 콜백을 통해 전달됩니다. 내부적으로 Material 3의 `DatePickerDialog` 및 `DatePicker` 컴포넌트를 사용하여 구성됩니다.
+
+## 사용 예시
+```kotlin
+WantedDatePicker(
+    confirm = "확인",
+    cancel = "취소",
+    onDateSelected = { selectedDate ->
+        // 선택된 날짜 처리
+    },
+    onDismiss = {
+        // 다이얼로그 닫기 처리
+    }
+)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| confirm | `String` | 확인 버튼에 표시할 텍스트입니다. |
+| cancel | `String` | 취소 버튼에 표시할 텍스트입니다. |
+| datePickerState | `DatePickerState` | 선택된 날짜 및 UI 상태를 관리하는 상태 객체입니다. 기본값은 `rememberDatePickerState()`입니다. |
+| dateFormatter | `DatePickerFormatter` | 날짜 포맷터로, 선택된 날짜의 포맷을 지정합니다. 기본값은 `DatePickerDefaults.dateFormatter()`입니다. |
+| onDateSelected | `(Long?) -> Unit` | 날짜 선택 완료 시 호출되는 콜백입니다. 선택된 날짜의 Unix 타임스탬프(Long) 또는 null이 전달됩니다. |
+| onDismiss | `() -> Unit` | 다이얼로그가 닫힐 때 호출되는 콜백입니다. |
+
+---
+
+## WantedDatePickerWheel (연도 및 월을 선택할 수 있는 휠 형태의 날짜 선택 모달입니다.)
+사용자는 연도와 월을 각각 NumberPicker를 통해 선택할 수 있으며, 확인/취소 버튼을 통해 선택 값을 확정하거나 취소할 수 있습니다. 선택된 연도와 월은 콜백을 통해 반환되며, 기본 설정값은 `WantedDatePickerWheelDefaults.getDefault()`를 통해 조절 가능합니다.
+
+### 사용 예시
+```kotlin
+WantedDatePickerWheel(
+    title = "날짜 선택",
+    confirm = "확인",
+    cancel = "취소",
+    selectedYear = 2023,
+    selectedMonth = 1,
+    onSelect = { year, month ->
+        // 선택된 연도 및 월 처리
+    },
+    onDismissRequest = {
+        // 모달 닫힘 처리
+    }
+)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| title | `String` | 다이얼로그 상단에 표시될 제목 텍스트입니다. |
+| confirm | `String` | 확인 버튼 텍스트입니다. |
+| cancel | `String` | 취소 버튼 텍스트입니다. |
+| selectedYear | `Int` | 초기 선택된 연도입니다. |
+| selectedMonth | `Int` | 초기 선택된 월입니다. |
+| modifier | Modifier | 외형을 설정하는 Modifier입니다. |
+| default | `WantedDatePickerWheelDefault` | 날짜 휠 설정을 지정하는 기본값 객체입니다. |
+| onSelect | `(year: Int, month: Int) -> Unit` | 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다. |
+| onDismissRequest | `() -> Unit` | 다이얼로그가 닫힐 때 호출되는 콜백입니다. |
+
+---
+
+## Enum 설명
+
+### ButtonShape
+| 값 | 설명 |
+|:---|:---|
+| SOLID | 배경이 채워진 기본형 버튼 |
+
+---
+
+## Note
+이 함수는 다양한 날짜 선택 기능을 쉽게 구현할 수 있도록 도와줍니다.
+```
