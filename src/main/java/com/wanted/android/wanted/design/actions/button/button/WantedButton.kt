@@ -32,7 +32,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param text 버튼에 표시할 텍스트입니다.
+ * @param text 버튼에 표시할 텍스트입니다.울라울라
  * @param modifier Modifier를 통해 버튼 외형을 조정합니다.
  * @param buttonShape 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다.
  * @param type 버튼의 타입(PRIMARY, SECONDARY, ASSISTIVE)을 지정합니다.
