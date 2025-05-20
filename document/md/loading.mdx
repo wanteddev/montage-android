@@ -1,0 +1,62 @@
+```mdx
+---
+title: circular-loading
+description: 화면 중앙에 원형 로딩 인디케이터를 표시하는 컴포저블입니다.
+image: /components/circular-loading/design/thumbnail.png
+createdAt: 2023-10-17
+---
+
+## WantedCircularLoading
+화면 중앙에 원형 로딩 인디케이터를 표시하는 컴포저블입니다. dim 배경 포함 여부, 크기, 색상을 설정할 수 있으며 전체 화면에 로딩을 표시할 때 사용합니다.
+
+## 사용 예시
+```kotlin
+WantedCircularLoading(
+    size = 32.dp,
+    circleColor = Color.Gray,
+    dimColor = Color.Black.copy(alpha = 0.3f)
+)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 외형 및 배치 설정입니다. |
+| circleColor | `Color` | 로딩 인디케이터 색상입니다. |
+| dimColor | `Color` | 배경 dim 색상입니다. |
+| size | `Dp` | 로딩 인디케이터 크기입니다. |
+
+---
+
+## WantedCircularProgressIndicator (커스터마이징 가능한 원형 로딩 인디케이터입니다.)
+기본 크기는 28dp이며, 선 두께는 전체 크기의 10%입니다. StrokeCap은 Round입니다.
+
+### 사용 예시
+```kotlin
+WantedCircularProgressIndicator(modifier = Modifier.size(40.dp), color = Color.Red)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 크기 및 레이아웃 조정용입니다. |
+| color | `Color` | 인디케이터 색상입니다. |
+
+---
+
+## WantedLogoLoading
+Wanted 로고 기반의 로딩 애니메이션을 표시하는 컴포저블입니다. `isUseDim`이 true일 경우, Dialog 기반 dim 처리된 로딩 레이어가 출력됩니다.
+
+## 사용 예시
+```kotlin
+WantedLogoLoading(isUseDim = true)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 레이아웃 설정입니다. |
+| isUseDim | `Boolean` | dim 배경 사용 여부입니다. |
+
+---
+
+## Note
+이 컴포저블들은 다양한 로딩 상태를 시각적으로 표현할 수 있도록 도와줍니다.
+```

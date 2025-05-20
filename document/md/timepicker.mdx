@@ -1,0 +1,83 @@
+```mdx
+---
+title: time-picker
+description: 시계 및 입력 형식을 지원하는 시간 선택 다이얼로그입니다.
+image: /components/time-picker/design/thumbnail.png
+createdAt: 2023-10-17
+---
+
+## WantedTimePicker
+시계 및 입력 형식을 지원하는 시간 선택 다이얼로그입니다. 사용자는 시계 기반 또는 직접 입력 기반의 시간 선택 UI를 전환하여 사용할 수 있으며, 선택 후 확인/취소 버튼으로 결과를 확정하거나 다이얼로그를 닫을 수 있습니다. 내부적으로 `TimePicker` 또는 `TimeInput`을 사용하며, 선택 모드 전환 버튼을 제공합니다.
+
+## 사용 예시
+```kotlin
+WantedTimePicker(
+    title = "시간 선택",
+    confirm = "확인",
+    cancel = "취소",
+    onClickConfirm = { /* 확인 처리 */ },
+    onClickCancel = { /* 취소 처리 */ },
+    onDismissRequest = { /* 다이얼로그 종료 처리 */ },
+    onClickChangeMode = { /* 입력 형식 전환 처리 */ },
+    isEnableClock = true
+)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| title | `String` | 다이얼로그 상단 제목 텍스트입니다. |
+| confirm | `String` | 확인 버튼 텍스트입니다. |
+| onClickConfirm | `() -> Unit` | 확인 버튼 클릭 시 호출되는 콜백입니다. |
+| onClickChangeMode | `() -> Unit` | 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다. |
+| onDismissRequest | `() -> Unit` | 다이얼로그 외부 클릭 또는 닫기 시 호출되는 콜백입니다. |
+| cancel | `String?` | 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다. |
+| isEnableClock | `Boolean` | true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다. |
+| onClickCancel | `() -> Unit` | 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다. |
+
+---
+
+## WantedTimePickerWheel (시간(AM/PM, 시, 분)을 휠 형태로 선택할 수 있는 다이얼로그입니다.)
+사용자는 오전/오후(AM/PM), 시(hour), 분(minute)을 각각 휠 컴포넌트를 통해 선택할 수 있습니다. `WantedNumberPicker` 및 `WantedStringPicker`를 활용하여 시각적인 휠 선택 UI를 제공합니다. 선택 완료 후 확인 버튼을 누르면 콜백으로 선택 값이 전달되며, 취소 또는 외부 클릭 시 닫힙니다.
+
+### 사용 예시
+```kotlin
+WantedTimePickerWheel(
+    isAm = true,
+    hour = 9,
+    minute = 30,
+    confirm = "확인",
+    cancel = "취소",
+    onSelected = { isAm, hour, minute ->
+        // 시간 선택 처리
+    },
+    onDismissRequest = { /* 다이얼로그 닫기 처리 */ }
+)
+```
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| isAm | `Boolean` | 초기 오전/오후 여부입니다. true이면 AM, false이면 PM입니다. |
+| hour | `Int` | 초기 선택된 시(hour)입니다. |
+| minute | `Int` | 초기 선택된 분(minute)입니다. |
+| confirm | `String` | 확인 버튼에 표시할 텍스트입니다. |
+| cancel | `String` | 취소 버튼에 표시할 텍스트입니다. |
+| modifier | Modifier | 외형을 설정하는 Modifier입니다. |
+| title | `String` | 다이얼로그 상단에 표시될 제목입니다. 기본값은 빈 문자열입니다. |
+| default | `WantedTimePickerWheelDefault` | 시간 선택 휠에 대한 기본 설정 값입니다. |
+| onSelected | `(Boolean, Int, Int) -> Unit` | 시간 선택 완료 시 호출되는 콜백입니다. 파라미터는 (isAm, hour, minute) 순입니다. |
+| onDismissRequest | `() -> Unit` | 다이얼로그 닫기 요청 시 호출되는 콜백입니다. |
+
+---
+
+## Enum 설명
+
+### ButtonShape
+| 값 | 설명 |
+|:---|:---|
+| SOLID | 배경이 채워진 기본형 버튼 |
+
+---
+
+## Note
+이 다이얼로그는 다양한 시간 선택 UI를 제공하여 사용자 편의성을 높입니다.
+```
