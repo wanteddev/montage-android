@@ -1,9 +1,8 @@
-```mdx
 ---
 title: number-picker
 description: 숫자 범위를 기준으로 자동 생성된 리스트를 사용하여 숫자를 선택할 수 있는 휠 형태의 NumberPicker입니다.
 image: /components/number-picker/design/thumbnail.png
-createdAt: 2023-10-17
+createdAt: 2023-11-01
 ---
 
 ## WantedNumberPicker
@@ -21,13 +20,14 @@ WantedNumberPicker(
     }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | start | `Int` | 시작 숫자입니다. |
 | end | `Int` | 종료 숫자입니다. |
 | step | `Int` | 숫자 간격입니다. |
-| modifier | Modifier | 외형을 설정하는 Modifier입니다. |
+| modifier | `Modifier` | 외형을 설정하는 Modifier입니다. |
 | itemList | `List<Int>` | 내부에서 자동 생성된 숫자 리스트입니다. |
 | selectedValue | `Int` | 기본 선택값입니다. |
 | enableMinValue | `Int` | 선택 가능 최소값입니다. |
@@ -41,8 +41,8 @@ WantedNumberPicker(
 
 ---
 
-## WantedNumberPicker (숫자 리스트를 직접 전달하여 사용할 수 있는 NumberPicker 컴포넌트입니다.)
-전달된 리스트에서 인덱스를 기준으로 선택하며, 선택 상태는 콜백으로 전달됩니다. 사용자는 직접 리스트를 생성하여 원하는 숫자 구성을 조정할 수 있습니다.
+## WantedNumberPicker (숫자 리스트 직접 전달 방식)
+숫자 리스트를 직접 전달하여 사용할 수 있는 NumberPicker 컴포넌트입니다. 전달된 리스트에서 인덱스를 기준으로 선택하며, 선택 상태는 콜백으로 전달됩니다. 사용자는 직접 리스트를 생성하여 원하는 숫자 구성을 조정할 수 있습니다.
 
 ### 사용 예시
 ```kotlin
@@ -54,10 +54,11 @@ WantedNumberPicker(
     }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| modifier | Modifier | 외형을 설정하는 Modifier입니다. |
+| modifier | `Modifier` | 외형을 설정하는 Modifier입니다. |
 | itemList | `List<Int>` | 표시할 숫자 리스트입니다. |
 | selectedIndex | `Int` | 선택된 인덱스입니다. |
 | enableStartIndex | `Int` | 선택 가능한 시작 인덱스입니다. |
@@ -69,7 +70,3 @@ WantedNumberPicker(
 | onSelect | `(index: Int, enabled: Boolean) -> Unit` | 선택 이벤트 콜백입니다. |
 
 ---
-
-## Note
-이 컴포넌트는 숫자 선택을 위한 직관적인 UI를 제공합니다.
-```

@@ -1,9 +1,8 @@
-```mdx
 ---
 title: menu
 description: 섹션 타이틀과 아이템으로 구성된 기본 메뉴 컴포저블입니다.
 image: /components/menu/design/thumbnail.png
-createdAt: 2023-10-17
+createdAt: 2023-11-01
 ---
 
 ## WantedMenu
@@ -18,21 +17,22 @@ WantedMenu(
     onBindSectionItem = { section, index -> Text("Item $index") }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | sectionCount | `Int` | 섹션의 총 개수입니다. |
 | itemCount | `(section: Int) -> Int` | 각 섹션의 아이템 개수를 반환합니다. |
 | onBindSectionItem | `@Composable (section: Int, index: Int) -> Unit` | 각 아이템에 대한 컴포저블입니다. |
-| modifier | Modifier | 메뉴 전체에 적용할 Modifier입니다. |
+| modifier | `Modifier` | 메뉴 전체에 적용할 Modifier입니다. |
 | onBindSectionTitle | `@Composable ((section: Int) -> Unit)?` | 섹션 타이틀 컴포저블입니다. |
 
 ---
 
-## WantedMenuModal (문자열 리스트를 바탕으로 구성되는 기본 메뉴 모달입니다.)
-항목 클릭 시 index와 문자열 값을 반환합니다.
+## WantedMenuModal
+문자열 리스트를 바탕으로 구성되는 기본 메뉴 모달입니다. 항목 클릭 시 index와 문자열 값을 반환합니다.
 
-### 사용 예시
+## 사용 예시
 ```kotlin
 WantedMenuModal(
     items = listOf("Option 1", "Option 2"),
@@ -40,6 +40,7 @@ WantedMenuModal(
     onClick = { index, value -> }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
@@ -50,10 +51,10 @@ WantedMenuModal(
 
 ---
 
-## WantedMenuModal (리스트 유형에 따라 구성되는 메뉴 모달입니다.)
-각 항목에 라디오 버튼, 체크박스를 표시할 수 있으며 클릭 시 index와 값을 반환합니다.
+## WantedMenuModal (리스트 유형에 따른 구성)
+리스트 유형(Radio, Check, Normal)에 따라 구성되는 메뉴 모달입니다. 각 항목에 라디오 버튼, 체크박스를 표시할 수 있으며 클릭 시 index와 값을 반환합니다.
 
-### 사용 예시
+## 사용 예시
 ```kotlin
 WantedMenuModal(
     items = listOf("One", "Two"),
@@ -62,6 +63,7 @@ WantedMenuModal(
     onClick = { index, value -> }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
@@ -74,16 +76,14 @@ WantedMenuModal(
 ---
 
 ## Enum 설명
-
 ### ListType
 | 값 | 설명 |
 |:---|:---|
-| NORMAL | 기본 텍스트만 있는 리스트 |
-| RADIO | 우측에 라디오 버튼이 포함된 리스트 |
-| CHECK | 좌측에 체크박스가 포함된 리스트 |
+| Normal | 기본 텍스트만 있는 리스트 |
+| Radio | 우측에 라디오 버튼이 포함된 리스트 |
+| Check | 좌측에 체크박스가 포함된 리스트 |
 
 ---
 
 ## Note
-이 컴포넌트는 다양한 메뉴 스타일을 쉽게 구현할 수 있도록 도와줍니다.
-```
+WantedMenuContract는 메뉴(Menu) 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다. 리스트 형태를 지정하는 enum 클래스 `ListType`을 포함합니다.

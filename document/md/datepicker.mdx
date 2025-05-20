@@ -1,9 +1,8 @@
-```mdx
 ---
 title: date-picker
 description: 날짜를 선택할 수 있는 DatePicker 다이얼로그를 제공합니다.
 image: /components/date-picker/design/thumbnail.png
-createdAt: 2023-10-17
+createdAt: 2023-11-01
 ---
 
 ## WantedDatePicker
@@ -22,6 +21,7 @@ WantedDatePicker(
     }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
@@ -34,8 +34,8 @@ WantedDatePicker(
 
 ---
 
-## WantedDatePickerWheel (연도 및 월을 선택할 수 있는 휠 형태의 날짜 선택 모달입니다.)
-사용자는 연도와 월을 각각 NumberPicker를 통해 선택할 수 있으며, 확인/취소 버튼을 통해 선택 값을 확정하거나 취소할 수 있습니다. 선택된 연도와 월은 콜백을 통해 반환되며, 기본 설정값은 `WantedDatePickerWheelDefaults.getDefault()`를 통해 조절 가능합니다.
+## WantedDatePickerWheel
+연도 및 월을 선택할 수 있는 휠 형태의 날짜 선택 모달입니다. 사용자는 연도와 월을 각각 NumberPicker를 통해 선택할 수 있으며, 확인/취소 버튼을 통해 선택 값을 확정하거나 취소할 수 있습니다. 선택된 연도와 월은 콜백을 통해 반환되며, 기본 설정값은 `WantedDatePickerWheelDefaults.getDefault()`를 통해 조절 가능합니다.
 
 ### 사용 예시
 ```kotlin
@@ -53,6 +53,7 @@ WantedDatePickerWheel(
     }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
@@ -61,7 +62,7 @@ WantedDatePickerWheel(
 | cancel | `String` | 취소 버튼 텍스트입니다. |
 | selectedYear | `Int` | 초기 선택된 연도입니다. |
 | selectedMonth | `Int` | 초기 선택된 월입니다. |
-| modifier | Modifier | 외형을 설정하는 Modifier입니다. |
+| modifier | `Modifier` | 외형을 설정하는 Modifier입니다. |
 | default | `WantedDatePickerWheelDefault` | 날짜 휠 설정을 지정하는 기본값 객체입니다. |
 | onSelect | `(year: Int, month: Int) -> Unit` | 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다. |
 | onDismissRequest | `() -> Unit` | 다이얼로그가 닫힐 때 호출되는 콜백입니다. |
@@ -69,14 +70,17 @@ WantedDatePickerWheel(
 ---
 
 ## Enum 설명
-
-### ButtonShape
+### ActionAreaType
 | 값 | 설명 |
 |:---|:---|
-| SOLID | 배경이 채워진 기본형 버튼 |
+| Strong | 강한 강조의 액션 영역 타입 |
+| Neutral | 중립적인 액션 영역 타입 |
+| Cancel | 취소 타입의 액션 영역 |
 
 ---
 
 ## Note
-이 함수는 다양한 날짜 선택 기능을 쉽게 구현할 수 있도록 도와줍니다.
-```
+WantedDatePickerWheelDefault는 날짜 선택 휠(DatePickerWheel)의 기본 설정 값을 담는 데이터 클래스입니다. 연도와 월 범위, 사용 가능한 최소/최대 값, 비활성 날짜 표시 여부를 지정할 수 있습니다.
+
+## Warning
+Deprecated - 더 이상 사용되지 않음. 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.

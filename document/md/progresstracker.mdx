@@ -1,9 +1,8 @@
-```mdx
 ---
 title: progress-tracker
-description: 단계 진행 표시를 위한 컴포저블 함수입니다.
+description: 단계 진행 표시 컴포저블입니다.
 image: /components/progress-tracker/design/thumbnail.png
-createdAt: 2023-10-17
+createdAt: 2023-11-01
 ---
 
 ## WantedProgressTrackerHorizontal
@@ -17,12 +16,13 @@ WantedProgressTrackerHorizontal(
     label = { index -> "${index + 1}단계" }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | stepCount | `Int` | 전체 단계 수입니다. |
 | currentStep | `Int` | 현재 선택된 단계 (1부터 시작)입니다. |
-| modifier | Modifier | 외형 및 배치 조정을 위한 Modifier입니다. |
+| modifier | `Modifier` | 외형 및 배치 조정을 위한 Modifier입니다. |
 | label | `((Int) -> String)?` | 각 단계별 라벨 텍스트를 반환하는 함수입니다. |
 
 ---
@@ -39,18 +39,31 @@ WantedProgressTrackerVertical(
     content = { index -> Text("내용 $index") }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | stepCount | `Int` | 총 단계 수입니다. |
 | currentStep | `Int` | 현재 진행 중인 단계입니다. |
-| modifier | Modifier | 외형 및 배치 조정을 위한 Modifier입니다. |
+| modifier | `Modifier` | 외형 및 배치 조정을 위한 Modifier입니다. |
 | label | `((Int) -> String)?` | 각 단계의 텍스트 라벨 함수입니다. |
 | labelContent | `@Composable ((Int) -> Unit)?` | 텍스트 라벨 대신 사용할 커스텀 UI 슬롯입니다. |
 | content | `@Composable (Int) -> Unit` | 단계별 본문 콘텐츠입니다. |
 
 ---
 
+## Enum 설명
+### ActionAreaType
+| 값 | 설명 |
+|:---|:---|
+| Strong | 강한 강조의 액션 영역 타입 |
+| Neutral | 중립적인 액션 영역 타입 |
+| Cancel | 취소 타입의 액션 영역 |
+
+---
+
 ## Note
-이 컴포저블은 단계별 진행 상태를 시각적으로 표시하는 데 유용합니다.
-```
+WantedActionAreaDefault는 ActionArea에 필요한 버튼 기본 스타일을 묶어둔 데이터 클래스입니다. 각 버튼의 WantedButtonDefault를 개별 설정할 수 있습니다.
+
+## Warning
+Deprecated - 더 이상 사용되지 않음. 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.

@@ -1,9 +1,8 @@
-```mdx
 ---
 title: category
-description: 카테고리 컴포넌트에 대한 설명입니다.
+description: 카테고리 컴포넌트 및 그라디언트 배경 색상 지정
 image: /components/category/design/thumbnail.png
-createdAt: 2023-10-17
+createdAt: 2023-11-01
 ---
 
 ## LocalCategoryGradationColor
@@ -15,6 +14,11 @@ CompositionLocalProvider(LocalCategoryGradationColor provides Color.Red) {
     ...
 }
 ```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| current | `Color` | 현재 CompositionLocal에 저장된 색상입니다. |
 
 ---
 
@@ -29,12 +33,13 @@ WantedCategory(
     onClick = { tag, selected -> ... }
 )
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
 | itemList | `List<String>` | 표시할 문자열 목록입니다. |
 | selectedList | `List<String>` | 선택된 항목 리스트입니다. |
-| modifier | Modifier | 레이아웃 설정용 Modifier입니다. |
+| modifier | `Modifier` | 레이아웃 설정용 Modifier입니다. |
 | state | `LazyListState` | 내부 LazyRow 상태를 제어하는 객체입니다. |
 | size | `Size` | 카테고리 항목 크기입니다. |
 | horizontalPadding | `Boolean` | 좌우 여백 여부입니다. |
@@ -46,8 +51,8 @@ WantedCategory(
 
 ---
 
-## WantedCategory (사용자 정의 콘텐츠로 구성할 수 있는 카테고리 컴포넌트입니다.)
-LazyListScope 기반으로 직접 항목을 구성할 수 있으며, 좌우 그라디언트 및 아이콘 슬롯도 제공합니다.
+## WantedCategory (사용자 정의 콘텐츠)
+사용자 정의 콘텐츠로 구성할 수 있는 카테고리 컴포넌트입니다. LazyListScope 기반으로 직접 항목을 구성할 수 있으며, 좌우 그라디언트 및 아이콘 슬롯도 제공합니다.
 
 ## 사용 예시
 ```kotlin
@@ -57,10 +62,11 @@ WantedCategory {
     }
 }
 ```
+
 ### 파라미터
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| modifier | Modifier | 레이아웃 설정용 Modifier입니다. |
+| modifier | `Modifier` | 레이아웃 설정용 Modifier입니다. |
 | state | `LazyListState` | LazyRow의 스크롤 상태입니다. |
 | size | `Size` | 액션칩 크기 및 여백 설정입니다. |
 | horizontalPadding | `Boolean` | 좌우 패딩 여부입니다. |
@@ -72,7 +78,6 @@ WantedCategory {
 ---
 
 ## Enum 설명
-
 ### Size
 | 값 | 설명 |
 |:---|:---|
@@ -82,7 +87,3 @@ WantedCategory {
 | XLarge | 세로 패딩 10dp, 수평 간격 10dp |
 
 ---
-
-## Note
-이 컴포넌트는 다양한 카테고리 스타일을 쉽게 구현할 수 있도록 도와줍니다.
-```
