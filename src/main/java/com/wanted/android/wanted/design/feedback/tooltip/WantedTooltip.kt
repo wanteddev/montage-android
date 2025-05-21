@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.button.WantedButton
+import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme

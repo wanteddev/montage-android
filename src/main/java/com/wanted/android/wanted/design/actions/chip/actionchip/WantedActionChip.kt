@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.chip
+package com.wanted.android.wanted.design.actions.chip.actionchip
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -33,18 +33,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipVariant
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.actionChipIconSize
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.actionChipPadding
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.actionChipTextPadding
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.getActionChipHorizontalArrangement
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.getActionChipRadius
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipActive
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipEnable
-import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipSize
-import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.OPACITY_22
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
@@ -75,8 +78,8 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
 @Composable
 fun WantedActionChip(
     text: String,
-    size: ChipActionSize = ChipActionSize.Medium,
-    variant: ChipActionVariant = ChipActionVariant.Solid,
+    size: ActionChipSize = ActionChipSize.Medium,
+    variant: ActionChipVariant = ActionChipVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
     leftIcon: Int? = null,
@@ -87,15 +90,15 @@ fun WantedActionChip(
 ) {
     CompositionLocalProvider(
         LocalWantedChipEnable.provides(isEnable),
-        LocalWantedChipSize.provides(size),
-        LocalWantedChipVariant.provides(variant),
+        LocalWantedActionChipSize.provides(size),
+        LocalWantedActionChipVariant.provides(variant),
         LocalWantedChipActive.provides(isActive)
     ) {
         WantedActionChip(
             text = text,
             modifier = modifier,
             interactionSource = interactionSource,
-            chipDefault = WantedChipDefaults.getDefault(),
+            chipDefault = WantedActionChipDefaults.getDefault(),
             leftIcon = leftIcon,
             rightIcon = rightIcon,
             onClick = onClick
@@ -129,7 +132,7 @@ fun WantedActionChip(
     text: String,
     leftIcon: Int? = null,
     rightIcon: Int? = null,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
+    chipDefault: WantedActionChipDefault = WantedActionChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
@@ -203,11 +206,11 @@ fun WantedActionChip(
  */
 @Composable
 fun WantedActionChip(
-    size: ChipActionSize = ChipActionSize.Small,
-    variant: ChipActionVariant = ChipActionVariant.Solid,
+    size: ActionChipSize = ActionChipSize.Small,
+    variant: ActionChipVariant = ActionChipVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
+    chipDefault: WantedActionChipDefault = WantedActionChipDefaults.getDefault(
         size = size,
         variant = variant,
         isActive = isActive,
@@ -222,16 +225,16 @@ fun WantedActionChip(
 ) {
     WantedActionChipLayout(
         modifier = modifier
-            .clip(RoundedCornerShape(getChipRadius(chipDefault.size)))
+            .clip(RoundedCornerShape(getActionChipRadius(chipDefault.size)))
             .background(chipDefault.backgroundColor)
             .border(
                 width = 1.dp,
-                shape = RoundedCornerShape(getChipRadius(chipDefault.size)),
+                shape = RoundedCornerShape(getActionChipRadius(chipDefault.size)),
                 color = chipDefault.borderColor
             )
             .clickOnce(
                 interactionSource = interactionSource,
-                indication = if (chipDefault.variant == ChipActionVariant.Solid) {
+                indication = if (chipDefault.variant == ActionChipVariant.Solid) {
                     wantedRippleEffect(
                         color = colorResource(id = R.color.label_normal).copy(
                             OPACITY_12
@@ -255,7 +258,7 @@ fun WantedActionChip(
 
 @Composable
 private fun WantedActionChipLayout(
-    chipDefault: WantedChipDefault,
+    chipDefault: WantedActionChipDefault,
     leftIcon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null,
@@ -319,25 +322,25 @@ private fun ActionChipPreView() {
                 ) {
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
-                        size = ChipActionSize.Small
+                        variant = ActionChipVariant.Solid,
+                        size = ActionChipSize.Small
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = ActionChipVariant.Solid,
                         isEnable = false,
-                        size = ChipActionSize.Small
+                        size = ActionChipSize.Small
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
-                        size = ChipActionSize.Small
+                        variant = ActionChipVariant.Outlined,
+                        size = ActionChipSize.Small
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = ActionChipVariant.Outlined,
                         isEnable = false,
-                        size = ChipActionSize.Small
+                        size = ActionChipSize.Small
                     )
                 }
 
@@ -347,28 +350,28 @@ private fun ActionChipPreView() {
                 ) {
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
-                        size = ChipActionSize.Small,
+                        variant = ActionChipVariant.Solid,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = ActionChipVariant.Solid,
                         isEnable = false,
-                        size = ChipActionSize.Small,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
-                        size = ChipActionSize.Small,
+                        variant = ActionChipVariant.Outlined,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = ActionChipVariant.Outlined,
                         isEnable = false,
-                        size = ChipActionSize.Small,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg
                     )
                 }
@@ -378,28 +381,28 @@ private fun ActionChipPreView() {
                 ) {
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
-                        size = ChipActionSize.Small,
+                        variant = ActionChipVariant.Solid,
+                        size = ActionChipSize.Small,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = ActionChipVariant.Solid,
                         isEnable = false,
-                        size = ChipActionSize.Small,
+                        size = ActionChipSize.Small,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
-                        size = ChipActionSize.Small,
+                        variant = ActionChipVariant.Outlined,
+                        size = ActionChipSize.Small,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = ActionChipVariant.Outlined,
                         isEnable = false,
-                        size = ChipActionSize.Small,
+                        size = ActionChipSize.Small,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                 }
@@ -410,31 +413,31 @@ private fun ActionChipPreView() {
                 ) {
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
-                        size = ChipActionSize.Small,
+                        variant = ActionChipVariant.Solid,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = ActionChipVariant.Solid,
                         isEnable = false,
-                        size = ChipActionSize.Small,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
-                        size = ChipActionSize.Small,
+                        variant = ActionChipVariant.Outlined,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
                     WantedActionChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = ActionChipVariant.Outlined,
                         isEnable = false,
-                        size = ChipActionSize.Small,
+                        size = ActionChipSize.Small,
                         leftIcon = R.drawable.ic_normal_bookmark_svg,
                         rightIcon = R.drawable.ic_normal_bookmark_svg
                     )
@@ -449,25 +452,25 @@ private fun ActionChipPreView() {
                     ) {
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
-                            size = ChipActionSize.Medium
+                            variant = ActionChipVariant.Solid,
+                            size = ActionChipSize.Medium
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
+                            variant = ActionChipVariant.Solid,
                             isEnable = false,
-                            size = ChipActionSize.Medium
+                            size = ActionChipSize.Medium
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
-                            size = ChipActionSize.Medium
+                            variant = ActionChipVariant.Outlined,
+                            size = ActionChipSize.Medium
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
+                            variant = ActionChipVariant.Outlined,
                             isEnable = false,
-                            size = ChipActionSize.Medium
+                            size = ActionChipSize.Medium
                         )
                     }
                     Row(
@@ -476,28 +479,28 @@ private fun ActionChipPreView() {
                     ) {
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
-                            size = ChipActionSize.Medium,
+                            variant = ActionChipVariant.Solid,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
+                            variant = ActionChipVariant.Solid,
                             isEnable = false,
-                            size = ChipActionSize.Medium,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
-                            size = ChipActionSize.Medium,
+                            variant = ActionChipVariant.Outlined,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
+                            variant = ActionChipVariant.Outlined,
                             isEnable = false,
-                            size = ChipActionSize.Medium,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg
                         )
                     }
@@ -507,28 +510,28 @@ private fun ActionChipPreView() {
                     ) {
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
-                            size = ChipActionSize.Medium,
+                            variant = ActionChipVariant.Solid,
+                            size = ActionChipSize.Medium,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
+                            variant = ActionChipVariant.Solid,
                             isEnable = false,
-                            size = ChipActionSize.Medium,
+                            size = ActionChipSize.Medium,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
-                            size = ChipActionSize.Medium,
+                            variant = ActionChipVariant.Outlined,
+                            size = ActionChipSize.Medium,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
+                            variant = ActionChipVariant.Outlined,
                             isEnable = false,
-                            size = ChipActionSize.Medium,
+                            size = ActionChipSize.Medium,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                     }
@@ -538,31 +541,31 @@ private fun ActionChipPreView() {
                     ) {
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
-                            size = ChipActionSize.Medium,
+                            variant = ActionChipVariant.Solid,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Solid,
+                            variant = ActionChipVariant.Solid,
                             isEnable = false,
-                            size = ChipActionSize.Medium,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
-                            size = ChipActionSize.Medium,
+                            variant = ActionChipVariant.Outlined,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
                         WantedActionChip(
                             text = "텍스트",
-                            variant = ChipActionVariant.Outlined,
+                            variant = ActionChipVariant.Outlined,
                             isEnable = false,
-                            size = ChipActionSize.Medium,
+                            size = ActionChipSize.Medium,
                             leftIcon = R.drawable.ic_normal_bookmark_svg,
                             rightIcon = R.drawable.ic_normal_bookmark_svg
                         )
@@ -576,37 +579,37 @@ private fun ActionChipPreView() {
                         ) {
                             WantedActionChip(
                                 text = "텍스트",
-                                variant = ChipActionVariant.Solid,
+                                variant = ActionChipVariant.Solid,
                                 isActive = true,
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                size = ChipActionSize.Small
+                                size = ActionChipSize.Small
                             )
                             WantedActionChip(
                                 text = "텍스트",
-                                variant = ChipActionVariant.Solid,
+                                variant = ActionChipVariant.Solid,
                                 isActive = true,
                                 isEnable = false,
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                size = ChipActionSize.Small
+                                size = ActionChipSize.Small
                             )
                             WantedActionChip(
                                 text = "텍스트",
-                                variant = ChipActionVariant.Outlined,
+                                variant = ActionChipVariant.Outlined,
                                 isActive = true,
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                size = ChipActionSize.Small
+                                size = ActionChipSize.Small
                             )
                             WantedActionChip(
                                 text = "텍스트",
-                                variant = ChipActionVariant.Outlined,
+                                variant = ActionChipVariant.Outlined,
                                 isActive = true,
                                 isEnable = false,
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                size = ChipActionSize.Small
+                                size = ActionChipSize.Small
                             )
                         }
 
@@ -618,10 +621,10 @@ private fun ActionChipPreView() {
                                 text = "텍스트",
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                chipDefault = WantedChipDefaults.getDefault(
-                                    variant = ChipActionVariant.Solid,
+                                chipDefault = WantedActionChipDefaults.getDefault(
+                                    variant = ActionChipVariant.Solid,
                                     isActive = false,
-                                    size = ChipActionSize.Small,
+                                    size = ActionChipSize.Small,
                                     isEnable = true,
                                     textStyle = WantedTextStyle(
                                         colorRes = R.color.status_negative,
@@ -636,10 +639,10 @@ private fun ActionChipPreView() {
                                 text = "텍스트",
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                chipDefault = WantedChipDefaults.getDefault(
-                                    variant = ChipActionVariant.Solid,
+                                chipDefault = WantedActionChipDefaults.getDefault(
+                                    variant = ActionChipVariant.Solid,
                                     isActive = false,
-                                    size = ChipActionSize.Small,
+                                    size = ActionChipSize.Small,
                                     isEnable = true,
                                     textStyle = WantedTextStyle(
                                         colorRes = R.color.status_negative,
@@ -652,10 +655,10 @@ private fun ActionChipPreView() {
                             )
                             WantedActionChip(
                                 text = "텍스트",
-                                chipDefault = WantedChipDefaults.getDefault(
-                                    variant = ChipActionVariant.Outlined,
+                                chipDefault = WantedActionChipDefaults.getDefault(
+                                    variant = ActionChipVariant.Outlined,
                                     isActive = false,
-                                    size = ChipActionSize.Small,
+                                    size = ActionChipSize.Small,
                                     isEnable = true,
                                     textStyle = WantedTextStyle(
                                         colorRes = R.color.status_negative,
@@ -672,10 +675,10 @@ private fun ActionChipPreView() {
                                 text = "텍스트",
                                 leftIcon = R.drawable.ic_normal_bookmark_svg,
                                 rightIcon = R.drawable.ic_normal_bookmark_svg,
-                                chipDefault = WantedChipDefaults.getDefault(
-                                    variant = ChipActionVariant.Outlined,
+                                chipDefault = WantedActionChipDefaults.getDefault(
+                                    variant = ActionChipVariant.Outlined,
                                     isActive = false,
-                                    size = ChipActionSize.Small,
+                                    size = ActionChipSize.Small,
                                     isEnable = false,
                                     textStyle = WantedTextStyle(
                                         colorRes = R.color.status_negative,
@@ -700,8 +703,8 @@ private fun ActionChipPreView() {
                     ) {
                         WantedActionChip(
                             text = "this is very very long long long long long long text",
-                            variant = ChipActionVariant.Solid,
-                            size = ChipActionSize.Medium,
+                            variant = ActionChipVariant.Solid,
+                            size = ActionChipSize.Medium,
                             modifier = Modifier.widthIn(max = 200.dp)
                         )
                     }

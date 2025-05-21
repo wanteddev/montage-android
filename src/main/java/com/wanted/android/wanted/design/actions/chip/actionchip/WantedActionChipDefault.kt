@@ -1,16 +1,14 @@
-package com.wanted.android.wanted.design.actions.chip
+package com.wanted.android.wanted.design.actions.chip.actionchip
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipVariant
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipActive
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipEnable
-import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipSize
-import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -21,7 +19,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  *
  * 사용 예시:
  * ```kotlin
- * val chipDefault = WantedChipDefault(
+ * val chipDefault = WantedActionChipDefault(
  *     size = ChipActionSize.Medium,
  *     variant = ChipActionVariant.Solid,
  *     isActive = true,
@@ -42,9 +40,9 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param borderColor 테두리 색상
  * @param textStyle 텍스트 스타일
  */
-data class WantedChipDefault(
-    val size: ChipActionSize = ChipActionSize.Medium,
-    val variant: ChipActionVariant = ChipActionVariant.Solid,
+data class WantedActionChipDefault(
+    val size: ActionChipSize = ActionChipSize.Medium,
+    val variant: ActionChipVariant = ActionChipVariant.Solid,
     val isActive: Boolean = false,
     val isEnable: Boolean = true,
     val iconColor: Color,
@@ -54,7 +52,7 @@ data class WantedChipDefault(
 )
 
 
-object WantedChipDefaults {
+object WantedActionChipDefaults {
     /**
      * 기본 스타일에 맞춰 WantedChipDefault 객체를 생성합니다.
      * 컴포즈 환경에 따라 Chip의 스타일을 동적으로 결정합니다.
@@ -72,12 +70,12 @@ object WantedChipDefaults {
      * @param backgroundColor 배경 색상
      * @param borderColor 테두리 색상
      * @param textStyle 텍스트 스타일
-     * @return 설정된 WantedChipDefault 객체 반환
+     * @return 설정된 WantedActionChipDefault 객체 반환
      */
     @Composable
     fun getDefault(
-        size: ChipActionSize = LocalWantedChipSize.current,
-        variant: ChipActionVariant = LocalWantedChipVariant.current,
+        size: ActionChipSize = LocalWantedActionChipSize.current,
+        variant: ActionChipVariant = LocalWantedActionChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current,
         iconColor: Color = colorResource(
@@ -103,7 +101,7 @@ object WantedChipDefaults {
             isActive = isActive,
             isEnable = isEnable
         )
-    ) = WantedChipDefault(
+    ) = WantedActionChipDefault(
         size = size,
         variant = variant,
         isActive = isActive,
@@ -117,12 +115,12 @@ object WantedChipDefaults {
 
     @Composable
     private fun getIconColor(
-        variant: ChipActionVariant = LocalWantedChipVariant.current,
+        variant: ActionChipVariant = LocalWantedActionChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Int {
         return when (variant) {
-            ChipActionVariant.Solid -> {
+            ActionChipVariant.Solid -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.inverse_label
@@ -130,7 +128,7 @@ object WantedChipDefaults {
                 }
             }
 
-            ChipActionVariant.Outlined -> {
+            ActionChipVariant.Outlined -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.primary_normal
@@ -156,12 +154,12 @@ object WantedChipDefaults {
      */
     @Composable
     fun getFilterIconColor(
-        variant: ChipActionVariant = LocalWantedChipVariant.current,
+        variant: ActionChipVariant = LocalWantedActionChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Int {
         return when (variant) {
-            ChipActionVariant.Solid -> {
+            ActionChipVariant.Solid -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.inverse_label
@@ -169,7 +167,7 @@ object WantedChipDefaults {
                 }
             }
 
-            ChipActionVariant.Outlined -> {
+            ActionChipVariant.Outlined -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.label_normal
@@ -181,11 +179,11 @@ object WantedChipDefaults {
 
     @Composable
     private fun getBackgroundColor(
-        variant: ChipActionVariant = LocalWantedChipVariant.current,
+        variant: ActionChipVariant = LocalWantedActionChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Color = when (variant) {
-        ChipActionVariant.Solid -> {
+        ActionChipVariant.Solid -> {
             when {
                 !isEnable -> colorResource(id = R.color.interaction_disable)
                 isActive -> colorResource(id = R.color.inverse_background)
@@ -193,7 +191,7 @@ object WantedChipDefaults {
             }
         }
 
-        ChipActionVariant.Outlined -> {
+        ActionChipVariant.Outlined -> {
             when {
                 !isEnable -> colorResource(id = R.color.transparent)
                 isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
@@ -204,11 +202,11 @@ object WantedChipDefaults {
 
     @Composable
     private fun getBorderColor(
-        variant: ChipActionVariant = LocalWantedChipVariant.current,
+        variant: ActionChipVariant = LocalWantedActionChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Color = when (variant) {
-        ChipActionVariant.Solid -> {
+        ActionChipVariant.Solid -> {
             when {
                 !isEnable -> colorResource(id = R.color.transparent)
                 isActive -> colorResource(id = R.color.transparent)
@@ -216,7 +214,7 @@ object WantedChipDefaults {
             }
         }
 
-        ChipActionVariant.Outlined -> {
+        ActionChipVariant.Outlined -> {
             when {
                 !isEnable -> colorResource(id = R.color.line_normal_neutral)
                 isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
@@ -227,8 +225,8 @@ object WantedChipDefaults {
 
     @Composable
     private fun getTextStyle(
-        size: ChipActionSize = LocalWantedChipSize.current,
-        variant: ChipActionVariant = LocalWantedChipVariant.current,
+        size: ActionChipSize = LocalWantedActionChipSize.current,
+        variant: ActionChipVariant = LocalWantedActionChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): TextStyle = WantedTextStyle(
@@ -239,12 +237,12 @@ object WantedChipDefaults {
 
     @Composable
     private fun getChipActionTextColor(
-        variant: ChipActionVariant = LocalWantedChipVariant.current,
+        variant: ActionChipVariant = LocalWantedActionChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
     ): Int {
         return when (variant) {
-            ChipActionVariant.Solid -> {
+            ActionChipVariant.Solid -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.inverse_label
@@ -252,7 +250,7 @@ object WantedChipDefaults {
                 }
             }
 
-            ChipActionVariant.Outlined -> {
+            ActionChipVariant.Outlined -> {
                 when {
                     !isEnable -> R.color.label_disable
                     isActive -> R.color.primary_normal
@@ -264,11 +262,11 @@ object WantedChipDefaults {
 
     @Composable
     private fun getChipActionTextStyle(
-        size: ChipActionSize = LocalWantedChipSize.current
+        size: ActionChipSize = LocalWantedActionChipSize.current
     ): TextStyle = when (size) {
-        ChipActionSize.XSmall -> DesignSystemTheme.typography.caption1Medium
-        ChipActionSize.Small -> DesignSystemTheme.typography.label1Medium
-        ChipActionSize.Medium -> DesignSystemTheme.typography.body2Medium
-        ChipActionSize.Large -> DesignSystemTheme.typography.body2Medium
+        ActionChipSize.XSmall -> DesignSystemTheme.typography.caption1Medium
+        ActionChipSize.Small -> DesignSystemTheme.typography.label1Medium
+        ActionChipSize.Medium -> DesignSystemTheme.typography.body2Medium
+        ActionChipSize.Large -> DesignSystemTheme.typography.body2Medium
     }
 }

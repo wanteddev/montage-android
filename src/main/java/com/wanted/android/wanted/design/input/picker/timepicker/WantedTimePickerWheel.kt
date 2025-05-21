@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.button.WantedButton
+import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedNumberPicker
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedStringPicker

@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.chip.WantedActionChip
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChip
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipVariant
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryContract.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -94,18 +94,18 @@ fun WantedCategory(
                     text = item,
                     variant = if (selectedList.contains(item)) {
                         if (isAlternative) {
-                            ChipActionVariant.Outlined
+                            ActionChipVariant.Outlined
                         } else {
-                            ChipActionVariant.Solid
+                            ActionChipVariant.Solid
                         }
                     } else {
-                        ChipActionVariant.Outlined
+                        ActionChipVariant.Outlined
                     },
                     size = when (size) {
-                        Size.Small -> ChipActionSize.XSmall
-                        Size.Medium -> ChipActionSize.Small
-                        Size.Large -> ChipActionSize.Medium
-                        Size.XLarge -> ChipActionSize.Large
+                        Size.Small -> ActionChipSize.XSmall
+                        Size.Medium -> ActionChipSize.Small
+                        Size.Large -> ActionChipSize.Medium
+                        Size.XLarge -> ActionChipSize.Large
                     },
                     isActive = selectedList.contains(item),
                     onClick = {
@@ -306,11 +306,11 @@ private fun WantedCategoryPreview() {
                             WantedActionChip(
                                 text = item,
                                 variant = if (index == 0) {
-                                    ChipActionVariant.Solid
+                                    ActionChipVariant.Solid
                                 } else {
-                                    ChipActionVariant.Outlined
+                                    ActionChipVariant.Outlined
                                 },
-                                size = ChipActionSize.Small,
+                                size = ActionChipSize.Small,
                                 isActive = index == 0
                             )
                         }

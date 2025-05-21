@@ -13,7 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.button.WantedButton
+import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.contents.cell.WantedCell
 import com.wanted.android.wanted.design.contents.cell.WantedCellContract
 import com.wanted.android.wanted.design.input.control.CheckBoxSize

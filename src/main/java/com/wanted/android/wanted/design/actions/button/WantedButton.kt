@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.button.button
+package com.wanted.android.wanted.design.actions.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

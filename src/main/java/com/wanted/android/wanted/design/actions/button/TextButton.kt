@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.button.button
+package com.wanted.android.wanted.design.actions.button
 
 import android.content.Context
 import android.content.res.ColorStateList

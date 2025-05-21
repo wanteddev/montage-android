@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.actions.chip
+package com.wanted.android.wanted.design.actions.chip.filterchip
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -31,15 +31,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipActive
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipEnable
-import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipSize
-import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipVariant
+import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.FilterChipSize
+import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.FilterChipVariant
+import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.filterChipIconSize
+import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.filterChipPadding
+import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.filterChipTextPadding
+import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.getFilterChipHorizontalArrangement
+import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.getFilterChipRadius
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
+import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
@@ -72,28 +75,28 @@ fun WantedFilterChip(
     text: String,
     modifier: Modifier = Modifier,
     activeLabel: String = "",
-    size: ChipActionSize = ChipActionSize.Small,
-    variant: ChipActionVariant = ChipActionVariant.Solid,
+    size: FilterChipSize = FilterChipSize.Small,
+    variant: FilterChipVariant = FilterChipVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
     isExpend: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
 
     CompositionLocalProvider(
         LocalWantedChipEnable.provides(isEnable),
-        LocalWantedChipSize.provides(size),
-        LocalWantedChipVariant.provides(variant),
+        LocalWantedFilterChipSize.provides(size),
+        LocalWantedFilterChipVariant.provides(variant),
         LocalWantedChipActive.provides(isActive)
     ) {
         WantedFilterChip(
             modifier = modifier,
             text = text,
             activeLabel = activeLabel,
-            chipDefault = WantedChipDefaults
+            chipDefault = WantedFilterChipDefaults
                 .getDefault()
-                .copy(iconColor = colorResource(id = WantedChipDefaults.getFilterIconColor())),
+                .copy(iconColor = colorResource(id = WantedFilterChipDefaults.getFilterIconColor())),
             isExpanded = isExpend,
             interactionSource = interactionSource,
             onClick = onClick
@@ -130,9 +133,9 @@ fun WantedFilterChip(
     modifier: Modifier = Modifier,
     activeLabel: String = "",
     isExpanded: Boolean = false,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(),
+    chipDefault: WantedFilterChipDefault = WantedFilterChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     WantedFilterChip(
         modifier = modifier,
@@ -185,11 +188,11 @@ fun WantedFilterChip(
 @Composable
 private fun WantedFilterChip(
     modifier: Modifier = Modifier,
-    size: ChipActionSize = ChipActionSize.Small,
-    variant: ChipActionVariant = ChipActionVariant.Solid,
+    size: FilterChipSize = FilterChipSize.Small,
+    variant: FilterChipVariant = FilterChipVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
-    chipDefault: WantedChipDefault = WantedChipDefaults.getDefault(
+    chipDefault: WantedFilterChipDefault = WantedFilterChipDefaults.getDefault(
         size = size,
         variant = variant,
         isActive = isActive,
@@ -198,20 +201,20 @@ private fun WantedFilterChip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     WantedFilterChipLayout(
         modifier = modifier
-            .clip(RoundedCornerShape(getChipRadius(chipDefault.size)))
+            .clip(RoundedCornerShape(getFilterChipRadius(chipDefault.size)))
             .background(chipDefault.backgroundColor)
             .border(
                 width = 1.dp,
-                shape = RoundedCornerShape(getChipRadius(chipDefault.size)),
+                shape = RoundedCornerShape(getFilterChipRadius(chipDefault.size)),
                 color = chipDefault.borderColor
             )
             .clickOnce(
                 interactionSource = interactionSource,
-                indication = if (chipDefault.variant == ChipActionVariant.Solid) {
+                indication = if (chipDefault.variant == FilterChipVariant.Solid) {
                     wantedRippleEffect(
                         color = colorResource(id = R.color.label_normal).copy(
                             OPACITY_12
@@ -235,10 +238,10 @@ private fun WantedFilterChip(
 
 @Composable
 private fun WantedFilterChipLayout(
-    chipDefault: WantedChipDefault,
+    chipDefault: WantedFilterChipDefault,
     content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Row(
         modifier = modifier
@@ -250,7 +253,7 @@ private fun WantedFilterChipLayout(
         ProvideTextStyle(value = chipDefault.textStyle) {
             Box(
                 modifier = Modifier
-                    .actionChipTextPadding(chipDefault.size)
+                    .filterChipTextPadding(chipDefault.size)
                     .wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
@@ -292,25 +295,25 @@ private fun ActionChipPreView() {
                 ) {
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
-                        size = ChipActionSize.Medium
+                        variant = FilterChipVariant.Solid,
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = FilterChipVariant.Solid,
                         isEnable = false,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
-                        size = ChipActionSize.Medium
+                        variant = FilterChipVariant.Outlined,
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = FilterChipVariant.Outlined,
                         isEnable = false,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                 }
 
@@ -320,29 +323,29 @@ private fun ActionChipPreView() {
                 ) {
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = FilterChipVariant.Solid,
                         isExpend = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = FilterChipVariant.Solid,
                         isEnable = false,
                         isExpend = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = FilterChipVariant.Outlined,
                         isExpend = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = FilterChipVariant.Outlined,
                         isEnable = false,
                         isExpend = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                 }
 
@@ -352,33 +355,33 @@ private fun ActionChipPreView() {
                 ) {
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = FilterChipVariant.Solid,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Solid,
+                        variant = FilterChipVariant.Solid,
                         isEnable = false,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = FilterChipVariant.Outlined,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
-                        variant = ChipActionVariant.Outlined,
+                        variant = FilterChipVariant.Outlined,
                         isEnable = false,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                 }
 
@@ -389,34 +392,34 @@ private fun ActionChipPreView() {
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "1",
-                        variant = ChipActionVariant.Solid,
+                        variant = FilterChipVariant.Solid,
                         isExpend = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "2",
-                        variant = ChipActionVariant.Outlined,
+                        variant = FilterChipVariant.Outlined,
                         isEnable = false,
                         isActive = true,
-                        size = ChipActionSize.Medium
+                        size = FilterChipSize.Medium
                     )
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "일",
-                        variant = ChipActionVariant.Solid,
+                        variant = FilterChipVariant.Solid,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.Small
+                        size = FilterChipSize.Small
                     )
                     WantedFilterChip(
                         text = "텍스트",
                         activeLabel = "이",
-                        variant = ChipActionVariant.Outlined,
+                        variant = FilterChipVariant.Outlined,
                         isEnable = false,
                         isExpend = true,
                         isActive = true,
-                        size = ChipActionSize.Small
+                        size = FilterChipSize.Small
                     )
                 }
             }
