@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
 
 /**
- * object WantedActionContract
+ * object WantedFilterChipContract
  *
  * ChipAction에 대한 전반적인 계약(Contract)을 정의하는 객체입니다.
  *

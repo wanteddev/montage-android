@@ -41,7 +41,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedDropShadow
-import com.wanted.android.wanted.design.input.textinput.WantedTextFieldContract.RightVariant
+import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextFieldContract.RightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle

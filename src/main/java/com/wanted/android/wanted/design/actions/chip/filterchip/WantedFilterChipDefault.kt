@@ -19,7 +19,7 @@ import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * WantedActionChip 기본 스타일을 정의하는 데이터 클래스입니다.
+ * WantedFilterChip 기본 스타일을 정의하는 데이터 클래스입니다.
  * 크기, 스타일 변형, 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
  *
  * 사용 예시:

@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.input.textinput
+package com.wanted.android.wanted.design.input.textinput.textarea
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -45,7 +45,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChip
 import com.wanted.android.wanted.design.base.WantedDropShadow
-import com.wanted.android.wanted.design.input.ComponentTitle
+import com.wanted.android.wanted.design.input.textinput.view.ComponentTitle
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaCharacterCount
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaLayout
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout

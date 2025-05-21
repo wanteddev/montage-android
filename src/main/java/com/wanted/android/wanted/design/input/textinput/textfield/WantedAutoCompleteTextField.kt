@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.input.textinput
+package com.wanted.android.wanted.design.input.textinput.textfield
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -26,7 +26,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.input.textinput.WantedTextFieldContract.RightVariant
 import com.wanted.android.wanted.design.presentation.autocomplete.WantedAutoComplete
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -96,7 +95,7 @@ fun WantedAutoCompleteTextField(
     title: String = "",
     description: String? = null,
     rightButton: String? = null,
-    rightButtonVariant: RightVariant = RightVariant.Normal,
+    rightButtonVariant: WantedTextFieldContract.RightVariant = WantedTextFieldContract.RightVariant.Normal,
     status: WantedTextFieldContract.Status = WantedTextFieldContract.Status.Normal,
     enabled: Boolean = true,
     rightButtonEnabled: Boolean = true,
@@ -242,7 +241,7 @@ fun WantedAutoCompleteTextField(
     title: String = "",
     description: String? = null,
     rightButton: String? = null,
-    rightButtonVariant: RightVariant = RightVariant.Normal,
+    rightButtonVariant: WantedTextFieldContract.RightVariant = WantedTextFieldContract.RightVariant.Normal,
     status: WantedTextFieldContract.Status = WantedTextFieldContract.Status.Normal,
     enabled: Boolean = true,
     rightButtonEnabled: Boolean = true,

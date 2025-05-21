@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.input.textinput
+package com.wanted.android.wanted.design.input.textinput.textfield
 
 /**
  * object WantedSelectContract
