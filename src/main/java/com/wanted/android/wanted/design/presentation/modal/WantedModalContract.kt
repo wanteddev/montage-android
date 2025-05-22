@@ -5,11 +5,11 @@ import androidx.compose.ui.unit.dp
 
 object WantedModalContract {
 
-    sealed class BottomSheetDialogType(
+    sealed class ModalType(
         open val isCloseable: Boolean = true,
         open val isSystemBottomSheet: Boolean = true
     ) {
-        data object Flexible : BottomSheetDialogType()
+        data object Flexible : ModalType()
 
         /**
          * hug
@@ -17,13 +17,13 @@ object WantedModalContract {
         data class FixedWrapContent(
             override val isCloseable: Boolean = true,
             override val isSystemBottomSheet: Boolean = false
-        ) : BottomSheetDialogType(isCloseable, isSystemBottomSheet)
+        ) : ModalType(isCloseable, isSystemBottomSheet)
 
         data class Fixed(
             val height: Dp,
             override val isCloseable: Boolean = true,
             override val isSystemBottomSheet: Boolean = false
-        ) : BottomSheetDialogType(isCloseable, isSystemBottomSheet)
+        ) : ModalType(isCloseable, isSystemBottomSheet)
 
         /**
          * fill
@@ -31,13 +31,13 @@ object WantedModalContract {
         data class FixedFullScreen(
             override val isCloseable: Boolean = true,
             override val isSystemBottomSheet: Boolean = false
-        ) : BottomSheetDialogType(isCloseable, isSystemBottomSheet)
+        ) : ModalType(isCloseable, isSystemBottomSheet)
 
         data class FixedRatio(
             val ratio: Float,
             override val isCloseable: Boolean = true,
             override val isSystemBottomSheet: Boolean = false
-        ) : BottomSheetDialogType(isCloseable, isSystemBottomSheet)
+        ) : ModalType(isCloseable, isSystemBottomSheet)
     }
 
     enum class ModalSize(
@@ -46,6 +46,7 @@ object WantedModalContract {
         val titleVerticalPadding: Dp,
         val titleHorizontalPadding: Dp,
     ) {
+        @Deprecated("")
         Small(
             contentPadding = 20.dp,
             bottomBarPadding = 16.dp,
@@ -70,6 +71,7 @@ object WantedModalContract {
             titleVerticalPadding = 8.dp,
             titleHorizontalPadding = 4.dp
         ),
+        @Deprecated("")
         Custom(
             contentPadding = 0.dp,
             bottomBarPadding = 0.dp,
@@ -77,4 +79,6 @@ object WantedModalContract {
             titleHorizontalPadding = 0.dp
         )
     }
+
+    internal const val MAX_MODAL_SIZE = 760
 }
