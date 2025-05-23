@@ -255,91 +255,6 @@ fun WantedSelect(
 }
 
 /**
- * 문자열 리스트 기반으로 구성된 멀티 셀렉트 UI 컴포넌트입니다.
- *
- * 여러 개의 문자열 값을 선택하고, 선택된 항목을 Chip 또는 텍스트 형태로 보여주는 UI를 구성합니다.
- * `WantedSelect`의 문자열 래핑 버전으로, 내부적으로 `WantedSelectData`로 변환 후 처리합니다.
- *
- * 사용 예시:
- * ```kotlin
- * WantedSelectWithString(
- *     selectedValueList = listOf("개발자", "디자이너"),
- *     selectValueList = listOf("기획자", "개발자", "디자이너"),
- *     onSelectList = { 선택된리스트 -> ... },
- *     onClick = { /* 열기 처리 */ }
- * )
- * ```
- *
- * @param selectedValueList List<String>: 현재 선택된 문자열 항목 리스트입니다.
- * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
- * @param title String?: 상단에 표시할 제목입니다.
- * @param description String?: 셀렉트 아래 설명 텍스트입니다.
- * @param confirmText String: 확인 버튼에 표시할 텍스트입니다. 비워두면 즉시 반영됩니다.
- * @param placeHolder String: 아무 항목도 선택되지 않았을 때 표시되는 안내 텍스트입니다.
- * @param isRequiredBadge Boolean: 제목 옆 필수 뱃지를 표시할지 여부입니다.
- * @param negativeList List<String>: 오류로 표시할 항목 리스트입니다.
- * @param focused Boolean: 포커스 상태 여부입니다.
- * @param enabled Boolean: 비활성화 상태 여부입니다.
- * @param overflow Boolean: Chip 렌더링 시 줄바꿈 여부입니다.
- * @param selectValueList List<String>: 선택 가능한 항목 리스트입니다.
- * @param selectType SelectType: 선택 방식 (CheckBox, CheckMark, Radio) 중 하나입니다.
- * @param render MultiSelectRender: 선택 항목 렌더링 형태 (Chip 또는 Text)입니다.
- * @param background Color: 컴포넌트 배경 색상입니다.
- * @param leadingIcon (() -> Unit)?: 왼쪽에 표시할 선택적 아이콘 슬롯입니다.
- * @param onDelete (String) -> Unit: 선택된 항목에서 삭제 버튼 클릭 시 호출되는 콜백입니다.
- * @param onClick () -> Unit: 셀렉트 영역 클릭 시 호출되는 콜백입니다.
- * @param onSelectList (List<String>) -> Unit: 항목 선택 완료 후 호출되는 콜백입니다.
- */
-@Composable
-fun WantedSelectWithString(
-    selectedValueList: List<String>,
-    modifier: Modifier = Modifier,
-    title: String? = null,
-    description: String? = null,
-    confirmText: String = "",
-    placeHolder: String = "",
-    isRequiredBadge: Boolean = false,
-    negativeList: List<String> = emptyList(),
-    focused: Boolean = false,
-    enabled: Boolean = true,
-    overflow: Boolean = false,
-    selectValueList: List<String> = emptyList(),
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
-    render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
-    background: Color = colorResource(id = R.color.background_normal_normal),
-    leadingIcon: (@Composable (() -> Unit))? = null,
-    onDelete: (String) -> Unit = {},
-    onClick: () -> Unit = {},
-    onSelectList: (itemList: List<String>) -> Unit = {}
-) {
-    WantedSelect(
-        modifier = modifier,
-        title = title,
-        description = description,
-        confirmText = confirmText,
-        selectedDataList = selectedValueList.map { WantedSelectData(text = it) },
-        placeHolder = placeHolder,
-        isRequiredBadge = isRequiredBadge,
-        negativeDataList = negativeList.map { WantedSelectData(text = it) },
-        focused = focused,
-        enabled = enabled,
-        overflow = overflow,
-        selectDataList = selectValueList.map { WantedSelectData(text = it) },
-        selectType = selectType,
-        render = render,
-        background = background,
-        onDeleteData = {
-            onDelete(it.text)
-        },
-        onClick = onClick,
-        leadingIcon = leadingIcon,
-        onSelectDataList = { itemList ->
-            onSelectList(itemList.map { it.text })
-        }
-    )
-}
-
-/**
  * 여러 항목을 선택할 수 있는 멀티 셀렉트 컴포넌트입니다.
  *
  * 선택된 항목들을 Chip 또는 텍스트 형태로 보여주며, 클릭 시 BottomSheet 형태의 다중 선택 다이얼로그를 표시합니다.
@@ -454,6 +369,91 @@ fun WantedSelect(
         onDismissRequest = {
             isShowBottomSheetDialog.value = false
             isFocus.value = false
+        }
+    )
+}
+
+/**
+ * 문자열 리스트 기반으로 구성된 멀티 셀렉트 UI 컴포넌트입니다.
+ *
+ * 여러 개의 문자열 값을 선택하고, 선택된 항목을 Chip 또는 텍스트 형태로 보여주는 UI를 구성합니다.
+ * `WantedSelect`의 문자열 래핑 버전으로, 내부적으로 `WantedSelectData`로 변환 후 처리합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedSelectWithString(
+ *     selectedValueList = listOf("개발자", "디자이너"),
+ *     selectValueList = listOf("기획자", "개발자", "디자이너"),
+ *     onSelectList = { 선택된리스트 -> ... },
+ *     onClick = { /* 열기 처리 */ }
+ * )
+ * ```
+ *
+ * @param selectedValueList List<String>: 현재 선택된 문자열 항목 리스트입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param title String?: 상단에 표시할 제목입니다.
+ * @param description String?: 셀렉트 아래 설명 텍스트입니다.
+ * @param confirmText String: 확인 버튼에 표시할 텍스트입니다. 비워두면 즉시 반영됩니다.
+ * @param placeHolder String: 아무 항목도 선택되지 않았을 때 표시되는 안내 텍스트입니다.
+ * @param isRequiredBadge Boolean: 제목 옆 필수 뱃지를 표시할지 여부입니다.
+ * @param negativeList List<String>: 오류로 표시할 항목 리스트입니다.
+ * @param focused Boolean: 포커스 상태 여부입니다.
+ * @param enabled Boolean: 비활성화 상태 여부입니다.
+ * @param overflow Boolean: Chip 렌더링 시 줄바꿈 여부입니다.
+ * @param selectValueList List<String>: 선택 가능한 항목 리스트입니다.
+ * @param selectType SelectType: 선택 방식 (CheckBox, CheckMark, Radio) 중 하나입니다.
+ * @param render MultiSelectRender: 선택 항목 렌더링 형태 (Chip 또는 Text)입니다.
+ * @param background Color: 컴포넌트 배경 색상입니다.
+ * @param leadingIcon (() -> Unit)?: 왼쪽에 표시할 선택적 아이콘 슬롯입니다.
+ * @param onDelete (String) -> Unit: 선택된 항목에서 삭제 버튼 클릭 시 호출되는 콜백입니다.
+ * @param onClick () -> Unit: 셀렉트 영역 클릭 시 호출되는 콜백입니다.
+ * @param onSelectList (List<String>) -> Unit: 항목 선택 완료 후 호출되는 콜백입니다.
+ */
+@Composable
+fun WantedSelectWithString(
+    selectedValueList: List<String>,
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    description: String? = null,
+    confirmText: String = "",
+    placeHolder: String = "",
+    isRequiredBadge: Boolean = false,
+    negativeList: List<String> = emptyList(),
+    focused: Boolean = false,
+    enabled: Boolean = true,
+    overflow: Boolean = false,
+    selectValueList: List<String> = emptyList(),
+    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
+    render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
+    background: Color = colorResource(id = R.color.background_normal_normal),
+    leadingIcon: (@Composable (() -> Unit))? = null,
+    onDelete: (String) -> Unit = {},
+    onClick: () -> Unit = {},
+    onSelectList: (itemList: List<String>) -> Unit = {}
+) {
+    WantedSelect(
+        modifier = modifier,
+        title = title,
+        description = description,
+        confirmText = confirmText,
+        selectedDataList = selectedValueList.map { WantedSelectData(text = it) },
+        placeHolder = placeHolder,
+        isRequiredBadge = isRequiredBadge,
+        negativeDataList = negativeList.map { WantedSelectData(text = it) },
+        focused = focused,
+        enabled = enabled,
+        overflow = overflow,
+        selectDataList = selectValueList.map { WantedSelectData(text = it) },
+        selectType = selectType,
+        render = render,
+        background = background,
+        onDeleteData = {
+            onDelete(it.text)
+        },
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        onSelectDataList = { itemList ->
+            onSelectList(itemList.map { it.text })
         }
     )
 }
