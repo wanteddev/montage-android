@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.input.textinput.textfield
+package com.wanted.android.wanted.design.input.textinput.autocompletetextfield
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -26,6 +26,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextField
+import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextFieldContract
 import com.wanted.android.wanted.design.presentation.autocomplete.WantedAutoComplete
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
