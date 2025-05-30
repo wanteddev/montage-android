@@ -10,6 +10,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -65,7 +66,7 @@ fun WantedPullToRefreshBox(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     state: PullToRefreshState = rememberPullToRefreshState(),
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val scale = remember { Animatable(1f) }
