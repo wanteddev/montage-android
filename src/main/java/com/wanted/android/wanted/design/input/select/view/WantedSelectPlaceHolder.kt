@@ -12,9 +12,9 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedSelectPlaceHolder(
-    modifier: Modifier = Modifier,
-    placeHolder: String = "",
     enabled: Boolean,
+    modifier: Modifier = Modifier,
+    placeHolder: String = ""
 ) {
     Text(
         modifier = modifier.padding(horizontal = 4.dp),

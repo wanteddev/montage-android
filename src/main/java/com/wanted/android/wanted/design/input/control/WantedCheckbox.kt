@@ -43,25 +43,6 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 
-enum class CheckBoxSize {
-    Normal, Small
-}
-
-enum class CheckBoxStyle {
-    CheckBox,
-    RoundCheckBox,
-    Check,
-    Radio,
-    Switch
-}
-
-enum class CheckBoxState {
-    Unchecked,
-    Checked,
-    Indeterminate
-}
-
-
 class WantedCheckBox : MaterialCheckBox {
 
     constructor(context: Context) : super(context)
@@ -75,16 +56,43 @@ class WantedCheckBox : MaterialCheckBox {
     )
 }
 
+
+/**
+ * 다양한 스타일(CheckBox, RoundCheckBox, Check, Radio, Switch)을 지원하는 커스터마이징 가능한 체크박스 컴포저블입니다.
+ *
+ * 각 스타일에 맞는 시각적 표현 및 상호작용이 정의되어 있으며, 크기, 상태, 활성화 여부 등을 설정할 수 있습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedCheckBox(
+ *     size = CheckBoxSize.Normal,
+ *     style = CheckBoxStyle.CheckBox,
+ *     checkState = CheckBoxState.Checked,
+ *     tight = false,
+ *     enabled = true,
+ *     onCheckedChange = { isChecked -> /* 상태 처리 */ }
+ * )
+ * ```
+ *
+ * @param onCheckedChange (Boolean) -> Unit: 상태가 변경될 때 호출되는 콜백입니다.
+ * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
+ * @param size CheckBoxSize: Small 또는 Normal 사이즈를 선택할 수 있습니다.
+ * @param style CheckBoxStyle: 표시할 체크박스 스타일 (CheckBox, RoundCheckBox, Check, Radio, Switch)입니다.
+ * @param checkState CheckBoxState: 체크박스의 상태 (Unchecked, Checked, Indeterminate)를 설정합니다.
+ * @param tight Boolean: true일 경우 패딩이 줄어든 컴팩트한 형태로 표시됩니다.
+ * @param enabled Boolean: 체크박스 활성화 여부입니다.
+ * @param interactionSource MutableInteractionSource: 커스텀 인터랙션 처리를 위한 InteractionSource입니다.
+ */
 @Composable
 fun WantedCheckBox(
-    modifier: Modifier,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
     size: CheckBoxSize = CheckBoxSize.Normal,
     style: CheckBoxStyle = CheckBoxStyle.CheckBox,
     checkState: CheckBoxState = CheckBoxState.Unchecked,
     tight: Boolean = false,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onCheckedChange: ((Boolean) -> Unit)
 ) {
     when (style) {
         CheckBoxStyle.CheckBox -> {
@@ -157,9 +165,9 @@ private fun WantedCheckBoxImpl(
     shape: Shape,
     checkState: CheckBoxState,
     tight: Boolean,
-    enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onCheckedChange: ((Boolean) -> Unit)
+    enabled: Boolean = true,
+    onCheckedChange: ((Boolean) -> Unit) = {},
 ) {
     WantedTouchArea(
         modifier = modifier,
@@ -237,27 +245,27 @@ private fun WantedCheckBoxImpl(
 
 @Deprecated(
     "Use \n" +
-        "WantedCheckBox(modifier: Modifier,\n" +
-        "    size: CheckBoxSize,\n" +
-        "    style: CheckBoxStyle = CheckBoxStyle.CheckBox,\n" +
-        "    checkState: CheckBoxState = CheckBoxState.Unchecked,\n" +
-        "    enabled: Boolean = true,\n" +
-        "    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },\n" +
-        "    onCheckedChange: ((Boolean) -> Unit))"
+            "WantedCheckBox(modifier: Modifier,\n" +
+            "    size: CheckBoxSize,\n" +
+            "    style: CheckBoxStyle = CheckBoxStyle.CheckBox,\n" +
+            "    checkState: CheckBoxState = CheckBoxState.Unchecked,\n" +
+            "    enabled: Boolean = true,\n" +
+            "    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },\n" +
+            "    onCheckedChange: ((Boolean) -> Unit))"
 )
 @Composable
 fun WantedCheckBox(
-    modifier: Modifier = Modifier,
     checked: Boolean,
+    modifier: Modifier = Modifier,
     isIndeterminate: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit),
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: CheckboxColors = CheckboxDefaults.colors(
         uncheckedColor = colorResource(id = R.color.line_normal_neutral),
         checkedColor = colorResource(id = R.color.primary_normal),
         checkmarkColor = colorResource(id = R.color.static_white)
-    )
+    ),
+    onCheckedChange: (Boolean) -> Unit = {},
 ) {
     val toggleState = when {
         !checked -> ToggleableState.Off
@@ -288,7 +296,7 @@ private fun CheckboxImpl(
     modifier: Modifier,
     enabled: Boolean,
     value: ToggleableState,
-    colors: CheckboxColors
+    colors: CheckboxColors,
 ) {
     val borderColor = colors.borderColor(enabled = enabled, state = value).value
     val boxColor = colors.boxColor(enabled = enabled, state = value).value
@@ -362,7 +370,7 @@ private fun CertificationAuthInputScreenPreview() {
 @Composable
 private fun CheckBox(
     style: CheckBoxStyle = CheckBoxStyle.CheckBox,
-    tight: Boolean
+    tight: Boolean,
 ) {
     Column {
         Row(

@@ -41,23 +41,54 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45079&m=dev
+ * 하단에 위치한 액션 버튼 영역을 생성합니다.
+ *
+ * positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달합니다.
+ * variant 영역을 통해 상단에 부가 요소를 렌더링할 수 있습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedActionArea(
+ *     type = ActionAreaType.Strong,
+ *     positive = "확인",
+ *     onClickPositive = { /* 처리 */ },
+ *     negative = "취소",
+ *     onClickNegative = { /* 처리 */ },
+ *     neutral = "건너뛰기",
+ *     onClickNeutral = { /* 처리 */ }
+ * )
+ * ```
+ *
+ * @param type 액션 영역의 타입을 설정합니다.
+ * @param positive 메인(긍정) 액션 버튼 텍스트입니다.
+ * @param onClickPositive 메인 액션 버튼 클릭 콜백입니다.
+ * @param negative 서브(부정) 액션 버튼 텍스트입니다.
+ * @param neutral 추가(중립) 액션 버튼 텍스트입니다.
+ * @param caption 액션 영역 상단에 표시할 캡션입니다.
+ * @param scrollableState 스크롤 가능한 경우 상태를 전달합니다.
+ * @param modifier Modifier를 설정합니다.
+ * @param background 배경 그라데이션 표시 여부를 지정합니다.
+ * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
+ * @param gradationColor 배경 그라데이션 색상을 설정합니다.
+ * @param onClickNegative 서브 액션 버튼 클릭 콜백입니다.
+ * @param onClickNeutral 추가 액션 버튼 클릭 콜백입니다.
+ * @param variant 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
 fun WantedActionArea(
-    modifier: Modifier = Modifier,
-    safeArea: Boolean = true,
-    background: Boolean = false,
-    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     type: ActionAreaType,
     positive: String,
+    onClickPositive: () -> Unit,
     negative: String? = null,
     neutral: String? = null,
+    caption: String? = null,
     scrollableState: ScrollableState? = null,
-    onClickPositive: () -> Unit,
+    modifier: Modifier = Modifier,
+    background: Boolean = false,
+    safeArea: Boolean = true,
+    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
-    caption: String? = null,
     variant: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
@@ -110,18 +141,47 @@ fun WantedActionArea(
 }
 
 
+/**
+ * Slot을 활용하여 커스텀 버튼을 직접 전달하는 방식의 액션 영역입니다.
+ * 버튼 스타일, 배치 등을 완전히 제어할 수 있습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedActionArea(
+ *     type = ActionAreaType.Strong,
+ *     positive = {
+ *         CustomMainButton(onClick = { ... })
+ *     },
+ *     negative = {
+ *         CustomSecondaryButton(onClick = { ... })
+ *     }
+ * )
+ * ```
+ *
+ * @param type 액션 영역의 타입을 설정합니다.
+ * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
+ * @param background 배경 그라데이션 표시 여부를 지정합니다.
+ * @param gradationColor 배경 그라데이션 색상을 설정합니다.
+ * @param caption 액션 영역 상단에 표시할 캡션입니다.
+ * @param scrollableState 스크롤 가능한 경우 상태를 전달합니다.
+ * @param modifier Modifier를 설정합니다.
+ * @param positive 메인(긍정) 액션 버튼 Slot입니다.
+ * @param negative 서브(부정) 액션 버튼 Slot입니다.
+ * @param neutral 추가(중립) 액션 버튼 Slot입니다.
+ * @param variant 추가적으로 표시할 컴포넌트입니다.
+ */
 @Composable
 fun WantedActionArea(
-    modifier: Modifier = Modifier,
-    safeArea: Boolean = true, // dialog 에서는 false, 일반 screen  에서는 true
+    type: ActionAreaType = ActionAreaType.Strong,
+    safeArea: Boolean = true,
     background: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
-    type: ActionAreaType = ActionAreaType.Strong,
+    caption: String? = null,
     scrollableState: ScrollableState? = null,
+    modifier: Modifier = Modifier,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)? = null,
     neutral: @Composable (() -> Unit)? = null,
-    caption: String? = null,
     variant: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
@@ -143,24 +203,23 @@ fun WantedActionArea(
     )
 }
 
-
-@Deprecated("", level = DeprecationLevel.ERROR)
+@Deprecated("Slot 방식을 사용하는 WantedActionArea를 사용하세요", level = DeprecationLevel.ERROR)
 @Composable
 fun WantedActionArea(
-    modifier: Modifier = Modifier,
+    positive: String,
+    onClickPositive: () -> Unit,
+    negative: String? = null,
+    onClickNegative: (() -> Unit)? = null,
+    neutral: String? = null,
+    onClickNeutral: (() -> Unit)? = null,
+    actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
     safeArea: Boolean = true,
     background: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
-    actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
-    positive: String,
-    negative: String? = null,
-    neutral: String? = null,
     scrollableState: ScrollableState? = null,
-    onClickPositive: () -> Unit,
-    onClickNegative: (() -> Unit)? = null,
-    onClickNeutral: (() -> Unit)? = null,
     caption: String? = null,
-    variant: @Composable (() -> Unit)? = null
+    variant: @Composable (() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
     WantedActionAreaLayout(
         modifier = modifier,

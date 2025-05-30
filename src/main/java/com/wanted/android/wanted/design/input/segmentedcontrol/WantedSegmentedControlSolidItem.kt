@@ -27,11 +27,37 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
+/**
+ * SegmentedControlSolid 내 개별 항목을 구성하는 아이템 컴포넌트입니다.
+ *
+ * 선택 상태에 따라 텍스트 색상이 달라지며, 선택 시 강조 색상(`label_normal`)이 적용됩니다.
+ * `SegmentedSize`에 따라 패딩 및 텍스트 스타일이 달라지며, 아이콘을 함께 표시할 수 있습니다.
+ * Solid 형태의 SegmentedControl에서 각 항목을 표현할 때 사용됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedSegmentedControlSolidItem(
+ *     title = "알림",
+ *     isSelected = true,
+ *     icon = {
+ *         Icon(
+ *             painter = painterResource(id = R.drawable.ic_info),
+ *             contentDescription = null
+ *         )
+ *     }
+ * )
+ * ```
+ *
+ * @param title String: 항목에 표시할 텍스트입니다.
+ * @param isSelected Boolean: 현재 항목이 선택되었는지 여부입니다.
+ * @param modifier Modifier: 외형을 조정하는 Modifier입니다.
+ * @param icon (() -> Unit)?: 항목 왼쪽에 표시할 선택적 아이콘 Composable입니다.
+ */
 @Composable
 fun WantedSegmentedControlSolidItem(
-    modifier: Modifier = Modifier,
     title: String,
     isSelected: Boolean,
+    modifier: Modifier = Modifier,
     icon: @Composable (() -> Unit)? = null
 ) {
     CompositionLocalProvider(

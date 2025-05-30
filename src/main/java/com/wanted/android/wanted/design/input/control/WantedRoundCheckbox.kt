@@ -44,17 +44,13 @@ class WantedRoundCheckBox : MaterialCheckBox {
 @Deprecated("Deprecated")
 @Composable
 fun WantedRoundCheckBox(
-    modifier: Modifier = Modifier,
     checked: Boolean,
+    modifier: Modifier = Modifier,
     isIndeterminate: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit),
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    colors: CheckboxColors = CheckboxDefaults.colors(
-        uncheckedColor = colorResource(id = R.color.line_normal_neutral),
-        checkedColor = colorResource(id = R.color.primary_normal)
-    ),
-    size: CheckBoxSize = CheckBoxSize.Normal
+    size: CheckBoxSize = CheckBoxSize.Normal,
+    onCheckedChange: (Boolean) -> Unit = {}
 ) {
     val toggleState = when {
         !checked -> ToggleableState.Off
@@ -72,10 +68,8 @@ fun WantedRoundCheckBox(
     )
 
     RoundCheckboxImpl(
-        enabled = enabled,
         value = toggleState,
         modifier = modifier.then(toggleableModifier),
-        colors = colors,
         size = size
     )
 }
@@ -83,9 +77,7 @@ fun WantedRoundCheckBox(
 @Composable
 private fun RoundCheckboxImpl(
     modifier: Modifier,
-    enabled: Boolean,
     value: ToggleableState,
-    colors: CheckboxColors,
     size: CheckBoxSize
 ) {
     Box(
@@ -105,60 +97,6 @@ private fun RoundCheckboxImpl(
         )
     }
 }
-//    val borderColor = colors.borderColor(enabled = enabled, state = value).value
-//    val boxColor = colors.boxColor(enabled = enabled, state = value).value
-//    val checkmarkColor = colors.checkmarkColor(state = value).value
-//
-//    val height = remember { mutableStateOf(0.dp) }
-//    val width = remember { mutableStateOf(0.dp) }
-//    val localDensity = LocalDensity.current
-//
-//
-//    Box(
-//        modifier = Modifier
-//            .size(24.dp)
-//            .defaultMinSize(18.dp)
-//            .width(intrinsicSize = IntrinsicSize.Min)
-//            .height(intrinsicSize = IntrinsicSize.Min)
-//            .clip(CircleShape)
-//            .border(
-//                width = 2.dp,
-//                color = borderColor,
-//                CircleShape
-//            )
-//            .background(boxColor, CircleShape)
-//            .then(modifier)
-//            .onGloballyPositioned { coordinates ->
-//                // Set column height using the LayoutCoordinates
-//                height.value = with(localDensity) { coordinates.size.height.toDp() }
-//                width.value = with(localDensity) { coordinates.size.width.toDp() }
-//            },
-//        contentAlignment = Alignment.Center
-//    ) {
-//        val paddingValue = if (value == ToggleableState.Indeterminate) {
-//            5.dp
-//        } else {
-//            6.dp
-//        }
-//
-//        Image(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(paddingValue),
-//            painter = painterResource(
-//                if (value == ToggleableState.Indeterminate) {
-//                    R.drawable.icon_checkbox_indeterminate
-//                } else {
-//                    R.drawable.icon_checkbox_checked
-//                }
-//            ),
-//            contentDescription = "checkBox_check",
-//            colorFilter = ColorFilter.tint(
-//                color = checkmarkColor
-//            )
-//        )
-//    }
-//}
 
 @DevicePreviews
 @Composable

@@ -88,17 +88,17 @@ fun String.accent(
 
 
 @Composable
-fun Modifier.getBoarderModifier(
+fun Modifier.getBorderModifier(
     size: Dp,
     isCircleShape: Boolean,
-    boarderType: BoarderType,
+    borderType: BorderType,
     cornerRadius: Dp = 0.dp,
-    boarderWidth: Dp = 1.dp,
-    boarderColor: Color = colorResource(id = R.color.label_normal).copy(OPACITY_5),
+    borderWidth: Dp = 1.dp,
+    borderColor: Color = colorResource(id = R.color.label_normal).copy(OPACITY_5),
     backgroundColor: Color = colorResource(id = R.color.static_white)
 ) = this.then(
-    when (boarderType) {
-        BoarderType.None -> {
+    when (borderType) {
+        BorderType.None -> {
             if (isCircleShape) {
                 Modifier
                     .clip(CircleShape)
@@ -110,27 +110,27 @@ fun Modifier.getBoarderModifier(
             }
         }
 
-        BoarderType.OutLine -> {
+        BorderType.OutLine -> {
             val localDensity = LocalDensity.current
             Modifier
                 .drawBehind {
                     if (isCircleShape) {
                         drawCircle(
-                            color = boarderColor,
-                            radius = with(localDensity) { (size + boarderWidth * 2).toPx() } / 2,
+                            color = borderColor,
+                            radius = with(localDensity) { (size + borderWidth * 2).toPx() } / 2,
                             center = center,
                             style = Fill
                         )
                     } else {
                         drawRoundRect(
-                            color = boarderColor,
+                            color = borderColor,
                             topLeft = Offset(
-                                -with(localDensity) { boarderWidth.toPx() },
-                                -with(localDensity) { boarderWidth.toPx() }),
+                                -with(localDensity) { borderWidth.toPx() },
+                                -with(localDensity) { borderWidth.toPx() }),
                             size = Size(
-                                with(localDensity) { (size + boarderWidth * 2).toPx() },
-                                with(localDensity) { (size + boarderWidth * 2).toPx() }),
-                            cornerRadius = CornerRadius(with(localDensity) { (cornerRadius + boarderWidth).toPx() }),
+                                with(localDensity) { (size + borderWidth * 2).toPx() },
+                                with(localDensity) { (size + borderWidth * 2).toPx() }),
+                            cornerRadius = CornerRadius(with(localDensity) { (cornerRadius + borderWidth).toPx() }),
                             style = Fill
                         )
                     }
@@ -145,14 +145,14 @@ fun Modifier.getBoarderModifier(
                 )
         }
 
-        BoarderType.InnerLine -> {
+        BorderType.InnerLine -> {
             if (isCircleShape) {
                 Modifier
                     .clip(CircleShape)
                     .background(color = backgroundColor)
                     .border(
-                        width = boarderWidth,
-                        color = boarderColor,
+                        width = borderWidth,
+                        color = borderColor,
                         shape = CircleShape
                     )
             } else {
@@ -160,8 +160,8 @@ fun Modifier.getBoarderModifier(
                     .clip(RoundedCornerShape(cornerRadius))
                     .background(color = backgroundColor)
                     .border(
-                        width = boarderWidth,
-                        color = boarderColor,
+                        width = borderWidth,
+                        color = borderColor,
                         shape = RoundedCornerShape(cornerRadius)
                     )
             }
@@ -170,7 +170,7 @@ fun Modifier.getBoarderModifier(
 )
 
 
-enum class BoarderType {
+enum class BorderType {
     None,
     InnerLine,
     OutLine

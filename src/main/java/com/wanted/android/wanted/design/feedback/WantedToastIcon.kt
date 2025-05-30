@@ -27,9 +27,9 @@ import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
 internal fun WantedToastIcon(
-    modifier: Modifier = Modifier,
     @DrawableRes resourceId: Int,
     tint: Color,
+    modifier: Modifier = Modifier,
     size: Dp = 22.dp
 ) {
     Box(

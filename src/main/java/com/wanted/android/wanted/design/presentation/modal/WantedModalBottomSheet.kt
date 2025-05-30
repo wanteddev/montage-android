@@ -22,19 +22,43 @@ import com.wanted.android.wanted.design.presentation.modal.WantedModalDefaults.h
 import com.wanted.android.wanted.design.presentation.modal.draggable.WantedDraggableModalBottomSheet
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
 
-
+/**
+ * 시스템 또는 사용자 정의 가능한 BottomSheet 형태의 모달입니다.
+ *
+ * `isSystemBottomSheet` 여부에 따라 `ModalBottomSheet` 또는 `WantedDraggableModalBottomSheet`를 사용합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedModalBottomSheet(
+ *     isShow = true,
+ *     onDismissRequest = {},
+ *     content = { Text("시트 내용") }
+ * )
+ * ```
+ *
+ * @param isShow Boolean: 모달 표시 여부입니다.
+ * @param onDismissRequest () -> Unit: 닫힘 콜백입니다.
+ * @param modifier Modifier: 외형 조정 Modifier입니다.
+ * @param background Color: 배경 색상입니다.
+ * @param type ModalType: 시트 유형 (Flexible, Fixed 등)입니다.
+ * @param modalSize ModalSize: 콘텐츠 패딩 등을 조절하는 크기 설정입니다.
+ * @param dismissOnClickOutside Boolean: 외부 클릭 시 닫힘 여부입니다.
+ * @param topBar @Composable (() -> Unit)?: 상단 바입니다.
+ * @param bottomBar @Composable (() -> Unit)?: 하단 바입니다.
+ * @param content @Composable () -> Unit: 본문 콘텐츠입니다.
+ */
 @Composable
 fun WantedModalBottomSheet(
-    modifier: Modifier = Modifier,
     isShow: Boolean,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
     background: Color = colorResource(id = R.color.background_elevated_normal),
     type: ModalType = ModalType.Flexible,
     modalSize: ModalSize = ModalSize.Medium,
     dismissOnClickOutside: Boolean = true,
-    onDismissRequest: () -> Unit,
     topBar: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit,
-    bottomBar: (@Composable () -> Unit)? = null
+    bottomBar: (@Composable () -> Unit)? = null,
+    content: @Composable () -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = type !is ModalType.Flexible,

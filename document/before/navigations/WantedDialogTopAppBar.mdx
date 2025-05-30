@@ -1,0 +1,137 @@
+
+---
+title: DialogTopAppBar
+description: 다이얼로그 스타일의 TopAppBar 컴포저블 모음
+image: /components/dialog-top-app-bar/design/thumbnail.png
+createdAt: 2025-05-09
+---
+
+## WantedDialogTopAppBar
+
+다이얼로그에서 사용하는 일반 상단 앱바입니다. 타이틀은 좌측 정렬되며, 필요에 따라 좌우 아이콘 및 액션을 설정할 수 있습니다.
+
+### 사용 예시
+```kotlin
+WantedDialogTopAppBar(
+    title = "다이얼로그 제목",
+    navigationIcon = { Icon(...) },
+    actions = { IconButton(...) }
+)
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | `Modifier` | 앱바 외형 및 배치를 조정하는 Modifier입니다. |
+| windowInsets | `WindowInsets` | 인셋 정보를 적용합니다. |
+| background | `Color` | 앱바 배경 색상입니다. |
+| type | `TopAppBarType` | 앱바 스타일 (Normal, Floating, Extended)입니다. |
+| scrollableState | `ScrollableState?` | 스크롤 상태입니다. |
+| title | `String` | 타이틀 텍스트입니다. |
+| navigationIcon | `@Composable (() -> Unit)?` | 좌측 아이콘 컴포저블입니다. |
+| actions | `@Composable RowScope.() -> Unit?` | 우측 액션 아이콘 영역입니다. |
+
+---
+
+
+
+## WantedDialogCloseTopAppBar
+
+닫기 아이콘이 포함된 다이얼로그 상단 앱바입니다. 우측 닫기 아이콘 클릭 시 콜백을 받을 수 있습니다.
+
+### 사용 예시
+```kotlin
+WantedDialogCloseTopAppBar(
+    title = "닫기형 타이틀",
+    onClickBack = { /* 닫기 처리 */ }
+)
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | `Modifier` | 앱바 외형 및 배치를 조정하는 Modifier입니다. |
+| windowInsets | `WindowInsets` | 인셋 정보를 적용합니다. |
+| background | `Color` | 앱바 배경 색상입니다. |
+| type | `TopAppBarType` | 앱바 스타일 (Normal, Floating, Extended)입니다. |
+| scrollableState | `ScrollableState?` | 스크롤 상태입니다. |
+| navigationIcon | `@Composable (() -> Unit)?` | 좌측 아이콘 컴포저블입니다. |
+| title | `String` | 타이틀 텍스트입니다. |
+| onClickBack | `() -> Unit` | 닫기 아이콘 클릭 시 실행되는 콜백입니다. |
+
+---
+
+
+
+## WantedDialogCenterTopAppBar
+
+타이틀이 중앙에 배치된 다이얼로그용 앱바입니다. Normal 및 Floating, Extended 스타일 모두 지원합니다.
+
+### 사용 예시
+```kotlin
+WantedDialogCenterTopAppBar(
+    title = "중앙 타이틀",
+    actions = { IconButton(...) }
+)
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | `Modifier` | 앱바 외형 및 배치를 조정하는 Modifier입니다. |
+| windowInsets | `WindowInsets` | 인셋 정보를 적용합니다. |
+| background | `Color` | 앱바 배경 색상입니다. |
+| type | `TopAppBarType` | 앱바 스타일 (Normal, Floating, Extended)입니다. |
+| scrollableState | `ScrollableState?` | 스크롤 상태입니다. |
+| title | `String` | 타이틀 텍스트입니다. |
+| navigationIcon | `@Composable (() -> Unit)?` | 좌측 아이콘 컴포저블입니다. |
+| actions | `@Composable RowScope.() -> Unit?` | 우측 액션 컴포저블입니다. |
+
+---
+
+
+
+## WantedDialogCenterCloseTopAppBar
+
+중앙 타이틀과 우측 닫기 아이콘이 함께 있는 앱바입니다. 닫기 콜백을 처리할 수 있습니다.
+
+### 사용 예시
+```kotlin
+WantedDialogCenterCloseTopAppBar(
+    title = "중앙+닫기 앱바",
+    onClickBack = { /* 닫기 */ }
+)
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | `Modifier` | 앱바 외형 및 배치를 조정하는 Modifier입니다. |
+| windowInsets | `WindowInsets` | 인셋 정보를 적용합니다. |
+| background | `Color` | 앱바 배경 색상입니다. |
+| type | `TopAppBarType` | 앱바 스타일 (Normal, Floating, Extended)입니다. |
+| scrollableState | `ScrollableState?` | 스크롤 상태입니다. |
+| title | `String` | 중앙 정렬 타이틀입니다. |
+| navigationIcon | `@Composable (() -> Unit)?` | 좌측 아이콘 컴포저블입니다. |
+| onClickBack | `() -> Unit` | 닫기 버튼 클릭 시 콜백입니다. |
+
+---
+
+
+
+## Enum 설명
+
+### TopAppBarType
+| 값 | 설명 |
+|:---|:---|
+| Normal | 일반 앱바 스타일입니다. |
+| Extended | 확장된 형태로 타이틀 외 요소를 추가로 표시합니다. |
+| Floating | 배경이 투명한 공중형 앱바입니다. |
+
+---
+
+
+
+## Note
+- 닫기 버튼은 항상 우측 정렬되며 스타일은 앱바 타입에 따라 자동 적용됩니다.
+- 배경 색상은 Elevated 스타일에 적합한 기본값을 따릅니다.

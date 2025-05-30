@@ -17,9 +17,28 @@ import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.OPACITY_16
 
+
+/**
+ * Linear 방식의 shimmer 애니메이션을 적용하는 Modifier 확장 함수입니다.
+ *
+ * 주기적으로 좌상단에서 우하단 방향으로 흐르는 그라디언트 효과를 제공합니다.
+ * 일반적으로 스켈레톤 UI 등에 사용되며, 색상 및 투명도를 설정할 수 있습니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * Modifier.shimmerLinear(
+ *     colorRes = R.color.fill_alternative,
+ *     alpha = 0.16f
+ * )
+ * ```
+ *
+ * @param colorRes Int: 그라디언트 색상의 리소스 ID입니다. 기본값은 `R.color.fill_alternative`입니다.
+ * @param alpha Float: 투명도 값으로, 0.0 ~ 1.0 사이입니다. 기본값은 `OPACITY_16`입니다.
+ * @return Modifier: shimmer 애니메이션이 적용된 Modifier를 반환합니다.
+ */
 fun Modifier.shimmerLinear(
     colorRes: Int = R.color.fill_alternative,
-    alpha: Float = OPACITY_16
+    alpha: Float = OPACITY_16,
 ): Modifier = composed {
     val transition = rememberInfiniteTransition(label = "")
     val translateAnimation by transition.animateFloat(
@@ -35,22 +54,20 @@ fun Modifier.shimmerLinear(
         colorResource(id = colorRes),
         colorResource(id = colorRes).copy(alpha = alpha),
     )
-    return@composed this.then(
-        drawWithContent {
-            drawContent()
-            drawRect(
-                Brush.linearGradient(
-                    colors = shimmerColors,
-                    start = Offset(translateAnimation, translateAnimation),
-                    end = Offset(
-                        translateAnimation + GRADATION_DISTANCE_X,
-                        translateAnimation + GRADATION_DISTANCE_ANGLE
-                    ),
-                    tileMode = TileMode.Mirror,
-                )
+    drawWithContent {
+        drawContent()
+        drawRect(
+            Brush.linearGradient(
+                colors = shimmerColors,
+                start = Offset(translateAnimation, translateAnimation),
+                end = Offset(
+                    translateAnimation + GRADATION_DISTANCE_X,
+                    translateAnimation + GRADATION_DISTANCE_ANGLE
+                ),
+                tileMode = TileMode.Mirror,
             )
-        }
-    )
+        )
+    }
 }
 
 private const val ANIMATION_DURATION = 1500

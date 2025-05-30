@@ -12,8 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 
-// https://github.com/wanteddev/montage-common/tree/release/packages/montage-themes/tokens/color
-
 private val DefaultColors = WantedColors(
     staticWhite = Color(0xffffffff),
     staticBlack = Color(0xff000000),
