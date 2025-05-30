@@ -66,7 +66,7 @@ fun WantedPullToRefreshBox(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     state: PullToRefreshState = rememberPullToRefreshState(),
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val scale = remember { Animatable(1f) }
