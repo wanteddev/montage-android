@@ -19,14 +19,14 @@ import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.M
 
 
 @Composable
-fun WantedDialogLayout(
+internal fun WantedDialogLayout(
+    modalSize: ModalSize,
     modifier: Modifier = Modifier,
     backgroundColor: Color = colorResource(R.color.background_elevated_normal),
-    modalSize: ModalSize,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit,
-    bottomBar: (@Composable () -> Unit)? = null
+    bottomBar: (@Composable () -> Unit)? = null,
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -35,9 +35,6 @@ fun WantedDialogLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        /**
-         * topBar
-         */
         topBar?.let {
             Box(
                 modifier = Modifier
@@ -50,9 +47,6 @@ fun WantedDialogLayout(
 
         }
 
-        /**
-         * content
-         */
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,9 +55,6 @@ fun WantedDialogLayout(
             content()
         }
 
-        /**
-         * bottomBar
-         */
         bottomBar?.let {
             // bottomBar
             Box(

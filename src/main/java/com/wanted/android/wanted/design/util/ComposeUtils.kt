@@ -138,10 +138,6 @@ fun String.bold(vararg subText: String): AnnotatedString {
     return AnnotatedString(text = this, spanStyles = spanStyles)
 }
 
-/**
- * Converts a [Spanned] into an [AnnotatedString] trying to keep as much formatting as possible.
- * Currently supports `bold`, `italic`, `underline` and `color`.
- */
 @Composable
 fun String.toAnnotatedString(): AnnotatedString  {
     val spanned = HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_COMPACT)
@@ -165,10 +161,6 @@ fun String.toAnnotatedString(): AnnotatedString  {
     }
 }
 
-/**
- * Converts a [Spanned] into an [AnnotatedString] trying to keep as much formatting as possible.
- * Currently supports `bold`, `italic`, `underline` and `color`.
- */
 @Composable
 fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
     val spanned = this@toAnnotatedString

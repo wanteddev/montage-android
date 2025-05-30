@@ -44,14 +44,7 @@ import com.wanted.android.wanted.design.util.getButtonRadius
 import com.wanted.android.wanted.design.util.getButtonWidth
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
-/**
- *
- * Button Design System link
- * https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=423-8298&t=YgKbX4F2B73vuTbS-0
- *
- * Button Design System Guide
- * https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1373-26592&t=a5QyDszAwnnfpwdQ-0
- */
+
 class WantedSolidButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -113,21 +106,21 @@ class WantedSolidButton @JvmOverloads constructor(
 
 @Composable
 internal fun WantedSolidButton(
+    text: String,
     modifier: Modifier = Modifier,
-    text: String = "",
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
     enabled: Boolean = true,
     isLoading: Boolean = false,
+    leadingDrawable: Int? = null,
+    trailingDrawable: Int? = null,
+    onClick: () -> Unit = {},
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
         shape = ButtonShape.SOLID,
         type = type,
         size = size,
         enabled = enabled
-    ),
-    leadingDrawable: Int? = null,
-    trailingDrawable: Int? = null,
-    onClick: () -> Unit = {}
+    )
 ) {
     WantedButtonLayout(
         modifier = modifier
@@ -216,7 +209,7 @@ internal fun WantedSolidButton(
 
 @Preview
 @Composable
-fun PreviewSolidButtons() {
+private fun PreviewSolidButtons() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -260,7 +253,7 @@ fun PreviewSolidButtons() {
 
 @Preview
 @Composable
-fun PreviewWantedSolidButtonIconOnlySmallNoDrawableEnable() {
+private fun PreviewWantedSolidButtonIconOnlySmallNoDrawableEnable() {
     Column(
         modifier = Modifier
             .background(colorResource(id = R.color.background_normal_normal))

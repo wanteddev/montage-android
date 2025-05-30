@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun WantedTextAreaLayout(
     modifier: Modifier = Modifier,
-    textField: @Composable () -> Unit,
     leftContent: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null
+    rightContent: @Composable (() -> Unit)? = null,
+    textField: @Composable () -> Unit
 ) {
 
     Column(

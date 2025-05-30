@@ -35,12 +35,41 @@ import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-
+/**
+ * SegmentedControlOutlined 내 개별 항목을 구성하는 아이템 컴포넌트입니다.
+ *
+ * 선택 여부에 따라 배경 색상, 테두리 색상, 텍스트 색상이 달라지며,
+ * 좌우 끝 항목 여부에 따라 각진 모서리 처리가 적용됩니다.
+ * 또한, 필요 시 아이콘을 함께 표시할 수 있습니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedSegmentedControlOutlinedItem(
+ *     title = "Option",
+ *     isSelected = true,
+ *     isFirst = true,
+ *     isLast = false,
+ *     icon = {
+ *         Icon(
+ *             painter = painterResource(id = R.drawable.ic_info),
+ *             contentDescription = null
+ *         )
+ *     }
+ * )
+ * ```
+ *
+ * @param title String: 항목에 표시할 텍스트입니다.
+ * @param isSelected Boolean: 항목이 선택된 상태인지 여부입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param isFirst Boolean: 해당 항목이 첫 번째 항목인지 여부입니다. 좌측 모서리 스타일에 영향을 줍니다.
+ * @param isLast Boolean: 해당 항목이 마지막 항목인지 여부입니다. 우측 모서리 스타일에 영향을 줍니다.
+ * @param icon (() -> Unit)?: 항목 왼쪽에 표시할 선택적 아이콘 Composable입니다.
+ */
 @Composable
 fun WantedSegmentedControlOutlinedItem(
-    modifier: Modifier = Modifier,
     title: String,
     isSelected: Boolean,
+    modifier: Modifier = Modifier,
     isFirst: Boolean = false,
     isLast: Boolean = false,
     icon: @Composable (() -> Unit)? = null

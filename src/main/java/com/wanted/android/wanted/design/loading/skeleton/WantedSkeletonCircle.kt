@@ -16,6 +16,20 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
+
+/**
+ * 원형 스켈레톤 UI를 구성하는 컴포저블입니다.
+ *
+ * 내부적으로 `WantedSkeletonRectangle`을 `CircleShape`로 설정하여 사용합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedSkeletonCircle(modifier = Modifier.size(100.dp))
+ * ```
+ *
+ * @param modifier Modifier: 외형 및 배치를 조정합니다.
+ * @param color Color: 배경 색상입니다.
+ */
 @Composable
 fun WantedSkeletonCircle(
     modifier: Modifier = Modifier,

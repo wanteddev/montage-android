@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.contents.card
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -28,19 +29,48 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=23188-76308&m=dev
- * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3295-855&m=dev
+ * 가로형 카드 컴포저블입니다.
+ *
+ * 썸네일과 설명 영역을 좌우로 배치한 형태의 카드입니다.
+ * 로딩 상태에서는 Skeleton UI가 나타나며, 상단/하단 커스텀 콘텐츠와 좌우 콘텐츠 Slot을 제공합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedCardHorizontal(
+ *     modifier = Modifier.fillMaxWidth(),
+ *     title = "제목",
+ *     caption = "캡션",
+ *     extraCaption = "추가 설명",
+ *     topContent = { WantedContentBadge(text = "상단") },
+ *     bottomContent = { WantedContentBadge(text = "하단") },
+ *     leftContent = { WantedCheckBox(...) },
+ *     rightContent = { Icon(...) },
+ *     onClick = { /* 클릭 처리 */ }
+ * )
+ * ```
+ *
+ * @param modifier Modifier: 컴포넌트의 레이아웃과 스타일을 조정합니다.
+ * @param thumbnail Any?: 썸네일 이미지 리소스 또는 URL입니다. null이면 표시되지 않습니다.
+ * @param title String: 카드의 주요 제목입니다.
+ * @param caption String: 제목 아래에 표시될 보조 설명입니다.
+ * @param extraCaption String: 추가적인 설명 텍스트입니다.
+ * @param isLoading Boolean: true일 경우 스켈레톤 UI로 렌더링됩니다.
+ * @param cardDefault WantedCardDefault: 스켈레톤 모드 시 항목별 표시 여부를 지정하는 설정 객체입니다.
+ * @param topContent @Composable (() -> Unit)?: 설명 위에 표시될 추가 콘텐츠입니다.
+ * @param bottomContent @Composable (() -> Unit)?: 설명 아래에 표시될 추가 콘텐츠입니다.
+ * @param leftContent @Composable (() -> Unit)?: 썸네일 왼쪽에 표시될 콘텐츠입니다. (예: 체크박스)
+ * @param rightContent @Composable (() -> Unit)?: 설명 오른쪽에 표시될 콘텐츠입니다. (예: 아이콘 버튼)
+ * @param onClick () -> Unit: 카드 클릭 시 호출되는 콜백 함수입니다.
  */
-
 @Composable
 fun WantedCardHorizontal(
     modifier: Modifier = Modifier,
@@ -116,7 +146,7 @@ private fun WantedCardHorizontalSkeleton(
     extraCaption: Boolean = true,
     bottomContent: Boolean = false,
     leftContent: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null,
+    rightContent: @Composable (() -> Unit)? = null
 ) {
     WantedCardHorizontalLayout(
         modifier = modifier,
@@ -145,10 +175,11 @@ private fun WantedCardHorizontalSkeleton(
     )
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedCardHorizontalLayout(
     modifier: Modifier = Modifier,
-    thumbnail: @Composable (width: Dp, height: Dp) -> Unit,
+    thumbnail: @Composable (width: Dp, height: Dp) -> Unit = { _, _ -> },
     description: @Composable (() -> Unit)? = null,
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null

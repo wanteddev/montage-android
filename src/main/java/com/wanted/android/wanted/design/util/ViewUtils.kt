@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.ImageViewCompat
 
-/** DP to Pixel */
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 

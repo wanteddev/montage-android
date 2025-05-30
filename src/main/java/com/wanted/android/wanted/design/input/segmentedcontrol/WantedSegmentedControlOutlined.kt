@@ -27,24 +27,42 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=22610-72534&m=dev
+ * 텍스트 리스트를 기반으로 하는 Segmented Control 컴포넌트입니다.
  *
- * icon의 색상은 text color와 동일하게 적용된다.
- * tint를 적용하면 tint color가 적용된다.
+ * 아이템들을 테두리 형태로 구분하여 선택할 수 있으며, 선택된 항목의 인덱스를 콜백으로 전달합니다.
+ * 내부적으로 `WantedSegmentedControlOutlinedItem`을 사용하며, 선택 상태에 따라 스타일이 변경됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val items = listOf("One", "Two", "Three")
+ * var selectedIndex by remember { mutableIntStateOf(0) }
+ *
+ * WantedSegmentedControlOutlined(
+ *     items = items,
+ *     selectedIndex = selectedIndex,
+ *     onClick = { selectedIndex = it }
+ * )
+ * ```
+ *
+ * @param items List<String>: 항목에 표시할 텍스트 리스트입니다.
+ * @param selectedIndex Int: 선택된 항목의 인덱스입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param size WantedSegmentedContract.SegmentedSize: 세그먼트의 크기입니다 (Small, Medium, Large).
+ * @param onClick (index: Int) -> Unit: 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다.
  */
 @Composable
 fun WantedSegmentedControlOutlined(
-    modifier: Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     items: List<String>,
     selectedIndex: Int,
-    onClick: (index: Int) -> Unit = {}
+    modifier: Modifier = Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
+    onClick: (index: Int) -> Unit = {},
 ) {
     CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
         WantedSegmentedControlOutlined(
@@ -52,7 +70,6 @@ fun WantedSegmentedControlOutlined(
             size = size,
             itemCount = items.size,
             onClick = onClick,
-            selectedIndex = selectedIndex,
             item = { index ->
                 WantedSegmentedControlOutlinedItem(
                     modifier = Modifier.fillMaxWidth(),
@@ -66,14 +83,40 @@ fun WantedSegmentedControlOutlined(
     }
 }
 
+
+/**
+ * 사용자 정의 슬롯 방식으로 구성할 수 있는 Segmented Control 컴포저블입니다.
+ *
+ * 항목 수와 개별 항목 Composable을 입력받아 세그먼트를 구성하며,
+ * 클릭 시 콜백을 통해 선택된 인덱스를 반환합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedSegmentedControlOutlined(
+ *     itemCount = 3,
+ *     item = { index ->
+ *         WantedSegmentedControlOutlinedItem(
+ *             title = "Item $index",
+ *             isSelected = selectedIndex == index
+ *         )
+ *     },
+ *     onClick = { index -> selectedIndex = index }
+ * )
+ * ```
+ *
+ * @param itemCount Int: 표시할 항목의 수입니다.
+ * @param item (index: Int) -> Unit: 각 인덱스에 대응하는 항목 Composable 슬롯입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param size WantedSegmentedContract.SegmentedSize: 세그먼트 크기 설정입니다.
+ * @param onClick (index: Int) -> Unit: 항목 클릭 시 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedSegmentedControlOutlined(
-    modifier: Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
     itemCount: Int,
-    selectedIndex: Int,
     item: @Composable (index: Int) -> Unit,
-    onClick: (index: Int) -> Unit = {}
+    modifier: Modifier = Modifier,
+    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
+    onClick: (index: Int) -> Unit = {},
 ) {
     CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
         Row(
@@ -148,7 +191,6 @@ private fun WantedSegmentedControlSolidPreview() {
                 WantedSegmentedControlOutlined(
                     modifier = Modifier,
                     itemCount = items.size,
-                    selectedIndex = selectedIndex,
                     onClick = {
                         selectedIndex = it
                     },

@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.navigations.tab
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -46,20 +47,48 @@ import com.wanted.android.wanted.design.navigations.tab.WantedTabContract.TabSiz
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
+/**
+ * 스크롤 가능한 탭 레이아웃을 제공하는 컴포저블입니다.
+ *
+ * 좌우 gradient 효과, 우측 아이콘, 가변 너비를 지원하며,
+ * 선택된 탭은 SecondaryIndicator로 강조됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedScrollableTabRow(
+ *     itemCount = 5,
+ *     selectedTabIndex = 2,
+ *     content = { index -> "탭$index" }
+ * )
+ * ```
+ *
+ * @param itemCount Int: 탭 항목 수입니다.
+ * @param selectedTabIndex Int: 현재 선택된 탭 인덱스입니다.
+ * @param modifier Modifier: 레이아웃 설정용 Modifier입니다.
+ * @param tabSize TabSize: 탭 크기 설정입니다.
+ * @param horizontalPadding Boolean: 양쪽 여백을 둘지 여부입니다.
+ * @param isLeftGradient Boolean: 왼쪽에 gradient를 표시할지 여부입니다.
+ * @param isRightGradient Boolean: 오른쪽에 gradient를 표시할지 여부입니다.
+ * @param gradientColor Color: gradient 색상입니다.
+ * @param scrollState ScrollState: 외부에서 전달받은 스크롤 상태입니다.
+ * @param onClickItem (index: Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
+ * @param rightIcon @Composable ((Dp) -> Unit)? : 탭 우측에 추가할 아이콘 슬롯입니다.
+ * @param content (index: Int) -> String: 각 탭의 텍스트를 반환합니다.
+ */
 @Composable
 fun WantedScrollableTabRow(
-    modifier: Modifier,
-    tabSize: TabSize = TabSize.Medium,
     itemCount: Int,
     selectedTabIndex: Int,
+    modifier: Modifier = Modifier,
+    tabSize: TabSize = TabSize.Medium,
     horizontalPadding: Boolean = false,
     isLeftGradient: Boolean = false,
     isRightGradient: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
     scrollState: ScrollState = rememberScrollState(),
-    content: (index: Int) -> String,
     onClickItem: (index: Int) -> Unit = {},
-    rightIcon: @Composable ((Dp) -> Unit)? = null
+    rightIcon: @Composable ((Dp) -> Unit)? = null,
+    content: (index: Int) -> String
 ) {
     CompositionLocalProvider(LocalTabGradationColor provides gradientColor) {
         WantedTabLayout(
@@ -86,14 +115,14 @@ fun WantedScrollableTabRow(
 
 @Composable
 private fun WantedScrollableFlexTabRow(
-    modifier: Modifier = Modifier,
     tabSize: TabSize,
     itemCount: Int,
     selectedTabIndex: Int,
     horizontalPadding: Boolean,
     scrollState: ScrollState,
-    content: (index: Int) -> String,
+    modifier: Modifier = Modifier,
     onClickItem: (index: Int) -> Unit = {},
+    content: (index: Int) -> String
 ) {
     val density = LocalDensity.current
     val tabWidths = remember(itemCount) {
@@ -149,14 +178,15 @@ private fun WantedScrollableFlexTabRow(
     }
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedTabLayout(
-    modifier: Modifier = Modifier,
     tabSize: TabSize,
     isLeftGradient: Boolean,
     isRightGradient: Boolean,
-    tab: @Composable () -> Unit,
-    rightIcon: @Composable ((Dp) -> Unit)?
+    modifier: Modifier = Modifier,
+    rightIcon: @Composable ((Dp) -> Unit)? = null,
+    tab: @Composable () -> Unit
 ) {
     Box(
         modifier = modifier

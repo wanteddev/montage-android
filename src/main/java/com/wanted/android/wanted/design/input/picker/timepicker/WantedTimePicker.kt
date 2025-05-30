@@ -34,21 +34,51 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import java.util.Calendar
 
+/**
+ * 시계 및 입력 형식을 지원하는 시간 선택 다이얼로그입니다.
+ *
+ * 사용자는 시계 기반 또는 직접 입력 기반의 시간 선택 UI를 전환하여 사용할 수 있으며,
+ * 선택 후 확인/취소 버튼으로 결과를 확정하거나 다이얼로그를 닫을 수 있습니다.
+ * 내부적으로 `TimePicker` 또는 `TimeInput`을 사용하며, 선택 모드 전환 버튼을 제공합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedTimePicker(
+ *     title = "시간 선택",
+ *     confirm = "확인",
+ *     cancel = "취소",
+ *     onClickConfirm = { /* 확인 처리 */ },
+ *     onClickCancel = { /* 취소 처리 */ },
+ *     onDismissRequest = { /* 다이얼로그 종료 처리 */ },
+ *     onClickChangeMode = { /* 입력 형식 전환 처리 */ },
+ *     isEnableClock = true
+ * )
+ * ```
+ *
+ * @param title String: 다이얼로그 상단 제목 텍스트입니다.
+ * @param confirm String: 확인 버튼 텍스트입니다.
+ * @param onClickConfirm () -> Unit: 확인 버튼 클릭 시 호출되는 콜백입니다.
+ * @param onClickChangeMode () -> Unit: 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다.
+ * @param onDismissRequest () -> Unit: 다이얼로그 외부 클릭 또는 닫기 시 호출되는 콜백입니다.
+ * @param cancel String?: 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다.
+ * @param isEnableClock Boolean: true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다.
+ * @param onClickCancel () -> Unit: 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다.
+ */
 @Composable
 fun WantedTimePicker(
     title: String,
     confirm: String,
-    cancel: String? = null,
     onClickConfirm: () -> Unit,
-    onClickCancel: () -> Unit = {},
     onClickChangeMode: () -> Unit,
-    isEnableClock: Boolean = true,
     onDismissRequest: () -> Unit,
+    cancel: String? = null,
+    isEnableClock: Boolean = true,
+    onClickCancel: () -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = { onDismissRequest() },
@@ -71,14 +101,14 @@ fun WantedTimePicker(
 
 @Composable
 private fun WantedTimePickerContent(
-    modifier: Modifier = Modifier,
-    isEnableClock: Boolean = true,
     title: String,
     confirm: String,
-    cancel: String? = null,
     onClickConfirm: () -> Unit,
+    onClickChangeMode: () -> Unit,
+    modifier: Modifier = Modifier,
+    isEnableClock: Boolean = true,
+    cancel: String? = null,
     onClickCancel: () -> Unit = {},
-    onClickChangeMode: () -> Unit
 ) {
     val currentTime = Calendar.getInstance()
 
@@ -140,9 +170,9 @@ private fun WantedTimePickerContent(
 
 @Composable
 private fun TimepickerButton(
-    modifier: Modifier = Modifier,
     text: String,
-    onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     TextButton(
         modifier = modifier,
@@ -163,9 +193,9 @@ private fun TimepickerButton(
 
 @Composable
 private fun TimepickerModeChangeButton(
-    modifier: Modifier = Modifier,
     isEnableClock: Boolean,
-    onClickChangeMode: () -> Unit
+    modifier: Modifier = Modifier,
+    onClickChangeMode: () -> Unit = {},
 ) {
     WantedTouchArea(
         modifier = modifier,
@@ -252,7 +282,7 @@ private fun getWantedTimePickerDefaults(
     selectorColor = colorResource(R.color.primary_normal),
     // 시간 선택기의 배경 색상.
     containerColor = colorResource(R.color.background_elevated_normal),
-    // 오전 / 오후 boarder 색상
+    // 오전 / 오후 barder 색상
     periodSelectorBorderColor = colorResource(R.color.line_normal_normal),
     // 오전 / 오후 select 배경
     periodSelectorSelectedContainerColor = colorResource(R.color.fill_normal),

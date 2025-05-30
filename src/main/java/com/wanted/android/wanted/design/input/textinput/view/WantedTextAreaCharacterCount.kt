@@ -16,10 +16,10 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedTextAreaCharacterCount(
-    modifier: Modifier = Modifier,
-    error: Boolean = false,
     current: Int,
-    maxWordCount: Int
+    maxWordCount: Int,
+    modifier: Modifier = Modifier,
+    error: Boolean = false
 ) {
     Row(
         modifier = modifier.padding(horizontal = 6.dp),

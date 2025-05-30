@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.input.slider
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -34,20 +35,21 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun WantedRangeSlider(
-    modifier: Modifier,
-    scope: CoroutineScope = rememberCoroutineScope(),
     value: ClosedFloatingPointRange<Float>,
     valueRange: ClosedFloatingPointRange<Float>,
-    enabled: Boolean = true,
-    active: Boolean = true,
-    colors: SliderColors = SliderDefaults.colors(),
-    isRange: Boolean = false,
     thumbSize: Dp,
     trackHeight: Dp,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
-    onValueChangeFinished: (ClosedFloatingPointRange<Float>) -> Unit
+    onValueChangeFinished: (ClosedFloatingPointRange<Float>) -> Unit,
+    modifier: Modifier = Modifier,
+    scope: CoroutineScope = rememberCoroutineScope(),
+    enabled: Boolean = true,
+    active: Boolean = true,
+    colors: SliderColors = SliderDefaults.colors(),
+    isRange: Boolean = false
 ) {
     val density = LocalDensity.current
     val totalStep =

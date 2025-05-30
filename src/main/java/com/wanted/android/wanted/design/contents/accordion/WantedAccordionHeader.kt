@@ -35,14 +35,14 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedAccordionHeader(
-    modifier: Modifier = Modifier,
-    verticalPadding: VerticalPadding,
     title: String,
-    maxLine: Int = Int.MAX_VALUE,
+    verticalPadding: VerticalPadding,
     style: TextStyle,
     fillWidth: Boolean,
+    maxLine: Int = Int.MAX_VALUE,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailIcon: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Row(

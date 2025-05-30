@@ -91,26 +91,26 @@ internal fun getButtonTypography(
 ): TextStyle =
     getTextStyle(
         textStyle =
-        when (shape) {
-            ButtonShape.TEXT -> when (size) {
-                ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
-                else -> WantedTextStyle.BODY1_BOLD
-            }
+            when (shape) {
+                ButtonShape.TEXT -> when (size) {
+                    ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
+                    else -> WantedTextStyle.BODY1_BOLD
+                }
 
-            else -> if (type == ButtonType.ASSISTIVE) {
-                when (size) {
-                    ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
-                    ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
-                    ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
-                }
-            } else {
-                when (size) {
-                    ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
-                    ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
-                    ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                else -> if (type == ButtonType.ASSISTIVE) {
+                    when (size) {
+                        ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
+                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
+                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
+                    }
+                } else {
+                    when (size) {
+                        ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
+                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
+                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                    }
                 }
             }
-        }
     )
 
 @Composable

@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.navigations.progresstracker
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -23,15 +24,30 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=25951-95482&m=dev
+ * 수평형 단계 진행 표시 컴포저블입니다.
  *
+ * 전체 단계 수와 현재 진행 단계를 기준으로 진행 바와 단계 라벨을 렌더링합니다.
+ * 각 단계는 번호와 함께 완료/진행 중/예정 상태로 표시되며, 선택된 단계에 강조 스타일이 적용됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedProgressTrackerHorizontal(
+ *     stepCount = 4,
+ *     currentStep = 2,
+ *     label = { index -> "${index + 1}단계" }
+ * )
+ * ```
+ *
+ * @param stepCount Int: 전체 단계 수입니다.
+ * @param currentStep Int: 현재 선택된 단계 (1부터 시작)입니다.
+ * @param modifier Modifier: 외형 및 배치 조정을 위한 Modifier입니다.
+ * @param label ((Int) -> String)?: 각 단계별 라벨 텍스트를 반환하는 함수입니다.
  */
-
 @Composable
 fun WantedProgressTrackerHorizontal(
-    modifier: Modifier = Modifier,
     stepCount: Int,
     currentStep: Int,
+    modifier: Modifier = Modifier,
     label: ((index: Int) -> String)? = null
 ) {
     WantedProgressTrackerHorizontalLayout(
@@ -63,11 +79,12 @@ fun WantedProgressTrackerHorizontal(
     )
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedProgressTrackerHorizontalLayout(
-    modifier: Modifier = Modifier,
     stepCount: Int,
     progress: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     step: @Composable (index: Int) -> Unit
 ) {
 

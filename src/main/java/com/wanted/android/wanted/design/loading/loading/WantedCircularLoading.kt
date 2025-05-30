@@ -16,7 +16,23 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
- * 피그마 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3297-9864&t=GbyYpYYnAOI0hwwu-4
+ * 화면 중앙에 원형 로딩 인디케이터를 표시하는 컴포저블입니다.
+ *
+ * dim 배경 포함 여부, 크기, 색상을 설정할 수 있으며 전체 화면에 로딩을 표시할 때 사용합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedCircularLoading(
+ *     size = 32.dp,
+ *     circleColor = Color.Gray,
+ *     dimColor = Color.Black.copy(alpha = 0.3f)
+ * )
+ * ```
+ *
+ * @param modifier Modifier: 외형 및 배치 설정입니다.
+ * @param circleColor Color: 로딩 인디케이터 색상입니다.
+ * @param dimColor Color: 배경 dim 색상입니다.
+ * @param size Dp: 로딩 인디케이터 크기입니다.
  */
 @Composable
 fun WantedCircularLoading(
