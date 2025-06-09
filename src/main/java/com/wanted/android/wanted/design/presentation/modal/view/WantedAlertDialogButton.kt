@@ -15,9 +15,9 @@ import com.wanted.android.wanted.design.util.ButtonType
 
 @Composable
 internal fun WantedAlertDialogButton(
-    type: WantedAlertDialogButtonType = WantedAlertDialogButtonType.Positive,
     text: String,
-    onClick: () -> Unit
+    type: WantedAlertDialogButtonType = WantedAlertDialogButtonType.Positive,
+    onClick: () -> Unit = {}
 ) {
     when (type) {
         WantedAlertDialogButtonType.Positive -> {

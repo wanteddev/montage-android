@@ -27,9 +27,9 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
-fun WantedCardDescription(
-    modifier: Modifier = Modifier,
+internal fun WantedCardDescription(
     title: String,
+    modifier: Modifier = Modifier,
     maxLines: Int = 2,
     caption: String = "",
     subCaption: String = "",
@@ -47,7 +47,7 @@ fun WantedCardDescription(
                 overflow = TextOverflow.Ellipsis
             )
         },
-        cation = caption.ifEmpty { null }?.let {
+        caption = caption.ifEmpty { null }?.let {
             {
                 Text(
                     text = caption,
@@ -98,7 +98,7 @@ internal fun WantedCardDescriptionSkeleton(
                 length = WantedSkeletonLength.Ratio100
             )
         },
-        cation = if (caption) {
+        caption = if (caption) {
             {
                 WantedSkeletonText(
                     modifier = Modifier.height(18.dp),
@@ -125,11 +125,11 @@ internal fun WantedCardDescriptionSkeleton(
 internal fun WantedCardDescriptionLayout(
     modifier: Modifier = Modifier,
     topContent: @Composable (() -> Unit)? = null,
-    title: @Composable () -> Unit,
-    cation: @Composable (() -> Unit)? = null,
+    caption: @Composable (() -> Unit)? = null,
     subCaption: @Composable (() -> Unit)? = null,
     extraCaption: @Composable (() -> Unit)? = null,
-    bottomContent: @Composable (() -> Unit)? = null
+    bottomContent: @Composable (() -> Unit)? = null,
+    title: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier.padding(horizontal = 2.dp),
@@ -157,7 +157,7 @@ internal fun WantedCardDescriptionLayout(
                 style = DesignSystemTheme.typography.label2Medium
             )
         ) {
-            cation?.invoke()
+            caption?.invoke()
 
             subCaption?.let {
                 Spacer(Modifier.size(2.dp))

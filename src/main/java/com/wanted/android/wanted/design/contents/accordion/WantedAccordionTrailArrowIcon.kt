@@ -13,9 +13,9 @@ import com.wanted.android.designsystem.R
 
 @Composable
 internal fun WantedAccordionTrailArrowIcon(
-    modifier: Modifier = Modifier,
     isExpanded: Boolean,
-    tint: Color
+    tint: Color,
+    modifier: Modifier = Modifier
 ) {
     Icon(
         modifier = modifier

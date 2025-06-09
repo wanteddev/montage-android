@@ -31,7 +31,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
-import com.wanted.android.wanted.design.input.picker.WantedNumberPicker
+import com.wanted.android.wanted.design.input.picker.numberpicker.WantedNumberPicker
 import com.wanted.android.wanted.design.presentation.modal.WantedModal
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -39,18 +39,50 @@ import com.wanted.android.wanted.design.util.ButtonShape
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.DevicePreviews
 
-
+/**
+ * 연도 및 월을 선택할 수 있는 휠 형태의 날짜 선택 모달입니다.
+ *
+ * 사용자는 연도와 월을 각각 NumberPicker를 통해 선택할 수 있으며, 확인/취소 버튼을 통해 선택 값을 확정하거나 취소할 수 있습니다.
+ * 선택된 연도와 월은 콜백을 통해 반환되며, 기본 설정값은 `WantedDatePickerWheelDefaults.getDefault()`를 통해 조절 가능합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedDatePickerWheel(
+ *     title = "날짜 선택",
+ *     confirm = "확인",
+ *     cancel = "취소",
+ *     selectedYear = 2023,
+ *     selectedMonth = 1,
+ *     onSelect = { year, month ->
+ *         // 선택된 연도 및 월 처리
+ *     },
+ *     onDismissRequest = {
+ *         // 모달 닫힘 처리
+ *     }
+ * )
+ * ```
+ *
+ * @param title String: 다이얼로그 상단에 표시될 제목 텍스트입니다.
+ * @param confirm String: 확인 버튼 텍스트입니다.
+ * @param cancel String: 취소 버튼 텍스트입니다.
+ * @param selectedYear Int: 초기 선택된 연도입니다.
+ * @param selectedMonth Int: 초기 선택된 월입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param default WantedDatePickerWheelDefault: 날짜 휠 설정을 지정하는 기본값 객체입니다.
+ * @param onSelect (year: Int, month: Int) -> Unit: 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다.
+ * @param onDismissRequest () -> Unit: 다이얼로그가 닫힐 때 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedDatePickerWheel(
-    title: String,
-    confirm: String,
-    cancel: String,
-    selectedYear: Int,
-    selectedMonth: Int,
-    onSelect: (year: Int, month: Int) -> Unit,
-    onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
-    default: WantedDatePickerWheelDefault = WantedDatePickerWheelDefaults.getDefault(),
+    title: String,                                                       // 1. 필수
+    confirm: String,                                                     // 1. 필수
+    cancel: String,                                                      // 1. 필수
+    selectedYear: Int,                                                   // 1. 필수
+    selectedMonth: Int,                                                  // 1. 필수
+    modifier: Modifier = Modifier,                                       // 2. 첫 번째 Optional
+    default: WantedDatePickerWheelDefault = WantedDatePickerWheelDefaults.getDefault(),  // 3. 기타 Optional non-lambda
+    onSelect: (year: Int, month: Int) -> Unit = {_, _ -> },                      // 4. Optional 람다
+    onDismissRequest: () -> Unit = {}
 ) {
 
     var selectYear by remember(selectedYear) { mutableIntStateOf(selectedYear) }

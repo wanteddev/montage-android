@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.navigations.category
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,24 +32,50 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.chip.WantedActionChip
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionSize
-import com.wanted.android.wanted.design.actions.chip.WantedActionContract.ChipActionVariant
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChip
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
+import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipVariant
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryContract.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 
+/**
+ * 선택형 액션칩 목록을 표시하는 카테고리 컴포넌트입니다.
+ *
+ * 전달된 문자열 리스트를 기반으로 원하는 크기, 스타일, 정렬 및 선택 상태로 액션칩을 구성합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedCategory(
+ *     itemList = listOf("태그1", "태그2"),
+ *     selectedList = listOf("태그1"),
+ *     onClick = { tag, selected -> ... }
+ * )
+ * ```
+ *
+ * @param itemList List<String>: 표시할 문자열 목록입니다.
+ * @param selectedList List<String>: 선택된 항목 리스트입니다.
+ * @param modifier Modifier: 레이아웃 설정용 Modifier입니다.
+ * @param state LazyListState: 내부 LazyRow 상태를 제어하는 객체입니다.
+ * @param size Size: 카테고리 항목 크기입니다.
+ * @param horizontalPadding Boolean: 좌우 여백 여부입니다.
+ * @param isVerticalPadding Boolean: 상하 여백 여부입니다.
+ * @param isAlternative Boolean: 선택 시 Outlined 스타일 적용 여부입니다.
+ * @param gradientColor Color: 좌우 그라디언트 배경 색상입니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 우측에 표시할 아이콘 슬롯입니다.
+ * @param onClick (item: String, isSelected: Boolean) -> Unit: 항목 클릭 시 선택 상태를 포함하여 호출됩니다.
+ */
 @Composable
 fun WantedCategory(
-    modifier: Modifier,
+    itemList: List<String>,
+    selectedList: List<String>,
+    modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     size: Size = Size.Medium,
     horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
     isAlternative: Boolean = false,
-    itemList: List<String>,
-    selectedList: List<String>,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
     rightIcon: @Composable ((Dp) -> Unit)? = null,
     onClick: (item: String, isSelected: Boolean) -> Unit
@@ -67,18 +94,18 @@ fun WantedCategory(
                     text = item,
                     variant = if (selectedList.contains(item)) {
                         if (isAlternative) {
-                            ChipActionVariant.Outlined
+                            ActionChipVariant.Outlined
                         } else {
-                            ChipActionVariant.Solid
+                            ActionChipVariant.Solid
                         }
                     } else {
-                        ChipActionVariant.Outlined
+                        ActionChipVariant.Outlined
                     },
                     size = when (size) {
-                        Size.Small -> ChipActionSize.XSmall
-                        Size.Medium -> ChipActionSize.Small
-                        Size.Large -> ChipActionSize.Medium
-                        Size.XLarge -> ChipActionSize.Large
+                        Size.Small -> ActionChipSize.XSmall
+                        Size.Medium -> ActionChipSize.Small
+                        Size.Large -> ActionChipSize.Medium
+                        Size.XLarge -> ActionChipSize.Large
                     },
                     isActive = selectedList.contains(item),
                     onClick = {
@@ -90,17 +117,39 @@ fun WantedCategory(
     )
 }
 
-
+/**
+ * 사용자 정의 콘텐츠로 구성할 수 있는 카테고리 컴포넌트입니다.
+ *
+ * LazyListScope 기반으로 직접 항목을 구성할 수 있으며, 좌우 그라디언트 및 아이콘 슬롯도 제공합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedCategory {
+ *     items(10) {
+ *         WantedActionChip(...)
+ *     }
+ * }
+ * ```
+ *
+ * @param modifier Modifier: 레이아웃 설정용 Modifier입니다.
+ * @param state LazyListState: LazyRow의 스크롤 상태입니다.
+ * @param size Size: 액션칩 크기 및 여백 설정입니다.
+ * @param horizontalPadding Boolean: 좌우 패딩 여부입니다.
+ * @param isVerticalPadding Boolean: 상하 패딩 여부입니다.
+ * @param gradientColor Color: 좌우 그라디언트 색상입니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다.
+ * @param content LazyListScope.() -> Unit: 내부 아이템 UI 구성 블록입니다.
+ */
 @Composable
 fun WantedCategory(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     size: Size = Size.Medium,
     horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
     gradientColor: Color = colorResource(R.color.background_normal_normal),
-    content: LazyListScope.() -> Unit,
-    rightIcon: @Composable ((Dp) -> Unit)? = null
+    rightIcon: @Composable ((Dp) -> Unit)? = null,
+    content: LazyListScope.() -> Unit
 ) {
     CompositionLocalProvider(LocalCategoryGradationColor provides gradientColor) {
         WantedCategoryLayout(
@@ -132,14 +181,15 @@ fun WantedCategory(
 }
 
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedCategoryLayout(
-    modifier: Modifier = Modifier,
-    size: Size = Size.Medium,
     isLeftGradient: Boolean,
     isRightGradient: Boolean,
-    content: @Composable () -> Unit,
-    rightIcon: @Composable ((Dp) -> Unit)?
+    rightIcon: @Composable ((Dp) -> Unit)?,
+    modifier: Modifier = Modifier,
+    size: Size = Size.Medium,
+    content: @Composable () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -256,11 +306,11 @@ private fun WantedCategoryPreview() {
                             WantedActionChip(
                                 text = item,
                                 variant = if (index == 0) {
-                                    ChipActionVariant.Solid
+                                    ActionChipVariant.Solid
                                 } else {
-                                    ChipActionVariant.Outlined
+                                    ActionChipVariant.Outlined
                                 },
-                                size = ChipActionSize.Small,
+                                size = ActionChipSize.Small,
                                 isActive = index == 0
                             )
                         }

@@ -13,8 +13,22 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 
+/**
+ * 사각형 형태의 스켈레톤 UI를 구성하는 컴포저블입니다.
+ *
+ * 기본적으로 shimmer 애니메이션이 적용되며, 배경 색상과 shape 커스터마이징이 가능합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedSkeletonRectangle(modifier = Modifier.size(200.dp))
+ * ```
+ *
+ * @param modifier Modifier: 외형 및 배치를 조정합니다.
+ * @param shape RoundedCornerShape: 사각형의 모서리 형태를 지정합니다.
+ * @param color Color: 배경 색상입니다.
+ */
 fun Modifier.shimmer(
-    colorRes: Int = R.color.background_normal_normal // 기본 색상 리소스
+    colorRes: Int = R.color.background_normal_normal, // 기본 색상 리소스
 ): Modifier = composed {
     val transition = rememberInfiniteTransition(label = "")
     val alphaAnimation by transition.animateFloat(
@@ -33,14 +47,13 @@ fun Modifier.shimmer(
     val shimmerColor = colorResource(id = colorRes)
 
     // 실제 Modifier에 적용
-    return@composed this.then(
-        drawWithContent {
-            drawContent() // 원본 콘텐츠를 먼저 그린 후, 애니메이션을 덮어씌움
 
-            // 깜박이는 Shimmer 애니메이션을 적용
-            drawRect(color = shimmerColor.copy(alpha = alphaAnimation))
-        }
-    )
+    drawWithContent {
+        drawContent() // 원본 콘텐츠를 먼저 그린 후, 애니메이션을 덮어씌움
+
+        // 깜박이는 Shimmer 애니메이션을 적용
+        drawRect(color = shimmerColor.copy(alpha = alphaAnimation))
+    }
 }
 
 private const val ANIMATION_DURATION = 1000

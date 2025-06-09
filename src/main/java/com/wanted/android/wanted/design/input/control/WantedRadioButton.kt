@@ -40,15 +40,40 @@ class WantedRadioButton : MaterialRadioButton {
     )
 }
 
+
+/**
+ * 머터리얼 스타일의 원형 라디오 버튼 컴포저블입니다.
+ *
+ * 체크 여부, 크기, 컴팩트 여부, 활성화 상태 등을 설정할 수 있으며,
+ * 내부적으로 `WantedTouchArea`를 사용하여 터치 영역을 확장합니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedRadioButton(
+ *     checked = true,
+ *     size = CheckBoxSize.Normal,
+ *     enabled = true,
+ *     onCheckedChange = { selected -> /* 상태 변경 처리 */ }
+ * )
+ * ```
+ *
+ * @param checked Boolean: 라디오 버튼이 선택된 상태인지 여부입니다.
+ * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
+ * @param enabled Boolean: 라디오 버튼의 활성화 여부입니다.
+ * @param tight Boolean: true일 경우 내부 패딩이 줄어들어 컴팩트하게 표시됩니다.
+ * @param interactionSource MutableInteractionSource: 클릭, 호버 등 상호작용 처리를 위한 인터랙션 소스입니다.
+ * @param size CheckBoxSize: 라디오 버튼의 크기를 설정합니다. Normal 또는 Small.
+ * @param onCheckedChange (Boolean) -> Unit: 선택 상태 변경 시 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedRadioButton(
-    modifier: Modifier = Modifier,
     checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     tight: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    size: CheckBoxSize = CheckBoxSize.Normal
+    size: CheckBoxSize = CheckBoxSize.Normal,
+    onCheckedChange: (Boolean) -> Unit = {},
 ) {
 
     WantedTouchArea(

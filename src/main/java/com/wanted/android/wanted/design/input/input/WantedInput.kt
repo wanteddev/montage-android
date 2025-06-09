@@ -34,6 +34,35 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 
 
+/**
+ * 체크박스, 라디오버튼, 체크마크 스타일을 포함하는 커스텀 입력 행 컴포저블입니다.
+ *
+ * `text`, `size`, `type`, `checkBoxState` 등을 조합하여 텍스트 라벨과 체크박스를 포함한 입력 항목을 구성합니다.
+ * 내부적으로 `WantedCheckBox` 및 `WantedInputLayout`을 활용하여 입력 항목 UI를 생성합니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedInput(
+ *     text = "이용약관에 동의합니다.",
+ *     type = WantedInputType.CheckBox,
+ *     size = WantedInputSize.Medium,
+ *     checkBoxState = CheckBoxState.Checked,
+ *     onCheckedChange = { /* 상태 변경 처리 */ }
+ * )
+ * ```
+ *
+ * @param text String: 항목에 표시될 텍스트입니다.
+ * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
+ * @param type WantedInputType: CheckBox, Radio, CheckMark 중 하나의 타입을 지정합니다.
+ * @param size WantedInputSize: Medium 또는 Small 사이즈를 지정합니다.
+ * @param checkBoxState CheckBoxState: 체크 상태 (Unchecked, Checked, Indeterminate)를 지정합니다.
+ * @param bold Boolean: true일 경우 텍스트를 굵게 표시합니다.
+ * @param enabled Boolean: 항목의 활성화 여부를 설정합니다.
+ * @param tight Boolean: true일 경우 컴팩트한 스타일로 표시됩니다.
+ * @param textStyle TextStyle: 텍스트 스타일을 수동 지정할 수 있으며, 생략 시 자동으로 size와 bold를 기반으로 설정됩니다.
+ * @param interactionSource MutableInteractionSource: 클릭 상호작용 효과를 전달합니다.
+ * @param onCheckedChange ((Boolean) -> Unit): 체크 상태가 변경될 때 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedInput(
     text: String,
@@ -62,7 +91,7 @@ fun WantedInput(
         }
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onCheckedChange: ((Boolean) -> Unit)
+    onCheckedChange: ((Boolean) -> Unit) = {}
 ) {
     val density = LocalDensity.current
     val checkBoxInteractionSource: MutableInteractionSource =

@@ -10,6 +10,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,17 +37,36 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.launch
 
-
 /**
- * 피그마 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=4279-37961&t=rgBL8FqtWf5Wcg7D-0
+ * 커스텀 애니메이션과 로티 인디케이터가 포함된 Pull-to-Refresh 컴포저블입니다.
+ *
+ * 시스템 다크 모드 여부에 따라 Lottie 애셋이 자동 전환되며, 유저가 스크롤을 아래로 당길 때
+ * 부드러운 그래픽과 함께 새로고침 로직을 트리거할 수 있습니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val isRefreshing by remember { mutableStateOf(false) }
+ * WantedPullToRefreshBox(
+ *     isRefreshing = isRefreshing,
+ *     onRefresh = { /* 새로고침 처리 */ }
+ * ) {
+ *     LazyColumn { ... }
+ * }
+ * ```
+ *
+ * @param isRefreshing Boolean: 현재 새로고침 중인지 여부를 나타냅니다.
+ * @param onRefresh () -> Unit: 유저가 당겨서 새로고침을 요청했을 때 호출되는 콜백입니다.
+ * @param modifier Modifier: 외형 및 배치 설정용 modifier입니다.
+ * @param state PullToRefreshState: Pull-to-Refresh 상태를 관리하는 객체입니다. 기본값은 `rememberPullToRefreshState()`입니다.
+ * @param content @Composable () -> Unit: 새로고침 박스 내부에 배치할 UI 콘텐츠입니다.
  */
 @Composable
 fun WantedPullToRefreshBox(
-    modifier: Modifier = Modifier,
-    state: PullToRefreshState = rememberPullToRefreshState(),
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
-    content: @Composable () -> Unit
+    modifier: Modifier = Modifier,
+    state: PullToRefreshState = rememberPullToRefreshState(),
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val scale = remember { Animatable(1f) }
@@ -167,8 +187,8 @@ private fun RefreshIndicator(
 
 @Composable
 private fun ProgressIndicator(
+    progress: Float,
     modifier: Modifier = Modifier,
-    progress: Float
 ) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.Asset(

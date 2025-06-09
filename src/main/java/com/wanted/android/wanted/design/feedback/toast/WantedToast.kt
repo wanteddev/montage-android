@@ -1,8 +1,5 @@
 package com.wanted.android.wanted.design.feedback.toast
 
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,162 +14,75 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
-
+import kotlinx.coroutines.launch
 
 /**
+ * SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
  *
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14852-42415&m=dev
- * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
- **/
-sealed class WantedToastVariant(
-    @DrawableRes val resourceId: Int,
-    @ColorRes val tinColor: Int
-) {
-    data object Message : WantedToastVariant(-1, -1)
-    data object Positive : WantedToastVariant(
-        R.drawable.ic_normal_circle_check_fill_svg,
-        R.color.green_60
-    )
-
-    data object Cautionary : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.orange_60
-    )
-
-    data object Negative : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.red_60
-    )
-}
-
-@Composable
-fun WantedSnackBar(
-    @StringRes text: Int,
-    hostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Message,
-    @DrawableRes icon: Int? = null,
-    @ColorRes tintColor: Int? = null
-) {
-    SnackbarHost(
-        modifier = modifier.zIndex(1000f),
-        hostState = hostState
-    ) {
-        WantedToast(
-            modifier = Modifier,
-            variant = variant,
-            windowInsets = windowInsets,
-            text = text,
-            icon = icon,
-            tintColor = tintColor
-        )
-    }
-}
-
-@Composable
-fun WantedSnackBar(
-    text: String,
-    hostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Message,
-    icon: @Composable (() -> Unit)? = null
-) {
-    SnackbarHost(
-        modifier = modifier.zIndex(1000f),
-        hostState = hostState
-    ) {
-        WantedToast(
-            modifier = Modifier,
-            variant = variant,
-            windowInsets = windowInsets,
-            text = text,
-            icon = icon
-        )
-    }
-}
-
-@Deprecated(
-    """
-    WantedSnackBar(
-        @StringRes text: Int,
-        hostState: SnackbarHostState,
-        modifier: Modifier = Modifier,
-        windowInsets: WindowInsets = WindowInsets(0),
-        variant: WantedToastVariant = WantedToastVariant.Normal,
-           @DrawableRes icon: Int? = null,
-        @ColorRes tintColor: Int? = null
-    )       
-    
-    hostState.show(coroutineScope)
-    """
-)
+ * `SnackbarData.visuals` 타입이 `WantedToastVisuals`인 경우 variant와 아이콘을 사용한 토스트를 표시하며,
+ * 일반 메시지 타입일 경우 기본 메시지 출력만 합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val snackbarHostState = remember { SnackbarHostState() }
+ * WantedToast(snackBarHostState = snackbarHostState)
+ * ```
+ *
+ * @param snackBarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
+ * @param modifier Modifier: 외형을 조정합니다.
+ * @param windowInsets WindowInsets: 시스템 인셋 대응을 위한 설정입니다.
+ */
 @Composable
 fun WantedToast(
-    @StringRes text: Int,
+    snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Message,
-    @DrawableRes icon: Int? = null,
-    @ColorRes tintColor: Int? = null
 ) {
-    WantedToast(
-        modifier = modifier,
-        variant = variant,
-        windowInsets = windowInsets,
-        text = stringResource(id = text),
-        icon = icon?.let {
-            {
-                WantedToastIcon(
-                    resourceId = icon,
-                    modifier = Modifier.fillMaxSize(),
-                    tint = tintColor?.let {
-                        colorResource(id = tintColor)
-                    } ?: LocalContentColor.current
-                )
-            }
+    SnackbarHost(
+        modifier = modifier.zIndex(1000f),
+        hostState = snackBarHostState
+    ) {
+        val visuals = it.visuals
+        if (visuals is WantedToastVisuals) {
+            WantedToastImpl(
+                variant = visuals.variant,
+                windowInsets = windowInsets,
+                text = visuals.message,
+                icon = visuals.icon
+            )
+        } else {
+            WantedToastImpl(
+                windowInsets = windowInsets,
+                text = visuals.message,
+            )
         }
-    )
+    }
 }
 
-@Deprecated(
-    """
-    WantedSnackBar(
-        text: String,
-        hostState: SnackbarHostState,
-        modifier: Modifier = Modifier,
-        windowInsets: WindowInsets = WindowInsets(0),
-        variant: WantedToastVariant = WantedToastVariant.Normal,
-        icon: @Composable (() -> Unit)? = null
-    )       
-    
-    hostState.show(coroutineScope)
-    """
-)
 @Composable
-fun WantedToast(
+internal fun WantedToastImpl(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
@@ -263,32 +173,52 @@ private fun WantedToastLayout(
 @Composable
 private fun ToastNormalPreview() {
     DesignSystemTheme {
-        Surface(Modifier.fillMaxSize()) {
+        val hostState: SnackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = {
+                WantedToast(hostState)
+            }
+        )  {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WantedToast(
-                    variant = WantedToastVariant.Message,
-                    text = "메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요.메시지에 마침표를 찍어요."
-                )
 
-                WantedToast(
+                WantedButton(text = "toast") {
+                    coroutineScope.launch {
+                        hostState.showSnackbar(message = "메시지에 마침표를 찍어요.")
+                    }
+                }
+
+                WantedButton(text = "toast Visuals") {
+                    coroutineScope.launch {
+                        hostState.showSnackbar(
+                            visuals = WantedToastVisuals(
+                                variant = WantedToastVariant.Positive,
+                                message = "메시지에 마침표를 찍어요."
+                            )
+                        )
+                    }
+                }
+
+                WantedToastImpl(
                     variant = WantedToastVariant.Message,
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     variant = WantedToastVariant.Positive,
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     variant = WantedToastVariant.Cautionary,
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     icon = {
                         Icon(
                             contentDescription = "icon",
@@ -300,7 +230,7 @@ private fun ToastNormalPreview() {
                     text = "메시지에 마침표를 찍어요."
                 )
 
-                WantedToast(
+                WantedToastImpl(
                     text = "메시지에 마침표를 찍어요."
                 )
             }

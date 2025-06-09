@@ -18,12 +18,25 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 /**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=14854-45476&m=dev
+ * 진행 상태를 나타내는 LinearProgressIndicator 컴포넌트입니다.
+ *
+ * 지정된 `currentProgress` 값을 기준으로 전체 너비의 2dp 높이로 진행 바가 렌더링되며,
+ * 색상은 디자인 시스템의 `primary_normal`과 `fill_normal`을 사용합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedLinearProgressIndicator(
+ *     currentProgress = 0.3f
+ * )
+ * ```
+ *
+ * @param currentProgress Float: 진행률 (0.0 ~ 1.0)입니다. 0은 0%, 1은 100%를 의미합니다.
+ * @param modifier Modifier: 레이아웃 및 외형을 조정하기 위한 Modifier입니다. 기본값은 Modifier입니다.
  */
 @Composable
 fun WantedLinearProgressIndicator(
-    modifier: Modifier = Modifier,
-    currentProgress: Float
+    currentProgress: Float,
+    modifier: Modifier = Modifier
 ) {
 
     LinearProgressIndicator(

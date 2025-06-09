@@ -40,14 +40,14 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedMultiSelectContents(
-    modifier: Modifier = Modifier,
     valueList: List<WantedSelectData>,
-    placeHolder: String = "",
     errorList: List<WantedSelectData>,
     render: WantedSelectContract.MultiSelectRender,
     enabled: Boolean,
     overflow: Boolean,
-    onDelete: (WantedSelectData) -> Unit
+    onDelete: (WantedSelectData) -> Unit,
+    modifier: Modifier = Modifier,
+    placeHolder: String = ""
 ) {
     when {
         valueList.isEmpty() -> {

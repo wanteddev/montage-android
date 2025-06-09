@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.input.slider
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
@@ -34,18 +35,36 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 
 /**
- * figma : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=23088-74063&m=dev
- * 설명 : https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=3249-11005&t=NBcGxPA8xDj0pTCY-4
+ * 단일 값 선택을 위한 Slider 컴포저블입니다.
+ *
+ * 사용자가 슬라이더를 이동시켜 하나의 값을 선택할 수 있도록 구성된 UI 컴포넌트입니다.
+ * 내부적으로 `WantedRangeSlider`를 사용하여 단일 값에 맞게 범위를 구성합니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedSlider(
+ *     value = 30f,
+ *     valueRange = 0f..100f,
+ *     onValueChange = { value -> /* 처리 */ }
+ * )
+ * ```
+ *
+ * @param value Float: 현재 선택된 값입니다.
+ * @param valueRange ClosedFloatingPointRange<Float>: 슬라이더가 선택할 수 있는 값의 범위입니다.
+ * @param modifier Modifier: 레이아웃 및 스타일을 조정할 수 있습니다.
+ * @param header String: 상단에 표시할 헤더 텍스트입니다.
+ * @param label String: 하단에 표시할 라벨 텍스트입니다.
+ * @param enabled Boolean: 슬라이더 활성화 여부입니다.
+ * @param onValueChange (Float) -> Unit: 값이 변경될 때 호출되는 콜백입니다.
  */
-
 @Composable
 fun WantedSlider(
+    value: Float,
+    valueRange: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier,
     header: String = "",
     label: String = "",
     enabled: Boolean = true,
-    value: Float,
-    valueRange: ClosedFloatingPointRange<Float>,
     onValueChange: (Float) -> Unit
 ) {
     WantedRangeSlider(
@@ -62,16 +81,40 @@ fun WantedSlider(
     )
 }
 
+/**
+ * 범위 선택이 가능한 Slider 컴포저블입니다.
+ *
+ * 사용자가 슬라이더의 양 끝을 조절하여 범위를 선택할 수 있는 UI 컴포넌트입니다.
+ * 내부적으로 `WantedRangeSlider`를 사용하여 범위 선택 슬라이더로 동작합니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedSlider(
+ *     value = 10f..90f,
+ *     valueRange = 0f..100f,
+ *     onValueChange = { range -> /* 처리 */ }
+ * )
+ * ```
+ *
+ * @param value ClosedFloatingPointRange<Float>: 현재 선택된 값의 범위입니다.
+ * @param valueRange ClosedFloatingPointRange<Float>: 선택 가능한 값의 최소/최대 범위입니다.
+ * @param modifier Modifier: 레이아웃 및 스타일을 조정할 수 있습니다.
+ * @param header String: 상단에 표시할 헤더 텍스트입니다.
+ * @param labelMin String: 최소값 라벨 텍스트입니다.
+ * @param labelMax String: 최대값 라벨 텍스트입니다.
+ * @param enabled Boolean: 슬라이더 활성화 여부입니다.
+ * @param onValueChange (ClosedFloatingPointRange<Float>) -> Unit: 값이 변경될 때 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedSlider(
+    value: ClosedFloatingPointRange<Float>,
+    valueRange: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier,
     header: String = "",
     labelMin: String = "",
     labelMax: String = "",
     enabled: Boolean = true,
-    value: ClosedFloatingPointRange<Float>,
-    valueRange: ClosedFloatingPointRange<Float>,
-    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
+    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit
 ) {
     WantedRangeSlider(
         modifier = modifier,
@@ -88,15 +131,15 @@ fun WantedSlider(
 
 @Composable
 private fun WantedRangeSlider(
+    value: ClosedFloatingPointRange<Float>,
+    valueRange: ClosedFloatingPointRange<Float>,
+    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
     modifier: Modifier = Modifier,
     header: String = "",
     labelMin: String = "",
     labelMax: String = "",
     isRange: Boolean = false,
-    value: ClosedFloatingPointRange<Float>,
-    valueRange: ClosedFloatingPointRange<Float>,
-    enabled: Boolean = true,
-    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
+    enabled: Boolean = true
 ) {
     val density = LocalDensity.current
 
@@ -206,6 +249,7 @@ private fun WantedRangeSlider(
     )
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun SliderLayout(
     modifier: Modifier = Modifier,
