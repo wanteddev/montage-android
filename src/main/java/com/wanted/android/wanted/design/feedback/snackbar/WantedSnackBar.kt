@@ -14,13 +14,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ProvideTextStyle
-import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,83 +36,59 @@ import com.wanted.android.wanted.design.util.clickOnce
 
 
 /**
- * https://www.figma.com/design/MK6KmtXBxX7ZkoQXfD9MFH/%EA%B0%9C%EC%84%A0%3A-Components?node-id=1596-18812&m=dev
+ * 앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다.
+ *
+ * `SnackbarHostState`를 받아 `SnackbarData.visuals`가 `WantedSnackbarVisuals`인 경우 커스텀 레이아웃으로,
+ * 아닌 경우 기본 스낵바 텍스트와 버튼만 사용해 표시합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val snackbarHostState = remember { SnackbarHostState() }
+ * WantedSnackBar(snackbarHostState = snackbarHostState)
+ * ```
+ *
+ * @param snackbarHostState SnackbarHostState: 스낵바 표시 상태를 제어합니다.
+ * @param modifier Modifier: 스낵바 전체 레이아웃 조정 Modifier입니다.
  */
-
 @Composable
 fun WantedSnackBar(
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
-    hostState: SnackbarHostState,
-    snackbarData: SnackbarData? = null,
-    text: String = "",
-    description: String = "",
-    buttonText: String,
-    icon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit
 ) {
     SnackbarHost(
         modifier = Modifier.zIndex(1000f),
-        hostState = hostState
+        hostState = snackbarHostState
     ) { data ->
-        WantedSnackBarImpl(
-            modifier = modifier,
-            snackbarData = snackbarData,
-            text = text,
-            description = description,
-            buttonText = buttonText,
-            icon = icon,
-            onClick = onClick
-        )
+        val visuals = data.visuals
+        if (visuals is WantedSnackbarVisuals) {
+            WantedSnackBarImpl(
+                modifier = modifier,
+                text = visuals.message,
+                description = visuals.description,
+                buttonText = visuals.actionLabel.orEmpty(),
+                icon = visuals.icon,
+                onClick = { data.performAction() }
+            )
+        } else {
+            WantedSnackBarImpl(
+                modifier = modifier,
+                text = data.visuals.message,
+                buttonText = visuals.actionLabel.orEmpty(),
+                icon = null,
+                onClick = { data.performAction() }
+            )
+        }
     }
-}
-
-
-@Deprecated(
-    """
-    WantedSnackBar(
-        modifier: Modifier = Modifier,
-        hostState: SnackbarHostState, // Added
-        snackbarData: SnackbarData? = null,
-        text: String = "",
-        description: String = "",
-        buttonText: String,
-        icon: @Composable (() -> Unit)? = null,
-        onClick: () -> Unit
-    )
-    
-    hostState.show(coroutineScope)
-"""
-)
-@Composable
-fun WantedSnackBar(
-    modifier: Modifier = Modifier,
-    snackbarData: SnackbarData? = null,
-    text: String = "",
-    description: String = "",
-    buttonText: String,
-    icon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit
-) {
-    WantedSnackBarImpl(
-        modifier = modifier,
-        snackbarData = snackbarData,
-        text = text,
-        description = description,
-        buttonText = buttonText,
-        icon = icon,
-        onClick = onClick
-    )
 }
 
 @Composable
 private fun WantedSnackBarImpl(
-    modifier: Modifier = Modifier,
-    snackbarData: SnackbarData? = null,
-    text: String = "",
-    description: String = "",
+    text: String,
     buttonText: String,
+    modifier: Modifier = Modifier,
+    description: String = "",
     icon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit = {},
 ) {
     WantedSnackBarLayout(
         modifier = modifier,
@@ -145,7 +119,6 @@ private fun WantedSnackBarImpl(
                         .clip(RoundedCornerShape(8.dp))
                         .clickOnce {
                             onClick()
-                            snackbarData?.performAction()
                         }
                         .padding(vertical = 4.dp, horizontal = 7.dp),
 
@@ -166,7 +139,7 @@ private fun WantedSnackBarLayout(
     icon: @Composable (() -> Unit)? = null,
     headingSlot: @Composable (() -> Unit) = {},
     descriptionSlot: @Composable (() -> Unit) = {},
-    buttonTextSlot: @Composable (() -> Unit) = {}
+    buttonTextSlot: @Composable (() -> Unit) = {},
 ) {
     Row(
         modifier = modifier
@@ -229,7 +202,7 @@ private fun WantedSnackBarLayout(
 
 @DevicePreviews
 @Composable
-fun WantedSnackBarDescriptionExtraContentPreview() {
+private fun WantedSnackBarDescriptionExtraContentPreview() {
     DesignSystemTheme {
         Surface(Modifier.fillMaxSize()) {
             Column(
@@ -237,8 +210,7 @@ fun WantedSnackBarDescriptionExtraContentPreview() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                WantedSnackBar(
-                    hostState = remember { SnackbarHostState() },
+                WantedSnackBarImpl(
                     text = "메시지에 마침표를 찍어요.",
                     description = "설명은 필요할 때만 써요.",
                     buttonText = "텍스트",
@@ -254,8 +226,8 @@ fun WantedSnackBarDescriptionExtraContentPreview() {
                     onClick = {}
                 )
 
-                WantedSnackBar(
-                    hostState = remember { SnackbarHostState() },
+                WantedSnackBarImpl(
+                    text = "",
                     description = "설명은 필요할 때만 써요, 설명은 필요할 때만 써요, 설명은 필요할 때만 써요",
                     buttonText = "텍스트",
                     icon = {
@@ -269,15 +241,14 @@ fun WantedSnackBarDescriptionExtraContentPreview() {
                     onClick = {}
                 )
 
-                WantedSnackBar(
-                    hostState = remember { SnackbarHostState() },
+                WantedSnackBarImpl(
+                    text = "",
                     description = "설명은 필요할 때만 써요, 설명은 필요할 때만 써요, 설명은 필요할 때만 써요",
                     buttonText = "텍스트",
                     onClick = {}
                 )
 
-                WantedSnackBar(
-                    hostState = remember { SnackbarHostState() },
+                WantedSnackBarImpl(
                     text = "메시지에 마침표를 찍어요.",
                     buttonText = "텍스트",
                     onClick = {}

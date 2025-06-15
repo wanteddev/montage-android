@@ -65,8 +65,6 @@ fun WantedBottomSheetDialog(
 ) {
     val visibleState: MutableTransitionState<Boolean> = remember { MutableTransitionState(false) }
     val dialogVisibility: MutableState<Boolean> = remember { mutableStateOf(false) }
-    val configuration = LocalConfiguration.current
-    val height = remember(configuration) { (configuration.screenHeightDp).dp }
     LaunchedEffect(key1 = isVisible) {
         if (isVisible) {
             dialogVisibility.value = true
@@ -124,9 +122,9 @@ fun WantedBottomSheetDialog(
 @Deprecated("Use WantedModalBottomSheet")
 @Composable
 fun WantedBottomSheetLayout(
+    modalSize: ModalSize,
     modifier: Modifier = Modifier,
     backgroundColor: Color = colorResource(R.color.background_elevated_normal),
-    modalSize: ModalSize,
     shadowElevation: Dp = 4.dp,
     topBar: @Composable (() -> Unit)?,
     bottomBar: @Composable (() -> Unit)?,

@@ -60,6 +60,7 @@ import kotlin.math.roundToInt
 @Composable
 internal fun WantedDraggableModalBottomSheet(
     isShow: Boolean,
+    onDismissRequest: () -> Unit = {},
     properties: DialogProperties = remember {
         DialogProperties(
             usePlatformDefaultWidth = true,
@@ -70,8 +71,7 @@ internal fun WantedDraggableModalBottomSheet(
     contentColor: Color = colorResource(R.color.background_elevated_normal),
     shape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     dragHandle: @Composable (() -> Unit)? = { WantedModalDefaults.DragHandle() },
-    content: @Composable () -> Unit,
-    onDismissRequest: () -> Unit
+    content: @Composable () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
@@ -219,8 +219,8 @@ internal fun WantedDraggableModalBottomSheet(
 
 @Composable
 private fun WantedHandleTouchArea(
-    modifier: Modifier = Modifier,
-    draggableState: AnchoredDraggableState<SheetValue>
+    draggableState: AnchoredDraggableState<SheetValue>,
+    modifier: Modifier = Modifier
 ) {
     Layout(
         modifier = modifier,

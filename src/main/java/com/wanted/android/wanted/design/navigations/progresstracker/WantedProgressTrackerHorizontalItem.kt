@@ -29,11 +29,11 @@ import com.wanted.android.wanted.design.util.dpToSp
 
 @Composable
 internal fun WantedProgressTrackerHorizontalItem(
-    modifier: Modifier = Modifier,
     step: String,
     label: String,
     enabled: Boolean,
-    completed: Boolean
+    completed: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -68,10 +68,10 @@ internal fun WantedProgressTrackerHorizontalItem(
 
 @Composable
 internal fun WantedProgressTrackerStep(
-    modifier: Modifier = Modifier,
     step: String,
     enabled: Boolean,
-    completed: Boolean
+    completed: Boolean,
+    modifier: Modifier = Modifier
 ) {
 
     Box(

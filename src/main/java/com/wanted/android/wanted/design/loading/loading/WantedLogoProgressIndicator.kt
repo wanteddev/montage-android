@@ -28,6 +28,14 @@ class WantedLogoProgressIndicator @JvmOverloads constructor(
     }
 }
 
+/**
+ * 다이얼로그를 통한 Wanted 로고 로딩 표시 컴포저블입니다.
+ *
+ * 외부 dismiss를 막는 속성을 포함한 Dialog 위에 로고 애니메이션이 표시됩니다.
+ *
+ * @param onDismissRequest () -> Unit: 다이얼로그 닫기 요청 콜백입니다.
+ * @param properties DialogProperties: Dialog 구성 속성입니다.
+ */
 @Composable
 fun WantedLogoProgressIndicator(modifier: Modifier = Modifier) {
     val composition by rememberLottieComposition(

@@ -25,8 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
-import com.wanted.android.wanted.design.actions.button.WantedOutlinedButton
-import com.wanted.android.wanted.design.actions.button.WantedSolidButton
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -36,7 +34,7 @@ import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
-fun WantedDialogTwoButtonImpl(
+internal fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
     background: Color = colorResource(R.color.background_elevated_normal),
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),

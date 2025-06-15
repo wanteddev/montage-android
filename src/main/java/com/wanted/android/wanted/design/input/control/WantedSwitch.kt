@@ -37,9 +37,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.dpToPx
 import kotlinx.coroutines.launch
 
@@ -61,14 +61,38 @@ class WantedSwitch : SwitchMaterial {
     }
 }
 
+
+/**
+ * 커스텀 스타일의 토글 스위치 컴포저블입니다.
+ *
+ * 머터리얼 스위치와 유사하지만, 색상/사이즈/애니메이션 등을 사용자 정의한 컴포넌트입니다.
+ * 선택 여부 및 활성화 상태에 따라 thumb 위치와 색상이 전환됩니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * WantedSwitch(
+ *     checked = true,
+ *     size = CheckBoxSize.Normal,
+ *     enabled = true,
+ *     onCheckedChange = { toggled -> /* 상태 처리 */ }
+ * )
+ * ```
+ *
+ * @param checked Boolean: 스위치가 켜진 상태인지 여부입니다.
+ * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
+ * @param enabled Boolean: 스위치 활성화 여부입니다.
+ * @param size CheckBoxSize: 스위치의 크기 설정 (Normal, Small).
+ * @param interactionSource MutableInteractionSource: 상호작용 효과(리플 등)를 처리하기 위한 인터랙션 소스입니다.
+ * @param onCheckedChange (Boolean) -> Unit: 상태가 변경될 때 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedSwitch(
-    modifier: Modifier = Modifier,
     checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     size: CheckBoxSize = CheckBoxSize.Normal,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onCheckedChange: (Boolean) -> Unit = {},
 ) {
     val thumbSize = remember(size) {
         if (size == CheckBoxSize.Normal) 24.dp else 18.dp
@@ -124,8 +148,7 @@ fun WantedSwitch(
             .width(width)
             .height(if (size == CheckBoxSize.Normal) 32.dp else 24.dp)
             .then(toggleableModifier)
-            .padding(if (size == CheckBoxSize.Normal) 4.dp else 3.dp)
-            ,
+            .padding(if (size == CheckBoxSize.Normal) 4.dp else 3.dp),
     ) {
         Box(
             modifier = Modifier
@@ -158,7 +181,7 @@ private fun WantedSwitchPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                CheckBox(CheckBoxStyle.Switch)
+                CheckBox()
             }
         }
     }

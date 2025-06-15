@@ -44,13 +44,15 @@ import kotlin.math.max
 @Deprecated("")
 @Composable
 fun ScrollableFlexTabRow(
-    modifier: Modifier = Modifier,
     selectedTabProvider: () -> Int,
+    modifier: Modifier = Modifier,
     minItemWidth: Dp = ScrollableTabRowMinimumTabWidth,
     containerColor: Color = primaryContainerColor,
     contentColor: Color = primaryContentColor,
     edgePadding: Dp = ScrollableTabRowPadding,
     horizontalArrange: Dp = 0.dp,
+    dividerFitTab: Boolean = true,
+    scrollState: ScrollState = rememberScrollState(),
     indicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
         SecondaryIndicator(
             modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabProvider()])
@@ -59,8 +61,6 @@ fun ScrollableFlexTabRow(
     divider: @Composable () -> Unit = @Composable {
         HorizontalDivider()
     },
-    dividerFitTab: Boolean = true,
-    scrollState: ScrollState = rememberScrollState(),
     tabs: @Composable () -> Unit
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
