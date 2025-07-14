@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -42,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -51,6 +53,7 @@ import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedSolidButton
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemBottomSheetTheme
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -295,7 +298,7 @@ private fun CustomDialogContentImpl(
             modifier = Modifier
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 74.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top
         ) {
             Box(
                 modifier = Modifier
@@ -313,17 +316,34 @@ private fun CustomDialogContentImpl(
                 }
             }
 
-            Icon(
+            Box(
                 modifier = Modifier
-                    .padding(2.dp)
-                    .size(56.dp)
-                    .clip(CircleShape)
-                    .clickOnce { onDismissRequest() }
-                    .padding(18.dp),
-                painter = painterResource(id = R.drawable.ic_normal_close_svg),
-                contentDescription = "close button",
-                tint = colorResource(id = R.color.label_normal)
-            )
+                    .padding(top = 24.dp, end = 20.dp)
+                    .defaultMinSize(
+                        minHeight = with(LocalDensity.current) {
+                            DesignSystemTheme.typography.heading1Bold.lineHeight.toDp()
+                        }
+                    )
+                    .wrapContentWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                WantedTouchArea(
+                    modifier = Modifier
+                        .padding(3.dp),
+                    horizontalPadding = 16.dp,
+                    verticalPadding = 16.dp,
+                    shape = CircleShape,
+                    onClick = { onDismissRequest() },
+                    content = {
+                        Icon(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_normal_close_svg),
+                            contentDescription = "close button",
+                            tint = colorResource(id = R.color.label_normal)
+                        )
+                    }
+                )
+            }
         }
 
         Box(
