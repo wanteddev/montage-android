@@ -93,7 +93,7 @@ object WantedModalDefaults {
             }
 
             is ModalType.FixedFullScreen -> {
-                val height = screenHeight - windowInset + 10.dp
+                val height = screenHeight - windowInset
                 Modifier.height(min(height, maxHeight ?: height))
             }
 
