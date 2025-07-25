@@ -78,13 +78,13 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
 @Composable
 fun WantedActionChip(
     text: String,
+    modifier: Modifier = Modifier,
     size: ActionChipSize = ActionChipSize.Medium,
     variant: ActionChipVariant = ActionChipVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
     leftIcon: Int? = null,
     rightIcon: Int? = null,
-    modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null
 ) {
@@ -130,11 +130,11 @@ fun WantedActionChip(
 @Composable
 fun WantedActionChip(
     text: String,
+    modifier: Modifier = Modifier,
     leftIcon: Int? = null,
     rightIcon: Int? = null,
     chipDefault: WantedActionChipDefault = WantedActionChipDefaults.getDefault(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     WantedActionChip(
@@ -206,6 +206,7 @@ fun WantedActionChip(
  */
 @Composable
 fun WantedActionChip(
+    modifier: Modifier = Modifier,
     size: ActionChipSize = ActionChipSize.Small,
     variant: ActionChipVariant = ActionChipVariant.Solid,
     isActive: Boolean = false,
@@ -217,10 +218,9 @@ fun WantedActionChip(
         isEnable = isEnable
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable () -> Unit = {},
     leftIcon: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit,
     rightIcon: @Composable (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
 ) {
     WantedActionChipLayout(
@@ -258,11 +258,11 @@ fun WantedActionChip(
 
 @Composable
 private fun WantedActionChipLayout(
+    modifier: Modifier,
     chipDefault: WantedActionChipDefault,
-    leftIcon: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
-    rightIcon: @Composable (() -> Unit)? = null,
-    modifier: Modifier
+    leftIcon: @Composable (() -> Unit)? = null,
+    rightIcon: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier
