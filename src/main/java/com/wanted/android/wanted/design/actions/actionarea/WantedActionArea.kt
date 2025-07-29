@@ -351,7 +351,7 @@ private fun WantedActionAreaLayout(
             when (type) {
                 ActionAreaType.Strong -> {
                     WantedActionStrongAreaLayout(
-                        modifier = modifier.then(contentModifier),
+                        modifier = Modifier.then(contentModifier),
                         caption = caption,
                         positive = positive,
                         negative = negative,
@@ -361,7 +361,7 @@ private fun WantedActionAreaLayout(
 
                 ActionAreaType.Neutral -> {
                     WantedActionNeutralAreaLayout(
-                        modifier = modifier.then(contentModifier),
+                        modifier = Modifier.then(contentModifier),
                         caption = caption,
                         positive = positive,
                         negative = negative,
@@ -371,7 +371,7 @@ private fun WantedActionAreaLayout(
 
                 ActionAreaType.Cancel -> {
                     WantedActionStrongAreaLayout(
-                        modifier = modifier.then(contentModifier),
+                        modifier = Modifier.then(contentModifier),
                         caption = caption,
                         positive = positive,
                         negative = null,
