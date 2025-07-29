@@ -15,7 +15,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
-internal fun WantedTextAreaCharacterCount(
+fun WantedTextAreaCharacterCount(
     current: Int,
     maxWordCount: Int,
     modifier: Modifier = Modifier,
