@@ -92,7 +92,7 @@ data class WantedTypography(
             trim = LineHeightStyle.Trim.None
         )
     ),
-    val title1Regular: TextStyle = TextStyle(
+    val display3Regular: TextStyle = TextStyle(
         fontFamily = pretendardBold,
         fontSize = 36.sp,
         fontWeight = FontWeight.W400,
@@ -103,7 +103,7 @@ data class WantedTypography(
             trim = LineHeightStyle.Trim.None
         )
     ),
-    val title1Medium: TextStyle = TextStyle(
+    val display3Medium: TextStyle = TextStyle(
         fontFamily = pretendardBold,
         fontSize = 36.sp,
         fontWeight = FontWeight.W500,
@@ -114,12 +114,45 @@ data class WantedTypography(
             trim = LineHeightStyle.Trim.None
         )
     ),
-    val title1Bold: TextStyle = TextStyle(
+    val display3Bold: TextStyle = TextStyle(
         fontFamily = pretendardBold,
         fontSize = 36.sp,
         fontWeight = FontWeight.W700,
         letterSpacing = (-0.027).em,
         lineHeight = 48.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
+    val title1Regular: TextStyle = TextStyle(
+        fontFamily = pretendardBold,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.W400,
+        letterSpacing = (-0.0253).em,
+        lineHeight = 44.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
+    val title1Medium: TextStyle = TextStyle(
+        fontFamily = pretendardBold,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.W500,
+        letterSpacing = (-0.0253).em,
+        lineHeight = 44.sp,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
+    val title1Bold: TextStyle = TextStyle(
+        fontFamily = pretendardBold,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.W700,
+        letterSpacing = (-0.0253).em,
+        lineHeight = 44.sp,
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.None
