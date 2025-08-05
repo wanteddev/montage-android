@@ -30,18 +30,31 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="typography_display3">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_display3</item>
+        <item name="android:letterSpacing">-0.027</item>
+        <item name="android:lineHeight">48sp</item>
+    </style>
+
+    <style name="typography_display3_bold">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/text_display3</item>
+        <item name="android:letterSpacing">-0.027</item>
+        <item name="android:lineHeight">48sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="typography_title1">
         <item name="android:fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">@dimen/text_title1</item>
-        <item name="android:letterSpacing">-0.027</item>
-        <item name="android:lineHeight">48sp</item>
+        <item name="android:letterSpacing">-0.0253</item>
     </style>
 
     <style name="typography_title1_bold">
         <item name="android:fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">@dimen/text_title1</item>
-        <item name="android:letterSpacing">-0.027</item>
-        <item name="android:lineHeight">48sp</item>
+        <item name="android:letterSpacing">-0.0253</item>
         <item name="android:textStyle">bold</item>
     </style>
 
