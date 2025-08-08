@@ -220,8 +220,8 @@ private fun MeasureOnly(
         // 3) 측정된 size 콜백으로 전달
 
         onSizeCalculated(IntSize(placeable.width, placeable.height))
-        // 4) layout 단계에서는 보이지 않게 0×0 크기로 설정
-        layout(width = 0, height = 0) { /* no placement → draw pass에서 skip */ }
+
+        layout(width = placeable.width, height = placeable.height) { /* no placement → draw pass에서 skip */ }
     }
 }
 
