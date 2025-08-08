@@ -37,7 +37,6 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.legacy.supportV4)
 
     implementation(libs.androidx.vectordrawable)
 

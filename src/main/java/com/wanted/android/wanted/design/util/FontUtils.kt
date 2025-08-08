@@ -6,6 +6,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 enum class WantedTextStyle {
     DISPLAY1_REGULAR, DISPLAY1_MEDIUM, DISPLAY1_BOLD,
     DISPLAY2_REGULAR, DISPLAY2_MEDIUM, DISPLAY2_BOLD,
+    DISPLAY3_REGULAR, DISPLAY3_MEDIUM, DISPLAY3_BOLD,
     TITLE1_REGULAR, TITLE1_MEDIUM, TITLE1_BOLD,
     TITLE2_REGULAR, TITLE2_MEDIUM, TITLE2_BOLD,
     TITLE3_REGULAR, TITLE3_MEDIUM, TITLE3_BOLD,
@@ -32,6 +33,9 @@ fun getTextStyle(textStyle: WantedTextStyle) = when (textStyle) {
     WantedTextStyle.DISPLAY2_REGULAR -> DesignSystemTheme.typography.display2Regular
     WantedTextStyle.DISPLAY2_MEDIUM -> DesignSystemTheme.typography.display2Medium
     WantedTextStyle.DISPLAY2_BOLD -> DesignSystemTheme.typography.display2Bold
+    WantedTextStyle.DISPLAY3_REGULAR -> DesignSystemTheme.typography.display3Regular
+    WantedTextStyle.DISPLAY3_MEDIUM -> DesignSystemTheme.typography.display3Medium
+    WantedTextStyle.DISPLAY3_BOLD -> DesignSystemTheme.typography.display3Bold
     WantedTextStyle.TITLE1_REGULAR -> DesignSystemTheme.typography.title1Regular
     WantedTextStyle.TITLE1_MEDIUM -> DesignSystemTheme.typography.title1Medium
     WantedTextStyle.TITLE1_BOLD -> DesignSystemTheme.typography.title1Bold
