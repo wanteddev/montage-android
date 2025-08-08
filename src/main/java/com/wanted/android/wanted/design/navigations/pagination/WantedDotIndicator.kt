@@ -33,11 +33,13 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.BorderType
 import com.wanted.android.wanted.design.base.getBorderModifier
+import com.wanted.android.wanted.design.navigations.pagination.WantedPaginationContract.IndicatorDotSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_16
 import com.wanted.android.wanted.design.util.OPACITY_52
 import com.wanted.android.wanted.design.util.OPACITY_8
+import kotlin.math.abs
 import kotlin.math.floor
 
 /**
@@ -51,7 +53,7 @@ import kotlin.math.floor
  * ```kotlin
  * WantedDotIndicator(
  *     totalPageCount = 10,
- *     visibleDotCount = 5, // 인디케이터가 항상 이 개수의 점을 표시할 공간을 확보합니다.
+ *     visibleDotCount = 5,
  *     currentIndex = 2
  * )
  * ```
@@ -94,7 +96,6 @@ fun WantedDotIndicator(
     // visibleDotCount개의 점과 그 사이의 간격을 포함하는 전체 너비 계산
     val calculatedWidth: Dp
     if (visibleDotCount > 0) {
-        // 타입을 명시적으로 정의하여 명확성을 높이고 잠재적인 타입 추론 문제를 방지합니다.
         val countOfDotsValue: Int = visibleDotCount
         val dotSizeValue: Dp = maxDotSizeDp
         val spaceSizeValue: Dp = spaceDp
@@ -408,22 +409,22 @@ private fun getPaginationDotVisibleArea(
 
 private fun getDotSize(
     size: WantedPaginationContract.WantedDotIndicatorSize,
-    dotSize: WantedPaginationContract.IndicatorDotSize,
+    dotSize: IndicatorDotSize,
 ): Dp {
     return if (size == WantedPaginationContract.WantedDotIndicatorSize.Medium) {
         when (dotSize) {
-            WantedPaginationContract.IndicatorDotSize.Max -> 10.dp
-            WantedPaginationContract.IndicatorDotSize.Mid -> 8.dp
-            WantedPaginationContract.IndicatorDotSize.Min -> 6.dp
-            WantedPaginationContract.IndicatorDotSize.Zero -> 0.dp
+            IndicatorDotSize.Max -> 10.dp
+            IndicatorDotSize.Mid -> 8.dp
+            IndicatorDotSize.Min -> 6.dp
+            IndicatorDotSize.Zero -> 0.dp
         }
 
     } else { // Small
         when (dotSize) {
-            WantedPaginationContract.IndicatorDotSize.Max -> 6.dp
-            WantedPaginationContract.IndicatorDotSize.Mid -> 4.dp
-            WantedPaginationContract.IndicatorDotSize.Min -> 2.dp
-            WantedPaginationContract.IndicatorDotSize.Zero -> 0.dp
+            IndicatorDotSize.Max -> 6.dp
+            IndicatorDotSize.Mid -> 4.dp
+            IndicatorDotSize.Min -> 2.dp
+            IndicatorDotSize.Zero -> 0.dp
         }
     }
 }
@@ -432,35 +433,56 @@ private fun getIndicatorDotSize(
     index: Int,
     visibleStartIndex: Int,
     visibleEndIndex: Int,
-    visibleDotCount: Int, // WantedDotIndicator에 전달된 초기 visibleDotCount
+    visibleDotCount: Int,
     totalPageCount: Int,
-): WantedPaginationContract.IndicatorDotSize {
-    if (visibleStartIndex == -1 || index < visibleStartIndex || index > visibleEndIndex) {
-        return WantedPaginationContract.IndicatorDotSize.Zero
+): IndicatorDotSize {
+
+    if (index < visibleStartIndex || index > visibleEndIndex) {
+        return IndicatorDotSize.Zero
     }
 
-    val currentVisibleDotAmount = visibleEndIndex - visibleStartIndex + 1
+    val centerIndex = floor(visibleDotCount * 0.5)
 
-    // 이동 애니메이션이 없는 경우 (모든 점이 보이거나, 고정된 경우)
-    if (totalPageCount <= visibleDotCount) {
-        return WantedPaginationContract.IndicatorDotSize.Max
+    // first
+    if ((visibleStartIndex == 0 && centerIndex > index)
+        || (visibleStartIndex == 1 && index == 2)
+    ) {
+        return IndicatorDotSize.Max
     }
 
-    // 가장자리 점 판단
-    val isEdgeDot = index == visibleStartIndex || index == visibleEndIndex
-    // 가장자리 바로 안쪽 점 판단
-    val isNearEdgeDot = index == visibleStartIndex + 1 || index == visibleEndIndex - 1
+    // last
+    if (
+        (visibleEndIndex == totalPageCount - 1 && index >= totalPageCount - centerIndex - 1)
+        || (visibleEndIndex == totalPageCount - 2 && index == totalPageCount - 3)
+    ) {
+        return IndicatorDotSize.Max
+    }
 
+    val distance = abs(index - visibleStartIndex).coerceAtMost(abs(index - visibleEndIndex))
+    if ((visibleStartIndex == 1 && index == 1)
+        || (visibleEndIndex == totalPageCount - 2 && index == totalPageCount - 2)
+    ) {
+        return IndicatorDotSize.Mid
+    }
 
-    return when {
-        currentVisibleDotAmount <= 2 -> WantedPaginationContract.IndicatorDotSize.Max // 보이는 점이 2개 이하면 모두 Max
-        currentVisibleDotAmount == 3 -> { // 보이는 점이 3개일 때
-            if (isEdgeDot) WantedPaginationContract.IndicatorDotSize.Mid else WantedPaginationContract.IndicatorDotSize.Max
+    return when (distance) {
+        1 -> {
+            if (visibleDotCount <= 4) {
+                IndicatorDotSize.Max
+            } else {
+                IndicatorDotSize.Mid
+            }
         }
 
-        isEdgeDot -> WantedPaginationContract.IndicatorDotSize.Min // 4개 이상 보이는 경우 가장자리는 Min
-        isNearEdgeDot -> WantedPaginationContract.IndicatorDotSize.Mid // 4개 이상 보이는 경우 가장자리 안쪽은 Mid
-        else -> WantedPaginationContract.IndicatorDotSize.Max // 그 외 중앙은 Max
+        0 -> {
+            if (visibleDotCount <= 4) {
+                IndicatorDotSize.Mid
+            } else {
+                IndicatorDotSize.Min
+            }
+        }
+
+        else -> IndicatorDotSize.Max
     }
 }
 
