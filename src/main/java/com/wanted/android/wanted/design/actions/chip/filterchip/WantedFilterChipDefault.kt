@@ -5,16 +5,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
-import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipVariant
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipActive
 import com.wanted.android.wanted.design.actions.chip.config.LocalWantedChipEnable
-import com.wanted.android.wanted.design.actions.chip.actionchip.LocalWantedActionChipSize
-import com.wanted.android.wanted.design.actions.chip.actionchip.LocalWantedActionChipVariant
 import com.wanted.android.wanted.design.actions.chip.config.WantedChipDefault
 import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.FilterChipSize
 import com.wanted.android.wanted.design.actions.chip.filterchip.WantedFilterChipContract.FilterChipVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -229,7 +226,7 @@ object WantedFilterChipDefaults {
         FilterChipVariant.Outlined -> {
             when {
                 !isEnable -> colorResource(id = R.color.line_normal_neutral)
-                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
+                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_43)
                 else -> colorResource(id = R.color.line_normal_neutral)
             }
         }
