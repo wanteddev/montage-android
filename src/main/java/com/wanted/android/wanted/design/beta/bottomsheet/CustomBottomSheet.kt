@@ -186,7 +186,7 @@ private fun CustomBottomSheetImpl(
 fun CustomBottomSheet(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
-    backgroundColor: Color = colorResource(id = R.color.background_normal_normal),
+    backgroundColor: Color = colorResource(id = R.color.background_elevated_normal),
     title: @Composable () -> Unit,
     content: @Composable () -> Unit,
     confirm: String? = null,

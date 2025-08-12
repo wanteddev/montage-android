@@ -121,6 +121,7 @@ fun WantedInput(
                 },
             size = size,
             tight = tight,
+            textStyle = textStyle,
             leadingIcon = {
                 WantedCheckBox(
                     modifier = Modifier,
