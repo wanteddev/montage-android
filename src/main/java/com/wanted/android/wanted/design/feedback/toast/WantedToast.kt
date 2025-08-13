@@ -103,6 +103,8 @@ internal fun WantedToastImpl(
                 WantedToastIcon(
                     modifier = Modifier.fillMaxSize(),
                     resourceId = variant.resourceId,
+                    backgroundResourceId = variant.backgroundResourceId,
+                    backgroundColor = colorResource(id = variant.backgroundTintColor),
                     tint = colorResource(variant.tinColor)
                 )
             }
@@ -180,9 +182,11 @@ private fun ToastNormalPreview() {
             snackbarHost = {
                 WantedToast(hostState)
             }
-        )  {
+        ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(it),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -217,6 +221,12 @@ private fun ToastNormalPreview() {
                     variant = WantedToastVariant.Cautionary,
                     text = "메시지에 마침표를 찍어요."
                 )
+
+                WantedToastImpl(
+                    variant = WantedToastVariant.Negative,
+                    text = "메시지에 마침표를 찍어요."
+                )
+
 
                 WantedToastImpl(
                     icon = {

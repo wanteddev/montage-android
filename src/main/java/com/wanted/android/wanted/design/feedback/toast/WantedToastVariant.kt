@@ -19,10 +19,15 @@ import com.wanted.android.designsystem.R
  *
  * @property resourceId `Int`: 표시할 아이콘 리소스의 ID입니다.
  * @property tinColor `Int`: 아이콘에 적용될 색상 리소스의 ID입니다.
+ * @property backgroundResourceId `Int?`: 배경 이미지 리소스의 ID입니다.
+ * @property backgroundTintColor `Int?`: 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
+ * @DrawableRes val backgroundResourceId: Int? = null
  */
 sealed class WantedToastVariant(
     @DrawableRes val resourceId: Int,
-    @ColorRes val tinColor: Int
+    @ColorRes val tinColor: Int,
+    @DrawableRes val backgroundResourceId: Int? = null,
+    @ColorRes val backgroundTintColor: Int = R.color.static_white
 ) {
     /**
      * data object Message
@@ -39,7 +44,8 @@ sealed class WantedToastVariant(
      */
     data object Positive : WantedToastVariant(
         R.drawable.ic_normal_circle_check_fill_svg,
-        R.color.green_60
+        R.color.green_60,
+        backgroundResourceId = R.drawable.ic_normal_circle_check_filler_svg
     )
 
     /**
@@ -49,11 +55,12 @@ sealed class WantedToastVariant(
      * 느낌표 아이콘과 주황색 색상이 사용됩니다.
      */
     data object Cautionary : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.orange_60
+        R.drawable.ic_normal_triangle_exclamation_fill_svg,
+        R.color.orange_60,
+        backgroundResourceId = R.drawable.ic_normal_triangle_exclamation_filler_svg
     )
 
-    /**
+    /**Icon/Normal/triangle Exclamation
      * data object Negative
      *
      * 부정적인 상황을 나타내는 스타일입니다.
@@ -61,6 +68,7 @@ sealed class WantedToastVariant(
      */
     data object Negative : WantedToastVariant(
         R.drawable.ic_normal_circle_exclamation_fill_svg,
-        R.color.red_60
+        R.color.red_60,
+        backgroundResourceId = R.drawable.ic_normal_circle_exclamation_filler_svg
     )
 }
