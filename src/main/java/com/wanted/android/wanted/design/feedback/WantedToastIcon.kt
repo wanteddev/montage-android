@@ -30,17 +30,28 @@ internal fun WantedToastIcon(
     @DrawableRes resourceId: Int,
     tint: Color,
     modifier: Modifier = Modifier,
+    @DrawableRes backgroundResourceId: Int? = null,
+    backgroundColor: Color = colorResource(id = R.color.static_white),
     size: Dp = 22.dp
 ) {
     Box(
         modifier = modifier.size(size),
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(11.dp)
-                .background(colorResource(id = R.color.static_white))
-        )
+        backgroundResourceId?.let {
+            Icon(
+                contentDescription = "icon",
+                painter = painterResource(id = backgroundResourceId),
+                modifier = Modifier.size(12.dp),
+                tint = backgroundColor
+            )
+        } ?: run {
+            Box(
+                modifier = Modifier
+                    .size(12.dp)
+                    .background(backgroundColor)
+            )
+        }
 
         Icon(
             contentDescription = "icon",
