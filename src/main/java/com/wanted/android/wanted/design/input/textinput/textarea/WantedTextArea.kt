@@ -461,6 +461,7 @@ private fun WantedTextArea(
                     value.text.length
                 },
                 error = value.text.length > maxWordCount,
+                enable = enabled,
                 maxWordCount = maxWordCount
             )
         },
@@ -470,7 +471,7 @@ private fun WantedTextArea(
                     modifier = Modifier.padding(horizontal = 4.dp),
                     text = rightButton,
                     buttonShape = ButtonShape.TEXT,
-                    enabled = enabled,
+                    enabled = enabled && !negative,
                     onClick = { onClickRightButton() }
                 )
             }
