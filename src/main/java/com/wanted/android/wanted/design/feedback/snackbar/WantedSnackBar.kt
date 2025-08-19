@@ -29,14 +29,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.feedback.toast.WantedToastVariant
-import com.wanted.android.wanted.design.feedback.toast.WantedToastVisuals
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 
 /**
@@ -201,22 +197,6 @@ private fun WantedSnackBarLayout(
         ) {
             buttonTextSlot()
         }
-    }
-}
-
-fun SnackbarHostState.showSnackBar(
-    scope: CoroutineScope,
-    message: String,
-    variant: WantedToastVariant = WantedToastVariant.Message,
-) {
-    scope.launch {
-        currentSnackbarData?.dismiss()
-        showSnackbar(
-            visuals = WantedToastVisuals(
-                message = message,
-                variant = variant
-            )
-        )
     }
 }
 
