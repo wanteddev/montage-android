@@ -67,7 +67,7 @@ sealed class WantedToastVariant(
      * 느낌표 아이콘과 빨간색 색상이 사용됩니다.
      */
     data object Negative : WantedToastVariant(
-        R.drawable.ic_normal_circle_exclamation_fill_svg,
+        R.drawable.ic_normal_circle_close_fill_svg,
         R.color.red_60,
         backgroundResourceId = R.drawable.ic_normal_circle_exclamation_filler_svg
     )
