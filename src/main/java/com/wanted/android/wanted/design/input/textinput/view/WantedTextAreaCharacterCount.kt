@@ -19,7 +19,8 @@ fun WantedTextAreaCharacterCount(
     current: Int,
     maxWordCount: Int,
     modifier: Modifier = Modifier,
-    error: Boolean = false
+    error: Boolean = false,
+    enable: Boolean = true
 ) {
     Row(
         modifier = modifier.padding(horizontal = 6.dp),
@@ -29,7 +30,11 @@ fun WantedTextAreaCharacterCount(
             modifier = Modifier.alpha(OPACITY_74),
             text = "$current",
             style = WantedTextStyle(
-                colorRes = if (error) R.color.status_negative else R.color.label_alternative,
+                colorRes = when {
+                    !enable -> R.color.label_disable
+                    error -> R.color.status_negative
+                    else -> R.color.label_alternative
+                },
                 style = DesignSystemTheme.typography.label2Medium
             )
         )
@@ -38,7 +43,10 @@ fun WantedTextAreaCharacterCount(
             modifier = Modifier.alpha(OPACITY_74),
             text = "/$maxWordCount",
             style = WantedTextStyle(
-                colorRes = R.color.label_alternative,
+                colorRes =  when {
+                    !enable -> R.color.label_disable
+                    else -> R.color.label_alternative
+                },
                 style = DesignSystemTheme.typography.label2Medium
             )
         )
