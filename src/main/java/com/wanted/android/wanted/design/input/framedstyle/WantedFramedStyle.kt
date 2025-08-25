@@ -22,34 +22,46 @@ import com.wanted.android.wanted.design.util.OPACITY_43
 
 
 fun Modifier.framedStyle(
-    negative: Boolean = false,
-    focused: Boolean = false,
+    status: WantedFramedStyleStatus = WantedFramedStyleStatus.Normal,
     enabled: Boolean = true
 ) = composed {
     this
         .border(
             shape = RoundedCornerShape(12.dp),
             color = when {
-                negative || focused -> {
+                status == WantedFramedStyleStatus.Negative
+                        || status == WantedFramedStyleStatus.Selected -> {
                     colorResource(id = R.color.background_normal_normal)
                         .copy(alpha = OPACITY_43)
                 }
 
                 else -> colorResource(R.color.transparent)
             },
-            width = if (focused) 2.dp else 1.dp
+            width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
         )
         .border(
             shape = RoundedCornerShape(12.dp),
             color = when {
                 !enabled -> colorResource(R.color.line_normal_alternative)
-                negative -> colorResource(R.color.status_negative).copy(OPACITY_43)
-                focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                status == WantedFramedStyleStatus.Negative -> {
+                    colorResource(R.color.status_negative).copy(OPACITY_43)
+                }
+
+                status == WantedFramedStyleStatus.Selected -> {
+                    colorResource(R.color.primary_normal).copy(OPACITY_43)
+                }
+
                 else -> colorResource(R.color.line_normal_neutral)
             },
-            width = if (focused) 2.dp else 1.dp
+            width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
         )
         .clip(RoundedCornerShape(12.dp))
+}
+
+enum class WantedFramedStyleStatus {
+    Normal,
+    Negative,
+    Selected
 }
 
 @DevicePreviews
@@ -65,45 +77,58 @@ private fun WantedFramedStylePreview() {
             ) {
                 Box(
                     modifier = Modifier
-                    .size(100.dp)
-                    .framedStyle(
-                        negative = true,
-                        focused = true,
-                        enabled = true
-                    )
+                        .size(50.dp)
+                        .framedStyle(
+                            status = WantedFramedStyleStatus.Negative,
+                            enabled = true
+                        )
                 )
 
                 Box(
                     modifier = Modifier
-                    .size(100.dp)
-                    .framedStyle(
-                        negative = false,
-                        focused = true,
-                        enabled = true
-                    )
+                        .size(50.dp)
+                        .framedStyle(
+                            status = WantedFramedStyleStatus.Selected,
+                            enabled = true
+                        )
                 )
 
                 Box(
                     modifier = Modifier
-                    .size(100.dp)
-                    .framedStyle(
-                        negative = false,
-                        focused = false,
-                        enabled = true
-                    )
+                        .size(50.dp)
+                        .framedStyle(
+                            status = WantedFramedStyleStatus.Normal,
+                            enabled = true
+                        )
                 )
 
 
                 Box(
                     modifier = Modifier
-                    .size(100.dp)
-                    .framedStyle(
-                        negative = false,
-                        focused = false,
-                        enabled = false
-                    )
+                        .size(50.dp)
+                        .framedStyle(
+                            status = WantedFramedStyleStatus.Negative,
+                            enabled = false
+                        )
                 )
 
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .framedStyle(
+                            status = WantedFramedStyleStatus.Selected,
+                            enabled = false
+                        )
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .framedStyle(
+                            status = WantedFramedStyleStatus.Normal,
+                            enabled = false
+                        )
+                )
             }
         }
     }
