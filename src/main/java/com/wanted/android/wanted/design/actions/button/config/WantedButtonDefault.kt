@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 
 
 data class WantedButtonDefault(
-    val shape: ButtonShape,
+    val variant: ButtonVariant,
     val type: ButtonType,
     val enabled: Boolean,
     val size: ButtonSize,
@@ -28,20 +28,20 @@ data class WantedButtonDefault(
 object WantedButtonDefaults {
     @Composable
     fun getDefault(
-        shape: ButtonShape = ButtonShape.SOLID,
+        variant: ButtonVariant = ButtonVariant.SOLID,
         type: ButtonType = ButtonType.PRIMARY,
         enabled: Boolean = true,
         size: ButtonSize = ButtonSize.LARGE,
-        contentColor: Color = getContentColor(shape, type, enabled),
-        leftIconTintColor: Color = getContentColor(shape, type, enabled),
-        rightIconTintColor: Color = getContentColor(shape, type, enabled),
-        backgroundColor: Color = getBackgroundColor(shape, type, enabled),
-        borderColor: Color = getBorderColor(shape, type, enabled),
-        textStyle: TextStyle = getTextStyle(shape, type, size),
+        contentColor: Color = getContentColor(variant, type, enabled),
+        leftIconTintColor: Color = getContentColor(variant, type, enabled),
+        rightIconTintColor: Color = getContentColor(variant, type, enabled),
+        backgroundColor: Color = getBackgroundColor(variant, type, enabled),
+        borderColor: Color = getBorderColor(variant, type, enabled),
+        textStyle: TextStyle = getTextStyle(variant, type, size),
         loadingSize: Dp = getLoadingSize(size),
-        loadingColor: Color = getLoadingColor(shape, type, enabled),
+        loadingColor: Color = getLoadingColor(variant, type, enabled),
     ) = WantedButtonDefault(
-        shape = shape,
+        variant = variant,
         type = type,
         enabled = enabled,
         size = size,
@@ -57,40 +57,40 @@ object WantedButtonDefaults {
 
     @Composable
     private fun getContentColor(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType = ButtonType.PRIMARY,
         enabled: Boolean
-    ): Color = LocalWantedButtonContent.current.getContentColor(shape, type, enabled)
+    ): Color = LocalWantedButtonContent.current.getContentColor(variant, type, enabled)
 
     @Composable
     private fun getBackgroundColor(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType = ButtonType.PRIMARY,
         enabled: Boolean
     ): Color = LocalWantedButtonBackground.current.getBackgroundColor(
-        shape = shape,
+        shape = variant,
         type = type,
         enabled = enabled
     )
 
     @Composable
     private fun getBorderColor(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType = ButtonType.PRIMARY,
         enabled: Boolean
     ): Color = LocalWantedButtonBorder.current.getBorderColor(
-        shape = shape,
+        variant = variant,
         type = type,
         enabled = enabled
     )
 
     @Composable
     private fun getTextStyle(
-        shape: ButtonShape,
+        shape: ButtonVariant,
         type: ButtonType = ButtonType.PRIMARY,
         size: ButtonSize = ButtonSize.LARGE
     ): TextStyle = LocalWantedButtonTextStyle.current.getTextStyle(
-        shape = shape,
+        variant = shape,
         type = type,
         size = size
     )
@@ -102,8 +102,8 @@ object WantedButtonDefaults {
 
     @Composable
     private fun getLoadingColor(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType = ButtonType.PRIMARY,
         enabled: Boolean = true
-    ): Color = LocalWantedButtonLoading.current.getLoadingColor(shape, type, enabled)
+    ): Color = LocalWantedButtonLoading.current.getLoadingColor(variant, type, enabled)
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeSize
 
-enum class ButtonShape {
+enum class ButtonVariant {
     SOLID, OUTLINED, TEXT
 }
 
@@ -54,7 +54,7 @@ internal fun getTextButtonSize(buttonWidth: Int, buttonHeight: Int): Modifier {
 }
 
 internal fun getButtonHeight(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     size: ButtonSize
 ): Dp =
     when (size) {
@@ -64,7 +64,7 @@ internal fun getButtonHeight(
     }
 
 internal fun getButtonRadius(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     size: ButtonSize
 ): Dp =
     when (size) {
@@ -74,7 +74,7 @@ internal fun getButtonRadius(
     }
 
 internal fun getButtonSpaceBetweenTextAndIcon(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     size: ButtonSize
 ): Dp =
     when (size) {
@@ -85,14 +85,14 @@ internal fun getButtonSpaceBetweenTextAndIcon(
 
 @Composable
 internal fun getButtonTypography(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     type: ButtonType,
     size: ButtonSize
 ): TextStyle =
     getTextStyle(
         textStyle =
             when (shape) {
-                ButtonShape.TEXT -> when (size) {
+                ButtonVariant.TEXT -> when (size) {
                     ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
                     else -> WantedTextStyle.BODY1_BOLD
                 }
@@ -115,7 +115,7 @@ internal fun getButtonTypography(
 
 @Composable
 internal fun getButtonHorizontalPadding(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     size: ButtonSize
 ): Dp =
     when (size) {
@@ -126,7 +126,7 @@ internal fun getButtonHorizontalPadding(
 
 @Composable
 internal fun getButtonDrawableSize(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     size: ButtonSize
 ): Modifier =
     when (size) {
@@ -146,11 +146,11 @@ internal fun getButtonDrawableSize(
             .wrapContentWidth()
     }
 
-private fun isLargeSizeButtonExist(shape: ButtonShape): Boolean =
+private fun isLargeSizeButtonExist(shape: ButtonVariant): Boolean =
     when (shape) {
-        ButtonShape.SOLID -> true
-        ButtonShape.OUTLINED -> true
-        ButtonShape.TEXT -> false
+        ButtonVariant.SOLID -> true
+        ButtonVariant.OUTLINED -> true
+        ButtonVariant.TEXT -> false
     }
 
 @Composable

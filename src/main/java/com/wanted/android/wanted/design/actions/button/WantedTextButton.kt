@@ -35,7 +35,7 @@ import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.OPACITY_12
@@ -120,7 +120,7 @@ internal fun WantedTextButton(
     trailingDrawable: Int? = null,
     onClick: () -> Unit = {},
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-        shape = ButtonShape.TEXT,
+        variant = ButtonVariant.TEXT,
         type = type,
         size = size,
         enabled = enabled
@@ -147,13 +147,13 @@ internal fun WantedTextButton(
         content = {
             WantedButtonLayout(
                 modifier = Modifier,
-                buttonShape = ButtonShape.TEXT,
+                buttonVariant = ButtonVariant.TEXT,
                 buttonSize = buttonDefault.size,
                 leftDrawable = leadingDrawable?.let {
                     {
                         WantedButtonSideIcon(
                             modifier = getButtonDrawableSize(
-                                shape = ButtonShape.TEXT,
+                                shape = ButtonVariant.TEXT,
                                 size = buttonDefault.size
                             ).alpha(if (isLoading) 0f else 1f),
                             drawableRes = it,
@@ -180,7 +180,7 @@ internal fun WantedTextButton(
                     {
                         WantedButtonSideIcon(
                             modifier = getButtonDrawableSize(
-                                shape = ButtonShape.TEXT,
+                                shape = ButtonVariant.TEXT,
                                 size = buttonDefault.size
                             ).alpha(if (isLoading) 0f else 1f),
                             drawableRes = it,

@@ -3,7 +3,7 @@ package com.wanted.android.wanted.design.actions.actionarea
 import androidx.compose.runtime.Composable
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 
@@ -42,17 +42,17 @@ object WantedActionAreaDefaults {
     fun getDefault(
         type: ActionAreaType = ActionAreaType.Strong,
         positiveButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            shape = getPositiveButtonShape(type),
+            variant = getPositiveButtonShape(type),
             type = getPositiveButtonType(type),
             size = getPositiveButtonSize(type)
         ),
         negativeButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            shape = getNegativeButtonShape(type),
+            variant = getNegativeButtonShape(type),
             type = getNegativeButtonType(type),
             size = getNegativeButtonSize(type)
         ),
         neutralButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            shape = getNeutralButtonShape(type),
+            variant = getNeutralButtonShape(type),
             type = getNeutralButtonType(type),
             size = getNeutralButtonSize(type)
         )
@@ -63,10 +63,10 @@ object WantedActionAreaDefaults {
         neutralButtonDefault = neutralButtonDefault,
     )
 
-    private fun getPositiveButtonShape(type: ActionAreaType): ButtonShape {
+    private fun getPositiveButtonShape(type: ActionAreaType): ButtonVariant {
         return when (type) {
-            ActionAreaType.Cancel -> ButtonShape.OUTLINED
-            else -> ButtonShape.SOLID
+            ActionAreaType.Cancel -> ButtonVariant.OUTLINED
+            else -> ButtonVariant.SOLID
         }
     }
 
@@ -81,8 +81,8 @@ object WantedActionAreaDefaults {
         return ButtonSize.LARGE
     }
 
-    private fun getNegativeButtonShape(type: ActionAreaType): ButtonShape {
-        return ButtonShape.OUTLINED
+    private fun getNegativeButtonShape(type: ActionAreaType): ButtonVariant {
+        return ButtonVariant.OUTLINED
     }
 
     private fun getNegativeButtonType(type: ActionAreaType): ButtonType {
@@ -93,10 +93,10 @@ object WantedActionAreaDefaults {
         return ButtonSize.LARGE
     }
 
-    private fun getNeutralButtonShape(type: ActionAreaType): ButtonShape {
+    private fun getNeutralButtonShape(type: ActionAreaType): ButtonVariant {
         return when (type) {
-            ActionAreaType.Strong -> ButtonShape.TEXT
-            else -> ButtonShape.OUTLINED
+            ActionAreaType.Strong -> ButtonVariant.TEXT
+            else -> ButtonVariant.OUTLINED
         }
     }
 
