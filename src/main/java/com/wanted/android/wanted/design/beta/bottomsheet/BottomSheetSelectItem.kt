@@ -14,11 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.input.control.WantedRadioButton
+import com.wanted.android.wanted.design.input.control.CheckBoxState
+import com.wanted.android.wanted.design.input.input.WantedInput
+import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
 fun BottomSheetSelectItem(
@@ -53,11 +55,14 @@ fun BottomSheetSelectItem(
             )
         )
 
-        WantedRadioButton(
-            checked = isSelect,
-            onCheckedChange = {
-                onClick()
-            }
+        WantedInput(
+            type = WantedInputType.Radio,
+            checkBoxState = if (isSelect) {
+                CheckBoxState.Checked
+            } else {
+                CheckBoxState.Unchecked
+            },
+            onCheckedChange = { onClick() }
         )
     }
 }

@@ -36,6 +36,7 @@ object WantedInputContract {
     enum class WantedInputType {
         CheckBox,
         Radio,
-        CheckMark
+        CheckMark,
+        Switch
     }
 }

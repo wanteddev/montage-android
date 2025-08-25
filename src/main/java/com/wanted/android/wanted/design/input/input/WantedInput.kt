@@ -65,8 +65,8 @@ import com.wanted.android.wanted.design.util.clickOnce
  */
 @Composable
 fun WantedInput(
-    text: String,
     modifier: Modifier = Modifier,
+    text: String = "",
     type: WantedInputType = WantedInputType.CheckBox,
     size: WantedInputSize = WantedInputSize.Medium,
     checkBoxState: CheckBoxState = CheckBoxState.Unchecked,
@@ -134,6 +134,7 @@ fun WantedInput(
                         WantedInputType.CheckBox -> CheckBoxStyle.CheckBox
                         WantedInputType.Radio -> CheckBoxStyle.Radio
                         WantedInputType.CheckMark -> CheckBoxStyle.Check
+                        WantedInputType.Switch -> CheckBoxStyle.Switch
                     },
                     checkState = checkBoxState,
                     tight = tight,
