@@ -58,7 +58,7 @@ internal fun WantedSelectBottomSheet(
                         modifier = Modifier,
                         verticalPadding = WantedCellContract.VerticalPadding.Medium,
                         text = item.text,
-                        isActive = selectItem.value == item,
+                        selected = selectItem.value == item,
                         rightContent = when {
                             selectItem.value == item
                                 && selectType == WantedSelectContract.SelectType.CheckMark -> {
