@@ -34,40 +34,18 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 // 편의 함수들
-fun Modifier.wantedDropShadow(
-    size: WantedShadowSize
-): Modifier {
-    val shadowStyle = size.toShadowStyle()
-    return this
-        .dropShadow(
-            shadows = shadowStyle.shadows,
-            borderRadius = shadowStyle.borderRadius,
-            isBackgroundTransparent = shadowStyle.backgroundColor == Color.Transparent
-        )
-        .background(
-            color = shadowStyle.backgroundColor,
-            shape = RoundedCornerShape(shadowStyle.borderRadius)
-        )
-}
+fun Modifier.wantedDropShadow(style: WantedShadowStyle) = this
+    .dropShadow(
+        shadows = style.getShadow(),
+        borderRadius = style.borderRadius,
+        isBackgroundTransparent = style.backgroundColor == Color.Transparent
+    )
+    .background(
+        color = style.backgroundColor,
+        shape = RoundedCornerShape(style.borderRadius)
+    )
 
-// 편의 함수들
-fun Modifier.wantedDropShadow(
-    shadowStyle: ShadowStyle
-): Modifier {
-    return this
-        .dropShadow(
-            shadows = shadowStyle.shadows,
-            borderRadius = shadowStyle.borderRadius,
-            isBackgroundTransparent = shadowStyle.backgroundColor == Color.Transparent
-        )
-        .background(
-            color = shadowStyle.backgroundColor,
-            shape = RoundedCornerShape(shadowStyle.borderRadius)
-        )
-}
-
-
-// 다중 shadow 지원하는 modifier
+// 성능 최적화된 다중 shadow 지원하는 modifier
 private fun Modifier.dropShadow(
     shadows: List<WantedShadowToken>,
     borderRadius: Dp = 0.dp,
@@ -75,25 +53,34 @@ private fun Modifier.dropShadow(
 ) = this.then(
     Modifier.drawBehind {
         this.drawIntoCanvas { canvas ->
+            // Paint 객체를 한 번만 생성하고 재사용
+            val paint = Paint()
+            val frameworkPaint = paint.asFrameworkPaint()
+
             // shadow를 뒤에서부터 그려서 올바른 layering 구현
-            shadows.reversed().forEach { shadow ->
-                val paint = Paint()
-                val frameworkPaint = paint.asFrameworkPaint()
+            // reversed() 대신 인덱스로 역순 접근하여 새로운 리스트 생성 방지
+            for (i in shadows.size - 1 downTo 0) {
+                val shadow = shadows[i]
+
+                // Paint 설정을 각 shadow마다 업데이트
+                frameworkPaint.color = shadow.color.toArgb()
+
+                // BlurMaskFilter 설정
+                if (shadow.blurRadius > 0.dp) {
+                    frameworkPaint.maskFilter = BlurMaskFilter(
+                        shadow.blurRadius.toPx(),
+                        BlurMaskFilter.Blur.NORMAL
+                    )
+                } else {
+                    // blur가 0이면 maskFilter를 null로 설정
+                    frameworkPaint.maskFilter = null
+                }
 
                 val spreadPixel = shadow.spreadRadius.toPx()
                 val left = -spreadPixel + shadow.offsetX.toPx()
                 val top = -spreadPixel + shadow.offsetY.toPx()
                 val right = size.width + spreadPixel + shadow.offsetX.toPx()
                 val bottom = size.height + spreadPixel + shadow.offsetY.toPx()
-
-                if (shadow.blurRadius > 0.dp) {
-                    frameworkPaint.maskFilter = BlurMaskFilter(
-                        shadow.blurRadius.toPx(),
-                        BlurMaskFilter.Blur.NORMAL
-                    )
-                }
-
-                frameworkPaint.color = shadow.color.toArgb()
 
                 if (isBackgroundTransparent) {
                     // shadow 그리기 전에 원본 컴포넌트 영역을 clip out
@@ -135,79 +122,82 @@ private fun Modifier.dropShadow(
     }
 )
 
-// Shadow 스타일 정의
-data class ShadowStyle(
-    val shadows: List<WantedShadowToken>,
-    val borderRadius: Dp = 12.dp,
-    val backgroundColor: Color = Color.White
-)
+sealed class WantedShadowStyle(
+    open val borderRadius: Dp,
+    open val backgroundColor: Color
+) {
+    abstract fun getShadow(): List<WantedShadowToken>
 
-enum class WantedShadowSize {
-    XSmall,
-    Small,
-    Medium,
-    Large,
-    XLarge;
-
-    fun toShadowStyle(): ShadowStyle {
-        return when (this) {
-            XSmall -> ShadowStyle(
-                shadows = listOf(
-                    // 0 1px 2px -1px rgba(23, 23, 23, 0.10)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 1.dp,
-                        blurRadius = 2.dp,
-                        spreadRadius = (-1).dp,
-                        color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
-                    )
-                )
+    data class XSmall(
+        override val borderRadius: Dp = 12.dp,
+        override val backgroundColor: Color = Color.White
+    ) : WantedShadowStyle(borderRadius, backgroundColor) {
+        override fun getShadow() = listOf(
+            // 0 1px 2px -1px rgba(23, 23, 23, 0.10)
+            WantedShadowToken(
+                offsetX = 0.dp,
+                offsetY = 1.dp,
+                blurRadius = 2.dp,
+                spreadRadius = (-1).dp,
+                color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
             )
+        )
+    }
 
-            Small -> ShadowStyle(
-                shadows = listOf(
-                    // 0 2px 4px -2px rgba(23, 23, 23, 0.06)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 2.dp,
-                        blurRadius = 4.dp,
-                        spreadRadius = (-2).dp,
-                        color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
-                    ),
-                    // 0 4px 6px -1px rgba(23, 23, 23, 0.06)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 4.dp,
-                        blurRadius = 6.dp,
-                        spreadRadius = (-1).dp,
-                        color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
-                    )
-                )
+    data class Small(
+        override val borderRadius: Dp = 12.dp,
+        override val backgroundColor: Color = Color.White
+    ) : WantedShadowStyle(borderRadius, backgroundColor) {
+        override fun getShadow() = listOf(
+            // 0 2px 4px -2px rgba(23, 23, 23, 0.06)
+            WantedShadowToken(
+                offsetX = 0.dp,
+                offsetY = 2.dp,
+                blurRadius = 4.dp,
+                spreadRadius = (-2).dp,
+                color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
+            ),
+            // 0 4px 6px -1px rgba(23, 23, 23, 0.06)
+            WantedShadowToken(
+                offsetX = 0.dp,
+                offsetY = 4.dp,
+                blurRadius = 6.dp,
+                spreadRadius = (-1).dp,
+                color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
             )
+        )
+    }
 
-            Medium -> ShadowStyle(
-                shadows = listOf(
-                    // 0 4px 6px -2px rgba(0, 0, 0, 0.07)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 4.dp,
-                        blurRadius = 6.dp,
-                        spreadRadius = (-2).dp,
-                        color = Color(0x12000000) // rgba(0, 0, 0, 0.07)
-                    ),
-                    // 0 10px 15px -3px rgba(23, 23, 23, 0.07)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 10.dp,
-                        blurRadius = 15.dp,
-                        spreadRadius = (-3).dp,
-                        color = Color(0x12171717) // rgba(23, 23, 23, 0.07)
-                    )
-                )
+    data class Medium(
+        override val borderRadius: Dp = 12.dp,
+        override val backgroundColor: Color = Color.White
+    ) : WantedShadowStyle(borderRadius, backgroundColor) {
+        override fun getShadow() = listOf(
+            // 0 4px 6px -2px rgba(0, 0, 0, 0.07)
+            WantedShadowToken(
+                offsetX = 0.dp,
+                offsetY = 4.dp,
+                blurRadius = 6.dp,
+                spreadRadius = (-2).dp,
+                color = Color(0x12000000) // rgba(0, 0, 0, 0.07)
+            ),
+            // 0 10px 15px -3px rgba(23, 23, 23, 0.07)
+            WantedShadowToken(
+                offsetX = 0.dp,
+                offsetY = 10.dp,
+                blurRadius = 15.dp,
+                spreadRadius = (-3).dp,
+                color = Color(0x12171717) // rgba(23, 23, 23, 0.07)
             )
+        )
+    }
 
-            Large -> ShadowStyle(
-                shadows = listOf(
+    data class Large(
+        override val borderRadius: Dp = 12.dp,
+        override val backgroundColor: Color = Color.White
+    ) : WantedShadowStyle(borderRadius, backgroundColor) {
+        override fun getShadow(): List<WantedShadowToken> =
+                listOf(
                     // 0 6px 10px -4px rgba(23, 23, 23, 0.08)
                     WantedShadowToken(
                         offsetX = 0.dp,
@@ -225,29 +215,30 @@ enum class WantedShadowSize {
                         color = Color(0x14171717) // rgba(23, 23, 23, 0.08)
                     )
                 )
-            )
+    }
 
-            XLarge -> ShadowStyle(
-                shadows = listOf(
-                    // 0 10px 15px -5px rgba(23, 23, 23, 0.10)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 10.dp,
-                        blurRadius = 15.dp,
-                        spreadRadius = (-5).dp,
-                        color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
-                    ),
-                    // 0 24px 38px -10px rgba(23, 23, 23, 0.12)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 24.dp,
-                        blurRadius = 38.dp,
-                        spreadRadius = (-10).dp,
-                        color = Color(0x1F171717) // rgba(23, 23, 23, 0.12)
-                    )
-                )
+    data class XLarge(
+        override val borderRadius: Dp = 12.dp,
+        override val backgroundColor: Color = Color.White
+    ) : WantedShadowStyle(borderRadius, backgroundColor) {
+        override fun getShadow() = listOf(
+            // 0 10px 15px -5px rgba(23, 23, 23, 0.10)
+            WantedShadowToken(
+                offsetX = 0.dp,
+                offsetY = 10.dp,
+                blurRadius = 15.dp,
+                spreadRadius = (-5).dp,
+                color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
+            ),
+            // 0 24px 38px -10px rgba(23, 23, 23, 0.12)
+            WantedShadowToken(
+                offsetX = 0.dp,
+                offsetY = 24.dp,
+                blurRadius = 38.dp,
+                spreadRadius = (-10).dp,
+                color = Color(0x1F171717) // rgba(23, 23, 23, 0.12)
             )
-        }
+        )
     }
 }
 
@@ -311,9 +302,8 @@ private fun WantedDropShadowPreview() {
                     Modifier
                         .size(100.dp)
                         .wantedDropShadow(
-                            shadowStyle = WantedShadowSize
-                                .XLarge
-                                .toShadowStyle()
+                            style = WantedShadowStyle
+                                .XLarge()
                                 .copy(backgroundColor = colorResource(R.color.transparent))
                         )
                 )
@@ -322,35 +312,35 @@ private fun WantedDropShadowPreview() {
                 Box(
                     Modifier
                         .size(100.dp)
-                        .wantedDropShadow(WantedShadowSize.XSmall)
+                        .wantedDropShadow(WantedShadowStyle.XSmall())
                 )
 
                 // SMALL Shadow
                 Box(
                     Modifier
                         .size(100.dp)
-                        .wantedDropShadow(WantedShadowSize.Small)
+                        .wantedDropShadow(WantedShadowStyle.Small())
                 )
 
                 // MEDIUM Shadow
                 Box(
                     Modifier
                         .size(100.dp)
-                        .wantedDropShadow(WantedShadowSize.Medium)
+                        .wantedDropShadow(WantedShadowStyle.Medium())
                 )
 
                 // LARGE Shadow
                 Box(
                     Modifier
                         .size(100.dp)
-                        .wantedDropShadow(WantedShadowSize.Large)
+                        .wantedDropShadow(WantedShadowStyle.Large())
                 )
 
                 // XLARGE Shadow
                 Box(
                     Modifier
                         .size(100.dp)
-                        .wantedDropShadow(WantedShadowSize.XLarge)
+                        .wantedDropShadow(WantedShadowStyle.XLarge())
                 )
 
             }
