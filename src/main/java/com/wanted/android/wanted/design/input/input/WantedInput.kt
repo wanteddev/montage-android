@@ -37,13 +37,13 @@ import com.wanted.android.wanted.design.util.clickOnce
 /**
  * 체크박스, 라디오버튼, 체크마크 스타일을 포함하는 커스텀 입력 행 컴포저블입니다.
  *
- * `text`, `size`, `type`, `checkBoxState` 등을 조합하여 텍스트 라벨과 체크박스를 포함한 입력 항목을 구성합니다.
+ * `label`, `size`, `type`, `checkBoxState` 등을 조합하여 텍스트 라벨과 체크박스를 포함한 입력 항목을 구성합니다.
  * 내부적으로 `WantedCheckBox` 및 `WantedInputLayout`을 활용하여 입력 항목 UI를 생성합니다.
  *
  * 사용 예시 :
  * ```kotlin
  * WantedInput(
- *     text = "이용약관에 동의합니다.",
+ *     label = "이용약관에 동의합니다.",
  *     type = WantedInputType.CheckBox,
  *     size = WantedInputSize.Medium,
  *     checkBoxState = CheckBoxState.Checked,
@@ -51,7 +51,7 @@ import com.wanted.android.wanted.design.util.clickOnce
  * )
  * ```
  *
- * @param text String: 항목에 표시될 텍스트입니다.
+ * @param label String: 항목에 표시될 텍스트입니다.
  * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
  * @param type WantedInputType: CheckBox, Radio, CheckMark 중 하나의 타입을 지정합니다.
  * @param size WantedInputSize: Medium 또는 Small 사이즈를 지정합니다.
@@ -66,7 +66,7 @@ import com.wanted.android.wanted.design.util.clickOnce
 @Composable
 fun WantedInput(
     modifier: Modifier = Modifier,
-    text: String = "",
+    label: String = "",
     type: WantedInputType = WantedInputType.CheckBox,
     size: WantedInputSize = WantedInputSize.Medium,
     checkBoxState: CheckBoxState = CheckBoxState.Unchecked,
@@ -144,8 +144,8 @@ fun WantedInput(
 
                 )
             },
-            text = {
-                Text(text = text)
+            label = {
+                Text(text = label)
             }
         )
     }
@@ -195,7 +195,7 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = "${size.name}\n${size.name}",
+        label = "${size.name}\n${size.name}",
         size = size,
         checkBoxState = checked,
         bold = false,
@@ -212,7 +212,7 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = size.name,
+        label = size.name,
         size = size,
         checkBoxState = checked,
         bold = false,
@@ -229,7 +229,7 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = size.name,
+        label = size.name,
         size = size,
         checkBoxState = checked,
         bold = true,
@@ -246,7 +246,7 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = size.name,
+        label = size.name,
         size = size,
         checkBoxState = checked,
         bold = true,

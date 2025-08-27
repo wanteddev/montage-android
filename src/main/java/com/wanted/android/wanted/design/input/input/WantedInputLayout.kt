@@ -34,7 +34,7 @@ internal fun WantedInputLayout(
     tight: Boolean,
     textStyle: TextStyle,
     leadingIcon: @Composable (() -> Unit)? = null,
-    text: @Composable () -> Unit
+    label: @Composable () -> Unit
 ) {
     val density = LocalDensity.current
     val lineHeight = remember(size, textStyle) {
@@ -71,7 +71,7 @@ internal fun WantedInputLayout(
             modifier = Modifier.defaultMinSize(minHeight = lineHeight),
             contentAlignment = Alignment.CenterStart
         ) {
-            text()
+            label()
         }
     }
 }
@@ -98,7 +98,7 @@ private fun WantedInputLayoutPreview() {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
                     tight = false,
-                    text = {
+                    label = {
                         Text(text = "텍스트 한줄")
                     }
                 )
@@ -114,7 +114,7 @@ private fun WantedInputLayoutPreview() {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
                     tight = false,
-                    text = {
+                    label = {
                         Text(text = "텍스트 \n두줄")
                     }
                 )
@@ -130,7 +130,7 @@ private fun WantedInputLayoutPreview() {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
                     tight = false,
-                    text = {
+                    label = {
                         Text(
                             text = "텍스트\n텍스트"
                         )
@@ -148,7 +148,7 @@ private fun WantedInputLayoutPreview() {
                         style = DesignSystemTheme.typography.label1Regular
                     ),
                     tight = false,
-                    text = {
+                    label = {
                         Text(text = "텍스트\n텍스트")
                     }
                 )
