@@ -249,14 +249,14 @@ fun WantedContentBadgeOld(
     ) {
         leadingContent?.let {
             Box(
-                modifier = getContentBadgeDrawableSize(size),
+                modifier = Modifier.getContentBadgeDrawableSize(size),
             ) {
                 it()
             }
         }
         leadingDrawable?.let {
             Image(
-                painter = painterResource(id = it), modifier = getContentBadgeDrawableSize(size),
+                painter = painterResource(id = it), modifier = Modifier.getContentBadgeDrawableSize(size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(textColor)
@@ -273,7 +273,7 @@ fun WantedContentBadgeOld(
         trailingDrawable?.let {
             Image(
                 painter = painterResource(id = it),
-                modifier = getContentBadgeDrawableSize(size),
+                modifier = Modifier.getContentBadgeDrawableSize(size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(textColor)
@@ -281,7 +281,7 @@ fun WantedContentBadgeOld(
         }
         trailingContent?.let {
             Box(
-                modifier = getContentBadgeDrawableSize(size),
+                modifier = Modifier.getContentBadgeDrawableSize(size),
             ) {
                 it()
             }

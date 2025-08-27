@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 
@@ -24,7 +24,7 @@ internal fun WantedAlertDialogButton(
             WantedButton(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = text,
-                buttonShape = ButtonShape.TEXT,
+                variant = ButtonVariant.TEXT,
                 size = ButtonSize.MEDIUM,
                 onClick = { onClick() }
             )
@@ -34,7 +34,7 @@ internal fun WantedAlertDialogButton(
             WantedButton(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = text,
-                buttonShape = ButtonShape.TEXT,
+                variant = ButtonVariant.TEXT,
                 size = ButtonSize.MEDIUM,
                 type = ButtonType.ASSISTIVE,
                 onClick = { onClick() }
@@ -46,7 +46,7 @@ internal fun WantedAlertDialogButton(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = text,
                 buttonDefault = WantedButtonDefaults.getDefault(
-                    shape = ButtonShape.TEXT,
+                    variant = ButtonVariant.TEXT,
                     type = ButtonType.ASSISTIVE,
                     size = ButtonSize.SMALL,
                 ).copy(

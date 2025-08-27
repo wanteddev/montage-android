@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -15,7 +15,7 @@ val LocalWantedButtonTextStyle = WantedButtonTextStyleCompositionLocal()
 interface WantedButtonTextStyleLoader {
     @Composable
     fun getTextStyle(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType,
         size: ButtonSize
     ): TextStyle
@@ -25,13 +25,13 @@ internal class WantedButtonTextStyleLoaderImpl : WantedButtonTextStyleLoader {
 
     @Composable
     override fun getTextStyle(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType,
         size: ButtonSize
     ): TextStyle = com.wanted.android.wanted.design.util.getTextStyle(
         textStyle =
-        when (shape) {
-            ButtonShape.TEXT -> when (size) {
+        when (variant) {
+            ButtonVariant.TEXT -> when (size) {
                 ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
                 else -> WantedTextStyle.BODY1_BOLD
             }
