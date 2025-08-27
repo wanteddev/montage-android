@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.input.WantedInput
-import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputType
+import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -56,7 +56,7 @@ fun BottomSheetSelectItem(
         )
 
         WantedInput(
-            type = WantedInputType.Radio,
+            variant = WantedInputVariant.Radio,
             checkBoxState = if (isSelect) {
                 CheckBoxState.Checked
             } else {
