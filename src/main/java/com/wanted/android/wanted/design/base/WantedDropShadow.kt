@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
@@ -32,89 +33,120 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
+@Composable
+fun Modifier.wantedDropShadow(style: WantedShadowStyle): Modifier {
+    // shadow 리스트를 remember로 캐싱하여 재계산 방지
+    val cachedShadows = remember(style) { style.getShadow() }
 
-// 편의 함수들
-fun Modifier.wantedDropShadow(style: WantedShadowStyle) = this
-    .dropShadow(
-        shadows = style.getShadow(),
-        borderRadius = style.borderRadius,
-        isBackgroundTransparent = style.backgroundColor == Color.Transparent
-    )
-    .background(
-        color = style.backgroundColor,
-        shape = RoundedCornerShape(style.borderRadius)
-    )
+    return this
+        .dropShadow(
+            shadows = cachedShadows,
+            borderRadius = style.borderRadius,
+            isBackgroundTransparent = style.backgroundColor == Color.Transparent
+        )
+        .background(
+            color = style.backgroundColor,
+            shape = RoundedCornerShape(style.borderRadius)
+        )
+}
 
-// 성능 최적화된 다중 shadow 지원하는 modifier
 private fun Modifier.dropShadow(
     shadows: List<WantedShadowToken>,
     borderRadius: Dp = 0.dp,
     isBackgroundTransparent: Boolean = false
 ) = this.then(
     Modifier.drawBehind {
+        // Early return으로 불필요한 연산 방지
+        if (shadows.isEmpty()) return@drawBehind
+
+        // BlurMaskFilter 캐시 - dropShadow 함수 내부에서만 사용
+        val blurMaskFilterCache = mutableMapOf<Float, BlurMaskFilter>()
+
         this.drawIntoCanvas { canvas ->
-            // Paint 객체를 한 번만 생성하고 재사용
             val paint = Paint()
             val frameworkPaint = paint.asFrameworkPaint()
 
+            // transparent 배경인 경우를 위한 Path - 재사용 가능하도록 미리 생성
+            var clipPath: Path? = null
+            val borderRadiusPx = borderRadius.toPx()
+
+            if (isBackgroundTransparent && borderRadiusPx > 0f) {
+                clipPath = Path().apply {
+                    addRoundRect(
+                        androidx.compose.ui.geometry.RoundRect(
+                            left = 0f,
+                            top = 0f,
+                            right = size.width,
+                            bottom = size.height,
+                            radiusX = borderRadiusPx,
+                            radiusY = borderRadiusPx
+                        )
+                    )
+                }
+            }
+
             // shadow를 뒤에서부터 그려서 올바른 layering 구현
-            // reversed() 대신 인덱스로 역순 접근하여 새로운 리스트 생성 방지
             for (i in shadows.size - 1 downTo 0) {
                 val shadow = shadows[i]
 
-                // Paint 설정을 각 shadow마다 업데이트
+                // 색상 설정
                 frameworkPaint.color = shadow.color.toArgb()
 
-                // BlurMaskFilter 설정
-                if (shadow.blurRadius > 0.dp) {
-                    frameworkPaint.maskFilter = BlurMaskFilter(
-                        shadow.blurRadius.toPx(),
-                        BlurMaskFilter.Blur.NORMAL
-                    )
+                // BlurMaskFilter 캐싱 및 재사용 - 같은 drawBehind 호출 내에서만 캐싱
+                val blurRadiusPx = shadow.blurRadius.toPx()
+                if (blurRadiusPx > 0f) {
+                    frameworkPaint.maskFilter = blurMaskFilterCache.getOrPut(blurRadiusPx) {
+                        BlurMaskFilter(blurRadiusPx, BlurMaskFilter.Blur.NORMAL)
+                    }
                 } else {
-                    // blur가 0이면 maskFilter를 null로 설정
                     frameworkPaint.maskFilter = null
                 }
 
+                // 그리기 영역 계산 - 변수 재사용으로 메모리 할당 최소화
                 val spreadPixel = shadow.spreadRadius.toPx()
-                val left = -spreadPixel + shadow.offsetX.toPx()
-                val top = -spreadPixel + shadow.offsetY.toPx()
-                val right = size.width + spreadPixel + shadow.offsetX.toPx()
-                val bottom = size.height + spreadPixel + shadow.offsetY.toPx()
+                val offsetXPx = shadow.offsetX.toPx()
+                val offsetYPx = shadow.offsetY.toPx()
 
+                val left = -spreadPixel + offsetXPx
+                val top = -spreadPixel + offsetYPx
+                val right = size.width + spreadPixel + offsetXPx
+                val bottom = size.height + spreadPixel + offsetYPx
+
+                // Clipping 처리 최적화
+                var needsRestore = false
                 if (isBackgroundTransparent) {
-                    // shadow 그리기 전에 원본 컴포넌트 영역을 clip out
                     canvas.save()
+                    needsRestore = true
 
-                    // 원본 컴포넌트의 모양을 clipPath로 제외
-                    val componentPath = Path().apply {
-                        addRoundRect(
-                            androidx.compose.ui.geometry.RoundRect(
-                                left = 0f,
-                                top = 0f,
-                                right = size.width,
-                                bottom = size.height,
-                                radiusX = borderRadius.toPx(),
-                                radiusY = borderRadius.toPx()
-                            )
-                        )
+                    // 미리 생성된 clipPath 재사용
+                    clipPath?.let { path ->
+                        canvas.clipPath(path, ClipOp.Difference)
                     }
-
-                    // 원본 컴포넌트 영역을 제외하고 shadow 그리기
-                    canvas.clipPath(componentPath, ClipOp.Difference)
                 }
 
-                canvas.drawRoundRect(
-                    left = left,
-                    top = top,
-                    right = right,
-                    bottom = bottom,
-                    radiusX = borderRadius.toPx(),
-                    radiusY = borderRadius.toPx(),
-                    paint = paint
-                )
+                // 그리기 - 조건부 radius 최적화
+                if (borderRadiusPx > 0f) {
+                    canvas.drawRoundRect(
+                        left = left,
+                        top = top,
+                        right = right,
+                        bottom = bottom,
+                        radiusX = borderRadiusPx,
+                        radiusY = borderRadiusPx,
+                        paint = paint
+                    )
+                } else {
+                    // radius가 0이면 더 빠른 drawRect 사용
+                    canvas.drawRect(
+                        left = left,
+                        top = top,
+                        right = right,
+                        bottom = bottom,
+                        paint = paint
+                    )
+                }
 
-                if (isBackgroundTransparent) {
+                if (needsRestore) {
                     canvas.restore()
                 }
             }
@@ -132,113 +164,124 @@ sealed class WantedShadowStyle(
         override val borderRadius: Dp = 12.dp,
         override val backgroundColor: Color = Color.White
     ) : WantedShadowStyle(borderRadius, backgroundColor) {
-        override fun getShadow() = listOf(
-            // 0 1px 2px -1px rgba(23, 23, 23, 0.10)
-            WantedShadowToken(
-                offsetX = 0.dp,
-                offsetY = 1.dp,
-                blurRadius = 2.dp,
-                spreadRadius = (-1).dp,
-                color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
+        // 성능을 위해 lazy로 shadow 리스트 생성
+        private val shadowList by lazy {
+            listOf(
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 1.dp,
+                    blurRadius = 2.dp,
+                    spreadRadius = (-1).dp,
+                    color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
+                )
             )
-        )
+        }
+
+        override fun getShadow() = shadowList
     }
 
     data class Small(
         override val borderRadius: Dp = 12.dp,
         override val backgroundColor: Color = Color.White
     ) : WantedShadowStyle(borderRadius, backgroundColor) {
-        override fun getShadow() = listOf(
-            // 0 2px 4px -2px rgba(23, 23, 23, 0.06)
-            WantedShadowToken(
-                offsetX = 0.dp,
-                offsetY = 2.dp,
-                blurRadius = 4.dp,
-                spreadRadius = (-2).dp,
-                color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
-            ),
-            // 0 4px 6px -1px rgba(23, 23, 23, 0.06)
-            WantedShadowToken(
-                offsetX = 0.dp,
-                offsetY = 4.dp,
-                blurRadius = 6.dp,
-                spreadRadius = (-1).dp,
-                color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
+        private val shadowList by lazy {
+            listOf(
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 2.dp,
+                    blurRadius = 4.dp,
+                    spreadRadius = (-2).dp,
+                    color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
+                ),
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 4.dp,
+                    blurRadius = 6.dp,
+                    spreadRadius = (-1).dp,
+                    color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
+                )
             )
-        )
+        }
+
+        override fun getShadow() = shadowList
     }
 
     data class Medium(
         override val borderRadius: Dp = 12.dp,
         override val backgroundColor: Color = Color.White
     ) : WantedShadowStyle(borderRadius, backgroundColor) {
-        override fun getShadow() = listOf(
-            // 0 4px 6px -2px rgba(0, 0, 0, 0.07)
-            WantedShadowToken(
-                offsetX = 0.dp,
-                offsetY = 4.dp,
-                blurRadius = 6.dp,
-                spreadRadius = (-2).dp,
-                color = Color(0x12000000) // rgba(0, 0, 0, 0.07)
-            ),
-            // 0 10px 15px -3px rgba(23, 23, 23, 0.07)
-            WantedShadowToken(
-                offsetX = 0.dp,
-                offsetY = 10.dp,
-                blurRadius = 15.dp,
-                spreadRadius = (-3).dp,
-                color = Color(0x12171717) // rgba(23, 23, 23, 0.07)
+        private val shadowList by lazy {
+            listOf(
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 4.dp,
+                    blurRadius = 6.dp,
+                    spreadRadius = (-2).dp,
+                    color = Color(0x12000000) // rgba(0, 0, 0, 0.07)
+                ),
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 10.dp,
+                    blurRadius = 15.dp,
+                    spreadRadius = (-3).dp,
+                    color = Color(0x12171717) // rgba(23, 23, 23, 0.07)
+                )
             )
-        )
+        }
+
+        override fun getShadow() = shadowList
     }
 
     data class Large(
         override val borderRadius: Dp = 12.dp,
         override val backgroundColor: Color = Color.White
     ) : WantedShadowStyle(borderRadius, backgroundColor) {
-        override fun getShadow(): List<WantedShadowToken> =
-                listOf(
-                    // 0 6px 10px -4px rgba(23, 23, 23, 0.08)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 6.dp,
-                        blurRadius = 10.dp,
-                        spreadRadius = (-4).dp,
-                        color = Color(0x14171717) // rgba(23, 23, 23, 0.08)
-                    ),
-                    // 0 16px 24px -6px rgba(23, 23, 23, 0.08)
-                    WantedShadowToken(
-                        offsetX = 0.dp,
-                        offsetY = 16.dp,
-                        blurRadius = 24.dp,
-                        spreadRadius = (-6).dp,
-                        color = Color(0x14171717) // rgba(23, 23, 23, 0.08)
-                    )
+        private val shadowList by lazy {
+            listOf(
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 6.dp,
+                    blurRadius = 10.dp,
+                    spreadRadius = (-4).dp,
+                    color = Color(0x14171717) // rgba(23, 23, 23, 0.08)
+                ),
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 16.dp,
+                    blurRadius = 24.dp,
+                    spreadRadius = (-6).dp,
+                    color = Color(0x14171717) // rgba(23, 23, 23, 0.08)
                 )
+            )
+        }
+
+        override fun getShadow() = shadowList
     }
 
     data class XLarge(
         override val borderRadius: Dp = 12.dp,
         override val backgroundColor: Color = Color.White
     ) : WantedShadowStyle(borderRadius, backgroundColor) {
-        override fun getShadow() = listOf(
-            // 0 10px 15px -5px rgba(23, 23, 23, 0.10)
-            WantedShadowToken(
-                offsetX = 0.dp,
-                offsetY = 10.dp,
-                blurRadius = 15.dp,
-                spreadRadius = (-5).dp,
-                color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
-            ),
-            // 0 24px 38px -10px rgba(23, 23, 23, 0.12)
-            WantedShadowToken(
-                offsetX = 0.dp,
-                offsetY = 24.dp,
-                blurRadius = 38.dp,
-                spreadRadius = (-10).dp,
-                color = Color(0x1F171717) // rgba(23, 23, 23, 0.12)
+        private val shadowList by lazy {
+            listOf(
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 10.dp,
+                    blurRadius = 15.dp,
+                    spreadRadius = (-5).dp,
+                    color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
+                ),
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 24.dp,
+                    blurRadius = 38.dp,
+                    spreadRadius = (-10).dp,
+                    color = Color(0x1F171717) // rgba(23, 23, 23, 0.12)
+                )
             )
-        )
+        }
+
+        override fun getShadow() = shadowList
     }
 }
 
