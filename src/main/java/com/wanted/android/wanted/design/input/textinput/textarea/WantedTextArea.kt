@@ -47,7 +47,7 @@ import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaChara
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaLayout
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -470,7 +470,7 @@ private fun WantedTextArea(
                 WantedButton(
                     modifier = Modifier.padding(horizontal = 4.dp),
                     text = rightButton,
-                    buttonShape = ButtonShape.TEXT,
+                    variant = ButtonVariant.TEXT,
                     enabled = enabled && !negative,
                     onClick = { onClickRightButton() }
                 )

@@ -8,7 +8,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 
@@ -21,7 +21,7 @@ interface WantedButtonLoadingLoader {
 
     @Composable
     fun getLoadingColor(
-        shape: ButtonShape,
+        shape: ButtonVariant,
         type: ButtonType,
         enabled: Boolean
     ): Color
@@ -39,7 +39,7 @@ internal class WantedButtonLoadingLoaderImpl : WantedButtonLoadingLoader {
 
     @Composable
     override fun getLoadingColor(
-        shape: ButtonShape,
+        shape: ButtonVariant,
         type: ButtonType,
         enabled: Boolean
     ): Color = when (type) {

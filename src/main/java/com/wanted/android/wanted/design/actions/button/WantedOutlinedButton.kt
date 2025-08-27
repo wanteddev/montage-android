@@ -37,7 +37,7 @@ import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaul
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.OPACITY_12
@@ -100,7 +100,7 @@ class WantedOutlinedButton @JvmOverloads constructor(
     override fun Content() {
         WantedOutlinedButton(
             text = text,
-            modifier = getButtonWidth(buttonWidth = buttonWidth),
+            modifier = Modifier.getButtonWidth(buttonWidth = buttonWidth),
             type = buttonType,
             size = size,
             enabled = buttonStatus,
@@ -124,7 +124,7 @@ internal fun WantedOutlinedButton(
     trailingDrawable: Int? = null,
     onClick: () -> Unit = {},
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-        shape = ButtonShape.OUTLINED,
+        variant = ButtonVariant.OUTLINED,
         type = type,
         size = size,
         enabled = enabled
@@ -135,7 +135,7 @@ internal fun WantedOutlinedButton(
             .clip(
                 RoundedCornerShape(
                     size = getButtonRadius(
-                        ButtonShape.SOLID,
+                        ButtonVariant.SOLID,
                         size = buttonDefault.size
                     )
                 )
@@ -158,16 +158,16 @@ internal fun WantedOutlinedButton(
             )
             .border(
                 BorderStroke(1.dp, buttonDefault.borderColor),
-                RoundedCornerShape(size = getButtonRadius(ButtonShape.OUTLINED, buttonDefault.size))
+                RoundedCornerShape(size = getButtonRadius(ButtonVariant.OUTLINED, buttonDefault.size))
             )
             .background(buttonDefault.backgroundColor),
-        buttonShape = ButtonShape.OUTLINED,
+        buttonVariant = ButtonVariant.OUTLINED,
         buttonSize = buttonDefault.size,
         leftDrawable = leadingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonShape.OUTLINED,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.OUTLINED,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
@@ -197,8 +197,8 @@ internal fun WantedOutlinedButton(
         rightDrawable = trailingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonShape.OUTLINED,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.OUTLINED,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
