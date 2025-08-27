@@ -11,14 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.getButtonSpaceBetweenTextAndIcon
 
 @Composable
 internal fun WantedButtonLayout(
     modifier: Modifier,
-    buttonShape: ButtonShape = ButtonShape.SOLID,
+    buttonVariant: ButtonVariant = ButtonVariant.SOLID,
     buttonSize: ButtonSize = ButtonSize.LARGE,
     text: @Composable (() -> Unit)? = null,
     leftDrawable: @Composable (() -> Unit)? = null,
@@ -27,16 +27,16 @@ internal fun WantedButtonLayout(
 ) {
     Box(
         modifier
-            .buttonHeight(buttonShape, buttonSize)
+            .buttonHeight(buttonVariant, buttonSize)
             .buttonWidth(buttonSize, text == null)
-            .buttonVerticalPadding(buttonShape != ButtonShape.TEXT && text != null)
-            .buttonHorizontalPadding(buttonShape, buttonSize, text == null),
+            .buttonVerticalPadding(buttonVariant != ButtonVariant.TEXT && text != null)
+            .buttonHorizontalPadding(buttonVariant, buttonSize, text == null),
         contentAlignment = Alignment.Center
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(
                 space = getButtonSpaceBetweenTextAndIcon(
-                    buttonShape,
+                    buttonVariant,
                     buttonSize
                 ),
                 alignment = Alignment.CenterHorizontally
@@ -68,9 +68,9 @@ internal fun WantedButtonLayout(
 
 @Composable
 private fun Modifier.buttonHeight(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     size: ButtonSize
-): Modifier = if (shape == ButtonShape.TEXT) {
+): Modifier = if (shape == ButtonVariant.TEXT) {
     this
 } else {
     this
@@ -101,12 +101,12 @@ private fun Modifier.buttonWidth(
 
 @Composable
 private fun Modifier.buttonHorizontalPadding(
-    shape: ButtonShape,
+    shape: ButtonVariant,
     size: ButtonSize,
     isIconOnly: Boolean
 ): Modifier = when {
     isIconOnly -> this
-    shape == ButtonShape.TEXT -> this
+    shape == ButtonVariant.TEXT -> this
 
     else -> {
         this.padding(

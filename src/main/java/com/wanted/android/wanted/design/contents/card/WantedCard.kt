@@ -38,7 +38,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * 사용 예시:
  * ```kotlin
- * WantedCardVertical(
+ * WantedCard(
  *     title = "제목",
  *     caption = "캡션",
  *     overlayCaption = "Overlay",
@@ -64,7 +64,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param onClick () -> Unit: 카드 전체 클릭 시 호출되는 콜백입니다.
  */
 @Composable
-fun WantedCardVertical(
+fun WantedCard(
     modifier: Modifier = Modifier,
     thumbnail: Any? = null,
     overlayCaption: String = "",
@@ -209,14 +209,14 @@ private fun WantedCardPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
                     overlayCaption = "overlayCaption"
                 )
 
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
@@ -231,7 +231,7 @@ private fun WantedCardPreview() {
                     }
                 )
 
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
@@ -241,7 +241,7 @@ private fun WantedCardPreview() {
                     }
                 )
 
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
@@ -251,7 +251,7 @@ private fun WantedCardPreview() {
                     }
                 )
 
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     title = "제목",
                     caption = "캡션",
@@ -278,7 +278,7 @@ private fun WantedCardSkeletonPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     isLoading = true,
                     title = "제목",
@@ -286,7 +286,7 @@ private fun WantedCardSkeletonPreview() {
                     overlayCaption = "overlayCaption"
                 )
 
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     isLoading = true,
                     title = "제목",
@@ -305,7 +305,7 @@ private fun WantedCardSkeletonPreview() {
                     }
                 )
 
-                WantedCardVertical(
+                WantedCard(
                     modifier = Modifier.width(152.dp),
                     isLoading = true,
                     title = "제목",

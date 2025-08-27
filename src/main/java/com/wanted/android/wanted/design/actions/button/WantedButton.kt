@@ -12,20 +12,20 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * 다양한 스타일의 버튼을 생성하는 공통 Compose 함수입니다.
- * ButtonShape에 따라 Solid, Outlined, Text 버튼을 선택하여 렌더링합니다.
+ * ButtonVariant에 따라 Solid, Outlined 버튼을 선택하여 렌더링합니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedButton(
  *     text = "확인",
- *     buttonShape = ButtonShape.SOLID,
+ *     ButtonVariant = ButtonVariant.SOLID,
  *     type = ButtonType.PRIMARY,
  *     size = ButtonSize.LARGE,
  *     onClick = { /* 클릭 이벤트 처리 */ }
@@ -34,7 +34,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * @param text 버튼에 표시할 텍스트입니다.
  * @param modifier Modifier를 통해 버튼 외형을 조정합니다.
- * @param buttonShape 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다.
+ * @param variant 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다.
  * @param type 버튼의 타입(PRIMARY, SECONDARY, ASSISTIVE)을 지정합니다.
  * @param size 버튼의 크기(LARGE, MEDIUM, SMALL)를 지정합니다.
  * @param enabled 버튼 활성화 여부를 지정합니다.
@@ -49,15 +49,15 @@ fun WantedButton(
     modifier: Modifier = Modifier,
     type: ButtonType = ButtonType.PRIMARY,
     size: ButtonSize = ButtonSize.LARGE,
-    buttonShape: ButtonShape = ButtonShape.SOLID,
+    variant: ButtonVariant = ButtonVariant.SOLID,
     enabled: Boolean = true,
     isLoading: Boolean = false,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
     onClick: () -> Unit = {}
 ) {
-    when (buttonShape) {
-        ButtonShape.SOLID -> {
+    when (variant) {
+        ButtonVariant.SOLID -> {
             WantedSolidButton(
                 modifier = modifier,
                 text = text,
@@ -66,7 +66,7 @@ fun WantedButton(
                 enabled = enabled,
                 isLoading = isLoading,
                 buttonDefault = WantedButtonDefaults.getDefault(
-                    shape = buttonShape,
+                    variant = variant,
                     type = type,
                     enabled = enabled,
                     size = size
@@ -77,7 +77,7 @@ fun WantedButton(
             )
         }
 
-        ButtonShape.OUTLINED -> {
+        ButtonVariant.OUTLINED -> {
             WantedOutlinedButton(
                 modifier = modifier,
                 text = text,
@@ -86,7 +86,7 @@ fun WantedButton(
                 enabled = enabled,
                 isLoading = isLoading,
                 buttonDefault = WantedButtonDefaults.getDefault(
-                    shape = buttonShape,
+                    variant = variant,
                     type = type,
                     enabled = enabled,
                     size = size
@@ -97,7 +97,7 @@ fun WantedButton(
             )
         }
 
-        ButtonShape.TEXT -> {
+        ButtonVariant.TEXT -> {
             WantedTextButton(
                 modifier = modifier,
                 text = text,
@@ -106,7 +106,7 @@ fun WantedButton(
                 enabled = enabled,
                 isLoading = isLoading,
                 buttonDefault = WantedButtonDefaults.getDefault(
-                    shape = buttonShape,
+                    variant = variant,
                     type = type,
                     enabled = enabled,
                     size = size
@@ -127,7 +127,7 @@ fun WantedButton(
  * ```kotlin
  * WantedButton(
  *     text = "삭제",
- *     buttonDefault = WantedButtonDefaults.getDefault(ButtonShape.OUTLINED),
+ *     buttonDefault = WantedButtonDefaults.getDefault(ButtonVariant.OUTLINED),
  *     onClick = { /* 클릭 처리 */ }
  * )
  * ```
@@ -151,8 +151,8 @@ fun WantedButton(
     onClick: () -> Unit = {}
 ) {
 
-    when (buttonDefault.shape) {
-        ButtonShape.SOLID -> {
+    when (buttonDefault.variant) {
+        ButtonVariant.SOLID -> {
             WantedSolidButton(
                 modifier = modifier,
                 text = text,
@@ -164,7 +164,7 @@ fun WantedButton(
             )
         }
 
-        ButtonShape.OUTLINED -> {
+        ButtonVariant.OUTLINED -> {
             WantedOutlinedButton(
                 modifier = modifier,
                 text = text,
@@ -176,7 +176,7 @@ fun WantedButton(
             )
         }
 
-        ButtonShape.TEXT -> {
+        ButtonVariant.TEXT -> {
             WantedTextButton(
                 modifier = modifier,
                 text = text,
@@ -205,7 +205,7 @@ private fun WantedAvatarPreview() {
                 WantedButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = "텍스트",
-                    buttonShape = ButtonShape.OUTLINED,
+                    variant = ButtonVariant.OUTLINED,
                     type = ButtonType.SECONDARY,
                     size = ButtonSize.MEDIUM,
                     onClick = { }
@@ -215,7 +215,7 @@ private fun WantedAvatarPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     text = "텍스트",
                     buttonDefault = WantedButtonDefaults.getDefault(
-                        shape = ButtonShape.OUTLINED,
+                        variant = ButtonVariant.OUTLINED,
                         type = ButtonType.SECONDARY,
                         size = ButtonSize.MEDIUM
                     ),
