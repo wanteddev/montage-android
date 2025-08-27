@@ -45,7 +45,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * 사용 예시:
  * ```kotlin
- * WantedCardHorizontal(
+ * WantedListCard(
  *     modifier = Modifier.fillMaxWidth(),
  *     title = "제목",
  *     caption = "캡션",
@@ -72,7 +72,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param onClick () -> Unit: 카드 클릭 시 호출되는 콜백 함수입니다.
  */
 @Composable
-fun WantedCardHorizontal(
+fun WantedListCard(
     modifier: Modifier = Modifier,
     thumbnail: Any? = null,
     title: String = "",
@@ -232,7 +232,7 @@ private fun WantedCardPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -240,7 +240,7 @@ private fun WantedCardPreview() {
                     caption = "캡션",
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -249,7 +249,7 @@ private fun WantedCardPreview() {
                     extraCaption = "추가 캡션"
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -261,7 +261,7 @@ private fun WantedCardPreview() {
                     }
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -273,7 +273,7 @@ private fun WantedCardPreview() {
                     }
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -292,7 +292,7 @@ private fun WantedCardPreview() {
                     }
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -333,7 +333,7 @@ private fun WantedCardSkeletonPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -342,7 +342,7 @@ private fun WantedCardSkeletonPreview() {
                     caption = "캡션",
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -355,7 +355,7 @@ private fun WantedCardSkeletonPreview() {
                     extraCaption = "추가 캡션"
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -372,7 +372,7 @@ private fun WantedCardSkeletonPreview() {
                     }
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -390,7 +390,7 @@ private fun WantedCardSkeletonPreview() {
                     leftContent = {}
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
@@ -408,7 +408,7 @@ private fun WantedCardSkeletonPreview() {
                     rightContent = {}
                 )
 
-                WantedCardHorizontal(
+                WantedListCard(
                     modifier = Modifier
                         .defaultMinSize(minHeight = 64.dp)
                         .fillMaxWidth(),
