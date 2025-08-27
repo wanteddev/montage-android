@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeSize
@@ -32,15 +31,17 @@ enum class ButtonSize {
 }
 
 @Composable
-internal fun getButtonWidth(buttonWidth: Int): Modifier =
+internal fun Modifier.getButtonWidth(buttonWidth: Int): Modifier = this.then(
     when (buttonWidth) {
         -1 -> Modifier.fillMaxWidth()
         -2 -> Modifier.wrapContentWidth(align = Alignment.CenterHorizontally)
         else -> Modifier.width(buttonWidth.dp)
     }
+)
+
 
 @Composable
-internal fun getTextButtonSize(buttonWidth: Int, buttonHeight: Int): Modifier {
+internal fun Modifier.getTextButtonSize(buttonWidth: Int, buttonHeight: Int): Modifier {
     val widthModifier = getButtonWidth(buttonWidth = buttonWidth)
     val heightModifier = when (buttonHeight) {
         -1 -> Modifier.fillMaxHeight()
@@ -49,88 +50,40 @@ internal fun getTextButtonSize(buttonWidth: Int, buttonHeight: Int): Modifier {
     }
 
     return Modifier
+        .then(this)
         .then(widthModifier)
         .then(heightModifier)
+
 }
 
-internal fun getButtonHeight(
-    shape: ButtonVariant,
-    size: ButtonSize
-): Dp =
-    when (size) {
-        ButtonSize.LARGE -> if (isLargeSizeButtonExist(shape)) 48.dp else 40.dp
-        ButtonSize.MEDIUM -> 40.dp
-        ButtonSize.SMALL -> 32.dp
-    }
-
 internal fun getButtonRadius(
-    shape: ButtonVariant,
+    variant: ButtonVariant,
     size: ButtonSize
 ): Dp =
-    when (size) {
-        ButtonSize.LARGE -> if (isLargeSizeButtonExist(shape)) 12.dp else 10.dp
-        ButtonSize.MEDIUM -> 10.dp
-        ButtonSize.SMALL -> 8.dp
-    }
+        when (size) {
+            ButtonSize.LARGE -> if (isLargeSizeButtonExist(variant)) 12.dp else 10.dp
+            ButtonSize.MEDIUM -> 10.dp
+            ButtonSize.SMALL -> 8.dp
+        }
 
 internal fun getButtonSpaceBetweenTextAndIcon(
-    shape: ButtonVariant,
+    variant: ButtonVariant,
     size: ButtonSize
 ): Dp =
-    when (size) {
-        ButtonSize.LARGE -> if (isLargeSizeButtonExist(shape)) 6.dp else 5.dp
-        ButtonSize.MEDIUM -> 5.dp
-        ButtonSize.SMALL -> 4.dp
-    }
+        when (size) {
+            ButtonSize.LARGE -> if (isLargeSizeButtonExist(variant)) 6.dp else 5.dp
+            ButtonSize.MEDIUM -> 5.dp
+            ButtonSize.SMALL -> 4.dp
+        }
+
 
 @Composable
-internal fun getButtonTypography(
-    shape: ButtonVariant,
-    type: ButtonType,
+internal fun Modifier.getButtonDrawableSize(
+    variant: ButtonVariant,
     size: ButtonSize
-): TextStyle =
-    getTextStyle(
-        textStyle =
-            when (shape) {
-                ButtonVariant.TEXT -> when (size) {
-                    ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
-                    else -> WantedTextStyle.BODY1_BOLD
-                }
-
-                else -> if (type == ButtonType.ASSISTIVE) {
-                    when (size) {
-                        ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
-                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
-                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
-                    }
-                } else {
-                    when (size) {
-                        ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
-                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
-                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
-                    }
-                }
-            }
-    )
-
-@Composable
-internal fun getButtonHorizontalPadding(
-    shape: ButtonVariant,
-    size: ButtonSize
-): Dp =
+): Modifier = this.then(
     when (size) {
-        ButtonSize.LARGE -> if (isLargeSizeButtonExist(shape)) 28.dp else 20.dp
-        ButtonSize.MEDIUM -> 20.dp
-        ButtonSize.SMALL -> 14.dp
-    }
-
-@Composable
-internal fun getButtonDrawableSize(
-    shape: ButtonVariant,
-    size: ButtonSize
-): Modifier =
-    when (size) {
-        ButtonSize.LARGE -> if (isLargeSizeButtonExist(shape)) Modifier
+        ButtonSize.LARGE -> if (isLargeSizeButtonExist(variant)) Modifier
             .height(20.dp)
             .wrapContentWidth()
         else Modifier
@@ -145,18 +98,19 @@ internal fun getButtonDrawableSize(
             .height(16.dp)
             .wrapContentWidth()
     }
+)
 
-private fun isLargeSizeButtonExist(shape: ButtonVariant): Boolean =
-    when (shape) {
-        ButtonVariant.SOLID -> true
-        ButtonVariant.OUTLINED -> true
-        ButtonVariant.TEXT -> false
-    }
+private fun isLargeSizeButtonExist(variant: ButtonVariant): Boolean =
+        when (variant) {
+            ButtonVariant.SOLID -> true
+            ButtonVariant.OUTLINED -> true
+            ButtonVariant.TEXT -> false
+        }
 
 @Composable
-internal fun getContentBadgeDrawableSize(
+internal fun Modifier.getContentBadgeDrawableSize(
     size: ContentBadgeSize
-): Modifier =
+): Modifier = this.then(
     when (size) {
         ContentBadgeSize.Large -> Modifier
             .height(16.dp)
@@ -170,3 +124,4 @@ internal fun getContentBadgeDrawableSize(
             .size(12.dp)
             .wrapContentWidth()
     }
+)

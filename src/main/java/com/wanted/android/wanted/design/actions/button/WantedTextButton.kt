@@ -66,7 +66,7 @@ class WantedTextButton @JvmOverloads constructor(
             context.obtainStyledAttributes(it, R.styleable.WantedButton).run {
                 text = getString(R.styleable.WantedButton_text) ?: ""
                 buttonType =
-                    ButtonType.entries[getInteger(R.styleable.WantedButton_button_type, 0)]
+                        ButtonType.entries[getInteger(R.styleable.WantedButton_button_type, 0)]
                 size = ButtonSize.entries[getInteger(R.styleable.WantedButton_button_size, 0)]
                 leftDrawable = getResourceId(R.styleable.WantedButton_leftDrawable, 0)
                 rightDrawable = getResourceId(R.styleable.WantedButton_rightDrawable, 0)
@@ -97,7 +97,7 @@ class WantedTextButton @JvmOverloads constructor(
     override fun Content() {
         WantedTextButton(
             text = text,
-            modifier = getTextButtonSize(buttonWidth = buttonWidth, buttonHeight = buttonHeight),
+            modifier = Modifier.getTextButtonSize(buttonWidth = buttonWidth, buttonHeight = buttonHeight),
             type = buttonType,
             size = size,
             enabled = buttonStatus,
@@ -129,9 +129,9 @@ internal fun WantedTextButton(
     val textColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.contentColor) }
 
     val rightIconTintColor =
-        remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.rightIconTintColor) }
+            remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.rightIconTintColor) }
     val leftIconTintColor =
-        remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.leftIconTintColor) }
+            remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.leftIconTintColor) }
 
     WantedTouchArea(
         modifier = modifier,
@@ -152,37 +152,41 @@ internal fun WantedTextButton(
                 leftDrawable = leadingDrawable?.let {
                     {
                         WantedButtonSideIcon(
-                            modifier = getButtonDrawableSize(
-                                shape = ButtonVariant.TEXT,
-                                size = buttonDefault.size
-                            ).alpha(if (isLoading) 0f else 1f),
+                            modifier = Modifier
+                                .getButtonDrawableSize(
+                                    variant = ButtonVariant.TEXT,
+                                    size = buttonDefault.size
+                                )
+                                .alpha(if (isLoading) 0f else 1f),
                             drawableRes = it,
                             tint = leftIconTintColor.value
                         )
                     }
                 },
                 text =
-                    {
-                        Text(
-                            text = text,
-                            modifier = Modifier
-                                .wrapContentHeight()
-                                .alpha(if (isLoading) 0f else 1f),
-                            style = buttonDefault.textStyle,
-                            color = textColor.value,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
-                        )
+                        {
+                            Text(
+                                text = text,
+                                modifier = Modifier
+                                    .wrapContentHeight()
+                                    .alpha(if (isLoading) 0f else 1f),
+                                style = buttonDefault.textStyle,
+                                color = textColor.value,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center
+                            )
 
-                    },
+                        },
                 rightDrawable = trailingDrawable?.let {
                     {
                         WantedButtonSideIcon(
-                            modifier = getButtonDrawableSize(
-                                shape = ButtonVariant.TEXT,
-                                size = buttonDefault.size
-                            ).alpha(if (isLoading) 0f else 1f),
+                            modifier = Modifier
+                                .getButtonDrawableSize(
+                                    variant = ButtonVariant.TEXT,
+                                    size = buttonDefault.size
+                                )
+                                .alpha(if (isLoading) 0f else 1f),
                             drawableRes = it,
                             tint = rightIconTintColor.value
                         )

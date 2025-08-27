@@ -94,7 +94,7 @@ class WantedSolidButton @JvmOverloads constructor(
     override fun Content() {
         WantedSolidButton(
             text = text,
-            modifier = getButtonWidth(buttonWidth = buttonWidth),
+            modifier = Modifier.getButtonWidth(buttonWidth = buttonWidth),
             size = size,
             enabled = buttonStatus,
             leadingDrawable = if (leftDrawable != 0) leftDrawable else null,
@@ -156,8 +156,8 @@ internal fun WantedSolidButton(
         leftDrawable = leadingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonVariant.SOLID,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.SOLID,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
@@ -187,8 +187,8 @@ internal fun WantedSolidButton(
         rightDrawable = trailingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonVariant.SOLID,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.SOLID,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,

@@ -68,7 +68,7 @@ object WantedButtonDefaults {
         type: ButtonType = ButtonType.PRIMARY,
         enabled: Boolean
     ): Color = LocalWantedButtonBackground.current.getBackgroundColor(
-        shape = variant,
+        variant = variant,
         type = type,
         enabled = enabled
     )

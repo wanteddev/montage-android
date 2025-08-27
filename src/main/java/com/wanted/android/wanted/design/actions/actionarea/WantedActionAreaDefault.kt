@@ -42,17 +42,17 @@ object WantedActionAreaDefaults {
     fun getDefault(
         type: ActionAreaType = ActionAreaType.Strong,
         positiveButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            variant = getPositiveButtonShape(type),
+            variant = getPositiveButtonVariant(type),
             type = getPositiveButtonType(type),
             size = getPositiveButtonSize(type)
         ),
         negativeButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            variant = getNegativeButtonShape(type),
+            variant = getNegativeButtonVariant(type),
             type = getNegativeButtonType(type),
             size = getNegativeButtonSize(type)
         ),
         neutralButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            variant = getNeutralButtonShape(type),
+            variant = getNeutralButtonVariant(type),
             type = getNeutralButtonType(type),
             size = getNeutralButtonSize(type)
         )
@@ -63,7 +63,7 @@ object WantedActionAreaDefaults {
         neutralButtonDefault = neutralButtonDefault,
     )
 
-    private fun getPositiveButtonShape(type: ActionAreaType): ButtonVariant {
+    private fun getPositiveButtonVariant(type: ActionAreaType): ButtonVariant {
         return when (type) {
             ActionAreaType.Cancel -> ButtonVariant.OUTLINED
             else -> ButtonVariant.SOLID
@@ -81,7 +81,7 @@ object WantedActionAreaDefaults {
         return ButtonSize.LARGE
     }
 
-    private fun getNegativeButtonShape(type: ActionAreaType): ButtonVariant {
+    private fun getNegativeButtonVariant(type: ActionAreaType): ButtonVariant {
         return ButtonVariant.OUTLINED
     }
 
@@ -93,7 +93,7 @@ object WantedActionAreaDefaults {
         return ButtonSize.LARGE
     }
 
-    private fun getNeutralButtonShape(type: ActionAreaType): ButtonVariant {
+    private fun getNeutralButtonVariant(type: ActionAreaType): ButtonVariant {
         return when (type) {
             ActionAreaType.Strong -> ButtonVariant.TEXT
             else -> ButtonVariant.OUTLINED

@@ -100,7 +100,7 @@ class WantedOutlinedButton @JvmOverloads constructor(
     override fun Content() {
         WantedOutlinedButton(
             text = text,
-            modifier = getButtonWidth(buttonWidth = buttonWidth),
+            modifier = Modifier.getButtonWidth(buttonWidth = buttonWidth),
             type = buttonType,
             size = size,
             enabled = buttonStatus,
@@ -166,8 +166,8 @@ internal fun WantedOutlinedButton(
         leftDrawable = leadingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonVariant.OUTLINED,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.OUTLINED,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
@@ -197,8 +197,8 @@ internal fun WantedOutlinedButton(
         rightDrawable = trailingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonVariant.OUTLINED,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.OUTLINED,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,

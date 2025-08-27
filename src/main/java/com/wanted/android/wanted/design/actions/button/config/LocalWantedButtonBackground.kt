@@ -15,7 +15,7 @@ val LocalWantedButtonBackground = WantedButtonBackgroundCompositionLocal()
 interface WantedButtonBackgroundLoader {
     @Composable
     fun getBackgroundColor(
-        shape: ButtonVariant,
+        variant: ButtonVariant,
         type: ButtonType,
         enabled: Boolean
     ): Color
@@ -24,10 +24,10 @@ interface WantedButtonBackgroundLoader {
 internal class WantedButtonBackgroundLoaderImpl : WantedButtonBackgroundLoader {
     @Composable
     override fun getBackgroundColor(
-        shape: ButtonVariant,
+        variant: ButtonVariant,
         type: ButtonType,
         enabled: Boolean
-    ): Color = when (shape) {
+    ): Color = when (variant) {
         ButtonVariant.SOLID -> getSolidBackgroundColor(type, enabled)
         ButtonVariant.OUTLINED -> colorResource(id = R.color.transparent)
         ButtonVariant.TEXT -> colorResource(id = R.color.transparent)
