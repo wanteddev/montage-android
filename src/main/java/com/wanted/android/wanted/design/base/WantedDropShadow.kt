@@ -18,8 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
@@ -39,7 +41,24 @@ fun Modifier.wantedDropShadow(
     return this
         .dropShadow(
             shadows = shadowStyle.shadows,
-            borderRadius = shadowStyle.borderRadius
+            borderRadius = shadowStyle.borderRadius,
+            isBackgroundTransparent = shadowStyle.backgroundColor == Color.Transparent
+        )
+        .background(
+            color = shadowStyle.backgroundColor,
+            shape = RoundedCornerShape(shadowStyle.borderRadius)
+        )
+}
+
+// 편의 함수들
+fun Modifier.wantedDropShadow(
+    shadowStyle: ShadowStyle
+): Modifier {
+    return this
+        .dropShadow(
+            shadows = shadowStyle.shadows,
+            borderRadius = shadowStyle.borderRadius,
+            isBackgroundTransparent = shadowStyle.backgroundColor == Color.Transparent
         )
         .background(
             color = shadowStyle.backgroundColor,
@@ -51,7 +70,8 @@ fun Modifier.wantedDropShadow(
 // 다중 shadow 지원하는 modifier
 private fun Modifier.dropShadow(
     shadows: List<WantedShadowToken>,
-    borderRadius: Dp = 0.dp
+    borderRadius: Dp = 0.dp,
+    isBackgroundTransparent: Boolean = false
 ) = this.then(
     Modifier.drawBehind {
         this.drawIntoCanvas { canvas ->
@@ -75,6 +95,28 @@ private fun Modifier.dropShadow(
 
                 frameworkPaint.color = shadow.color.toArgb()
 
+                if (isBackgroundTransparent) {
+                    // shadow 그리기 전에 원본 컴포넌트 영역을 clip out
+                    canvas.save()
+
+                    // 원본 컴포넌트의 모양을 clipPath로 제외
+                    val componentPath = Path().apply {
+                        addRoundRect(
+                            androidx.compose.ui.geometry.RoundRect(
+                                left = 0f,
+                                top = 0f,
+                                right = size.width,
+                                bottom = size.height,
+                                radiusX = borderRadius.toPx(),
+                                radiusY = borderRadius.toPx()
+                            )
+                        )
+                    }
+
+                    // 원본 컴포넌트 영역을 제외하고 shadow 그리기
+                    canvas.clipPath(componentPath, ClipOp.Difference)
+                }
+
                 canvas.drawRoundRect(
                     left = left,
                     top = top,
@@ -84,6 +126,10 @@ private fun Modifier.dropShadow(
                     radiusY = borderRadius.toPx(),
                     paint = paint
                 )
+
+                if (isBackgroundTransparent) {
+                    canvas.restore()
+                }
             }
         }
     }
@@ -260,15 +306,23 @@ private fun WantedDropShadowPreview() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
 
+                // backgroud color가 transparent 일때
+                Box(
+                    Modifier
+                        .size(100.dp)
+                        .wantedDropShadow(
+                            shadowStyle = WantedShadowSize
+                                .XLarge
+                                .toShadowStyle()
+                                .copy(backgroundColor = colorResource(R.color.transparent))
+                        )
+                )
+
                 // XSMALL Shadow
                 Box(
                     Modifier
                         .size(100.dp)
                         .wantedDropShadow(WantedShadowSize.XSmall)
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(12.dp)
-                        )
                 )
 
                 // SMALL Shadow
@@ -276,10 +330,6 @@ private fun WantedDropShadowPreview() {
                     Modifier
                         .size(100.dp)
                         .wantedDropShadow(WantedShadowSize.Small)
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(12.dp)
-                        )
                 )
 
                 // MEDIUM Shadow
