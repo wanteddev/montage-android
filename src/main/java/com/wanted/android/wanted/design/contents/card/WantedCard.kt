@@ -1,15 +1,14 @@
 package com.wanted.android.wanted.design.contents.card
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -20,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
@@ -66,7 +64,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedCard(
     modifier: Modifier = Modifier,
-    thumbnail: Any? = null,
+    thumbnail: @Composable () -> Unit = {},
     overlayCaption: String = "",
     title: String = "",
     caption: String = "",
@@ -80,7 +78,7 @@ fun WantedCard(
     onClick: () -> Unit = {},
 ) {
     if (isLoading) {
-        WantedCardVerticalSkeleton(
+        WantedCardSkeleton(
             modifier = modifier,
             topContent = cardDefault.topContentSkeleton,
             caption = cardDefault.captionSkeleton,
@@ -90,15 +88,9 @@ fun WantedCard(
     } else {
         WantedTouchArea(
             content = {
-                WantedCardVerticalLayout(
+                WantedCardLayout(
                     modifier = modifier,
-                    thumbnail = { width: Dp, height: Dp ->
-                        GlideImage(
-                            modifier = Modifier.size(width, height),
-                            model = thumbnail,
-                            contentDescription = ""
-                        )
-                    },
+                    thumbnail = thumbnail,
                     thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
                         {
                             WantedThumbnailOverly(
@@ -140,17 +132,22 @@ fun WantedCard(
 }
 
 @Composable
-private fun WantedCardVerticalSkeleton(
+private fun WantedCardSkeleton(
     modifier: Modifier = Modifier,
     topContent: Boolean = false,
     caption: Boolean = true,
     extraCaption: Boolean = true,
     bottomContent: Boolean = false,
+    ratio: Float = 4 / 3f
 ) {
-    WantedCardVerticalLayout(
+    WantedCardLayout(
         modifier = modifier,
-        thumbnail = { width: Dp, height: Dp ->
-            WantedSkeletonRectangle(Modifier.size(width, height))
+        thumbnail = {
+            WantedSkeletonRectangle(
+                Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(ratio)
+            )
         },
         thumbnailOverlay = null,
         description = {
@@ -165,11 +162,10 @@ private fun WantedCardVerticalSkeleton(
     )
 }
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-private fun WantedCardVerticalLayout(
+private fun WantedCardLayout(
     modifier: Modifier = Modifier,
-    thumbnail: @Composable (width: Dp, height: Dp) -> Unit = { _, _ -> },
+    thumbnail: @Composable () -> Unit = { },
     thumbnailOverlay: @Composable (() -> Unit)? = null,
     description: @Composable (() -> Unit)? = null,
 ) {
@@ -177,9 +173,8 @@ private fun WantedCardVerticalLayout(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        BoxWithConstraints(
+        Box(
             modifier = Modifier
-                .aspectRatio(4 / 3f)
                 .clip(RoundedCornerShape(12.dp))
                 .background(color = colorResource(id = R.color.fill_alternative))
                 .border(
@@ -189,7 +184,7 @@ private fun WantedCardVerticalLayout(
                 ),
             contentAlignment = Alignment.TopStart
         ) {
-            thumbnail(maxWidth, maxHeight)
+            thumbnail()
             thumbnailOverlay?.invoke()
         }
 
@@ -211,6 +206,13 @@ private fun WantedCardPreview() {
             ) {
                 WantedCard(
                     modifier = Modifier.width(152.dp),
+                    thumbnail = {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(4 / 3f)
+                        )
+                    },
                     title = "제목",
                     caption = "캡션",
                     overlayCaption = "overlayCaption"
@@ -223,9 +225,11 @@ private fun WantedCardPreview() {
                     subCaption = "추가 캡션",
                     overlayCaption = "overlayCaption",
                     overlayToggleIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_bookmark_fill_svg),
-                            tint = colorResource(R.color.primary_normal),
+                        GlideImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(4 / 3f),
+                            model = "",
                             contentDescription = ""
                         )
                     }
