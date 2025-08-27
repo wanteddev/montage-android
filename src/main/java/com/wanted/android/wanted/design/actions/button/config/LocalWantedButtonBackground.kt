@@ -6,7 +6,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonType
 
 
@@ -15,7 +15,7 @@ val LocalWantedButtonBackground = WantedButtonBackgroundCompositionLocal()
 interface WantedButtonBackgroundLoader {
     @Composable
     fun getBackgroundColor(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType,
         enabled: Boolean
     ): Color
@@ -24,13 +24,13 @@ interface WantedButtonBackgroundLoader {
 internal class WantedButtonBackgroundLoaderImpl : WantedButtonBackgroundLoader {
     @Composable
     override fun getBackgroundColor(
-        shape: ButtonShape,
+        variant: ButtonVariant,
         type: ButtonType,
         enabled: Boolean
-    ): Color = when (shape) {
-        ButtonShape.SOLID -> getSolidBackgroundColor(type, enabled)
-        ButtonShape.OUTLINED -> colorResource(id = R.color.transparent)
-        ButtonShape.TEXT -> colorResource(id = R.color.transparent)
+    ): Color = when (variant) {
+        ButtonVariant.SOLID -> getSolidBackgroundColor(type, enabled)
+        ButtonVariant.OUTLINED -> colorResource(id = R.color.transparent)
+        ButtonVariant.TEXT -> colorResource(id = R.color.transparent)
     }
 
     @Composable
