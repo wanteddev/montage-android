@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -111,7 +111,7 @@ fun WantedDotIndicator(
 
     Row(
         modifier = modifier
-            .height(12.dp) // 높이는 가장 큰 점(Medium Size의 Max인 10dp + 여유)을 수용할 수 있도록 12.dp로 고정
+            .heightIn(min = maxDotSizeDp) // 높이는 가장 큰 점
             .width(calculatedWidth) // 계산된 고정 너비 적용
         // .background(Color.Yellow.copy(alpha = 0.3f)) // 디버깅용: Row의 실제 영역 확인 시 사용
         ,
