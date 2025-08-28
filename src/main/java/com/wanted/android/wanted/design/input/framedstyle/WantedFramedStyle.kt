@@ -23,16 +23,22 @@ import com.wanted.android.wanted.design.util.OPACITY_43
 
 fun Modifier.framedStyle(
     status: WantedFramedStyleStatus = WantedFramedStyleStatus.Normal,
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     enabled: Boolean = true
 ) = composed {
     this
         .border(
-            shape = RoundedCornerShape(12.dp),
+            shape = shape,
             color = when {
                 status == WantedFramedStyleStatus.Negative
                         || status == WantedFramedStyleStatus.Selected -> {
-                    colorResource(id = R.color.background_normal_normal)
-                        .copy(alpha = OPACITY_43)
+                    if (enabled) {
+                        colorResource(id = R.color.background_normal_normal)
+                            .copy(alpha = OPACITY_43)
+                    } else {
+                        colorResource(id = R.color.background_normal_normal)
+                            .copy(alpha = 0.185f)
+                    }
                 }
 
                 else -> colorResource(R.color.transparent)
@@ -40,22 +46,29 @@ fun Modifier.framedStyle(
             width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
         )
         .border(
-            shape = RoundedCornerShape(12.dp),
-            color = when {
-                !enabled -> colorResource(R.color.line_normal_alternative)
-                status == WantedFramedStyleStatus.Negative -> {
-                    colorResource(R.color.status_negative).copy(OPACITY_43)
+            shape = shape,
+            color = when (status) {
+                WantedFramedStyleStatus.Negative -> {
+                    if (enabled) {
+                        colorResource(R.color.status_negative).copy(OPACITY_43)
+                    } else {
+                        colorResource(R.color.status_negative).copy(0.185f)
+                    }
                 }
 
-                status == WantedFramedStyleStatus.Selected -> {
-                    colorResource(R.color.primary_normal).copy(OPACITY_43)
+                WantedFramedStyleStatus.Selected -> {
+                    if (enabled) {
+                        colorResource(R.color.primary_normal).copy(OPACITY_43)
+                    } else {
+                        colorResource(R.color.primary_normal).copy(0.185f)
+                    }
                 }
 
                 else -> colorResource(R.color.line_normal_neutral)
             },
             width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
         )
-        .clip(RoundedCornerShape(12.dp))
+        .clip(shape)
 }
 
 enum class WantedFramedStyleStatus {
