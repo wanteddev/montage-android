@@ -86,7 +86,7 @@ class WantedSwitch : SwitchMaterial {
  * @param onCheckedChange (Boolean) -> Unit: 상태가 변경될 때 호출되는 콜백입니다.
  */
 @Composable
-fun WantedSwitch(
+internal fun WantedSwitch(
     checked: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
