@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.wanted.android.wanted.design.contents.cell.WantedCell
+import com.wanted.android.wanted.design.contents.listcell.WantedListCell
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.control.WantedRadioButton
 
@@ -41,7 +41,7 @@ fun WantedMenuModal(
         itemCount = { items.size },
         onBindSectionTitle = null,
         onBindSectionItem = { _, index ->
-            WantedCell(
+            WantedListCell(
                 text = items[index],
                 onClick = {
                     onClick(index, items[index])
@@ -89,7 +89,7 @@ fun WantedMenuModal(
         onBindSectionItem = { _, index ->
             when (listType) {
                 WantedMenuContract.ListType.Normal -> {
-                    WantedCell(
+                    WantedListCell(
                         text = items[index],
                         onClick = {
                             onClick(index, items[index])
@@ -98,9 +98,9 @@ fun WantedMenuModal(
                 }
 
                 WantedMenuContract.ListType.Radio -> {
-                    WantedCell(
+                    WantedListCell(
                         text = items[index],
-                        rightContent = {
+                        trailingContent = {
                             WantedRadioButton(
                                 checked = false,
                                 onCheckedChange = {
@@ -115,9 +115,9 @@ fun WantedMenuModal(
                 }
 
                 WantedMenuContract.ListType.Check -> {
-                    WantedCell(
+                    WantedListCell(
                         text = items[index],
-                        leftContent = {
+                        leadingContent = {
                             WantedCheckBox(
                                 checked = false,
                                 onCheckedChange = {
