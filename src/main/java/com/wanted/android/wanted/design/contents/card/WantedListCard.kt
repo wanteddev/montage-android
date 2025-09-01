@@ -1,11 +1,9 @@
 package com.wanted.android.wanted.design.contents.card
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,9 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
@@ -36,6 +32,7 @@ import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.OPACITY_8
 
 /**
  * 가로형 카드 컴포저블입니다.
@@ -67,45 +64,50 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param cardDefault WantedCardDefault: 스켈레톤 모드 시 항목별 표시 여부를 지정하는 설정 객체입니다.
  * @param topContent @Composable (() -> Unit)?: 설명 위에 표시될 추가 콘텐츠입니다.
  * @param bottomContent @Composable (() -> Unit)?: 설명 아래에 표시될 추가 콘텐츠입니다.
- * @param leftContent @Composable (() -> Unit)?: 썸네일 왼쪽에 표시될 콘텐츠입니다. (예: 체크박스)
- * @param rightContent @Composable (() -> Unit)?: 설명 오른쪽에 표시될 콘텐츠입니다. (예: 아이콘 버튼)
+ * @param leadingContent @Composable (() -> Unit)?: 썸네일 왼쪽에 표시될 콘텐츠입니다. (예: 체크박스)
+ * @param trailingContent @Composable (() -> Unit)?: 설명 오른쪽에 표시될 콘텐츠입니다. (예: 아이콘 버튼)
  * @param onClick () -> Unit: 카드 클릭 시 호출되는 콜백 함수입니다.
  */
 @Composable
 fun WantedListCard(
     modifier: Modifier = Modifier,
-    thumbnail: Any? = null,
     title: String = "",
     caption: String = "",
     extraCaption: String = "",
     isLoading: Boolean = false,
     cardDefault: WantedCardDefault = WantedCardDefaults.getDefault(),
+    thumbnail: @Composable (() -> Unit)? = null,
     topContent: @Composable (() -> Unit)? = null,
     bottomContent: @Composable (() -> Unit)? = null,
-    leftContent: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null,
+    leadingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     onClick: () -> Unit = {}
 ) {
     if (isLoading) {
         WantedCardHorizontalSkeleton(
             modifier = modifier,
+            thumbnail = thumbnail,
             topContent = cardDefault.topContentSkeleton,
             caption = cardDefault.captionSkeleton,
             extraCaption = cardDefault.extraCaptionSkeleton,
             bottomContent = cardDefault.bottomContentSkeleton,
-            leftContent = leftContent,
-            rightContent = rightContent
+            leadingContent = leadingContent,
+            trailingContent = trailingContent
         )
     } else {
         WantedTouchArea(
             content = {
                 WantedCardHorizontalLayout(
                     modifier = modifier,
-                    thumbnail = { width: Dp, height: Dp ->
-                        GlideImage(
-                            modifier = Modifier.size(width, height),
-                            model = thumbnail,
-                            contentDescription = ""
+                    thumbnail = thumbnail ?: {
+                        Box(
+                            modifier = Modifier
+                                .height(64.dp)
+                                .aspectRatio(cardDefault.ratio)
+                                .background(
+                                    color = colorResource(id = R.color.fill_normal)
+                                        .copy(OPACITY_8)
+                                ),
                         )
                     },
                     description = {
@@ -119,8 +121,8 @@ fun WantedListCard(
                             topContent = topContent
                         )
                     },
-                    leftContent = leftContent,
-                    rightContent = rightContent
+                    leadingContent = leadingContent,
+                    trailingContent = trailingContent
                 )
             },
             verticalPadding = 8.dp,
@@ -141,17 +143,25 @@ fun WantedListCard(
 @Composable
 private fun WantedCardHorizontalSkeleton(
     modifier: Modifier = Modifier,
+    thumbnail: @Composable (() -> Unit)?,
     topContent: Boolean = false,
     caption: Boolean = true,
     extraCaption: Boolean = true,
     bottomContent: Boolean = false,
-    leftContent: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null
+    ratio: Float = 4 / 3f,
+    leadingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null
 ) {
     WantedCardHorizontalLayout(
         modifier = modifier,
-        thumbnail = { width: Dp, height: Dp ->
-            WantedSkeletonRectangle(Modifier.size(width, height))
+        thumbnail = thumbnail ?: run {
+            {
+                WantedSkeletonRectangle(
+                    Modifier
+                        .height(64.dp)
+                        .aspectRatio(ratio)
+                )
+            }
         },
         description = {
             WantedCardDescriptionSkeleton(
@@ -162,12 +172,12 @@ private fun WantedCardHorizontalSkeleton(
                 topContent = topContent
             )
         },
-        leftContent = if (leftContent != null) {
+        leadingContent = if (leadingContent != null) {
             {
                 Spacer(modifier = Modifier.size(24.dp))
             }
         } else null,
-        rightContent = if (rightContent != null) {
+        trailingContent = if (trailingContent != null) {
             {
                 Spacer(modifier = Modifier.size(24.dp))
             }
@@ -175,14 +185,13 @@ private fun WantedCardHorizontalSkeleton(
     )
 }
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun WantedCardHorizontalLayout(
     modifier: Modifier = Modifier,
-    thumbnail: @Composable (width: Dp, height: Dp) -> Unit = { _, _ -> },
+    thumbnail: @Composable () -> Unit = { },
     description: @Composable (() -> Unit)? = null,
-    leftContent: @Composable (() -> Unit)? = null,
-    rightContent: @Composable (() -> Unit)? = null
+    leadingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
@@ -190,11 +199,10 @@ private fun WantedCardHorizontalLayout(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        leftContent?.invoke()
-        BoxWithConstraints(
+        leadingContent?.invoke()
+
+        Box(
             modifier = Modifier
-                .height(64.dp)
-                .aspectRatio(4 / 3f)
                 .clip(RoundedCornerShape(12.dp))
                 .background(color = colorResource(id = R.color.fill_alternative))
                 .border(
@@ -204,7 +212,7 @@ private fun WantedCardHorizontalLayout(
                 ),
             contentAlignment = Alignment.TopStart
         ) {
-            thumbnail(maxWidth, maxHeight)
+            thumbnail()
         }
 
         description?.let {
@@ -216,7 +224,7 @@ private fun WantedCardHorizontalLayout(
             }
         }
 
-        rightContent?.invoke()
+        trailingContent?.invoke()
     }
 }
 
@@ -283,7 +291,7 @@ private fun WantedCardPreview() {
                     bottomContent = {
                         WantedContentBadge(text = "텍스트")
                     },
-                    leftContent = {
+                    leadingContent = {
                         WantedCheckBox(
                             modifier = Modifier,
                             size = CheckBoxSize.Normal,
@@ -302,7 +310,7 @@ private fun WantedCardPreview() {
                     bottomContent = {
                         WantedContentBadge(text = "텍스트")
                     },
-                    rightContent = {
+                    trailingContent = {
                         WantedTouchArea(
                             modifier = Modifier.size(24.dp),
                             content = {
@@ -387,7 +395,7 @@ private fun WantedCardSkeletonPreview() {
                     topContent = {
                         WantedContentBadge(text = "텍스트")
                     },
-                    leftContent = {}
+                    leadingContent = {}
                 )
 
                 WantedListCard(
@@ -405,7 +413,7 @@ private fun WantedCardSkeletonPreview() {
                     topContent = {
                         WantedContentBadge(text = "텍스트")
                     },
-                    rightContent = {}
+                    trailingContent = {}
                 )
 
                 WantedListCard(
@@ -423,8 +431,8 @@ private fun WantedCardSkeletonPreview() {
                     topContent = {
                         WantedContentBadge(text = "텍스트")
                     },
-                    leftContent = {},
-                    rightContent = {}
+                    leadingContent = {},
+                    trailingContent = {}
                 )
 
             }
