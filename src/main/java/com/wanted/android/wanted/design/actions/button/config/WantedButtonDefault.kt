@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 
 
 data class WantedButtonDefault(
@@ -36,7 +36,7 @@ object WantedButtonDefaults {
         leftIconTintColor: Color = getContentColor(variant, type, enabled),
         rightIconTintColor: Color = getContentColor(variant, type, enabled),
         backgroundColor: Color = getBackgroundColor(variant, type, enabled),
-        borderColor: Color = getBorderColor(variant, type, enabled),
+        borderColor: Color = getBorderColor(variant),
         textStyle: TextStyle = getTextStyle(variant, type, size),
         loadingSize: Dp = getLoadingSize(size),
         loadingColor: Color = getLoadingColor(variant, type, enabled),
@@ -75,14 +75,8 @@ object WantedButtonDefaults {
 
     @Composable
     private fun getBorderColor(
-        variant: ButtonVariant,
-        type: ButtonType = ButtonType.PRIMARY,
-        enabled: Boolean
-    ): Color = LocalWantedButtonBorder.current.getBorderColor(
-        variant = variant,
-        type = type,
-        enabled = enabled
-    )
+        variant: ButtonVariant
+    ): Color = LocalWantedButtonBorder.current.getBorderColor(variant = variant)
 
     @Composable
     private fun getTextStyle(
