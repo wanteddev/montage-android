@@ -84,6 +84,7 @@ fun WantedCard(
             caption = cardDefault.captionSkeleton,
             extraCaption = cardDefault.extraCaptionSkeleton,
             bottomContent = cardDefault.bottomContentSkeleton,
+            ratio = cardDefault.ratio
         )
     } else {
         WantedTouchArea(
