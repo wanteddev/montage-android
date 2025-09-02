@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
  * @param captionSkeleton 메인 캡션에 스켈레톤을 표시할지 여부입니다.
  * @param extraCaptionSkeleton 추가 캡션에 스켈레톤을 표시할지 여부입니다.
  * @param bottomContentSkeleton 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
+ * @param ratio thumbnail 스캘레톤의 비율 입니다.
  */
 data class WantedCardDefault(
     val topContentSkeleton: Boolean = false,
     val captionSkeleton: Boolean = true,
     val extraCaptionSkeleton: Boolean = true,
-    val bottomContentSkeleton: Boolean = false
+    val bottomContentSkeleton: Boolean = false,
+    val ratio: Float = 4 / 3f
 )
 
 object WantedCardDefaults {
