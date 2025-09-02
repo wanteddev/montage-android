@@ -84,7 +84,7 @@ class WantedCheckBox : MaterialCheckBox {
  * @param interactionSource MutableInteractionSource: 커스텀 인터랙션 처리를 위한 InteractionSource입니다.
  */
 @Composable
-fun WantedCheckBox(
+internal fun WantedCheckBox(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     size: CheckBoxSize = CheckBoxSize.Normal,
