@@ -20,7 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.contents.cell.WantedCell
+import com.wanted.android.wanted.design.contents.listcell.WantedListCell
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -106,7 +106,7 @@ private fun WantedMenuPreview() {
                         Text(text = "$it title")
                     },
                     onBindSectionItem = { section, index ->
-                        WantedCell(
+                        WantedListCell(
                             text = "section $section",
                             caption = "index $index",
                             onClick = {

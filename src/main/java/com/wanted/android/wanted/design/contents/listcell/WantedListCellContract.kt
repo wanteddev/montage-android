@@ -1,19 +1,19 @@
-package com.wanted.android.wanted.design.contents.cell
+package com.wanted.android.wanted.design.contents.listcell
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * object WantedCellContract
+ * object WantedListCellContract
  *
- * WantedCell 컴포넌트에 사용되는 세로 패딩 및 인터랙션 패딩 관련 설정을 정의하는 객체입니다.
+ * WantedListCell 컴포넌트에 사용되는 세로 패딩 및 인터랙션 패딩 관련 설정을 정의하는 객체입니다.
  */
-object WantedCellContract {
+object WantedListCellContract {
 
     /**
      * enum class VerticalPadding
      *
-     * WantedCell의 세로 방향 패딩 크기를 정의하는 enum 클래스입니다.
+     * WantedListCell 세로 방향 패딩 크기를 정의하는 enum 클래스입니다.
      *
      * 각 값은 셀의 상하 여백을 조정하며, 셀의 전체 높이에 영향을 줍니다.
      * 제공되는 옵션은 다음과 같습니다:
