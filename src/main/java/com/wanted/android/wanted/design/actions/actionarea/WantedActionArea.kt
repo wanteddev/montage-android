@@ -35,8 +35,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -110,7 +110,7 @@ fun WantedActionArea(
                 WantedButton(
                     modifier = Modifier.fillMaxWidth(),
                     variant = ButtonVariant.OUTLINED,
-                    type = ButtonType.SECONDARY,
+                    type = ButtonType.PRIMARY,
                     text = negative.orEmpty(),
                     onClick = onClickNegative
                 )
