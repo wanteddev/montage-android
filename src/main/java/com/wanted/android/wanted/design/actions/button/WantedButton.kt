@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
@@ -206,7 +206,7 @@ private fun WantedAvatarPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     text = "텍스트",
                     variant = ButtonVariant.OUTLINED,
-                    type = ButtonType.SECONDARY,
+                    type = ButtonType.PRIMARY,
                     size = ButtonSize.MEDIUM,
                     onClick = { }
                 )
@@ -216,7 +216,7 @@ private fun WantedAvatarPreview() {
                     text = "텍스트",
                     buttonDefault = WantedButtonDefaults.getDefault(
                         variant = ButtonVariant.OUTLINED,
-                        type = ButtonType.SECONDARY,
+                        type = ButtonType.PRIMARY,
                         size = ButtonSize.MEDIUM
                     ),
                     onClick = { }
