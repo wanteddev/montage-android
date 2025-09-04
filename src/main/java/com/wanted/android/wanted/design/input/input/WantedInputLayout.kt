@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,7 +34,7 @@ internal fun WantedInputLayout(
     tight: Boolean,
     textStyle: TextStyle,
     leadingIcon: @Composable (() -> Unit)? = null,
-    text: @Composable () -> Unit
+    label: @Composable () -> Unit
 ) {
     val density = LocalDensity.current
     val lineHeight = remember(size, textStyle) {
@@ -54,19 +53,13 @@ internal fun WantedInputLayout(
             Box(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .height(lineHeight),
+                    .defaultMinSize(minHeight = lineHeight),
                 contentAlignment = Alignment.TopStart
             ) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .width(
-                            when (tight) {
-                                true -> if (size == WantedInputSize.Medium) 20.dp else 16.dp
-                                else -> if (size == WantedInputSize.Medium) 24.dp else 20.dp
-                            }
-                        )
-                        .height(if (size == WantedInputSize.Medium) 24.dp else 20.dp),
+                        .wrapContentSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     leadingIcon()
@@ -78,7 +71,7 @@ internal fun WantedInputLayout(
             modifier = Modifier.defaultMinSize(minHeight = lineHeight),
             contentAlignment = Alignment.CenterStart
         ) {
-            text()
+            label()
         }
     }
 }
@@ -105,7 +98,7 @@ private fun WantedInputLayoutPreview() {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
                     tight = false,
-                    text = {
+                    label = {
                         Text(text = "텍스트 한줄")
                     }
                 )
@@ -121,7 +114,7 @@ private fun WantedInputLayoutPreview() {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
                     tight = false,
-                    text = {
+                    label = {
                         Text(text = "텍스트 \n두줄")
                     }
                 )
@@ -137,7 +130,7 @@ private fun WantedInputLayoutPreview() {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
                     tight = false,
-                    text = {
+                    label = {
                         Text(
                             text = "텍스트\n텍스트"
                         )
@@ -155,7 +148,7 @@ private fun WantedInputLayoutPreview() {
                         style = DesignSystemTheme.typography.label1Regular
                     ),
                     tight = false,
-                    text = {
+                    label = {
                         Text(text = "텍스트\n텍스트")
                     }
                 )

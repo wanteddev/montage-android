@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +33,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -50,7 +47,7 @@ import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaChara
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaLayout
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -172,7 +169,7 @@ fun WantedTextArea(
                         textFieldValueState = newTextFieldValueState
 
                         val stringChangedSinceLastInvocation =
-                            lastTextValue != newTextFieldValueState.text
+                                lastTextValue != newTextFieldValueState.text
                         lastTextValue = newTextFieldValueState.text
 
                         if (stringChangedSinceLastInvocation) {
@@ -203,7 +200,7 @@ fun WantedTextArea(
                         textFieldValueState = newTextFieldValueState
 
                         val stringChangedSinceLastInvocation =
-                            lastTextValue != newTextFieldValueState.text
+                                lastTextValue != newTextFieldValueState.text
                         lastTextValue = newTextFieldValueState.text
 
                         if (stringChangedSinceLastInvocation) {
@@ -464,29 +461,19 @@ private fun WantedTextArea(
                     value.text.length
                 },
                 error = value.text.length > maxWordCount,
+                enable = enabled,
                 maxWordCount = maxWordCount
             )
         },
         rightContent = {
-            if (negative) {
-                Icon(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(1.dp),
-                    painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
-                    tint = colorResource(id = R.color.status_negative),
-                    contentDescription = ""
+            rightButton?.let {
+                WantedButton(
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    text = rightButton,
+                    variant = ButtonVariant.TEXT,
+                    enabled = enabled && !negative,
+                    onClick = { onClickRightButton() }
                 )
-            } else {
-                rightButton?.let {
-                    WantedButton(
-                        modifier = Modifier.padding(horizontal = 4.dp),
-                        text = rightButton,
-                        buttonShape = ButtonShape.TEXT,
-                        enabled = enabled,
-                        onClick = { onClickRightButton() }
-                    )
-                }
             }
         },
         onValueChange = onValueChange

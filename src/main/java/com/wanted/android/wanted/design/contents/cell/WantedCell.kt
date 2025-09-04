@@ -56,7 +56,7 @@ import com.wanted.android.wanted.design.util.toAnnotatedString
  * @param interactionPadding WantedCellContract.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
  * @param divider Boolean: true일 경우 셀 하단에 구분선을 표시합니다.
  * @param isEnable Boolean: 셀의 활성화 여부를 설정합니다. 비활성화 시 알파값이 줄어듭니다.
- * @param isActive Boolean: true일 경우 메인 텍스트 색상을 primary로 강조 표시합니다.
+ * @param selected Boolean: true일 경우 메인 텍스트 색상을 primary로 강조 표시합니다.
  * @param ellipsis Boolean: true일 경우 텍스트가 넘칠 시 생략 부호(...)로 표시됩니다.
  * @param verticalAlignCenter Boolean: true일 경우 텍스트를 수직 중앙 정렬합니다.
  * @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다.
@@ -75,7 +75,7 @@ fun WantedCell(
     interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default(fillWidth),
     divider: Boolean = false,
     isEnable: Boolean = true,
-    isActive: Boolean = false,
+    selected: Boolean = false,
     ellipsis: Boolean = true,
     verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
@@ -93,7 +93,7 @@ fun WantedCell(
         fillWidth = fillWidth,
         divider = divider,
         isEnable = isEnable,
-        isActive = isActive,
+        selected = selected,
         ellipsis = ellipsis,
         verticalAlignCenter = verticalAlignCenter,
         chevrons = chevrons,
@@ -124,7 +124,7 @@ fun WantedCell(
  * @param interactionPadding WantedCellContract.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
  * @param divider Boolean: true일 경우 셀 하단에 구분선을 표시합니다.
  * @param isEnable Boolean: 셀의 활성화 여부를 설정합니다.
- * @param isActive Boolean: true일 경우 텍스트 색상을 primary로 강조합니다.
+ * @param selected Boolean: true일 경우 텍스트 색상을 primary로 강조합니다.
  * @param ellipsis Boolean: true일 경우 텍스트가 넘칠 시 생략 부호(...)로 표시됩니다.
  * @param verticalAlignCenter Boolean: true일 경우 텍스트를 수직 중앙 정렬합니다.
  * @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다.
@@ -145,7 +145,7 @@ fun WantedCell(
     interactionPadding: WantedCellContract.InteractionPadding = WantedCellContract.InteractionPadding.Default(fillWidth),
     divider: Boolean = false,
     isEnable: Boolean = true,
-    isActive: Boolean = false,
+    selected: Boolean = false,
     ellipsis: Boolean = true,
     verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
@@ -171,7 +171,7 @@ fun WantedCell(
                     textMaxLine = textMaxLine,
                     caption = annotatedCaption,
                     isEnable = isEnable,
-                    isActive = isActive,
+                    selected = selected,
                     ellipsis = ellipsis,
                     verticalAlignCenter = verticalAlignCenter,
                     chevrons = chevrons,
@@ -202,7 +202,7 @@ private fun WantedCellImpl(
     textMaxLine: Int = 1,
     caption: AnnotatedString = AnnotatedString(""),
     isEnable: Boolean = true,
-    isActive: Boolean = false,
+    selected: Boolean = false,
     ellipsis: Boolean = true,
     verticalAlignCenter: Boolean = ellipsis,
     chevrons: Boolean = false,
@@ -223,7 +223,7 @@ private fun WantedCellImpl(
                 overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
                 style = WantedTextStyle(
                     colorRes = when {
-                        isActive -> R.color.primary_normal
+                        selected -> R.color.primary_normal
                         else -> R.color.label_normal
                     },
                     style = when {
@@ -361,14 +361,14 @@ private fun WantedCellPreview() {
                 WantedCell(
                     text = "텍스트",
                     caption = "캡션",
-                    isActive = true,
+                    selected = true,
                     onClick = {}
                 )
 
                 WantedCell(
                     text = "텍스트",
                     caption = "캡션",
-                    isActive = true,
+                    selected = true,
                     isEnable = false,
                     onClick = {}
                 )

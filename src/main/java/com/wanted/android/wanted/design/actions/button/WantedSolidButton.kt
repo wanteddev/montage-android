@@ -35,7 +35,7 @@ import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaul
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.clickOnce
@@ -94,7 +94,7 @@ class WantedSolidButton @JvmOverloads constructor(
     override fun Content() {
         WantedSolidButton(
             text = text,
-            modifier = getButtonWidth(buttonWidth = buttonWidth),
+            modifier = Modifier.getButtonWidth(buttonWidth = buttonWidth),
             size = size,
             enabled = buttonStatus,
             leadingDrawable = if (leftDrawable != 0) leftDrawable else null,
@@ -116,7 +116,7 @@ internal fun WantedSolidButton(
     trailingDrawable: Int? = null,
     onClick: () -> Unit = {},
     buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-        shape = ButtonShape.SOLID,
+        variant = ButtonVariant.SOLID,
         type = type,
         size = size,
         enabled = enabled
@@ -128,7 +128,7 @@ internal fun WantedSolidButton(
                 buttonDefault.backgroundColor,
                 RoundedCornerShape(
                     size = getButtonRadius(
-                        ButtonShape.SOLID,
+                        ButtonVariant.SOLID,
                         size = buttonDefault.size
                     )
                 )
@@ -136,7 +136,7 @@ internal fun WantedSolidButton(
             .clip(
                 RoundedCornerShape(
                     size = getButtonRadius(
-                        ButtonShape.SOLID,
+                        ButtonVariant.SOLID,
                         size = buttonDefault.size
                     )
                 )
@@ -151,13 +151,13 @@ internal fun WantedSolidButton(
                     }
                 }
             ),
-        buttonShape = ButtonShape.SOLID,
+        buttonVariant = ButtonVariant.SOLID,
         buttonSize = buttonDefault.size,
         leftDrawable = leadingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonShape.SOLID,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.SOLID,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
@@ -187,8 +187,8 @@ internal fun WantedSolidButton(
         rightDrawable = trailingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = getButtonDrawableSize(
-                        shape = ButtonShape.SOLID,
+                    modifier = Modifier.getButtonDrawableSize(
+                        variant = ButtonVariant.SOLID,
                         size = buttonDefault.size
                     ).alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,

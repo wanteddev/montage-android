@@ -36,7 +36,7 @@ import com.wanted.android.wanted.design.input.picker.numberpicker.WantedStringPi
 import com.wanted.android.wanted.design.presentation.modal.WantedModal
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.DevicePreviews
 
@@ -138,7 +138,7 @@ fun WantedTimePickerWheel(
                     modifier = Modifier.wrapContentSize(),
                     text = cancel,
                     buttonDefault = WantedButtonDefaults.getDefault(
-                        shape = ButtonShape.OUTLINED,
+                        variant = ButtonVariant.OUTLINED,
                         size = ButtonSize.MEDIUM,
                         borderColor = Color.Transparent
                     ),
@@ -149,7 +149,7 @@ fun WantedTimePickerWheel(
                     modifier = Modifier.wrapContentSize(),
                     text = confirm,
                     buttonDefault = WantedButtonDefaults.getDefault(
-                        shape = ButtonShape.OUTLINED,
+                        variant = ButtonVariant.OUTLINED,
                         size = ButtonSize.MEDIUM,
                         borderColor = Color.Transparent,
                         enabled = enablePeriod && enableHour && enableMinute,

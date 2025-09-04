@@ -50,19 +50,19 @@ import kotlinx.coroutines.launch
  * WantedToast(snackBarHostState = snackbarHostState)
  * ```
  *
- * @param snackBarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
+ * @param snackbarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
  * @param modifier Modifier: 외형을 조정합니다.
  * @param windowInsets WindowInsets: 시스템 인셋 대응을 위한 설정입니다.
  */
 @Composable
 fun WantedToast(
-    snackBarHostState: SnackbarHostState,
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
 ) {
     SnackbarHost(
         modifier = modifier.zIndex(1000f),
-        hostState = snackBarHostState
+        hostState = snackbarHostState
     ) {
         val visuals = it.visuals
         if (visuals is WantedToastVisuals) {
@@ -103,6 +103,8 @@ internal fun WantedToastImpl(
                 WantedToastIcon(
                     modifier = Modifier.fillMaxSize(),
                     resourceId = variant.resourceId,
+                    backgroundResourceId = variant.backgroundResourceId,
+                    backgroundColor = colorResource(id = variant.backgroundTintColor),
                     tint = colorResource(variant.tinColor)
                 )
             }
@@ -180,9 +182,11 @@ private fun ToastNormalPreview() {
             snackbarHost = {
                 WantedToast(hostState)
             }
-        )  {
+        ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(it),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -217,6 +221,12 @@ private fun ToastNormalPreview() {
                     variant = WantedToastVariant.Cautionary,
                     text = "메시지에 마침표를 찍어요."
                 )
+
+                WantedToastImpl(
+                    variant = WantedToastVariant.Negative,
+                    text = "메시지에 마침표를 찍어요."
+                )
+
 
                 WantedToastImpl(
                     icon = {

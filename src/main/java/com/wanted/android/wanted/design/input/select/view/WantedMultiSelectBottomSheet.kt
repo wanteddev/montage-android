@@ -25,7 +25,7 @@ import com.wanted.android.wanted.design.input.select.WantedSelectContract
 import com.wanted.android.wanted.design.input.select.WantedSelectData
 import com.wanted.android.wanted.design.presentation.modal.WantedModalBottomSheet
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
-import com.wanted.android.wanted.design.util.ButtonShape
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonType
 
 @Composable
@@ -127,7 +127,7 @@ internal fun WantedMultiSelectBottomSheet(
                 ) {
                     WantedButton(
                         text = "",
-                        buttonShape = ButtonShape.OUTLINED,
+                        variant = ButtonVariant.OUTLINED,
                         type = ButtonType.ASSISTIVE,
                         leadingDrawable = R.drawable.ic_normal_refresh_svg,
                         onClick = {
@@ -138,7 +138,7 @@ internal fun WantedMultiSelectBottomSheet(
                     WantedButton(
                         modifier = Modifier.weight(1f),
                         text = confirmText,
-                        buttonShape = ButtonShape.SOLID,
+                        variant = ButtonVariant.SOLID,
                         onClick = {
                             onSelect(items.filter { item -> selectItemList.value.contains(item) })
                         }
