@@ -1,5 +1,6 @@
-package com.wanted.android.wanted.design.drag
+package com.wanted.android.wanted.design.beta.drag
 
+import android.annotation.SuppressLint
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -56,8 +58,9 @@ inline fun <T : Any> LazyListScope.draggableItems(
     }
 }
 
-fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
-    return this.then(pointerInput(dragDropState) {
+@SuppressLint("UnnecessaryComposedModifier")
+fun Modifier.dragContainer(dragDropState: DragDropState): Modifier = composed {
+    pointerInput(dragDropState) {
         detectDragGestures(
             onDrag = { change, offset ->
                 change.consume()
@@ -69,7 +72,7 @@ fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
             onDragEnd = { dragDropState.onDragInterrupted() },
             onDragCancel = { dragDropState.onDragInterrupted() }
         )
-    })
+    }
 }
 
 @Composable
