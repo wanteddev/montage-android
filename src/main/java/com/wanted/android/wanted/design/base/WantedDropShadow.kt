@@ -170,7 +170,7 @@ sealed class WantedShadowStyle(
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 1.dp,
-                    blurRadius = 2.dp,
+                    blurRadius = 0.87.dp,
                     spreadRadius = (-1).dp,
                     color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
                 )
@@ -189,14 +189,14 @@ sealed class WantedShadowStyle(
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 2.dp,
-                    blurRadius = 4.dp,
+                    blurRadius = 1.73.dp,
                     spreadRadius = (-2).dp,
                     color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
                 ),
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 4.dp,
-                    blurRadius = 6.dp,
+                    blurRadius = 4.33.dp,
                     spreadRadius = (-1).dp,
                     color = Color(0x0F171717) // rgba(23, 23, 23, 0.06)
                 )
@@ -215,14 +215,14 @@ sealed class WantedShadowStyle(
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 4.dp,
-                    blurRadius = 6.dp,
+                    blurRadius = 3.46.dp,
                     spreadRadius = (-2).dp,
                     color = Color(0x12000000) // rgba(0, 0, 0, 0.07)
                 ),
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 10.dp,
-                    blurRadius = 15.dp,
+                    blurRadius = 10.39.dp,
                     spreadRadius = (-3).dp,
                     color = Color(0x12171717) // rgba(23, 23, 23, 0.07)
                 )
@@ -241,14 +241,14 @@ sealed class WantedShadowStyle(
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 6.dp,
-                    blurRadius = 10.dp,
+                    blurRadius = 5.20.dp,
                     spreadRadius = (-4).dp,
                     color = Color(0x14171717) // rgba(23, 23, 23, 0.08)
                 ),
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 16.dp,
-                    blurRadius = 24.dp,
+                    blurRadius = 15.59.dp,
                     spreadRadius = (-6).dp,
                     color = Color(0x14171717) // rgba(23, 23, 23, 0.08)
                 )
@@ -267,14 +267,14 @@ sealed class WantedShadowStyle(
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 10.dp,
-                    blurRadius = 15.dp,
+                    blurRadius = 8.66.dp,
                     spreadRadius = (-5).dp,
                     color = Color(0x1A171717) // rgba(23, 23, 23, 0.10)
                 ),
                 WantedShadowToken(
                     offsetX = 0.dp,
                     offsetY = 24.dp,
-                    blurRadius = 38.dp,
+                    blurRadius = 24.25.dp,
                     spreadRadius = (-10).dp,
                     color = Color(0x1F171717) // rgba(23, 23, 23, 0.12)
                 )
