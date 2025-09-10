@@ -27,7 +27,7 @@ import com.wanted.android.wanted.design.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.control.CheckBoxStyle
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputSize
-import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputType
+import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -37,23 +37,23 @@ import com.wanted.android.wanted.design.util.clickOnce
 /**
  * 체크박스, 라디오버튼, 체크마크 스타일을 포함하는 커스텀 입력 행 컴포저블입니다.
  *
- * `text`, `size`, `type`, `checkBoxState` 등을 조합하여 텍스트 라벨과 체크박스를 포함한 입력 항목을 구성합니다.
+ * `label`, `size`, `variant`, `checkBoxState` 등을 조합하여 텍스트 라벨과 체크박스를 포함한 입력 항목을 구성합니다.
  * 내부적으로 `WantedCheckBox` 및 `WantedInputLayout`을 활용하여 입력 항목 UI를 생성합니다.
  *
  * 사용 예시 :
  * ```kotlin
  * WantedInput(
- *     text = "이용약관에 동의합니다.",
- *     type = WantedInputType.CheckBox,
+ *     label = "이용약관에 동의합니다.",
+ *     variant = WantedInputVariant.CheckBox,
  *     size = WantedInputSize.Medium,
  *     checkBoxState = CheckBoxState.Checked,
  *     onCheckedChange = { /* 상태 변경 처리 */ }
  * )
  * ```
  *
- * @param text String: 항목에 표시될 텍스트입니다.
+ * @param label String: 항목에 표시될 텍스트입니다.
  * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
- * @param type WantedInputType: CheckBox, Radio, CheckMark 중 하나의 타입을 지정합니다.
+ * @param variant WantedInputVariant: CheckBox, Radio, CheckMark 중 하나의 타입을 지정합니다.
  * @param size WantedInputSize: Medium 또는 Small 사이즈를 지정합니다.
  * @param checkBoxState CheckBoxState: 체크 상태 (Unchecked, Checked, Indeterminate)를 지정합니다.
  * @param bold Boolean: true일 경우 텍스트를 굵게 표시합니다.
@@ -65,9 +65,9 @@ import com.wanted.android.wanted.design.util.clickOnce
  */
 @Composable
 fun WantedInput(
-    text: String,
     modifier: Modifier = Modifier,
-    type: WantedInputType = WantedInputType.CheckBox,
+    label: String = "",
+    variant: WantedInputVariant = WantedInputVariant.CheckBox,
     size: WantedInputSize = WantedInputSize.Medium,
     checkBoxState: CheckBoxState = CheckBoxState.Unchecked,
     bold: Boolean = false,
@@ -130,10 +130,11 @@ fun WantedInput(
                     } else {
                         CheckBoxSize.Small
                     },
-                    style = when (type) {
-                        WantedInputType.CheckBox -> CheckBoxStyle.CheckBox
-                        WantedInputType.Radio -> CheckBoxStyle.Radio
-                        WantedInputType.CheckMark -> CheckBoxStyle.Check
+                    style = when (variant) {
+                        WantedInputVariant.CheckBox -> CheckBoxStyle.CheckBox
+                        WantedInputVariant.Radio -> CheckBoxStyle.Radio
+                        WantedInputVariant.CheckMark -> CheckBoxStyle.Check
+                        WantedInputVariant.Switch -> CheckBoxStyle.Switch
                     },
                     checkState = checkBoxState,
                     tight = tight,
@@ -143,8 +144,8 @@ fun WantedInput(
 
                 )
             },
-            text = {
-                Text(text = text)
+            label = {
+                Text(text = label)
             }
         )
     }
@@ -164,22 +165,22 @@ private fun WantedInputPreview() {
             ) {
 
                 Text(text = "CheckBox Small")
-                WantedInput(WantedInputSize.Small, WantedInputType.CheckBox)
+                WantedInput(WantedInputSize.Small, WantedInputVariant.CheckBox)
 
                 Text(text = "CheckBox Normal")
-                WantedInput(WantedInputSize.Medium, WantedInputType.CheckBox)
+                WantedInput(WantedInputSize.Medium, WantedInputVariant.CheckBox)
 
                 Text(text = "Radio Small")
-                WantedInput(WantedInputSize.Small, WantedInputType.Radio)
+                WantedInput(WantedInputSize.Small, WantedInputVariant.Radio)
 
                 Text(text = "Radio Normal")
-                WantedInput(WantedInputSize.Medium, WantedInputType.Radio)
+                WantedInput(WantedInputSize.Medium, WantedInputVariant.Radio)
 
                 Text(text = "NestedCheckBox Small")
-                WantedInput(WantedInputSize.Small, WantedInputType.CheckMark)
+                WantedInput(WantedInputSize.Small, WantedInputVariant.CheckMark)
 
                 Text(text = "NestedCheckBox Normal")
-                WantedInput(WantedInputSize.Medium, WantedInputType.CheckMark)
+                WantedInput(WantedInputSize.Medium, WantedInputVariant.CheckMark)
             }
         }
     }
@@ -188,18 +189,18 @@ private fun WantedInputPreview() {
 @Composable
 private fun WantedInput(
     size: WantedInputSize,
-    type: WantedInputType
+    variant: WantedInputVariant
 ) {
     var checked by remember { mutableStateOf(CheckBoxState.Unchecked) }
 
     WantedInput(
         modifier = Modifier,
-        text = "${size.name}\n${size.name}",
+        label = "${size.name}\n${size.name}",
         size = size,
         checkBoxState = checked,
         bold = false,
         enabled = true,
-        type = type,
+        variant = variant,
         onCheckedChange = {
             checked = if (it) {
                 CheckBoxState.Checked
@@ -211,12 +212,12 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = size.name,
+        label = size.name,
         size = size,
         checkBoxState = checked,
         bold = false,
         enabled = false,
-        type = type,
+        variant = variant,
         onCheckedChange = {
             checked = if (it) {
                 CheckBoxState.Checked
@@ -228,12 +229,12 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = size.name,
+        label = size.name,
         size = size,
         checkBoxState = checked,
         bold = true,
         enabled = true,
-        type = type,
+        variant = variant,
         onCheckedChange = {
             checked = if (it) {
                 CheckBoxState.Checked
@@ -245,12 +246,12 @@ private fun WantedInput(
 
     WantedInput(
         modifier = Modifier,
-        text = size.name,
+        label = size.name,
         size = size,
         checkBoxState = checked,
         bold = true,
         enabled = false,
-        type = type,
+        variant = variant,
         onCheckedChange = {
             checked = if (it) {
                 CheckBoxState.Checked

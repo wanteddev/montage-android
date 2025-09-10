@@ -24,7 +24,7 @@ object WantedInputContract {
     }
 
     /**
-     * enum class WantedInputType
+     * enum class WantedInputVariant
      *
      * 입력 타입을 정의하는 enum 클래스입니다.
      *
@@ -33,9 +33,10 @@ object WantedInputContract {
      * - Radio: 원형의 라디오 버튼 형식
      * - CheckMark: 체크 아이콘만 표시되는 스타일
      */
-    enum class WantedInputType {
+    enum class WantedInputVariant {
         CheckBox,
         Radio,
-        CheckMark
+        CheckMark,
+        Switch
     }
 }

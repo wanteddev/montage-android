@@ -66,7 +66,7 @@ class WantedRadioButton : MaterialRadioButton {
  * @param onCheckedChange (Boolean) -> Unit: 선택 상태 변경 시 호출되는 콜백입니다.
  */
 @Composable
-fun WantedRadioButton(
+internal fun WantedRadioButton(
     checked: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,

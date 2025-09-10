@@ -23,7 +23,7 @@ enum class ButtonStatus {
 }
 
 enum class ButtonType {
-    PRIMARY, SECONDARY, ASSISTIVE
+    PRIMARY, ASSISTIVE
 }
 
 enum class ButtonSize {

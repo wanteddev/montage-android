@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
-import com.wanted.android.wanted.design.contents.cell.WantedCell
-import com.wanted.android.wanted.design.contents.cell.WantedCellContract
+import com.wanted.android.wanted.design.contents.listcell.WantedListCell
+import com.wanted.android.wanted.design.contents.listcell.WantedListCellContract
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
@@ -54,12 +54,12 @@ internal fun WantedSelectBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(items) { item ->
-                    WantedCell(
+                    WantedListCell(
                         modifier = Modifier,
-                        verticalPadding = WantedCellContract.VerticalPadding.Medium,
+                        verticalPadding = WantedListCellContract.VerticalPadding.Medium,
                         text = item.text,
                         selected = selectItem.value == item,
-                        rightContent = when {
+                        trailingContent = when {
                             selectItem.value == item
                                 && selectType == WantedSelectContract.SelectType.CheckMark -> {
                                 {
@@ -75,7 +75,7 @@ internal fun WantedSelectBottomSheet(
 
                             else -> null
                         },
-                        leftContent = when {
+                        leadingContent = when {
                             selectItem.value == item
                                 && selectType == WantedSelectContract.SelectType.CheckBox -> {
                                 {

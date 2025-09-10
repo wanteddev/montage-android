@@ -28,8 +28,8 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.clickOnce
 
 
@@ -40,7 +40,7 @@ internal fun WantedDialogTwoButtonImpl(
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     positiveButtonType: ButtonType = ButtonType.PRIMARY,
-    negativeButtonType: ButtonType = ButtonType.SECONDARY,
+    negativeButtonType: ButtonType = ButtonType.PRIMARY,
     positive: String? = null,
     negative: String? = null,
     onClickPositive: (() -> Unit)? = null,
