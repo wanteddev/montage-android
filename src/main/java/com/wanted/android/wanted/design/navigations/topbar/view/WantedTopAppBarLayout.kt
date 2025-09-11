@@ -103,7 +103,7 @@ private fun WantedTopAppBarLayoutPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 navigationIcon = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                         onClick = { }
                     )
                 },
