@@ -205,7 +205,7 @@ private fun WantedFallbackViewPreview() {
                                 .clip(CircleShape)
                                 .background(colorResource(id = R.color.label_disable))
                                 .padding(10.dp),
-                            painter = painterResource(id = R.drawable.ic_normal_camera_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_camera_fill),
                             contentScale = ContentScale.Crop,
                             contentDescription = ""
                         )
