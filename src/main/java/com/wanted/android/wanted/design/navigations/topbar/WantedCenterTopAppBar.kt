@@ -103,7 +103,7 @@ private fun WantedCenterBackTopAppBar(
         scrollableState = scrollableState,
         navigationIcon = {
             WantedTopAppBarIconButton(
-                painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
+                painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                 onClick = { onClickBack() }
             )
         },
@@ -199,7 +199,7 @@ private fun WantedCenterTopAppBarPreview() {
             WantedCenterTopAppBar(
                 navigationIcon = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                         onClick = { }
                     )
                 },
