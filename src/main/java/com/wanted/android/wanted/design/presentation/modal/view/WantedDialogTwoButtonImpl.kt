@@ -269,7 +269,7 @@ private fun WantedDialogTopBarPreview() {
                         navigationIcon = {
                             Icon(
                                 modifier = Modifier.clickOnce { },
-                                painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
+                                painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                                 contentDescription = ""
                             )
                         },
