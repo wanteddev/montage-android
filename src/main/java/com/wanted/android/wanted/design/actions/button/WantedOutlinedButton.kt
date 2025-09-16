@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,6 +33,11 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
+import com.wanted.android.wanted.design.actions.button.config.buttonDrawableSize
+import com.wanted.android.wanted.design.actions.button.config.buttonHeight
+import com.wanted.android.wanted.design.actions.button.config.buttonHorizontalPadding
+import com.wanted.android.wanted.design.actions.button.config.buttonVerticalPadding
+import com.wanted.android.wanted.design.actions.button.config.buttonWidth
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
@@ -41,8 +45,6 @@ import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.util.getButtonDrawableSize
-import com.wanted.android.wanted.design.util.getButtonRadius
 import com.wanted.android.wanted.design.util.getButtonWidth
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
@@ -69,7 +71,7 @@ class WantedOutlinedButton @JvmOverloads constructor(
             context.obtainStyledAttributes(it, R.styleable.WantedButton).run {
                 text = getString(R.styleable.WantedButton_text) ?: ""
                 buttonType =
-                    ButtonType.entries[getInteger(R.styleable.WantedButton_button_type, 0)]
+                        ButtonType.entries[getInteger(R.styleable.WantedButton_button_type, 0)]
                 size = ButtonSize.entries[getInteger(R.styleable.WantedButton_button_size, 0)]
                 leftDrawable = getResourceId(R.styleable.WantedButton_leftDrawable, 0)
                 rightDrawable = getResourceId(R.styleable.WantedButton_rightDrawable, 0)
@@ -131,14 +133,7 @@ internal fun WantedOutlinedButton(
 ) {
     WantedButtonLayout(
         modifier = modifier
-            .clip(
-                RoundedCornerShape(
-                    size = getButtonRadius(
-                        ButtonVariant.SOLID,
-                        size = buttonDefault.size
-                    )
-                )
-            )
+            .clip(buttonDefault.borderShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(
@@ -153,21 +148,26 @@ internal fun WantedOutlinedButton(
             )
             .border(
                 BorderStroke(1.dp, buttonDefault.borderColor),
-                RoundedCornerShape(
-                    size = getButtonRadius(
-                        ButtonVariant.OUTLINED,
-                        buttonDefault.size
-                    )
-                )
+                buttonDefault.borderShape
             )
-            .background(buttonDefault.backgroundColor),
-        buttonVariant = ButtonVariant.OUTLINED,
-        buttonSize = buttonDefault.size,
+            .background(buttonDefault.backgroundColor)
+            .buttonHeight(ButtonVariant.OUTLINED, buttonDefault.size)
+            .buttonWidth(buttonDefault.size, text.isEmpty())
+            .buttonVerticalPadding(text.isNotEmpty())
+            .buttonHorizontalPadding(ButtonVariant.OUTLINED, buttonDefault.size, text.isEmpty()),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = when (size) {
+                ButtonSize.LARGE -> 6.dp
+                ButtonSize.MEDIUM -> 5.dp
+                else -> 4.dp
+            },
+            alignment = Alignment.CenterHorizontally
+        ),
         leftDrawable = leadingDrawable?.let {
             {
                 WantedButtonSideIcon(
                     modifier = Modifier
-                        .getButtonDrawableSize(
+                        .buttonDrawableSize(
                             variant = ButtonVariant.OUTLINED,
                             size = buttonDefault.size
                         )
@@ -200,7 +200,7 @@ internal fun WantedOutlinedButton(
             {
                 WantedButtonSideIcon(
                     modifier = Modifier
-                        .getButtonDrawableSize(
+                        .buttonDrawableSize(
                             variant = ButtonVariant.OUTLINED,
                             size = buttonDefault.size
                         )
