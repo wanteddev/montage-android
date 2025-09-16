@@ -276,21 +276,21 @@ fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
         WantedOutlinedButton(
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedOutlinedButton(
             text = "",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_fill_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark_fill
         )
 
         WantedOutlinedButton(
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
     }
 }
@@ -390,7 +390,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedOutlinedButton(
@@ -398,7 +398,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedOutlinedButton(
@@ -406,7 +406,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
             isLoading = true,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedOutlinedButton(
@@ -415,7 +415,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
     }
 }
@@ -476,7 +476,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
@@ -485,7 +485,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
@@ -494,7 +494,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             isLoading = true,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
@@ -504,7 +504,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
     }
@@ -684,7 +684,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedOutlinedButton(
@@ -693,7 +693,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedOutlinedButton(
@@ -702,7 +702,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedOutlinedButton(
@@ -712,7 +712,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
     }
 }
@@ -778,7 +778,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
@@ -788,7 +788,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             type = ButtonType.ASSISTIVE,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
         WantedOutlinedButton(
@@ -797,7 +797,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
@@ -808,7 +808,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 

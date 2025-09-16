@@ -342,7 +342,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedTextButton(
@@ -350,7 +350,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
             size = ButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
     }
 }
@@ -396,7 +396,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
@@ -405,7 +405,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
     }
@@ -528,7 +528,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedTextButton(
@@ -537,7 +537,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg
+            leadingDrawable = R.drawable.icon_normal_bookmark
         )
     }
 }
@@ -586,7 +586,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
 
@@ -596,7 +596,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            leadingDrawable = R.drawable.ic_normal_bookmark_svg,
+            leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.ic_normal_heart_svg
         )
     }
