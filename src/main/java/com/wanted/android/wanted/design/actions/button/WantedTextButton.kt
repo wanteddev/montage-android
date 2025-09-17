@@ -187,7 +187,7 @@ private fun WantedTextContent(
         mutableStateOf(buttonDefault.rightIconTintColor)
     }
 
-    val leftIconTintColor = remember(buttonDefault.enabled, buttonDefault.rightIconTintColor) {
+    val leftIconTintColor = remember(buttonDefault.enabled, buttonDefault.leftIconTintColor) {
         mutableStateOf(buttonDefault.leftIconTintColor)
     }
 
