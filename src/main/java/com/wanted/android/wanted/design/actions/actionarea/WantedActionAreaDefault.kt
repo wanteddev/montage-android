@@ -3,9 +3,9 @@ package com.wanted.android.wanted.design.actions.actionarea
 import androidx.compose.runtime.Composable
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 
 /**
  * enum class ActionAreaType
@@ -86,7 +86,7 @@ object WantedActionAreaDefaults {
     }
 
     private fun getNegativeButtonType(type: ActionAreaType): ButtonType {
-        return ButtonType.SECONDARY
+        return ButtonType.PRIMARY
     }
 
     private fun getNegativeButtonSize(type: ActionAreaType): ButtonSize {

@@ -461,22 +461,22 @@ private fun PreviewContentBadges() {
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.XSmall,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg
+                        leadingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.XSmall,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg
+                        trailingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.XSmall,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark
                     )
                 }
 
@@ -489,8 +489,8 @@ private fun PreviewContentBadges() {
                         text = "Badge",
                         size = ContentBadgeSize.XSmall,
                         color = ContentBadgeColor.Accent,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
                     WantedContentBadge(
@@ -498,8 +498,8 @@ private fun PreviewContentBadges() {
                         text = "Badge",
                         size = ContentBadgeSize.XSmall,
                         type = ContentBadgeType.Outlined,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
 
@@ -509,8 +509,8 @@ private fun PreviewContentBadges() {
                         size = ContentBadgeSize.XSmall,
                         color = ContentBadgeColor.Accent,
                         type = ContentBadgeType.Outlined,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
                 }
@@ -534,22 +534,22 @@ private fun PreviewContentBadges() {
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.Small,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg
+                        leadingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.Small,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg
+                        trailingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.Small,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark
                     )
                 }
 
@@ -562,8 +562,8 @@ private fun PreviewContentBadges() {
                         text = "Badge",
                         size = ContentBadgeSize.Small,
                         color = ContentBadgeColor.Accent,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
                     WantedContentBadge(
@@ -571,8 +571,8 @@ private fun PreviewContentBadges() {
                         text = "Badge",
                         size = ContentBadgeSize.Small,
                         type = ContentBadgeType.Outlined,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
 
@@ -582,8 +582,8 @@ private fun PreviewContentBadges() {
                         size = ContentBadgeSize.Small,
                         color = ContentBadgeColor.Accent,
                         type = ContentBadgeType.Outlined,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
                 }
@@ -607,22 +607,22 @@ private fun PreviewContentBadges() {
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.Large,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg
+                        leadingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.Large,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg
+                        trailingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
                         size = ContentBadgeSize.Large,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark
                     )
                 }
 
@@ -635,8 +635,8 @@ private fun PreviewContentBadges() {
                         text = "Badge",
                         size = ContentBadgeSize.Large,
                         color = ContentBadgeColor.Accent,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
                     WantedContentBadge(
@@ -644,8 +644,8 @@ private fun PreviewContentBadges() {
                         text = "Badge",
                         size = ContentBadgeSize.Large,
                         type = ContentBadgeType.Outlined,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
 
@@ -655,8 +655,8 @@ private fun PreviewContentBadges() {
                         size = ContentBadgeSize.Large,
                         color = ContentBadgeColor.Accent,
                         type = ContentBadgeType.Outlined,
-                        leadingDrawable = R.drawable.ic_normal_bookmark_svg,
-                        trailingDrawable = R.drawable.ic_normal_bookmark_svg,
+                        leadingDrawable = R.drawable.icon_normal_bookmark,
+                        trailingDrawable = R.drawable.icon_normal_bookmark,
                         onClick = {}
                     )
                 }

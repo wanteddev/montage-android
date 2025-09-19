@@ -147,7 +147,7 @@ fun WantedBackTopAppBar(
         navigationIcon = {
             WantedTopAppBarIconButton(
                 type = type,
-                painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
+                painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                 onClick = { onClickBack() }
             )
         },
