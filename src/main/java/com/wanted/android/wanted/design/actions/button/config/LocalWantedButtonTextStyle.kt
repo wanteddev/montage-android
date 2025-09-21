@@ -30,34 +30,34 @@ internal class WantedButtonTextStyleLoaderImpl : WantedButtonTextStyleLoader {
         size: ButtonSize
     ): TextStyle = com.wanted.android.wanted.design.util.getTextStyle(
         textStyle =
-            when (variant) {
-                ButtonVariant.TEXT -> when (size) {
-                    ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
-                    else -> WantedTextStyle.BODY1_BOLD
-                }
+                when (variant) {
+                    ButtonVariant.TEXT -> when (size) {
+                        ButtonSize.SMALL -> WantedTextStyle.LABEL1_BOLD
+                        else -> WantedTextStyle.BODY1_BOLD
+                    }
 
-                ButtonVariant.OUTLINED -> {
-                    when (size) {
-                        ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
-                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
-                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                    ButtonVariant.OUTLINED -> {
+                        when (size) {
+                            ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
+                            ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
+                            ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                        }
                     }
-                }
 
-                else -> if (type == ButtonType.PRIMARY) {
-                    when (size) {
-                        ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
-                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
-                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
-                    }
-                } else {
-                    when (size) {
-                        ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
-                        ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
-                        ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                    else -> if (type == ButtonType.PRIMARY) {
+                        when (size) {
+                            ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
+                            ButtonSize.MEDIUM -> WantedTextStyle.BODY2_BOLD
+                            ButtonSize.SMALL -> WantedTextStyle.LABEL2_BOLD
+                        }
+                    } else {
+                        when (size) {
+                            ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
+                            ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
+                            ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
+                        }
                     }
                 }
-            }
     )
 }
 

@@ -15,9 +15,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ProvideTextStyle
@@ -47,7 +49,6 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.util.getContentBadgeDrawableSize
 import com.wanted.android.wanted.design.util.getTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
@@ -110,6 +111,7 @@ class WantedContentBadge @JvmOverloads constructor(
         )
     }
 }
+
 /**
  * 텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 뱃지를 구성하는 컴포저블입니다.
  *
@@ -411,6 +413,25 @@ private fun getContentBadgeTypography(
                 ContentBadgeSize.XSmall -> WantedTextStyle.CAPTION2_MEDIUM
             }
         )
+
+@Composable
+private fun Modifier.getContentBadgeDrawableSize(
+    size: ContentBadgeSize
+): Modifier = this.then(
+    when (size) {
+        ContentBadgeSize.Large -> Modifier
+            .height(16.dp)
+            .wrapContentWidth()
+
+        ContentBadgeSize.Small -> Modifier
+            .height(14.dp)
+            .wrapContentWidth()
+
+        ContentBadgeSize.XSmall -> Modifier
+            .size(12.dp)
+            .wrapContentWidth()
+    }
+)
 
 enum class ContentBadgeSize {
     XSmall, Small, Large
