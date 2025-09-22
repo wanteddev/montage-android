@@ -560,9 +560,9 @@ private fun WantedSelectImpl(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(
                                 id = if (focused) {
-                                    R.drawable.ic_normal_chevron_up_thick_small_svg
+                                    R.drawable.icon_normal_chevron_up_thick_small
                                 } else {
-                                    R.drawable.ic_normal_chevron_down_thick_small_svg
+                                    R.drawable.icon_normal_chevron_down_thick_small
                                 }
                             ),
                             tint = colorResource(
