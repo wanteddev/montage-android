@@ -16,6 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedShadowStyle
+import com.wanted.android.wanted.design.base.wantedDropShadow
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
@@ -27,6 +29,7 @@ fun Modifier.framedStyle(
     enabled: Boolean = true
 ) = composed {
     this
+        .wantedDropShadow(WantedShadowStyle.XSmall())
         .border(
             shape = shape,
             color = when {
