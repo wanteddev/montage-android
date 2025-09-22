@@ -598,7 +598,7 @@ private fun WantedTextArea(
                                     Text(
                                         text = placeholder,
                                         style = WantedTextStyle(
-                                            colorRes = if (enabled) R.color.label_assistive else R.color.fill_alternative,
+                                            colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
                                             style = DesignSystemTheme.typography.body1Regular
                                         )
                                     )
