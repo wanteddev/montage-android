@@ -93,7 +93,7 @@ fun BottomSheetMultiSelectItem(
                 Icon(
                     modifier = Modifier
                         .size(16.dp),
-                    painter = painterResource(id = R.drawable.ic_normal_check_svg),
+                    painter = painterResource(id = R.drawable.icon_normal_check),
                     contentDescription = "",
                     tint = colorResource(id = R.color.static_white)
                 )

@@ -211,4 +211,8 @@
     <color name="cool_neutral_25_opacity28">#4737383C</color>
     <color name="cool_neutral_25_opacity61">#9C37383C</color>
     <color name="cool_neutral_22_opacity88">#E02E2F33</color>
+    <color name="cool_neutral_17_opacity61">#9C212225</color>
+
+    <color name="common_100_opacity_8">#14FFFFFF</color>
+    <color name="common_100_opacity_28">#47FFFFFF</color>
 </resources>
