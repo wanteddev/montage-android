@@ -165,7 +165,7 @@ fun WantedTooltip(
                                     }
                                 }
                                 .padding(2.dp),
-                            painter = painterResource(id = R.drawable.ic_normal_close_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_close),
                             tint = colorResource(id = R.color.inverse_label).copy(alpha = OPACITY_61),
                             contentDescription = ""
                         )
@@ -404,7 +404,7 @@ private fun WantedTooltipPreview() {
                     content = {
                         WantedToastIcon(
                             modifier = Modifier.size(22.dp),
-                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                            resourceId = R.drawable.icon_normal_circle_exclamation_fill,
                             tint = colorResource(id = R.color.status_negative)
                         )
                     },

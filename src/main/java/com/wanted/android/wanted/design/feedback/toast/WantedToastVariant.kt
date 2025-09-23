@@ -43,7 +43,7 @@ sealed class WantedToastVariant(
      * 체크 아이콘과 초록색 색상이 사용됩니다.
      */
     data object Positive : WantedToastVariant(
-        R.drawable.ic_normal_circle_check_fill_svg,
+        R.drawable.icon_normal_circle_check_fill,
         R.color.green_60,
         backgroundResourceId = R.drawable.ic_normal_circle_check_filler_svg
     )
@@ -67,7 +67,7 @@ sealed class WantedToastVariant(
      * 느낌표 아이콘과 빨간색 색상이 사용됩니다.
      */
     data object Negative : WantedToastVariant(
-        R.drawable.ic_normal_circle_close_fill_svg,
+        R.drawable.icon_normal_circle_close_fill,
         R.color.red_60,
         backgroundResourceId = R.drawable.ic_normal_circle_exclamation_filler_svg
     )

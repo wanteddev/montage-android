@@ -250,7 +250,7 @@ private fun WantedDialogTopBarPreview() {
                         actions = {
                             Icon(
                                 modifier = Modifier.clickOnce { },
-                                painter = painterResource(id = R.drawable.ic_normal_close_svg),
+                                painter = painterResource(id = R.drawable.icon_normal_close),
                                 contentDescription = ""
                             )
                         }
