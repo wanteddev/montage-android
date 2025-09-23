@@ -196,7 +196,7 @@ internal fun WantedCustomTextField(
                                     {
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
-                                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                            painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
                                             tint = colorResource(id = R.color.status_negative),
                                             contentDescription = ""
                                         )
@@ -207,7 +207,7 @@ internal fun WantedCustomTextField(
                                     {
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
-                                            painter = painterResource(R.drawable.ic_normal_circle_check_fill_svg),
+                                            painter = painterResource(R.drawable.icon_normal_circle_check_fill),
                                             tint = colorResource(id = R.color.primary_normal),
                                             contentDescription = ""
                                         )
@@ -223,7 +223,7 @@ internal fun WantedCustomTextField(
                                                 .clickOnce {
                                                     onValueChange(value.copy(""))
                                                 },
-                                            painter = painterResource(R.drawable.ic_normal_circle_close_fill_svg),
+                                            painter = painterResource(R.drawable.icon_normal_circle_close_fill),
                                             tint = colorResource(id = R.color.label_assistive),
                                             contentDescription = ""
                                         )
