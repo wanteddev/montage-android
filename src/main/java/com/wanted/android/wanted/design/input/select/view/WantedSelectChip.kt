@@ -67,7 +67,7 @@ internal fun WantedSelectChip(
         trailingIcon = {
             Icon(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.ic_normal_close_thick_svg),
+                painter = painterResource(id = R.drawable.icon_normal_close_thick),
                 tint = colorResource(
                     id = when {
                         !enable -> R.color.label_disable
