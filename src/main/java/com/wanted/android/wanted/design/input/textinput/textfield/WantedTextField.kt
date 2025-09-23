@@ -96,7 +96,7 @@ fun WantedTextField(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     rightContent: @Composable ((Dp) -> Unit)? = null,
@@ -246,7 +246,7 @@ fun WantedTextField(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal)
+    background: Color = colorResource(id = R.color.background_transparent_alternative)
 ) {
     WantedTextInputLayout(
         modifier = modifier,

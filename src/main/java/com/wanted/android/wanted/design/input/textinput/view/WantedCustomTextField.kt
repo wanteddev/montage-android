@@ -103,7 +103,7 @@ internal fun WantedCustomTextField(
                     if (enabled) {
                         background
                     } else {
-                        colorResource(R.color.interaction_disable)
+                        colorResource(R.color.fill_alternative)
                     }
                 )
                 .height(IntrinsicSize.Min),
@@ -265,7 +265,7 @@ internal fun WantedCustomTextField(
                                 if (rightButtonEnabled) {
                                     colorResource(id = R.color.transparent)
                                 } else {
-                                    colorResource(id = R.color.interaction_disable)
+                                    colorResource(id = R.color.fill_alternative)
                                 }
                             ),
                             title = rightButton,
