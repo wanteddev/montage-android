@@ -5,10 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ProvideTextStyle
@@ -25,12 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
@@ -52,18 +55,23 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
  * @param heading String?: 상단에 강조 텍스트(제목)를 표시합니다.
  * @param description String?: 제목 아래에 설명 텍스트를 표시합니다. 최대 두 줄까지만 표시됩니다.
- * @param button String?: 버튼에 표시될 텍스트입니다. null일 경우 버튼은 렌더링되지 않습니다.
+ * @param positive String?: 버튼에 표시될 텍스트입니다. null일 경우 버튼은 렌더링되지 않습니다.
  * @param image (() -> Unit)?: 중앙에 표시될 이미지 컴포저블입니다.
- * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
+ * @param onClickPositive () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
  */
 @Composable
 fun WantedFallbackView(
     modifier: Modifier = Modifier,
+    buttonVariant: WantedFallbackButtonVariant = WantedFallbackButtonVariant.Single,
     heading: String? = null,
     description: String? = null,
-    button: String? = null,
+    positive: String? = null,
+    negative: String? = null,
+    positiveColor: ButtonType = ButtonType.ASSISTIVE,
+    negativeColor: ButtonType = ButtonType.ASSISTIVE,
     image: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit = {}
+    onClickPositive: () -> Unit = {},
+    onClickNegative: () -> Unit = {}
 ) {
     WantedFallbackLayout(
         modifier = modifier.fillMaxWidth(),
@@ -86,18 +94,144 @@ fun WantedFallbackView(
                 )
             }
         },
-        button = button?.let {
-            {
-                WantedButton(
-                    text = it,
-                    variant = ButtonVariant.OUTLINED,
-                    type = ButtonType.ASSISTIVE,
-                    size = ButtonSize.LARGE,
-                    onClick = onClick
-                )
+        button = {
+            when (buttonVariant) {
+                WantedFallbackButtonVariant.Single -> {
+                    WantedFallbackSingleButton(
+                        positive = positive,
+                        positiveColor = positiveColor,
+                        onClickPositive = onClickPositive
+                    )
+                }
+
+                WantedFallbackButtonVariant.Horizontal -> {
+                    WantedFallbackHorizontalButtons(
+                        positive = positive,
+                        negative = negative,
+                        positiveColor = positiveColor,
+                        negativeColor = negativeColor,
+                        onClickPositive = onClickPositive,
+                        onClickNegative = onClickNegative
+                    )
+                }
+
+                WantedFallbackButtonVariant.Vertical -> {
+                    WantedFallbackVerticalButtons(
+                        positive = positive,
+                        negative = negative,
+                        positiveColor = positiveColor,
+                        negativeColor = negativeColor,
+                        onClickPositive = onClickPositive,
+                        onClickNegative = onClickNegative
+                    )
+                }
             }
         }
     )
+}
+
+@Composable
+private fun WantedFallbackSingleButton(
+    positive: String?,
+    positiveColor: ButtonType,
+    modifier: Modifier = Modifier,
+    onClickPositive: () -> Unit
+) {
+    positive?.let {
+        Box(modifier = modifier) {
+            WantedButton(
+                text = it,
+                variant = ButtonVariant.OUTLINED,
+                type = positiveColor,
+                size = ButtonSize.MEDIUM,
+                onClick = onClickPositive
+            )
+        }
+    }
+}
+
+@Composable
+private fun WantedFallbackHorizontalButtons(
+    positive: String?,
+    negative: String?,
+    positiveColor: ButtonType,
+    negativeColor: ButtonType,
+    modifier: Modifier = Modifier,
+    onClickPositive: () -> Unit,
+    onClickNegative: () -> Unit
+) {
+    if (positive != null || negative != null) {
+        Row(
+            modifier = modifier
+                .width(intrinsicSize = IntrinsicSize.Max),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            negative?.let {
+                WantedButton(
+                    modifier = Modifier.weight(1f),
+                    text = it,
+                    variant = ButtonVariant.OUTLINED,
+                    type = negativeColor,
+                    size = ButtonSize.MEDIUM,
+                    onClick = onClickNegative
+                )
+            }
+
+            positive?.let {
+                WantedButton(
+                    modifier = Modifier.weight(1f),
+                    text = it,
+                    variant = ButtonVariant.OUTLINED,
+                    type = positiveColor,
+                    size = ButtonSize.MEDIUM,
+                    onClick = onClickPositive
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun WantedFallbackVerticalButtons(
+    positive: String?,
+    negative: String?,
+    positiveColor: ButtonType,
+    negativeColor: ButtonType,
+    modifier: Modifier = Modifier,
+    onClickPositive: () -> Unit,
+    onClickNegative: () -> Unit
+) {
+    if (positive != null || negative != null) {
+        Column(
+            modifier = modifier
+                .width(intrinsicSize = IntrinsicSize.Max),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            positive?.let {
+                WantedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = it,
+                    variant = ButtonVariant.OUTLINED,
+                    type = positiveColor,
+                    size = ButtonSize.MEDIUM,
+                    onClick = onClickPositive
+                )
+            }
+
+            negative?.let {
+                WantedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = it,
+                    variant = ButtonVariant.OUTLINED,
+                    type = negativeColor,
+                    size = ButtonSize.MEDIUM,
+                    onClick = onClickNegative
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -175,6 +309,12 @@ private fun WantedFallbackLayout(
     }
 }
 
+enum class WantedFallbackButtonVariant {
+    Single,
+    Horizontal,
+    Vertical
+}
+
 @DevicePreviews
 @Composable
 private fun WantedFallbackViewPreview() {
@@ -190,9 +330,9 @@ private fun WantedFallbackViewPreview() {
                     modifier = Modifier,
                     heading = "타이틀이 들어가요.",
                     description = "상황에 대한 설명이 들어가요.\n" +
-                        "설명은 최대 두 줄로 작성해요.",
-                    button = "텍스트",
-                    onClick = {}
+                            "설명은 최대 두 줄로 작성해요.",
+                    positive = "텍스트",
+                    onClickPositive = {}
 
                 )
 
@@ -212,9 +352,90 @@ private fun WantedFallbackViewPreview() {
                     },
                     heading = "타이틀이 들어가요.",
                     description = "상황에 대한 설명이 들어가요.\n" +
-                        "설명은 최대 두 줄로 작성해요.",
-                    button = "텍스트",
-                    onClick = {}
+                            "설명은 최대 두 줄로 작성해요.",
+                    positive = "텍스트",
+                    onClickPositive = {}
+
+                )
+            }
+        }
+    }
+}
+
+
+@DevicePreviews
+@Composable
+private fun WantedFallbackViewHorizontalPreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+
+                WantedFallbackView(
+                    modifier = Modifier,
+                    buttonVariant = WantedFallbackButtonVariant.Horizontal,
+                    image = {
+                        Image(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                                .background(colorResource(id = R.color.label_disable))
+                                .padding(10.dp),
+                            painter = painterResource(id = R.drawable.icon_normal_camera_fill),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
+                    },
+                    heading = "타이틀이 들어가요.",
+                    description = "상황에 대한 설명이 들어가요.\n" +
+                            "설명은 최대 두 줄로 작성해요.",
+                    positive = "텍스트",
+                    negative = "대체엑션",
+                    onClickPositive = {}
+
+                )
+            }
+        }
+    }
+}
+
+
+@DevicePreviews
+@Composable
+private fun WantedFallbackViewVerticalPreview() {
+    DesignSystemTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                WantedFallbackView(
+                    modifier = Modifier,
+                    buttonVariant = WantedFallbackButtonVariant.Vertical,
+                    image = {
+                        Image(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                                .background(colorResource(id = R.color.label_disable))
+                                .padding(10.dp),
+                            painter = painterResource(id = R.drawable.icon_normal_camera_fill),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
+                    },
+                    heading = "타이틀이 들어가요.",
+                    description = "상황에 대한 설명이 들어가요.\n" +
+                            "설명은 최대 두 줄로 작성해요.",
+                    positive = "텍스트",
+                    negative = "대체엑션",
+                    onClickPositive = {}
 
                 )
             }
