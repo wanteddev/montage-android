@@ -78,9 +78,12 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedActionArea(
     type: ActionAreaType,
     positive: String,
+    isEnablePositive: Boolean = true,
     onClickPositive: () -> Unit,
     negative: String? = null,
+    isEnableNegative: Boolean = true,
     neutral: String? = null,
+    isEnableNeutral: Boolean = true,
     caption: String? = null,
     scrollableState: ScrollableState? = null,
     modifier: Modifier = Modifier,
@@ -102,6 +105,7 @@ fun WantedActionArea(
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = positive,
+                enabled = isEnablePositive,
                 onClick = onClickPositive
             )
         },
@@ -112,6 +116,7 @@ fun WantedActionArea(
                     variant = ButtonVariant.OUTLINED,
                     type = ButtonType.PRIMARY,
                     text = negative.orEmpty(),
+                    enabled = isEnableNegative,
                     onClick = onClickNegative
                 )
             }
@@ -127,6 +132,7 @@ fun WantedActionArea(
                     variant = ButtonVariant.OUTLINED,
                     type = ButtonType.ASSISTIVE,
                     text = neutral.orEmpty(),
+                    enabled = isEnableNeutral,
                     onClick = onClickNeutral
                 )
             }
