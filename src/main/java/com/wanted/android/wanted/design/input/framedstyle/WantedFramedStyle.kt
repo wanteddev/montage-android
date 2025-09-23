@@ -26,10 +26,11 @@ import com.wanted.android.wanted.design.util.OPACITY_43
 fun Modifier.framedStyle(
     status: WantedFramedStyleStatus = WantedFramedStyleStatus.Normal,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    shadow: WantedShadowStyle =  WantedShadowStyle.XSmall(),
 ) = composed {
     this
-        .wantedDropShadow(WantedShadowStyle.XSmall())
+        .wantedDropShadow(shadow)
         .border(
             shape = shape,
             color = when {
