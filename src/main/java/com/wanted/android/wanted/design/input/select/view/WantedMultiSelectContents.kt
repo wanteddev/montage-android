@@ -217,7 +217,7 @@ private fun WantedMultiSelectChipList(
                 {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(id = R.drawable.ic_normal_close_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_close),
                         tint = if (valueList[index].tint != 0) {
                             colorResource(id = valueList[index].tint)
                         } else {

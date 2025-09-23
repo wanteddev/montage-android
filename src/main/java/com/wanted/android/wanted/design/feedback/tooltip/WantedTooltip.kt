@@ -165,7 +165,7 @@ fun WantedTooltip(
                                     }
                                 }
                                 .padding(2.dp),
-                            painter = painterResource(id = R.drawable.ic_normal_close_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_close),
                             tint = colorResource(id = R.color.inverse_label).copy(alpha = OPACITY_61),
                             contentDescription = ""
                         )
