@@ -120,9 +120,9 @@ private fun AccordionHeaderPreview() {
                         Icon(
                             modifier = Modifier.size(20.dp),
                             painter = if (true) {
-                                painterResource(R.drawable.ic_normal_chevron_up_svg)
+                                painterResource(R.drawable.icon_normal_chevron_up)
                             } else {
-                                painterResource(R.drawable.ic_normal_chevron_down_svg)
+                                painterResource(R.drawable.icon_normal_chevron_down)
                             },
                             tint = colorResource(R.color.label_normal),
                             contentDescription = ""

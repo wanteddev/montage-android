@@ -22,9 +22,9 @@ internal fun WantedAccordionTrailArrowIcon(
             .clip(CircleShape)
             .size(20.dp),
         painter = if (isExpanded) {
-            painterResource(R.drawable.ic_normal_chevron_up_svg)
+            painterResource(R.drawable.icon_normal_chevron_up)
         } else {
-            painterResource(R.drawable.ic_normal_chevron_down_svg)
+            painterResource(R.drawable.icon_normal_chevron_down)
         },
         tint = tint,
         contentDescription = ""
