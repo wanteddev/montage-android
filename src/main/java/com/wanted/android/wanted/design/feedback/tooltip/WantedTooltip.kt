@@ -404,7 +404,7 @@ private fun WantedTooltipPreview() {
                     content = {
                         WantedToastIcon(
                             modifier = Modifier.size(22.dp),
-                            resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                            resourceId = R.drawable.icon_normal_circle_exclamation_fill,
                             tint = colorResource(id = R.color.status_negative)
                         )
                     },

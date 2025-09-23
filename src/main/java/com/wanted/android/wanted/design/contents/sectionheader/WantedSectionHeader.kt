@@ -135,13 +135,13 @@ private fun WantedSectionHeaderPreview() {
                     title = "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목",
                     headingContents = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     },
                     trailingContent = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -158,13 +158,13 @@ private fun WantedSectionHeaderPreview() {
                     title = "제목",
                     headingContents = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     },
                     trailingContent = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -175,7 +175,7 @@ private fun WantedSectionHeaderPreview() {
                     title = "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목",
                     trailingContent = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -187,7 +187,7 @@ private fun WantedSectionHeaderPreview() {
                     trailingContent = {
                         Icon(
                             modifier = Modifier,
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -199,7 +199,7 @@ private fun WantedSectionHeaderPreview() {
                     size = Size.XSmall,
                     headingContents = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -211,7 +211,7 @@ private fun WantedSectionHeaderPreview() {
                     size = Size.Small,
                     headingContents = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -223,7 +223,7 @@ private fun WantedSectionHeaderPreview() {
                     size = Size.Medium,
                     headingContents = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -235,7 +235,7 @@ private fun WantedSectionHeaderPreview() {
                     size = Size.Large,
                     headingContents = {
                         Icon(
-                            painter = painterResource(R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
