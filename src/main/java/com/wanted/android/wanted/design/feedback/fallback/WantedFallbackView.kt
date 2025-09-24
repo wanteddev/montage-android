@@ -143,7 +143,7 @@ private fun WantedFallbackSingleButton(
                 text = it,
                 variant = ButtonVariant.OUTLINED,
                 type = positiveColor,
-                size = ButtonSize.MEDIUM,
+                size = ButtonSize.SMALL,
                 onClick = onClickPositive
             )
         }
@@ -173,7 +173,7 @@ private fun WantedFallbackHorizontalButtons(
                     text = it,
                     variant = ButtonVariant.OUTLINED,
                     type = negativeColor,
-                    size = ButtonSize.MEDIUM,
+                    size = ButtonSize.SMALL,
                     onClick = onClickNegative
                 )
             }
@@ -184,7 +184,7 @@ private fun WantedFallbackHorizontalButtons(
                     text = it,
                     variant = ButtonVariant.OUTLINED,
                     type = positiveColor,
-                    size = ButtonSize.MEDIUM,
+                    size = ButtonSize.SMALL,
                     onClick = onClickPositive
                 )
             }
@@ -215,7 +215,7 @@ private fun WantedFallbackVerticalButtons(
                     text = it,
                     variant = ButtonVariant.OUTLINED,
                     type = positiveColor,
-                    size = ButtonSize.MEDIUM,
+                    size = ButtonSize.SMALL,
                     onClick = onClickPositive
                 )
             }
@@ -226,7 +226,7 @@ private fun WantedFallbackVerticalButtons(
                     text = it,
                     variant = ButtonVariant.OUTLINED,
                     type = negativeColor,
-                    size = ButtonSize.MEDIUM,
+                    size = ButtonSize.SMALL,
                     onClick = onClickNegative
                 )
             }
