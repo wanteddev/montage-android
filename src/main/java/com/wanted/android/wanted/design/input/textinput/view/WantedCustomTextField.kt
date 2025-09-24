@@ -69,7 +69,7 @@ internal fun WantedCustomTextField(
     cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
     background: Color = colorResource(id = R.color.background_normal_normal),
     rightButton: String? = null,
-    rightContent: @Composable ((size: Dp) -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
@@ -232,7 +232,7 @@ internal fun WantedCustomTextField(
 
                                 else -> trailingIcon
                             },
-                            rightContent = rightContent
+                            trailingContent = trailingContent
                         )
                     }
                 )
@@ -311,7 +311,7 @@ private fun DecorationBox(
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable ((size: Dp) -> Unit)? = null
+    trailingContent: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier,
@@ -354,12 +354,12 @@ private fun DecorationBox(
             }
         }
 
-        rightContent?.let {
+        trailingContent?.let {
             Box(
                 modifier = Modifier.defaultMinSize(24.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                rightContent(24.dp)
+                trailingContent()
             }
         }
     }

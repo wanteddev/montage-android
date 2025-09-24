@@ -81,7 +81,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param onValueChange (String) -> Unit: 값 변경 시 호출됩니다.
  * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
- * @param rightContent ((Dp) -> Unit)?: 우측 콘텐츠 슬롯입니다.
+ * @param trailingContent (() -> Unit)?: 우측 콘텐츠 슬롯입니다.
  * @param topDirectInput (() -> Unit)?: 드롭다운 상단 직접 입력 슬롯입니다.
  * @param bottomDirectInput (() -> Unit)?: 드롭다운 하단 직접 입력 슬롯입니다.
  * @param sectionItem @Composable (Int, Int) -> Unit: 각 섹션의 아이템 UI를 정의합니다.
@@ -120,7 +120,7 @@ fun WantedAutoCompleteTextField(
     onValueChange: (String) -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable ((Dp) -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     topDirectInput: @Composable (() -> Unit)? = null,
     bottomDirectInput: @Composable (() -> Unit)? = null,
     sectionItem: @Composable (section: Int, index: Int) -> Unit
@@ -160,7 +160,7 @@ fun WantedAutoCompleteTextField(
                 placeholder = placeholder,
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
-                rightContent = rightContent,
+                trailingContent = trailingContent,
                 onClickRightButton = onClickRightButton,
                 onValueChange = { text ->
                     onExpandedChange(text.isNotEmpty())
@@ -227,7 +227,7 @@ fun WantedAutoCompleteTextField(
  * @param onClickRightButton () -> Unit: 우측 버튼 클릭 콜백입니다.
  * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
- * @param rightContent ((Dp) -> Unit)?: 우측 콘텐츠입니다.
+ * @param trailingContent ((Dp) -> Unit)?: 우측 콘텐츠입니다.
  * @param topDirectInput (() -> Unit)?: 드롭다운 상단 콘텐츠입니다.
  * @param bottomDirectInput (() -> Unit)?: 드롭다운 하단 콘텐츠입니다.
  */
@@ -263,7 +263,7 @@ fun WantedAutoCompleteTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable ((Dp) -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     sectionTitle: ((section: Int) -> String)? = null,
     onClickRightButton: () -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit = {},
@@ -305,7 +305,7 @@ fun WantedAutoCompleteTextField(
                 placeholder = placeholder,
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
-                rightContent = rightContent,
+                trailingContent = trailingContent,
                 onClickRightButton = onClickRightButton,
                 onValueChange = { text ->
                     onExpandedChange(text.text.isNotEmpty())
