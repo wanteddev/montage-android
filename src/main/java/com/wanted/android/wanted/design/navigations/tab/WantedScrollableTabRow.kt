@@ -80,6 +80,7 @@ fun WantedScrollableTabRow(
     itemCount: Int,
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
+    disableIndexList: List<Int> = emptyList(),
     tabSize: TabSize = TabSize.Medium,
     horizontalPadding: Boolean = false,
     isLeftGradient: Boolean = false,
@@ -102,6 +103,7 @@ fun WantedScrollableTabRow(
                     tabSize = tabSize,
                     scrollState = scrollState,
                     itemCount = itemCount,
+                    disableIndexList = disableIndexList,
                     selectedTabIndex = selectedTabIndex,
                     horizontalPadding = horizontalPadding,
                     content = content,
@@ -118,6 +120,7 @@ private fun WantedScrollableFlexTabRow(
     tabSize: TabSize,
     itemCount: Int,
     selectedTabIndex: Int,
+    disableIndexList: List<Int>,
     horizontalPadding: Boolean,
     scrollState: ScrollState,
     modifier: Modifier = Modifier,
@@ -166,7 +169,8 @@ private fun WantedScrollableFlexTabRow(
                     .wrapContentSize(),
                 tabSize = tabSize,
                 title = content(index),
-                isSelect = selectedTabIndex == index,
+                active = selectedTabIndex == index,
+                enable = disableIndexList.contains(index).not(),
                 onTextLayout = { layoutCoordinates ->
                     tabWidths[index] = with(density) { layoutCoordinates.size.width.toDp() }
                 },

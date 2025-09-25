@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * 고정형 탭 레이아웃을 제공하는 컴포저블입니다.
@@ -47,8 +47,9 @@ fun WantedTabRow(
     selectedTabIndex: Int,
     modifier: Modifier,
     tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Medium,
+    disableIndexList: List<Int> = emptyList(),
     onClickItem: (index: Int) -> Unit = {},
-    content: (index: Int) -> String
+    content: (index: Int) -> String,
 ) {
 
     TabRow(
@@ -59,7 +60,12 @@ fun WantedTabRow(
                 TabRowDefaults.SecondaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                     height = 1.dp,
-                    color = colorResource(id = R.color.label_strong)
+                    color = if (disableIndexList.contains(selectedTabIndex)) {
+                        colorResource(id = R.color.fill_alternative)
+                    } else {
+                        colorResource(id = R.color.label_strong)
+                    }
+
                 )
             }
         },
@@ -74,7 +80,8 @@ fun WantedTabRow(
                         .wrapContentSize(),
                     tabSize = tabSize,
                     title = content(index),
-                    isSelect = selectedTabIndex == index,
+                    enable = !disableIndexList.contains(index),
+                    active = selectedTabIndex == index,
                     onClick = {
                         onClickItem(index)
                     }
@@ -96,7 +103,7 @@ private fun WantedTabPreview() {
             }
             items
         }
-        Scaffold() {
+        Scaffold {
             Column(
                 modifier = Modifier
                     .padding(it)
@@ -108,6 +115,7 @@ private fun WantedTabPreview() {
                     modifier = Modifier,
                     selectedTabIndex = 1,
                     itemSize = itemList.size,
+                    disableIndexList = listOf(1),
                     content = { index ->
                         itemList[index]
                     },
@@ -118,6 +126,7 @@ private fun WantedTabPreview() {
                     modifier = Modifier,
                     tabSize = WantedTabContract.TabSize.Small,
                     selectedTabIndex = 1,
+                    disableIndexList = listOf(0),
                     itemSize = itemList.size,
                     content = { index ->
                         itemList[index]
