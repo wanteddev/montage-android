@@ -71,6 +71,7 @@ fun WantedCategory(
     itemList: List<String>,
     selectedList: List<String>,
     modifier: Modifier = Modifier,
+    disableItemList: List<String> = emptyList(),
     state: LazyListState = rememberLazyListState(),
     size: Size = Size.Medium,
     horizontalPadding: Boolean = false,
@@ -108,6 +109,7 @@ fun WantedCategory(
                         Size.XLarge -> ActionChipSize.Large
                     },
                     isActive = selectedList.contains(item),
+                    isEnable = !disableItemList.contains(item),
                     onClick = {
                         onClick(item, !selectedList.contains(item))
                     }
@@ -322,6 +324,7 @@ private fun WantedCategoryPreview() {
                     size = Size.Medium,
                     itemList = itemList,
                     selectedList = listOf(itemList.first()),
+                    disableItemList = listOf(itemList[2]),
                     onClick = { _, _ -> }
                 )
 
@@ -331,6 +334,7 @@ private fun WantedCategoryPreview() {
                     itemList = itemList,
                     isAlternative = true,
                     selectedList = listOf(itemList.first()),
+                    disableItemList = listOf(itemList.first()),
                     onClick = { _, _ -> }
                 )
             }
