@@ -31,16 +31,20 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
+import com.wanted.android.wanted.design.actions.button.config.buttonDrawableSize
+import com.wanted.android.wanted.design.actions.button.config.buttonHeight
+import com.wanted.android.wanted.design.actions.button.config.buttonHorizontalPadding
+import com.wanted.android.wanted.design.actions.button.config.buttonVerticalPadding
+import com.wanted.android.wanted.design.actions.button.config.buttonWidth
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.util.getButtonDrawableSize
 import com.wanted.android.wanted.design.util.getTextButtonSize
 
 class WantedTextButton @JvmOverloads constructor(
@@ -126,13 +130,6 @@ internal fun WantedTextButton(
         enabled = enabled
     )
 ) {
-    val textColor = remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.contentColor) }
-
-    val rightIconTintColor =
-            remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.rightIconTintColor) }
-    val leftIconTintColor =
-            remember(buttonDefault.enabled) { mutableStateOf(buttonDefault.leftIconTintColor) }
-
     WantedTouchArea(
         modifier = modifier,
         verticalPadding = 4.dp,
@@ -145,61 +142,16 @@ internal fun WantedTextButton(
             colorResource(id = R.color.label_normal_opacity12)
         },
         content = {
-            WantedButtonLayout(
+            WantedTextContent(
+                text = text,
                 modifier = Modifier,
-                buttonVariant = ButtonVariant.TEXT,
-                buttonSize = buttonDefault.size,
-                leftDrawable = leadingDrawable?.let {
-                    {
-                        WantedButtonSideIcon(
-                            modifier = Modifier
-                                .getButtonDrawableSize(
-                                    variant = ButtonVariant.TEXT,
-                                    size = buttonDefault.size
-                                )
-                                .alpha(if (isLoading) 0f else 1f),
-                            drawableRes = it,
-                            tint = leftIconTintColor.value
-                        )
-                    }
-                },
-                text =
-                        {
-                            Text(
-                                text = text,
-                                modifier = Modifier
-                                    .wrapContentHeight()
-                                    .alpha(if (isLoading) 0f else 1f),
-                                style = buttonDefault.textStyle,
-                                color = textColor.value,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center
-                            )
-
-                        },
-                rightDrawable = trailingDrawable?.let {
-                    {
-                        WantedButtonSideIcon(
-                            modifier = Modifier
-                                .getButtonDrawableSize(
-                                    variant = ButtonVariant.TEXT,
-                                    size = buttonDefault.size
-                                )
-                                .alpha(if (isLoading) 0f else 1f),
-                            drawableRes = it,
-                            tint = rightIconTintColor.value
-                        )
-                    }
-                },
-                loading = if (isLoading) {
-                    {
-                        WantedCircularProgressIndicator(
-                            modifier = Modifier.size(buttonDefault.loadingSize),
-                            color = buttonDefault.loadingColor
-                        )
-                    }
-                } else null
+                type = type,
+                size = size,
+                enabled = enabled,
+                isLoading = isLoading,
+                leadingDrawable = leadingDrawable,
+                trailingDrawable = trailingDrawable,
+                buttonDefault = buttonDefault
             )
         },
         onClick = {
@@ -208,7 +160,105 @@ internal fun WantedTextButton(
             }
         }
     )
+}
 
+@Composable
+private fun WantedTextContent(
+    text: String,
+    modifier: Modifier = Modifier,
+    type: ButtonType = ButtonType.PRIMARY,
+    size: ButtonSize = ButtonSize.MEDIUM,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+    leadingDrawable: Int? = null,
+    trailingDrawable: Int? = null,
+    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
+        variant = ButtonVariant.TEXT,
+        type = type,
+        size = size,
+        enabled = enabled
+    )
+) {
+    val textColor = remember(buttonDefault.enabled, buttonDefault.contentColor) {
+        mutableStateOf(buttonDefault.contentColor)
+    }
+
+    val rightIconTintColor = remember(buttonDefault.enabled, buttonDefault.rightIconTintColor) {
+        mutableStateOf(buttonDefault.rightIconTintColor)
+    }
+
+    val leftIconTintColor = remember(buttonDefault.enabled, buttonDefault.leftIconTintColor) {
+        mutableStateOf(buttonDefault.leftIconTintColor)
+    }
+
+    WantedButtonLayout(
+        modifier = modifier
+            .buttonHeight(ButtonVariant.TEXT, buttonDefault.size)
+            .buttonWidth(buttonDefault.size, text.isEmpty())
+            .buttonVerticalPadding(text.isNotEmpty())
+            .buttonHorizontalPadding(
+                ButtonVariant.TEXT,
+                buttonDefault.size,
+                text.isEmpty()
+            ),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = when (size) {
+                ButtonSize.SMALL -> 4.dp
+                else -> 5.dp
+            },
+            alignment = Alignment.CenterHorizontally
+        ),
+        leftDrawable = leadingDrawable?.let {
+            {
+                WantedButtonSideIcon(
+                    modifier = Modifier
+                        .buttonDrawableSize(
+                            variant = ButtonVariant.TEXT,
+                            size = buttonDefault.size
+                        )
+                        .alpha(if (isLoading) 0f else 1f),
+                    drawableRes = it,
+                    tint = leftIconTintColor.value
+                )
+            }
+        },
+        text = {
+            Text(
+                text = text,
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .alpha(if (isLoading) 0f else 1f),
+                style = buttonDefault.textStyle,
+                color = textColor.value,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
+            )
+
+        },
+        rightDrawable = trailingDrawable?.let {
+            {
+                WantedButtonSideIcon(
+                    modifier = Modifier
+                        .buttonDrawableSize(
+                            variant = ButtonVariant.TEXT,
+                            size = buttonDefault.size
+                        )
+                        .alpha(if (isLoading) 0f else 1f),
+                    drawableRes = it,
+                    tint = rightIconTintColor.value
+                )
+            }
+        },
+        loading = if (isLoading) {
+            {
+                WantedCircularProgressIndicator(
+                    modifier = Modifier.size(buttonDefault.loadingSize),
+                    color = buttonDefault.loadingColor
+                )
+            }
+        } else null
+    )
 }
 
 @Preview

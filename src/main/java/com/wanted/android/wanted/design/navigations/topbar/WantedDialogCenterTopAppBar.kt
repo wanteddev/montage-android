@@ -16,8 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
@@ -101,7 +101,7 @@ fun WantedDialogCenterTopAppBar(
  * @param scrollableState ScrollableState?: 스크롤 상태입니다.
  * @param title String: 중앙 타이틀 텍스트입니다.
  * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
- * @param onClickBack () -> Unit: 닫기 아이콘 클릭 시 콜백입니다.
+ * @param onClickClose () -> Unit: 닫기 아이콘 클릭 시 콜백입니다.
  */
 @Composable
 fun WantedDialogCenterCloseTopAppBar(
@@ -112,7 +112,7 @@ fun WantedDialogCenterCloseTopAppBar(
     scrollableState: ScrollableState? = null,
     title: String = "",
     navigationIcon: @Composable (() -> Unit)? = null,
-    onClickBack: () -> Unit = {}
+    onClickClose: () -> Unit = {}
 ) {
     WantedCenterTopAppBar(
         modifier = modifier,
@@ -143,8 +143,8 @@ fun WantedDialogCenterCloseTopAppBar(
         actions = {
             WantedTopAppBarIconButton(
                 type = type,
-                painter = painterResource(id = R.drawable.ic_normal_close_svg),
-                onClick = { onClickBack() }
+                painter = painterResource(id = R.drawable.icon_normal_close),
+                onClick = { onClickClose() }
             )
         }
     )
@@ -197,7 +197,7 @@ private fun WantedDialogCenterTopAppBarPreview() {
 
             WantedDialogCenterCloseTopAppBar(
                 title = "title",
-                onClickBack = { }
+                onClickClose = { }
             )
 
             Box(Modifier.background(Color.DarkGray)) {
@@ -209,7 +209,7 @@ private fun WantedDialogCenterTopAppBarPreview() {
                             onClick = { }
                         )
                     },
-                    onClickBack = { }
+                    onClickClose = { }
                 )
             }
 
@@ -222,7 +222,7 @@ private fun WantedDialogCenterTopAppBarPreview() {
                         onClick = { }
                     )
                 },
-                onClickBack = {}
+                onClickClose = {}
             )
         }
     }

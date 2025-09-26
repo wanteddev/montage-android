@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,15 +31,18 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
+import com.wanted.android.wanted.design.actions.button.config.buttonDrawableSize
+import com.wanted.android.wanted.design.actions.button.config.buttonHeight
+import com.wanted.android.wanted.design.actions.button.config.buttonHorizontalPadding
+import com.wanted.android.wanted.design.actions.button.config.buttonVerticalPadding
+import com.wanted.android.wanted.design.actions.button.config.buttonWidth
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.util.getButtonDrawableSize
-import com.wanted.android.wanted.design.util.getButtonRadius
 import com.wanted.android.wanted.design.util.getButtonWidth
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
@@ -125,22 +127,10 @@ internal fun WantedSolidButton(
     WantedButtonLayout(
         modifier = modifier
             .background(
-                buttonDefault.backgroundColor,
-                RoundedCornerShape(
-                    size = getButtonRadius(
-                        ButtonVariant.SOLID,
-                        size = buttonDefault.size
-                    )
-                )
+                color = buttonDefault.backgroundColor,
+                shape = buttonDefault.borderShape
             )
-            .clip(
-                RoundedCornerShape(
-                    size = getButtonRadius(
-                        ButtonVariant.SOLID,
-                        size = buttonDefault.size
-                    )
-                )
-            )
+            .clip(buttonDefault.borderShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12)),
@@ -150,16 +140,28 @@ internal fun WantedSolidButton(
                         onClick.clickOnce()
                     }
                 }
-            ),
-        buttonVariant = ButtonVariant.SOLID,
-        buttonSize = buttonDefault.size,
+            )
+            .buttonHeight(ButtonVariant.SOLID, buttonDefault.size)
+            .buttonWidth(buttonDefault.size, text.isEmpty())
+            .buttonVerticalPadding(text.isNotEmpty())
+            .buttonHorizontalPadding(ButtonVariant.SOLID, buttonDefault.size, text.isEmpty()),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = when (size) {
+                ButtonSize.LARGE -> 6.dp
+                ButtonSize.MEDIUM -> 5.dp
+                else -> 4.dp
+            },
+            alignment = Alignment.CenterHorizontally
+        ),
         leftDrawable = leadingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = Modifier.getButtonDrawableSize(
-                        variant = ButtonVariant.SOLID,
-                        size = buttonDefault.size
-                    ).alpha(if (isLoading) 0f else 1f),
+                    modifier = Modifier
+                        .buttonDrawableSize(
+                            variant = ButtonVariant.SOLID,
+                            size = buttonDefault.size
+                        )
+                        .alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
                     tint = buttonDefault.leftIconTintColor
                 )
@@ -187,10 +189,12 @@ internal fun WantedSolidButton(
         rightDrawable = trailingDrawable?.let {
             {
                 WantedButtonSideIcon(
-                    modifier = Modifier.getButtonDrawableSize(
-                        variant = ButtonVariant.SOLID,
-                        size = buttonDefault.size
-                    ).alpha(if (isLoading) 0f else 1f),
+                    modifier = Modifier
+                        .buttonDrawableSize(
+                            variant = ButtonVariant.SOLID,
+                            size = buttonDefault.size
+                        )
+                        .alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
                     tint = buttonDefault.rightIconTintColor
                 )

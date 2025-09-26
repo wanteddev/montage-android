@@ -560,9 +560,9 @@ private fun WantedSelectImpl(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(
                                 id = if (focused) {
-                                    R.drawable.ic_normal_chevron_up_thick_small_svg
+                                    R.drawable.icon_normal_chevron_up_thick_small
                                 } else {
-                                    R.drawable.ic_normal_chevron_down_thick_small_svg
+                                    R.drawable.icon_normal_chevron_down_thick_small
                                 }
                             ),
                             tint = colorResource(
@@ -581,7 +581,7 @@ private fun WantedSelectImpl(
                                 modifier = Modifier
                                     .size(24.dp)
                                     .padding(1.dp),
-                                painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                                painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
                                 tint = colorResource(id = R.color.status_negative),
                                 contentDescription = ""
                             )

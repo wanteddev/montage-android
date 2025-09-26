@@ -24,6 +24,8 @@
     <color name="background_normal_alternative">@color/cool_neutral_99</color>
     <color name="background_elevated_normal">@color/common_100</color>
     <color name="background_elevated_alternative">@color/cool_neutral_99</color>
+    <color name="background_transparent_normal">@color/common_100_opacity_8</color>
+    <color name="background_transparent_alternative">@color/common_100_opacity_28</color>
 
     <!-- Interaction -->
     <color name="interaction_inactive">@color/cool_neutral_70</color>

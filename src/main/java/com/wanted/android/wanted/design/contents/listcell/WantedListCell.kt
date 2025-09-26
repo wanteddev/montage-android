@@ -254,7 +254,7 @@ private fun WantedListCellImpl(
         chevrons = if (chevrons) {
             {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_normal_chevron_right_tight_small_svg),
+                    painter = painterResource(id = R.drawable.icon_normal_chevron_right_tight_small),
                     tint = colorResource(id = R.color.label_assistive),
                     contentDescription = ""
                 )
