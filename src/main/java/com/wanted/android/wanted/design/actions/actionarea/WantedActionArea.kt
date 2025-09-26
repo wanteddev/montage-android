@@ -304,7 +304,9 @@ private fun WantedActionAreaLayout(
         modifier = modifier,
     ) {
         extra?.let {
-            HorizontalDivider(color = colorResource(id = R.color.line_normal_neutral))
+            if (divider) {
+                HorizontalDivider(color = colorResource(id = R.color.line_normal_neutral))
+            }
 
             Box(
                 modifier = if (safeArea) {
