@@ -172,9 +172,9 @@ fun WantedFilterChip(
             Image(
                 modifier = Modifier.fillMaxSize(),
                 painter = if (isExpanded) {
-                    painterResource(id = R.drawable.ic_normal_caret_up_svg)
+                    painterResource(id = R.drawable.icon_normal_caret_up)
                 } else {
-                    painterResource(id = R.drawable.ic_normal_caret_down_svg)
+                    painterResource(id = R.drawable.icon_normal_caret_down)
                 },
                 contentDescription = null,
                 contentScale = ContentScale.Fit,

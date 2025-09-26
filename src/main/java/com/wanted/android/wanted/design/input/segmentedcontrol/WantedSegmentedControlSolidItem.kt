@@ -150,7 +150,7 @@ private fun WantedSegmentedControlItemPreview() {
                     icon = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -163,7 +163,7 @@ private fun WantedSegmentedControlItemPreview() {
                     icon = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
                             contentDescription = ""
                         )
                     }
@@ -176,7 +176,7 @@ private fun WantedSegmentedControlItemPreview() {
                     icon = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.ic_normal_circle_exclamation_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
                             tint = colorResource(id = R.color.primary_normal),
                             contentDescription = ""
                         )

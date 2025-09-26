@@ -79,13 +79,13 @@ private fun WantedCommonIconPreview() {
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
-                    resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                    resourceId = R.drawable.icon_normal_circle_exclamation_fill,
                     tint = colorResource(id = R.color.status_negative)
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
-                    resourceId = R.drawable.ic_normal_circle_check_fill_svg,
+                    resourceId = R.drawable.icon_normal_circle_check_fill,
                     tint = colorResource(id = R.color.primary_normal)
                 )
 
@@ -94,19 +94,19 @@ private fun WantedCommonIconPreview() {
                         .size(22.dp)
                         .clip(CircleShape)
                         .clickOnce { },
-                    resourceId = R.drawable.ic_normal_circle_close_fill_svg,
+                    resourceId = R.drawable.icon_normal_circle_close_fill,
                     tint = colorResource(id = R.color.label_alternative)
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
-                    resourceId = R.drawable.ic_normal_circle_exclamation_fill_svg,
+                    resourceId = R.drawable.icon_normal_circle_exclamation_fill,
                     tint = colorResource(id = R.color.status_cautionary)
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
-                    resourceId = R.drawable.ic_normal_circle_check_fill_svg,
+                    resourceId = R.drawable.icon_normal_circle_check_fill,
                     tint = colorResource(id = R.color.status_positive)
                 )
             }
