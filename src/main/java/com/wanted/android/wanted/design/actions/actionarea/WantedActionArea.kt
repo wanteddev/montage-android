@@ -72,7 +72,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param gradationColor 배경 그라데이션 색상을 설정합니다.
  * @param onClickNegative 서브 액션 버튼 클릭 콜백입니다.
  * @param onClickNeutral 추가 액션 버튼 클릭 콜백입니다.
- * @param variant 추가적으로 표시할 컴포넌트입니다.
+ * @param extra 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
 fun WantedActionArea(
@@ -86,10 +86,11 @@ fun WantedActionArea(
     modifier: Modifier = Modifier,
     background: Boolean = false,
     safeArea: Boolean = true,
+    divider: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
-    variant: @Composable (() -> Unit)? = null
+    extra: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
         modifier = modifier,
@@ -136,7 +137,8 @@ fun WantedActionArea(
                 Text(text = caption)
             }
         },
-        variant = variant
+        divider = divider,
+        extra = extra
     )
 }
 
@@ -168,7 +170,7 @@ fun WantedActionArea(
  * @param positive 메인(긍정) 액션 버튼 Slot입니다.
  * @param negative 서브(부정) 액션 버튼 Slot입니다.
  * @param neutral 추가(중립) 액션 버튼 Slot입니다.
- * @param variant 추가적으로 표시할 컴포넌트입니다.
+ * @param extra 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
 fun WantedActionArea(
@@ -179,10 +181,11 @@ fun WantedActionArea(
     caption: String? = null,
     scrollableState: ScrollableState? = null,
     modifier: Modifier = Modifier,
+    divider: Boolean = false,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)? = null,
     neutral: @Composable (() -> Unit)? = null,
-    variant: @Composable (() -> Unit)? = null
+    extra: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
         modifier = modifier,
@@ -199,7 +202,8 @@ fun WantedActionArea(
                 Text(text = caption)
             }
         },
-        variant = variant
+        divider = divider,
+        extra = extra
     )
 }
 
@@ -214,11 +218,12 @@ fun WantedActionArea(
     onClickNeutral: (() -> Unit)? = null,
     actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
     safeArea: Boolean = true,
+    divider: Boolean = false,
     background: Boolean = false,
     gradationColor: Color = colorResource(id = R.color.background_normal_normal),
     scrollableState: ScrollableState? = null,
     caption: String? = null,
-    variant: @Composable (() -> Unit)? = null,
+    extra: @Composable (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     WantedActionAreaLayout(
@@ -265,7 +270,8 @@ fun WantedActionArea(
                 Text(text = caption)
             }
         },
-        variant = variant
+        divider = divider,
+        extra = extra
     )
 }
 
@@ -277,8 +283,9 @@ private fun WantedActionAreaLayout(
     background: Boolean,
     gradationColor: Color,
     type: ActionAreaType,
+    divider: Boolean,
     scrollableState: ScrollableState? = null,
-    variant: @Composable (() -> Unit)?,
+    extra: @Composable (() -> Unit)?,
     caption: @Composable (() -> Unit)?,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)?,
@@ -296,7 +303,7 @@ private fun WantedActionAreaLayout(
     Column(
         modifier = modifier,
     ) {
-        variant?.let {
+        extra?.let {
             HorizontalDivider(color = colorResource(id = R.color.line_normal_neutral))
 
             Box(
@@ -311,7 +318,7 @@ private fun WantedActionAreaLayout(
                         .fillMaxWidth()
                 }
             ) {
-                variant()
+                extra()
             }
         }
 
@@ -323,10 +330,10 @@ private fun WantedActionAreaLayout(
                 Modifier
                     .padding(horizontal = 20.dp)
                     .padding(bottom = 20.dp)
-                    .padding(top = if (background && variant == null) 0.dp else 20.dp)
+                    .padding(top = if (background && extra == null) 0.dp else 20.dp)
                     .fillMaxWidth()
             } else {
-                Modifier.padding(top = if (variant == null) 0.dp else 20.dp)
+                Modifier.padding(top = if (extra == null) 0.dp else 20.dp)
             }.constrainAs(box) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
@@ -334,7 +341,7 @@ private fun WantedActionAreaLayout(
                 bottom.linkTo(parent.bottom)
             }
 
-            if (background && variant == null && isShowGradient.value) {
+            if (background && extra == null && isShowGradient.value) {
                 WantedActionAreaGradation(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -615,7 +622,7 @@ private fun WantedActionAreaPreview() {
                     onClickPositive = {},
                     onClickNegative = {},
                     onClickNeutral = {},
-                    variant = {
+                    extra = {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
