@@ -20,19 +20,28 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.CacheDrawScope
 import androidx.compose.ui.draw.DrawResult
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
@@ -41,20 +50,273 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.OPACITY_61
+import com.wanted.android.wanted.design.util.OPACITY_88
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
+
+
+enum class WantedTooltipSize{
+    Small,
+    Medium
+}
+@Composable
+fun WantedTooltip(
+    modifier: Modifier,
+    isShowTooltip: Boolean,
+    text: String,
+    size: WantedTooltipSize = WantedTooltipSize.Medium,
+    content: @Composable () -> Unit
+) {
+
+    var isShow by remember(isShowTooltip) { mutableStateOf(isShowTooltip) }
+
+    val density = LocalDensity.current
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val screenHeight = configuration.screenHeightDp
+
+    val backgroundColor = colorResource(id = R.color.background_normal_normal)
+    val color = colorResource(id = R.color.inverse_background).copy(OPACITY_88)
+    val color1 = colorResource(id = R.color.primary_normal).copy(OPACITY_5)
+    var positionY by remember { mutableFloatStateOf(0f) }
+    var height by remember { mutableIntStateOf(0) }
+    var widthHalf by remember { mutableFloatStateOf(0f) }
+    var tooltipWidthHalf by remember { mutableFloatStateOf(0f) }
+    var tooltipPositionX by remember { mutableFloatStateOf(0f) }
+    var tooltipHeight by remember { mutableIntStateOf(0) }
+    var isPopupAbove by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier.onGloballyPositioned { coordinates ->
+            positionY = coordinates.positionInParent().y
+            height = coordinates.size.height
+            widthHalf = coordinates.size.width * 0.5f
+            if (coordinates.positionInWindow().x < 0) {
+                isShow = false
+            } else {
+                if (isShowTooltip) {
+                    isShow = true
+                }
+            }
+        }
+    ) {
+        content()
+
+        if (isShow) {
+            // 툴팁이 화면 아래쪽을 벗어나는지 확인
+            val estimatedTooltipHeight = with(density) { 80.dp.toPx() } // 대략적인 툴팁 높이
+            val spaceBelow = with(density) { screenHeight.dp.toPx() } - (positionY + height)
+            val spaceAbove = positionY
+            // 툴팁이 위로 나올 여유 공간이 충분하지 않으면 아래로 내림
+            isPopupAbove = spaceBelow < estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor &&
+                    spaceAbove > estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor
+
+            Popup(
+                alignment = Alignment.TopStart,
+                offset = IntOffset(
+                    x = if (with(density) { 20.dp.toPx() } + widthHalf.toInt() - tooltipWidthHalf.toInt() < 0) {
+                        widthHalf.toInt()
+                    } else {
+                        widthHalf.toInt() - tooltipWidthHalf.toInt()
+                    },
+                    y = if (isPopupAbove) {
+                        positionY.toInt() - tooltipHeight - SpacingBetweenTooltipAndAnchor
+                    } else {
+                        positionY.toInt() + height + SpacingBetweenTooltipAndAnchor
+                    }
+                ),
+                properties = PopupProperties(
+                    focusable = false,
+                    dismissOnClickOutside = false,
+                    dismissOnBackPress = false
+                )
+            ) {
+                SocialProfileCountryNotificationTooltipLayout(
+                    modifier = Modifier
+                        .onGloballyPositioned { coordinates ->
+                            tooltipWidthHalf = coordinates.size.width * 0.5f
+                            tooltipHeight = coordinates.size.height
+                            val width = with(density) { screenWidth.dp.toPx() }
+                            val padding = with(density) { 20.dp.toPx() }
+                            tooltipPositionX =
+                                if (padding + widthHalf.toInt() - tooltipWidthHalf.toInt() > 0) {
+                                    tooltipWidthHalf
+                                } else {
+                                    padding + widthHalf.toInt() - (width - tooltipWidthHalf * 2)
+                                }
+
+                        }
+                        .drawWithCache {
+                            drawCaretWithPath(
+                                density = this,
+                                caretCenterPosition = Offset(
+                                    x = tooltipPositionX,
+                                    y = if (isPopupAbove) this.size.height.toFloat() else 0f
+                                ),
+                                spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
+                                backgroundColor = backgroundColor,
+                                containerColor = color,
+                                containerColor1 = color1,
+                                dpSize = DpSize(12.dp, 6.dp),
+                                isCaretPointingUp = !isPopupAbove
+                            )
+                        },
+                    spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
+                    text = {
+                        Text(
+                            modifier = Modifier.padding(horizontal = 2.dp),
+                            text = text,
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis,
+                            style = WantedTextStyle(
+                                colorRes = R.color.inverse_label,
+                                style = DesignSystemTheme.typography.label1Medium
+                            )
+                        )
+
+                    }
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun SocialProfileCountryNotificationTooltipLayout(
+    modifier: Modifier = Modifier,
+    spacingBetweenTooltipAndAnchor: Dp,
+    text: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .sizeIn(
+                minWidth = 64.dp,
+                maxWidth = 296.dp //SpacingBetweenTooltipAndAnchor *2 포함해야 한다.
+            )
+            .padding(spacingBetweenTooltipAndAnchor)
+            .clip(RoundedCornerShape(8.dp))
+            .background(colorResource(id = R.color.background_normal_normal))
+            .background(colorResource(id = R.color.inverse_background).copy(OPACITY_88))
+            .background(colorResource(id = R.color.primary_normal).copy(OPACITY_5))
+            .padding(horizontal = 10.dp)
+            .padding(top = 10.dp, bottom = 10.dp)
+    ) {
+        Row(
+            modifier = Modifier.wrapContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.Top,
+        ) {
+            text()
+        }
+    }
+}
+
+
+private fun CacheDrawScope.drawCaretWithPath(
+    density: Density,
+    caretCenterPosition: Offset,
+    spacingBetweenTooltipAndAnchor: Dp,
+    backgroundColor: Color,
+    containerColor: Color,
+    containerColor1: Color,
+    dpSize: DpSize,
+    isCaretPointingUp: Boolean = true
+): DrawResult {
+    val path = Path()
+
+    val caretHeightPx: Int
+    val caretWidthPx: Int
+    val tooltipAnchorSpacing: Int
+    val anchorSize: Float
+
+    with(density) {
+        caretHeightPx = dpSize.height.roundToPx()
+        caretWidthPx = dpSize.width.roundToPx()
+        tooltipAnchorSpacing = spacingBetweenTooltipAndAnchor.roundToPx()
+        anchorSize = 2.dp.roundToPx().toFloat()
+    }
+
+    val caretY = if (isCaretPointingUp) {
+        caretCenterPosition.y
+    } else {
+        caretCenterPosition.y - caretHeightPx
+    }
+
+    val caretX = caretCenterPosition.x
+
+    if (isCaretPointingUp) {
+        path.apply {
+            moveTo(x = caretX, y = caretY)
+            lineTo(x = caretX + caretWidthPx / 2, y = caretY)
+            lineTo(x = caretX + anchorSize, y = caretY + caretHeightPx - anchorSize)
+
+            arcTo(
+                rect = Rect(
+                    left = caretX - anchorSize / 2,
+                    top = caretY + caretHeightPx - anchorSize,
+                    right = caretX + anchorSize / 2,
+                    bottom = caretY + caretHeightPx - anchorSize / 2
+                ),
+                startAngleDegrees = 45f,
+                sweepAngleDegrees = 135f,
+                forceMoveTo = false
+            )
+
+            lineTo(x = caretX - anchorSize, y = caretY + caretHeightPx - anchorSize)
+
+            lineTo(x = caretX - caretWidthPx / 2, y = caretY)
+            close()
+        }
+    } else {
+        path.apply {
+            moveTo(x = caretX, y = caretY)
+            lineTo(x = caretX + caretWidthPx / 2, y = caretY)
+            lineTo(x = caretX + anchorSize, y = caretY - caretHeightPx + anchorSize)
+
+            arcTo(
+                rect = Rect(
+                    left = caretX - anchorSize / 2,
+                    top = caretY - caretHeightPx + anchorSize / 2,
+                    right = caretX + anchorSize / 2,
+                    bottom = caretY - caretHeightPx + anchorSize
+                ),
+                startAngleDegrees = -45f,
+                sweepAngleDegrees = -135f,
+                forceMoveTo = false
+            )
+
+            lineTo(x = caretX - anchorSize, y = caretY - caretHeightPx + anchorSize)
+            lineTo(x = caretX - caretWidthPx / 2, y = caretY)
+            close()
+        }
+    }
+
+    return onDrawWithContent {
+
+        drawPath(path, backgroundColor)
+        drawPath(path, containerColor)
+        drawPath(path, containerColor1)
+
+        drawContent()
+    }
+}
 
 /**
  * 텍스트와 버튼, 닫기 아이콘, 화살표 등을 포함할 수 있는 사용자 정의 Tooltip 컴포저블입니다.
