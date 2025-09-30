@@ -91,6 +91,7 @@ fun WantedTextField(
     enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -98,8 +99,7 @@ fun WantedTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     rightContent: @Composable ((Dp) -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
-    onValueChange: (String) -> Unit = {},
-    focusRequester: FocusRequester? = null
+    onValueChange: (String) -> Unit = {}
 ) {
     var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
     val textFieldValue = textFieldValueState.copy(text = text)
@@ -159,7 +159,7 @@ fun WantedTextField(
                         onValueChange(newTextFieldValueState.text)
                     }
                 },
-                focusRequester = focusRequester ?: FocusRequester()
+                focusRequester = focusRequester
             )
         },
         message = if (!description.isNullOrEmpty()) {
@@ -240,10 +240,10 @@ fun WantedTextField(
     minLines: Int = 1,
     maxLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
-    focusRequester: FocusRequester? = null
+    background: Color = colorResource(id = R.color.background_normal_normal)
 ) {
     WantedTextInputLayout(
         modifier = modifier,
@@ -281,7 +281,7 @@ fun WantedTextField(
                 rightContent = rightContent,
                 onClickRightButton = onClickRightButton,
                 onValueChange = onValueChange,
-                focusRequester = focusRequester ?: FocusRequester()
+                focusRequester = focusRequester
             )
         },
         message = description?.let {
