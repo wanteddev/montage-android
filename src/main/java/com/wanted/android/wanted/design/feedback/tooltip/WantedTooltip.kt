@@ -71,10 +71,11 @@ import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
 
 
-enum class WantedTooltipSize{
+enum class WantedTooltipSize {
     Small,
     Medium
 }
+
 @Composable
 fun WantedTooltip(
     modifier: Modifier,
@@ -83,7 +84,6 @@ fun WantedTooltip(
     size: WantedTooltipSize = WantedTooltipSize.Medium,
     content: @Composable () -> Unit
 ) {
-
     var isShow by remember(isShowTooltip) { mutableStateOf(isShowTooltip) }
 
     val density = LocalDensity.current
@@ -155,11 +155,11 @@ fun WantedTooltip(
                             val width = with(density) { screenWidth.dp.toPx() }
                             val padding = with(density) { 20.dp.toPx() }
                             tooltipPositionX =
-                                if (padding + widthHalf.toInt() - tooltipWidthHalf.toInt() > 0) {
-                                    tooltipWidthHalf
-                                } else {
-                                    padding + widthHalf.toInt() - (width - tooltipWidthHalf * 2)
-                                }
+                                    if (padding + widthHalf.toInt() - tooltipWidthHalf.toInt() > 0) {
+                                        tooltipWidthHalf
+                                    } else {
+                                        padding + widthHalf.toInt() - (width - tooltipWidthHalf * 2)
+                                    }
 
                         }
                         .drawWithCache {
@@ -254,14 +254,14 @@ private fun CacheDrawScope.drawCaretWithPath(
     }
 
     val caretY = if (isCaretPointingUp) {
-        caretCenterPosition.y
+        tooltipAnchorSpacing.toFloat()
     } else {
-        caretCenterPosition.y - caretHeightPx
+        this.size.height - tooltipAnchorSpacing.toFloat()
     }
 
     val caretX = caretCenterPosition.x
 
-    if (isCaretPointingUp) {
+    if (!isCaretPointingUp) {
         path.apply {
             moveTo(x = caretX, y = caretY)
             lineTo(x = caretX + caretWidthPx / 2, y = caretY)
@@ -564,17 +564,17 @@ private fun CacheDrawScope.drawCaretWithPath(
         }
 
         val position =
-            if (anchorMid + tooltipWidth / 2 > screenWidthPx) {
-                val anchorMidFromRightScreenEdge =
-                    screenWidthPx - anchorMid
-                val caretX = tooltipWidth - anchorMidFromRightScreenEdge
-                Offset(caretX, caretY)
-            } else {
-                val tooltipLeft =
-                    anchorLeft - (this.size.width / 2 - anchorWidth / 2)
-                val caretX = anchorMid - maxOf(tooltipLeft, 0f)
-                Offset(caretX, caretY)
-            }
+                if (anchorMid + tooltipWidth / 2 > screenWidthPx) {
+                    val anchorMidFromRightScreenEdge =
+                            screenWidthPx - anchorMid
+                    val caretX = tooltipWidth - anchorMidFromRightScreenEdge
+                    Offset(caretX, caretY)
+                } else {
+                    val tooltipLeft =
+                            anchorLeft - (this.size.width / 2 - anchorWidth / 2)
+                    val caretX = anchorMid - maxOf(tooltipLeft, 0f)
+                    Offset(caretX, caretY)
+                }
 
         if (isCaretTop) {
             path.apply {
