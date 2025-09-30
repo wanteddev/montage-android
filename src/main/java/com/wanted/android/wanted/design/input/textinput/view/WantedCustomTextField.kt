@@ -3,6 +3,7 @@ package com.wanted.android.wanted.design.input.textinput.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -23,9 +24,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -55,7 +59,6 @@ internal fun WantedCustomTextField(
     error: Boolean,
     enabled: Boolean,
     rightButtonEnabled: Boolean,
-    focused: Boolean,
     complete: Boolean,
     maxLines: Int,
     minLines: Int,
@@ -66,6 +69,7 @@ internal fun WantedCustomTextField(
     keyboardActions: KeyboardActions,
     rightButtonVariant: RightVariant,
     modifier: Modifier = Modifier,
+    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
     background: Color = colorResource(id = R.color.background_normal_normal),
     rightButton: String? = null,
@@ -73,7 +77,8 @@ internal fun WantedCustomTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
-    onValueChange: (TextFieldValue) -> Unit = {}
+    onValueChange: (TextFieldValue) -> Unit = {},
+    focusRequester: FocusRequester = FocusRequester()
 ) {
     ConstraintLayout {
         val (shadow, textField) = createRefs()
@@ -110,6 +115,7 @@ internal fun WantedCustomTextField(
             textField = {
                 BasicTextField(
                     modifier = Modifier
+                        .focusRequester(focusRequester)
                         .border(
                             shape = RoundedCornerShape(
                                 topStart = 12.dp,
@@ -118,14 +124,14 @@ internal fun WantedCustomTextField(
                                 bottomEnd = rightButton?.let { 0.dp } ?: 12.dp
                             ),
                             color = when {
-                                error || focused -> {
+                                error || focused.value -> {
                                     colorResource(id = R.color.background_normal_normal)
                                         .copy(alpha = OPACITY_43)
                                 }
 
                                 else -> colorResource(R.color.transparent)
                             },
-                            width = if (focused) 2.dp else 1.dp
+                            width = if (focused.value) 2.dp else 1.dp
                         )
                         .border(
                             shape = rightButton?.let {
@@ -139,10 +145,10 @@ internal fun WantedCustomTextField(
                             color = when {
                                 !enabled -> colorResource(R.color.line_normal_alternative)
                                 error -> colorResource(R.color.status_negative).copy(OPACITY_43)
-                                focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
+                                focused.value -> colorResource(R.color.primary_normal).copy(OPACITY_43)
                                 else -> colorResource(R.color.line_normal_neutral)
                             },
-                            width = if (focused) 2.dp else 1.dp
+                            width = if (focused.value) 2.dp else 1.dp
                         )
                         .padding(horizontal = 12.dp)
                         .padding(vertical = 12.dp)
@@ -192,7 +198,7 @@ internal fun WantedCustomTextField(
                             },
                             leadingIcon = leadingIcon,
                             trailingIcon = when {
-                                !focused && enabled && error -> {
+                                !focused.value && enabled && error -> {
                                     {
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
@@ -203,7 +209,7 @@ internal fun WantedCustomTextField(
                                     }
                                 }
 
-                                !focused && complete -> {
+                                !focused.value && complete -> {
                                     {
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
@@ -214,7 +220,7 @@ internal fun WantedCustomTextField(
                                     }
                                 }
 
-                                trailingIcon == null && value.text.isNotEmpty() && enabled && focused -> {
+                                trailingIcon == null && value.text.isNotEmpty() && enabled && focused.value -> {
                                     {
                                         Icon(
                                             modifier = Modifier
@@ -253,7 +259,7 @@ internal fun WantedCustomTextField(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        if (isVisibleVerticalDivider(rightButtonEnabled, enabled, error, focused)) {
+                        if (isVisibleVerticalDivider(rightButtonEnabled, enabled, error, focused.value)) {
                             VerticalDivider(
                                 color = colorResource(id = R.color.line_normal_neutral),
                                 thickness = 1.dp
