@@ -1,7 +1,6 @@
 package com.wanted.android.wanted.design.input.textinput.textfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,12 +12,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -65,7 +64,6 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param enabledOverflowText Boolean: 글자 수 초과 허용 여부입니다.
  * @param requiredBadge Boolean: 제목 옆에 필수 뱃지 표시 여부입니다.
  * @param interactionSource MutableInteractionSource: 포커스 및 인터랙션 상태를 추적합니다.
- * @param focused State<Boolean>: 포커스 여부를 외부에서 제어합니다.
  * @param keyboardOptions KeyboardOptions: 키보드 동작 옵션입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션에 대한 핸들링입니다.
  * @param background Color: 텍스트 필드 배경 색상입니다.
@@ -93,7 +91,7 @@ fun WantedTextField(
     enabledOverflowText: Boolean = false,
     requiredBadge: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     background: Color = colorResource(id = R.color.background_normal_normal),
@@ -134,7 +132,6 @@ fun WantedTextField(
                 error = status == WantedTextFieldContract.Status.Negative,
                 enabled = enabled,
                 rightButtonEnabled = rightButtonEnabled,
-                focused = focused.value,
                 complete = status == WantedTextFieldContract.Status.Positive,
                 maxLines = maxLines,
                 minLines = minLines,
@@ -155,13 +152,14 @@ fun WantedTextField(
                     textFieldValueState = newTextFieldValueState
 
                     val stringChangedSinceLastInvocation =
-                        lastTextValue != newTextFieldValueState.text
+                            lastTextValue != newTextFieldValueState.text
                     lastTextValue = newTextFieldValueState.text
 
                     if (stringChangedSinceLastInvocation) {
                         onValueChange(newTextFieldValueState.text)
                     }
-                }
+                },
+                focusRequester = focusRequester
             )
         },
         message = if (!description.isNullOrEmpty()) {
@@ -215,7 +213,6 @@ fun WantedTextField(
  * @param minLines Int: 최소 줄 수입니다.
  * @param maxLines Int: 최대 줄 수입니다.
  * @param interactionSource MutableInteractionSource: 포커스 추적용입니다.
- * @param focused State<Boolean>: 포커스 상태 제어용입니다.
  * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
  * @param background Color: 배경 색상입니다.
@@ -243,7 +240,7 @@ fun WantedTextField(
     minLines: Int = 1,
     maxLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     background: Color = colorResource(id = R.color.background_normal_normal)
@@ -267,7 +264,6 @@ fun WantedTextField(
                 error = status == WantedTextFieldContract.Status.Negative,
                 enabled = enabled,
                 rightButtonEnabled = rightButtonEnabled,
-                focused = focused.value,
                 complete = status == WantedTextFieldContract.Status.Positive,
                 maxLines = maxLines,
                 minLines = minLines,
@@ -284,7 +280,8 @@ fun WantedTextField(
                 trailingIcon = trailingIcon,
                 rightContent = rightContent,
                 onClickRightButton = onClickRightButton,
-                onValueChange = onValueChange
+                onValueChange = onValueChange,
+                focusRequester = focusRequester
             )
         },
         message = description?.let {
@@ -322,7 +319,6 @@ private fun WantedTextFieldPreview() {
                 WantedTextField(
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
-                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextField(
@@ -384,7 +380,6 @@ private fun WantedTextFieldPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     status = WantedTextFieldContract.Status.Positive,
-                    focused = remember { mutableStateOf(false) }
                 )
 
                 WantedTextField(
@@ -392,7 +387,6 @@ private fun WantedTextFieldPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     status = WantedTextFieldContract.Status.Positive,
-                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextField(
@@ -400,7 +394,6 @@ private fun WantedTextFieldPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     status = WantedTextFieldContract.Status.Positive,
-                    focused = remember { mutableStateOf(false) }
                 )
 
                 WantedTextField(
@@ -408,7 +401,6 @@ private fun WantedTextFieldPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     status = WantedTextFieldContract.Status.Positive,
-                    focused = remember { mutableStateOf(true) }
                 )
             }
 
@@ -475,7 +467,6 @@ private fun WantedTextInputPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
                     description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextField(
@@ -484,7 +475,6 @@ private fun WantedTextInputPreview() {
                     rightButton = "텍스트",
                     status = WantedTextFieldContract.Status.Negative,
                     description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
                 )
 
 
@@ -493,7 +483,6 @@ private fun WantedTextInputPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
                     description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextField(
@@ -501,7 +490,6 @@ private fun WantedTextInputPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     enabled = false,
                     description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextField(
@@ -510,7 +498,6 @@ private fun WantedTextInputPreview() {
                     rightButton = "텍스트",
                     enabled = false,
                     description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
                 )
 
                 WantedTextField(
@@ -520,7 +507,6 @@ private fun WantedTextInputPreview() {
                     enabled = false,
                     status = WantedTextFieldContract.Status.Positive,
                     description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(false) }
                 )
 
                 WantedTextField(
@@ -530,7 +516,6 @@ private fun WantedTextInputPreview() {
                     enabled = false,
                     status = WantedTextFieldContract.Status.Negative,
                     description = "메시지에 마침표를 찍어요.",
-                    focused = remember { mutableStateOf(true) }
                 )
             }
         }
