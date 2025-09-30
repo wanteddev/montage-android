@@ -2,7 +2,6 @@ package com.wanted.android.wanted.design.input.textinput.autocompletetextfield
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -17,9 +16,9 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -112,7 +111,7 @@ fun WantedAutoCompleteTextField(
     sectionCount: Int = 1,
     background: Color = colorResource(id = R.color.background_normal_normal),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     sectionTitle: ((section: Int) -> String)? = null,
@@ -147,11 +146,11 @@ fun WantedAutoCompleteTextField(
                 status = status,
                 enabled = enabled,
                 rightButtonEnabled = rightButtonEnabled,
-                focused = focused,
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
                 interactionSource = interactionSource,
+                focusRequester = focusRequester,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 background = background,
@@ -258,7 +257,7 @@ fun WantedAutoCompleteTextField(
     sectionCount: Int = 1,
     background: Color = colorResource(id = R.color.background_normal_normal),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -292,11 +291,11 @@ fun WantedAutoCompleteTextField(
                 status = status,
                 enabled = enabled,
                 rightButtonEnabled = rightButtonEnabled,
-                focused = focused,
                 maxLines = maxLines,
                 minLines = minLines,
                 maxWordCount = maxWordCount,
                 interactionSource = interactionSource,
+                focusRequester = focusRequester,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 background = background,
