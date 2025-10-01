@@ -76,12 +76,20 @@ enum class WantedTooltipSize {
     Medium
 }
 
+enum class WantedTooltipAlign {
+    Left,
+    Center,
+    Right
+}
+
+
 @Composable
 fun WantedTooltip(
     modifier: Modifier,
     isShowTooltip: Boolean,
     text: String,
     size: WantedTooltipSize = WantedTooltipSize.Medium,
+    align: WantedTooltipAlign = WantedTooltipAlign.Left,
     content: @Composable () -> Unit
 ) {
     var isShow by remember(isShowTooltip) { mutableStateOf(isShowTooltip) }
@@ -94,19 +102,26 @@ fun WantedTooltip(
     val backgroundColor = colorResource(id = R.color.background_normal_normal)
     val color = colorResource(id = R.color.inverse_background).copy(OPACITY_88)
     val color1 = colorResource(id = R.color.primary_normal).copy(OPACITY_5)
-    var positionY by remember { mutableFloatStateOf(0f) }
-    var height by remember { mutableIntStateOf(0) }
-    var widthHalf by remember { mutableFloatStateOf(0f) }
-    var tooltipWidthHalf by remember { mutableFloatStateOf(0f) }
-    var tooltipPositionX by remember { mutableFloatStateOf(0f) }
+
+    var contentPositionY by remember { mutableFloatStateOf(0f) }
+    var contentPositionX by remember { mutableFloatStateOf(0f) }
+    var contentHeight by remember { mutableIntStateOf(0) }
+    var contentWidth by remember { mutableIntStateOf(0) }
+
+    var tooltipWidth by remember { mutableIntStateOf(0) }
     var tooltipHeight by remember { mutableIntStateOf(0) }
+
+    var caretPositionX by remember { mutableFloatStateOf(0f) }
+
     var isPopupAbove by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier.onGloballyPositioned { coordinates ->
-            positionY = coordinates.positionInParent().y
-            height = coordinates.size.height
-            widthHalf = coordinates.size.width * 0.5f
+            contentPositionY = coordinates.positionInParent().y
+            contentPositionX = coordinates.positionInWindow().x
+            contentHeight = coordinates.size.height
+            contentWidth = coordinates.size.width
+
             if (coordinates.positionInWindow().x < 0) {
                 isShow = false
             } else {
@@ -119,26 +134,27 @@ fun WantedTooltip(
         content()
 
         if (isShow) {
-            // 툴팁이 화면 아래쪽을 벗어나는지 확인
-            val estimatedTooltipHeight = with(density) { 80.dp.toPx() } // 대략적인 툴팁 높이
-            val spaceBelow = with(density) { screenHeight.dp.toPx() } - (positionY + height)
-            val spaceAbove = positionY
-            // 툴팁이 위로 나올 여유 공간이 충분하지 않으면 아래로 내림
+            val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
+            val spaceBelow = with(density) { screenHeight.dp.toPx() } - (contentPositionY + contentHeight)
+            val spaceAbove = contentPositionY
+
             isPopupAbove = spaceBelow < estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor &&
                     spaceAbove > estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor
 
             Popup(
                 alignment = Alignment.TopStart,
                 offset = IntOffset(
-                    x = if (with(density) { 20.dp.toPx() } + widthHalf.toInt() - tooltipWidthHalf.toInt() < 0) {
-                        widthHalf.toInt()
-                    } else {
-                        widthHalf.toInt() - tooltipWidthHalf.toInt()
-                    },
+                    x = calculateTooltipOffsetX(
+                        align = align,
+                        contentWidth = contentWidth,
+                        tooltipWidth = tooltipWidth,
+                        screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
+                        paddingPx = with(density) { 20.dp.toPx() }.toInt()
+                    ),
                     y = if (isPopupAbove) {
-                        positionY.toInt() - tooltipHeight - SpacingBetweenTooltipAndAnchor
+                        contentPositionY.toInt() - tooltipHeight - SpacingBetweenTooltipAndAnchor
                     } else {
-                        positionY.toInt() + height + SpacingBetweenTooltipAndAnchor
+                        contentPositionY.toInt() + contentHeight + SpacingBetweenTooltipAndAnchor
                     }
                 ),
                 properties = PopupProperties(
@@ -150,23 +166,20 @@ fun WantedTooltip(
                 SocialProfileCountryNotificationTooltipLayout(
                     modifier = Modifier
                         .onGloballyPositioned { coordinates ->
-                            tooltipWidthHalf = coordinates.size.width * 0.5f
+                            tooltipWidth = coordinates.size.width
                             tooltipHeight = coordinates.size.height
-                            val width = with(density) { screenWidth.dp.toPx() }
-                            val padding = with(density) { 20.dp.toPx() }
-                            tooltipPositionX =
-                                    if (padding + widthHalf.toInt() - tooltipWidthHalf.toInt() > 0) {
-                                        tooltipWidthHalf
-                                    } else {
-                                        padding + widthHalf.toInt() - (width - tooltipWidthHalf * 2)
-                                    }
 
+                            caretPositionX = calculateCaretPositionX(
+                                align = align,
+                                tooltipWidth = tooltipWidth,
+                                caretWidthPx = with(density) { 12.dp.toPx() }
+                            )
                         }
                         .drawWithCache {
                             drawCaretWithPath(
                                 density = this,
                                 caretCenterPosition = Offset(
-                                    x = tooltipPositionX,
+                                    x = caretPositionX,
                                     y = if (isPopupAbove) this.size.height.toFloat() else 0f
                                 ),
                                 spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
@@ -197,6 +210,58 @@ fun WantedTooltip(
     }
 }
 
+private fun calculateTooltipOffsetX(
+    align: WantedTooltipAlign,
+    contentWidth: Int,
+    tooltipWidth: Int,
+    screenWidthPx: Int,
+    paddingPx: Int
+): Int {
+    if (tooltipWidth == 0) return 0
+
+    val offsetX = when (align) {
+        WantedTooltipAlign.Left -> {
+            0
+        }
+
+        WantedTooltipAlign.Center -> {
+            (contentWidth - tooltipWidth) / 2
+        }
+
+        WantedTooltipAlign.Right -> {
+            contentWidth - tooltipWidth
+        }
+    }
+
+    val minOffset = -contentWidth + paddingPx
+    val maxOffset = screenWidthPx - tooltipWidth - paddingPx - contentWidth
+
+    return offsetX.coerceIn(minOffset, maxOffset)
+}
+
+private fun calculateCaretPositionX(
+    align: WantedTooltipAlign,
+    tooltipWidth: Int,
+    caretWidthPx: Float
+): Float {
+    if (tooltipWidth == 0) return 0f
+
+    val caretOffset = 20f
+
+    return when (align) {
+        WantedTooltipAlign.Left -> {
+            caretOffset + caretWidthPx
+        }
+
+        WantedTooltipAlign.Center -> {
+            tooltipWidth / 2f
+        }
+
+        WantedTooltipAlign.Right -> {
+            tooltipWidth - caretOffset - caretWidthPx
+        }
+    }
+}
 
 @Composable
 private fun SocialProfileCountryNotificationTooltipLayout(
@@ -672,6 +737,100 @@ private fun WantedTooltipPreview() {
                     },
                     state = remember { TooltipState(true) }
                 )
+            }
+        }
+    }
+}
+
+@DevicePreviews
+@Composable
+private fun WantedTooltipAlignPreview() {
+    DesignSystemTheme {
+        Surface(Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(80.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Left Align
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    WantedTooltip(
+                        modifier = Modifier.padding(start = 40.dp),
+                        isShowTooltip = true,
+                        text = "Left Align - 툴팁이 왼쪽에 정렬됩니다.",
+                        align = WantedTooltipAlign.Left,
+                        content = {
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .background(
+                                        colorResource(id = R.color.primary_normal),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                            )
+                        }
+                    )
+                }
+
+                // Center Align
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    WantedTooltip(
+                        modifier = Modifier,
+                        isShowTooltip = true,
+                        text = "Center Align - 툴팁이 중앙에 정렬됩니다.",
+                        align = WantedTooltipAlign.Center,
+                        content = {
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .background(
+                                        colorResource(id = R.color.background_normal_alternative),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                            )
+                        }
+                    )
+                }
+
+                // Right Align
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    WantedTooltip(
+                        modifier = Modifier.padding(end = 40.dp),
+                        isShowTooltip = true,
+                        text = "Right Align - 툴팁이 오른쪽에 정렬됩니다.",
+                        align = WantedTooltipAlign.Right,
+                        content = {
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .background(
+                                        colorResource(id = R.color.status_negative),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                            )
+                        }
+                    )
+                }
             }
         }
     }
