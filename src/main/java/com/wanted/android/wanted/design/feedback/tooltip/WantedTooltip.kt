@@ -110,6 +110,7 @@ fun WantedTooltip(
 
     var tooltipWidth by remember { mutableIntStateOf(0) }
     var tooltipHeight by remember { mutableIntStateOf(0) }
+    var tooltipOffsetX by remember { mutableIntStateOf(0) }
 
     var caretPositionX by remember { mutableFloatStateOf(0f) }
 
@@ -141,16 +142,20 @@ fun WantedTooltip(
             isPopupAbove = spaceBelow < estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor &&
                     spaceAbove > estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor
 
+            // Tooltip offset 계산 및 저장
+            tooltipOffsetX = calculateTooltipOffsetX(
+                align = align,
+                contentPositionX = contentPositionX,
+                contentWidth = contentWidth,
+                tooltipWidth = tooltipWidth,
+                screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
+                paddingPx = with(density) { 20.dp.toPx() }.toInt()
+            )
+
             Popup(
                 alignment = Alignment.TopStart,
                 offset = IntOffset(
-                    x = calculateTooltipOffsetX(
-                        align = align,
-                        contentWidth = contentWidth,
-                        tooltipWidth = tooltipWidth,
-                        screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
-                        paddingPx = with(density) { 20.dp.toPx() }.toInt()
-                    ),
+                    x = tooltipOffsetX,
                     y = if (isPopupAbove) {
                         contentPositionY.toInt() - tooltipHeight - SpacingBetweenTooltipAndAnchor
                     } else {
@@ -169,9 +174,11 @@ fun WantedTooltip(
                             tooltipWidth = coordinates.size.width
                             tooltipHeight = coordinates.size.height
 
+                            // Caret은 content의 align 기준점을 가리키도록 계산
                             caretPositionX = calculateCaretPositionX(
                                 align = align,
-                                tooltipWidth = tooltipWidth,
+                                contentWidth = contentWidth,
+                                tooltipOffsetX = tooltipOffsetX,
                                 caretWidthPx = with(density) { 12.dp.toPx() }
                             )
                         }
@@ -212,6 +219,7 @@ fun WantedTooltip(
 
 private fun calculateTooltipOffsetX(
     align: WantedTooltipAlign,
+    contentPositionX: Float,
     contentWidth: Int,
     tooltipWidth: Int,
     screenWidthPx: Int,
@@ -219,48 +227,72 @@ private fun calculateTooltipOffsetX(
 ): Int {
     if (tooltipWidth == 0) return 0
 
-    val offsetX = when (align) {
+    // Align에 따른 이상적인 tooltip 위치 계산
+    val idealOffsetX = when (align) {
         WantedTooltipAlign.Left -> {
+            // Content의 왼쪽 가장자리에 tooltip 왼쪽 가장자리 정렬
             0
         }
 
         WantedTooltipAlign.Center -> {
+            // Content의 중앙에 tooltip 중앙 정렬
             (contentWidth - tooltipWidth) / 2
         }
 
         WantedTooltipAlign.Right -> {
+            // Content의 오른쪽 가장자리에 tooltip 오른쪽 가장자리 정렬
             contentWidth - tooltipWidth
         }
     }
 
-    val minOffset = -contentWidth + paddingPx
-    val maxOffset = screenWidthPx - tooltipWidth - paddingPx - contentWidth
+    // 화면 경계 체크 및 보정
+    val tooltipAbsoluteLeft = contentPositionX + idealOffsetX
+    val tooltipAbsoluteRight = tooltipAbsoluteLeft + tooltipWidth
 
-    return offsetX.coerceIn(minOffset, maxOffset)
+    val adjustedOffsetX = when {
+        // 왼쪽 경계를 벗어나는 경우
+        tooltipAbsoluteLeft < paddingPx -> {
+            (paddingPx - contentPositionX).toInt()
+        }
+        // 오른쪽 경계를 벗어나는 경우
+        tooltipAbsoluteRight > screenWidthPx - paddingPx -> {
+            (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
+        }
+        // 경계 내에 있는 경우
+        else -> {
+            idealOffsetX
+        }
+    }
+
+    return adjustedOffsetX
 }
 
 private fun calculateCaretPositionX(
     align: WantedTooltipAlign,
-    tooltipWidth: Int,
+    contentWidth: Int,
+    tooltipOffsetX: Int,
     caretWidthPx: Float
 ): Float {
-    if (tooltipWidth == 0) return 0f
-
-    val caretOffset = 20f
-
-    return when (align) {
+    // Content의 align 기준점 계산 (content 기준 좌표)
+    val contentAnchorX = when (align) {
         WantedTooltipAlign.Left -> {
-            caretOffset + caretWidthPx
+            // Content의 왼쪽 가장자리에서 약간 안쪽
+            20f + caretWidthPx
         }
-
         WantedTooltipAlign.Center -> {
-            tooltipWidth / 2f
+            // Content의 중앙
+            contentWidth / 2f
         }
-
         WantedTooltipAlign.Right -> {
-            tooltipWidth - caretOffset - caretWidthPx
+            // Content의 오른쪽 가장자리에서 약간 안쪽
+            contentWidth - 20f - caretWidthPx
         }
     }
+
+    // Tooltip 기준 좌표로 변환
+    // tooltipOffsetX = tooltip의 왼쪽 - content의 왼쪽
+    // caretPositionX = contentAnchorX - tooltipOffsetX
+    return contentAnchorX - tooltipOffsetX
 }
 
 @Composable
@@ -292,7 +324,6 @@ private fun SocialProfileCountryNotificationTooltipLayout(
         }
     }
 }
-
 
 private fun CacheDrawScope.drawCaretWithPath(
     density: Density,
@@ -588,6 +619,7 @@ private fun WantedTooltipContentsLayout(
     }
 }
 
+
 private fun CacheDrawScope.drawCaretWithPath(
     density: Density,
     configuration: Configuration,
@@ -606,6 +638,7 @@ private fun CacheDrawScope.drawCaretWithPath(
         val screenWidthPx: Int
         val tooltipAnchorSpacing: Int
         val anchorSize: Float
+
         with(density) {
             caretHeightPx = dpSize.height.roundToPx()
             caretWidthPx = dpSize.width.roundToPx()
@@ -823,6 +856,99 @@ private fun WantedTooltipAlignPreview() {
                             Box(
                                 modifier = Modifier
                                     .size(60.dp)
+                                    .background(
+                                        colorResource(id = R.color.status_negative),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@DevicePreviews
+@Composable
+private fun WantedTooltipBoundaryPreview() {
+    DesignSystemTheme {
+        Surface(Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(100.dp)
+            ) {
+                // Left Align at screen edge - 경계 처리 테스트
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    WantedTooltip(
+                        modifier = Modifier.padding(start = 8.dp),
+                        isShowTooltip = true,
+                        text = "화면 왼쪽 끝: Tooltip은 보정되지만 Caret은 Content를 가리킵니다.",
+                        align = WantedTooltipAlign.Left,
+                        content = {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        colorResource(id = R.color.primary_normal),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                            )
+                        }
+                    )
+                }
+
+                // Center content near left edge
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    WantedTooltip(
+                        modifier = Modifier.padding(start = 40.dp),
+                        isShowTooltip = true,
+                        text = "Center Align 왼쪽 근처: Tooltip 보정시에도 Caret은 중앙 유지",
+                        align = WantedTooltipAlign.Center,
+                        content = {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        colorResource(id = R.color.background_normal_alternative),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                            )
+                        }
+                    )
+                }
+
+                // Right Align at screen edge - 경계 처리 테스트
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    WantedTooltip(
+                        modifier = Modifier.padding(end = 8.dp),
+                        isShowTooltip = true,
+                        text = "화면 오른쪽 끝: Tooltip은 보정되지만 Caret은 Content를 가리킵니다.",
+                        align = WantedTooltipAlign.Right,
+                        content = {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
                                     .background(
                                         colorResource(id = R.color.status_negative),
                                         shape = RoundedCornerShape(8.dp)
