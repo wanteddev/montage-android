@@ -218,7 +218,7 @@ private fun WantedSnackBarDescriptionExtraContentPreview() {
                     icon = {
                         Icon(
                             contentDescription = "icon",
-                            painter = painterResource(id = R.drawable.ic_normal_eye_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier
                                 .size(32.dp),
                             tint = colorResource(id = R.color.design_default_color_error)
@@ -234,7 +234,7 @@ private fun WantedSnackBarDescriptionExtraContentPreview() {
                     icon = {
                         Icon(
                             contentDescription = "icon",
-                            painter = painterResource(id = R.drawable.ic_normal_eye_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier.fillMaxSize(),
                             tint = colorResource(id = R.color.design_default_color_error)
                         )
