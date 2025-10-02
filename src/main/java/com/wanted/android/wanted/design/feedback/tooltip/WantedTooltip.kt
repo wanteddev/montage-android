@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
@@ -179,6 +180,9 @@ fun WantedTooltip(
                                 align = align,
                                 contentWidth = contentWidth,
                                 tooltipOffsetX = tooltipOffsetX,
+                                caretPaddingHorizontalPx = with(density) {
+                                    if (size == WantedTooltipSize.Small) 5.dp.toPx() else 8.dp.toPx()
+                                },
                                 caretWidthPx = with(density) { 12.dp.toPx() }
                             )
                         }
@@ -187,7 +191,7 @@ fun WantedTooltip(
                                 density = this,
                                 caretCenterPosition = Offset(
                                     x = caretPositionX,
-                                    y = if (isPopupAbove) this.size.height.toFloat() else 0f
+                                    y = if (isPopupAbove) this.size.height else 0f
                                 ),
                                 spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
                                 backgroundColor = backgroundColor,
@@ -198,18 +202,13 @@ fun WantedTooltip(
                             )
                         },
                     spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
+                    size = size,
                     text = {
                         Text(
-                            modifier = Modifier.padding(horizontal = 2.dp),
                             text = text,
                             maxLines = 3,
-                            overflow = TextOverflow.Ellipsis,
-                            style = WantedTextStyle(
-                                colorRes = R.color.inverse_label,
-                                style = DesignSystemTheme.typography.label1Medium
-                            )
+                            overflow = TextOverflow.Ellipsis
                         )
-
                     }
                 )
             }
@@ -271,21 +270,24 @@ private fun calculateCaretPositionX(
     align: WantedTooltipAlign,
     contentWidth: Int,
     tooltipOffsetX: Int,
+    caretPaddingHorizontalPx: Float,
     caretWidthPx: Float
 ): Float {
     // Content의 align 기준점 계산 (content 기준 좌표)
     val contentAnchorX = when (align) {
         WantedTooltipAlign.Left -> {
             // Content의 왼쪽 가장자리에서 약간 안쪽
-            20f + caretWidthPx
+            caretPaddingHorizontalPx + caretWidthPx
         }
+
         WantedTooltipAlign.Center -> {
             // Content의 중앙
             contentWidth / 2f
         }
+
         WantedTooltipAlign.Right -> {
             // Content의 오른쪽 가장자리에서 약간 안쪽
-            contentWidth - 20f - caretWidthPx
+            contentWidth - caretPaddingHorizontalPx - caretWidthPx
         }
     }
 
@@ -299,26 +301,35 @@ private fun calculateCaretPositionX(
 private fun SocialProfileCountryNotificationTooltipLayout(
     modifier: Modifier = Modifier,
     spacingBetweenTooltipAndAnchor: Dp,
+    size: WantedTooltipSize,
     text: @Composable () -> Unit,
 ) {
-    Column(
+    Box(
         modifier = modifier
             .sizeIn(
-                minWidth = 64.dp,
+                minWidth = if (size == WantedTooltipSize.Small) 36.dp else 64.dp,
                 maxWidth = 296.dp //SpacingBetweenTooltipAndAnchor *2 포함해야 한다.
             )
             .padding(spacingBetweenTooltipAndAnchor)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(if (size == WantedTooltipSize.Small) 6.dp else 8.dp))
             .background(colorResource(id = R.color.background_normal_normal))
             .background(colorResource(id = R.color.inverse_background).copy(OPACITY_88))
             .background(colorResource(id = R.color.primary_normal).copy(OPACITY_5))
-            .padding(horizontal = 10.dp)
-            .padding(top = 10.dp, bottom = 10.dp)
+            .padding(
+                horizontal = if (size == WantedTooltipSize.Small) 8.dp else 10.dp,
+                vertical = if (size == WantedTooltipSize.Small) 5.dp else 10.dp
+            )
+            .padding(horizontal = if (size == WantedTooltipSize.Small) 0.dp else 2.dp)
     ) {
-        Row(
-            modifier = Modifier.wrapContentSize(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.Top,
+        ProvideTextStyle(
+            value = WantedTextStyle(
+                colorRes = R.color.inverse_label,
+                style = if (size == WantedTooltipSize.Small) {
+                    DesignSystemTheme.typography.caption2Medium
+                } else {
+                    DesignSystemTheme.typography.label1Medium
+                }
+            )
         ) {
             text()
         }
