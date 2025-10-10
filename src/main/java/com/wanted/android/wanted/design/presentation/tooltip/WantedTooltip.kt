@@ -1,4 +1,4 @@
-package com.wanted.android.wanted.design.feedback.tooltip
+package com.wanted.android.wanted.design.presentation.tooltip
 
 import android.content.Context
 import android.content.res.Configuration
@@ -442,6 +442,7 @@ private fun drawableResourceToBitmap(
  * @param onClickAction (() -> Unit)?: 보조 액션 버튼 클릭 시 호출되는 콜백입니다.
  * @param content () -> Unit: 툴팁을 보여줄 기준 콘텐츠입니다. 클릭 시 툴팁이 열립니다.
  */
+@Deprecated("")
 @Composable
 fun WantedTooltip(
     text: String,
