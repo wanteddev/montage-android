@@ -168,9 +168,9 @@ fun WantedTooltip(
                     }
                 ),
                 properties = PopupProperties(
-                    focusable = false,
-                    dismissOnClickOutside = !always,
-                    dismissOnBackPress = !always
+                    focusable = !always,
+                    dismissOnClickOutside = true,
+                    dismissOnBackPress = true
                 ),
                 onDismissRequest = {
                     if (!always) {
@@ -749,9 +749,11 @@ interface WantedTooltipState {
     val visibleState: State<Boolean>
 }
 
-private class WantedTooltipStateImpl : WantedTooltipState {
+private class WantedTooltipStateImpl(
+    initialVisible: Boolean
+) : WantedTooltipState {
 
-    private val _visibleState = mutableStateOf(false)
+    private val _visibleState = mutableStateOf(initialVisible)
     override val visibleState: State<Boolean>
         get() = _visibleState
 
@@ -769,7 +771,7 @@ private class WantedTooltipStateImpl : WantedTooltipState {
 
 
 @Composable
-fun rememberTooltipState(): WantedTooltipState = remember { WantedTooltipStateImpl() }
+fun rememberTooltipState(initialVisible: Boolean = false): WantedTooltipState = remember { WantedTooltipStateImpl(initialVisible) }
 
 
 private const val SpacingBetweenTooltipAndAnchor = 8
