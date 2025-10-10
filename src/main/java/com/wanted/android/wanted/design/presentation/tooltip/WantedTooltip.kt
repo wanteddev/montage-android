@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -109,6 +110,7 @@ fun WantedTooltip(
 
     var contentPositionY by remember { mutableFloatStateOf(0f) }
     var contentPositionX by remember { mutableFloatStateOf(0f) }
+    var contentPositionYInWindow by remember { mutableFloatStateOf(0f) }
     var contentHeight by remember { mutableIntStateOf(0) }
     var contentWidth by remember { mutableIntStateOf(0) }
 
@@ -124,6 +126,7 @@ fun WantedTooltip(
         modifier = modifier.onGloballyPositioned { coordinates ->
             val positionWindow = coordinates.positionInWindow()
             contentPositionY = coordinates.positionInParent().y
+            contentPositionYInWindow = positionWindow.y
             contentPositionX = positionWindow.x
             contentHeight = coordinates.size.height
             contentWidth = coordinates.size.width
@@ -142,8 +145,8 @@ fun WantedTooltip(
         if (isShow) {
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
             val spaceBelow =
-                with(density) { screenHeight.dp.toPx() } - (contentPositionY + contentHeight)
-            val spaceAbove = contentPositionY
+                with(density) { screenHeight.dp.toPx() } - (contentPositionYInWindow + contentHeight)
+            val spaceAbove = contentPositionYInWindow
 
             isPopupAbove = spaceBelow < estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor &&
                     spaceAbove > estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor
@@ -162,7 +165,7 @@ fun WantedTooltip(
                 offset = IntOffset(
                     x = tooltipOffsetX,
                     y = if (isPopupAbove) {
-                        contentPositionY.toInt() - tooltipHeight - SpacingBetweenTooltipAndAnchor
+                        -tooltipHeight - SpacingBetweenTooltipAndAnchor
                     } else {
                         contentPositionY.toInt() + contentHeight + SpacingBetweenTooltipAndAnchor
                     }
@@ -279,11 +282,25 @@ private fun CacheDrawScope.drawCaret(
         )
 
         // 화살표 모양으로 마스킹
-        drawImage(
-            image = originalBitmap.asImageBitmap(),
-            topLeft = drawOffset,
-            blendMode = BlendMode.DstIn
-        )
+        if (isPopupAbove) {
+            // isPopupAbove가 true일 때 180도 회전
+            val center = drawOffset + Offset(rectSize.width / 2, rectSize.height / 2)
+            withTransform({
+                rotate(180f, center)
+            }) {
+                drawImage(
+                    image = originalBitmap.asImageBitmap(),
+                    topLeft = drawOffset,
+                    blendMode = BlendMode.DstIn
+                )
+            }
+        } else {
+            drawImage(
+                image = originalBitmap.asImageBitmap(),
+                topLeft = drawOffset,
+                blendMode = BlendMode.DstIn
+            )
+        }
 
         drawContent()
     }
@@ -771,7 +788,8 @@ private class WantedTooltipStateImpl(
 
 
 @Composable
-fun rememberTooltipState(initialVisible: Boolean = false): WantedTooltipState = remember { WantedTooltipStateImpl(initialVisible) }
+fun rememberTooltipState(initialVisible: Boolean = false): WantedTooltipState =
+    remember { WantedTooltipStateImpl(initialVisible) }
 
 
 private const val SpacingBetweenTooltipAndAnchor = 8
