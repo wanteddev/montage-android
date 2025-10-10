@@ -1,6 +1,9 @@
 package com.wanted.android.wanted.design.feedback.tooltip
 
+import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,14 +39,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -55,6 +62,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
@@ -71,19 +80,6 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
 
-
-enum class WantedTooltipSize {
-    Small,
-    Medium
-}
-
-enum class WantedTooltipAlign {
-    Left,
-    Center,
-    Right
-}
-
-
 @Composable
 fun WantedTooltip(
     modifier: Modifier,
@@ -95,6 +91,7 @@ fun WantedTooltip(
 ) {
     var isShow by remember(isShowTooltip) { mutableStateOf(isShowTooltip) }
 
+    val context = LocalContext.current
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp
@@ -137,13 +134,13 @@ fun WantedTooltip(
 
         if (isShow) {
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
-            val spaceBelow = with(density) { screenHeight.dp.toPx() } - (contentPositionY + contentHeight)
+            val spaceBelow =
+                with(density) { screenHeight.dp.toPx() } - (contentPositionY + contentHeight)
             val spaceAbove = contentPositionY
 
             isPopupAbove = spaceBelow < estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor &&
                     spaceAbove > estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor
 
-            // Tooltip offset 계산 및 저장
             tooltipOffsetX = calculateTooltipOffsetX(
                 align = align,
                 contentPositionX = contentPositionX,
@@ -169,36 +166,31 @@ fun WantedTooltip(
                     dismissOnBackPress = false
                 )
             ) {
-                SocialProfileCountryNotificationTooltipLayout(
+                WantedTooltipLayout(
                     modifier = Modifier
                         .onGloballyPositioned { coordinates ->
                             tooltipWidth = coordinates.size.width
                             tooltipHeight = coordinates.size.height
 
-                            // Caret은 content의 align 기준점을 가리키도록 계산
                             caretPositionX = calculateCaretPositionX(
                                 align = align,
                                 contentWidth = contentWidth,
                                 tooltipOffsetX = tooltipOffsetX,
                                 caretPaddingHorizontalPx = with(density) {
-                                    if (size == WantedTooltipSize.Small) 5.dp.toPx() else 8.dp.toPx()
+                                    if (size == WantedTooltipSize.Small) 8.dp.toPx() else 10.dp.toPx()
                                 },
                                 caretWidthPx = with(density) { 12.dp.toPx() }
                             )
                         }
                         .drawWithCache {
-                            drawCaretWithPath(
-                                density = this,
-                                caretCenterPosition = Offset(
-                                    x = caretPositionX,
-                                    y = if (isPopupAbove) this.size.height else 0f
-                                ),
-                                spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
+                            drawCaret(
+                                context = context,
+                                size = size,
                                 backgroundColor = backgroundColor,
-                                containerColor = color,
-                                containerColor1 = color1,
-                                dpSize = DpSize(12.dp, 6.dp),
-                                isCaretPointingUp = !isPopupAbove
+                                color = color,
+                                color1 = color1,
+                                isPopupAbove = isPopupAbove,
+                                caretPositionX = caretPositionX
                             )
                         },
                     spacingBetweenTooltipAndAnchor = SpacingBetweenTooltipAndAnchor.dp,
@@ -216,6 +208,75 @@ fun WantedTooltip(
     }
 }
 
+private fun CacheDrawScope.drawCaret(
+    context: Context,
+    size: WantedTooltipSize,
+    backgroundColor: Color,
+    color: Color,
+    color1: Color,
+    isPopupAbove: Boolean,
+    caretPositionX: Float
+): DrawResult {
+    val caretWidthPx =
+        with(density) { if (size == WantedTooltipSize.Small) 14.dp.roundToPx() else 20.dp.roundToPx() }
+    val caretHeightPx =
+        with(density) { if (size == WantedTooltipSize.Small) 6.dp.roundToPx() else 8.dp.roundToPx() }
+
+    val originalBitmap = drawableResourceToBitmap(
+        context,
+        if (size == WantedTooltipSize.Small) R.drawable.icon_tooltip_arrow_small else R.drawable.icon_tooltip_arrow_medium,
+        caretWidthPx,
+        caretHeightPx
+    )
+
+    val drawOffset = Offset(
+        x = caretPositionX - caretWidthPx / 2,
+        y = if (!isPopupAbove) {
+            with(density) {
+                SpacingBetweenTooltipAndAnchor.dp.roundToPx().toFloat()
+            } - caretHeightPx
+        } else {
+            this.size.height - with(density) {
+                SpacingBetweenTooltipAndAnchor.dp.roundToPx().toFloat()
+            }
+        }
+    )
+
+    return onDrawWithContent {
+        val rectSize = Size(
+            width = originalBitmap.width.toFloat(),
+            height = originalBitmap.height.toFloat()
+        )
+
+        drawRect(
+            color = backgroundColor,
+            topLeft = drawOffset,
+            size = rectSize
+        )
+
+        drawRect(
+            color = color,
+            topLeft = drawOffset,
+            size = rectSize
+        )
+
+        drawRect(
+            color = color1,
+            topLeft = drawOffset,
+            size = rectSize
+        )
+
+        // 화살표 모양으로 마스킹
+        drawImage(
+            image = originalBitmap.asImageBitmap(),
+            topLeft = drawOffset,
+            blendMode = BlendMode.DstIn
+        )
+
+        drawContent()
+    }
+}
+
 private fun calculateTooltipOffsetX(
     align: WantedTooltipAlign,
     contentPositionX: Float,
@@ -226,38 +287,32 @@ private fun calculateTooltipOffsetX(
 ): Int {
     if (tooltipWidth == 0) return 0
 
-    // Align에 따른 이상적인 tooltip 위치 계산
     val idealOffsetX = when (align) {
         WantedTooltipAlign.Left -> {
-            // Content의 왼쪽 가장자리에 tooltip 왼쪽 가장자리 정렬
             0
         }
 
         WantedTooltipAlign.Center -> {
-            // Content의 중앙에 tooltip 중앙 정렬
             (contentWidth - tooltipWidth) / 2
         }
 
         WantedTooltipAlign.Right -> {
-            // Content의 오른쪽 가장자리에 tooltip 오른쪽 가장자리 정렬
             contentWidth - tooltipWidth
         }
     }
 
-    // 화면 경계 체크 및 보정
     val tooltipAbsoluteLeft = contentPositionX + idealOffsetX
     val tooltipAbsoluteRight = tooltipAbsoluteLeft + tooltipWidth
 
     val adjustedOffsetX = when {
-        // 왼쪽 경계를 벗어나는 경우
         tooltipAbsoluteLeft < paddingPx -> {
             (paddingPx - contentPositionX).toInt()
         }
-        // 오른쪽 경계를 벗어나는 경우
+
         tooltipAbsoluteRight > screenWidthPx - paddingPx -> {
             (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
         }
-        // 경계 내에 있는 경우
+
         else -> {
             idealOffsetX
         }
@@ -273,32 +328,25 @@ private fun calculateCaretPositionX(
     caretPaddingHorizontalPx: Float,
     caretWidthPx: Float
 ): Float {
-    // Content의 align 기준점 계산 (content 기준 좌표)
     val contentAnchorX = when (align) {
         WantedTooltipAlign.Left -> {
-            // Content의 왼쪽 가장자리에서 약간 안쪽
             caretPaddingHorizontalPx + caretWidthPx
         }
 
         WantedTooltipAlign.Center -> {
-            // Content의 중앙
             contentWidth / 2f
         }
 
         WantedTooltipAlign.Right -> {
-            // Content의 오른쪽 가장자리에서 약간 안쪽
             contentWidth - caretPaddingHorizontalPx - caretWidthPx
         }
     }
 
-    // Tooltip 기준 좌표로 변환
-    // tooltipOffsetX = tooltip의 왼쪽 - content의 왼쪽
-    // caretPositionX = contentAnchorX - tooltipOffsetX
     return contentAnchorX - tooltipOffsetX
 }
 
 @Composable
-private fun SocialProfileCountryNotificationTooltipLayout(
+private fun WantedTooltipLayout(
     modifier: Modifier = Modifier,
     spacingBetweenTooltipAndAnchor: Dp,
     size: WantedTooltipSize,
@@ -308,7 +356,7 @@ private fun SocialProfileCountryNotificationTooltipLayout(
         modifier = modifier
             .sizeIn(
                 minWidth = if (size == WantedTooltipSize.Small) 36.dp else 64.dp,
-                maxWidth = 296.dp //SpacingBetweenTooltipAndAnchor *2 포함해야 한다.
+                maxWidth = 296.dp
             )
             .padding(spacingBetweenTooltipAndAnchor)
             .clip(RoundedCornerShape(if (size == WantedTooltipSize.Small) 6.dp else 8.dp))
@@ -336,93 +384,20 @@ private fun SocialProfileCountryNotificationTooltipLayout(
     }
 }
 
-private fun CacheDrawScope.drawCaretWithPath(
-    density: Density,
-    caretCenterPosition: Offset,
-    spacingBetweenTooltipAndAnchor: Dp,
-    backgroundColor: Color,
-    containerColor: Color,
-    containerColor1: Color,
-    dpSize: DpSize,
-    isCaretPointingUp: Boolean = true
-): DrawResult {
-    val path = Path()
+private fun drawableResourceToBitmap(
+    context: Context,
+    drawableRes: Int,
+    width: Int,
+    height: Int
+): Bitmap {
+    val drawable = ContextCompat.getDrawable(context, drawableRes)
+        ?: throw IllegalArgumentException("Drawable resource not found: $drawableRes")
 
-    val caretHeightPx: Int
-    val caretWidthPx: Int
-    val tooltipAnchorSpacing: Int
-    val anchorSize: Float
-
-    with(density) {
-        caretHeightPx = dpSize.height.roundToPx()
-        caretWidthPx = dpSize.width.roundToPx()
-        tooltipAnchorSpacing = spacingBetweenTooltipAndAnchor.roundToPx()
-        anchorSize = 2.dp.roundToPx().toFloat()
-    }
-
-    val caretY = if (isCaretPointingUp) {
-        tooltipAnchorSpacing.toFloat()
-    } else {
-        this.size.height - tooltipAnchorSpacing.toFloat()
-    }
-
-    val caretX = caretCenterPosition.x
-
-    if (!isCaretPointingUp) {
-        path.apply {
-            moveTo(x = caretX, y = caretY)
-            lineTo(x = caretX + caretWidthPx / 2, y = caretY)
-            lineTo(x = caretX + anchorSize, y = caretY + caretHeightPx - anchorSize)
-
-            arcTo(
-                rect = Rect(
-                    left = caretX - anchorSize / 2,
-                    top = caretY + caretHeightPx - anchorSize,
-                    right = caretX + anchorSize / 2,
-                    bottom = caretY + caretHeightPx - anchorSize / 2
-                ),
-                startAngleDegrees = 45f,
-                sweepAngleDegrees = 135f,
-                forceMoveTo = false
-            )
-
-            lineTo(x = caretX - anchorSize, y = caretY + caretHeightPx - anchorSize)
-
-            lineTo(x = caretX - caretWidthPx / 2, y = caretY)
-            close()
-        }
-    } else {
-        path.apply {
-            moveTo(x = caretX, y = caretY)
-            lineTo(x = caretX + caretWidthPx / 2, y = caretY)
-            lineTo(x = caretX + anchorSize, y = caretY - caretHeightPx + anchorSize)
-
-            arcTo(
-                rect = Rect(
-                    left = caretX - anchorSize / 2,
-                    top = caretY - caretHeightPx + anchorSize / 2,
-                    right = caretX + anchorSize / 2,
-                    bottom = caretY - caretHeightPx + anchorSize
-                ),
-                startAngleDegrees = -45f,
-                sweepAngleDegrees = -135f,
-                forceMoveTo = false
-            )
-
-            lineTo(x = caretX - anchorSize, y = caretY - caretHeightPx + anchorSize)
-            lineTo(x = caretX - caretWidthPx / 2, y = caretY)
-            close()
-        }
-    }
-
-    return onDrawWithContent {
-
-        drawPath(path, backgroundColor)
-        drawPath(path, containerColor)
-        drawPath(path, containerColor1)
-
-        drawContent()
-    }
+    val bitmap = createBitmap(width, height)
+    val canvas = Canvas(bitmap)
+    drawable.setBounds(0, 0, width, height)
+    drawable.draw(canvas)
+    return bitmap
 }
 
 /**
@@ -470,8 +445,8 @@ fun WantedTooltip(
     val scope = rememberCoroutineScope()
 
     val backgroundColor = colorResource(id = R.color.background_normal_normal)
-    val color = colorResource(id = R.color.inverse_background).copy(0.88f)
-    val color1 = colorResource(id = R.color.primary_normal).copy(0.05f)
+    val color = colorResource(id = R.color.inverse_background).copy(OPACITY_88)
+    val color1 = colorResource(id = R.color.primary_normal).copy(OPACITY_5)
 
     TooltipBox(
         modifier = modifier,
@@ -585,17 +560,21 @@ private fun WantedTooltipContentsLayout(
     onClose: @Composable (() -> Unit)?,
     action: @Composable (() -> Unit)?
 ) {
+    val backgroundColor = colorResource(id = R.color.background_normal_normal)
+    val color = colorResource(id = R.color.inverse_background).copy(OPACITY_88)
+    val color1 = colorResource(id = R.color.primary_normal).copy(OPACITY_5)
+
     Column(
         modifier = modifier
             .sizeIn(
                 minWidth = 64.dp,
-                maxWidth = 296.dp //SpacingBetweenTooltipAndAnchor *2 포함해야 한다.
+                maxWidth = 296.dp
             )
             .padding(spacingBetweenTooltipAndAnchor)
             .clip(RoundedCornerShape(8.dp))
-            .background(colorResource(id = R.color.background_normal_normal))
-            .background(colorResource(id = R.color.inverse_background).copy(0.88f))
-            .background(colorResource(id = R.color.primary_normal).copy(0.05f))
+            .background(backgroundColor)
+            .background(color)
+            .background(color1)
             .padding(horizontal = 10.dp)
             .padding(top = 10.dp, bottom = 10.dp)
     ) {
@@ -672,18 +651,15 @@ private fun CacheDrawScope.drawCaretWithPath(
             tooltipHeight - tooltipAnchorSpacing
         }
 
-        val position =
-                if (anchorMid + tooltipWidth / 2 > screenWidthPx) {
-                    val anchorMidFromRightScreenEdge =
-                            screenWidthPx - anchorMid
-                    val caretX = tooltipWidth - anchorMidFromRightScreenEdge
-                    Offset(caretX, caretY)
-                } else {
-                    val tooltipLeft =
-                            anchorLeft - (this.size.width / 2 - anchorWidth / 2)
-                    val caretX = anchorMid - maxOf(tooltipLeft, 0f)
-                    Offset(caretX, caretY)
-                }
+        val position = if (anchorMid + tooltipWidth / 2 > screenWidthPx) {
+            val anchorMidFromRightScreenEdge = screenWidthPx - anchorMid
+            val caretX = tooltipWidth - anchorMidFromRightScreenEdge
+            Offset(caretX, caretY)
+        } else {
+            val tooltipLeft = anchorLeft - (this.size.width / 2 - anchorWidth / 2)
+            val caretX = anchorMid - maxOf(tooltipLeft, 0f)
+            Offset(caretX, caretY)
+        }
 
         if (isCaretTop) {
             path.apply {
@@ -755,6 +731,18 @@ private fun CacheDrawScope.drawCaretWithPath(
 
 private const val SpacingBetweenTooltipAndAnchor = 8
 private const val SpacingBetweenTooltipAndAnchorNotArrow = 2
+
+enum class WantedTooltipSize {
+    Small,
+    Medium
+}
+
+enum class WantedTooltipAlign {
+    Left,
+    Center,
+    Right
+}
+
 
 @DevicePreviews
 @Composable
