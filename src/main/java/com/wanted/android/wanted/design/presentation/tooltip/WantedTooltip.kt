@@ -80,7 +80,40 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
 
-
+/**
+ * 사용자 정의 Tooltip 컴포저블입니다.
+ *
+ * 앵커 요소 주변에 텍스트를 표시하는 툴팁을 제공하며, 크기, 정렬, 표시 여부를 제어할 수 있습니다.
+ * 화면 경계를 고려하여 자동으로 위치를 조정하고, 화살표(caret)를 통해 앵커와의 연관성을 시각적으로 표현합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val tooltipState = rememberTooltipState()
+ *
+ * WantedTooltip(
+ *     modifier = Modifier.padding(16.dp),
+ *     tooltipState = tooltipState,
+ *     text = "이것은 도움말 텍스트입니다.",
+ *     size = WantedTooltipSize.Medium,
+ *     align = WantedTooltipAlign.Center,
+ *     always = false
+ * ) {
+ *     Icon(
+ *         painter = painterResource(id = R.drawable.ic_help),
+ *         contentDescription = "도움말",
+ *         modifier = Modifier.clickable { tooltipState.show() }
+ *     )
+ * }
+ * ```
+ *
+ * @param modifier 툴팁 컨테이너의 외형 및 배치를 제어하는 Modifier입니다.
+ * @param tooltipState 툴팁의 표시/숨김 상태를 관리하는 상태 객체입니다. 기본값은 `rememberTooltipState()`입니다.
+ * @param text 툴팁에 표시할 텍스트입니다. 최대 3줄까지 표시되며, 초과 시 말줄임표(...)로 처리됩니다.
+ * @param size 툴팁의 크기를 지정합니다. Small 또는 Medium 중 선택할 수 있으며, 기본값은 Medium입니다.
+ * @param align 앵커 요소에 대한 툴팁의 정렬 방식입니다. Left, Center, Right 중 선택할 수 있으며, 기본값은 Left입니다.
+ * @param always true일 경우 툴팁이 항상 표시되며 사용자 상호작용으로 닫을 수 없습니다. 기본값은 false입니다.
+ * @param content 툴팁을 트리거하는 앵커 콘텐츠입니다. 툴팁 상태를 수동으로 제어해야 합니다.
+ */
 @Composable
 fun WantedTooltip(
     modifier: Modifier,
@@ -460,7 +493,13 @@ private fun drawableResourceToBitmap(
  * @param onClickAction (() -> Unit)?: 보조 액션 버튼 클릭 시 호출되는 콜백입니다.
  * @param content () -> Unit: 툴팁을 보여줄 기준 콘텐츠입니다. 클릭 시 툴팁이 열립니다.
  */
-@Deprecated("")
+@Deprecated(
+    message = "Use the new WantedTooltip with WantedTooltipState instead",
+    replaceWith = ReplaceWith(
+        "WantedTooltip(modifier, rememberTooltipState(), text, content = content)",
+        "com.wanted.android.wanted.design.presentation.tooltip.rememberTooltipState"
+    )
+)
 @Composable
 fun WantedTooltip(
     text: String,
