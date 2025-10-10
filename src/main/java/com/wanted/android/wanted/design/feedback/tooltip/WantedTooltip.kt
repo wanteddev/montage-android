@@ -18,12 +18,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ProvideTextStyle
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -67,12 +68,10 @@ import androidx.core.graphics.createBitmap
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
-import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.OPACITY_61
 import com.wanted.android.wanted.design.util.OPACITY_88
@@ -80,16 +79,23 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun WantedTooltip(
     modifier: Modifier,
-    isShowTooltip: Boolean,
+    tooltipState: WantedTooltipState = rememberTooltipState(),
     text: String,
     size: WantedTooltipSize = WantedTooltipSize.Medium,
     align: WantedTooltipAlign = WantedTooltipAlign.Left,
+    always: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    var isShow by remember(isShowTooltip) { mutableStateOf(isShowTooltip) }
+    val isVisible by tooltipState.visibleState
+    var isShow by remember { mutableStateOf(isVisible) }
+
+    LaunchedEffect(isVisible) {
+        isShow = isVisible
+    }
 
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -124,7 +130,7 @@ fun WantedTooltip(
             if (coordinates.positionInWindow().x < 0) {
                 isShow = false
             } else {
-                if (isShowTooltip) {
+                if (tooltipState.isVisible) {
                     isShow = true
                 }
             }
@@ -162,9 +168,14 @@ fun WantedTooltip(
                 ),
                 properties = PopupProperties(
                     focusable = false,
-                    dismissOnClickOutside = false,
-                    dismissOnBackPress = false
-                )
+                    dismissOnClickOutside = !always,
+                    dismissOnBackPress = !always
+                ),
+                onDismissRequest = {
+                    if (!always) {
+                        tooltipState.dismiss()
+                    }
+                }
             ) {
                 WantedTooltipLayout(
                     modifier = Modifier
@@ -729,6 +740,36 @@ private fun CacheDrawScope.drawCaretWithPath(
     }
 }
 
+interface WantedTooltipState {
+    fun show()
+    fun dismiss()
+    val isVisible: Boolean
+    val visibleState: State<Boolean>
+}
+
+private class WantedTooltipStateImpl : WantedTooltipState {
+
+    private val _visibleState = mutableStateOf(false)
+    override val visibleState: State<Boolean>
+        get() = _visibleState
+
+    override fun show() {
+        _visibleState.value = true
+    }
+
+    override fun dismiss() {
+        _visibleState.value = false
+    }
+
+    override val isVisible: Boolean
+        get() = _visibleState.value
+}
+
+
+@Composable
+fun rememberTooltipState(): WantedTooltipState = remember { WantedTooltipStateImpl() }
+
+
 private const val SpacingBetweenTooltipAndAnchor = 8
 private const val SpacingBetweenTooltipAndAnchorNotArrow = 2
 
@@ -741,222 +782,4 @@ enum class WantedTooltipAlign {
     Left,
     Center,
     Right
-}
-
-
-@DevicePreviews
-@Composable
-private fun WantedTooltipPreview() {
-    DesignSystemTheme {
-        Surface(Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                WantedTooltip(
-                    text = "메시지에 마침표를 찍어요.",
-                    action = "더 알아보기",
-                    isShowCloseButton = true,
-                    content = {
-                        WantedToastIcon(
-                            modifier = Modifier.size(22.dp),
-                            resourceId = R.drawable.icon_normal_circle_exclamation_fill,
-                            tint = colorResource(id = R.color.status_negative)
-                        )
-                    },
-                    state = remember { TooltipState(true) }
-                )
-            }
-        }
-    }
-}
-
-@DevicePreviews
-@Composable
-private fun WantedTooltipAlignPreview() {
-    DesignSystemTheme {
-        Surface(Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(80.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Left Align
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    WantedTooltip(
-                        modifier = Modifier.padding(start = 40.dp),
-                        isShowTooltip = true,
-                        text = "Left Align - 툴팁이 왼쪽에 정렬됩니다.",
-                        align = WantedTooltipAlign.Left,
-                        content = {
-                            Box(
-                                modifier = Modifier
-                                    .size(60.dp)
-                                    .background(
-                                        colorResource(id = R.color.primary_normal),
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                            )
-                        }
-                    )
-                }
-
-                // Center Align
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    WantedTooltip(
-                        modifier = Modifier,
-                        isShowTooltip = true,
-                        text = "Center Align - 툴팁이 중앙에 정렬됩니다.",
-                        align = WantedTooltipAlign.Center,
-                        content = {
-                            Box(
-                                modifier = Modifier
-                                    .size(60.dp)
-                                    .background(
-                                        colorResource(id = R.color.background_normal_alternative),
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                            )
-                        }
-                    )
-                }
-
-                // Right Align
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    WantedTooltip(
-                        modifier = Modifier.padding(end = 40.dp),
-                        isShowTooltip = true,
-                        text = "Right Align - 툴팁이 오른쪽에 정렬됩니다.",
-                        align = WantedTooltipAlign.Right,
-                        content = {
-                            Box(
-                                modifier = Modifier
-                                    .size(60.dp)
-                                    .background(
-                                        colorResource(id = R.color.status_negative),
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                            )
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@DevicePreviews
-@Composable
-private fun WantedTooltipBoundaryPreview() {
-    DesignSystemTheme {
-        Surface(Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(100.dp)
-            ) {
-                // Left Align at screen edge - 경계 처리 테스트
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    WantedTooltip(
-                        modifier = Modifier.padding(start = 8.dp),
-                        isShowTooltip = true,
-                        text = "화면 왼쪽 끝: Tooltip은 보정되지만 Caret은 Content를 가리킵니다.",
-                        align = WantedTooltipAlign.Left,
-                        content = {
-                            Box(
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .background(
-                                        colorResource(id = R.color.primary_normal),
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                            )
-                        }
-                    )
-                }
-
-                // Center content near left edge
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    WantedTooltip(
-                        modifier = Modifier.padding(start = 40.dp),
-                        isShowTooltip = true,
-                        text = "Center Align 왼쪽 근처: Tooltip 보정시에도 Caret은 중앙 유지",
-                        align = WantedTooltipAlign.Center,
-                        content = {
-                            Box(
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .background(
-                                        colorResource(id = R.color.background_normal_alternative),
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                            )
-                        }
-                    )
-                }
-
-                // Right Align at screen edge - 경계 처리 테스트
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    WantedTooltip(
-                        modifier = Modifier.padding(end = 8.dp),
-                        isShowTooltip = true,
-                        text = "화면 오른쪽 끝: Tooltip은 보정되지만 Caret은 Content를 가리킵니다.",
-                        align = WantedTooltipAlign.Right,
-                        content = {
-                            Box(
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .background(
-                                        colorResource(id = R.color.status_negative),
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                            )
-                        }
-                    )
-                }
-            }
-        }
-    }
 }
