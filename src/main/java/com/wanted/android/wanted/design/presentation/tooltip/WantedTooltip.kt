@@ -122,12 +122,13 @@ fun WantedTooltip(
 
     Box(
         modifier = modifier.onGloballyPositioned { coordinates ->
+            val positionWindow = coordinates.positionInWindow()
             contentPositionY = coordinates.positionInParent().y
-            contentPositionX = coordinates.positionInWindow().x
+            contentPositionX = positionWindow.x
             contentHeight = coordinates.size.height
             contentWidth = coordinates.size.width
 
-            if (coordinates.positionInWindow().x < 0) {
+            if (positionWindow.x < 0) {
                 isShow = false
             } else {
                 if (tooltipState.isVisible) {
