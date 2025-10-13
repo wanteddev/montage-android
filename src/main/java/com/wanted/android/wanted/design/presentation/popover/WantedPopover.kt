@@ -44,9 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedShadowStyle
+import com.wanted.android.wanted.design.base.WantedShadowSpreadStyle
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.base.wantedDropShadow
+import com.wanted.android.wanted.design.base.wantedDropShadowSpared
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -101,7 +101,6 @@ fun WantedPopover(
                     }
                 }
             }
-            .wantedDropShadow(style = WantedShadowStyle.XLarge())
     ) {
         content()
 
@@ -145,11 +144,12 @@ fun WantedPopover(
                 }
             ) {
                 Box(
-                    modifier = Modifier.onGloballyPositioned { coordinates ->
-                        tooltipWidth = coordinates.size.width
-                        tooltipHeight = coordinates.size.height
-                    }
-
+                    modifier = Modifier
+                        .onGloballyPositioned { coordinates ->
+                            tooltipWidth = coordinates.size.width
+                            tooltipHeight = coordinates.size.height
+                        }
+                        .wantedDropShadowSpared(style = WantedShadowSpreadStyle.Small())
                 ) {
                     body()
                 }

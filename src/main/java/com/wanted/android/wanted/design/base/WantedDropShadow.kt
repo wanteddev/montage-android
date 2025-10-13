@@ -50,6 +50,24 @@ fun Modifier.wantedDropShadow(style: WantedShadowStyle): Modifier {
         )
 }
 
+
+@Composable
+fun Modifier.wantedDropShadowSpared(style: WantedShadowSpreadStyle): Modifier {
+    // shadow 리스트를 remember로 캐싱하여 재계산 방지
+    val cachedShadows = remember(style) { style.getShadow() }
+
+    return this
+        .dropShadow(
+            shadows = cachedShadows,
+            borderRadius = style.borderRadius,
+            isBackgroundTransparent = style.backgroundColor == Color.Transparent
+        )
+        .background(
+            color = style.backgroundColor,
+            shape = RoundedCornerShape(style.borderRadius)
+        )
+}
+
 private fun Modifier.dropShadow(
     shadows: List<WantedShadowToken>,
     borderRadius: Dp = 0.dp,
@@ -284,6 +302,53 @@ sealed class WantedShadowStyle(
         override fun getShadow() = shadowList
     }
 }
+
+
+sealed class WantedShadowSpreadStyle(
+    open val borderRadius: Dp,
+    open val backgroundColor: Color
+) {
+    abstract fun getShadow(): List<WantedShadowToken>
+
+    data class Small(
+        override val borderRadius: Dp = 12.dp,
+        override val backgroundColor: Color = Color.White
+    ) : WantedShadowSpreadStyle(borderRadius, backgroundColor) {
+        private val shadowList by lazy {
+            listOf(
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 0.dp,
+                    blurRadius = 60.dp,
+                    spreadRadius = (0).dp,
+                    color = Color(0x1A171717) // rgba(23, 23, 23, 0.1)
+                )
+            )
+        }
+
+        override fun getShadow() = shadowList
+    }
+
+    data class Medium(
+        override val borderRadius: Dp = 12.dp,
+        override val backgroundColor: Color = Color.White
+    ) : WantedShadowSpreadStyle(borderRadius, backgroundColor) {
+        private val shadowList by lazy {
+            listOf(
+                WantedShadowToken(
+                    offsetX = 0.dp,
+                    offsetY = 15.dp,
+                    blurRadius = 75.dp,
+                    spreadRadius = (0).dp,
+                    color = Color(0x1A171717) // rgba(23, 23, 23, 0.1)
+                ),
+            )
+        }
+
+        override fun getShadow() = shadowList
+    }
+}
+
 
 data class WantedShadowToken(
     val offsetX: Dp,
