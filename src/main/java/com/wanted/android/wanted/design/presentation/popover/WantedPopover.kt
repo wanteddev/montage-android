@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,6 +56,7 @@ fun WantedPopover(
     modifier: Modifier,
     state: WantedPopoverState = rememberPopoverState(),
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
+    positionTop: Boolean = false,
     always: Boolean = false,
     body: @Composable () -> Unit,
     content: @Composable () -> Unit
@@ -110,8 +112,15 @@ fun WantedPopover(
                 with(density) { screenHeight.dp.toPx() } - (contentPositionYInWindow + contentHeight)
             val spaceAbove = contentPositionYInWindow
 
-            isPopupAbove = spaceBelow < estimatedTooltipHeight + SpacingBetweenPopover &&
-                    spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
+            // positionTop 옵션에 따른 popover 위치 결정
+            isPopupAbove = if (positionTop) {
+                // positionTop이 true일 때: 위쪽 공간이 충분하면 위에, 아니면 아래에
+                spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
+            } else {
+                // positionTop이 false일 때: 기존 로직 (아래쪽 공간 부족시에만 위에)
+                spaceBelow < estimatedTooltipHeight + SpacingBetweenPopover &&
+                        spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
+            }
 
             offsetX = calculatePopoverOffsetX(
                 align = align,
@@ -127,8 +136,10 @@ fun WantedPopover(
                 offset = IntOffset(
                     x = offsetX,
                     y = if (isPopupAbove) {
-                        -tooltipHeight - SpacingBetweenPopover
+                        // 위쪽에 표시할 때: content의 top에서 tooltip height와 spacing만큼 위로
+                        contentPositionY.toInt() - tooltipHeight - SpacingBetweenPopover
                     } else {
+                        // 아래쪽에 표시할 때: content의 bottom에서 spacing만큼 아래로
                         contentPositionY.toInt() + contentHeight + SpacingBetweenPopover
                     }
                 ),
@@ -166,6 +177,7 @@ fun WantedPopover(
     heading: String = "",
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     closeButton: Boolean = false,
+    positionTop: Boolean = false,
     always: Boolean = false,
     action: @Composable (RowScope.() -> Unit)? = null,
     content: @Composable () -> Unit
@@ -174,6 +186,7 @@ fun WantedPopover(
         modifier = modifier,
         state = state,
         align = align,
+        positionTop = positionTop,
         always = always,
         content = content,
         body = {
@@ -181,6 +194,7 @@ fun WantedPopover(
                 modifier = Modifier,
                 text = {
                     PopoverBody(
+                        modifier = Modifier.fillMaxWidth(),
                         text = text,
                         closeButton = if (heading.isEmpty()) closeButton else false,
                         onDismiss = {
@@ -272,7 +286,7 @@ private fun PopoverBody(
         Text(
             modifier = Modifier
                 .padding(vertical = 2.dp)
-                .weight(1f, fill = false),
+                .weight(1f),
             text = text,
             style = WantedTextStyle(
                 colorRes = R.color.label_neutral,
@@ -334,8 +348,12 @@ private fun WantedPopoverLayout(
     ) {
         Column(
             modifier = Modifier
+                .sizeIn(
+                    minWidth = 140.dp,
+                    maxWidth = 360.dp
+                )
                 .width(IntrinsicSize.Max)
-                .wrapContentSize()
+                .wrapContentHeight()
         ) {
 
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -347,7 +365,9 @@ private fun WantedPopoverLayout(
                 Spacer(modifier = Modifier.padding(top = 8.dp))
             }
 
-            text()
+            Box(modifier = Modifier.fillMaxWidth()) {
+                text()
+            }
 
             action?.let {
                 Spacer(modifier = Modifier.padding(top = 12.dp))
