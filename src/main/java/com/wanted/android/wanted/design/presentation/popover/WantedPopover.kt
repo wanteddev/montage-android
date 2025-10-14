@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.layout.positionInWindow
@@ -109,7 +110,7 @@ fun WantedPopover(
         if (isShow) {
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
             val spaceBelow =
-                with(density) { screenHeight.dp.toPx() } - (contentPositionYInWindow + contentHeight)
+                    with(density) { screenHeight.dp.toPx() } - (contentPositionYInWindow + contentHeight)
             val spaceAbove = contentPositionYInWindow
 
             // positionTop 옵션에 따른 popover 위치 결정
@@ -122,31 +123,58 @@ fun WantedPopover(
                         spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
             }
 
-            offsetX = calculatePopoverOffsetX(
+            // Shadow 영역 계산
+            val shadowSpacing = remember {
+                val shadows = WantedShadowSpreadStyle.Small().getShadow()
+                var maxBlur = 0.dp
+                var maxSpread = 0.dp
+                var maxOffsetX = 0.dp
+                var maxOffsetY = 0.dp
+
+                shadows.forEach { shadow ->
+                    maxBlur = maxOf(maxBlur, shadow.blurRadius)
+                    maxSpread = maxOf(maxSpread, shadow.spreadRadius)
+                    maxOffsetX = maxOf(maxOffsetX, kotlin.math.abs(shadow.offsetX.value).dp)
+                    maxOffsetY = maxOf(maxOffsetY, kotlin.math.abs(shadow.offsetY.value).dp)
+                }
+
+                maxOf(maxBlur + maxSpread + maxOffsetX, maxBlur + maxSpread + maxOffsetY)
+            }
+            val shadowSpacingPx = with(density) { shadowSpacing.toPx().toInt() }
+
+            // 기본 오프셋 계산 (shadow 영역을 고려하지 않음)
+            val baseOffsetX = calculatePopoverOffsetX(
                 align = align,
                 contentPositionX = contentPositionX,
                 contentWidth = contentWidth,
                 tooltipWidth = tooltipWidth,
+                shadowSpacingPx = shadowSpacingPx,
                 screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
                 paddingPx = with(density) { 8.dp.toPx() }.toInt()
             )
+
+            // Shadow 영역을 고려한 최종 오프셋 계산
+            // PopoverWithShadow에서 Layout이 shadow 영역만큼 확장되므로,
+            // content가 정확한 위치에 오도록 shadow spacing만큼 조정
+            offsetX = baseOffsetX - shadowSpacingPx
 
             Popup(
                 alignment = Alignment.TopStart,
                 offset = IntOffset(
                     x = offsetX,
                     y = if (isPopupAbove) {
-                        // 위쪽에 표시할 때: content의 top에서 tooltip height와 spacing만큼 위로
-                        contentPositionY.toInt() - tooltipHeight - SpacingBetweenPopover
+                        // 위쪽에 표시할 때: shadow 영역 고려
+                        contentPositionY.toInt() - tooltipHeight - SpacingBetweenPopover - shadowSpacingPx
                     } else {
-                        // 아래쪽에 표시할 때: content의 bottom에서 spacing만큼 아래로
-                        contentPositionY.toInt() + contentHeight + SpacingBetweenPopover
+                        // 아래쪽에 표시할 때: shadow 영역 고려
+                        contentPositionY.toInt() + contentHeight + SpacingBetweenPopover - shadowSpacingPx
                     }
                 ),
                 properties = PopupProperties(
                     focusable = !always,
                     dismissOnClickOutside = true,
-                    dismissOnBackPress = true
+                    dismissOnBackPress = true,
+                    clippingEnabled = false
                 ),
                 onDismissRequest = {
                     if (!always) {
@@ -154,16 +182,15 @@ fun WantedPopover(
                     }
                 }
             ) {
-                Box(
-                    modifier = Modifier
-                        .onGloballyPositioned { coordinates ->
-                            tooltipWidth = coordinates.size.width
-                            tooltipHeight = coordinates.size.height
-                        }
-                        .wantedDropShadowSpared(style = WantedShadowSpreadStyle.Small())
-                ) {
-                    body()
-                }
+                PopoverWithShadow(
+                    modifier = Modifier,
+                    shadowStyle = WantedShadowSpreadStyle.Small(),
+                    onSizeChange = { width, height ->
+                        tooltipWidth = width
+                        tooltipHeight = height
+                    },
+                    content = body
+                )
             }
         }
     }
@@ -244,7 +271,7 @@ private fun PopoverHeader(
             style = WantedTextStyle(
                 colorRes = R.color.label_normal,
                 style =
-                    DesignSystemTheme.typography.body2Bold
+                        DesignSystemTheme.typography.body2Bold
             )
         )
 
@@ -291,7 +318,7 @@ private fun PopoverBody(
             style = WantedTextStyle(
                 colorRes = R.color.label_neutral,
                 style =
-                    DesignSystemTheme.typography.label2Medium
+                        DesignSystemTheme.typography.label2Medium
             ),
             overflow = TextOverflow.Ellipsis
         )
@@ -390,6 +417,7 @@ private fun calculatePopoverOffsetX(
     contentPositionX: Float,
     contentWidth: Int,
     tooltipWidth: Int,
+    shadowSpacingPx: Int,
     screenWidthPx: Int,
     paddingPx: Int
 ): Int {
@@ -409,15 +437,19 @@ private fun calculatePopoverOffsetX(
         }
     }
 
-    val tooltipAbsoluteLeft = contentPositionX + idealOffsetX
-    val tooltipAbsoluteRight = tooltipAbsoluteLeft + tooltipWidth
+    // Shadow는 무시하고 content만 기준으로 화면 경계 계산
+    // Shadow가 화면 밖으로 나가는 것은 허용하되, content 자체는 정확한 위치에 배치
+    val contentLeft = contentPositionX + idealOffsetX
+    val contentRight = contentLeft + tooltipWidth
 
     val adjustedOffsetX = when {
-        tooltipAbsoluteLeft < paddingPx -> {
+        // 왼쪽 경계 체크: content만 화면 안에 들어오도록 (shadow는 잘릴 수 있음)
+        contentLeft < paddingPx -> {
             (paddingPx - contentPositionX).toInt()
         }
 
-        tooltipAbsoluteRight > screenWidthPx - paddingPx -> {
+        // 오른쪽 경계 체크: content만 화면 안에 들어오도록 (shadow는 잘릴 수 있음)
+        contentRight > screenWidthPx - paddingPx -> {
             (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
         }
 
@@ -470,4 +502,66 @@ private class WantedPopoverStateImpl(
 
 @Composable
 fun rememberPopoverState(initialVisible: Boolean = false): WantedPopoverState =
-    remember { WantedPopoverStateImpl(initialVisible) }
+        remember { WantedPopoverStateImpl(initialVisible) }
+
+@Composable
+private fun PopoverWithShadow(
+    modifier: Modifier = Modifier,
+    shadowStyle: WantedShadowSpreadStyle,
+    onSizeChange: (width: Int, height: Int) -> Unit = { _, _ -> },
+    content: @Composable () -> Unit
+) {
+    val density = LocalDensity.current
+
+    // Shadow의 blur radius를 기반으로 필요한 여백 계산
+    val shadowSpacing = remember(shadowStyle) {
+        val shadows = shadowStyle.getShadow()
+        var maxBlur = 0.dp
+        var maxSpread = 0.dp
+        var maxOffsetX = 0.dp
+        var maxOffsetY = 0.dp
+
+        shadows.forEach { shadow ->
+            maxBlur = maxOf(maxBlur, shadow.blurRadius)
+            maxSpread = maxOf(maxSpread, shadow.spreadRadius)
+            maxOffsetX = maxOf(maxOffsetX, kotlin.math.abs(shadow.offsetX.value).dp)
+            maxOffsetY = maxOf(maxOffsetY, kotlin.math.abs(shadow.offsetY.value).dp)
+        }
+
+        // Shadow가 표시될 수 있는 최대 영역 계산
+        maxOf(maxBlur + maxSpread + maxOffsetX, maxBlur + maxSpread + maxOffsetY)
+    }
+
+    Layout(
+        modifier = modifier,
+        content = {
+            // Shadow 배경 (터치 불가능)
+            Box(
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        // Shadow가 적용된 실제 content의 크기를 측정
+                        onSizeChange(coordinates.size.width, coordinates.size.height)
+                    }
+                    .wantedDropShadowSpared(style = shadowStyle)
+            ) {
+                content()
+            }
+        }
+    ) { measurables, constraints ->
+        val placeable = measurables[0].measure(constraints)
+
+        // Shadow 영역을 고려한 전체 크기 계산
+        val shadowSpacingPx = with(density) { shadowSpacing.toPx().toInt() }
+        val totalWidth = placeable.width + (shadowSpacingPx * 2)
+        val totalHeight = placeable.height + (shadowSpacingPx * 2)
+
+        layout(totalWidth, totalHeight) {
+            // Content를 중앙에 배치하여 shadow가 모든 방향으로 표시될 수 있도록 함
+            // 하지만 터치 영역은 실제 content 크기만 유지됨
+            placeable.placeRelative(
+                x = (totalWidth - placeable.width) / 2,
+                y = (totalHeight - placeable.height) / 2
+            )
+        }
+    }
+}
