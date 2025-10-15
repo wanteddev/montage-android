@@ -105,7 +105,6 @@ fun WantedPopover(
             val windowInsetsBottomPx = with(density) { windowInsets.getBottom(density).toDp().toPx() }
             val screenHeight = configuration.screenHeightDp
             val screenHeightPx = with(density) { screenHeight.dp.toPx() }
-            with(density) { windowInsets.getTop(density).toDp().toPx() }
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
             val shadowSpacing = calculateShadowSpacing()
             val shadowSpacingPx = with(density) { shadowSpacing.toPx().toInt() }
@@ -194,7 +193,6 @@ private fun PopoverContainer(
     val screenHeight = configuration.screenHeightDp
 
     // WindowInsets 계산 (WindowInsets(0)인 경우 모두 0이 됨)
-    val windowInsetsTopPx = with(density) { windowInsets.getTop(density).toDp().toPx() }
     val windowInsetsBottomPx = with(density) { windowInsets.getBottom(density).toDp().toPx() }
     val screenHeightPx = with(density) { screenHeight.dp.toPx() }
     val screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt()
@@ -208,7 +206,6 @@ private fun PopoverContainer(
             PopoverPopup(
                 popoverState = popoverState,
                 density = density,
-                windowInsetsTopPx = windowInsetsTopPx,
                 windowInsetsBottomPx = windowInsetsBottomPx,
                 screenHeightPx = screenHeightPx,
                 screenWidthPx = screenWidthPx,
@@ -228,7 +225,6 @@ private fun PopoverContainer(
 private fun PopoverPopup(
     popoverState: WantedPopoverState,
     density: Density,
-    windowInsetsTopPx: Float,
     windowInsetsBottomPx: Float,
     screenHeightPx: Float,
     screenWidthPx: Int,
