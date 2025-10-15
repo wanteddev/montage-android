@@ -50,15 +50,15 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 // Simple interface for external API compatibility
-interface SimplePopoverState {
+interface WantedSimplePopoverState {
     fun show()
     fun dismiss()
     val isVisible: Boolean
 }
 
-private class SimplePopoverStateImpl(
+private class WantedSimplePopoverStateImpl(
     private val stateHolder: WantedPopoverStateHolder
-) : SimplePopoverState {
+) : WantedSimplePopoverState {
     override fun show() = stateHolder.show()
     override fun dismiss() = stateHolder.dismiss()
     override val isVisible: Boolean get() = stateHolder.state.isVisible
@@ -68,7 +68,7 @@ private class SimplePopoverStateImpl(
 fun WantedPopover(
     modifier: Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    state: SimplePopoverState? = null,
+    state: WantedSimplePopoverState? = null,
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     positionTop: Boolean = false,
     always: Boolean = false,
@@ -288,7 +288,7 @@ fun WantedPopover(
     modifier: Modifier,
     text: String,
     heading: String = "",
-    state: SimplePopoverState? = null,
+    state: WantedSimplePopoverState? = null,
     windowInsets: WindowInsets = WindowInsets.systemBars,
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     closeButton: Boolean = false,
@@ -509,9 +509,9 @@ private fun PopoverWithShadow(
 
 // Public API for backward compatibility
 @Composable
-fun rememberPopoverState(initialVisible: Boolean = false): SimplePopoverState {
+fun rememberPopoverState(initialVisible: Boolean = false): WantedSimplePopoverState {
     val stateHolder = rememberWantedPopoverStateHolder(initialVisible)
-    return remember(stateHolder) { SimplePopoverStateImpl(stateHolder) }
+    return remember(stateHolder) { WantedSimplePopoverStateImpl(stateHolder) }
 }
 
 // Constants
