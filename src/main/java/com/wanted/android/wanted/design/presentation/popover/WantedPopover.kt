@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
@@ -203,7 +202,6 @@ fun WantedPopover(
                 }
             ) {
                 PopoverWithShadow(
-                    modifier = Modifier.pointerInput(Unit) {},
                     shadowStyle = WantedShadowSpreadStyle.Small(),
                     onSizeChange = { width, height ->
                         tooltipWidth = width
