@@ -257,8 +257,9 @@ private fun PopoverPopup(
         windowInsetsBottomPx,
         fullScreenHeightPx,
         shadowSpacingPx,
-        align,           // align 변경 시 재계산
-        positionTop      // positionTop 변경 시 재계산
+        screenWidthPx,     // 화면 폭 변경 시 재계산
+        align,             // align 변경 시 재계산
+        positionTop        // positionTop 변경 시 재계산
     ) {
         if (popoverState.contentHeight > 0 && popoverState.contentWidth > 0) {
             onCalculatePosition(
