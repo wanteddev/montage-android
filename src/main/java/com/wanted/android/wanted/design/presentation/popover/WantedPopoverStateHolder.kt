@@ -128,12 +128,12 @@ private class WantedPopoverStateHolderImpl(
         val requiredSpace = tooltipHeightToCheck + SPACING_BETWEEN_POPOVER
 
         // overlapBottom: 아래쪽 공간이 부족하고 위쪽 공간이 충분한 경우
-        val overlapBottom = spaceBelow < requiredSpace && spaceAbove > requiredSpace
+        val newOverlapBottom = spaceBelow < requiredSpace && spaceAbove > requiredSpace
 
         // 위치 결정 로직 (원래 로직 복원)
-        val isPopupAbove = when {
+        val newIsPopupAbove = when {
             // 1. overlapBottom이 true인 경우: 강제로 위쪽에 배치
-            overlapBottom -> true
+            newOverlapBottom -> true
             // 2. positionTop이 true인 경우: 위쪽 공간이 충분하면 위쪽에 배치
             positionTop -> spaceAbove >= requiredSpace
             // 3. 기본값: 아래쪽에 배치
@@ -149,13 +149,19 @@ private class WantedPopoverStateHolderImpl(
             paddingPx = paddingPx
         )
 
-        val offsetX = baseOffsetX - shadowSpacingPx
+        val newOffsetX = baseOffsetX - shadowSpacingPx
 
-        _state = _state.copy(
-            overlapBottom = overlapBottom,
-            isPopupAbove = isPopupAbove,
-            offsetX = offsetX
-        )
+        // 실제로 값이 변경되었을 때만 상태 업데이트 (불필요한 recomposition 방지)
+        if (_state.overlapBottom != newOverlapBottom ||
+            _state.isPopupAbove != newIsPopupAbove ||
+            _state.offsetX != newOffsetX
+        ) {
+            _state = _state.copy(
+                overlapBottom = newOverlapBottom,
+                isPopupAbove = newIsPopupAbove,
+                offsetX = newOffsetX
+            )
+        }
     }
 
     private fun calculatePopoverOffsetX(
