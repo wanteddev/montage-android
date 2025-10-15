@@ -4,27 +4,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
+// 팝오버 상태 데이터 클래스
+@Stable
+data class WantedPopoverState(
+    val isVisible: Boolean = false,
+    val isShow: Boolean = false,
+    val contentPositionY: Float = 0f,
+    val contentPositionX: Float = 0f,
+    val contentPositionYInWindow: Float = 0f,
+    val contentHeight: Int = 0,
+    val contentWidth: Int = 0,
+    val tooltipWidth: Int = 0,
+    val tooltipHeight: Int = 0,
+    val offsetX: Int = 0,
+    val isPopupAbove: Boolean = false,
+    val overlapBottom: Boolean = false
+)
+
+enum class WantedPopoverAlign {
+    Left,
+    Center,
+    Right
+}
+
 @Stable
 interface WantedPopoverStateHolder {
-    val isVisible: Boolean
+    val state: WantedPopoverState
     val visibleState: State<Boolean>
-    val isShow: Boolean
-    val contentPositionY: Float
-    val contentPositionX: Float
-    val contentPositionYInWindow: Float
-    val contentHeight: Int
-    val contentWidth: Int
-    val tooltipWidth: Int
-    val tooltipHeight: Int
-    val offsetX: Int
-    val isPopupAbove: Boolean
-    val overlapBottom: Boolean
 
     fun show()
     fun dismiss()
@@ -54,31 +64,20 @@ private class WantedPopoverStateHolderImpl(
 ) : WantedPopoverStateHolder {
 
     private val _visibleState = mutableStateOf(initialVisible)
-    override val visibleState: State<Boolean>
-        get() = _visibleState
+    override val visibleState: State<Boolean> get() = _visibleState
 
-    override var isShow by mutableStateOf(initialVisible)
-    override var contentPositionY by mutableFloatStateOf(0f)
-    override var contentPositionX by mutableFloatStateOf(0f)
-    override var contentPositionYInWindow by mutableFloatStateOf(0f)
-    override var contentHeight by mutableIntStateOf(0)
-    override var contentWidth by mutableIntStateOf(0)
-    override var tooltipWidth by mutableIntStateOf(0)
-    override var tooltipHeight by mutableIntStateOf(0)
-    override var offsetX by mutableIntStateOf(0)
-    override var isPopupAbove by mutableStateOf(false)
-    override var overlapBottom by mutableStateOf(false)
+    private var _state by mutableStateOf(WantedPopoverState(isVisible = initialVisible))
+    override val state: WantedPopoverState get() = _state
 
     override fun show() {
         _visibleState.value = true
+        _state = _state.copy(isVisible = true)
     }
 
     override fun dismiss() {
         _visibleState.value = false
+        _state = _state.copy(isVisible = false)
     }
-
-    override val isVisible: Boolean
-        get() = _visibleState.value
 
     override fun updateContentPosition(
         positionY: Float,
@@ -87,20 +86,24 @@ private class WantedPopoverStateHolderImpl(
         height: Int,
         width: Int
     ) {
-        contentPositionY = positionY
-        contentPositionX = positionX
-        contentPositionYInWindow = positionYInWindow
-        contentHeight = height
-        contentWidth = width
+        _state = _state.copy(
+            contentPositionY = positionY,
+            contentPositionX = positionX,
+            contentPositionYInWindow = positionYInWindow,
+            contentHeight = height,
+            contentWidth = width
+        )
     }
 
     override fun updateTooltipSize(width: Int, height: Int) {
-        tooltipWidth = width
-        tooltipHeight = height
+        _state = _state.copy(
+            tooltipWidth = width,
+            tooltipHeight = height
+        )
     }
 
     override fun updateShowState(show: Boolean) {
-        isShow = show
+        _state = _state.copy(isShow = show)
     }
 
     override fun calculatePopoverPosition(
@@ -117,19 +120,18 @@ private class WantedPopoverStateHolderImpl(
         val effectiveBottomY = screenHeightPx - windowInsetsBottomPx
 
         // 컨텐츠 기준 위아래 공간 계산
-        val spaceBelow = effectiveBottomY - (contentPositionYInWindow + contentHeight)
-        val spaceAbove = contentPositionYInWindow
+        val spaceBelow = effectiveBottomY - (_state.contentPositionYInWindow + _state.contentHeight)
+        val spaceAbove = _state.contentPositionYInWindow
 
         // 실제 툴팁 높이가 있으면 사용, 없으면 예상 높이 사용
-        val tooltipHeightToCheck = if (tooltipHeight > 0) tooltipHeight else estimatedTooltipHeight.toInt()
+        val tooltipHeightToCheck = if (_state.tooltipHeight > 0) _state.tooltipHeight else estimatedTooltipHeight.toInt()
         val requiredSpace = tooltipHeightToCheck + SPACING_BETWEEN_POPOVER
 
         // overlapBottom: 아래쪽 공간이 부족하고 위쪽 공간이 충분한 경우
-        // 원래 로직에서 중요한 조건이었음
-        overlapBottom = spaceBelow < requiredSpace && spaceAbove > requiredSpace
+        val overlapBottom = spaceBelow < requiredSpace && spaceAbove > requiredSpace
 
         // 위치 결정 로직 (원래 로직 복원)
-        isPopupAbove = when {
+        val isPopupAbove = when {
             // 1. overlapBottom이 true인 경우: 강제로 위쪽에 배치
             overlapBottom -> true
             // 2. positionTop이 true인 경우: 위쪽 공간이 충분하면 위쪽에 배치
@@ -140,14 +142,20 @@ private class WantedPopoverStateHolderImpl(
 
         val baseOffsetX = calculatePopoverOffsetX(
             align = align,
-            contentPositionX = contentPositionX,
-            contentWidth = contentWidth,
-            tooltipWidth = tooltipWidth,
+            contentPositionX = _state.contentPositionX,
+            contentWidth = _state.contentWidth,
+            tooltipWidth = _state.tooltipWidth,
             screenWidthPx = screenWidthPx,
             paddingPx = paddingPx
         )
 
-        offsetX = baseOffsetX - shadowSpacingPx
+        val offsetX = baseOffsetX - shadowSpacingPx
+
+        _state = _state.copy(
+            overlapBottom = overlapBottom,
+            isPopupAbove = isPopupAbove,
+            offsetX = offsetX
+        )
     }
 
     private fun calculatePopoverOffsetX(

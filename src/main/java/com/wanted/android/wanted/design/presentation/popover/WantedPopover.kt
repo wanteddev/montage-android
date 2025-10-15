@@ -24,9 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,22 +49,41 @@ import com.wanted.android.wanted.design.base.wantedDropShadowSpared
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
+// Simple interface for external API compatibility
+interface SimplePopoverState {
+    fun show()
+    fun dismiss()
+    val isVisible: Boolean
+}
+
+private class SimplePopoverStateImpl(
+    private val stateHolder: WantedPopoverStateHolder
+) : SimplePopoverState {
+    override fun show() = stateHolder.show()
+    override fun dismiss() = stateHolder.dismiss()
+    override val isVisible: Boolean get() = stateHolder.state.isVisible
+}
+
 @Composable
 fun WantedPopover(
     modifier: Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    state: WantedPopoverState = rememberPopoverState(),
+    state: SimplePopoverState? = null,
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     positionTop: Boolean = false,
     always: Boolean = false,
     body: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val stateHolder = rememberWantedPopoverStateHolder(initialVisible = state.isVisible)
-    val isVisible by state.visibleState
+    val stateHolder = rememberWantedPopoverStateHolder(
+        initialVisible = state?.isVisible ?: false
+    )
 
-    LaunchedEffect(isVisible) {
-        stateHolder.updateShowState(isVisible)
+    // External state와 동기화
+    state?.let { externalState ->
+        LaunchedEffect(externalState.isVisible) {
+            stateHolder.updateShowState(externalState.isVisible)
+        }
     }
 
     val density = LocalDensity.current
@@ -75,32 +91,64 @@ fun WantedPopover(
 
     PopoverContainer(
         modifier = modifier,
-        stateHolder = stateHolder,
-        state = state,
+        popoverState = stateHolder.state,
         windowInsets = windowInsets,
         density = density,
         configuration = configuration,
-        align = align,
-        positionTop = positionTop,
         always = always,
         body = body,
-        content = content
+        content = content,
+        onContentPositioned = { coordinates ->
+            val positionWindow = coordinates.positionInWindow()
+            stateHolder.updateContentPosition(
+                positionY = coordinates.positionInParent().y,
+                positionX = positionWindow.x,
+                positionYInWindow = positionWindow.y,
+                height = coordinates.size.height,
+                width = coordinates.size.width
+            )
+
+            if (positionWindow.x < 0) {
+                stateHolder.updateShowState(false)
+            } else if (stateHolder.state.isVisible) {
+                stateHolder.updateShowState(true)
+            }
+        },
+        onCalculatePosition = { windowInsetsBottomPx, screenHeightPx, estimatedTooltipHeight, shadowSpacingPx, screenWidthPx, paddingPx ->
+            stateHolder.calculatePopoverPosition(
+                windowInsetsBottomPx = windowInsetsBottomPx,
+                screenHeightPx = screenHeightPx,
+                estimatedTooltipHeight = estimatedTooltipHeight,
+                positionTop = positionTop,
+                shadowSpacingPx = shadowSpacingPx,
+                align = align,
+                screenWidthPx = screenWidthPx,
+                paddingPx = paddingPx
+            )
+        },
+        onTooltipSizeChanged = { width, height ->
+            stateHolder.updateTooltipSize(width, height)
+        },
+        onDismiss = {
+            state?.dismiss() ?: stateHolder.dismiss()
+        }
     )
 }
 
 @Composable
 private fun PopoverContainer(
     modifier: Modifier,
-    stateHolder: WantedPopoverStateHolder,
-    state: WantedPopoverState,
+    popoverState: WantedPopoverState,
     windowInsets: WindowInsets,
     density: Density,
     configuration: android.content.res.Configuration,
-    align: WantedPopoverAlign,
-    positionTop: Boolean,
     always: Boolean,
     body: @Composable () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    onContentPositioned: (androidx.compose.ui.layout.LayoutCoordinates) -> Unit,
+    onCalculatePosition: (Float, Float, Float, Int, Int, Int) -> Unit,
+    onTooltipSizeChanged: (Int, Int) -> Unit,
+    onDismiss: () -> Unit
 ) {
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
@@ -112,26 +160,23 @@ private fun PopoverContainer(
     val screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt()
 
     Box(
-        modifier = modifier
-            .onGloballyPositioned { coordinates ->
-                handleContentPositioning(coordinates, stateHolder, state)
-            }
+        modifier = modifier.onGloballyPositioned(onContentPositioned)
     ) {
         content()
 
-        if (stateHolder.isShow) {
+        if (popoverState.isShow) {
             PopoverPopup(
-                stateHolder = stateHolder,
-                state = state,
+                popoverState = popoverState,
                 density = density,
                 windowInsetsTopPx = windowInsetsTopPx,
                 windowInsetsBottomPx = windowInsetsBottomPx,
                 screenHeightPx = screenHeightPx,
                 screenWidthPx = screenWidthPx,
-                align = align,
-                positionTop = positionTop,
                 always = always,
-                body = body
+                body = body,
+                onCalculatePosition = onCalculatePosition,
+                onTooltipSizeChanged = onTooltipSizeChanged,
+                onDismiss = onDismiss
             )
         }
     }
@@ -139,17 +184,17 @@ private fun PopoverContainer(
 
 @Composable
 private fun PopoverPopup(
-    stateHolder: WantedPopoverStateHolder,
-    state: WantedPopoverState,
+    popoverState: WantedPopoverState,
     density: Density,
     windowInsetsTopPx: Float,
     windowInsetsBottomPx: Float,
     screenHeightPx: Float,
     screenWidthPx: Int,
-    align: WantedPopoverAlign,
-    positionTop: Boolean,
     always: Boolean,
-    body: @Composable () -> Unit
+    body: @Composable () -> Unit,
+    onCalculatePosition: (Float, Float, Float, Int, Int, Int) -> Unit,
+    onTooltipSizeChanged: (Int, Int) -> Unit,
+    onDismiss: () -> Unit
 ) {
     val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
     val shadowSpacing = calculateShadowSpacing()
@@ -161,79 +206,53 @@ private fun PopoverPopup(
     // 실제 사용 가능한 화면 높이 = screenHeightPx - windowInsetsTopPx - windowInsetsBottomPx
     val availableScreenHeightPx = screenHeightPx - windowInsetsTopPx - windowInsetsBottomPx
 
-    stateHolder.calculatePopoverPosition(
-        windowInsetsBottomPx = windowInsetsBottomPx,
-        screenHeightPx = availableScreenHeightPx,
-        estimatedTooltipHeight = estimatedTooltipHeight,
-        positionTop = positionTop,
-        shadowSpacingPx = shadowSpacingPx,
-        align = align,
-        screenWidthPx = screenWidthPx,
-        paddingPx = paddingPx
+    onCalculatePosition(
+        windowInsetsBottomPx,
+        availableScreenHeightPx,
+        estimatedTooltipHeight,
+        shadowSpacingPx,
+        screenWidthPx,
+        paddingPx
     )
 
     Popup(
         alignment = Alignment.TopStart,
-        offset = calculatePopupOffset(stateHolder, windowInsetsBottomPx, shadowSpacingPx),
+        offset = calculatePopupOffset(popoverState, windowInsetsBottomPx, shadowSpacingPx),
         properties = createPopupProperties(always),
         onDismissRequest = {
             if (!always) {
-                state.dismiss()
+                onDismiss()
             }
         }
     ) {
         PopoverWithShadow(
             shadowStyle = WantedShadowSpreadStyle.Small(),
-            onSizeChange = { width, height ->
-                stateHolder.updateTooltipSize(width, height)
-            },
+            onSizeChange = onTooltipSizeChanged,
             content = body
         )
     }
 }
 
-private fun handleContentPositioning(
-    coordinates: androidx.compose.ui.layout.LayoutCoordinates,
-    stateHolder: WantedPopoverStateHolder,
-    state: WantedPopoverState
-) {
-    val positionWindow = coordinates.positionInWindow()
-
-    stateHolder.updateContentPosition(
-        positionY = coordinates.positionInParent().y,
-        positionX = positionWindow.x,
-        positionYInWindow = positionWindow.y,
-        height = coordinates.size.height,
-        width = coordinates.size.width
-    )
-
-    if (positionWindow.x < 0) {
-        stateHolder.updateShowState(false)
-    } else if (state.isVisible) {
-        stateHolder.updateShowState(true)
-    }
-}
-
 private fun calculatePopupOffset(
-    stateHolder: WantedPopoverStateHolder,
+    popoverState: WantedPopoverState,
     windowInsetsBottomPx: Float,
     shadowSpacingPx: Int
 ): IntOffset {
     return IntOffset(
-        x = stateHolder.offsetX,
-        y = if (stateHolder.isPopupAbove) {
+        x = popoverState.offsetX,
+        y = if (popoverState.isPopupAbove) {
             // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격, 그림자 여백 제거
-            var positionY = stateHolder.contentPositionY.toInt() - stateHolder.tooltipHeight - SPACING_BETWEEN_POPOVER - shadowSpacingPx
+            var positionY = popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - SPACING_BETWEEN_POPOVER - shadowSpacingPx
 
             // overlapBottom 조건일 때 추가 보정 (원래 로직)
-            if (stateHolder.overlapBottom) {
-                positionY = positionY - windowInsetsBottomPx.toInt() - stateHolder.contentHeight
+            if (popoverState.overlapBottom) {
+                positionY = positionY - windowInsetsBottomPx.toInt() - popoverState.contentHeight
             }
 
             positionY
         } else {
             // 아래쪽에 표시할 때: content 아래 + 간격 - 그림자 여백
-            stateHolder.contentPositionY.toInt() + stateHolder.contentHeight + SPACING_BETWEEN_POPOVER - shadowSpacingPx
+            popoverState.contentPositionY.toInt() + popoverState.contentHeight + SPACING_BETWEEN_POPOVER - shadowSpacingPx
         }
     )
 }
@@ -269,7 +288,7 @@ fun WantedPopover(
     modifier: Modifier,
     text: String,
     heading: String = "",
-    state: WantedPopoverState = rememberPopoverState(),
+    state: SimplePopoverState? = null,
     windowInsets: WindowInsets = WindowInsets.systemBars,
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     closeButton: Boolean = false,
@@ -288,13 +307,12 @@ fun WantedPopover(
         content = content,
         body = {
             WantedPopoverLayout(
-                modifier = Modifier,
                 text = {
                     PopoverBody(
                         modifier = Modifier.fillMaxWidth(),
                         text = text,
                         closeButton = if (heading.isEmpty()) closeButton else false,
-                        onDismiss = { state.dismiss() }
+                        onDismiss = { state?.dismiss() }
                     )
                 },
                 heading = if (heading.isNotEmpty()) {
@@ -303,7 +321,7 @@ fun WantedPopover(
                             modifier = Modifier.fillMaxWidth(),
                             heading = heading,
                             closeButton = closeButton,
-                            onDismiss = { state.dismiss() }
+                            onDismiss = { state?.dismiss() }
                         )
                     }
                 } else {
@@ -315,12 +333,13 @@ fun WantedPopover(
     )
 }
 
+// Stateless UI Components
 @Composable
 private fun PopoverHeader(
     modifier: Modifier = Modifier,
     heading: String,
     closeButton: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: (() -> Unit)?
 ) {
     Row(
         modifier = modifier,
@@ -340,7 +359,7 @@ private fun PopoverHeader(
             )
         )
 
-        if (closeButton) {
+        if (closeButton && onDismiss != null) {
             PopoverCloseButton(onDismiss = onDismiss)
         }
     }
@@ -351,7 +370,7 @@ private fun PopoverBody(
     modifier: Modifier = Modifier,
     text: String,
     closeButton: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: (() -> Unit)?
 ) {
     Row(
         modifier = modifier,
@@ -370,7 +389,7 @@ private fun PopoverBody(
             overflow = TextOverflow.Ellipsis
         )
 
-        if (closeButton) {
+        if (closeButton && onDismiss != null) {
             Box(
                 modifier = Modifier.defaultMinSize(
                     minHeight = with(LocalDensity.current) {
@@ -488,40 +507,12 @@ private fun PopoverWithShadow(
     }
 }
 
-// State Management
-interface WantedPopoverState {
-    fun show()
-    fun dismiss()
-    val isVisible: Boolean
-    val visibleState: State<Boolean>
-}
-
-private class WantedPopoverStateImpl(
-    initialVisible: Boolean
-) : WantedPopoverState {
-    private val _visibleState = mutableStateOf(initialVisible)
-    override val visibleState: State<Boolean> get() = _visibleState
-
-    override fun show() {
-        _visibleState.value = true
-    }
-
-    override fun dismiss() {
-        _visibleState.value = false
-    }
-
-    override val isVisible: Boolean get() = _visibleState.value
-}
-
+// Public API for backward compatibility
 @Composable
-fun rememberPopoverState(initialVisible: Boolean = false): WantedPopoverState =
-        remember { WantedPopoverStateImpl(initialVisible) }
-
-// Enums and Constants
-enum class WantedPopoverAlign {
-    Left,
-    Center,
-    Right
+fun rememberPopoverState(initialVisible: Boolean = false): SimplePopoverState {
+    val stateHolder = rememberWantedPopoverStateHolder(initialVisible)
+    return remember(stateHolder) { SimplePopoverStateImpl(stateHolder) }
 }
 
+// Constants
 private const val SPACING_BETWEEN_POPOVER = 8
