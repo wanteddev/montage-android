@@ -49,21 +49,6 @@ import com.wanted.android.wanted.design.base.wantedDropShadowSpared
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-// Simple interface for external API compatibility
-interface WantedSimplePopoverState {
-    fun show()
-    fun dismiss()
-    val isVisible: Boolean
-}
-
-private class WantedSimplePopoverStateImpl(
-    private val stateHolder: WantedPopoverStateHolder
-) : WantedSimplePopoverState {
-    override fun show() = stateHolder.show()
-    override fun dismiss() = stateHolder.dismiss()
-    override val isVisible: Boolean get() = stateHolder.state.isVisible
-}
-
 @Composable
 fun WantedPopover(
     modifier: Modifier,
@@ -581,7 +566,6 @@ private fun PopoverWithShadow(
     }
 }
 
-// Public API for backward compatibility
 @Composable
 fun rememberPopoverState(initialVisible: Boolean = false): WantedSimplePopoverState {
     val stateHolder = rememberWantedPopoverStateHolder(initialVisible)

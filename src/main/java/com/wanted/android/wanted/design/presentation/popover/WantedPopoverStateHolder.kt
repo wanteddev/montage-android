@@ -8,9 +8,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
-// 팝오버 상태 데이터 클래스
+// 외부 공개용 간단한 상태 인터페이스
 @Stable
-data class WantedPopoverState(
+interface WantedSimplePopoverState {
+    fun show()
+    fun dismiss()
+    val isVisible: Boolean
+}
+
+// 팝오버 상태 데이터 클래스 (internal)
+@Stable
+internal data class WantedPopoverState(
     val isVisible: Boolean = false,
     val isShow: Boolean = false,
     val contentPositionY: Float = 0f,
@@ -31,8 +39,9 @@ enum class WantedPopoverAlign {
     Right
 }
 
+// 내부용 StateHolder 인터페이스 (internal)
 @Stable
-interface WantedPopoverStateHolder {
+internal interface WantedPopoverStateHolder {
     val state: WantedPopoverState
     val visibleState: State<Boolean>
 
@@ -59,6 +68,16 @@ interface WantedPopoverStateHolder {
     )
 }
 
+// 외부 공개용 Simple State 구현체
+internal class WantedSimplePopoverStateImpl(
+    private val stateHolder: WantedPopoverStateHolder
+) : WantedSimplePopoverState {
+    override fun show() = stateHolder.show()
+    override fun dismiss() = stateHolder.dismiss()
+    override val isVisible: Boolean get() = stateHolder.state.isVisible
+}
+
+// 내부용 StateHolder 구현체 (internal)
 private class WantedPopoverStateHolderImpl(
     initialVisible: Boolean
 ) : WantedPopoverStateHolder {
@@ -201,9 +220,11 @@ private class WantedPopoverStateHolderImpl(
     }
 }
 
+// 내부용 StateHolder 생성 함수 (internal)
 @Composable
-fun rememberWantedPopoverStateHolder(
+internal fun rememberWantedPopoverStateHolder(
     initialVisible: Boolean = false
 ): WantedPopoverStateHolder = remember {
     WantedPopoverStateHolderImpl(initialVisible)
 }
+
