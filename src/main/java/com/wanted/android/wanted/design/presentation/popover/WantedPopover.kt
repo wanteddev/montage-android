@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -32,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
@@ -55,6 +58,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 fun WantedPopover(
     modifier: Modifier,
+    windowInsets: WindowInsets = WindowInsets(0),
     state: WantedPopoverState = rememberPopoverState(),
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     positionTop: Boolean = false,
@@ -73,6 +77,14 @@ fun WantedPopover(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
+
+    // WindowInsets를 사용하여 실제 사용 가능한 화면 높이 계산
+    with(density) {
+        windowInsets.getTop(density).toDp()
+    }
+    val windowInsetsBottom = with(density) {
+        windowInsets.getBottom(density).toDp()
+    }
 
     var contentPositionY by remember { mutableFloatStateOf(0f) }
     var contentPositionX by remember { mutableFloatStateOf(0f) }
@@ -109,18 +121,24 @@ fun WantedPopover(
 
         if (isShow) {
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
-            val spaceBelow =
-                    with(density) { screenHeight.dp.toPx() } - (contentPositionYInWindow + contentHeight)
+
+            // windowInsets bottom을 고려하여 실제 사용 가능한 공간 계산
+            val windowInsetsBottomPx = with(density) { windowInsetsBottom.toPx() }
+            val screenHeightPx = with(density) { screenHeight.dp.toPx() }
+
+            val enableBottomY = (screenHeightPx - windowInsetsBottomPx)
+            // 아래쪽 공간: 전체 화면 높이 - windowInsets bottom - content 하단 위치
+            val spaceBelow = enableBottomY - (contentPositionYInWindow + contentHeight)
             val spaceAbove = contentPositionYInWindow
+            val overlapBottom = spaceBelow < estimatedTooltipHeight + SpacingBetweenPopover &&
+                    spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
+                    || spaceBelow < tooltipHeight + SpacingBetweenPopover
 
             // positionTop 옵션에 따른 popover 위치 결정
-            isPopupAbove = if (positionTop) {
-                // positionTop이 true일 때: 위쪽 공간이 충분하면 위에, 아니면 아래에
-                spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
-            } else {
-                // positionTop이 false일 때: 기존 로직 (아래쪽 공간 부족시에만 위에)
-                spaceBelow < estimatedTooltipHeight + SpacingBetweenPopover &&
-                        spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
+            isPopupAbove = when {
+                overlapBottom -> true
+                positionTop -> spaceAbove > estimatedTooltipHeight + SpacingBetweenPopover
+                else -> false
             }
 
             // Shadow 영역 계산
@@ -148,7 +166,6 @@ fun WantedPopover(
                 contentPositionX = contentPositionX,
                 contentWidth = contentWidth,
                 tooltipWidth = tooltipWidth,
-                shadowSpacingPx = shadowSpacingPx,
                 screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
                 paddingPx = with(density) { 8.dp.toPx() }.toInt()
             )
@@ -163,16 +180,19 @@ fun WantedPopover(
                 offset = IntOffset(
                     x = offsetX,
                     y = if (isPopupAbove) {
-                        // 위쪽에 표시할 때: shadow 영역 고려
-                        contentPositionY.toInt() - tooltipHeight - SpacingBetweenPopover - shadowSpacingPx
+                        var positionY = contentPositionY.toInt() - tooltipHeight - SpacingBetweenPopover - shadowSpacingPx
+                        if (overlapBottom) {
+                            positionY = positionY - windowInsetsBottomPx.toInt() - contentHeight
+                        }
+
+                        positionY
                     } else {
-                        // 아래쪽에 표시할 때: shadow 영역 고려
                         contentPositionY.toInt() + contentHeight + SpacingBetweenPopover - shadowSpacingPx
                     }
                 ),
                 properties = PopupProperties(
                     focusable = !always,
-                    dismissOnClickOutside = true,
+                    dismissOnClickOutside = !always,
                     dismissOnBackPress = true,
                     clippingEnabled = false
                 ),
@@ -183,7 +203,7 @@ fun WantedPopover(
                 }
             ) {
                 PopoverWithShadow(
-                    modifier = Modifier,
+                    modifier = Modifier.pointerInput(Unit) {},
                     shadowStyle = WantedShadowSpreadStyle.Small(),
                     onSizeChange = { width, height ->
                         tooltipWidth = width
@@ -199,9 +219,10 @@ fun WantedPopover(
 @Composable
 fun WantedPopover(
     modifier: Modifier,
-    state: WantedPopoverState = rememberPopoverState(),
     text: String,
     heading: String = "",
+    state: WantedPopoverState = rememberPopoverState(),
+    windowInsets: WindowInsets = WindowInsets.systemBars,
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     closeButton: Boolean = false,
     positionTop: Boolean = false,
@@ -212,6 +233,7 @@ fun WantedPopover(
     WantedPopover(
         modifier = modifier,
         state = state,
+        windowInsets = windowInsets,
         align = align,
         positionTop = positionTop,
         always = always,
@@ -417,7 +439,6 @@ private fun calculatePopoverOffsetX(
     contentPositionX: Float,
     contentWidth: Int,
     tooltipWidth: Int,
-    shadowSpacingPx: Int,
     screenWidthPx: Int,
     paddingPx: Int
 ): Int {
