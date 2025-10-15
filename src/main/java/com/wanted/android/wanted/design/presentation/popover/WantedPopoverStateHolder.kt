@@ -8,11 +8,43 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
-// 외부 공개용 간단한 상태 인터페이스
+/**
+ * 팝오버의 표시/숨김 상태를 관리하는 간단한 상태 인터페이스입니다.
+ *
+ * 이 인터페이스는 팝오버의 기본적인 표시/숨김 기능을 제공합니다.
+ * 사용자는 이 인터페이스를 통해 팝오버를 표시하거나 숨길 수 있습니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val popoverState = rememberPopoverState()
+ *
+ * // 팝오버 표시
+ * popoverState.show()
+ *
+ * // 팝오버 숨김
+ * popoverState.dismiss()
+ *
+ * // 현재 표시 상태 확인
+ * if (popoverState.isVisible) { /* ... */ }
+ * ```
+ *
+ * @see rememberPopoverState
+ */
 @Stable
 interface WantedSimplePopoverState {
+    /**
+     * 팝오버를 표시합니다.
+     */
     fun show()
+
+    /**
+     * 팝오버를 숨깁니다.
+     */
     fun dismiss()
+
+    /**
+     * 현재 팝오버의 표시 상태를 나타냅니다.
+     */
     val isVisible: Boolean
 }
 
@@ -33,6 +65,17 @@ internal data class WantedPopoverState(
     val overlapBottom: Boolean = false
 )
 
+/**
+ * 팝오버의 정렬 방식을 정의하는 enum 클래스입니다.
+ *
+ * 팝오버가 기준 콘텐츠에 대해 어떤 위치에 정렬될지를 결정합니다.
+ * 각 정렬 방식은 다음과 같습니다:
+ * - Left: 왼쪽 정렬
+ * - Center: 중앙 정렬
+ * - Right: 오른쪽 정렬
+ *
+ * @see WantedPopover
+ */
 enum class WantedPopoverAlign {
     Left,
     Center,
