@@ -276,35 +276,40 @@ private fun WantedFallbackLayout(
 ) {
     Column(
         modifier = modifier.padding(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        heading?.let {
-            ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = R.color.label_normal,
-                    style = DesignSystemTheme.typography.heading2Bold
-                )
+        if (heading != null || description != null) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                heading()
-            }
-        }
+                heading?.let {
+                    ProvideTextStyle(
+                        value = WantedTextStyle(
+                            colorRes = R.color.label_normal,
+                            style = DesignSystemTheme.typography.heading2Bold
+                        )
+                    ) {
+                        heading()
+                    }
+                }
 
-        description?.let {
-            ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = R.color.label_alternative,
-                    style = DesignSystemTheme.typography.body1ReadingRegular
-                )
-            ) {
-                description()
+                description?.let {
+                    ProvideTextStyle(
+                        value = WantedTextStyle(
+                            colorRes = R.color.label_alternative,
+                            style = DesignSystemTheme.typography.body1ReadingRegular
+                        )
+                    ) {
+                        description()
+                    }
+                }
             }
         }
 
         button?.let {
-            Box(modifier = Modifier.padding(top = 12.dp)) {
-                button()
-            }
+            button()
         }
     }
 }
