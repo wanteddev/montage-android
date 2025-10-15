@@ -52,7 +52,7 @@ fun Modifier.wantedDropShadow(style: WantedShadowStyle): Modifier {
 
 
 @Composable
-fun Modifier.wantedDropShadowSpared(style: WantedShadowSpreadStyle): Modifier {
+fun Modifier.wantedDropShadowSpread(style: WantedShadowSpreadStyle): Modifier {
     // shadow 리스트를 remember로 캐싱하여 재계산 방지
     val cachedShadows = remember(style) { style.getShadow() }
 

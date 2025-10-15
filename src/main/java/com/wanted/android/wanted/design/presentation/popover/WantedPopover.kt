@@ -45,7 +45,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedShadowSpreadStyle
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.base.wantedDropShadowSpared
+import com.wanted.android.wanted.design.base.wantedDropShadowSpread
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -105,8 +105,7 @@ fun WantedPopover(
             val windowInsetsBottomPx = with(density) { windowInsets.getBottom(density).toDp().toPx() }
             val screenHeight = configuration.screenHeightDp
             val screenHeightPx = with(density) { screenHeight.dp.toPx() }
-            val windowInsetsTopPx = with(density) { windowInsets.getTop(density).toDp().toPx() }
-            val availableScreenHeightPx = screenHeightPx - windowInsetsTopPx - windowInsetsBottomPx
+            with(density) { windowInsets.getTop(density).toDp().toPx() }
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
             val shadowSpacing = calculateShadowSpacing()
             val shadowSpacingPx = with(density) { shadowSpacing.toPx().toInt() }
@@ -115,7 +114,7 @@ fun WantedPopover(
 
             stateHolder.calculatePopoverPosition(
                 windowInsetsBottomPx = windowInsetsBottomPx,
-                screenHeightPx = availableScreenHeightPx,
+                screenHeightPx = screenHeightPx,
                 estimatedTooltipHeight = estimatedTooltipHeight,
                 positionTop = positionTop,
                 shadowSpacingPx = shadowSpacingPx,
@@ -249,7 +248,7 @@ private fun PopoverPopup(
     // Popover 위치 계산
     // WindowInsets(0)인 경우: windowInsetsTopPx = 0, windowInsetsBottomPx = 0
     // 실제 사용 가능한 화면 높이 = screenHeightPx - windowInsetsTopPx - windowInsetsBottomPx
-    val availableScreenHeightPx = screenHeightPx - windowInsetsTopPx - windowInsetsBottomPx
+    val fullScreenHeightPx = screenHeightPx
 
     LaunchedEffect(
         popoverState.contentPositionY,
@@ -260,7 +259,7 @@ private fun PopoverPopup(
         popoverState.tooltipWidth,
         popoverState.tooltipHeight,
         windowInsetsBottomPx,
-        availableScreenHeightPx,
+        fullScreenHeightPx,
         shadowSpacingPx,
         align,           // align 변경 시 재계산
         positionTop      // positionTop 변경 시 재계산
@@ -268,7 +267,7 @@ private fun PopoverPopup(
         if (popoverState.contentHeight > 0 && popoverState.contentWidth > 0) {
             onCalculatePosition(
                 windowInsetsBottomPx,
-                availableScreenHeightPx,
+                fullScreenHeightPx,
                 estimatedTooltipHeight,
                 shadowSpacingPx,
                 screenWidthPx,
@@ -601,7 +600,7 @@ private fun PopoverWithShadow(
                     .onGloballyPositioned { coordinates ->
                         onSizeChange(coordinates.size.width, coordinates.size.height)
                     }
-                    .wantedDropShadowSpared(style = shadowStyle)
+                    .wantedDropShadowSpread(style = shadowStyle)
             ) {
                 content()
             }
