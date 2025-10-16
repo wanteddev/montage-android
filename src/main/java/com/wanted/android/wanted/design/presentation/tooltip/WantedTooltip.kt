@@ -122,6 +122,7 @@ fun WantedTooltip(
     size: WantedTooltipSize = WantedTooltipSize.Medium,
     align: WantedTooltipAlign = WantedTooltipAlign.Left,
     always: Boolean = false,
+    positionTop: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val isVisible by tooltipState.visibleState
@@ -181,8 +182,12 @@ fun WantedTooltip(
                 with(density) { screenHeight.dp.toPx() } - (contentPositionYInWindow + contentHeight)
             val spaceAbove = contentPositionYInWindow
 
-            isPopupAbove = spaceBelow < estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor &&
-                    spaceAbove > estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor
+            isPopupAbove = if (positionTop) {
+                true
+            } else {
+                spaceBelow < estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor &&
+                        spaceAbove > estimatedTooltipHeight + SpacingBetweenTooltipAndAnchor
+            }
 
             tooltipOffsetX = calculateTooltipOffsetX(
                 align = align,
