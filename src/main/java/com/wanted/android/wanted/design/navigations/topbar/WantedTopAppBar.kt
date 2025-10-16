@@ -130,7 +130,7 @@ fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
-    background: Color = if (variant == Variant.Floating) colorResource(R.color.transparent) else colorResource(R.color.background_normal_normal),
+    background: Color = colorResource(R.color.background_normal_normal),
     scrollableState: ScrollableState? = null,
     titleAlignCenter: Boolean = false,
     title: String = "",
@@ -155,6 +155,37 @@ fun WantedBackTopAppBar(
         actions = actions
     )
 }
+
+@Composable
+fun WantedSearchTopAppBar(
+    modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
+    background: Color = colorResource(R.color.background_normal_normal),
+    scrollableState: ScrollableState? = null,
+    placeholder: String = "",
+    actions: @Composable (RowScope.() -> Unit)? = null,
+    onClickBack: () -> Unit = {},
+    onClickDelete: () -> Unit = {}
+) {
+    WantedTopAppBar(
+        modifier = modifier,
+        windowInsets = windowInsets,
+        background = background,
+        variant = Variant.Search,
+        scrollableState = scrollableState,
+        navigationIcon = {
+            WantedTopAppBarIconButton(
+                variant = Variant.Search,
+                painter = painterResource(id = R.drawable.icon_normal_arrow_left),
+                onClick = { onClickBack() }
+            )
+        },
+        title = {
+        },
+        actions = actions
+    )
+}
+
 
 /**
  * 일반 TopAppBar 형식을 제공합니다. 정렬/타입에 따라 내부 레이아웃이 달라집니다.
@@ -217,6 +248,15 @@ fun WantedTopAppBar(
                 }
 
                 Variant.Floating -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                Variant.Search -> {
                     WantedTopAppBarLayout(
                         modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,

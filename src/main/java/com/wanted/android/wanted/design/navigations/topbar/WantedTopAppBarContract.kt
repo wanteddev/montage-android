@@ -24,6 +24,7 @@ object WantedTopAppBarContract {
     enum class Variant {
         Normal,
         Display,
-        Floating
+        Floating,
+        Search
     }
 }
