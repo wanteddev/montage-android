@@ -3,33 +3,46 @@ package com.wanted.android.wanted.design.navigations.topbar
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.input.search.WantedSearchField
+import com.wanted.android.wanted.design.input.search.WantedSearchFieldConstant.Size
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedDisplayTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayoutDivider
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * 통합 상단 앱바 컴포저블로, 일반형, Floating형, Extended형을 포함합니다.
@@ -158,14 +171,29 @@ fun WantedBackTopAppBar(
 
 @Composable
 fun WantedSearchTopAppBar(
+    value: TextFieldValue,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     background: Color = colorResource(R.color.background_normal_normal),
     scrollableState: ScrollableState? = null,
     placeholder: String = "",
+    enabled: Boolean = true,
+    size: Size = Size.Medium(),
+    maxWordCount: Int = Int.MAX_VALUE,
+    enabledOverflowText: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    textStyle: TextStyle = WantedTextStyle(
+        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
+        style = DesignSystemTheme.typography.body1Regular
+    ),
+    cursorBrush: Brush = SolidColor(textStyle.color),
+    focusRequester: FocusRequester = FocusRequester(),
     actions: @Composable (RowScope.() -> Unit)? = null,
     onClickBack: () -> Unit = {},
-    onClickDelete: () -> Unit = {}
+    onValueChange: (TextFieldValue) -> Unit = {}
 ) {
     WantedTopAppBar(
         modifier = modifier,
@@ -181,6 +209,85 @@ fun WantedSearchTopAppBar(
             )
         },
         title = {
+            WantedSearchField(
+                value = value,
+                placeholder = placeholder,
+                size = size,
+                enabled = enabled,
+                maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                modifier = modifier,
+                focused = focused,
+                cursorBrush = cursorBrush,
+                textStyle = textStyle,
+                focusRequester = focusRequester,
+                onValueChange = onValueChange
+            )
+        },
+        actions = actions
+    )
+}
+
+@Composable
+fun WantedSearchTopAppBar(
+    text: String,
+    modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
+    background: Color = colorResource(R.color.background_normal_normal),
+    scrollableState: ScrollableState? = null,
+    placeholder: String = "",
+    enabled: Boolean = true,
+    size: Size = Size.Medium(),
+    maxWordCount: Int = Int.MAX_VALUE,
+    enabledOverflowText: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    textStyle: TextStyle = WantedTextStyle(
+        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
+        style = DesignSystemTheme.typography.body1Regular
+    ),
+    cursorBrush: Brush = SolidColor(textStyle.color),
+    focusRequester: FocusRequester = FocusRequester(),
+    actions: @Composable (RowScope.() -> Unit)? = null,
+    onClickBack: () -> Unit = {},
+    onValueChange: (String) -> Unit = {}
+) {
+    WantedTopAppBar(
+        modifier = modifier,
+        windowInsets = windowInsets,
+        background = background,
+        variant = Variant.Search,
+        scrollableState = scrollableState,
+        navigationIcon = {
+            WantedTopAppBarIconButton(
+                variant = Variant.Search,
+                painter = painterResource(id = R.drawable.icon_normal_arrow_left),
+                onClick = { onClickBack() }
+            )
+        },
+        title = {
+            WantedSearchField(
+                text = text,
+                placeholder = placeholder,
+                size = size,
+                enabled = enabled,
+                maxWordCount = maxWordCount,
+                enabledOverflowText = enabledOverflowText,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                modifier = modifier,
+                focused = focused,
+                cursorBrush = cursorBrush,
+                textStyle = textStyle,
+                focusRequester = focusRequester,
+                onValueChange = onValueChange
+            )
         },
         actions = actions
     )

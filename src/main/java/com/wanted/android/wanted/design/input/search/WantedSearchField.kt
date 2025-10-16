@@ -114,21 +114,21 @@ fun WantedSearchField(
 @Composable
 fun WantedSearchField(
     value: TextFieldValue,
-    placeholder: String,
-    size: Size,
-    enabled: Boolean,
-    maxWordCount: Int,
-    enabledOverflowText: Boolean,
-    interactionSource: MutableInteractionSource,
-    keyboardOptions: KeyboardOptions,
-    keyboardActions: KeyboardActions,
     modifier: Modifier = Modifier,
+    placeholder: String = "",
+    enabled: Boolean = true,
+    size: Size = Size.Medium(),
+    maxWordCount: Int = Int.MAX_VALUE,
+    enabledOverflowText: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
-    cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
     textStyle: TextStyle = WantedTextStyle(
         colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
         style = DesignSystemTheme.typography.body1Regular
     ),
+    cursorBrush: Brush = SolidColor(textStyle.color),
     focusRequester: FocusRequester = FocusRequester(),
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
