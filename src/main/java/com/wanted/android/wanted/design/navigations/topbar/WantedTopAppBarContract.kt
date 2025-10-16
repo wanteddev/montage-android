@@ -21,9 +21,9 @@ object WantedTopAppBarContract {
      * - Extended: 높이가 확장된 형태
      * - Floating: 투명 배경 또는 떠 있는 형태의 앱바
      */
-    enum class TopAppBarType {
+    enum class Variant {
         Normal,
-        Extended,
+        Display,
         Floating
     }
 }

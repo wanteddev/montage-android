@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -37,7 +38,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
  * @param background Color: 앱바의 배경 색상입니다.
- * @param type TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
+ * @param variant TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태를 기반으로 Divider를 제어합니다.
  * @param title String: 타이틀 텍스트입니다.
  * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
@@ -48,7 +49,7 @@ fun WantedDialogTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
     background: Color = colorResource(R.color.background_elevated_normal),
-    type: WantedTopAppBarContract.TopAppBarType = WantedTopAppBarContract.TopAppBarType.Normal,
+    variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -58,11 +59,11 @@ fun WantedDialogTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
         background = background,
-        type = type,
+        variant = variant,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,
         title = {
-            if (type == WantedTopAppBarContract.TopAppBarType.Normal) {
+            if (variant == Variant.Normal) {
                 Text(
                     text = title,
                     overflow = TextOverflow.Ellipsis,
@@ -100,7 +101,7 @@ fun WantedDialogTopAppBar(
  * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
  * @param background Color: 앱바의 배경 색상입니다.
- * @param type TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
+ * @param variant TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태를 기반으로 Divider를 제어합니다.
  * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
  * @param title String: 타이틀 텍스트입니다.
@@ -111,7 +112,7 @@ fun WantedDialogCloseTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
     background: Color = colorResource(R.color.background_elevated_normal),
-    type: WantedTopAppBarContract.TopAppBarType = WantedTopAppBarContract.TopAppBarType.Normal,
+    variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: String = "",
@@ -121,11 +122,11 @@ fun WantedDialogCloseTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
         background = background,
-        type = type,
+        variant = variant,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,
         title = {
-            if (type == WantedTopAppBarContract.TopAppBarType.Normal) {
+            if (variant == Variant.Normal) {
                 Text(
                     text = title,
                     overflow = TextOverflow.Ellipsis,
@@ -145,7 +146,7 @@ fun WantedDialogCloseTopAppBar(
         },
         actions = {
             WantedTopAppBarIconButton(
-                type = type,
+                variant = variant,
                 painter = painterResource(id = R.drawable.icon_normal_close),
                 onClick = { onClickClose() }
             )
@@ -189,12 +190,12 @@ private fun CustomTopAppBarPreview() {
 
             Box(Modifier.background(Color.DarkGray)) {
                 WantedDialogTopAppBar(
-                    type = WantedTopAppBarContract.TopAppBarType.Floating,
+                    variant = Variant.Floating,
                 )
             }
 
             WantedDialogTopAppBar(
-                type = WantedTopAppBarContract.TopAppBarType.Extended,
+                variant = Variant.Display,
                 title = "title",
             )
 
@@ -205,7 +206,7 @@ private fun CustomTopAppBarPreview() {
 
             Box(Modifier.background(Color.DarkGray)) {
                 WantedDialogCloseTopAppBar(
-                    type = WantedTopAppBarContract.TopAppBarType.Floating,
+                    variant = Variant.Floating,
                     navigationIcon = {
                         WantedTopAppBarIconButton(
                             painter = painterResource(id = R.drawable.ic_normal_share_svg),
@@ -217,7 +218,7 @@ private fun CustomTopAppBarPreview() {
             }
 
             WantedDialogCloseTopAppBar(
-                type = WantedTopAppBarContract.TopAppBarType.Extended,
+                variant = Variant.Display,
                 title = "title",
                 navigationIcon = {
                     WantedTopAppBarIconButton(
