@@ -273,6 +273,8 @@ private fun PopoverPopup(
         }
     }
 
+    val popoverSpacingPx = with(density) { SPACING_BETWEEN_POPOVER_DP.dp.toPx().toInt() }
+
     val popupOffset = remember(
         popoverState.offsetX,
         popoverState.isPopupAbove,
@@ -282,10 +284,11 @@ private fun PopoverPopup(
         popoverState.overlapBottom,
         windowInsetsBottomPx,
         shadowSpacingPx,
+        popoverSpacingPx,
         align,           // align이 offset 계산에 영향
         positionTop      // positionTop이 위치 결정에 영향
     ) {
-        calculatePopupOffset(popoverState, windowInsetsBottomPx, shadowSpacingPx)
+        calculatePopupOffset(popoverState, windowInsetsBottomPx, shadowSpacingPx, popoverSpacingPx)
     }
 
     // Popup properties도 remember로 캐시
@@ -315,13 +318,14 @@ private fun PopoverPopup(
 private fun calculatePopupOffset(
     popoverState: WantedPopoverState,
     windowInsetsBottomPx: Float,
-    shadowSpacingPx: Int
+    shadowSpacingPx: Int,
+    spacingBetweenPopoverPx: Int
 ): IntOffset {
     return IntOffset(
         x = popoverState.offsetX,
         y = if (popoverState.isPopupAbove) {
             // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격, 그림자 여백 제거
-            var positionY = popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - SPACING_BETWEEN_POPOVER - shadowSpacingPx
+            var positionY = popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - spacingBetweenPopoverPx - shadowSpacingPx
 
             // overlapBottom 조건일 때 추가 보정 (원래 로직)
             if (popoverState.overlapBottom) {
@@ -331,7 +335,7 @@ private fun calculatePopupOffset(
             positionY
         } else {
             // 아래쪽에 표시할 때: content 아래 + 간격 - 그림자 여백
-            popoverState.contentPositionY.toInt() + popoverState.contentHeight + SPACING_BETWEEN_POPOVER - shadowSpacingPx
+            popoverState.contentPositionY.toInt() + popoverState.contentHeight + spacingBetweenPopoverPx - shadowSpacingPx
         }
     )
 }
@@ -642,4 +646,4 @@ fun rememberPopoverState(initialVisible: Boolean = false): WantedSimplePopoverSt
 }
 
 // Constants
-private const val SPACING_BETWEEN_POPOVER = 8
+private const val SPACING_BETWEEN_POPOVER_DP = 8
