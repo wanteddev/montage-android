@@ -1,0 +1,273 @@
+package com.wanted.android.wanted.design.presentation.popover
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
+/**
+ * 팝오버의 표시/숨김 상태를 관리하는 간단한 상태 인터페이스입니다.
+ *
+ * 이 인터페이스는 팝오버의 기본적인 표시/숨김 기능을 제공합니다.
+ * 사용자는 이 인터페이스를 통해 팝오버를 표시하거나 숨길 수 있습니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val popoverState = rememberPopoverState()
+ *
+ * // 팝오버 표시
+ * popoverState.show()
+ *
+ * // 팝오버 숨김
+ * popoverState.dismiss()
+ *
+ * // 현재 표시 상태 확인
+ * if (popoverState.isVisible) { /* ... */ }
+ * ```
+ *
+ * @see rememberPopoverState
+ */
+@Stable
+interface WantedSimplePopoverState {
+    /**
+     * 팝오버를 표시합니다.
+     */
+    fun show()
+
+    /**
+     * 팝오버를 숨깁니다.
+     */
+    fun dismiss()
+
+    /**
+     * 현재 팝오버의 표시 상태를 나타냅니다.
+     */
+    val isVisible: Boolean
+}
+
+// 팝오버 상태 데이터 클래스 (internal)
+@Stable
+internal data class WantedPopoverState(
+    val isVisible: Boolean = false,
+    val isShow: Boolean = false,
+    val contentPositionY: Float = 0f,
+    val contentPositionX: Float = 0f,
+    val contentPositionYInWindow: Float = 0f,
+    val contentHeight: Int = 0,
+    val contentWidth: Int = 0,
+    val tooltipWidth: Int = 0,
+    val tooltipHeight: Int = 0,
+    val offsetX: Int = 0,
+    val isPopupAbove: Boolean = false,
+    val overlapBottom: Boolean = false
+)
+
+/**
+ * 팝오버의 정렬 방식을 정의하는 enum 클래스입니다.
+ *
+ * 팝오버가 기준 콘텐츠에 대해 어떤 위치에 정렬될지를 결정합니다.
+ * 각 정렬 방식은 다음과 같습니다:
+ * - Left: 왼쪽 정렬
+ * - Center: 중앙 정렬
+ * - Right: 오른쪽 정렬
+ *
+ * @see WantedPopover
+ */
+enum class WantedPopoverAlign {
+    Left,
+    Center,
+    Right
+}
+
+// 내부용 StateHolder 인터페이스 (internal)
+@Stable
+internal interface WantedPopoverStateHolder {
+    val state: WantedPopoverState
+    val visibleState: State<Boolean>
+
+    fun show()
+    fun dismiss()
+    fun updateContentPosition(
+        positionY: Float,
+        positionX: Float,
+        positionYInWindow: Float,
+        height: Int,
+        width: Int
+    )
+    fun updateTooltipSize(width: Int, height: Int)
+    fun updateShowState(show: Boolean)
+    fun calculatePopoverPosition(
+        windowInsetsBottomPx: Float,
+        screenHeightPx: Float,
+        estimatedTooltipHeight: Float,
+        positionTop: Boolean,
+        shadowSpacingPx: Int,
+        align: WantedPopoverAlign,
+        screenWidthPx: Int,
+        paddingPx: Int
+    )
+}
+
+// 외부 공개용 Simple State 구현체
+internal class WantedSimplePopoverStateImpl(
+    private val stateHolder: WantedPopoverStateHolder
+) : WantedSimplePopoverState {
+    override fun show() = stateHolder.show()
+    override fun dismiss() = stateHolder.dismiss()
+    override val isVisible: Boolean get() = stateHolder.state.isVisible
+}
+
+// 내부용 StateHolder 구현체 (internal)
+private class WantedPopoverStateHolderImpl(
+    initialVisible: Boolean
+) : WantedPopoverStateHolder {
+
+    private val _visibleState = mutableStateOf(initialVisible)
+    override val visibleState: State<Boolean> get() = _visibleState
+
+    private var _state by mutableStateOf(WantedPopoverState(isVisible = initialVisible))
+    override val state: WantedPopoverState get() = _state
+
+    override fun show() {
+        _visibleState.value = true
+        _state = _state.copy(isVisible = true)
+    }
+
+    override fun dismiss() {
+        _visibleState.value = false
+        _state = _state.copy(isVisible = false)
+    }
+
+    override fun updateContentPosition(
+        positionY: Float,
+        positionX: Float,
+        positionYInWindow: Float,
+        height: Int,
+        width: Int
+    ) {
+        _state = _state.copy(
+            contentPositionY = positionY,
+            contentPositionX = positionX,
+            contentPositionYInWindow = positionYInWindow,
+            contentHeight = height,
+            contentWidth = width
+        )
+    }
+
+    override fun updateTooltipSize(width: Int, height: Int) {
+        _state = _state.copy(
+            tooltipWidth = width,
+            tooltipHeight = height
+        )
+    }
+
+    override fun updateShowState(show: Boolean) {
+        _state = _state.copy(isShow = show)
+    }
+
+    override fun calculatePopoverPosition(
+        windowInsetsBottomPx: Float,
+        screenHeightPx: Float,
+        estimatedTooltipHeight: Float,
+        positionTop: Boolean,
+        shadowSpacingPx: Int,
+        align: WantedPopoverAlign,
+        screenWidthPx: Int,
+        paddingPx: Int
+    ) {
+        // 실제 사용 가능한 화면 하단 위치 계산
+        val effectiveBottomY = screenHeightPx - windowInsetsBottomPx
+
+        // 컨텐츠 기준 위아래 공간 계산
+        val spaceBelow = effectiveBottomY - (_state.contentPositionYInWindow + _state.contentHeight)
+        val spaceAbove = _state.contentPositionYInWindow
+
+        // 실제 툴팁 높이가 있으면 사용, 없으면 예상 높이 사용
+        val tooltipHeightToCheck = if (_state.tooltipHeight > 0) _state.tooltipHeight else estimatedTooltipHeight.toInt()
+        val requiredSpace = tooltipHeightToCheck + SPACING_BETWEEN_POPOVER
+
+        // overlapBottom: 아래쪽 공간이 부족하고 위쪽 공간이 충분한 경우
+        val newOverlapBottom = spaceBelow < requiredSpace && spaceAbove > requiredSpace
+
+        // 위치 결정 로직 (원래 로직 복원)
+        val newIsPopupAbove = when {
+            // 1. overlapBottom이 true인 경우: 강제로 위쪽에 배치
+            newOverlapBottom -> true
+            // 2. positionTop이 true인 경우: 위쪽 공간이 충분하면 위쪽에 배치
+            positionTop -> spaceAbove >= requiredSpace
+            // 3. 기본값: 아래쪽에 배치
+            else -> false
+        }
+
+        val baseOffsetX = calculatePopoverOffsetX(
+            align = align,
+            contentPositionX = _state.contentPositionX,
+            contentWidth = _state.contentWidth,
+            tooltipWidth = _state.tooltipWidth,
+            screenWidthPx = screenWidthPx,
+            paddingPx = paddingPx
+        )
+
+        val newOffsetX = baseOffsetX - shadowSpacingPx
+
+        // 실제로 값이 변경되었을 때만 상태 업데이트 (불필요한 recomposition 방지)
+        if (_state.overlapBottom != newOverlapBottom ||
+            _state.isPopupAbove != newIsPopupAbove ||
+            _state.offsetX != newOffsetX
+        ) {
+            _state = _state.copy(
+                overlapBottom = newOverlapBottom,
+                isPopupAbove = newIsPopupAbove,
+                offsetX = newOffsetX
+            )
+        }
+    }
+
+    private fun calculatePopoverOffsetX(
+        align: WantedPopoverAlign,
+        contentPositionX: Float,
+        contentWidth: Int,
+        tooltipWidth: Int,
+        screenWidthPx: Int,
+        paddingPx: Int
+    ): Int {
+        if (tooltipWidth == 0) return 0
+
+        val idealOffsetX = when (align) {
+            WantedPopoverAlign.Left -> 0
+            WantedPopoverAlign.Center -> (contentWidth - tooltipWidth) / 2
+            WantedPopoverAlign.Right -> contentWidth - tooltipWidth
+        }
+
+        val contentLeft = contentPositionX + idealOffsetX
+        val contentRight = contentLeft + tooltipWidth
+
+        return when {
+            contentLeft < paddingPx -> {
+                (paddingPx - contentPositionX).toInt()
+            }
+            contentRight > screenWidthPx - paddingPx -> {
+                (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
+            }
+            else -> {
+                idealOffsetX
+            }
+        }
+    }
+
+    companion object {
+        private const val SPACING_BETWEEN_POPOVER = 8
+    }
+}
+
+// 내부용 StateHolder 생성 함수 (internal)
+@Composable
+internal fun rememberWantedPopoverStateHolder(
+    initialVisible: Boolean = false
+): WantedPopoverStateHolder = remember {
+    WantedPopoverStateHolderImpl(initialVisible)
+}
+
