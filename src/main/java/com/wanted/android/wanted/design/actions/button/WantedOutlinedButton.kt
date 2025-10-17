@@ -433,7 +433,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -441,7 +441,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -449,7 +449,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
             isLoading = true,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -458,7 +458,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
     }
 }
@@ -477,7 +477,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -486,7 +486,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -495,7 +495,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -505,7 +505,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
     }
 }
@@ -731,7 +731,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -740,7 +740,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -749,7 +749,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -759,7 +759,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
     }
 }
@@ -779,7 +779,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             enabled = false,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -789,7 +789,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             enabled = false,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
         WantedOutlinedButton(
             text = "Button",
@@ -798,7 +798,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedOutlinedButton(
@@ -809,7 +809,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
     }
