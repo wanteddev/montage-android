@@ -47,7 +47,6 @@ import com.wanted.android.wanted.design.input.search.WantedSearchFieldConstant.S
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
-import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
@@ -102,7 +101,7 @@ fun WantedSearchField(
             textFieldValueState = newTextFieldValueState
 
             val stringChangedSinceLastInvocation =
-                    lastTextValue != newTextFieldValueState.text
+                lastTextValue != newTextFieldValueState.text
             lastTextValue = newTextFieldValueState.text
 
             if (stringChangedSinceLastInvocation) {
