@@ -184,7 +184,7 @@ fun WantedSearchTopAppBar(
     interactionSource: MutableInteractionSource? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    focused: State<Boolean>?,
+    focused: State<Boolean>? = null,
     textStyle: TextStyle = WantedTextStyle(
         colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
         style = DesignSystemTheme.typography.body1Regular

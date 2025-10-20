@@ -106,7 +106,7 @@ private fun TopBarTitle(
 
 @DevicePreviews
 @Composable
-private fun WantedExtendedTopAppBarLayoutPreview() {
+private fun WantedDisplayTopAppBarLayoutPreview() {
     DesignSystemTheme {
         Column(
             modifier = Modifier
