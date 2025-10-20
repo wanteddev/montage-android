@@ -47,7 +47,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋을 적용하여 상태바 등 시스템 UI를 고려한 여백을 처리합니다.
  * @param background Color: 앱바의 배경 색상입니다.
- * @param variant TopAppBarType: 앱바의 유형으로 Normal 또는 Extended를 설정할 수 있습니다.
+ * @param variant Variant: 앱바의 유형으로 Normal 또는 Extended를 설정할 수 있습니다.
  * @param scrollableState ScrollableState?: 스크롤 상태를 반영하여 divider 표시 여부를 조절합니다.
  * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 영역에 표시할 컴포저블입니다.
  * @param title @Composable (() -> Unit)?: 중앙 타이틀 영역에 표시할 컴포저블입니다.

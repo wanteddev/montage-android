@@ -38,7 +38,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
  * @param background Color: 앱바의 배경 색상입니다.
- * @param variant TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
+ * @param variant Variant: 앱바 스타일 (Normal, Floating, Extended)입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태를 기반으로 Divider를 제어합니다.
  * @param title String: 타이틀 텍스트입니다.
  * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
@@ -101,7 +101,7 @@ fun WantedDialogTopAppBar(
  * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
  * @param background Color: 앱바의 배경 색상입니다.
- * @param variant TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
+ * @param variant Variant: 앱바 스타일 (Normal, Floating, Extended)입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태를 기반으로 Divider를 제어합니다.
  * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
  * @param title String: 타이틀 텍스트입니다.

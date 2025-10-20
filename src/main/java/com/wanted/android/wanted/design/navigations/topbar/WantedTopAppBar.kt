@@ -60,7 +60,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  *
  * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param variant Variant: 앱바 유형(Normal, Floating, Extended)입니다.
  * @param background Color: 앱바 배경 색상입니다.
  * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -130,7 +130,7 @@ fun WantedTopAppBar(
  *
  * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param variant Variant: 앱바 유형(Normal, Floating, Extended)입니다.
  * @param background Color: 앱바 배경 색상입니다.
  * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -181,20 +181,25 @@ fun WantedSearchTopAppBar(
     size: Size = Size.Medium(),
     maxWordCount: Int = Int.MAX_VALUE,
     enabledOverflowText: Boolean = false,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    interactionSource: MutableInteractionSource? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    focused: State<Boolean>?,
     textStyle: TextStyle = WantedTextStyle(
         colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
         style = DesignSystemTheme.typography.body1Regular
     ),
     cursorBrush: Brush = SolidColor(textStyle.color),
-    focusRequester: FocusRequester = FocusRequester(),
+    focusRequester: FocusRequester? = null,
     actions: @Composable (RowScope.() -> Unit)? = null,
     onClickBack: () -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
+
+    val localInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val localFocused = focused ?: localInteractionSource.collectIsFocusedAsState()
+    val localFocusRequester = focusRequester ?: remember { FocusRequester() }
+
     WantedTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
@@ -216,14 +221,14 @@ fun WantedSearchTopAppBar(
                 enabled = enabled,
                 maxWordCount = maxWordCount,
                 enabledOverflowText = enabledOverflowText,
-                interactionSource = interactionSource,
+                interactionSource = localInteractionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 modifier = modifier,
-                focused = focused,
+                focused = localFocused,
                 cursorBrush = cursorBrush,
                 textStyle = textStyle,
-                focusRequester = focusRequester,
+                focusRequester = localFocusRequester,
                 onValueChange = onValueChange
             )
         },
@@ -243,20 +248,25 @@ fun WantedSearchTopAppBar(
     size: Size = Size.Medium(),
     maxWordCount: Int = Int.MAX_VALUE,
     enabledOverflowText: Boolean = false,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    interactionSource: MutableInteractionSource? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
+    focused: State<Boolean>? = null,
     textStyle: TextStyle = WantedTextStyle(
         colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
         style = DesignSystemTheme.typography.body1Regular
     ),
     cursorBrush: Brush = SolidColor(textStyle.color),
-    focusRequester: FocusRequester = FocusRequester(),
+    focusRequester: FocusRequester? = null,
     actions: @Composable (RowScope.() -> Unit)? = null,
     onClickBack: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
+
+    val localInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val localFocused = focused ?: localInteractionSource.collectIsFocusedAsState()
+    val localFocusRequester = focusRequester ?: remember { FocusRequester() }
+
     WantedTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
@@ -278,14 +288,14 @@ fun WantedSearchTopAppBar(
                 enabled = enabled,
                 maxWordCount = maxWordCount,
                 enabledOverflowText = enabledOverflowText,
-                interactionSource = interactionSource,
+                interactionSource = localInteractionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
                 modifier = modifier,
-                focused = focused,
+                focused = localFocused,
                 cursorBrush = cursorBrush,
                 textStyle = textStyle,
-                focusRequester = focusRequester,
+                focusRequester = localFocusRequester,
                 onValueChange = onValueChange
             )
         },
@@ -299,7 +309,7 @@ fun WantedSearchTopAppBar(
  *
  * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param variant Variant: 앱바 유형(Normal, Floating, Extended)입니다.
  * @param background Color: 앱바 배경 색상입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
  * @param title @Composable (() -> Unit)?: 타이틀 컴포저블입니다.

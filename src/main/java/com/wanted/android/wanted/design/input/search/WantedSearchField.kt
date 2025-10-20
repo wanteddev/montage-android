@@ -42,6 +42,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.input.search.WantedSearchFieldConstant.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -175,7 +176,7 @@ private fun SearchTextField(
             .focusRequester(focusRequester)
             .clip(RoundedCornerShape(12.dp))
             .background(colorResource(R.color.fill_normal))
-            .defaultMinSize(size.minHeight)
+            .defaultMinSize(minHeight = size.minHeight)
             .fillMaxWidth()
             .padding(size.padding),
         value = value,
@@ -222,23 +223,32 @@ private fun SearchTextField(
                         } else {
                             colorResource(id = R.color.label_assistive)
                         },
-                        contentDescription = ""
+                        contentDescription = null
                     )
                 },
                 trailingIcon = when {
                     value.text.isNotEmpty() && enabled && focused.value -> {
                         {
-                            Icon(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(CircleShape)
-                                    .clickOnce {
-                                        onValueChange(value.copy(""))
-                                    },
-                                painter = painterResource(R.drawable.icon_normal_circle_close_fill),
-                                tint = colorResource(id = R.color.label_assistive),
-                                contentDescription = ""
+                            WantedTouchArea(
+                                modifier = Modifier,
+                                shape = CircleShape,
+                                verticalPadding = 8.dp,
+                                horizontalPadding = 8.dp,
+                                content = {
+                                    Icon(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(CircleShape),
+                                        painter = painterResource(R.drawable.icon_normal_circle_close_fill),
+                                        tint = colorResource(id = R.color.label_assistive),
+                                        contentDescription = null
+                                    )
+                                },
+                                onClick = {
+                                    onValueChange(value.copy(""))
+                                }
                             )
+
                         }
                     }
 
