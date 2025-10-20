@@ -341,7 +341,7 @@ fun WantedTopAppBar(
             modifier.background(background)
         }
     ) {
-        CompositionLocalProvider(LocalWantedTopBarIconType.provides(variant)) {
+        CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
             when (variant) {
                 Variant.Normal -> {
                     WantedTopAppBarLayout(

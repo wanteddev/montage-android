@@ -34,8 +34,6 @@ import com.wanted.android.wanted.design.util.clickOnce
  * @param modifier Modifier: 버튼의 크기, 외형, 배치를 조정하는 Modifier입니다.
  * @param variant Variant: 앱바 타입으로 스타일에 영향을 미칩니다.
  * @param enabled Boolean: 버튼 활성화 여부입니다.
- * @param floatingStyleAlternative Boolean: Floating 타입의 대체 스타일 여부입니다.
- * @param floatingStyleBackground Boolean: Floating 타입의 기본 배경 스타일 사용 여부입니다.
  * @param interactionSource MutableInteractionSource: 사용자 인터랙션을 처리하는 객체입니다.
  * @param tint Color: 아이콘 색상입니다.
  * @param onClick () -> Unit: 버튼 클릭 시 실행되는 콜백입니다.
@@ -44,7 +42,7 @@ import com.wanted.android.wanted.design.util.clickOnce
 fun WantedTopAppBarIconButton(
     painter: Painter,
     modifier: Modifier = Modifier,
-    variant: Variant = LocalWantedTopBarIconType.current,
+    variant: Variant = LocalWantedTopBarIconVariant.current,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tint: Color = colorResource(id = R.color.label_normal),
@@ -71,7 +69,7 @@ fun WantedTopAppBarIconButton(
 }
 
 
-val LocalWantedTopBarIconType = WantedTopBarIconTypeCompositionLocal()
+val LocalWantedTopBarIconVariant = WantedTopBarIconTypeCompositionLocal()
 
 
 @JvmInline

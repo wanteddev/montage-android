@@ -131,7 +131,7 @@ fun WantedCenterTopAppBar(
     Box(
         modifier = modifier.background(background)
     ) {
-        CompositionLocalProvider(LocalWantedTopBarIconType.provides(variant)) {
+        CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
             when (variant) {
                 Variant.Normal -> {
                     WantedCenterTopAppBarLayout(
