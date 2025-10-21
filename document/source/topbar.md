@@ -15,7 +15,7 @@
 * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋을 적용하여 상태바 등 시스템 UI를 고려한 여백을 처리합니다.
 * @param background Color: 앱바의 배경 색상입니다.
-* @param type TopAppBarType: 앱바의 유형으로 Normal 또는 Extended를 설정할 수 있습니다.
+* @param type Variant: 앱바의 유형으로 Normal 또는 Extended를 설정할 수 있습니다.
 * @param scrollableState ScrollableState?: 스크롤 상태를 반영하여 divider 표시 여부를 조절합니다.
 * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 영역에 표시할 컴포저블입니다.
 * @param title @Composable (() -> Unit)?: 중앙 타이틀 영역에 표시할 컴포저블입니다.
@@ -38,7 +38,7 @@
 * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
 * @param background Color: 앱바 배경 색상입니다.
-* @param type TopAppBarType: 앱바 유형 (Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형 (Normal, Floating, Extended)입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태입니다.
 * @param title String: 타이틀 텍스트입니다.
 * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
@@ -59,7 +59,7 @@
 * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
 * @param background Color: 앱바 배경 색상입니다.
-* @param type TopAppBarType: 앱바 유형 (Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형 (Normal, Floating, Extended)입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태입니다.
 * @param title String: 중앙 타이틀 텍스트입니다.
 * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
@@ -83,7 +83,7 @@
 * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
 * @param background Color: 앱바의 배경 색상입니다.
-* @param type TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 스타일 (Normal, Floating, Extended)입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태를 기반으로 Divider를 제어합니다.
 * @param title String: 타이틀 텍스트입니다.
 * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
@@ -106,7 +106,7 @@
 * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
 * @param background Color: 앱바의 배경 색상입니다.
-* @param type TopAppBarType: 앱바 스타일 (Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 스타일 (Normal, Floating, Extended)입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태를 기반으로 Divider를 제어합니다.
 * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
 * @param title String: 타이틀 텍스트입니다.
@@ -129,7 +129,7 @@
 *
 * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋을 적용합니다.
-* @param type TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형(Normal, Floating, Extended)입니다.
 * @param background Color: 앱바 배경 색상입니다.
 * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -151,7 +151,7 @@
 *
 * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋을 적용합니다.
-* @param type TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형(Normal, Floating, Extended)입니다.
 * @param background Color: 앱바 배경 색상입니다.
 * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -166,7 +166,7 @@
 *
 * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋을 적용합니다.
-* @param type TopAppBarType: 앱바 유형(Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형(Normal, Floating, Extended)입니다.
 * @param background Color: 앱바 배경 색상입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
 * @param title @Composable (() -> Unit)?: 타이틀 컴포저블입니다.
@@ -179,11 +179,11 @@
 *
 * 상단 앱바(TopAppBar) 컴포넌트의 UI 설정 값을 정의하는 객체입니다.
 *
-* 앱바의 형태를 제어하는 enum 클래스 `TopAppBarType`을 포함합니다.
+* 앱바의 형태를 제어하는 enum 클래스 `Variant`을 포함합니다.
 */
 
 /**
-* enum class TopAppBarType
+* enum class Variant
 *
 * TopAppBar의 형태를 정의하는 enum 클래스입니다.
 *
@@ -221,7 +221,7 @@
 *
 * @param painter Painter: 아이콘으로 표시할 이미지입니다.
 * @param modifier Modifier: 버튼의 크기, 외형, 배치를 조정하는 Modifier입니다.
-* @param type TopAppBarType: 앱바 타입으로 스타일에 영향을 미칩니다.
+* @param type Variant: 앱바 타입으로 스타일에 영향을 미칩니다.
 * @param enabled Boolean: 버튼 활성화 여부입니다.
 * @param floatingStyleAlternative Boolean: Floating 타입의 대체 스타일 여부입니다.
 * @param floatingStyleBackground Boolean: Floating 타입의 기본 배경 스타일 사용 여부입니다.

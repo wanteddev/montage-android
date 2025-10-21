@@ -6,13 +6,13 @@ package com.wanted.android.wanted.design.navigations.topbar
  *
  * 상단 앱바(TopAppBar) 컴포넌트의 UI 설정 값을 정의하는 객체입니다.
  *
- * 앱바의 형태를 제어하는 enum 클래스 `TopAppBarType`을 포함합니다.
+ * 앱바의 형태를 제어하는 enum 클래스 `Variant`을 포함합니다.
  */
 object WantedTopAppBarContract {
 
 
     /**
-     * enum class TopAppBarType
+     * enum class Variant
      *
      * TopAppBar의 형태를 정의하는 enum 클래스입니다.
      *
@@ -21,9 +21,10 @@ object WantedTopAppBarContract {
      * - Extended: 높이가 확장된 형태
      * - Floating: 투명 배경 또는 떠 있는 형태의 앱바
      */
-    enum class TopAppBarType {
+    enum class Variant {
         Normal,
-        Extended,
-        Floating
+        Display,
+        Floating,
+        Search
     }
 }
