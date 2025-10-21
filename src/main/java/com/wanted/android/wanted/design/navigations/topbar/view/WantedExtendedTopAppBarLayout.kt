@@ -24,8 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
@@ -128,11 +128,11 @@ private fun WantedExtendedTopAppBarLayoutPreview() {
                 },
                 actions = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                 }
@@ -145,11 +145,11 @@ private fun WantedExtendedTopAppBarLayoutPreview() {
                 },
                 actions = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                 }
