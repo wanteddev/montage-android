@@ -55,7 +55,7 @@ sealed class WantedToastVariant(
      * 느낌표 아이콘과 주황색 색상이 사용됩니다.
      */
     data object Cautionary : WantedToastVariant(
-        R.drawable.ic_normal_triangle_exclamation_fill_svg,
+        R.drawable.icon_normal_triangle_exclamation_fill,
         R.color.orange_60,
         backgroundResourceId = R.drawable.ic_normal_triangle_exclamation_filler_svg
     )

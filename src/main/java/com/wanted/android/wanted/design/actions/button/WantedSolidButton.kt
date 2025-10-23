@@ -426,7 +426,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableEnable() {
             text = "Button",
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -434,7 +434,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -442,7 +442,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableEnable() {
             isLoading = true,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -451,7 +451,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableEnable() {
             type = ButtonType.ASSISTIVE,
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
     }
 }
@@ -470,7 +470,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -479,7 +479,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -488,7 +488,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -498,7 +498,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesEnable() {
             size = ButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
     }
 }
@@ -729,7 +729,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -738,7 +738,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
             size = ButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -747,7 +747,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -757,7 +757,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
     }
 }
@@ -779,7 +779,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
             enabled = false,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -789,7 +789,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
             enabled = false,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -799,7 +799,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedSolidButton(
@@ -810,7 +810,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
-            trailingDrawable = R.drawable.ic_normal_heart_svg
+            trailingDrawable = R.drawable.icon_normal_heart
         )
     }
 }

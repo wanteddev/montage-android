@@ -172,7 +172,7 @@ private fun CustomTopAppBarPreview() {
                 title = "title",
                 navigationIcon = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                 },
@@ -182,7 +182,7 @@ private fun CustomTopAppBarPreview() {
                 title = "title",
                 actions = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                 },
@@ -209,7 +209,7 @@ private fun CustomTopAppBarPreview() {
                     variant = Variant.Floating,
                     navigationIcon = {
                         WantedTopAppBarIconButton(
-                            painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_share),
                             onClick = { }
                         )
                     },
@@ -222,7 +222,7 @@ private fun CustomTopAppBarPreview() {
                 title = "title",
                 navigationIcon = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                 },
