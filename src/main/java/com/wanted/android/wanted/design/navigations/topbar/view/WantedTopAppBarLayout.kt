@@ -38,10 +38,10 @@ internal fun WantedTopAppBarLayout(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .height(IntrinsicSize.Min)
             .defaultMinSize(minHeight = 56.dp)
             .padding(vertical = 8.dp)
-            .padding(horizontal = 16.dp)
-            .height(IntrinsicSize.Min),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
