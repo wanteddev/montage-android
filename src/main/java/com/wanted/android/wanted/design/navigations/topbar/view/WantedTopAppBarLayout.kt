@@ -103,11 +103,11 @@ private fun WantedTopAppBarLayoutPreview() {
                 },
                 actions = {
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                     WantedTopAppBarIconButton(
-                        painter = painterResource(id = R.drawable.ic_normal_share_svg),
+                        painter = painterResource(id = R.drawable.icon_normal_share),
                         onClick = { }
                     )
                 }

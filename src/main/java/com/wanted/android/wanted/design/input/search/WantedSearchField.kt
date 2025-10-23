@@ -216,7 +216,7 @@ private fun SearchTextField(
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(R.drawable.ic_normal_search_svg),
+                        painter = painterResource(R.drawable.icon_normal_search),
                         tint = if (enabled) {
                             colorResource(id = R.color.label_alternative)
                         } else {
