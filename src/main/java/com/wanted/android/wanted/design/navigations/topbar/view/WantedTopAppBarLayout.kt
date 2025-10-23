@@ -7,13 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,8 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
@@ -41,30 +40,19 @@ internal fun WantedTopAppBarLayout(
             .fillMaxWidth()
             .defaultMinSize(minHeight = 56.dp)
             .padding(vertical = 8.dp)
+            .padding(horizontal = 16.dp)
             .height(IntrinsicSize.Min),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         navigationIcon?.let {
-            Spacer(modifier = Modifier.size(8.dp))
-
-            Box(
-                modifier = Modifier
-                    .size(40.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                navigationIcon()
-            }
-
-            Spacer(modifier = Modifier.size(8.dp))
-        } ?: kotlin.run {
-            Spacer(modifier = Modifier.size(16.dp))
+            navigationIcon()
         }
 
         Box(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxSize()
-                .padding(start = 4.dp),
+                .fillMaxSize(),
             contentAlignment = Alignment.CenterStart
         ) {
             title?.let {
@@ -79,11 +67,14 @@ internal fun WantedTopAppBarLayout(
             }
         }
 
-        Spacer(modifier = Modifier.size(16.dp))
-
         actions?.let {
-            actions()
-            Spacer(modifier = Modifier.size(8.dp))
+            Row(
+                modifier = Modifier.wrapContentSize(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                actions()
+            }
         }
     }
 }

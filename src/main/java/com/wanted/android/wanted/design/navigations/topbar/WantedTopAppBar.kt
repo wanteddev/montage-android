@@ -244,7 +244,7 @@ fun WantedSearchTopAppBar(
     scrollableState: ScrollableState? = null,
     placeholder: String = "",
     enabled: Boolean = true,
-    size: Size = Size.Medium(),
+    size: Size = Size.Small(),
     maxWordCount: Int = Int.MAX_VALUE,
     enabledOverflowText: Boolean = false,
     interactionSource: MutableInteractionSource? = null,

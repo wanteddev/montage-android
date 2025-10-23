@@ -2,8 +2,8 @@ package com.wanted.android.wanted.design.navigations.topbar
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
-import com.wanted.android.wanted.design.util.clickOnce
 
 /**
  * TopAppBar에 사용되는 아이콘 버튼 컴포저블입니다.
@@ -48,24 +48,23 @@ fun WantedTopAppBarIconButton(
     tint: Color = colorResource(id = R.color.label_normal),
     onClick: () -> Unit = {}
 ) {
-    /**
-     * 시스템에 정의되어 있는 IconButton의 default size 56.dp
-     * size를 40으로 줄이면 ripple 효과만 56.dp 로 보인다.
-     */
-    IconButton(
-        modifier = modifier
-            .size(40.dp),
+    WantedTouchArea(
+        modifier = modifier,
+        onClick = onClick,
         enabled = enabled,
+        verticalPadding = 8.dp,
+        horizontalPadding = 8.dp,
         interactionSource = interactionSource,
-        onClick = { onClick.clickOnce() }
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            painter = painter,
-            contentDescription = null,
-            tint = tint
-        )
-    }
+        shape = CircleShape,
+        content = {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painter,
+                contentDescription = null,
+                tint = tint
+            )
+        }
+    )
 }
 
 
