@@ -230,7 +230,7 @@ fun WantedTooltip(
                                 contentWidth = contentWidth,
                                 tooltipOffsetX = tooltipOffsetX,
                                 caretPaddingHorizontalPx = with(density) {
-                                    if (size == WantedTooltipSize.Small) 8.dp.toPx() else 10.dp.toPx()
+                                    if (size == WantedTooltipSize.Small) 8.dp.toPx() else 14.dp.toPx()
                                 },
                                 caretWidthPx = with(density) { 12.dp.toPx() }
                             )
