@@ -102,7 +102,8 @@ fun WantedPopover(
     // align, positionTop 변경 시 위치 재계산 강제 실행
     LaunchedEffect(align, positionTop) {
         if (stateHolder.state.contentHeight > 0 && stateHolder.state.contentWidth > 0) {
-            val windowInsetsBottomPx = with(density) { windowInsets.getBottom(density).toDp().toPx() }
+            val windowInsetsBottomPx =
+                with(density) { windowInsets.getBottom(density).toDp().toPx() }
             val screenHeight = configuration.screenHeightDp
             val screenHeightPx = with(density) { screenHeight.dp.toPx() }
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
@@ -325,7 +326,8 @@ private fun calculatePopupOffset(
         x = popoverState.offsetX,
         y = if (popoverState.isPopupAbove) {
             // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격, 그림자 여백 제거
-            var positionY = popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - spacingBetweenPopoverPx - shadowSpacingPx
+            var positionY =
+                popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - spacingBetweenPopoverPx - shadowSpacingPx
 
             // overlapBottom 조건일 때 추가 보정 (원래 로직)
             if (popoverState.overlapBottom) {
@@ -570,12 +572,17 @@ private fun WantedPopoverLayout(
 
             action?.let {
                 Spacer(modifier = Modifier.padding(top = 12.dp))
-                Row(
-                    modifier = Modifier.wrapContentSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End)
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
                 ) {
-                    it()
+                    Row(
+                        modifier = Modifier.wrapContentSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End)
+                    ) {
+                        it()
+                    }
                 }
             }
         }
