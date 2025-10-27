@@ -25,7 +25,7 @@ WantedTopAppBar(
 |:---|:---|:---|
 | modifier | Modifier | 외형 및 배치를 위한 Modifier입니다. |
 | windowInsets | WindowInsets | 인셋을 적용합니다. |
-| type | Variant | 앱바 유형(Normal, Floating, Extended)입니다. |
+| type | Variant | 앱바 유형(Normal, Floating, Display, Search)입니다. |
 | background | Color | 앱바 배경 색상입니다. |
 | titleAlignCenter | Boolean | 타이틀을 중앙 정렬할지 여부입니다. |
 | scrollableState | ScrollableState? | 스크롤 상태 정보입니다. |
@@ -55,7 +55,7 @@ WantedBackTopAppBar(
 |:---|:---|:---|
 | modifier | Modifier | 외형 및 배치를 위한 Modifier입니다. |
 | windowInsets | WindowInsets | 인셋을 적용합니다. |
-| type | Variant | 앱바 유형(Normal, Floating, Extended)입니다. |
+| type | Variant | 앱바 유형(Normal, Floating, Display, Search)입니다. |
 | background | Color | 앱바 배경 색상입니다. |
 | titleAlignCenter | Boolean | 타이틀을 중앙 정렬할지 여부입니다. |
 | scrollableState | ScrollableState? | 스크롤 상태 정보입니다. |
