@@ -2,7 +2,6 @@ package com.wanted.android.wanted.design.presentation.popover
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,7 +51,6 @@ interface WantedSimplePopoverState {
 @Stable
 internal data class WantedPopoverState(
     val isVisible: Boolean = false,
-    val isShow: Boolean = false,
     val contentPositionY: Float = 0f,
     val contentPositionX: Float = 0f,
     val contentPositionYInWindow: Float = 0f,
@@ -86,7 +84,6 @@ enum class WantedPopoverAlign {
 @Stable
 internal interface WantedPopoverStateHolder {
     val state: WantedPopoverState
-    val visibleState: State<Boolean>
 
     fun show()
     fun dismiss()
@@ -98,7 +95,6 @@ internal interface WantedPopoverStateHolder {
         width: Int
     )
     fun updateTooltipSize(width: Int, height: Int)
-    fun updateShowState(show: Boolean)
     fun calculatePopoverPosition(
         windowInsetsBottomPx: Float,
         screenHeightPx: Float,
@@ -125,19 +121,14 @@ private class WantedPopoverStateHolderImpl(
     initialVisible: Boolean
 ) : WantedPopoverStateHolder {
 
-    private val _visibleState = mutableStateOf(initialVisible)
-    override val visibleState: State<Boolean> get() = _visibleState
-
     private var _state by mutableStateOf(WantedPopoverState(isVisible = initialVisible))
     override val state: WantedPopoverState get() = _state
 
     override fun show() {
-        _visibleState.value = true
         _state = _state.copy(isVisible = true)
     }
 
     override fun dismiss() {
-        _visibleState.value = false
         _state = _state.copy(isVisible = false)
     }
 
@@ -162,10 +153,6 @@ private class WantedPopoverStateHolderImpl(
             tooltipWidth = width,
             tooltipHeight = height
         )
-    }
-
-    override fun updateShowState(show: Boolean) {
-        _state = _state.copy(isShow = show)
     }
 
     override fun calculatePopoverPosition(
