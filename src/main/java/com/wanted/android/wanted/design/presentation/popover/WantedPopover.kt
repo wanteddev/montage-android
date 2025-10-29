@@ -108,6 +108,8 @@ fun WantedPopover(
         if (stateHolder.state.contentHeight > 0 && stateHolder.state.contentWidth > 0) {
             val windowInsetsBottomPx =
                 with(density) { windowInsets.getBottom(density).toDp().toPx() }
+            val windowInsetsTopPx =
+                with(density) { windowInsets.getTop(density).toDp().toPx() }
             val screenHeight = configuration.screenHeightDp
             val screenHeightPx = with(density) { screenHeight.dp.toPx() }
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
@@ -116,10 +118,10 @@ fun WantedPopover(
 
             stateHolder.calculatePopoverPosition(
                 windowInsetsBottomPx = windowInsetsBottomPx,
+                windowInsetsTopPx = windowInsetsTopPx,
                 screenHeightPx = screenHeightPx,
                 estimatedTooltipHeight = estimatedTooltipHeight,
                 positionTop = positionTop,
-                shadowSpacingPx = 0,
                 align = align,
                 screenWidthPx = screenWidthPx,
                 paddingPx = paddingPx
@@ -148,13 +150,13 @@ fun WantedPopover(
                 width = coordinates.size.width
             )
         },
-        onCalculatePosition = { windowInsetsBottomPx, screenHeightPx, estimatedTooltipHeight, shadowSpacingPx, screenWidthPx, paddingPx ->
+        onCalculatePosition = { windowInsetsBottomPx, screenHeightPx, estimatedTooltipHeight, windowInsetsTopPx, screenWidthPx, paddingPx ->
             stateHolder.calculatePopoverPosition(
                 windowInsetsBottomPx = windowInsetsBottomPx,
+                windowInsetsTopPx = windowInsetsTopPx,
                 screenHeightPx = screenHeightPx,
                 estimatedTooltipHeight = estimatedTooltipHeight,
                 positionTop = positionTop,
-                shadowSpacingPx = 0,
                 align = align,
                 screenWidthPx = screenWidthPx,
                 paddingPx = paddingPx
@@ -182,7 +184,7 @@ private fun PopoverContainer(
     body: @Composable () -> Unit,
     content: @Composable () -> Unit,
     onContentPositioned: (androidx.compose.ui.layout.LayoutCoordinates) -> Unit,
-    onCalculatePosition: (Float, Float, Float, Int, Int, Int) -> Unit,
+    onCalculatePosition: (Float, Float, Float, Float, Int, Int) -> Unit,
     onTooltipSizeChanged: (Int, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -191,6 +193,7 @@ private fun PopoverContainer(
 
     // WindowInsets 계산 (WindowInsets(0)인 경우 모두 0이 됨)
     val windowInsetsBottomPx = with(density) { windowInsets.getBottom(density).toDp().toPx() }
+    val windowInsetsTopPx = with(density) { windowInsets.getTop(density).toDp().toPx() }
     val screenHeightPx = with(density) { screenHeight.dp.toPx() }
     val screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt()
 
@@ -204,6 +207,7 @@ private fun PopoverContainer(
                 popoverState = popoverState,
                 density = density,
                 windowInsetsBottomPx = windowInsetsBottomPx,
+                windowInsetsTopPx = windowInsetsTopPx,
                 screenHeightPx = screenHeightPx,
                 screenWidthPx = screenWidthPx,
                 align = align,
@@ -223,23 +227,19 @@ private fun PopoverPopup(
     popoverState: WantedPopoverState,
     density: Density,
     windowInsetsBottomPx: Float,
+    windowInsetsTopPx: Float,
     screenHeightPx: Float,
     screenWidthPx: Int,
     align: WantedPopoverAlign,
     positionTop: Boolean,
     always: Boolean,
     body: @Composable () -> Unit,
-    onCalculatePosition: (Float, Float, Float, Int, Int, Int) -> Unit,
+    onCalculatePosition: (Float, Float, Float, Float, Int, Int) -> Unit,
     onTooltipSizeChanged: (Int, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
     val paddingPx = with(density) { 8.dp.toPx().toInt() }
-
-    // Popover 위치 계산
-    // WindowInsets(0)인 경우: windowInsetsTopPx = 0, windowInsetsBottomPx = 0
-    // 실제 사용 가능한 화면 높이 = screenHeightPx - windowInsetsTopPx - windowInsetsBottomPx
-    val fullScreenHeightPx = screenHeightPx
 
     LaunchedEffect(
         popoverState.contentPositionY,
@@ -250,17 +250,17 @@ private fun PopoverPopup(
         popoverState.tooltipWidth,
         popoverState.tooltipHeight,
         windowInsetsBottomPx,
-        fullScreenHeightPx,
-        screenWidthPx,     // 화면 폭 변경 시 재계산
-        align,             // align 변경 시 재계산
-        positionTop        // positionTop 변경 시 재계산
+        screenHeightPx,
+        screenWidthPx,
+        align,
+        positionTop
     ) {
         if (popoverState.contentHeight > 0 && popoverState.contentWidth > 0) {
             onCalculatePosition(
                 windowInsetsBottomPx,
-                fullScreenHeightPx,
+                screenHeightPx,
                 estimatedTooltipHeight,
-                0,
+                windowInsetsTopPx,
                 screenWidthPx,
                 paddingPx
             )
@@ -269,7 +269,7 @@ private fun PopoverPopup(
 
     val popoverSpacingPx = with(density) { 8.dp.toPx().toInt() }
 
-    val popupOffset = calculatePopupOffset(popoverState, windowInsetsBottomPx, 0, popoverSpacingPx)
+    val popupOffset = calculatePopupOffset(popoverState, windowInsetsBottomPx,  popoverSpacingPx)
 
     val popupProperties = createPopupProperties(always)
 
@@ -304,24 +304,23 @@ private fun PopoverPopup(
 private fun calculatePopupOffset(
     popoverState: WantedPopoverState,
     windowInsetsBottomPx: Float,
-    shadowSpacingPx: Int,
     spacingBetweenPopoverPx: Int
 ): IntOffset {
     return IntOffset(
         x = popoverState.offsetX,
         y = if (popoverState.isPopupAbove) {
-            // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격, 그림자 여백 제거
+            // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격
             var positionY =
                 popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - spacingBetweenPopoverPx
 
-            // overlapBottom 조건일 때 추가 보정 (원래 로직)
+            // overlapBottom 조건일 때 추가 보정
             if (popoverState.overlapBottom) {
                 positionY = positionY - windowInsetsBottomPx.toInt() - popoverState.contentHeight
             }
 
             positionY
         } else {
-            // 아래쪽에 표시할 때: content 아래 + 간격 - 그림자 여백
+            // 아래쪽에 표시할 때: content 아래 + 간격
             popoverState.contentPositionY.toInt() + popoverState.contentHeight + spacingBetweenPopoverPx
         }
     )
