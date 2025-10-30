@@ -44,6 +44,95 @@ import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarL
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
+
+/**
+ * 일반 TopAppBar 형식을 제공합니다. 정렬/타입에 따라 내부 레이아웃이 달라집니다.
+ *
+ * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
+ * @param windowInsets WindowInsets: 인셋을 적용합니다.
+ * @param variant Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
+ * @param background Color: 앱바 배경 색상입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
+ * @param title @Composable (() -> Unit)?: 타이틀 컴포저블입니다.
+ * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
+ * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
+ */
+@Composable
+fun WantedTopAppBar(
+    modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
+    variant: Variant = Variant.Normal,
+    background: Color = colorResource(R.color.background_normal_normal),
+    scrollableState: ScrollableState? = null,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    title: @Composable (() -> Unit)? = null,
+    actions: @Composable (RowScope.() -> Unit)? = null
+) {
+    val isShowDivider = remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
+        isShowDivider.value = scrollableState?.canScrollBackward == true
+    }
+
+    Box(
+        modifier = if (variant == Variant.Floating) {
+            modifier.background(
+                Brush.verticalGradient(
+                    colors = listOf(background, colorResource(R.color.transparent))
+                )
+            )
+        } else {
+            modifier.background(background)
+        }
+    ) {
+        CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
+            when (variant) {
+                Variant.Normal -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier
+                            .windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                Variant.Display -> {
+                    WantedDisplayTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                Variant.Floating -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                Variant.Search -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+            }
+        }
+
+        if (isShowDivider.value) {
+            WantedOverLayoutDivider(
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
+    }
+}
+
 /**
  * 통합 상단 앱바 컴포저블로, 일반형, Floating형, Extended형을 포함합니다.
  *
@@ -60,7 +149,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  *
  * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant Variant: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param variant Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
  * @param background Color: 앱바 배경 색상입니다.
  * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -130,7 +219,7 @@ fun WantedTopAppBar(
  *
  * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant Variant: 앱바 유형(Normal, Floating, Extended)입니다.
+ * @param variant Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
  * @param background Color: 앱바 배경 색상입니다.
  * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -244,7 +333,7 @@ fun WantedSearchTopAppBar(
     scrollableState: ScrollableState? = null,
     placeholder: String = "",
     enabled: Boolean = true,
-    size: Size = Size.Medium(),
+    size: Size = Size.Small(),
     maxWordCount: Int = Int.MAX_VALUE,
     enabledOverflowText: Boolean = false,
     interactionSource: MutableInteractionSource? = null,
@@ -300,96 +389,6 @@ fun WantedSearchTopAppBar(
         actions = actions
     )
 }
-
-
-/**
- * 일반 TopAppBar 형식을 제공합니다. 정렬/타입에 따라 내부 레이아웃이 달라집니다.
- *
- * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
- * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant Variant: 앱바 유형(Normal, Floating, Extended)입니다.
- * @param background Color: 앱바 배경 색상입니다.
- * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
- * @param title @Composable (() -> Unit)?: 타이틀 컴포저블입니다.
- * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
- * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
- */
-@Composable
-fun WantedTopAppBar(
-    modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    variant: Variant = Variant.Normal,
-    background: Color = colorResource(R.color.background_normal_normal),
-    scrollableState: ScrollableState? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
-    title: @Composable (() -> Unit)? = null,
-    actions: @Composable (RowScope.() -> Unit)? = null
-) {
-    val isShowDivider = remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
-        isShowDivider.value = scrollableState?.canScrollBackward == true
-    }
-
-    Box(
-        modifier = if (variant == Variant.Floating) {
-            modifier.background(
-                Brush.verticalGradient(
-                    colors = listOf(background, colorResource(R.color.transparent))
-                )
-            )
-        } else {
-            modifier.background(background)
-        }
-    ) {
-        CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
-            when (variant) {
-                Variant.Normal -> {
-                    WantedTopAppBarLayout(
-                        modifier = Modifier
-                            .windowInsetsPadding(windowInsets),
-                        navigationIcon = navigationIcon,
-                        title = title,
-                        actions = actions
-                    )
-                }
-
-                Variant.Display -> {
-                    WantedDisplayTopAppBarLayout(
-                        modifier = Modifier.windowInsetsPadding(windowInsets),
-                        navigationIcon = navigationIcon,
-                        title = title,
-                        actions = actions
-                    )
-                }
-
-                Variant.Floating -> {
-                    WantedTopAppBarLayout(
-                        modifier = Modifier.windowInsetsPadding(windowInsets),
-                        navigationIcon = navigationIcon,
-                        title = title,
-                        actions = actions
-                    )
-                }
-
-                Variant.Search -> {
-                    WantedTopAppBarLayout(
-                        modifier = Modifier.windowInsetsPadding(windowInsets),
-                        navigationIcon = navigationIcon,
-                        title = title,
-                        actions = actions
-                    )
-                }
-            }
-        }
-
-        if (isShowDivider.value) {
-            WantedOverLayoutDivider(
-                modifier = Modifier.align(Alignment.BottomCenter)
-            )
-        }
-    }
-}
-
 
 @Preview("light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ko")
 @Preview("dark", uiMode = Configuration.UI_MODE_NIGHT_YES, locale = "ko")

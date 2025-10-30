@@ -129,7 +129,7 @@
 *
 * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋을 적용합니다.
-* @param type Variant: 앱바 유형(Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
 * @param background Color: 앱바 배경 색상입니다.
 * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -151,7 +151,7 @@
 *
 * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋을 적용합니다.
-* @param type Variant: 앱바 유형(Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
 * @param background Color: 앱바 배경 색상입니다.
 * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
@@ -166,7 +166,7 @@
 *
 * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
 * @param windowInsets WindowInsets: 인셋을 적용합니다.
-* @param type Variant: 앱바 유형(Normal, Floating, Extended)입니다.
+* @param type Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
 * @param background Color: 앱바 배경 색상입니다.
 * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
 * @param title @Composable (() -> Unit)?: 타이틀 컴포저블입니다.
