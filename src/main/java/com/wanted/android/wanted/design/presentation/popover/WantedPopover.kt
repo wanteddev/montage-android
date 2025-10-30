@@ -433,7 +433,7 @@ private fun PopoverHeader(
                 .padding(vertical = 2.dp)
                 .weight(1f),
             text = heading,
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             style = WantedTextStyle(
                 colorRes = R.color.label_normal,
