@@ -51,7 +51,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
  * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
- * @param model Any?: 표시할 이미지 모델 (URL 또는 Drawable ID)입니다.
+ * @param model Any?: 표시할 이미지 모델입니다 (URL 또는 Drawable ID).
  * @param placeHolder Int?: 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다.
  * @param isIcon Boolean: 아바타 안쪽에 추가 보더를 적용할지 여부를 설정합니다.
  * @param isDrawableRes Boolean: model이 Drawable 리소스 ID일 경우 true로 설정합니다.

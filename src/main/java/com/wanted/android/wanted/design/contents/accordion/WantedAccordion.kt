@@ -20,11 +20,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionContract.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_8
 import com.wanted.android.wanted.design.util.WantedTextStyle
+
 /**
  * 아코디언 형태로 확장/축소가 가능한 UI 컴포넌트입니다.
  *
@@ -55,9 +56,9 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param fillWidth Boolean: 콘텐츠의 가로 너비를 전체로 채울지 여부입니다.
  * @param divider Boolean: 하단 Divider 표시 여부입니다.
  * @param verticalPadding VerticalPadding: 헤더 영역의 수직 패딩 값입니다.
- * @param leadingIcon @Composable (() -> Unit)?: 제목 좌측에 위치할 아이콘입니다. 선택 사항입니다.
- * @param trail @Composable () -> Unit: 제목 우측에 위치할 아이콘입니다. 기본은 확장/축소 화살표입니다.
- * @param content @Composable (() -> Unit)?: 확장 상태일 때 표시될 추가 콘텐츠입니다. 선택 사항입니다.
+ * @param leadingIcon (@Composable () -> Unit)?: 제목 좌측에 위치할 아이콘입니다. 선택 사항입니다.
+ * @param trail (@Composable () -> Unit): 제목 우측에 위치할 아이콘입니다. 기본값은 확장/축소 화살표입니다.
+ * @param content (@Composable () -> Unit)?: 확장 상태일 때 표시될 추가 콘텐츠입니다. 선택 사항입니다.
  * @param onChangeExpanded (Boolean) -> Unit: 확장 상태 변경 시 호출되는 콜백입니다.
  *
  * @see WantedAccordionHeader
@@ -220,7 +221,10 @@ private fun WantedAccordionPreview() {
                             Modifier
                                 .fillMaxWidth()
                                 .height(100.dp)
-                                .background(colorResource(R.color.accent_background_violet).copy(OPACITY_8))
+                                .background(
+                                    color = colorResource(R.color.accent_background_violet)
+                                        .copy(OPACITY_8)
+                                )
                         )
                     },
                     onChangeExpanded = {}
@@ -237,7 +241,10 @@ private fun WantedAccordionPreview() {
                             Modifier
                                 .fillMaxWidth()
                                 .height(100.dp)
-                                .background(colorResource(R.color.accent_background_violet).copy(OPACITY_8))
+                                .background(
+                                    color = colorResource(R.color.accent_background_violet)
+                                        .copy(OPACITY_8)
+                                )
                         )
                     },
                     onChangeExpanded = {}

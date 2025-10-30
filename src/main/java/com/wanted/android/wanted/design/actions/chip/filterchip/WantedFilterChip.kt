@@ -46,7 +46,7 @@ import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 /**
- * 사용 편의성을 위한 필터 Chip 컴포저블입니다.
+ * 사용 편의성을 위한 필터 Chip입니다.
  * 간단한 설정만으로 기본 스타일의 필터 Chip을 사용할 수 있으며,
  * 내부적으로 CompositionLocal을 활용하여 관련 상태를 주입합니다.
  *
@@ -59,16 +59,16 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * )
  * ```
  *
- * @param text: Chip에 표시될 텍스트
- * @param modifier: Modifier를 통해 스타일을 조정할 수 있음
- * @param activeLabel: Chip이 활성화되었을 때 표시할 라벨 텍스트
- * @param size: Chip의 크기를 정의하는 enum 값 (기본값: Small)
- * @param variant: Chip의 스타일 (기본값: Solid)
- * @param isActive: Chip의 활성화 상태
- * @param isEnable: Chip의 사용 가능 상태
- * @param isExpend: 확장 가능 상태 (아이콘 변경 목적)
- * @param interactionSource: 사용자 인터랙션 처리를 위한 객체
- * @param onClick: 클릭 시 호출되는 콜백 함수
+ * @param text String: Chip에 표시될 텍스트입니다.
+ * @param modifier Modifier: Modifier를 통해 스타일을 조정할 수 있습니다.
+ * @param activeLabel String: Chip이 활성화되었을 때 표시할 라벨 텍스트입니다.
+ * @param size FilterChipSize: Chip의 크기를 정의하는 enum 값입니다 (기본값: Small).
+ * @param variant FilterChipVariant: Chip의 스타일입니다 (기본값: Solid).
+ * @param isActive Boolean: Chip의 활성화 상태입니다.
+ * @param isEnable Boolean: Chip의 사용 가능 상태입니다.
+ * @param isExpend Boolean: 확장 가능 상태입니다 (아이콘 변경 목적).
+ * @param interactionSource MutableInteractionSource: 사용자 인터랙션 처리를 위한 객체입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
  */
 @Composable
 fun WantedFilterChip(
@@ -105,8 +105,8 @@ fun WantedFilterChip(
 }
 
 /**
- * Chip 기본 설정을 외부에서 주입할 수 있는 커스터마이징 버전의 필터 Chip 컴포저블입니다.
- * 기본 스타일뿐만 아니라 텍스트 스타일, 색상 등 세부 속성을 설정 가능하며
+ * Chip 기본 설정을 외부에서 주입할 수 있는 커스터마이징 버전의 필터 Chip입니다.
+ * 기본 스타일뿐만 아니라 텍스트 스타일, 색상 등 세부 속성을 설정할 수 있으며,
  * 내부적으로 주어진 chipDefault 설정값을 기반으로 Chip을 구성합니다.
  *
  * 사용 예시:
@@ -119,13 +119,13 @@ fun WantedFilterChip(
  * )
  * ```
  *
- * @param text: Chip에 표시될 텍스트
- * @param modifier: Modifier를 통해 스타일을 조정할 수 있음
- * @param activeLabel: Chip이 활성화되었을 때 표시할 라벨 텍스트
- * @param isExpanded: Chip이 확장 상태인지 여부 (화살표 아이콘에 반영됨)
- * @param chipDefault: 외부에서 주입하는 Chip의 기본 설정값
- * @param interactionSource: 사용자 인터랙션 처리를 위한 객체
- * @param onClick: 클릭 시 호출되는 콜백 함수
+ * @param text String: Chip에 표시될 텍스트입니다.
+ * @param modifier Modifier: Modifier를 통해 스타일을 조정할 수 있습니다.
+ * @param activeLabel String: Chip이 활성화되었을 때 표시할 라벨 텍스트입니다.
+ * @param isExpanded Boolean: Chip이 확장 상태인지 여부입니다 (화살표 아이콘에 반영됨).
+ * @param chipDefault WantedFilterChipDefault: 외부에서 주입하는 Chip의 기본 설정값입니다.
+ * @param interactionSource MutableInteractionSource: 사용자 인터랙션 처리를 위한 객체입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
  */
 @Composable
 fun WantedFilterChip(

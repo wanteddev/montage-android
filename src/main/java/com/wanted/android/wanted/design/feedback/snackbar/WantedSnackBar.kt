@@ -38,8 +38,8 @@ import com.wanted.android.wanted.design.util.clickOnce
 /**
  * 앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다.
  *
- * `SnackbarHostState`를 받아 `SnackbarData.visuals`가 `WantedSnackbarVisuals`인 경우 커스텀 레이아웃으로,
- * 아닌 경우 기본 스낵바 텍스트와 버튼만 사용해 표시합니다.
+ * `WantedSnackbarVisuals`를 사용하면 아이콘과 설명이 포함된 커스텀 레이아웃으로 표시되고,
+ * 기본 `SnackbarVisuals`를 사용하면 표준 스낵바 형태로 표시됩니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -47,8 +47,8 @@ import com.wanted.android.wanted.design.util.clickOnce
  * WantedSnackBar(snackbarHostState = snackbarHostState)
  * ```
  *
- * @param snackbarHostState SnackbarHostState: 스낵바 표시 상태를 제어합니다.
- * @param modifier Modifier: 스낵바 전체 레이아웃 조정 Modifier입니다.
+ * @param snackbarHostState SnackbarHostState 스낵바 표시 상태를 제어합니다.
+ * @param modifier Modifier 스낵바 전체 레이아웃 조정 Modifier입니다.
  */
 @Composable
 fun WantedSnackBar(

@@ -39,7 +39,6 @@ import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.clickOnce
 
-
 val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
 
 /**
@@ -49,14 +48,14 @@ val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
  * 실제 콘텐츠 주변에 여백(Padding)을 추가하여 UX를 향상시킵니다.
  *
  * 리플 효과, 클릭 이벤트, 터치 활성화 여부 등을 설정할 수 있으며,
- * `LocalWantedTouchArea`를 활용해 내부 터치 허용 여부를 Composition으로 전달받습니다.
+ * LocalWantedTouchArea를 활용해 내부 터치 허용 여부를 Composition으로 전달받습니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedTouchArea(
  *     horizontalPadding = 16.dp,
  *     verticalPadding = 12.dp,
- *     shape = CircleShape,
+ *     shape = RoundedCornerShape(6.dp),
  *     onClick = { /* 클릭 이벤트 */ }
  * ) {
  *     Icon(painter = painterResource(id = R.drawable.ic_example), contentDescription = null)
@@ -66,14 +65,14 @@ val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
  * @param modifier Modifier: 전체 래퍼의 외형 및 배치를 제어합니다.
  * @param verticalPadding Dp: 상하 터치 영역 확장 값입니다.
  * @param horizontalPadding Dp: 좌우 터치 영역 확장 값입니다.
- * @param shape Shape: 터치 영역의 모양입니다. 기본은 6dp의 라운드 사각형입니다.
- * @param enabled Boolean: 클릭 가능한지 여부를 설정합니다.
- * @param enabledInnerTouch Boolean: 내부 콘텐츠 사이즈 계산 여부입니다. 내부 CompositionLocal에서 기본값 제공.
+ * @param shape Shape: 터치 영역의 모양입니다. 기본값은 6dp의 라운드 사각형입니다.
+ * @param enabled Boolean: 클릭 가능 여부를 설정합니다.
+ * @param enabledInnerTouch Boolean: 내부 콘텐츠 사이즈 계산 여부입니다. 내부 CompositionLocal에서 기본값을 제공합니다.
  * @param rippleColor Color: 리플 효과의 색상입니다. 기본값은 Unspecified입니다.
  * @param isUseRipple Boolean: true일 경우 리플 효과를 사용합니다.
  * @param interactionSource MutableInteractionSource: 상호작용 상태 관리를 위한 InteractionSource입니다.
- * @param content @Composable BoxScope.() -> Unit: 실제 표시할 콘텐츠입니다.
- * @param onClick (() -> Unit)?: 클릭 이벤트가 발생할 경우 호출되는 콜백입니다. null일 경우 클릭 비활성.
+ * @param content (@Composable BoxScope.() -> Unit): 실제 표시할 콘텐츠입니다.
+ * @param onClick (() -> Unit)?: 클릭 이벤트가 발생할 경우 호출되는 콜백입니다. null일 경우 클릭이 비활성화됩니다.
  */
 @Composable
 fun WantedTouchArea(
@@ -212,25 +211,20 @@ private fun MeasureOnly(
     onSizeCalculated: (IntSize) -> Unit
 ) {
     SubcomposeLayout { constraints ->
-        // 1) "measure" 키로 content만 subcompose
         val measurables = subcompose("measure", content)
-        // 2) constraints의 최소 크기를 0으로 열어 두고 실제 크기만 측정
         val placeable = measurables.first()
             .measure(constraints.copy(minWidth = 0, minHeight = 0))
-        // 3) 측정된 size 콜백으로 전달
-
         onSizeCalculated(IntSize(placeable.width, placeable.height))
 
         layout(width = placeable.width, height = placeable.height) { /* no placement → draw pass에서 skip */ }
     }
 }
 
-
 interface WantedTouchAreaLoader {
     fun getEnableInnerTouch(): Boolean
 }
 
-private class WantedTouchAreaLoaderImpl() : WantedTouchAreaLoader {
+private class WantedTouchAreaLoaderImpl : WantedTouchAreaLoader {
     override fun getEnableInnerTouch(): Boolean = false
 }
 

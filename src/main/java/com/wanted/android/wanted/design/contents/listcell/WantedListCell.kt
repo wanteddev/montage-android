@@ -60,9 +60,9 @@ import com.wanted.android.wanted.design.util.toAnnotatedString
  * @param ellipsis Boolean: true일 경우 텍스트가 넘칠 시 생략 부호(...)로 표시됩니다.
  * @param verticalAlignCenter Boolean: true일 경우 텍스트를 수직 중앙 정렬합니다.
  * @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다.
- * @param leadingContent Function0<Unit>?: 좌측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
- * @param trailingContent Function0<Unit>?: 우측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
- * @param onClick Function0<Unit>?: 셀 클릭 시 호출되는 콜백 함수입니다.
+ * @param leadingContent (@Composable () -> Unit)? : 좌측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
+ * @param trailingContent (@Composable () -> Unit)? : 우측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
+ * @param onClick (() -> Unit)? : 셀 클릭 시 호출되는 콜백 함수입니다.
  */
 @Composable
 fun WantedListCell(
@@ -129,11 +129,11 @@ fun WantedListCell(
  * @param verticalAlignCenter Boolean: true일 경우 텍스트를 수직 중앙 정렬합니다.
  * @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다.
  * @param textMaxLine Int: 텍스트 최대 줄 수를 지정합니다. 기본값은 1입니다.
- * @param titleStyle TextStyle?: 메인 텍스트의 커스텀 스타일을 설정할 수 있습니다.
- * @param captionStyle TextStyle?: 캡션 텍스트의 커스텀 스타일을 설정할 수 있습니다.
- * @param leadingContent Function0<Unit>?: 좌측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
- * @param trailingContent Function0<Unit>?: 우측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
- * @param onClick Function0<Unit>?: 셀 클릭 시 호출되는 콜백 함수입니다.
+ * @param titleStyle TextStyle? : 메인 텍스트의 커스텀 스타일을 설정할 수 있습니다.
+ * @param captionStyle TextStyle? : 캡션 텍스트의 커스텀 스타일을 설정할 수 있습니다.
+ * @param leadingContent (@Composable () -> Unit)? : 좌측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
+ * @param trailingContent (@Composable () -> Unit)? : 우측에 추가적인 컴포저블 콘텐츠를 배치할 수 있습니다.
+ * @param onClick (() -> Unit)? : 셀 클릭 시 호출되는 콜백 함수입니다.
  */
 @Composable
 fun WantedListCell(

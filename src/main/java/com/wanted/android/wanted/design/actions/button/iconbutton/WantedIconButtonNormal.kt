@@ -46,7 +46,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param modifier Modifier: 버튼 외형 및 배치를 제어하는 Modifier입니다.
  * @param enabled Boolean: 버튼의 활성화 여부입니다. false일 경우 비활성 색상으로 표시됩니다.
  * @param tint Color: 아이콘의 색상입니다. 기본값은 label_normal입니다.
- * @param pushBadge (() -> Unit)?: 우측 상단에 표시될 PushBadge 등 컴포저블입니다.
+ * @param pushBadge (@Composable () -> Unit)?: 우측 상단에 표시될 PushBadge 등 컴포저블입니다.
  * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
  */
 @Composable

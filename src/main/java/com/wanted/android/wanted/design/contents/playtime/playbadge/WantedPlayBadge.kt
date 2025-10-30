@@ -31,7 +31,7 @@ import com.wanted.android.wanted.design.util.OPACITY_61
  * 회색 계열 배경과 흰색 플레이 아이콘으로 구성되며, 크기 및 대체 색상 사용 여부를 설정할 수 있습니다.
  * `Size`에 따라 배지와 아이콘의 크기가 달라집니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedPlayBadge(
  *     size = Size.Medium,

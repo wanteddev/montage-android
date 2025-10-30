@@ -43,7 +43,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 /**
  * 하단에 위치한 액션 버튼 영역을 생성합니다.
  *
- * positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달합니다.
+ * positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달드립니다.
  * variant 영역을 통해 상단에 부가 요소를 렌더링할 수 있습니다.
  *
  * 사용 예시 :
@@ -59,20 +59,24 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * )
  * ```
  *
- * @param type 액션 영역의 타입을 설정합니다.
- * @param positive 메인(긍정) 액션 버튼 텍스트입니다.
- * @param onClickPositive 메인 액션 버튼 클릭 콜백입니다.
- * @param negative 서브(부정) 액션 버튼 텍스트입니다.
- * @param neutral 추가(중립) 액션 버튼 텍스트입니다.
- * @param caption 액션 영역 상단에 표시할 캡션입니다.
- * @param scrollableState 스크롤 가능한 경우 상태를 전달합니다.
- * @param modifier Modifier를 설정합니다.
- * @param background 배경 그라데이션 표시 여부를 지정합니다.
- * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
- * @param gradationColor 배경 그라데이션 색상을 설정합니다.
- * @param onClickNegative 서브 액션 버튼 클릭 콜백입니다.
- * @param onClickNeutral 추가 액션 버튼 클릭 콜백입니다.
- * @param extra 추가적으로 표시할 컴포넌트입니다.
+ * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
+ * @param positive String: 메인(긍정) 액션 버튼의 텍스트입니다.
+ * @param isEnablePositive Boolean: 메인 액션 버튼의 활성화 여부입니다.
+ * @param onClickPositive () -> Unit: 메인 액션 버튼 클릭 콜백입니다.
+ * @param negative String?: 서브(부정) 액션 버튼의 텍스트입니다.
+ * @param isEnableNegative Boolean: 서브 액션 버튼의 활성화 여부입니다.
+ * @param neutral String?: 추가(중립) 액션 버튼의 텍스트입니다.
+ * @param isEnableNeutral Boolean: 추가 액션 버튼의 활성화 여부입니다.
+ * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
+ * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
+ * @param modifier Modifier: Modifier를 설정합니다.
+ * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
+ * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
+ * @param divider Boolean: 구분선 표시 여부를 지정합니다.
+ * @param gradationColor Color: 배경 그라데이션 색상을 설정합니다.
+ * @param onClickNegative (() -> Unit)?: 서브 액션 버튼 클릭 콜백입니다.
+ * @param onClickNeutral (() -> Unit)?: 추가 액션 버튼 클릭 콜백입니다.
+ * @param extra (@Composable () -> Unit)?: 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
 fun WantedActionArea(
@@ -151,7 +155,7 @@ fun WantedActionArea(
 
 /**
  * Slot을 활용하여 커스텀 버튼을 직접 전달하는 방식의 액션 영역입니다.
- * 버튼 스타일, 배치 등을 완전히 제어할 수 있습니다.
+ * 버튼 스타일 및 배치를 완전히 제어할 수 있습니다.
  *
  * 사용 예시 :
  * ```kotlin
@@ -166,17 +170,17 @@ fun WantedActionArea(
  * )
  * ```
  *
- * @param type 액션 영역의 타입을 설정합니다.
- * @param safeArea SafeArea를 적용할지 여부를 지정합니다.
- * @param background 배경 그라데이션 표시 여부를 지정합니다.
- * @param gradationColor 배경 그라데이션 색상을 설정합니다.
- * @param caption 액션 영역 상단에 표시할 캡션입니다.
- * @param scrollableState 스크롤 가능한 경우 상태를 전달합니다.
- * @param modifier Modifier를 설정합니다.
- * @param positive 메인(긍정) 액션 버튼 Slot입니다.
- * @param negative 서브(부정) 액션 버튼 Slot입니다.
- * @param neutral 추가(중립) 액션 버튼 Slot입니다.
- * @param extra 추가적으로 표시할 컴포넌트입니다.
+ * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
+ * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
+ * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
+ * @param gradationColor Color: 배경 그라데이션 색상을 설정합니다.
+ * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
+ * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
+ * @param modifier Modifier: Modifier를 설정합니다.
+ * @param positive (@Composable () -> Unit): 메인(긍정) 액션 버튼 Slot입니다.
+ * @param negative (@Composable (() -> Unit)?): 서브(부정) 액션 버튼 Slot입니다.
+ * @param neutral (@Composable (() -> Unit)?): 추가(중립) 액션 버튼 Slot입니다.
+ * @param extra (@Composable (() -> Unit)?): 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
 fun WantedActionArea(
@@ -213,7 +217,7 @@ fun WantedActionArea(
     )
 }
 
-@Deprecated("Slot 방식을 사용하는 WantedActionArea를 사용하세요", level = DeprecationLevel.ERROR)
+@Deprecated("Slot 방식의 WantedActionArea를 사용하시기 바랍니다.", level = DeprecationLevel.ERROR)
 @Composable
 fun WantedActionArea(
     positive: String,

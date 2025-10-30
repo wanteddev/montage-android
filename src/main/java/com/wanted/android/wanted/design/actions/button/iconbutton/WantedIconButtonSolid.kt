@@ -25,11 +25,11 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 /**
- * `WantedIconButtonSize`를 사용하여 간편하게 크기와 패딩을 지정할 수 있는 Solid 스타일 아이콘 버튼입니다.
+ * WantedIconButtonSize를 사용하여 간편하게 크기와 패딩을 지정할 수 있는 Solid 스타일 아이콘 버튼입니다.
  *
- * 원형 배경과 흰색 아이콘을 기본으로 하며, 배경/아이콘 색상은 커스터마이징이 가능합니다.
+ * 원형 배경과 흰색 아이콘을 기본으로 하며, 배경 및 아이콘 색상은 커스터마이징이 가능합니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedIconButtonSolid(
  *     icon = R.drawable.ic_icon,
@@ -41,8 +41,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param icon Int: 아이콘으로 사용할 drawable 리소스 ID입니다.
  * @param size WantedIconButtonSize: 버튼 크기와 내부 패딩을 정의하는 enum입니다.
  * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
- * @param enabled Boolean: 버튼 활성화 여부입니다.
- * @param tint Color: 아이콘 색상입니다. 기본값은 흰색입니다.
+ * @param enabled Boolean: 버튼의 활성화 여부입니다.
+ * @param tint Color: 아이콘의 색상입니다. 기본값은 흰색입니다.
  * @param background Color: 배경 색상입니다. 기본값은 primary_normal입니다.
  * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
  */
@@ -73,7 +73,7 @@ fun WantedIconButtonSolid(
  *
  * 배경, 아이콘 색상 및 클릭 이벤트를 자유롭게 설정할 수 있습니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedIconButtonSolid(
  *     icon = R.drawable.ic_icon,
@@ -85,9 +85,9 @@ fun WantedIconButtonSolid(
  *
  * @param icon Int: 아이콘으로 사용할 drawable 리소스 ID입니다.
  * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
- * @param enabled Boolean: 버튼 활성화 여부입니다.
+ * @param enabled Boolean: 버튼의 활성화 여부입니다.
  * @param padding Dp: 아이콘 내부 패딩입니다.
- * @param tint Color: 아이콘 색상입니다. 기본값은 흰색입니다.
+ * @param tint Color: 아이콘의 색상입니다. 기본값은 흰색입니다.
  * @param background Color: 배경 색상입니다. 기본값은 primary_normal입니다.
  * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
  */

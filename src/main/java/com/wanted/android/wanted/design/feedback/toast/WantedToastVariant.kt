@@ -12,16 +12,15 @@ import com.wanted.android.designsystem.R
  * 각 타입은 고유의 아이콘 리소스 및 색상 리소스를 포함하고 있으며, 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
  *
  * 제공되는 토스트 스타일은 다음과 같습니다:
- * - Message: 일반 메시지 (아이콘 없음)
- * - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)
- * - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)
- * - Negative: 부정적인 메시지 (느낌표 아이콘, 빨간색)
+ * - Message: 일반 메시지 (아이콘 없음)입니다.
+ * - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
+ * - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
+ * - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
  *
- * @property resourceId `Int`: 표시할 아이콘 리소스의 ID입니다.
- * @property tinColor `Int`: 아이콘에 적용될 색상 리소스의 ID입니다.
- * @property backgroundResourceId `Int?`: 배경 이미지 리소스의 ID입니다.
- * @property backgroundTintColor `Int?`: 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
- * @DrawableRes val backgroundResourceId: Int? = null
+ * @property resourceId Int 표시할 아이콘 리소스의 ID입니다.
+ * @property tinColor Int 아이콘에 적용될 색상 리소스의 ID입니다.
+ * @property backgroundResourceId Int? 배경 이미지 리소스의 ID입니다.
+ * @property backgroundTintColor Int 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
  */
 sealed class WantedToastVariant(
     @DrawableRes val resourceId: Int,
@@ -52,7 +51,7 @@ sealed class WantedToastVariant(
      * data object Cautionary
      *
      * 주의가 필요한 상황을 나타내는 스타일입니다.
-     * 느낌표 아이콘과 주황색 색상이 사용됩니다.
+     * 삼각형 느낌표 아이콘과 주황색 색상이 사용됩니다.
      */
     data object Cautionary : WantedToastVariant(
         R.drawable.icon_normal_triangle_exclamation_fill,
@@ -60,11 +59,11 @@ sealed class WantedToastVariant(
         backgroundResourceId = R.drawable.ic_normal_triangle_exclamation_filler_svg
     )
 
-    /**Icon/Normal/triangle Exclamation
+    /**
      * data object Negative
      *
      * 부정적인 상황을 나타내는 스타일입니다.
-     * 느낌표 아이콘과 빨간색 색상이 사용됩니다.
+     * X 아이콘과 빨간색 색상이 사용됩니다.
      */
     data object Negative : WantedToastVariant(
         R.drawable.icon_normal_circle_close_fill,

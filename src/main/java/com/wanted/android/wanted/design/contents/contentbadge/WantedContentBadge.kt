@@ -113,12 +113,12 @@ class WantedContentBadge @JvmOverloads constructor(
 }
 
 /**
- * 텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 뱃지를 구성하는 컴포저블입니다.
+ * 텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 배지를 구성하는 컴포저블입니다.
  *
- * `Accent` 또는 `Neutral` 컬러 테마를 선택할 수 있으며, 크기와 테두리 스타일을 설정할 수 있습니다.
+ * Accent 또는 Neutral 컬러 테마를 선택할 수 있으며, 크기와 테두리 스타일을 설정할 수 있습니다.
  * 클릭 이벤트, 좌우 아이콘 표시 등 다양한 커스터마이징이 가능합니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedContentBadge(
  *     text = "Badge",
@@ -130,10 +130,10 @@ class WantedContentBadge @JvmOverloads constructor(
  * )
  * ```
  *
- * @param text String: 뱃지에 표시할 텍스트입니다.
+ * @param text String: 배지에 표시할 텍스트입니다.
  * @param modifier Modifier: 배지 외형과 배치를 설정합니다.
  * @param type ContentBadgeType: Solid 또는 Outlined 형식의 배지 스타일입니다.
- * @param size ContentBadgeSize: 뱃지 크기를 지정합니다 (XSmall, Small, Large).
+ * @param size ContentBadgeSize: 배지 크기를 지정합니다 (XSmall, Small, Large).
  * @param color ContentBadgeColor: 컬러 테마를 지정합니다 (Neutral, Accent).
  * @param accentDefault WantedContentBadgeDefault: Accent 또는 Neutral 컬러 설정의 기본값을 지정합니다.
  * @param leadingDrawable Int?: 텍스트 왼쪽에 표시할 아이콘 리소스 ID입니다.
@@ -228,17 +228,18 @@ fun WantedContentBadgeOld(
             .wrapContentSize()
             .clip(roundedCornerShape)
             .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
-            .then(if (type == ContentBadgeType.Solid) {
-                backgroundColor?.let {
-                    Modifier.background(color = it, shape = roundedCornerShape)
-                } ?: Modifier
-            } else {
-                lineColor?.let {
-                    Modifier.border(
-                        BorderStroke(1.dp, it), roundedCornerShape
-                    )
-                } ?: Modifier
-            })
+            .then(
+                if (type == ContentBadgeType.Solid) {
+                    backgroundColor?.let {
+                        Modifier.background(color = it, shape = roundedCornerShape)
+                    } ?: Modifier
+                } else {
+                    lineColor?.let {
+                        Modifier.border(
+                            BorderStroke(1.dp, it), roundedCornerShape
+                        )
+                    } ?: Modifier
+                })
             .padding(horizontal = getPadding(size).first, vertical = getPadding(size).second),
         horizontalArrangement = Arrangement.spacedBy(
             space = when (size) {

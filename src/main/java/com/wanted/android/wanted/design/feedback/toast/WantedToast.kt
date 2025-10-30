@@ -41,18 +41,18 @@ import kotlinx.coroutines.launch
 /**
  * SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
  *
- * `SnackbarData.visuals` 타입이 `WantedToastVisuals`인 경우 variant와 아이콘을 사용한 토스트를 표시하며,
- * 일반 메시지 타입일 경우 기본 메시지 출력만 합니다.
+ * `WantedToastVisuals`를 사용하면 variant와 아이콘이 포함된 토스트로 표시되고,
+ * 기본 `SnackbarVisuals`를 사용하면 메시지만 표시됩니다.
  *
  * 사용 예시:
  * ```kotlin
  * val snackbarHostState = remember { SnackbarHostState() }
- * WantedToast(snackBarHostState = snackbarHostState)
+ * WantedToast(snackbarHostState = snackbarHostState)
  * ```
  *
- * @param snackbarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
- * @param modifier Modifier: 외형을 조정합니다.
- * @param windowInsets WindowInsets: 시스템 인셋 대응을 위한 설정입니다.
+ * @param snackbarHostState SnackbarHostState Snackbar 상태를 관리합니다.
+ * @param modifier Modifier 외형을 조정합니다.
+ * @param windowInsets WindowInsets 시스템 인셋 대응을 위한 설정입니다.
  */
 @Composable
 fun WantedToast(

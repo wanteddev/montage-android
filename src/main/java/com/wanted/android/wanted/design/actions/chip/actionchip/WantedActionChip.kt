@@ -64,16 +64,16 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * )
  * ```
  *
- * @param text 표시할 텍스트입니다.
- * @param size Chip의 크기를 설정합니다.
- * @param variant Chip의 스타일 변형입니다. (Solid, Outlined)
- * @param isActive 선택 여부 상태입니다.
- * @param isEnable 사용 가능 여부입니다.
- * @param leftIcon 왼쪽에 표시할 아이콘 리소스 ID입니다.
- * @param rightIcon 오른쪽에 표시할 아이콘 리소스 ID입니다.
- * @param modifier Modifier를 통한 외형 스타일 지정입니다.
- * @param interactionSource 클릭 시의 상호작용 상태입니다.
- * @param onClick 클릭 시 실행되는 콜백입니다.
+ * @param text String: 표시할 텍스트입니다.
+ * @param modifier Modifier: Modifier를 통한 외형 스타일 지정입니다.
+ * @param size ActionChipSize: Chip의 크기를 설정합니다.
+ * @param variant ActionChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
+ * @param isActive Boolean: 선택 여부 상태입니다.
+ * @param isEnable Boolean: 사용 가능 여부입니다.
+ * @param leftIcon Int?: 왼쪽에 표시할 아이콘 리소스 ID입니다.
+ * @param rightIcon Int?: 오른쪽에 표시할 아이콘 리소스 ID입니다.
+ * @param interactionSource MutableInteractionSource: 클릭 시의 상호작용 상태입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 실행되는 콜백입니다.
  */
 @Composable
 fun WantedActionChip(
@@ -119,13 +119,13 @@ fun WantedActionChip(
  * )
  * ```
  *
- * @param text 표시할 텍스트입니다.
- * @param leftIcon 왼쪽 아이콘 리소스 ID입니다. nullable
- * @param rightIcon 오른쪽 아이콘 리소스 ID입니다. nullable
- * @param chipDefault 직접 지정한 Chip 스타일입니다.
- * @param interactionSource 클릭 상호작용을 위한 상태 객체입니다.
- * @param modifier Modifier를 통한 스타일 지정입니다.
- * @param onClick 클릭 시 실행될 콜백입니다.
+ * @param text String: 표시할 텍스트입니다.
+ * @param modifier Modifier: Modifier를 통한 스타��� 지정입니다.
+ * @param leftIcon Int?: 왼쪽 아이콘 리소스 ID입니다.
+ * @param rightIcon Int?: 오른쪽 아이콘 리소스 ID입니다.
+ * @param chipDefault WantedActionChipDefault: 직접 지정한 Chip 스타일입니다.
+ * @param interactionSource MutableInteractionSource: 클릭 상호작용을 위한 상태 객체입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 실행될 콜백입니다.
  */
 @Composable
 fun WantedActionChip(
@@ -192,17 +192,17 @@ fun WantedActionChip(
  * )
  * ```
  *
- * @param size Chip 크기 설정입니다.
- * @param variant Chip 스타일 변형입니다.
- * @param isActive 활성화 여부입니다.
- * @param isEnable 사용 가능 여부입니다.
- * @param chipDefault Chip 스타일 객체입니다.
- * @param interactionSource 터치 인터랙션 제어용 객체입니다.
- * @param leftIcon 좌측 아이콘 Composable입니다.
- * @param content 텍스트 또는 기타 Composable 콘텐츠입니다.
- * @param rightIcon 우측 아이콘 Composable입니다.
- * @param modifier Modifier를 통한 외형 스타일 지정입니다.
- * @param onClick 클릭 이벤트 콜백입니다.
+ * @param modifier Modifier: Modifier를 통한 외형 스타일 지정입니다.
+ * @param size ActionChipSize: Chip 크기 설정입니다.
+ * @param variant ActionChipVariant: Chip 스타일 변형입니다.
+ * @param isActive Boolean: 활성화 여부입니다.
+ * @param isEnable Boolean: 사용 가능 여부입니다.
+ * @param chipDefault WantedActionChipDefault: Chip 스타일 객체입니다.
+ * @param interactionSource MutableInteractionSource: 터치 인터랙션 제어용 객체입니다.
+ * @param content (@Composable () -> Unit): 텍스트 또는 기타 Composable 콘텐츠입니다.
+ * @param leftIcon (@Composable (() -> Unit)?): 좌측 아이콘 Composable입니다.
+ * @param rightIcon (@Composable (() -> Unit)?): 우측 아이콘 Composable입니다.
+ * @param onClick (() -> Unit)?: 클릭 이벤트 콜백입니다.
  */
 @Composable
 fun WantedActionChip(

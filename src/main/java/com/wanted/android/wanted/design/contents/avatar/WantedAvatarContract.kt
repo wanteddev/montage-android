@@ -17,17 +17,17 @@ object WantedAvatarContract {
      *
      * 아바타의 크기 및 모서리 반경 정보를 포함하는 sealed 클래스입니다.
      *
-     * 각 사이즈는 `data object`로 구체화되어 있으며, 아바타의 가로/세로 크기와 모서리 반경이 함께 정의됩니다.
+     * 각 사이즈는 data object로 구체화되어 있으며, 아바타의 가로/세로 크기와 모서리 반경이 함께 정의됩니다.
      *
      * 포함된 사이즈 값:
-     * - XSmall: 24dp, 6dp
-     * - Small: 32dp, 6dp
-     * - Medium: 40dp, 8dp
-     * - Large: 48dp, 10dp
-     * - XLarge: 56dp, 12dp
+     * - XSmall: 24dp 크기, 6dp 모서리 반경입니다.
+     * - Small: 32dp 크기, 6dp 모서리 반경입니다.
+     * - Medium: 40dp 크기, 8dp 모서리 반경입니다.
+     * - Large: 48dp 크기, 10dp 모서리 반경입니다.
+     * - XLarge: 56dp 크기, 12dp 모서리 반경입니다.
      *
-     * @property size `Dp`: 아바타의 가로/세로 크기입니다.
-     * @property cornerRadius `Dp`: 아바타 모서리의 반경입니다.
+     * @property size Dp: 아바타의 가로/세로 크기입니다.
+     * @property cornerRadius Dp: 아바타 모서리의 반경입니다.
      *
      * @see WantedAvatar
      */
@@ -35,7 +35,11 @@ object WantedAvatarContract {
         open val size: Dp,
         open val cornerRadius: Dp
     ) {
-
+        /**
+         * data object XSmall
+         *
+         * 24dp 크기, 6dp 모서리 반경의 가장 작은 아바타 크기입니다.
+         */
         data object XSmall : WantedAvatarSize(24.dp, 6.dp)
 
         /**
@@ -82,9 +86,9 @@ object WantedAvatarContract {
      * 아바타의 유형을 정의하는 enum 클래스입니다.
      *
      * 아바타가 표현하는 주체의 성격(사람, 회사, 학력 등)에 따라 다음의 유형을 가집니다:
-     * - Person: 사람(개인)
-     * - Company: 회사
-     * - Academic: 학력/학교
+     * - Person: 사람(개인)입니다.
+     * - Company: 회사입니다.
+     * - Academic: 학력/학교입니다.
      *
      * @see WantedAvatar
      */

@@ -15,9 +15,9 @@ import com.wanted.android.wanted.design.util.OPACITY_8
  *
  * 배지에 표시될 텍스트 또는 아이콘 색상(contentColor), 배경색(backgroundColor), 테두리 색상(outLineColor)을 설정합니다.
  *
- * @param contentColor `Color`: 콘텐츠 색상입니다.
- * @param backgroundColor `Color`: 배경 색상입니다. 기본값은 contentColor에 OPACITY_8을 적용한 색입니다.
- * @param outLineColor `Color`: 테두리 색상입니다. 기본값은 contentColor입니다.
+ * @param contentColor Color: 콘텐츠 색상입니다.
+ * @param backgroundColor Color: 배경 색상입니다. 기본값은 contentColor에 OPACITY_8을 적용한 색입니다.
+ * @param outLineColor Color: 테두리 색상입니다. 기본값은 contentColor입니다.
  */
 data class WantedContentBadgeDefault(
     val contentColor: Color,
@@ -37,14 +37,21 @@ data class WantedContentBadgeDefault(
 object WantedContentBadgeDefaults {
 
     /**
-     * getAccentDefault
-     *
      * 강조 스타일의 기본 콘텐츠 배지를 반환합니다.
      *
-     * @param contentColor `Color`: 콘텐츠 색상입니다. 기본값은 cyan 계열 색상입니다.
-     * @param backgroundColor `Color`: 배경 색상입니다. 기본값은 contentColor에 OPACITY_8을 적용한 색입니다.
-     * @param outLineColor `Color`: 테두리 색상입니다. 기본값은 contentColor입니다.
-     * @return `WantedContentBadgeDefault`: 강조 배지 구성
+     * 사용 예시:
+     * ```
+     * val badgeDefault = WantedContentBadgeDefaults.getAccentDefault()
+     * WantedContentBadge(
+     *     text = "New",
+     *     badgeDefault = badgeDefault
+     * )
+     * ```
+     *
+     * @param contentColor Color: 콘텐츠 색상입니다. 기본값은 cyan 계열 색상입니다.
+     * @param backgroundColor Color: 배경 색상입니다. 기본값은 contentColor에 OPACITY_8을 적용한 색입니다.
+     * @param outLineColor Color: 테두리 색상입니다. 기본값은 contentColor입니다.
+     * @return WantedContentBadgeDefault: 강조 배지 구성을 반환합니다.
      */
     @Composable
     fun getAccentDefault(
@@ -59,12 +66,19 @@ object WantedContentBadgeDefaults {
 
 
     /**
-     * getNeutralDefault
-     *
      * 중립 스타일의 기본 콘텐츠 배지를 반환합니다.
      *
-     * @param contentColor `Color`: 콘텐츠 색상입니다. 기본값은 label_alternative 색상입니다.
-     * @return `WantedContentBadgeDefault`: 중립 배지 구성
+     * 사용 예시:
+     * ```
+     * val badgeDefault = WantedContentBadgeDefaults.getNeutralDefault()
+     * WantedContentBadge(
+     *     text = "Label",
+     *     badgeDefault = badgeDefault
+     * )
+     * ```
+     *
+     * @param contentColor Color: 콘텐츠 색상입니다. 기본값은 label_alternative 색상입니다.
+     * @return WantedContentBadgeDefault: 중립 배지 구성을 반환합니다.
      */
     @Composable
     fun getNeutralDefault(

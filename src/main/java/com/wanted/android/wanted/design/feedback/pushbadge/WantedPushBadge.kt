@@ -35,12 +35,12 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 아이콘이나 UI 요소에 붙여 표시되는 푸시 뱃지 컴포저블입니다.
+ * 아이콘이나 UI 요소에 붙여 표시되는 푸시 배지 컴포저블입니다.
  *
  * `Dot`, `Number`, `New` 타입 중 하나를 선택할 수 있으며, 배지 위치, 사이즈, 색상 등을 설정할 수 있습니다.
  * 새로운 알림, 수량 표시, 간단한 포인트 강조 등에 적합합니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedPushBadge(
  *     variant = PushBadgeVariant.Number,
@@ -51,13 +51,13 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param modifier Modifier: 배지의 배치, 정렬 등에 사용되는 Modifier입니다.
- * @param variant PushBadgeVariant: 표시할 배지 타입입니다. Dot, Number, New 중 선택할 수 있습니다.
- * @param size PushBadgeSize: 배지의 크기를 지정합니다. XSmall, Small, Medium 중 선택합니다.
- * @param position PushBadgePosition: 배지의 위치를 설정합니다. TopEnd 등 9가지 위치를 지원합니다.
- * @param count String: `Number` 타입일 경우 표시할 숫자입니다.
- * @param background Color: 배지의 배경 색상입니다. 기본값은 primary_normal입니다.
- * @param contentColor Color: 텍스트(숫자, "N")의 색상입니다. 기본값은 static_white입니다.
+ * @param modifier Modifier 배지의 배치, 정렬 등에 사용되는 Modifier입니다.
+ * @param variant PushBadgeVariant 표시할 배지 타입입니다. Dot, Number, New 중 선택할 수 있습니다.
+ * @param size PushBadgeSize 배지의 크기를 지정합니다. XSmall, Small, Medium 중 선택합니다.
+ * @param position PushBadgePosition 배지의 위치를 설정합니다. TopEnd 등 9가지 위치를 지원합니다.
+ * @param count String `Number` 타입일 경우 표시할 숫자입니다.
+ * @param background Color 배지의 배경 색상입니다. 기본값은 primary_normal입니다.
+ * @param contentColor Color 텍스트(숫자, "N")의 색상입니다. 기본값은 static_white입니다.
  */
 @Composable
 fun WantedPushBadge(

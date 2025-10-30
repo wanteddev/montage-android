@@ -29,7 +29,7 @@ import com.wanted.android.wanted.design.util.clickOnce
  *
  * 아이콘의 크기와 패딩을 enum으로 간편하게 설정할 수 있으며, 외곽선과 배경, 텍스트 색상 등을 상태별로 지정할 수 있습니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedIconButtonOutlined(
  *     icon = R.drawable.ic_icon,
@@ -41,13 +41,13 @@ import com.wanted.android.wanted.design.util.clickOnce
  * @param icon Int: 버튼에 표시할 drawable 리소스 ID입니다.
  * @param size WantedIconButtonSize: 버튼의 크기와 내부 여백을 지정하는 enum입니다.
  * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
- * @param enabled Boolean: 버튼 활성화 여부입니다.
- * @param outlineColor Color: 활성화 상태 외곽선 색상입니다.
- * @param disableOutlineColor Color: 비활성 상태 외곽선 색상입니다.
- * @param tint Color: 활성 상태 아이콘 색상입니다.
- * @param disableTint Color: 비활성 상태 아이콘 색상입니다.
- * @param background Color: 활성 상태 배경 색상입니다.
- * @param disableBackground Color: 비활성 상태 배경 색상입니다.
+ * @param enabled Boolean: 버튼의 활성화 여부입니다.
+ * @param outlineColor Color: 활성화 상태의 외곽선 색상입니다.
+ * @param disableOutlineColor Color: 비활성 상태의 외곽선 색상입니다.
+ * @param tint Color: 활성 상태의 아이콘 색상입니다.
+ * @param disableTint Color: 비활성 상태의 아이콘 색상입니다.
+ * @param background Color: 활성 상태의 배경 색상입니다.
+ * @param disableBackground Color: 비활성 상태의 배경 색상입니다.
  * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
  */
 @Composable
@@ -81,11 +81,11 @@ fun WantedIconButtonOutlined(
 
 
 /**
- * 패딩을 수동 지정할 수 있는 Outlined 아이콘 버튼입니다.
+ * 패딩을 수동으로 지정할 수 있는 Outlined 아이콘 버튼입니다.
  *
- * 이 함수는 직접 `size` 대신 Modifier 크기 및 padding을 지정하여 좀 더 유연한 스타일링이 가능합니다.
+ * 이 함수는 size 대신 Modifier 크기 및 padding을 직접 지정하여 좀 더 유연한 스타일링이 가능합니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedIconButtonOutlined(
  *     icon = R.drawable.ic_icon,
@@ -98,13 +98,13 @@ fun WantedIconButtonOutlined(
  * @param icon Int: 버튼에 표시할 drawable 리소스 ID입니다.
  * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
  * @param padding Dp: 아이콘 내부 패딩입니다.
- * @param enabled Boolean: 버튼 활성화 여부입니다.
- * @param outlineColor Color: 활성화 상태 외곽선 색상입니다.
- * @param disableOutlineColor Color: 비활성 상태 외곽선 색상입니다.
- * @param tint Color: 활성 상태 아이콘 색상입니다.
- * @param disableTint Color: 비활성 상태 아이콘 색상입니다.
- * @param background Color: 활성 상태 배경 색상입니다.
- * @param disableBackground Color: 비활성 상태 배경 색상입니다.
+ * @param enabled Boolean: 버튼의 활성화 여부입니다.
+ * @param outlineColor Color: 활성화 상태의 외곽선 색상입니다.
+ * @param disableOutlineColor Color: 비활성 상태의 외곽선 색상입니다.
+ * @param tint Color: 활성 상태의 아이콘 색상입니다.
+ * @param disableTint Color: 비활성 상태의 아이콘 색상입니다.
+ * @param background Color: 활성 상태의 배경 색상입니다.
+ * @param disableBackground Color: 비활성 상태의 배경 색상입니다.
  * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
  */
 @Composable

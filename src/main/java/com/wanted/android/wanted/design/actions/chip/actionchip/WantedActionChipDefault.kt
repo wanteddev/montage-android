@@ -15,14 +15,14 @@ import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * WantedActionChip 기본 스타일을 정의하는 데이터 클래스입니다.
+ * WantedActionChip의 기본 스타일을 정의하는 데이터 클래스입니다.
  * 크기, 스타일 변형, 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
  *
  * 사용 예시:
  * ```kotlin
  * val chipDefault = WantedActionChipDefault(
- *     size = ChipActionSize.Medium,
- *     variant = ChipActionVariant.Solid,
+ *     size = ActionChipSize.Medium,
+ *     variant = ActionChipVariant.Solid,
  *     isActive = true,
  *     isEnable = true,
  *     iconColor = Color.Black,
@@ -32,14 +32,14 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * )
  * ```
  *
- * @param size Chip 크기 설정
- * @param variant Chip 스타일 변형 (Solid, Outlined)
- * @param isActive Chip 활성화 여부
- * @param isEnable Chip 사용 가능 여부
- * @param iconColor 아이콘 색상
- * @param backgroundColor 배경 색상
- * @param borderColor 테두리 색상
- * @param textStyle 텍스트 스타일
+ * @param size ActionChipSize: Chip의 크기를 설정합니다.
+ * @param variant ActionChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
+ * @param isActive Boolean: Chip의 활성화 여부입니다.
+ * @param isEnable Boolean: Chip의 사용 가능 여부입니다.
+ * @param iconColor Color: 아이콘의 색상입니다.
+ * @param backgroundColor Color: 배경 색상입니다.
+ * @param borderColor Color: 테두리 색상입니다.
+ * @param textStyle TextStyle: 텍스트 스타일입니다.
  */
 data class WantedActionChipDefault(
     val size: ActionChipSize = ActionChipSize.Medium,
@@ -55,23 +55,26 @@ data class WantedActionChipDefault(
 
 object WantedActionChipDefaults {
     /**
-     * 기본 스타일에 맞춰 WantedChipDefault 객체를 생성합니다.
-     * 컴포즈 환경에 따라 Chip의 스타일을 동적으로 결정합니다.
+     * 기본 스타일에 맞춰 WantedActionChipDefault 객체를 생성합니다.
+     * Compose 환경에 따라 Chip의 스타일을 동적으로 결정합니다.
      *
      * 사용 예시:
      * ```kotlin
-     * val chipDefault = WantedChipDefaults.getDefault()
+     * val chipDefault = WantedActionChipDefaults.getDefault(
+     *     size = ActionChipSize.Medium,
+     *     variant = ActionChipVariant.Solid
+     * )
      * ```
      *
-     * @param size Chip 크기 설정
-     * @param variant Chip 스타일 변형 (Solid, Outlined)
-     * @param isActive 활성화 여부
-     * @param isEnable 사용 가능 여부
-     * @param iconColor 아이콘 색상
-     * @param backgroundColor 배경 색상
-     * @param borderColor 테두리 색상
-     * @param textStyle 텍스트 스타일
-     * @return 설정된 WantedActionChipDefault 객체 반환
+     * @param size ActionChipSize: Chip의 크기를 설정합니다.
+     * @param variant ActionChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
+     * @param isActive Boolean: 활성화 여부입니다.
+     * @param isEnable Boolean: 사용 가능 여부입니다.
+     * @param iconColor Color: 아이콘의 색상입니다.
+     * @param backgroundColor Color: 배경 색상입니다.
+     * @param borderColor Color: 테두리 색상입니다.
+     * @param textStyle TextStyle: 텍스트 스타일입니다.
+     * @return WantedActionChipDefault: 설정된 WantedActionChipDefault 객체를 반환합니다.
      */
     @Composable
     fun getDefault(
@@ -145,13 +148,16 @@ object WantedActionChipDefaults {
      *
      * 사용 예시:
      * ```kotlin
-     * val iconColor = WantedChipDefaults.getFilterIconColor()
+     * val iconColor = WantedActionChipDefaults.getFilterIconColor(
+     *     variant = ActionChipVariant.Solid,
+     *     isActive = true
+     * )
      * ```
      *
-     * @param variant Chip 스타일 변형 (Solid, Outlined)
-     * @param isActive 활성화 여부
-     * @param isEnable 사용 가능 여부
-     * @return 아이콘 색상에 해당하는 리소스 ID 반환
+     * @param variant ActionChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
+     * @param isActive Boolean: 활성화 여부입니다.
+     * @param isEnable Boolean: 사용 가능 여부입니다.
+     * @return Int: 아이콘 색상에 해당하는 리소스 ID를 반환합니다.
      */
     @Composable
     fun getFilterIconColor(

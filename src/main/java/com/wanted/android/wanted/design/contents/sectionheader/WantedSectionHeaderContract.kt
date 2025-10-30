@@ -18,10 +18,10 @@ object WantedSectionHeaderContract {
      *
      * 사이즈에 따라 텍스트 크기나 마진 등이 달라질 수 있습니다.
      * 제공되는 사이즈 옵션은 다음과 같습니다:
-     * - XSmall: 매우 작은 사이즈
-     * - Small: 작은 사이즈
-     * - Medium: 중간 사이즈
-     * - Large: 큰 사이즈
+     * - XSmall: 매우 작은 사이즈입니다.
+     * - Small: 작은 사이즈입니다.
+     * - Medium: 중간 사이즈입니다.
+     * - Large: 큰 사이즈입니다.
      */
     enum class Size {
         XSmall,
