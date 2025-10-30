@@ -71,7 +71,7 @@ internal fun WantedTopAppBarLayout(
                 ProvideTextStyle(
                     value = WantedTextStyle(
                         colorRes = R.color.label_strong,
-                        style = DesignSystemTheme.typography.heading2Bold
+                        style = DesignSystemTheme.typography.headline2Bold
                     )
                 ) {
                     title()
