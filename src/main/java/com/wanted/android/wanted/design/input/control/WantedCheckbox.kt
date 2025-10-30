@@ -62,7 +62,7 @@ class WantedCheckBox : MaterialCheckBox {
  *
  * 각 스타일에 맞는 시각적 표현 및 상호작용이 정의되어 있으며, 크기, 상태, 활성화 여부 등을 설정할 수 있습니다.
  *
- * 사용 예시 :
+ * 사용 예시:
  * ```kotlin
  * WantedCheckBox(
  *     size = CheckBoxSize.Normal,
@@ -74,14 +74,14 @@ class WantedCheckBox : MaterialCheckBox {
  * )
  * ```
  *
- * @param onCheckedChange (Boolean) -> Unit: 상태가 변경될 때 호출되는 콜백입니다.
- * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
- * @param size CheckBoxSize: Small 또는 Normal 사이즈를 선택할 수 있습니다.
- * @param style CheckBoxStyle: 표시할 체크박스 스타일 (CheckBox, RoundCheckBox, Check, Radio, Switch)입니다.
- * @param checkState CheckBoxState: 체크박스의 상태 (Unchecked, Checked, Indeterminate)를 설정합니다.
- * @param tight Boolean: true일 경우 패딩이 줄어든 컴팩트한 형태로 표시됩니다.
- * @param enabled Boolean: 체크박스 활성화 여부입니다.
- * @param interactionSource MutableInteractionSource: 커스텀 인터랙션 처리를 위한 InteractionSource입니다.
+ * @param onCheckedChange (Boolean) -> Unit 상태가 변경될 때 호출되는 콜백입니다.
+ * @param modifier Modifier 외형 및 배치를 제어하는 Modifier입니다.
+ * @param size CheckBoxSize Small 또는 Normal 사이즈를 선택할 수 있습니다.
+ * @param style CheckBoxStyle 표시할 체크박스 스타일 (CheckBox, RoundCheckBox, Check, Radio, Switch)입니다.
+ * @param checkState CheckBoxState 체크박스의 상태 (Unchecked, Checked, Indeterminate)를 설정합니다.
+ * @param tight Boolean true일 경우 패딩이 줄어든 컴팩트한 형태로 표시됩니다.
+ * @param enabled Boolean 체크박스 활성화 여부입니다.
+ * @param interactionSource MutableInteractionSource 커스텀 인터랙션 처리를 위한 InteractionSource입니다.
  */
 @Composable
 internal fun WantedCheckBox(

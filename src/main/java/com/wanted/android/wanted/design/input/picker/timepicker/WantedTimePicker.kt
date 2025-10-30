@@ -60,14 +60,14 @@ import java.util.Calendar
  * )
  * ```
  *
- * @param title String: 다이얼로그 상단 제목 텍스트입니다.
- * @param confirm String: 확인 버튼 텍스트입니다.
- * @param onClickConfirm () -> Unit: 확인 버튼 클릭 시 호출되는 콜백입니다.
- * @param onClickChangeMode () -> Unit: 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다.
- * @param onDismissRequest () -> Unit: 다이얼로그 외부 클릭 또는 닫기 시 호출되는 콜백입니다.
- * @param cancel String?: 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다.
- * @param isEnableClock Boolean: true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다.
- * @param onClickCancel () -> Unit: 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다.
+ * @param title String 다이얼로그 상단 제목 텍스트입니다
+ * @param confirm String 확인 버튼 텍스트입니다
+ * @param onClickConfirm () -> Unit 확인 버튼 클릭 시 호출되는 콜백입니다
+ * @param onClickChangeMode () -> Unit 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다
+ * @param onDismissRequest () -> Unit 다이얼로그 외부 클릭 또는 닫기 시 호출되는 콜백입니다
+ * @param cancel String? 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다
+ * @param isEnableClock Boolean true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다
+ * @param onClickCancel () -> Unit 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다
  */
 @Composable
 fun WantedTimePicker(

@@ -3,19 +3,19 @@ package com.wanted.android.wanted.design.input.picker.timepicker
 import androidx.compose.runtime.Composable
 
 /**
- * data class WantedTimePickerWheelDefault
+ * 데이터 클래스 WantedTimePickerWheelDefault
  *
  * 시간 선택 휠(TimePickerWheel)의 기본 설정 값을 담는 데이터 클래스입니다.
  *
  * 시(hour), 분(minute), AM/PM 설정과 비활성 시간 표시 여부를 지정할 수 있습니다.
  *
- * @param enableMinHour `Int`: 선택 가능한 최소 시(hour)입니다.
- * @param enableMaxHour `Int`: 선택 가능한 최대 시(hour)입니다.
- * @param enableMinMinute `Int`: 선택 가능한 최소 분(minute)입니다.
- * @param enableMaxMinute `Int`: 선택 가능한 최대 분(minute)입니다.
- * @param enableAm `Boolean`: 오전(AM) 선택 허용 여부입니다.
- * @param enablePm `Boolean`: 오후(PM) 선택 허용 여부입니다.
- * @param isHideDisableTime `Boolean`: 비활성 시간 숨김 여부입니다.
+ * @param enableMinHour Int 선택 가능한 최소 시입니다
+ * @param enableMaxHour Int 선택 가능한 최대 시입니다
+ * @param enableMinMinute Int 선택 가능한 최소 분입니다
+ * @param enableMaxMinute Int 선택 가능한 최대 분입니다
+ * @param enableAm Boolean 오전(AM) 선택 허용 여부입니다
+ * @param enablePm Boolean 오후(PM) 선택 허용 여부입니다
+ * @param isHideDisableTime Boolean 비활성 시간 숨김 여부입니다
  */
 data class WantedTimePickerWheelDefault(
     val enableMinHour: Int,
@@ -29,7 +29,7 @@ data class WantedTimePickerWheelDefault(
 
 
 /**
- * object WantedTimePickerWheelDefaults
+ * 객체 WantedTimePickerWheelDefaults
  *
  * 시간 선택 휠의 기본 설정을 제공하는 객체입니다.
  *
@@ -58,14 +58,14 @@ object WantedTimePickerWheelDefaults {
      * )
      * ```
      *
-     * @param enableAm Boolean: 오전(AM) 선택을 허용할지 여부입니다. 기본값은 true입니다.
-     * @param enablePm Boolean: 오후(PM) 선택을 허용할지 여부입니다. 기본값은 true입니다. 단, AM이 false인 경우 자동으로 true로 설정됩니다.
-     * @param enableMinHour Int: 선택 가능한 최소 시(hour)입니다. 1 이상이어야 하며, 기본값은 1입니다.
-     * @param enableMaxHour Int: 선택 가능한 최대 시(hour)입니다. 12 이하이어야 하며, `enableMinHour`보다 작으면 자동 보정됩니다. 기본값은 12입니다.
-     * @param enableMinMinute Int: 선택 가능한 최소 분(minute)입니다. 0 이상이어야 하며, 기본값은 0입니다.
-     * @param enableMaxMinute Int: 선택 가능한 최대 분(minute)입니다. 59 이하이며, `enableMinMinute`보다 작으면 자동 보정됩니다. 기본값은 59입니다.
-     * @param isHideDisableTime Boolean: 비활성 시간대를 숨길지 여부입니다. 기본값은 false입니다.
-     * @return WantedTimePickerWheelDefault: 설정된 시간 선택 휠 기본값 객체입니다.
+     * @param enableAm Boolean 오전(AM) 선택을 허용할지 여부입니다. 기본값은 true입니다
+     * @param enablePm Boolean 오후(PM) 선택을 허용할지 여부입니다. 기본값은 true입니다. 단, AM이 false인 경우 자동으로 true로 설정됩니다
+     * @param enableMinHour Int 선택 가능한 최소 시입니다. 1 이상이어야 하며, 기본값은 1입니다
+     * @param enableMaxHour Int 선택 가능한 최대 시입니다. 12 이하이어야 하며, `enableMinHour`보다 작으면 자동 보정됩니다. 기본값은 12입니다
+     * @param enableMinMinute Int 선택 가능한 최소 분입니다. 0 이상이어야 하며, 기본값은 0입니다
+     * @param enableMaxMinute Int 선택 가능한 최대 분입니다. 59 이하이며, `enableMinMinute`보다 작으면 자동 보정됩니다. 기본값은 59입니다
+     * @param isHideDisableTime Boolean 비활성 시간대를 숨길지 여부입니다. 기본값은 false입니다
+     * @return WantedTimePickerWheelDefault 설정된 시간 선택 휠 기본값 객체입니다
      */
     @Composable
     fun getDefault(

@@ -62,26 +62,26 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param title String: 다이얼로그 상단에 표시될 제목 텍스트입니다.
- * @param confirm String: 확인 버튼 텍스트입니다.
- * @param cancel String: 취소 버튼 텍스트입니다.
- * @param selectedYear Int: 초기 선택된 연도입니다.
- * @param selectedMonth Int: 초기 선택된 월입니다.
- * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
- * @param default WantedDatePickerWheelDefault: 날짜 휠 설정을 지정하는 기본값 객체입니다.
- * @param onSelect (year: Int, month: Int) -> Unit: 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다.
- * @param onDismissRequest () -> Unit: 다이얼로그가 닫힐 때 호출되는 콜백입니다.
+ * @param title String 다이얼로그 상단에 표시될 제목 텍스트입니다.
+ * @param confirm String 확인 버튼 텍스트입니다.
+ * @param cancel String 취소 버튼 텍스트입니다.
+ * @param selectedYear Int 초기 선택된 연도입니다.
+ * @param selectedMonth Int 초기 선택된 월입니다.
+ * @param modifier Modifier 외형을 설정하는 Modifier입니다.
+ * @param default WantedDatePickerWheelDefault 날짜 휠 설정을 지정하는 기본값 객체입니다.
+ * @param onSelect (year: Int, month: Int) -> Unit 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다.
+ * @param onDismissRequest () -> Unit 다이얼로그가 닫힐 때 호출되는 콜백입니다.
  */
 @Composable
 fun WantedDatePickerWheel(
-    title: String,                                                       // 1. 필수
-    confirm: String,                                                     // 1. 필수
-    cancel: String,                                                      // 1. 필수
-    selectedYear: Int,                                                   // 1. 필수
-    selectedMonth: Int,                                                  // 1. 필수
-    modifier: Modifier = Modifier,                                       // 2. 첫 번째 Optional
-    default: WantedDatePickerWheelDefault = WantedDatePickerWheelDefaults.getDefault(),  // 3. 기타 Optional non-lambda
-    onSelect: (year: Int, month: Int) -> Unit = {_, _ -> },                      // 4. Optional 람다
+    title: String,
+    confirm: String,
+    cancel: String,
+    selectedYear: Int,
+    selectedMonth: Int,
+    modifier: Modifier = Modifier,
+    default: WantedDatePickerWheelDefault = WantedDatePickerWheelDefaults.getDefault(),
+    onSelect: (year: Int, month: Int) -> Unit = { _, _ -> },
     onDismissRequest: () -> Unit = {}
 ) {
 
