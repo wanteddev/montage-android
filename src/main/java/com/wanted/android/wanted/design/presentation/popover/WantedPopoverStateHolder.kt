@@ -199,10 +199,10 @@ private class WantedPopoverStateHolderImpl(
             paddingPx = paddingPx
         )
 
-
-        // 실제로 값이 변경되었을 때만 상태 업데이트 (불필요한 recomposition 방지)
+        // 값이 변경되었을 때만 상태 업데이트
         if (_state.overlapBottom != newOverlapBottom ||
-            _state.isPopupAbove != newIsPopupAbove 
+            _state.isPopupAbove != newIsPopupAbove ||
+            _state.offsetX != baseOffsetX
         ) {
             _state = _state.copy(
                 overlapBottom = newOverlapBottom,
@@ -223,25 +223,27 @@ private class WantedPopoverStateHolderImpl(
         if (tooltipWidth == 0) return 0
 
         val idealOffsetX = when (align) {
-            WantedPopoverAlign.Left -> 0
-            WantedPopoverAlign.Center -> (contentWidth - tooltipWidth) / 2
-            WantedPopoverAlign.Right -> contentWidth - tooltipWidth
+            WantedPopoverAlign.Left -> 0f
+            WantedPopoverAlign.Center -> (contentWidth - tooltipWidth) / 2f
+            WantedPopoverAlign.Right -> (contentWidth - tooltipWidth).toFloat()
         }
 
-        val contentLeft = contentPositionX + idealOffsetX
-        val contentRight = contentLeft + tooltipWidth
+        val tooltipAbsoluteLeft = contentPositionX + idealOffsetX
+        val tooltipAbsoluteRight = tooltipAbsoluteLeft + tooltipWidth
 
-        return when {
-            contentLeft < paddingPx -> {
+        val adjustedOffsetX = when {
+            tooltipAbsoluteLeft < paddingPx -> {
                 (paddingPx - contentPositionX).toInt()
             }
-            contentRight > screenWidthPx - paddingPx -> {
+            tooltipAbsoluteRight > screenWidthPx - paddingPx -> {
                 (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
             }
             else -> {
-                idealOffsetX
+                idealOffsetX.toInt()
             }
         }
+
+        return adjustedOffsetX
     }
 
     companion object {
