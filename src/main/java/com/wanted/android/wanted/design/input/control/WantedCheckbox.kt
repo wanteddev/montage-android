@@ -225,7 +225,7 @@ private fun WantedCheckBoxImpl(
                             .padding(2.dp),
                         painter = painterResource(
                             if (checkState == CheckBoxState.Indeterminate) {
-                                R.drawable.icon_normal_line_horizontal
+                                R.drawable.icon_normal_line_horizontal_thick
                             } else {
                                 R.drawable.icon_normal_check_thick
                             }

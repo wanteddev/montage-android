@@ -69,7 +69,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param background Color: 텍스트 필드 배경 색상입니다.
  * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
- * @param rightContent ((Dp) -> Unit)?: 우측 버튼 외 영역에 들어갈 커스텀 콘텐츠입니다.
+ * @param trailingContent ((Dp) -> Unit)?: 우측 버튼 외 영역에 들어갈 커스텀 콘텐츠입니다.
  * @param onClickRightButton () -> Unit: 우측 버튼 클릭 시 콜백입니다.
  * @param onValueChange (String) -> Unit: 텍스트 변경 시 콜백입니다.
  */
@@ -94,10 +94,10 @@ fun WantedTextField(
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable ((Dp) -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
@@ -146,7 +146,7 @@ fun WantedTextField(
                 placeholder = placeholder,
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
-                rightContent = rightContent,
+                trailingContent = trailingContent,
                 onClickRightButton = onClickRightButton,
                 onValueChange = { newTextFieldValueState ->
                     textFieldValueState = newTextFieldValueState
@@ -202,7 +202,7 @@ fun WantedTextField(
  * @param description String?: 하단 상태 또는 설명 메시지입니다.
  * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
- * @param rightContent ((Dp) -> Unit)?: 우측 영역 콘텐츠 슬롯입니다.
+ * @param trailingContent ((Dp) -> Unit)?: 우측 영역 콘텐츠 슬롯입니다.
  * @param rightButton String?: 우측 버튼 텍스트입니다.
  * @param onClickRightButton () -> Unit: 우측 버튼 클릭 콜백입니다.
  * @param rightButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
@@ -229,7 +229,7 @@ fun WantedTextField(
     description: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    rightContent: @Composable ((Dp) -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     rightButton: String? = null,
     onClickRightButton: () -> Unit = {},
     rightButtonEnabled: Boolean = true,
@@ -243,7 +243,7 @@ fun WantedTextField(
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal)
+    background: Color = colorResource(id = R.color.background_transparent_alternative)
 ) {
     WantedTextInputLayout(
         modifier = modifier,
@@ -278,7 +278,7 @@ fun WantedTextField(
                 placeholder = placeholder,
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
-                rightContent = rightContent,
+                trailingContent = trailingContent,
                 onClickRightButton = onClickRightButton,
                 onValueChange = onValueChange,
                 focusRequester = focusRequester
@@ -452,7 +452,7 @@ private fun WantedTextInputPreview() {
                             contentDescription = ""
                         )
                     },
-                    rightContent = {
+                    trailingContent = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),

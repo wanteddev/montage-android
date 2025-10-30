@@ -119,7 +119,7 @@ fun WantedTextArea(
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     onClickRightButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
@@ -284,7 +284,7 @@ fun WantedTextArea(
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     onClickRightButton: () -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
@@ -360,7 +360,7 @@ fun WantedTextArea(
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     leftContent: (@Composable (() -> Unit))? = null,
     rightContent: (@Composable (() -> Unit))? = null,
     onValueChange: (TextFieldValue) -> Unit = {}
@@ -435,7 +435,7 @@ private fun WantedTextArea(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     onClickRightButton: () -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
@@ -501,7 +501,7 @@ private fun WantedTextAreaContent(
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     leftContent: @Composable (() -> Unit)? = null,
     rightContent: @Composable (() -> Unit)? = null,
     onValueChange: (TextFieldValue) -> Unit
@@ -556,7 +556,7 @@ private fun WantedTextAreaContent(
                     if (enabled) {
                         background
                     } else {
-                        colorResource(R.color.interaction_disable)
+                        colorResource(R.color.fill_alternative)
                     }
                 )
                 .height(IntrinsicSize.Min),

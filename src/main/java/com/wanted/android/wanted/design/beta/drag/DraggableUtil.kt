@@ -200,6 +200,7 @@ fun Modifier.dragItem(dragDropState: DragDropState?) = this.then(
     }
 )
 
+@Deprecated("wantedDropShadow 사용")
 fun Modifier.dropShadow(
     shape: Shape,
     color: Color = Color.Black.copy(0.25f),

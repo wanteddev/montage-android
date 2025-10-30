@@ -96,7 +96,7 @@ fun WantedSelect(
     selectedValue: String? = null,
     bottomSheetType: WantedModalContract.ModalType = WantedModalContract.ModalType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     onClick: () -> Unit = {},
     onSelect: (item: String) -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
@@ -179,7 +179,7 @@ fun WantedSelect(
     selectedData: WantedSelectData? = null,
     bottomSheetType: WantedModalContract.ModalType = WantedModalContract.ModalType.Flexible,
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     onClick: () -> Unit = {},
     onSelectData: (item: WantedSelectData) -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null
@@ -310,7 +310,7 @@ fun WantedSelect(
     selectDataList: List<WantedSelectData> = emptyList(),
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
     render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     onDeleteData: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
     onSelectDataList: (itemList: List<WantedSelectData>) -> Unit = {},
@@ -425,7 +425,7 @@ fun WantedSelectWithString(
     selectValueList: List<String> = emptyList(),
     selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
     render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     leadingIcon: (@Composable (() -> Unit))? = null,
     onDelete: (String) -> Unit = {},
     onClick: () -> Unit = {},
@@ -536,7 +536,7 @@ private fun WantedSelectImpl(
                             if (enabled) {
                                 background
                             } else {
-                                colorResource(R.color.interaction_disable)
+                                colorResource(R.color.fill_alternative)
                             }
                         )
                         .clickOnce(
