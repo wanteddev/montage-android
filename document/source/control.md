@@ -3,7 +3,7 @@
 *
 * 각 스타일에 맞는 시각적 표현 및 상호작용이 정의되어 있으며, 크기, 상태, 활성화 여부 등을 설정할 수 있습니다.
 *
-* 사용 예시 :
+* 사용 예시:
 * ```kotlin
 * WantedCheckBox(
 *     size = CheckBoxSize.Normal,
@@ -15,14 +15,14 @@
 * )
 * ```
 *
-* @param onCheckedChange (Boolean) -> Unit: 상태가 변경될 때 호출되는 콜백입니다.
-* @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
-* @param size CheckBoxSize: Small 또는 Normal 사이즈를 선택할 수 있습니다.
-* @param style CheckBoxStyle: 표시할 체크박스 스타일 (CheckBox, RoundCheckBox, Check, Radio, Switch)입니다.
-* @param checkState CheckBoxState: 체크박스의 상태 (Unchecked, Checked, Indeterminate)를 설정합니다.
-* @param tight Boolean: true일 경우 패딩이 줄어든 컴팩트한 형태로 표시됩니다.
-* @param enabled Boolean: 체크박스 활성화 여부입니다.
-* @param interactionSource MutableInteractionSource: 커스텀 인터랙션 처리를 위한 InteractionSource입니다.
+* @param onCheckedChange (Boolean) -> Unit 상태가 변경될 때 호출되는 콜백입니다.
+* @param modifier Modifier 외형 및 배치를 제어하는 Modifier입니다.
+* @param size CheckBoxSize Small 또는 Normal 사이즈를 선택할 수 있습니다.
+* @param style CheckBoxStyle 표시할 체크박스 스타일 (CheckBox, RoundCheckBox, Check, Radio, Switch)입니다.
+* @param checkState CheckBoxState 체크박스의 상태 (Unchecked, Checked, Indeterminate)를 설정합니다.
+* @param tight Boolean true일 경우 패딩이 줄어든 컴팩트한 형태로 표시됩니다.
+* @param enabled Boolean 체크박스 활성화 여부입니다.
+* @param interactionSource MutableInteractionSource 커스텀 인터랙션 처리를 위한 InteractionSource입니다.
 */
 
 /**
@@ -31,8 +31,8 @@
 * 체크박스의 크기를 정의하는 enum 클래스입니다.
 *
 * 컴포넌트의 시각적 일관성을 유지하기 위해 두 가지 사이즈를 제공합니다:
-* - Normal: 일반 사이즈 (24dp)
-* - Small: 소형 사이즈 (20dp)
+* - Normal: 일반 사이즈 (24dp)입니다.
+* - Small: 소형 사이즈 (20dp)입니다.
 */
 
 /**
@@ -41,11 +41,11 @@
 * 다양한 형태의 체크박스 스타일을 정의하는 enum 클래스입니다.
 *
 * 사용 목적이나 UI 환경에 따라 다음과 같은 스타일을 사용할 수 있습니다:
-* - CheckBox: 기본 사각형 체크박스
-* - RoundCheckBox: 원형 배경을 가진 체크박스
-* - Check: 체크 마크만 표시되는 스타일
-* - Radio: 라디오 버튼 형식
-* - Switch: 토글 스위치 형식
+* - CheckBox: 기본 사각형 체크박스입니다.
+* - RoundCheckBox: 원형 배경을 가진 체크박스입니다.
+* - Check: 체크 마크만 표시되는 스타일입니다.
+* - Radio: 라디오 버튼 형식입니다.
+* - Switch: 토글 스위치 형식입니다.
 */
 
 /**
@@ -54,34 +54,9 @@
 * 체크박스의 현재 상태를 나타내는 enum 클래스입니다.
 *
 * 세 가지 상태를 통해 선택 여부 또는 그룹 선택의 중간 상태를 표현할 수 있습니다:
-* - Unchecked: 선택되지 않음
-* - Checked: 선택됨
-* - Indeterminate: 일부만 선택된 상태 등 중간 상태
-*/
-
-/**
-* 머터리얼 스타일의 원형 라디오 버튼 컴포저블입니다.
-*
-* 체크 여부, 크기, 컴팩트 여부, 활성화 상태 등을 설정할 수 있으며,
-* 내부적으로 `WantedTouchArea`를 사용하여 터치 영역을 확장합니다.
-*
-* 사용 예시 :
-* ```kotlin
-* WantedRadioButton(
-*     checked = true,
-*     size = CheckBoxSize.Normal,
-*     enabled = true,
-*     onCheckedChange = { selected -> /* 상태 변경 처리 */ }
-* )
-* ```
-*
-* @param checked Boolean: 라디오 버튼이 선택된 상태인지 여부입니다.
-* @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
-* @param enabled Boolean: 라디오 버튼의 활성화 여부입니다.
-* @param tight Boolean: true일 경우 내부 패딩이 줄어들어 컴팩트하게 표시됩니다.
-* @param interactionSource MutableInteractionSource: 클릭, 호버 등 상호작용 처리를 위한 인터랙션 소스입니다.
-* @param size CheckBoxSize: 라디오 버튼의 크기를 설정합니다. Normal 또는 Small.
-* @param onCheckedChange (Boolean) -> Unit: 선택 상태 변경 시 호출되는 콜백입니다.
+* - Unchecked: 선택되지 않았습니다.
+* - Checked: 선택되었습니다.
+* - Indeterminate: 일부만 선택된 상태 등 중간 상태입니다.
 */
 
 /**

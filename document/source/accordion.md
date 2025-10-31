@@ -28,9 +28,9 @@
 * @param fillWidth Boolean: 콘텐츠의 가로 너비를 전체로 채울지 여부입니다.
 * @param divider Boolean: 하단 Divider 표시 여부입니다.
 * @param verticalPadding VerticalPadding: 헤더 영역의 수직 패딩 값입니다.
-* @param leadingIcon @Composable (() -> Unit)?: 제목 좌측에 위치할 아이콘입니다. 선택 사항입니다.
-* @param trail @Composable () -> Unit: 제목 우측에 위치할 아이콘입니다. 기본은 확장/축소 화살표입니다.
-* @param content @Composable (() -> Unit)?: 확장 상태일 때 표시될 추가 콘텐츠입니다. 선택 사항입니다.
+* @param leadingIcon (@Composable () -> Unit)?: 제목 좌측에 위치할 아이콘입니다. 선택 사항입니다.
+* @param trail (@Composable () -> Unit): 제목 우측에 위치할 아이콘입니다. 기본값은 확장/축소 화살표입니다.
+* @param content (@Composable () -> Unit)?: 확장 상태일 때 표시될 추가 콘텐츠입니다. 선택 사항입니다.
 * @param onChangeExpanded (Boolean) -> Unit: 확장 상태 변경 시 호출되는 콜백입니다.
 *
 * @see WantedAccordionHeader
@@ -52,11 +52,11 @@
 * 아코디언 헤더 영역의 수직 패딩 크기를 정의하는 enum 클래스입니다.
 *
 * 아코디언 헤더 내 콘텐츠 간 간격을 조정할 때 사용됩니다. UI 요구사항에 따라 다음의 세 가지 옵션을 제공합니다:
-* - Padding16: 16dp 수직 패딩
-* - Padding12: 12dp 수직 패딩
-* - Padding8: 8dp 수직 패딩
+* - Padding16: 16dp 수직 패딩입니다.
+* - Padding12: 12dp 수직 패딩입니다.
+* - Padding8: 8dp 수직 패딩입니다.
 *
-* @property value `Dp`: 실제 적용되는 패딩 값입니다.
+* @property value Dp: 실제 적용되는 패딩 값입니다.
 *
 * @see WantedAccordion
 */

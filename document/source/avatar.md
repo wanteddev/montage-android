@@ -20,7 +20,7 @@
 *
 * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
 * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
-* @param model Any?: 표시할 이미지 모델 (URL 또는 Drawable ID)입니다.
+* @param model Any?: 표시할 이미지 모델입니다 (URL 또는 Drawable ID).
 * @param placeHolder Int?: 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다.
 * @param isIcon Boolean: 아바타 안쪽에 추가 보더를 적용할지 여부를 설정합니다.
 * @param isDrawableRes Boolean: model이 Drawable 리소스 ID일 경우 true로 설정합니다.
@@ -47,19 +47,25 @@
 *
 * 아바타의 크기 및 모서리 반경 정보를 포함하는 sealed 클래스입니다.
 *
-* 각 사이즈는 `data object`로 구체화되어 있으며, 아바타의 가로/세로 크기와 모서리 반경이 함께 정의됩니다.
+* 각 사이즈는 data object로 구체화되어 있으며, 아바타의 가로/세로 크기와 모서리 반경이 함께 정의됩니다.
 *
 * 포함된 사이즈 값:
-* - XSmall: 24dp, 6dp
-* - Small: 32dp, 6dp
-* - Medium: 40dp, 8dp
-* - Large: 48dp, 10dp
-* - XLarge: 56dp, 12dp
+* - XSmall: 24dp 크기, 6dp 모서리 반경입니다.
+* - Small: 32dp 크기, 6dp 모서리 반경입니다.
+* - Medium: 40dp 크기, 8dp 모서리 반경입니다.
+* - Large: 48dp 크기, 10dp 모서리 반경입니다.
+* - XLarge: 56dp 크기, 12dp 모서리 반경입니다.
 *
-* @property size `Dp`: 아바타의 가로/세로 크기입니다.
-* @property cornerRadius `Dp`: 아바타 모서리의 반경입니다.
+* @property size Dp: 아바타의 가로/세로 크기입니다.
+* @property cornerRadius Dp: 아바타 모서리의 반경입니다.
 *
 * @see WantedAvatar
+*/
+
+/**
+* data object XSmall
+*
+* 24dp 크기, 6dp 모서리 반경의 가장 작은 아바타 크기입니다.
 */
 
 /**
@@ -98,9 +104,9 @@
 * 아바타의 유형을 정의하는 enum 클래스입니다.
 *
 * 아바타가 표현하는 주체의 성격(사람, 회사, 학력 등)에 따라 다음의 유형을 가집니다:
-* - Person: 사람(개인)
-* - Company: 회사
-* - Academic: 학력/학교
+* - Person: 사람(개인)입니다.
+* - Company: 회사입니다.
+* - Academic: 학력/학교입니다.
 *
 * @see WantedAvatar
 */
@@ -124,12 +130,12 @@
 * )
 * ```
 *
-* @param modelList List<Any>: 표시할 아바타 모델 리스트입니다. (URL 또는 Drawable ID)
-* @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
+* @param modelList List<Any>: 표시할 아바타 모델 리스트입니다 (URL 또는 Drawable ID).
 * @param size WantedAvatarSize: 아바타 크기 및 코너 반경입니다.
 * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
+* @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
 * @param placeHolder Int?: 이미지 로딩 실패 시 사용할 Drawable 리소스 ID입니다.
 * @param isIcon Boolean: 아바타 내부에 Inner 보더를 적용할지 여부입니다.
 * @param isDrawableRes Boolean: modelList 항목이 Drawable 리소스인지 여부입니다.
-* @param trailingContent ((Dp) -> Unit)?: 아바타 그룹 오른쪽에 추가적으로 표시할 콘텐츠입니다.
+* @param trailingContent (@Composable (Dp) -> Unit)?: 아바타 그룹 오른쪽에 추가적으로 표시할 콘텐츠입니다.
 */

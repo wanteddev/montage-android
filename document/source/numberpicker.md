@@ -17,20 +17,20 @@
 * )
 * ```
 *
-* @param start Int: 시작 숫자입니다.
-* @param end Int: 종료 숫자입니다.
-* @param step Int: 숫자 간격입니다.
-* @param modifier Modifier: 외형을 설정하는 Modifier입니다.
-* @param itemList List<Int>: 내부에서 자동 생성된 숫자 리스트입니다.
-* @param selectedValue Int: 기본 선택값입니다.
-* @param enableMinValue Int: 선택 가능 최소값입니다.
-* @param enableMaxValue Int: 선택 가능 최대값입니다.
-* @param pagerState PagerState: 스크롤 상태를 관리하는 Pager 상태입니다.
-* @param textStyle TextStyle: 숫자 텍스트의 스타일입니다.
-* @param itemSize Dp: 각 항목의 높이입니다.
-* @param visibleCount Int: 화면에 표시될 항목 수입니다.
-* @param userScrollEnabled Boolean: 사용자의 스크롤 가능 여부입니다.
-* @param onSelect (index: Int, value: Int, enabled: Boolean) -> Unit: 선택 이벤트 콜백입니다.
+* @param start 시작 숫자입니다
+* @param end 종료 숫자입니다
+* @param step 숫자 간격입니다
+* @param modifier 외형을 설정하는 Modifier입니다
+* @param itemList 내부에서 자동 생성된 숫자 리스트입니다
+* @param selectedValue 기본 선택값입니다
+* @param enableMinValue 선택 가능 최소값입니다
+* @param enableMaxValue 선택 가능 최대값입니다
+* @param pagerState 스크롤 상태를 관리하는 Pager 상태입니다
+* @param textStyle 숫자 텍스트의 스타일입니다
+* @param itemSize 각 항목의 높이입니다
+* @param visibleCount 화면에 표시될 항목 수입니다
+* @param userScrollEnabled 사용자의 스크롤 가능 여부입니다
+* @param onSelect 선택 이벤트 콜백입니다
 */
 
 /**
@@ -50,14 +50,14 @@
 * )
 * ```
 *
-* @param modifier Modifier: 외형을 설정하는 Modifier입니다.
-* @param itemList List<Int>: 표시할 숫자 리스트입니다.
-* @param selectedIndex Int: 선택된 인덱스입니다.
-* @param enableStartIndex Int: 선택 가능한 시작 인덱스입니다.
-* @param enableEndIndex Int: 선택 가능한 종료 인덱스입니다.
-* @param pagerState PagerState: 스크롤 상태를 관리하는 Pager 상태입니다.
-* @param textStyle TextStyle: 숫자 텍스트 스타일입니다.
-* @param itemSize Dp: 각 항목의 높이입니다.
-* @param visibleCount Int: 화면에 표시할 항목 개수입니다.
-* @param onSelect (index: Int, enabled: Boolean) -> Unit: 선택 이벤트 콜백입니다.
+* @param modifier 외형을 설정하는 Modifier입니다
+* @param itemList 표시할 숫자 리스트입니다
+* @param selectedIndex 선택된 인덱스입니다
+* @param enableStartIndex 선택 가능한 시작 인덱스입니다
+* @param enableEndIndex 선택 가능한 종료 인덱스입니다
+* @param pagerState 스크롤 상태를 관리하는 Pager 상태입니다
+* @param textStyle 숫자 텍스트 스타일입니다
+* @param itemSize 각 항목의 높이입니다
+* @param visibleCount 화면에 표시할 항목 개수입니다
+* @param onSelect 선택 이벤트 콜백입니다
 */

@@ -19,14 +19,14 @@
 * )
 * ```
 *
-* @param title String: 다이얼로그 상단 제목 텍스트입니다.
-* @param confirm String: 확인 버튼 텍스트입니다.
-* @param onClickConfirm () -> Unit: 확인 버튼 클릭 시 호출되는 콜백입니다.
-* @param onClickChangeMode () -> Unit: 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다.
-* @param onDismissRequest () -> Unit: 다이얼로그 외부 클릭 또는 닫기 시 호출되는 콜백입니다.
-* @param cancel String?: 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다.
-* @param isEnableClock Boolean: true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다.
-* @param onClickCancel () -> Unit: 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다.
+* @param title String 다이얼로그 상단 제목 텍스트입니다
+* @param confirm String 확인 버튼 텍스트입니다
+* @param onClickConfirm () -> Unit 확인 버튼 클릭 시 호출되는 콜백입니다
+* @param onClickChangeMode () -> Unit 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다
+* @param onDismissRequest () -> Unit 다이얼로그 외부 클릭 또는 닫기 시 호출되는 콜백입니다
+* @param cancel String? 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다
+* @param isEnableClock Boolean true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다
+* @param onClickCancel () -> Unit 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다
 */
 
 /**
@@ -51,36 +51,36 @@
 * )
 * ```
 *
-* @param isAm Boolean: 초기 오전/오후 여부입니다. true이면 AM, false이면 PM입니다.
-* @param hour Int: 초기 선택된 시(hour)입니다.
-* @param minute Int: 초기 선택된 분(minute)입니다.
-* @param confirm String: 확인 버튼에 표시할 텍스트입니다.
-* @param cancel String: 취소 버튼에 표시할 텍스트입니다.
-* @param modifier Modifier: 외형을 설정하는 Modifier입니다.
-* @param title String: 다이얼로그 상단에 표시될 제목입니다. 기본값은 빈 문자열입니다.
-* @param default WantedTimePickerWheelDefault: 시간 선택 휠에 대한 기본 설정 값입니다.
-* @param onSelected (Boolean, Int, Int) -> Unit: 시간 선택 완료 시 호출되는 콜백입니다. 파라미터는 (isAm, hour, minute) 순입니다.
-* @param onDismissRequest () -> Unit: 다이얼로그 닫기 요청 시 호출되는 콜백입니다.
+* @param isAm Boolean 초기 오전/오후 여부입니다. true이면 AM, false이면 PM입니다
+* @param hour Int 초기 선택된 시(hour)입니다
+* @param minute Int 초기 선택된 분(minute)입니다
+* @param confirm String 확인 버튼에 표시할 텍스트입니다
+* @param cancel String 취소 버튼에 표시할 텍스트입니다
+* @param modifier Modifier 외형을 설정하는 Modifier입니다
+* @param title String 다이얼로그 상단에 표시될 제목입니다. 기본값은 빈 문자열입니다
+* @param default WantedTimePickerWheelDefault 시간 선택 휠에 대한 기본 설정 값입니다
+* @param onSelected (Boolean, Int, Int) -> Unit 시간 선택 완료 시 호출되는 콜백입니다. 파라미터는 (isAm, hour, minute) 순입니다
+* @param onDismissRequest () -> Unit 다이얼로그 닫기 요청 시 호출되는 콜백입니다
 */
 
 /**
-* data class WantedTimePickerWheelDefault
+* 데이터 클래스 WantedTimePickerWheelDefault
 *
 * 시간 선택 휠(TimePickerWheel)의 기본 설정 값을 담는 데이터 클래스입니다.
 *
 * 시(hour), 분(minute), AM/PM 설정과 비활성 시간 표시 여부를 지정할 수 있습니다.
 *
-* @param enableMinHour `Int`: 선택 가능한 최소 시(hour)입니다.
-* @param enableMaxHour `Int`: 선택 가능한 최대 시(hour)입니다.
-* @param enableMinMinute `Int`: 선택 가능한 최소 분(minute)입니다.
-* @param enableMaxMinute `Int`: 선택 가능한 최대 분(minute)입니다.
-* @param enableAm `Boolean`: 오전(AM) 선택 허용 여부입니다.
-* @param enablePm `Boolean`: 오후(PM) 선택 허용 여부입니다.
-* @param isHideDisableTime `Boolean`: 비활성 시간 숨김 여부입니다.
+* @param enableMinHour Int 선택 가능한 최소 시입니다
+* @param enableMaxHour Int 선택 가능한 최대 시입니다
+* @param enableMinMinute Int 선택 가능한 최소 분입니다
+* @param enableMaxMinute Int 선택 가능한 최대 분입니다
+* @param enableAm Boolean 오전(AM) 선택 허용 여부입니다
+* @param enablePm Boolean 오후(PM) 선택 허용 여부입니다
+* @param isHideDisableTime Boolean 비활성 시간 숨김 여부입니다
 */
 
 /**
-* object WantedTimePickerWheelDefaults
+* 객체 WantedTimePickerWheelDefaults
 *
 * 시간 선택 휠의 기본 설정을 제공하는 객체입니다.
 *
@@ -108,12 +108,12 @@
 * )
 * ```
 *
-* @param enableAm Boolean: 오전(AM) 선택을 허용할지 여부입니다. 기본값은 true입니다.
-* @param enablePm Boolean: 오후(PM) 선택을 허용할지 여부입니다. 기본값은 true입니다. 단, AM이 false인 경우 자동으로 true로 설정됩니다.
-* @param enableMinHour Int: 선택 가능한 최소 시(hour)입니다. 1 이상이어야 하며, 기본값은 1입니다.
-* @param enableMaxHour Int: 선택 가능한 최대 시(hour)입니다. 12 이하이어야 하며, `enableMinHour`보다 작으면 자동 보정됩니다. 기본값은 12입니다.
-* @param enableMinMinute Int: 선택 가능한 최소 분(minute)입니다. 0 이상이어야 하며, 기본값은 0입니다.
-* @param enableMaxMinute Int: 선택 가능한 최대 분(minute)입니다. 59 이하이며, `enableMinMinute`보다 작으면 자동 보정됩니다. 기본값은 59입니다.
-* @param isHideDisableTime Boolean: 비활성 시간대를 숨길지 여부입니다. 기본값은 false입니다.
-* @return WantedTimePickerWheelDefault: 설정된 시간 선택 휠 기본값 객체입니다.
+* @param enableAm Boolean 오전(AM) 선택을 허용할지 여부입니다. 기본값은 true입니다
+* @param enablePm Boolean 오후(PM) 선택을 허용할지 여부입니다. 기본값은 true입니다. 단, AM이 false인 경우 자동으로 true로 설정됩니다
+* @param enableMinHour Int 선택 가능한 최소 시입니다. 1 이상이어야 하며, 기본값은 1입니다
+* @param enableMaxHour Int 선택 가능한 최대 시입니다. 12 이하이어야 하며, `enableMinHour`보다 작으면 자동 보정됩니다. 기본값은 12입니다
+* @param enableMinMinute Int 선택 가능한 최소 분입니다. 0 이상이어야 하며, 기본값은 0입니다
+* @param enableMaxMinute Int 선택 가능한 최대 분입니다. 59 이하이며, `enableMinMinute`보다 작으면 자동 보정됩니다. 기본값은 59입니다
+* @param isHideDisableTime Boolean 비활성 시간대를 숨길지 여부입니다. 기본값은 false입니다
+* @return WantedTimePickerWheelDefault 설정된 시간 선택 휠 기본값 객체입니다
 */
