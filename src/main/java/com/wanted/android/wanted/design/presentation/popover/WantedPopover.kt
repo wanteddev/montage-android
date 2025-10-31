@@ -577,7 +577,7 @@ private fun WantedPopoverLayout(
 }
 
 /**
- * rememberPopoverState
+ * fun rememberPopoverState(...)
  *
  * 팝오버 상태를 관리하는 State 객체를 생성하고 기억합니다.
  *

@@ -37,7 +37,7 @@ data class WantedContentBadgeDefault(
 object WantedContentBadgeDefaults {
 
     /**
-     * fun getAccentDefault
+     * fun getAccentDefault(...)
      *
      * 강조 스타일의 기본 콘텐츠 배지를 반환합니다.
      *
@@ -69,7 +69,7 @@ object WantedContentBadgeDefaults {
 
     /**
      *
-     * fun getNeutralDefault
+     * fun getNeutralDefault(...)
      *
      * 중립 스타일의 기본 콘텐츠 배지를 반환합니다.
      *

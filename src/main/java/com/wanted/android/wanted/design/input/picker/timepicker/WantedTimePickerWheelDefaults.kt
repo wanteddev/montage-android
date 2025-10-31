@@ -3,7 +3,7 @@ package com.wanted.android.wanted.design.input.picker.timepicker
 import androidx.compose.runtime.Composable
 
 /**
- * 데이터 클래스 WantedTimePickerWheelDefault
+ * data class WantedTimePickerWheelDefault
  *
  * 시간 선택 휠(TimePickerWheel)의 기본 설정 값을 담는 데이터 클래스입니다.
  *
@@ -29,7 +29,7 @@ data class WantedTimePickerWheelDefault(
 
 
 /**
- * 객체 WantedTimePickerWheelDefaults
+ * object WantedTimePickerWheelDefaults
  *
  * 시간 선택 휠의 기본 설정을 제공하는 객체입니다.
  *
@@ -39,6 +39,8 @@ data class WantedTimePickerWheelDefault(
 object WantedTimePickerWheelDefaults {
 
     /**
+     * fun getDefault(...)
+     * 
      * 시간 선택 휠 기본 설정 값을 반환합니다.
      *
      * 시간 선택 시 사용할 수 있는 시, 분, AM/PM 범위를 설정할 수 있으며,

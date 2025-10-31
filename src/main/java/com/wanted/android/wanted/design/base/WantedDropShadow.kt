@@ -34,6 +34,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
+ * fun Modifier.wantedDropShadow(...)
+ *
  * 컴포넌트에 드롭 섀도우 효과를 적용하는 Modifier 확장 함수입니다.
  *
  * WantedShadowStyle을 사용하여 미리 정의된 섀도우 스타일을 적용합니다.
@@ -69,6 +71,8 @@ fun Modifier.wantedDropShadow(style: WantedShadowStyle): Modifier {
 }
 
 /**
+ * fun Modifier.wantedDropShadowSpread(...)
+ *
  * 컴포넌트에 확산형 드롭 섀도우 효과를 적용하는 Modifier 확장 함수입니다.
  *
  * WantedShadowSpreadStyle을 사용하여 확산형 섀도우 스타일을 적용합니다.
@@ -228,6 +232,8 @@ sealed class WantedShadowStyle(
     open val backgroundColor: Color
 ) {
     /**
+     * abstract fun getShadow()
+     *
      * 섀도우 토큰을 반환하는 함수입니다.
      * 하위 클래스에서 구현해야 합니다.
      *
@@ -236,6 +242,8 @@ sealed class WantedShadowStyle(
     abstract fun getShadow(): List<WantedShadowToken>
 
     /**
+     * data class XSmall
+     *
      * XSmall 섀도우 스타일을 반환하는 데이터 클래스입니다.
      *
      * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -262,6 +270,8 @@ sealed class WantedShadowStyle(
     }
 
     /**
+     * data class Small
+     *
      * Small 섀도우 스타일을 반환하는 데이터 클래스입니다.
      *
      * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -294,6 +304,8 @@ sealed class WantedShadowStyle(
     }
 
     /**
+     * data class Medium
+     *
      * Medium 섀도우 스타일을 반환하는 데이터 클래스입니다.
      *
      * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -326,6 +338,8 @@ sealed class WantedShadowStyle(
     }
 
     /**
+     * data class Large
+     *
      * Large 섀도우 스타일을 반환하는 데이터 클래스입니다.
      *
      * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -358,6 +372,8 @@ sealed class WantedShadowStyle(
     }
 
     /**
+     * data class XLarge
+     *
      * XLarge 섀도우 스타일을 반환하는 데이터 클래스입니다.
      *
      * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -408,6 +424,8 @@ sealed class WantedShadowSpreadStyle(
     open val backgroundColor: Color
 ) {
     /**
+     * abstract fun getShadow()
+     *
      * 섀도우 토큰을 반환하는 함수입니다.
      * 하위 클래스에서 구현해야 합니다.
      *
@@ -416,6 +434,8 @@ sealed class WantedShadowSpreadStyle(
     abstract fun getShadow(): List<WantedShadowToken>
 
     /**
+     * data class Small
+     *
      * Small 확산형 섀도우 스타일을 반환하는 데이터 클래스입니다.
      *
      * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -441,6 +461,8 @@ sealed class WantedShadowSpreadStyle(
     }
 
     /**
+     * data class Medium
+     *
      * Medium 확산형 섀도우 스타일을 반환하는 데이터 클래스입니다.
      *
      * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.

@@ -1,5 +1,10 @@
 package com.wanted.android.wanted.design.feedback.pushbadge
 
+/**
+ * Push 배지 컴포넌트의 계약(Contract) 클래스입니다.
+ *
+ * 이 클래스는 Push 배지의 표시 유형, 크기, 위치를 정의하는 열거형 클래스들을 포함합니다.
+ */
 class PushBadgeContract {
     /**
      * enum class PushBadgeVariant
@@ -32,13 +37,17 @@ class PushBadgeContract {
     }
 
     /**
-     * enum class PushBadgePosition
+     * Push 배지를 배치할 위치를 정의하는 열거형 클래스입니다.
      *
-     * Push 배지를 배치할 위치를 정의합니다.
-     *
-     * - TopStart, TopCenter, TopEnd: 상단의 좌측/중앙/우측 위치입니다.
-     * - MiddleStart, MiddleCenter, MiddleEnd: 중앙의 좌측/중앙/우측 위치입니다.
-     * - BottomStart, BottomCenter, BottomEnd: 하단의 좌측/중앙/우측 위치입니다.
+     * @property TopStart 상단의 좌측 위치입니다.
+     * @property TopCenter 상단의 중앙 위치입니다.
+     * @property TopEnd 상단의 우측 위치입니다.
+     * @property MiddleStart 중앙의 좌측 위치입니다.
+     * @property MiddleCenter 중앙의 중앙 위치입니다.
+     * @property MiddleEnd 중앙의 우측 위치입니다.
+     * @property BottomStart 하단의 좌측 위치입니다.
+     * @property BottomCenter 하단의 중앙 위치입니다.
+     * @property BottomEnd 하단의 우측 위치입니다.
      */
     enum class PushBadgePosition {
         TopStart,

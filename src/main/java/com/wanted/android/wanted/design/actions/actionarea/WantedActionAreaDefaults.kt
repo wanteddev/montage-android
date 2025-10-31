@@ -45,6 +45,8 @@ data class WantedActionAreaDefault(
  */
 object WantedActionAreaDefaults {
     /**
+     * fun getDefault(...)
+     *
      * WantedActionAreaDefault의 기본 설정을 생성합니다.
      *
      * 액션 영역 타입에 따라 positive, negative, neutral 버튼의 기본 스타일을 자동으로 설정합니다.

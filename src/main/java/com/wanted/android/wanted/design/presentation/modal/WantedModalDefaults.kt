@@ -35,7 +35,7 @@ import com.wanted.android.wanted.design.util.pxToDp
  */
 object WantedModalDefaults {
     /**
-     * DragHandle
+     * fun DragHandle(...)
      *
      * BottomSheet 상단에 표시되는 드래그 핸들 컴포넌트입니다.
      *

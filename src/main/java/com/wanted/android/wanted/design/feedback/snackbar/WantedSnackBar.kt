@@ -36,6 +36,8 @@ import com.wanted.android.wanted.design.util.clickOnce
 
 
 /**
+ * fun WantedSnackBar(..)
+ *
  * 앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다.
  *
  * `WantedSnackbarVisuals`를 사용하면 아이콘과 설명이 포함된 커스텀 레이아웃으로 표시되고,

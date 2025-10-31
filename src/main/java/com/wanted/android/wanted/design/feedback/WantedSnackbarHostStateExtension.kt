@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 
 
 /**
+ * fun SnackbarHostState.showSnackbar(...)
+ *
  * Wanted 스타일의 스낵바를 표시하는 확장 함수입니다.
  *
  * WantedSnackbarVisuals를 사용하여 스낵바를 표시하며,
@@ -41,6 +43,8 @@ fun SnackbarHostState.showSnackbar(
 }
 
 /**
+ * fun SnackbarHostState.showToast(...)
+ *
  * Wanted 스타일의 토스트를 표시하는 확장 함수입니다.
  *
  * WantedToastVisuals를 사용하여 토스트를 표시하며,

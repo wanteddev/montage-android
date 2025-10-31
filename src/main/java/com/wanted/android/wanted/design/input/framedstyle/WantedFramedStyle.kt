@@ -23,6 +23,8 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 
 /**
+ * fun Modifier.framedStyle(...)
+ *
  * 프레임 스타일을 적용하는 Modifier 확장 함수입니다.
  *
  * 테두리, 섀도우, 모서리 둥글기 등을 적용하여 카드나 입력 필드 등에 프레임 스타일을 부여합니다.

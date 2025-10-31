@@ -15,6 +15,8 @@ import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
+ * data class WantedActionChipDefault
+ *
  * WantedActionChip의 기본 스타일을 정의하는 데이터 클래스입니다.
  * 크기, 스타일 변형, 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
  *
@@ -55,6 +57,8 @@ data class WantedActionChipDefault(
 
 object WantedActionChipDefaults {
     /**
+     * fun getDefault(...)
+     *
      * 기본 스타일에 맞춰 WantedActionChipDefault 객체를 생성합니다.
      * Compose 환경에 따라 Chip의 스타일을 동적으로 결정합니다.
      *

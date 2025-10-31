@@ -26,6 +26,8 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.OPACITY_5
 
 /**
+ * fun String.accent(...)
+ *
  * 문자열 내에서 특정 부분 텍스트를 강조하여 AnnotatedString을 생성합니다.
  *
  * 전체 문자열에서 subText를 찾아 지정된 textStyle을 적용합니다.
@@ -75,6 +77,8 @@ fun String.accent(
 }
 
 /**
+ * fun String.accent(...)
+ *
  * 문자열 내에서 여러 부분 텍스트를 강조하여 AnnotatedString을 생성합니다.
  *
  * 전체 문자열에서 여러 개의 subText를 찾아 지정된 textStyle을 적용합니다.
@@ -122,6 +126,8 @@ fun String.accent(
 }
 
 /**
+ * fun Modifier.getBorderModifier(...)
+ *
  * 컴포넌트에 테두리 스타일을 적용하는 Modifier 확장 함수입니다.
  *
  * 원형 또는 둥근 모서리 형태에 대해 테두리 없음, 외곽선, 내부선 타입을 지원합니다.

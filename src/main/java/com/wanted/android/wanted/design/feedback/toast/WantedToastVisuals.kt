@@ -7,6 +7,8 @@ import androidx.compose.runtime.Stable
 
 
 /**
+ * class WantedToastVisuals
+ *
  * 커스텀 Toast를 위한 시각적 구성 클래스입니다.
  *
  * 메시지, 아이콘, variant 설정 등을 포함하며 SnackbarVisuals를 확장합니다.

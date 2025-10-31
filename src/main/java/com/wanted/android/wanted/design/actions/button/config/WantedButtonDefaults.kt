@@ -54,6 +54,8 @@ data class WantedButtonDefault(
  */
 object WantedButtonDefaults {
     /**
+     * fun getDefault(...)
+     *
      * WantedButtonDefault의 기본 설정을 생성합니다.
      *
      * 버튼의 variant, type, size에 따라 콘텐츠 색상, 배경 색상, 테두리 등의 스타일을 자동으로 설정합니다.

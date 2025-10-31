@@ -37,6 +37,8 @@ data class WantedDatePickerWheelDefault(
  */
 object WantedDatePickerWheelDefaults {
     /**
+     * fun getDefault(...)
+     *
      * 날짜 선택 휠 기본 설정 값을 반환합니다.
      *
      * 연도 및 월 범위 설정, 비활성 날짜 숨김 여부 등을 지정할 수 있으며, 유효하지 않은 값은 자동으로 보정됩니다.

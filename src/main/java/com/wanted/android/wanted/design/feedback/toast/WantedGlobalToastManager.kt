@@ -53,6 +53,8 @@ object WantedGlobalToastManager {
         }
 
     /**
+     * fun initialize(...)
+     *
      * 토스트 매니저를 초기화합니다.
      *
      * Application 생명주기에 콜백을 등록하여 Activity 상태를 추적합니다.
@@ -100,6 +102,8 @@ object WantedGlobalToastManager {
     }
 
     /**
+     *  fun showToast(...)
+     *
      * 커스텀 컴포저블 콘텐츠로 토스트를 표시합니다.
      *
      * 이전에 표시 중이던 토스트는 자동으로 취소되며, 지정된 시간 후에 자동으로 사라집니다.
@@ -136,6 +140,8 @@ object WantedGlobalToastManager {
     }
 
     /**
+     * fun showToast(...)
+     *
      * 텍스트와 스타일을 지정하여 토스트를 표시합니다.
      *
      * WantedToastImpl을 사용하여 표준 형태의 토스트를 표시합니다.

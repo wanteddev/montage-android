@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
  *
  * 각 항목별로 스켈레톤을 표시할지 여부를 설정합니다.
  *
- * @property topContentSkeleton 상단 콘텐츠 영역에 스켈레톤을 표시할지 여부
- * @property captionSkeleton 메인 캡션에 스켈레톤을 표시할지 여부
- * @property extraCaptionSkeleton 추가 캡션에 스켈레톤을 표시할지 여부
- * @property bottomContentSkeleton 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부
- * @property ratio 썸네일 스켈레톤의 비율
+ * @param topContentSkeleton Boolean: 상단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
+ * @param captionSkeleton Boolean: 메인 캡션에 스켈레톤을 표시할지 여부입니다.
+ * @param extraCaptionSkeleton Boolean: 추가 캡션에 스켈레톤을 표시할지 여부입니다.
+ * @param bottomContentSkeleton Boolean: 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
+ * @param ratio Float: 썸네일 스켈레톤의 비율입니다.
  */
 data class WantedCardDefault(
     val topContentSkeleton: Boolean = false,
@@ -24,17 +24,15 @@ data class WantedCardDefault(
 )
 
 /**
- *
  * object WantedCardDefaults
  *
- * 카드 컴포넌트의 스켈레톤 UI 기본 설정을 제공하는 객체입니다.
- *
- * 로딩 상태에서 표시할 스켈레톤 UI의 구성 요소별 표시 여부를 설정할 수 있습니다.
  */
 object WantedCardDefaults {
 
     /**
-     * 기본 스켈레톤 설정값을 반환합니다.
+     * fun getDefault(...)
+     *
+     * 기본 스켈레톤 설정값을 반환하는 Compose 함수입니다.
      *
      * 각 항목에 대해 스켈레톤 UI를 표시할지 여부를 설정할 수 있습니다.
      *
@@ -46,11 +44,11 @@ object WantedCardDefaults {
      * )
      * ```
      *
-     * @param topContentSkeleton 상단 콘텐츠 영역에 스켈레톤을 표시할지 여부 (기본값: false)
-     * @param captionSkeleton 메인 캡션에 스켈레톤을 표시할지 여부 (기본값: true)
-     * @param extraCaptionSkeleton 추가 캡션에 스켈레톤을 표시할지 여부 (기본값: true)
-     * @param bottomContentSkeleton 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부 (기본값: false)
-     * @return [WantedCardDefault] 스켈레톤 설정 정보가 담긴 데이터 클래스
+     * @param topContentSkeleton Boolean: 상단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다. 기본값은 false입니다.
+     * @param captionSkeleton Boolean: 메인 캡션에 스켈레톤을 표시할지 여부입니다. 기본값은 true입니다.
+     * @param extraCaptionSkeleton Boolean: 추가 캡션에 스켈레톤을 표시할지 여부입니다. 기본값은 true입니다.
+     * @param bottomContentSkeleton Boolean: 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다. 기본값은 false입니다.
+     * @return WantedCardDefault: 스켈레톤 설정 정보가 담긴 데이터 클래스입니다.
      */
     @Composable
     fun getDefault(
@@ -58,7 +56,7 @@ object WantedCardDefaults {
         captionSkeleton: Boolean = true,
         extraCaptionSkeleton: Boolean = true,
         bottomContentSkeleton: Boolean = false
-    ): WantedCardDefault = WantedCardDefault(
+    ) = WantedCardDefault(
         topContentSkeleton = topContentSkeleton,
         captionSkeleton = captionSkeleton,
         extraCaptionSkeleton = extraCaptionSkeleton,

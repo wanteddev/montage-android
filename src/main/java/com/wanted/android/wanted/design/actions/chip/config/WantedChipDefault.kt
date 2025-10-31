@@ -4,6 +4,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 
 /**
+ * open class WantedChipDefault
+ *
  * Chip 컴포넌트의 기본 스타일을 정의하는 베이스 클래스입니다.
  *
  * 이 클래스는 다양한 Chip 타입들이 상속하여 사용할 수 있는 공통 속성을 제공합니다.
