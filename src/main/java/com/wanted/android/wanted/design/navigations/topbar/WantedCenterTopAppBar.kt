@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,15 +18,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.TopAppBarType
+import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedCenterTopAppBarLayout
-import com.wanted.android.wanted.design.navigations.topbar.view.WantedExtendedTopAppBarLayout
+import com.wanted.android.wanted.design.navigations.topbar.view.WantedDisplayTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayoutDivider
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -47,7 +49,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
  * @param windowInsets WindowInsets: 인셋을 적용하여 상태바 등 시스템 UI를 고려한 여백을 처리합니다.
  * @param background Color: 앱바의 배경 색상입니다.
- * @param type TopAppBarType: 앱바의 유형으로 Normal 또는 Extended를 설정할 수 있습니다.
+ * @param variant Variant: 앱바의 유형으로 Normal 또는 Extended를 설정할 수 있습니다.
  * @param scrollableState ScrollableState?: 스크롤 상태를 반영하여 divider 표시 여부를 조절합니다.
  * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 영역에 표시할 컴포저블입니다.
  * @param title @Composable (() -> Unit)?: 중앙 타이틀 영역에 표시할 컴포저블입니다.
@@ -59,7 +61,7 @@ private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     background: Color = colorResource(id = R.color.background_normal_normal),
-    type: TopAppBarType = TopAppBarType.Normal,
+    variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -70,7 +72,7 @@ private fun WantedCenterTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
         background = background,
-        type = type,
+        variant = variant,
         scrollableState = scrollableState,
         navigationIcon = navigationIcon,
         title = {
@@ -89,7 +91,7 @@ private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     background: Color = colorResource(id = R.color.background_elevated_normal),
-    type: TopAppBarType = TopAppBarType.Normal,
+    variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
     actions: @Composable (RowScope.() -> Unit)? = null,
@@ -99,7 +101,7 @@ private fun WantedCenterBackTopAppBar(
         modifier = modifier,
         windowInsets = windowInsets,
         background = background,
-        type = type,
+        variant = variant,
         scrollableState = scrollableState,
         navigationIcon = {
             WantedTopAppBarIconButton(
@@ -117,7 +119,7 @@ fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     background: Color = colorResource(R.color.background_normal_normal),
-    type: TopAppBarType = TopAppBarType.Normal,
+    variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
@@ -129,11 +131,21 @@ fun WantedCenterTopAppBar(
     }
 
     Box(
-        modifier = modifier.background(background)
+        modifier = if (variant == Variant.Floating) {
+            modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(background, colorResource(R.color.transparent))
+                    )
+                )
+                .padding(bottom = 16.dp)
+        } else {
+            modifier.background(background)
+        }
     ) {
-        CompositionLocalProvider(LocalWantedTopBarIconType.provides(type)) {
-            when (type) {
-                TopAppBarType.Normal -> {
+        CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
+            when (variant) {
+                Variant.Normal -> {
                     WantedCenterTopAppBarLayout(
                         modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
@@ -142,8 +154,8 @@ fun WantedCenterTopAppBar(
                     )
                 }
 
-                TopAppBarType.Extended -> {
-                    WantedExtendedTopAppBarLayout(
+                Variant.Display -> {
+                    WantedDisplayTopAppBarLayout(
                         modifier = Modifier.windowInsetsPadding(windowInsets),
                         navigationIcon = navigationIcon,
                         title = title,

@@ -25,7 +25,7 @@ WantedTopAppBar(
 |:---|:---|:---|
 | modifier | Modifier | 외형 및 배치를 위한 Modifier입니다. |
 | windowInsets | WindowInsets | 인셋을 적용합니다. |
-| type | TopAppBarType | 앱바 유형(Normal, Floating, Extended)입니다. |
+| type | Variant | 앱바 유형(Normal, Floating, Display, Search)입니다. |
 | background | Color | 앱바 배경 색상입니다. |
 | titleAlignCenter | Boolean | 타이틀을 중앙 정렬할지 여부입니다. |
 | scrollableState | ScrollableState? | 스크롤 상태 정보입니다. |
@@ -55,7 +55,7 @@ WantedBackTopAppBar(
 |:---|:---|:---|
 | modifier | Modifier | 외형 및 배치를 위한 Modifier입니다. |
 | windowInsets | WindowInsets | 인셋을 적용합니다. |
-| type | TopAppBarType | 앱바 유형(Normal, Floating, Extended)입니다. |
+| type | Variant | 앱바 유형(Normal, Floating, Display, Search)입니다. |
 | background | Color | 앱바 배경 색상입니다. |
 | titleAlignCenter | Boolean | 타이틀을 중앙 정렬할지 여부입니다. |
 | scrollableState | ScrollableState? | 스크롤 상태 정보입니다. |
@@ -93,7 +93,7 @@ WantedCenterTopAppBar(
 | modifier | Modifier | 외형 및 배치를 위한 Modifier입니다. |
 | windowInsets | WindowInsets | 인셋을 적용합니다. |
 | background | Color | 앱바 배경 색상입니다. |
-| type | TopAppBarType | 앱바 유형(Normal, Extended)입니다. |
+| type | Variant | 앱바 유형(Normal, Extended)입니다. |
 | scrollableState | ScrollableState? | 스크롤 상태 정보입니다. |
 | navigationIcon | @Composable (() -> Unit)? | 좌측 아이콘 컴포저블입니다. |
 | title | @Composable (() -> Unit)? | 중앙 정렬 타이틀 영역입니다. |
@@ -121,7 +121,7 @@ WantedTopAppBarIconButton(
 |:---|:---|:---|
 | painter | Painter | 아이콘 이미지입니다. |
 | modifier | Modifier | 외형 및 배치를 조정하는 Modifier입니다. |
-| type | TopAppBarType | 앱바 유형으로 스타일에 영향을 줍니다. |
+| type | Variant | 앱바 유형으로 스타일에 영향을 줍니다. |
 | enabled | Boolean | 버튼 활성화 여부입니다. |
 | floatingStyleAlternative | Boolean | Floating 타입 대체 배경 여부입니다. |
 | floatingStyleBackground | Boolean | Floating 타입 기본 배경 여부입니다. |
@@ -135,7 +135,7 @@ WantedTopAppBarIconButton(
 
 ## Enum 설명
 
-### TopAppBarType
+### Variant
 | 값 | 설명 |
 |:---|:---|
 | Normal | 기본 상단 앱바 스타일입니다. |

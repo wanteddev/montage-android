@@ -42,20 +42,12 @@ internal fun WantedCenterTopAppBarLayout(
             Box(
                 Modifier
                     .layoutId("navigationIcon")
-                    .padding(start = 8.dp)
+                    .padding(start = 16.dp),
+                contentAlignment = Alignment.CenterStart
             ) {
-                Row {
-                    navigationIcon?.let {
-                        Box(
-                            modifier = Modifier
-                                .size(40.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            navigationIcon()
-                        }
-
-                        Spacer(modifier = Modifier.size(12.dp))
-                    } ?: kotlin.run {
+                navigationIcon?.let {
+                    Row {
+                        navigationIcon()
                         Spacer(modifier = Modifier.size(12.dp))
                     }
                 }
@@ -74,7 +66,7 @@ internal fun WantedCenterTopAppBarLayout(
                     ProvideTextStyle(
                         value = WantedTextStyle(
                             colorRes = R.color.label_strong,
-                            style = DesignSystemTheme.typography.heading2Bold
+                            style = DesignSystemTheme.typography.headline2Bold
                         )
                     ) {
                         title()
@@ -85,13 +77,14 @@ internal fun WantedCenterTopAppBarLayout(
             Box(
                 Modifier
                     .layoutId("actionIcons")
-                    .padding(end = 8.dp)
+                    .padding(end = 16.dp),
+                contentAlignment = Alignment.CenterEnd
             ) {
                 actions?.let {
                     Row(
                         modifier = Modifier.wrapContentSize(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
+                        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End),
                     ) {
                         actions()
                     }
@@ -100,11 +93,11 @@ internal fun WantedCenterTopAppBarLayout(
         }
     ) { measurables, constraints ->
         val navigationIconPlaceable =
-            measurables.fastFirst { it.layoutId == "navigationIcon" }
-                .measure(constraints.copy(minWidth = 0))
+                measurables.fastFirst { it.layoutId == "navigationIcon" }
+                    .measure(constraints.copy(minWidth = 0))
         val actionIconsPlaceable =
-            measurables.fastFirst { it.layoutId == "actionIcons" }
-                .measure(constraints.copy(minWidth = 0))
+                measurables.fastFirst { it.layoutId == "actionIcons" }
+                    .measure(constraints.copy(minWidth = 0))
 
         val maxTitleWidth = if (constraints.maxWidth == Constraints.Infinity) {
             constraints.maxWidth
@@ -113,8 +106,8 @@ internal fun WantedCenterTopAppBarLayout(
                 .coerceAtLeast(0)
         }
         val titlePlaceable =
-            measurables.fastFirst { it.layoutId == "title" }
-                .measure(constraints.copy(minWidth = 0, maxWidth = maxTitleWidth))
+                measurables.fastFirst { it.layoutId == "title" }
+                    .measure(constraints.copy(minWidth = 0, maxWidth = maxTitleWidth))
 
         val layoutHeight = height.floatValue.roundToInt()
 
@@ -137,7 +130,7 @@ internal fun WantedCenterTopAppBarLayout(
                 // May happen if the actions are wider than the navigation and the title
                 // is long. In this case, offset to the left.
                 baseX += ((constraints.maxWidth - actionIconsPlaceable.width) -
-                    (baseX + titlePlaceable.width))
+                        (baseX + titlePlaceable.width))
             }
 
             // Title

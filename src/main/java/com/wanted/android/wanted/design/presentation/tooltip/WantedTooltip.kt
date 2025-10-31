@@ -230,7 +230,7 @@ fun WantedTooltip(
                                 contentWidth = contentWidth,
                                 tooltipOffsetX = tooltipOffsetX,
                                 caretPaddingHorizontalPx = with(density) {
-                                    if (size == WantedTooltipSize.Small) 8.dp.toPx() else 10.dp.toPx()
+                                    if (size == WantedTooltipSize.Small) 1.dp.toPx() else 6.dp.toPx()
                                 },
                                 caretWidthPx = with(density) { 12.dp.toPx() }
                             )
@@ -425,7 +425,7 @@ private fun WantedTooltipLayout(
                 minWidth = if (size == WantedTooltipSize.Small) 36.dp else 64.dp,
                 maxWidth = 296.dp
             )
-            .padding(spacingBetweenTooltipAndAnchor)
+            .padding(vertical = spacingBetweenTooltipAndAnchor)
             .clip(RoundedCornerShape(if (size == WantedTooltipSize.Small) 6.dp else 8.dp))
             .background(colorResource(id = R.color.background_normal_normal))
             .background(colorResource(id = R.color.inverse_background).copy(OPACITY_88))

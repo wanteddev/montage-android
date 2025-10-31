@@ -29,7 +29,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
-internal fun WantedExtendedTopAppBarLayout(
+internal fun WantedDisplayTopAppBarLayout(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
@@ -38,60 +38,65 @@ internal fun WantedExtendedTopAppBarLayout(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 8.dp, bottom = 12.dp)
+            .padding(vertical = 16.dp)
+            .padding(horizontal = 16.dp)
             .wrapContentHeight()
             .height(IntrinsicSize.Min),
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
     ) {
         Row(
             modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             navigationIcon?.let {
-                Spacer(modifier = Modifier.size(8.dp))
-
                 Box(
-                    modifier = Modifier
-                        .size(40.dp),
+                    modifier = Modifier.size(24.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     navigationIcon()
                 }
 
-                Spacer(modifier = Modifier.size(8.dp))
+                Spacer(modifier = Modifier.weight(1f))
             } ?: kotlin.run {
                 title?.let {
-                    TopBarTitle(title)
+                    TopBarTitle(
+                        modifier = Modifier.weight(1f),
+                        title = title
+                    )
                 }
-                Spacer(modifier = Modifier.size(16.dp))
             }
 
-            Spacer(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 4.dp),
-            )
-
-            Spacer(modifier = Modifier.size(16.dp))
 
             actions?.let {
-                actions()
-                Spacer(modifier = Modifier.size(8.dp))
+                Row(
+                    modifier = Modifier.wrapContentHeight(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    actions()
+                }
             }
         }
 
         if (navigationIcon != null && title != null) {
-            Spacer(modifier = Modifier.size(8.dp))
-            TopBarTitle(title)
+            TopBarTitle(
+                modifier = Modifier,
+                title = title
+            )
         }
     }
 }
 
 @Composable
 private fun TopBarTitle(
+    modifier: Modifier = Modifier,
     title: @Composable () -> Unit
 ) {
-    Box(Modifier.padding(start = 20.dp)) {
+    Box(
+        modifier.padding(horizontal = 4.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
         ProvideTextStyle(
             value = WantedTextStyle(
                 colorRes = R.color.label_strong,
@@ -106,7 +111,7 @@ private fun TopBarTitle(
 
 @DevicePreviews
 @Composable
-private fun WantedExtendedTopAppBarLayoutPreview() {
+private fun WantedDisplayTopAppBarLayoutPreview() {
     DesignSystemTheme {
         Column(
             modifier = Modifier
@@ -115,7 +120,7 @@ private fun WantedExtendedTopAppBarLayoutPreview() {
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 
-            WantedExtendedTopAppBarLayout(
+            WantedDisplayTopAppBarLayout(
                 modifier = Modifier.fillMaxWidth(),
                 navigationIcon = {
                     WantedTopAppBarIconButton(
@@ -138,7 +143,7 @@ private fun WantedExtendedTopAppBarLayoutPreview() {
                 }
             )
 
-            WantedExtendedTopAppBarLayout(
+            WantedDisplayTopAppBarLayout(
                 modifier = Modifier.fillMaxWidth(),
                 title = {
                     Text(text = "타이틀")
