@@ -4,13 +4,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * object WantedAccordionContract
+ * object WantedAccordionDefaults
  *
  * 아코디언 컴포넌트에서 사용되는 상수 및 설정 값을 정의하는 객체입니다.
  *
  * 이 객체는 주로 아코디언 헤더의 시각적 구성 요소 중 패딩 관련 값을 제공합니다.
  */
-object WantedAccordionContract {
+object WantedAccordionDefaults {
 
     /**
      * enum class VerticalPadding

@@ -79,7 +79,7 @@ fun WantedSegmentedControlSolid(
     items: List<String>,
     selectedIndex: Int,
     modifier: Modifier = Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
+    size: WantedSegmentedDefaults.SegmentedSize = WantedSegmentedDefaults.SegmentedSize.Medium,
     onClick: (index: Int) -> Unit = {}
 ) {
     CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
@@ -138,7 +138,7 @@ fun WantedSegmentedControlSolid(
     selectedIndex: Int,
     item: @Composable (index: Int) -> Unit,
     modifier: Modifier = Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
+    size: WantedSegmentedDefaults.SegmentedSize = WantedSegmentedDefaults.SegmentedSize.Medium,
     onClick: (index: Int) -> Unit = {}
 ) {
     val localDensity = LocalDensity.current

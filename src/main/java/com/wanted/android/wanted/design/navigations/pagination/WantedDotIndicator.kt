@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.BorderType
 import com.wanted.android.wanted.design.base.getBorderModifier
-import com.wanted.android.wanted.design.navigations.pagination.WantedPaginationContract.IndicatorDotSize
+import com.wanted.android.wanted.design.navigations.pagination.WantedPaginationDefaults.IndicatorDotSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_16
@@ -74,8 +74,8 @@ fun WantedDotIndicator(
     visibleDotCount: Int,
     currentIndex: Int,
     modifier: Modifier = Modifier,
-    size: WantedPaginationContract.WantedDotIndicatorSize = WantedPaginationContract.WantedDotIndicatorSize.Medium,
-    type: WantedPaginationContract.WantedDotIndicatorType = WantedPaginationContract.WantedDotIndicatorType.Normal
+    size: WantedPaginationDefaults.WantedDotIndicatorSize = WantedPaginationDefaults.WantedDotIndicatorSize.Medium,
+    type: WantedPaginationDefaults.WantedDotIndicatorType = WantedPaginationDefaults.WantedDotIndicatorType.Normal
 ) {
     val visibleArea by remember(visibleDotCount, totalPageCount, currentIndex) {
         mutableStateOf(
@@ -89,12 +89,12 @@ fun WantedDotIndicator(
 
     // 각 점이 차지할 수 있는 최대 크기 (애니메이션 중 최대 크기 기준)
     val maxDotSizeDp = when (size) {
-        WantedPaginationContract.WantedDotIndicatorSize.Medium -> 10.dp
-        WantedPaginationContract.WantedDotIndicatorSize.Small -> 6.dp
+        WantedPaginationDefaults.WantedDotIndicatorSize.Medium -> 10.dp
+        WantedPaginationDefaults.WantedDotIndicatorSize.Small -> 6.dp
     }
     // 점들 사이의 간격
     val spaceDp =
-        if (type == WantedPaginationContract.WantedDotIndicatorType.Normal) 10.dp else 6.dp
+        if (type == WantedPaginationDefaults.WantedDotIndicatorType.Normal) 10.dp else 6.dp
 
     // visibleDotCount개의 점과 그 사이의 간격을 포함하는 전체 너비 계산
     val calculatedWidth: Dp
@@ -125,7 +125,7 @@ fun WantedDotIndicator(
         verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(totalPageCount) { index ->
-            if (type == WantedPaginationContract.WantedDotIndicatorType.Normal) {
+            if (type == WantedPaginationDefaults.WantedDotIndicatorType.Normal) {
                 IndicatorDot(
                     indicatorSize = size,
                     index = index,
@@ -150,7 +150,7 @@ fun WantedDotIndicator(
 
 @Composable
 private fun IndicatorDot(
-    indicatorSize: WantedPaginationContract.WantedDotIndicatorSize,
+    indicatorSize: WantedPaginationDefaults.WantedDotIndicatorSize,
     index: Int,
     visibleArea: Pair<Int, Int>,
     visibleDotCount: Int,
@@ -256,7 +256,7 @@ private fun IndicatorDot(
 
 @Composable
 private fun IndicatorBorder(
-    indicatorSize: WantedPaginationContract.WantedDotIndicatorSize,
+    indicatorSize: WantedPaginationDefaults.WantedDotIndicatorSize,
     index: Int,
     visibleArea: Pair<Int, Int>,
     visibleDotCount: Int,
@@ -411,10 +411,10 @@ private fun getPaginationDotVisibleArea(
 }
 
 private fun getDotSize(
-    size: WantedPaginationContract.WantedDotIndicatorSize,
+    size: WantedPaginationDefaults.WantedDotIndicatorSize,
     dotSize: IndicatorDotSize,
 ): Dp {
-    return if (size == WantedPaginationContract.WantedDotIndicatorSize.Medium) {
+    return if (size == WantedPaginationDefaults.WantedDotIndicatorSize.Medium) {
         when (dotSize) {
             IndicatorDotSize.Max -> 10.dp
             IndicatorDotSize.Mid -> 8.dp
@@ -505,58 +505,58 @@ private fun WantedDotIndicatorPreview() {
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.LightGray.copy(alpha = 0.3f)),
                     visibleDotCount = 5,
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Medium,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Medium,
                     totalPageCount = 10,
                     currentIndex = 0
                 )
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.LightGray.copy(alpha = 0.3f)),
                     visibleDotCount = 5,
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Medium,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Medium,
                     totalPageCount = 10,
                     currentIndex = 2
                 )
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.LightGray.copy(alpha = 0.3f)),
                     visibleDotCount = 5,
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Medium,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Medium,
                     totalPageCount = 10,
                     currentIndex = 4 // 중간
                 )
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.LightGray.copy(alpha = 0.3f)),
                     visibleDotCount = 5,
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Medium,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Medium,
                     totalPageCount = 10,
                     currentIndex = 8 // 거의 끝
                 )
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.LightGray.copy(alpha = 0.3f)),
                     visibleDotCount = 5,
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Medium,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Medium,
                     totalPageCount = 10,
                     currentIndex = 9 // 끝
                 )
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.DarkGray.copy(alpha = 0.3f)),
                     visibleDotCount = 3,
-                    type = WantedPaginationContract.WantedDotIndicatorType.White,
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Small,
+                    type = WantedPaginationDefaults.WantedDotIndicatorType.White,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Small,
                     totalPageCount = 3, // total == visible
                     currentIndex = 1
                 )
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.DarkGray.copy(alpha = 0.3f)),
                     visibleDotCount = 7, // visible > total
-                    type = WantedPaginationContract.WantedDotIndicatorType.White,
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Small,
+                    type = WantedPaginationDefaults.WantedDotIndicatorType.White,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Small,
                     totalPageCount = 5,
                     currentIndex = 2
                 )
                 WantedDotIndicator(
                     modifier = Modifier.background(Color.LightGray.copy(alpha = 0.3f)),
                     visibleDotCount = 6, // 짝수 visibleDotCount
-                    size = WantedPaginationContract.WantedDotIndicatorSize.Medium,
+                    size = WantedPaginationDefaults.WantedDotIndicatorSize.Medium,
                     totalPageCount = 10,
                     currentIndex = 4
                 )

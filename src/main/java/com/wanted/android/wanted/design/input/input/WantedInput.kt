@@ -26,8 +26,8 @@ import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.control.CheckBoxStyle
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
-import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputSize
-import com.wanted.android.wanted.design.input.input.WantedInputContract.WantedInputVariant
+import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputSize
+import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle

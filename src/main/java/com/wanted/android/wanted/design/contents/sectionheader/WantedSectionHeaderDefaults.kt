@@ -2,13 +2,13 @@ package com.wanted.android.wanted.design.contents.sectionheader
 
 
 /**
- * object WantedSectionHeaderContract
+ * object WantedSectionHeaderDefaults
  *
  * 섹션 헤더 컴포넌트에 사용되는 설정 값을 정의하는 객체입니다.
  *
  * 주로 텍스트 크기나 패딩 등의 기준이 되는 사이즈 정보를 제공합니다.
  */
-object WantedSectionHeaderContract {
+object WantedSectionHeaderDefaults {
 
 
     /**

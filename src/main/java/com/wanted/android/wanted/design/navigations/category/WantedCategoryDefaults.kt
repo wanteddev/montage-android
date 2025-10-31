@@ -4,11 +4,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * object WantedCategoryContract
+ * object WantedCategoryDefaults
  *
  * 카테고리 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
  */
-object WantedCategoryContract {
+object WantedCategoryDefaults {
 
     /**
      * enum class Size

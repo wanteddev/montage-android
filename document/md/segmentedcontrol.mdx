@@ -5,7 +5,7 @@ image: /components/segmented-control/design/thumbnail.png
 createdAt: 2023-11-01
 ---
 
-## WantedSegmentedContract
+## WantedSegmentedDefaults
 SegmentedControl UI 구성 요소에 사용되는 설정 값을 정의하는 객체입니다. 세그먼트 크기를 정의하는 enum 클래스 `SegmentedSize`를 포함하고 있습니다.
 
 ## 사용 예시
@@ -26,7 +26,7 @@ WantedSegmentedControlOutlined(
 | items | `List<String>` | 항목에 표시할 텍스트 리스트입니다. |
 | selectedIndex | `Int` | 선택된 항목의 인덱스입니다. |
 | modifier | `Modifier` | 외형을 설정하는 Modifier입니다. |
-| size | `WantedSegmentedContract.SegmentedSize` | 세그먼트의 크기입니다 (Small, Medium, Large). |
+| size | `WantedSegmentedDefaults.SegmentedSize` | 세그먼트의 크기입니다 (Small, Medium, Large). |
 | onClick | `(index: Int) -> Unit` | 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다. |
 
 ---
@@ -54,7 +54,7 @@ WantedSegmentedControlOutlined(
 | itemCount | `Int` | 표시할 항목의 수입니다. |
 | item | `(index: Int) -> Unit` | 각 인덱스에 대응하는 항목 Composable 슬롯입니다. |
 | modifier | `Modifier` | 외형을 설정하는 Modifier입니다. |
-| size | `WantedSegmentedContract.SegmentedSize` | 세그먼트 크기 설정입니다. |
+| size | `WantedSegmentedDefaults.SegmentedSize` | 세그먼트 크기 설정입니다. |
 | onClick | `(index: Int) -> Unit` | 항목 클릭 시 호출되는 콜백입니다. |
 
 ---

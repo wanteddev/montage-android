@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.contents.accordion.WantedAccordionContract.VerticalPadding
+import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 

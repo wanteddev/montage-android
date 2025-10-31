@@ -4,11 +4,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * object WantedListCellContract
+ * object WantedListCellDefaults
  *
  * WantedListCell 컴포넌트에 사용되는 세로 패딩 및 인터랙션 패딩 관련 설정을 정의하는 객체입니다.
  */
-object WantedListCellContract {
+object WantedListCellDefaults {
 
     /**
      * enum class VerticalPadding

@@ -2,11 +2,11 @@ package com.wanted.android.wanted.design.navigations.tab
 
 
 /**
- * object WantedTabContract
+ * object WantedTabDefaults
  *
  * 탭 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
  */
-object WantedTabContract {
+object WantedTabDefaults {
 
     /**
      * enum class TabSize

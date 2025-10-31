@@ -3,14 +3,14 @@ package com.wanted.android.wanted.design.input.segmentedcontrol
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.wanted.android.wanted.design.input.segmentedcontrol.WantedSegmentedContract.SegmentedSize
+import com.wanted.android.wanted.design.input.segmentedcontrol.WantedSegmentedDefaults.SegmentedSize
 
 /**
- * object WantedSegmentedContract
+ * object WantedSegmentedDefaults
  *
  * SegmentedControl 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
  */
-object WantedSegmentedContract {
+object WantedSegmentedDefaults {
 
     /**
      * enum class SegmentedSize

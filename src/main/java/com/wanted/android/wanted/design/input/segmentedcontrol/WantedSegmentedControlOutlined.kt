@@ -53,7 +53,7 @@ import com.wanted.android.wanted.design.util.clickOnce
  * @param items List<String>: 항목에 표시할 텍스트 리스트입니다.
  * @param selectedIndex Int: 선택된 항목의 인덱스입니다.
  * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
- * @param size WantedSegmentedContract.SegmentedSize: 세그먼트의 크기입니다 (Small, Medium, Large).
+ * @param size WantedSegmentedDefaults.SegmentedSize: 세그먼트의 크기입니다 (Small, Medium, Large).
  * @param onClick (index: Int) -> Unit: 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다.
  */
 @Composable
@@ -61,7 +61,7 @@ fun WantedSegmentedControlOutlined(
     items: List<String>,
     selectedIndex: Int,
     modifier: Modifier = Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
+    size: WantedSegmentedDefaults.SegmentedSize = WantedSegmentedDefaults.SegmentedSize.Medium,
     onClick: (index: Int) -> Unit = {},
 ) {
     CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {
@@ -107,7 +107,7 @@ fun WantedSegmentedControlOutlined(
  * @param itemCount Int: 표시할 항목의 수입니다.
  * @param item (index: Int) -> Unit: 각 인덱스에 대응하는 항목 Composable 슬롯입니다.
  * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
- * @param size WantedSegmentedContract.SegmentedSize: 세그먼트 크기 설정입니다.
+ * @param size WantedSegmentedDefaults.SegmentedSize: 세그먼트 크기 설정입니다.
  * @param onClick (index: Int) -> Unit: 항목 클릭 시 호출되는 콜백입니다.
  */
 @Composable
@@ -115,7 +115,7 @@ fun WantedSegmentedControlOutlined(
     itemCount: Int,
     item: @Composable (index: Int) -> Unit,
     modifier: Modifier = Modifier,
-    size: WantedSegmentedContract.SegmentedSize = WantedSegmentedContract.SegmentedSize.Medium,
+    size: WantedSegmentedDefaults.SegmentedSize = WantedSegmentedDefaults.SegmentedSize.Medium,
     onClick: (index: Int) -> Unit = {},
 ) {
     CompositionLocalProvider(LocalWantedSegmentedSize.provides(size)) {

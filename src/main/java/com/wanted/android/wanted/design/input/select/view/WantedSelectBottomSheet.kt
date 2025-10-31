@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.contents.listcell.WantedListCell
-import com.wanted.android.wanted.design.contents.listcell.WantedListCellContract
+import com.wanted.android.wanted.design.contents.listcell.WantedListCellDefaults
 import com.wanted.android.wanted.design.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.control.WantedCheckMark
 import com.wanted.android.wanted.design.input.control.WantedRadioButton
-import com.wanted.android.wanted.design.input.select.WantedSelectContract
+import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelectData
 import com.wanted.android.wanted.design.presentation.modal.WantedModalBottomSheet
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
@@ -35,7 +35,7 @@ internal fun WantedSelectBottomSheet(
     isShow: Boolean,
     items: List<WantedSelectData>,
     confirmText: String,
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
+    selectType: WantedSelectDefaults.SelectType = WantedSelectDefaults.SelectType.CheckMark,
     bottomSheetType: ModalType = ModalType.Flexible,
     selectedItem: WantedSelectData? = null,
     onSelect: (item: WantedSelectData) -> Unit,
@@ -56,12 +56,12 @@ internal fun WantedSelectBottomSheet(
                 items(items) { item ->
                     WantedListCell(
                         modifier = Modifier,
-                        verticalPadding = WantedListCellContract.VerticalPadding.Medium,
+                        verticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
                         text = item.text,
                         selected = selectItem.value == item,
                         trailingContent = when {
                             selectItem.value == item
-                                && selectType == WantedSelectContract.SelectType.CheckMark -> {
+                                && selectType == WantedSelectDefaults.SelectType.CheckMark -> {
                                 {
                                     WantedCheckMark(
                                         modifier = Modifier,
@@ -77,7 +77,7 @@ internal fun WantedSelectBottomSheet(
                         },
                         leadingContent = when {
                             selectItem.value == item
-                                && selectType == WantedSelectContract.SelectType.CheckBox -> {
+                                && selectType == WantedSelectDefaults.SelectType.CheckBox -> {
                                 {
                                     WantedCheckBox(
                                         modifier = Modifier,
@@ -89,7 +89,7 @@ internal fun WantedSelectBottomSheet(
                             }
 
                             selectItem.value == item
-                                && selectType == WantedSelectContract.SelectType.Radio -> {
+                                && selectType == WantedSelectDefaults.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
                                         modifier = Modifier,

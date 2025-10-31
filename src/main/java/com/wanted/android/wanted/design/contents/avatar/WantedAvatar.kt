@@ -22,8 +22,8 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.BorderType
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.base.getBorderModifier
-import com.wanted.android.wanted.design.contents.avatar.WantedAvatarContract.WantedAvatarSize
-import com.wanted.android.wanted.design.contents.avatar.WantedAvatarContract.WantedAvatarType
+import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarSize
+import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarType
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgeSize
 import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme

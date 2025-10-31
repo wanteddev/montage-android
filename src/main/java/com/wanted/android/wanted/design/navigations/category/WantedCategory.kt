@@ -35,7 +35,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChip
 import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
 import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipVariant
-import com.wanted.android.wanted.design.navigations.category.WantedCategoryContract.Size
+import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 

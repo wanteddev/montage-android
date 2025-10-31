@@ -1,5 +1,5 @@
 /**
-* object WantedSegmentedContract
+* object WantedSegmentedDefaults
 *
 * SegmentedControl 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
 */
@@ -32,7 +32,7 @@
 * @param items List<String>: 항목에 표시할 텍스트 리스트입니다.
 * @param selectedIndex Int: 선택된 항목의 인덱스입니다.
 * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
-* @param size WantedSegmentedContract.SegmentedSize: 세그먼트의 크기입니다 (Small, Medium, Large).
+* @param size WantedSegmentedDefaults.SegmentedSize: 세그먼트의 크기입니다 (Small, Medium, Large).
 * @param onClick (index: Int) -> Unit: 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다.
 */
 
@@ -59,7 +59,7 @@
 * @param itemCount Int: 표시할 항목의 수입니다.
 * @param item (index: Int) -> Unit: 각 인덱스에 대응하는 항목 Composable 슬롯입니다.
 * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
-* @param size WantedSegmentedContract.SegmentedSize: 세그먼트 크기 설정입니다.
+* @param size WantedSegmentedDefaults.SegmentedSize: 세그먼트 크기 설정입니다.
 * @param onClick (index: Int) -> Unit: 항목 클릭 시 호출되는 콜백입니다.
 */
 

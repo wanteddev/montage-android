@@ -99,7 +99,7 @@ fun WantedSelect(
     selectValueList: List<String> = emptyList(),
     selectedValue: String? = null,
     bottomSheetType: WantedModalContract.ModalType = WantedModalContract.ModalType.Flexible,
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
+    selectType: WantedSelectDefaults.SelectType = WantedSelectDefaults.SelectType.CheckMark,
     background: Color = colorResource(id = R.color.background_transparent_alternative),
     onClick: () -> Unit = {},
     onSelect: (item: String) -> Unit = {},
@@ -185,7 +185,7 @@ fun WantedSelect(
     selectDataList: List<WantedSelectData> = emptyList(),
     selectedData: WantedSelectData? = null,
     bottomSheetType: WantedModalContract.ModalType = WantedModalContract.ModalType.Flexible,
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckMark,
+    selectType: WantedSelectDefaults.SelectType = WantedSelectDefaults.SelectType.CheckMark,
     background: Color = colorResource(id = R.color.background_transparent_alternative),
     onClick: () -> Unit = {},
     onSelectData: (item: WantedSelectData) -> Unit = {},
@@ -320,8 +320,8 @@ fun WantedSelect(
     enabled: Boolean = true,
     overflow: Boolean = false,
     selectDataList: List<WantedSelectData> = emptyList(),
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
-    render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
+    selectType: WantedSelectDefaults.SelectType = WantedSelectDefaults.SelectType.CheckBox,
+    render: WantedSelectDefaults.MultiSelectRender = WantedSelectDefaults.MultiSelectRender.Text,
     background: Color = colorResource(id = R.color.background_transparent_alternative),
     onDeleteData: (WantedSelectData) -> Unit = {},
     onClick: () -> Unit = {},
@@ -441,8 +441,8 @@ fun WantedSelectWithString(
     enabled: Boolean = true,
     overflow: Boolean = false,
     selectValueList: List<String> = emptyList(),
-    selectType: WantedSelectContract.SelectType = WantedSelectContract.SelectType.CheckBox,
-    render: WantedSelectContract.MultiSelectRender = WantedSelectContract.MultiSelectRender.Text,
+    selectType: WantedSelectDefaults.SelectType = WantedSelectDefaults.SelectType.CheckBox,
+    render: WantedSelectDefaults.MultiSelectRender = WantedSelectDefaults.MultiSelectRender.Text,
     background: Color = colorResource(id = R.color.background_transparent_alternative),
     leadingIcon: (@Composable (() -> Unit))? = null,
     onDelete: (String) -> Unit = {},
@@ -742,7 +742,7 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    render = WantedSelectContract.MultiSelectRender.Chip,
+                    render = WantedSelectDefaults.MultiSelectRender.Chip,
                     selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
                         WantedSelectData(text = "선택값2")
@@ -756,7 +756,7 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    render = WantedSelectContract.MultiSelectRender.Chip,
+                    render = WantedSelectDefaults.MultiSelectRender.Chip,
                     focused = true,
                     selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),
@@ -771,7 +771,7 @@ private fun WantedSelectPreview() {
 
                 WantedSelect(
                     modifier = Modifier.fillMaxWidth(),
-                    render = WantedSelectContract.MultiSelectRender.Chip,
+                    render = WantedSelectDefaults.MultiSelectRender.Chip,
                     enabled = false,
                     selectedDataList = listOf(
                         WantedSelectData(text = "선택값1"),

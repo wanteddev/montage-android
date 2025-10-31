@@ -1,13 +1,13 @@
 package com.wanted.android.wanted.design.input.textinput.textfield
 
 /**
- * object WantedTextFieldContract
+ * object WantedTextFieldDefaults
  *
  * TextField 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
  *
  * 선택 렌더링 방식과 선택 UI 스타일을 제어할 수 있는 enum 클래스를 포함합니다.
  */
-object WantedTextFieldContract {
+object WantedTextFieldDefaults {
 
     /**
      * enum class Status

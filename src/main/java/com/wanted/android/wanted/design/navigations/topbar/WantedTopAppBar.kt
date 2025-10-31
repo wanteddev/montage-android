@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.search.WantedSearchField
-import com.wanted.android.wanted.design.input.search.WantedSearchFieldConstant.Size
+import com.wanted.android.wanted.design.input.search.WantedSearchFieldDefaults.Size
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedDisplayTopAppBarLayout
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayoutDivider

@@ -4,13 +4,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * object WantedPlayBadgeContract
+ * object WantedPlayBadgeDefaults
  *
  * 재생 배지(PlayBadge) 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
  *
  * 주로 배지의 크기와 관련된 정보를 제공합니다.
  */
-object WantedPlayBadgeContract {
+object WantedPlayBadgeDefaults {
 
     /**
      * enum class Size

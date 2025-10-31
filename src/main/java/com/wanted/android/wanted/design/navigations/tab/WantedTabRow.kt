@@ -51,7 +51,7 @@ fun WantedTabRow(
     itemSize: Int,
     selectedTabIndex: Int,
     modifier: Modifier,
-    tabSize: WantedTabContract.TabSize = WantedTabContract.TabSize.Medium,
+    tabSize: WantedTabDefaults.TabSize = WantedTabDefaults.TabSize.Medium,
     disableIndexList: List<Int> = emptyList(),
     onClickItem: (index: Int) -> Unit = {},
     content: (index: Int) -> String,
@@ -129,7 +129,7 @@ private fun WantedTabPreview() {
 
                 WantedTabRow(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Small,
+                    tabSize = WantedTabDefaults.TabSize.Small,
                     selectedTabIndex = 1,
                     disableIndexList = listOf(0),
                     itemSize = itemList.size,

@@ -4,11 +4,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * object WantedSearchFieldConstant
+ * object WantedSearchFieldDefaults
  *
  * WantedSearchField 컴포넌트에서 사용하는 상수들을 정의하는 객체입니다.
  */
-object WantedSearchFieldConstant {
+object WantedSearchFieldDefaults {
     /**
      * sealed class Size
      *

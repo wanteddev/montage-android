@@ -5,13 +5,13 @@ import androidx.compose.ui.unit.dp
 
 
 /**
- * object WantedAvatarContract
+ * object WantedAvatarDefaults
  *
  * 아바타 컴포넌트에 사용되는 크기와 유형 관련 설정을 정의하는 객체입니다.
  *
  * 다양한 사이즈와 타입을 설정하여 아바타 UI 요소를 유연하게 구성할 수 있도록 지원합니다.
  */
-object WantedAvatarContract {
+object WantedAvatarDefaults {
     /**
      * sealed class WantedAvatarSize
      *

@@ -20,7 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.contents.accordion.WantedAccordionContract.VerticalPadding
+import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_8
@@ -62,7 +62,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param onChangeExpanded (Boolean) -> Unit: 확장 상태 변경 시 호출되는 콜백입니다.
  *
  * @see WantedAccordionHeader
- * @see WantedAccordionContract.VerticalPadding
+ * @see WantedAccordionDefaults.VerticalPadding
  * @see WantedAccordionTrailArrowIcon
  */
 @Composable

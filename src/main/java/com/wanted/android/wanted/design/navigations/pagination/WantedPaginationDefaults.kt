@@ -4,11 +4,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * object WantedPaginationContract
+ * object WantedPaginationDefaults
  *
  * 페이지네이션 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
  */
-object WantedPaginationContract {
+object WantedPaginationDefaults {
     /**
      * enum class WantedDotIndicatorSize
      *

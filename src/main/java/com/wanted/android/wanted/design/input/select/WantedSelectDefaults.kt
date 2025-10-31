@@ -1,11 +1,11 @@
 package com.wanted.android.wanted.design.input.select
 
 /**
- * object WantedSelectContract
+ * object WantedSelectDefaults
  *
  * 셀렉트(Select) 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
  */
-object WantedSelectContract {
+object WantedSelectDefaults {
     /**
      * enum class MultiSelectRender
      *

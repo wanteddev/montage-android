@@ -52,8 +52,8 @@ import com.wanted.android.wanted.design.util.toAnnotatedString
  * @param textMaxLine Int: 텍스트 최대 줄 수를 지정합니다. 기본값은 1입니다.
  * @param caption String: 서브 텍스트(캡션)로 보조 정보를 제공합니다.
  * @param fillWidth Boolean: true일 경우 셀이 부모 너비를 가득 채웁니다.
- * @param verticalPadding WantedListCellContract.VerticalPadding: 셀 상하 패딩 크기를 조정합니다.
- * @param interactionPadding WantedListCellContract.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
+ * @param verticalPadding WantedListCellDefaults.VerticalPadding: 셀 상하 패딩 크기를 조정합니다.
+ * @param interactionPadding WantedListCellDefaults.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
  * @param divider Boolean: true일 경우 셀 하단에 구분선을 표시합니다.
  * @param isEnable Boolean: 셀의 활성화 여부를 설정합니다. 비활성화 시 알파값이 줄어듭니다.
  * @param selected Boolean: true일 경우 메인 텍스트 색상을 primary로 강조 표시합니다.
@@ -71,8 +71,8 @@ fun WantedListCell(
     textMaxLine: Int = 1,
     caption: String = "",
     fillWidth: Boolean = false,
-    verticalPadding: WantedListCellContract.VerticalPadding = WantedListCellContract.VerticalPadding.Medium,
-    interactionPadding: WantedListCellContract.InteractionPadding = WantedListCellContract.InteractionPadding.Default(fillWidth),
+    verticalPadding: WantedListCellDefaults.VerticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
+    interactionPadding: WantedListCellDefaults.InteractionPadding = WantedListCellDefaults.InteractionPadding.Default(fillWidth),
     divider: Boolean = false,
     isEnable: Boolean = true,
     selected: Boolean = false,
@@ -120,8 +120,8 @@ fun WantedListCell(
  * @param modifier Modifier: 셀 외형, 배치, 패딩 등을 조정합니다.
  * @param annotatedCaption AnnotatedString: 서브 텍스트(캡션)입니다.
  * @param fillWidth Boolean: true일 경우 셀이 부모 너비를 가득 채웁니다.
- * @param verticalPadding WantedListCellContract.VerticalPadding: 셀 상하 패딩 크기를 조정합니다.
- * @param interactionPadding WantedListCellContract.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
+ * @param verticalPadding WantedListCellDefaults.VerticalPadding: 셀 상하 패딩 크기를 조정합니다.
+ * @param interactionPadding WantedListCellDefaults.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
  * @param divider Boolean: true일 경우 셀 하단에 구분선을 표시합니다.
  * @param isEnable Boolean: 셀의 활성화 여부를 설정합니다.
  * @param selected Boolean: true일 경우 텍스트 색상을 primary로 강조합니다.
@@ -141,8 +141,8 @@ fun WantedListCell(
     modifier: Modifier = Modifier,
     annotatedCaption: AnnotatedString = AnnotatedString(""),
     fillWidth: Boolean = false,
-    verticalPadding: WantedListCellContract.VerticalPadding = WantedListCellContract.VerticalPadding.Medium,
-    interactionPadding: WantedListCellContract.InteractionPadding = WantedListCellContract.InteractionPadding.Default(fillWidth),
+    verticalPadding: WantedListCellDefaults.VerticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
+    interactionPadding: WantedListCellDefaults.InteractionPadding = WantedListCellDefaults.InteractionPadding.Default(fillWidth),
     divider: Boolean = false,
     isEnable: Boolean = true,
     selected: Boolean = false,
@@ -342,7 +342,7 @@ private fun WantedListCellPreview() {
                 WantedListCell(
                     text = "텍스트",
                     fillWidth = false,
-                    interactionPadding = WantedListCellContract.InteractionPadding.Custom(30.dp),
+                    interactionPadding = WantedListCellDefaults.InteractionPadding.Custom(30.dp),
                     onClick = {}
                 )
 
@@ -390,21 +390,21 @@ private fun WantedListCellPreview() {
                 WantedListCell(
                     text = "텍스트 padding Small",
                     caption = "캡션",
-                    verticalPadding = WantedListCellContract.VerticalPadding.Small,
+                    verticalPadding = WantedListCellDefaults.VerticalPadding.Small,
                     onClick = {}
                 )
 
                 WantedListCell(
                     text = "텍스트 padding Normal",
                     caption = "캡션",
-                    verticalPadding = WantedListCellContract.VerticalPadding.Medium,
+                    verticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
                     onClick = {}
                 )
 
                 WantedListCell(
                     text = "텍스트 padding Medium",
                     caption = "캡션",
-                    verticalPadding = WantedListCellContract.VerticalPadding.Large,
+                    verticalPadding = WantedListCellDefaults.VerticalPadding.Large,
                     onClick = {}
                 )
 
@@ -413,7 +413,7 @@ private fun WantedListCellPreview() {
                     caption = "캡션",
                     fillWidth = true,
                     divider = true,
-                    verticalPadding = WantedListCellContract.VerticalPadding.Large,
+                    verticalPadding = WantedListCellDefaults.VerticalPadding.Large,
                     onClick = {}
                 )
 

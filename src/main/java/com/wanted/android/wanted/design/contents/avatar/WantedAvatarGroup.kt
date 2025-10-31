@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.contents.avatar.WantedAvatarContract.WantedAvatarSize
-import com.wanted.android.wanted.design.contents.avatar.WantedAvatarContract.WantedAvatarType
+import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarSize
+import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 

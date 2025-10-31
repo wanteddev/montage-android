@@ -37,7 +37,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  */
 @Composable
 fun WantedTabItem(
-    tabSize: WantedTabContract.TabSize,
+    tabSize: WantedTabDefaults.TabSize,
     title: String,
     active: Boolean,
     enable: Boolean,
@@ -61,11 +61,11 @@ fun WantedTabItem(
                         R.color.label_assistive
                     },
                     style = when (tabSize) {
-                        WantedTabContract.TabSize.Large -> {
+                        WantedTabDefaults.TabSize.Large -> {
                             DesignSystemTheme.typography.heading2Bold
                         }
 
-                        WantedTabContract.TabSize.Medium -> {
+                        WantedTabDefaults.TabSize.Medium -> {
                             DesignSystemTheme.typography.headline2Bold
                         }
 
@@ -83,7 +83,7 @@ fun WantedTabItem(
             )
         },
         horizontalPadding = 12.dp,
-        verticalPadding = if (tabSize == WantedTabContract.TabSize.Large) 14.dp else 12.dp,
+        verticalPadding = if (tabSize == WantedTabDefaults.TabSize.Large) 14.dp else 12.dp,
         isUseRipple = false,
         rippleColor = colorResource(R.color.transparent),
         onClick = onClick
@@ -104,7 +104,7 @@ private fun WantedTabItemPreview() {
             ) {
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Small,
+                    tabSize = WantedTabDefaults.TabSize.Small,
                     title = "텍스트",
                     active = false,
                     enable = true,
@@ -114,7 +114,7 @@ private fun WantedTabItemPreview() {
 
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Small,
+                    tabSize = WantedTabDefaults.TabSize.Small,
                     title = "텍스트",
                     active = true,
                     enable = true,
@@ -124,7 +124,7 @@ private fun WantedTabItemPreview() {
 
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Medium,
+                    tabSize = WantedTabDefaults.TabSize.Medium,
                     title = "텍스트",
                     active = false,
                     enable = true,
@@ -134,7 +134,7 @@ private fun WantedTabItemPreview() {
 
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Medium,
+                    tabSize = WantedTabDefaults.TabSize.Medium,
                     title = "텍스트",
                     active = true,
                     enable = true,
@@ -144,7 +144,7 @@ private fun WantedTabItemPreview() {
 
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Large,
+                    tabSize = WantedTabDefaults.TabSize.Large,
                     title = "텍스트",
                     enable = true,
                     active = false,
@@ -154,7 +154,7 @@ private fun WantedTabItemPreview() {
 
                 WantedTabItem(
                     modifier = Modifier,
-                    tabSize = WantedTabContract.TabSize.Large,
+                    tabSize = WantedTabDefaults.TabSize.Large,
                     title = "텍스트",
                     active = true,
                     enable = true,
