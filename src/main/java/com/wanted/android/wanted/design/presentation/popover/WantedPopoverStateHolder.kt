@@ -2,7 +2,6 @@ package com.wanted.android.wanted.design.presentation.popover
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,7 +51,6 @@ interface WantedSimplePopoverState {
 @Stable
 internal data class WantedPopoverState(
     val isVisible: Boolean = false,
-    val isShow: Boolean = false,
     val contentPositionY: Float = 0f,
     val contentPositionX: Float = 0f,
     val contentPositionYInWindow: Float = 0f,
@@ -86,7 +84,6 @@ enum class WantedPopoverAlign {
 @Stable
 internal interface WantedPopoverStateHolder {
     val state: WantedPopoverState
-    val visibleState: State<Boolean>
 
     fun show()
     fun dismiss()
@@ -98,20 +95,18 @@ internal interface WantedPopoverStateHolder {
         width: Int
     )
     fun updateTooltipSize(width: Int, height: Int)
-    fun updateShowState(show: Boolean)
     fun calculatePopoverPosition(
         windowInsetsBottomPx: Float,
+        windowInsetsTopPx: Float,
         screenHeightPx: Float,
         estimatedTooltipHeight: Float,
         positionTop: Boolean,
-        shadowSpacingPx: Int,
         align: WantedPopoverAlign,
         screenWidthPx: Int,
         paddingPx: Int
     )
 }
 
-// 외부 공개용 Simple State 구현체
 internal class WantedSimplePopoverStateImpl(
     private val stateHolder: WantedPopoverStateHolder
 ) : WantedSimplePopoverState {
@@ -120,24 +115,18 @@ internal class WantedSimplePopoverStateImpl(
     override val isVisible: Boolean get() = stateHolder.state.isVisible
 }
 
-// 내부용 StateHolder 구현체 (internal)
 private class WantedPopoverStateHolderImpl(
     initialVisible: Boolean
 ) : WantedPopoverStateHolder {
-
-    private val _visibleState = mutableStateOf(initialVisible)
-    override val visibleState: State<Boolean> get() = _visibleState
 
     private var _state by mutableStateOf(WantedPopoverState(isVisible = initialVisible))
     override val state: WantedPopoverState get() = _state
 
     override fun show() {
-        _visibleState.value = true
         _state = _state.copy(isVisible = true)
     }
 
     override fun dismiss() {
-        _visibleState.value = false
         _state = _state.copy(isVisible = false)
     }
 
@@ -164,26 +153,23 @@ private class WantedPopoverStateHolderImpl(
         )
     }
 
-    override fun updateShowState(show: Boolean) {
-        _state = _state.copy(isShow = show)
-    }
-
     override fun calculatePopoverPosition(
         windowInsetsBottomPx: Float,
+        windowInsetsTopPx: Float,
         screenHeightPx: Float,
         estimatedTooltipHeight: Float,
         positionTop: Boolean,
-        shadowSpacingPx: Int,
         align: WantedPopoverAlign,
         screenWidthPx: Int,
         paddingPx: Int
     ) {
-        // 실제 사용 가능한 화면 하단 위치 계산
+        // 실제 사용 가능한 화면 상단/하단 위치 계산
+        val effectiveTopY = windowInsetsTopPx
         val effectiveBottomY = screenHeightPx - windowInsetsBottomPx
 
         // 컨텐츠 기준 위아래 공간 계산
         val spaceBelow = effectiveBottomY - (_state.contentPositionYInWindow + _state.contentHeight)
-        val spaceAbove = _state.contentPositionYInWindow
+        val spaceAbove = _state.contentPositionYInWindow - effectiveTopY
 
         // 실제 툴팁 높이가 있으면 사용, 없으면 예상 높이 사용
         val tooltipHeightToCheck = if (_state.tooltipHeight > 0) _state.tooltipHeight else estimatedTooltipHeight.toInt()
@@ -191,14 +177,16 @@ private class WantedPopoverStateHolderImpl(
 
         // overlapBottom: 아래쪽 공간이 부족하고 위쪽 공간이 충분한 경우
         val newOverlapBottom = spaceBelow < requiredSpace && spaceAbove > requiredSpace
+        val newOverlapTop = spaceAbove < requiredSpace && spaceBelow > requiredSpace
 
-        // 위치 결정 로직 (원래 로직 복원)
         val newIsPopupAbove = when {
             // 1. overlapBottom이 true인 경우: 강제로 위쪽에 배치
             newOverlapBottom -> true
-            // 2. positionTop이 true인 경우: 위쪽 공간이 충분하면 위쪽에 배치
+            // 2. newOverlapTop이 true인 경우: 강제로 아래쪽에 배치
+            newOverlapTop -> false
+            // 3. positionTop이 true인 경우: 위쪽 공간이 충분하면 위쪽에 배치
             positionTop -> spaceAbove >= requiredSpace
-            // 3. 기본값: 아래쪽에 배치
+            // 4. 기본값: 아래쪽에 배치
             else -> false
         }
 
@@ -211,17 +199,15 @@ private class WantedPopoverStateHolderImpl(
             paddingPx = paddingPx
         )
 
-        val newOffsetX = baseOffsetX - shadowSpacingPx
-
-        // 실제로 값이 변경되었을 때만 상태 업데이트 (불필요한 recomposition 방지)
+        // 값이 변경되었을 때만 상태 업데이트
         if (_state.overlapBottom != newOverlapBottom ||
             _state.isPopupAbove != newIsPopupAbove ||
-            _state.offsetX != newOffsetX
+            _state.offsetX != baseOffsetX
         ) {
             _state = _state.copy(
                 overlapBottom = newOverlapBottom,
                 isPopupAbove = newIsPopupAbove,
-                offsetX = newOffsetX
+                offsetX = baseOffsetX
             )
         }
     }
@@ -237,25 +223,27 @@ private class WantedPopoverStateHolderImpl(
         if (tooltipWidth == 0) return 0
 
         val idealOffsetX = when (align) {
-            WantedPopoverAlign.Left -> 0
-            WantedPopoverAlign.Center -> (contentWidth - tooltipWidth) / 2
-            WantedPopoverAlign.Right -> contentWidth - tooltipWidth
+            WantedPopoverAlign.Left -> 0f
+            WantedPopoverAlign.Center -> (contentWidth - tooltipWidth) / 2f
+            WantedPopoverAlign.Right -> (contentWidth - tooltipWidth).toFloat()
         }
 
-        val contentLeft = contentPositionX + idealOffsetX
-        val contentRight = contentLeft + tooltipWidth
+        val tooltipAbsoluteLeft = contentPositionX + idealOffsetX
+        val tooltipAbsoluteRight = tooltipAbsoluteLeft + tooltipWidth
 
-        return when {
-            contentLeft < paddingPx -> {
+        val adjustedOffsetX = when {
+            tooltipAbsoluteLeft < paddingPx -> {
                 (paddingPx - contentPositionX).toInt()
             }
-            contentRight > screenWidthPx - paddingPx -> {
+            tooltipAbsoluteRight > screenWidthPx - paddingPx -> {
                 (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
             }
             else -> {
-                idealOffsetX
+                idealOffsetX.toInt()
             }
         }
+
+        return adjustedOffsetX
     }
 
     companion object {

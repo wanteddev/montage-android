@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -131,11 +132,13 @@ fun WantedCenterTopAppBar(
 
     Box(
         modifier = if (variant == Variant.Floating) {
-            modifier.background(
-                Brush.verticalGradient(
-                    colors = listOf(background, colorResource(R.color.transparent))
+            modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(background, colorResource(R.color.transparent))
+                    )
                 )
-            )
+                .padding(bottom = 16.dp)
         } else {
             modifier.background(background)
         }

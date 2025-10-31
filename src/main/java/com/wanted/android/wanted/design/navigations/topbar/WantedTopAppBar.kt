@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -75,11 +76,13 @@ fun WantedTopAppBar(
 
     Box(
         modifier = if (variant == Variant.Floating) {
-            modifier.background(
-                Brush.verticalGradient(
-                    colors = listOf(background, colorResource(R.color.transparent))
+            modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(background, colorResource(R.color.transparent))
+                    )
                 )
-            )
+                .padding(bottom = 16.dp)
         } else {
             modifier.background(background)
         }

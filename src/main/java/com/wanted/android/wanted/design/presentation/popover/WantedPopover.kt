@@ -20,15 +20,17 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.layout.positionInWindow
@@ -43,9 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedShadowSpreadStyle
 import com.wanted.android.wanted.design.base.WantedTouchArea
-import com.wanted.android.wanted.design.base.wantedDropShadowSpread
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -92,7 +92,11 @@ fun WantedPopover(
     // External state와 동기화
     state?.let { externalState ->
         LaunchedEffect(externalState.isVisible) {
-            stateHolder.updateShowState(externalState.isVisible)
+            if (externalState.isVisible) {
+                stateHolder.show()
+            } else {
+                stateHolder.dismiss()
+            }
         }
     }
 
@@ -102,21 +106,22 @@ fun WantedPopover(
     // align, positionTop 변경 시 위치 재계산 강제 실행
     LaunchedEffect(align, positionTop) {
         if (stateHolder.state.contentHeight > 0 && stateHolder.state.contentWidth > 0) {
-            val windowInsetsBottomPx = with(density) { windowInsets.getBottom(density).toDp().toPx() }
+            val windowInsetsBottomPx =
+                with(density) { windowInsets.getBottom(density).toDp().toPx() }
+            val windowInsetsTopPx =
+                with(density) { windowInsets.getTop(density).toDp().toPx() }
             val screenHeight = configuration.screenHeightDp
             val screenHeightPx = with(density) { screenHeight.dp.toPx() }
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
-            val shadowSpacing = calculateShadowSpacing()
-            val shadowSpacingPx = with(density) { shadowSpacing.toPx().toInt() }
             val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }.toInt()
             val paddingPx = with(density) { 8.dp.toPx().toInt() }
 
             stateHolder.calculatePopoverPosition(
                 windowInsetsBottomPx = windowInsetsBottomPx,
+                windowInsetsTopPx = windowInsetsTopPx,
                 screenHeightPx = screenHeightPx,
                 estimatedTooltipHeight = estimatedTooltipHeight,
                 positionTop = positionTop,
-                shadowSpacingPx = shadowSpacingPx,
                 align = align,
                 screenWidthPx = screenWidthPx,
                 paddingPx = paddingPx
@@ -144,20 +149,14 @@ fun WantedPopover(
                 height = coordinates.size.height,
                 width = coordinates.size.width
             )
-
-            if (positionWindow.x < 0) {
-                stateHolder.updateShowState(false)
-            } else if (stateHolder.state.isVisible) {
-                stateHolder.updateShowState(true)
-            }
         },
-        onCalculatePosition = { windowInsetsBottomPx, screenHeightPx, estimatedTooltipHeight, shadowSpacingPx, screenWidthPx, paddingPx ->
+        onCalculatePosition = { windowInsetsBottomPx, screenHeightPx, estimatedTooltipHeight, windowInsetsTopPx, screenWidthPx, paddingPx ->
             stateHolder.calculatePopoverPosition(
                 windowInsetsBottomPx = windowInsetsBottomPx,
+                windowInsetsTopPx = windowInsetsTopPx,
                 screenHeightPx = screenHeightPx,
                 estimatedTooltipHeight = estimatedTooltipHeight,
                 positionTop = positionTop,
-                shadowSpacingPx = shadowSpacingPx,
                 align = align,
                 screenWidthPx = screenWidthPx,
                 paddingPx = paddingPx
@@ -185,7 +184,7 @@ private fun PopoverContainer(
     body: @Composable () -> Unit,
     content: @Composable () -> Unit,
     onContentPositioned: (androidx.compose.ui.layout.LayoutCoordinates) -> Unit,
-    onCalculatePosition: (Float, Float, Float, Int, Int, Int) -> Unit,
+    onCalculatePosition: (Float, Float, Float, Float, Int, Int) -> Unit,
     onTooltipSizeChanged: (Int, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -194,6 +193,7 @@ private fun PopoverContainer(
 
     // WindowInsets 계산 (WindowInsets(0)인 경우 모두 0이 됨)
     val windowInsetsBottomPx = with(density) { windowInsets.getBottom(density).toDp().toPx() }
+    val windowInsetsTopPx = with(density) { windowInsets.getTop(density).toDp().toPx() }
     val screenHeightPx = with(density) { screenHeight.dp.toPx() }
     val screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt()
 
@@ -202,11 +202,12 @@ private fun PopoverContainer(
     ) {
         content()
 
-        if (popoverState.isShow) {
+        if (popoverState.isVisible) {
             PopoverPopup(
                 popoverState = popoverState,
                 density = density,
                 windowInsetsBottomPx = windowInsetsBottomPx,
+                windowInsetsTopPx = windowInsetsTopPx,
                 screenHeightPx = screenHeightPx,
                 screenWidthPx = screenWidthPx,
                 align = align,
@@ -226,25 +227,19 @@ private fun PopoverPopup(
     popoverState: WantedPopoverState,
     density: Density,
     windowInsetsBottomPx: Float,
+    windowInsetsTopPx: Float,
     screenHeightPx: Float,
     screenWidthPx: Int,
     align: WantedPopoverAlign,
     positionTop: Boolean,
     always: Boolean,
     body: @Composable () -> Unit,
-    onCalculatePosition: (Float, Float, Float, Int, Int, Int) -> Unit,
+    onCalculatePosition: (Float, Float, Float, Float, Int, Int) -> Unit,
     onTooltipSizeChanged: (Int, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
-    val shadowSpacing = remember { calculateShadowSpacing() }
-    val shadowSpacingPx = with(density) { shadowSpacing.toPx().toInt() }
     val paddingPx = with(density) { 8.dp.toPx().toInt() }
-
-    // Popover 위치 계산
-    // WindowInsets(0)인 경우: windowInsetsTopPx = 0, windowInsetsBottomPx = 0
-    // 실제 사용 가능한 화면 높이 = screenHeightPx - windowInsetsTopPx - windowInsetsBottomPx
-    val fullScreenHeightPx = screenHeightPx
 
     LaunchedEffect(
         popoverState.contentPositionY,
@@ -255,47 +250,28 @@ private fun PopoverPopup(
         popoverState.tooltipWidth,
         popoverState.tooltipHeight,
         windowInsetsBottomPx,
-        fullScreenHeightPx,
-        shadowSpacingPx,
-        screenWidthPx,     // 화면 폭 변경 시 재계산
-        align,             // align 변경 시 재계산
-        positionTop        // positionTop 변경 시 재계산
+        screenHeightPx,
+        screenWidthPx,
+        align,
+        positionTop
     ) {
         if (popoverState.contentHeight > 0 && popoverState.contentWidth > 0) {
             onCalculatePosition(
                 windowInsetsBottomPx,
-                fullScreenHeightPx,
+                screenHeightPx,
                 estimatedTooltipHeight,
-                shadowSpacingPx,
+                windowInsetsTopPx,
                 screenWidthPx,
                 paddingPx
             )
         }
     }
 
-    val popoverSpacingPx = with(density) { SPACING_BETWEEN_POPOVER_DP.dp.toPx().toInt() }
+    val popoverSpacingPx = with(density) { 8.dp.toPx().toInt() }
 
-    val popupOffset = remember(
-        popoverState.offsetX,
-        popoverState.isPopupAbove,
-        popoverState.contentPositionY,
-        popoverState.tooltipHeight,
-        popoverState.contentHeight,
-        popoverState.overlapBottom,
-        windowInsetsBottomPx,
-        shadowSpacingPx,
-        popoverSpacingPx,
-        align,           // align이 offset 계산에 영향
-        positionTop      // positionTop이 위치 결정에 영향
-    ) {
-        calculatePopupOffset(popoverState, windowInsetsBottomPx, shadowSpacingPx, popoverSpacingPx)
-    }
+    val popupOffset = calculatePopupOffset(popoverState, windowInsetsBottomPx,  popoverSpacingPx)
 
-    // Popup properties도 remember로 캐시
-    // Always update popupProperties when 'always' changes
-    val popupProperties = remember(always) {
-        createPopupProperties(always)
-    }
+    val popupProperties = createPopupProperties(always)
 
     Popup(
         alignment = Alignment.TopStart,
@@ -307,35 +283,45 @@ private fun PopoverPopup(
             }
         }
     ) {
-        PopoverWithShadow(
-            shadowStyle = WantedShadowSpreadStyle.Small(),
-            onSizeChange = onTooltipSizeChanged,
-            content = body
-        )
+        Card(
+            modifier = Modifier
+                .onGloballyPositioned { coordinates ->
+                    onTooltipSizeChanged(coordinates.size.width, coordinates.size.height)
+                }
+                .graphicsLayer {
+                    shadowElevation = 10.dp.toPx()
+                    ambientShadowColor = Color.Black.copy(alpha = 0.2f)
+                    spotShadowColor = Color.Black.copy(alpha = 0.5f)
+                },
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            body()
+        }
     }
 }
 
 private fun calculatePopupOffset(
     popoverState: WantedPopoverState,
     windowInsetsBottomPx: Float,
-    shadowSpacingPx: Int,
     spacingBetweenPopoverPx: Int
 ): IntOffset {
     return IntOffset(
         x = popoverState.offsetX,
         y = if (popoverState.isPopupAbove) {
-            // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격, 그림자 여백 제거
-            var positionY = popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - spacingBetweenPopoverPx - shadowSpacingPx
+            // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격
+            var positionY =
+                popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - spacingBetweenPopoverPx
 
-            // overlapBottom 조건일 때 추가 보정 (원래 로직)
+            // overlapBottom 조건일 때 추가 보정
             if (popoverState.overlapBottom) {
                 positionY = positionY - windowInsetsBottomPx.toInt() - popoverState.contentHeight
             }
 
             positionY
         } else {
-            // 아래쪽에 표시할 때: content 아래 + 간격 - 그림자 여백
-            popoverState.contentPositionY.toInt() + popoverState.contentHeight + spacingBetweenPopoverPx - shadowSpacingPx
+            // 아래쪽에 표시할 때: content 아래 + 간격
+            popoverState.contentPositionY.toInt() + popoverState.contentHeight + spacingBetweenPopoverPx
         }
     )
 }
@@ -345,25 +331,8 @@ private fun createPopupProperties(always: Boolean): PopupProperties {
         focusable = !always,
         dismissOnClickOutside = !always,
         dismissOnBackPress = true,
-        clippingEnabled = false
+        clippingEnabled = true
     )
-}
-
-private fun calculateShadowSpacing(): androidx.compose.ui.unit.Dp {
-    val shadows = WantedShadowSpreadStyle.Small().getShadow()
-    var maxBlur = 0.dp
-    var maxSpread = 0.dp
-    var maxOffsetX = 0.dp
-    var maxOffsetY = 0.dp
-
-    shadows.forEach { shadow ->
-        maxBlur = maxOf(maxBlur, shadow.blurRadius)
-        maxSpread = maxOf(maxSpread, shadow.spreadRadius)
-        maxOffsetX = maxOf(maxOffsetX, kotlin.math.abs(shadow.offsetX.value).dp)
-        maxOffsetY = maxOf(maxOffsetY, kotlin.math.abs(shadow.offsetY.value).dp)
-    }
-
-    return maxOf(maxBlur + maxSpread + maxOffsetX, maxBlur + maxSpread + maxOffsetY)
 }
 
 /**
@@ -464,7 +433,7 @@ private fun PopoverHeader(
                 .padding(vertical = 2.dp)
                 .weight(1f),
             text = heading,
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             style = WantedTextStyle(
                 colorRes = R.color.label_normal,
@@ -570,53 +539,19 @@ private fun WantedPopoverLayout(
 
             action?.let {
                 Spacer(modifier = Modifier.padding(top = 12.dp))
-                Row(
-                    modifier = Modifier.wrapContentSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End)
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
                 ) {
-                    it()
+                    Row(
+                        modifier = Modifier.wrapContentSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End)
+                    ) {
+                        it()
+                    }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun PopoverWithShadow(
-    modifier: Modifier = Modifier,
-    shadowStyle: WantedShadowSpreadStyle,
-    onSizeChange: (width: Int, height: Int) -> Unit = { _, _ -> },
-    content: @Composable () -> Unit
-) {
-    val density = LocalDensity.current
-    // shadowSpacing 계산을 remember로 캐시
-    val shadowSpacing = remember { calculateShadowSpacing() }
-
-    Layout(
-        modifier = modifier,
-        content = {
-            Box(
-                modifier = Modifier
-                    .onGloballyPositioned { coordinates ->
-                        onSizeChange(coordinates.size.width, coordinates.size.height)
-                    }
-                    .wantedDropShadowSpread(style = shadowStyle)
-            ) {
-                content()
-            }
-        }
-    ) { measurables, constraints ->
-        val placeable = measurables[0].measure(constraints)
-        val shadowSpacingPx = with(density) { shadowSpacing.toPx().toInt() }
-        val totalWidth = placeable.width + (shadowSpacingPx * 2)
-        val totalHeight = placeable.height + (shadowSpacingPx * 2)
-
-        layout(totalWidth, totalHeight) {
-            placeable.placeRelative(
-                x = (totalWidth - placeable.width) / 2,
-                y = (totalHeight - placeable.height) / 2
-            )
         }
     }
 }
@@ -641,9 +576,5 @@ private fun PopoverWithShadow(
  */
 @Composable
 fun rememberPopoverState(initialVisible: Boolean = false): WantedSimplePopoverState {
-    val stateHolder = rememberWantedPopoverStateHolder(initialVisible)
-    return remember(stateHolder) { WantedSimplePopoverStateImpl(stateHolder) }
+    return WantedSimplePopoverStateImpl(rememberWantedPopoverStateHolder(initialVisible))
 }
-
-// Constants
-private const val SPACING_BETWEEN_POPOVER_DP = 8
