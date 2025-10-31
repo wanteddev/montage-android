@@ -20,26 +20,31 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 고정형 탭 레이아웃을 제공하는 컴포저블입니다.
+ * WantedTabRow
  *
- * 항목 수만큼 `WantedTabItem`을 구성하여 Material3의 TabRow와 함께 사용합니다.
+ * 고정형 탭 레이아웃 컴포넌트입니다.
+ *
+ * 탭 항목들이 전체 너비에 균등하게 배치되며, 선택된 탭은 하단 인디케이터로 강조됩니다.
  *
  * 사용 예시:
  * ```kotlin
+ * var selectedIndex by remember { mutableIntStateOf(0) }
+ *
  * WantedTabRow(
  *     itemSize = 3,
- *     selectedTabIndex = 1,
+ *     selectedTabIndex = selectedIndex,
  *     content = { index -> "탭$index" },
- *     onClickItem = { index -> ... }
+ *     onClickItem = { selectedIndex = it }
  * )
  * ```
  *
  * @param itemSize Int: 탭 항목 수입니다.
  * @param selectedTabIndex Int: 현재 선택된 탭 인덱스입니다.
- * @param modifier Modifier: 레이아웃 설정용 Modifier입니다.
- * @param tabSize TabSize: 탭 텍스트 스타일 크기입니다.
- * @param onClickItem (index: Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
- * @param content (index: Int) -> String: 탭에 표시할 텍스트를 반환하는 함수입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param tabSize TabSize: 탭 텍스트 크기입니다.
+ * @param disableIndexList List<Int>: 비활성화할 탭 인덱스 리스트입니다.
+ * @param onClickItem (Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
+ * @param content (Int) -> String: 각 탭의 텍스트를 반환하는 함수입니다.
  */
 @Composable
 fun WantedTabRow(

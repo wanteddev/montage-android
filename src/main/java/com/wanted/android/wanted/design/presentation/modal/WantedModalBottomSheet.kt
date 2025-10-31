@@ -23,29 +23,37 @@ import com.wanted.android.wanted.design.presentation.modal.draggable.WantedDragg
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
 
 /**
- * 시스템 또는 사용자 정의 가능한 BottomSheet 형태의 모달입니다.
+ * WantedModalBottomSheet
  *
- * `isSystemBottomSheet` 여부에 따라 `ModalBottomSheet` 또는 `WantedDraggableModalBottomSheet`를 사용합니다.
+ * BottomSheet 형태의 모달 컴포넌트입니다.
+ *
+ * 시스템 BottomSheet 또는 커스텀 드래그 가능한 BottomSheet를 사용할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
+ * var showSheet by remember { mutableStateOf(false) }
+ *
+ * Button(onClick = { showSheet = true }) {
+ *     Text("시트 열기")
+ * }
+ *
  * WantedModalBottomSheet(
- *     isShow = true,
- *     onDismissRequest = {},
+ *     isShow = showSheet,
+ *     onDismissRequest = { showSheet = false },
  *     content = { Text("시트 내용") }
  * )
  * ```
  *
  * @param isShow Boolean: 모달 표시 여부입니다.
- * @param onDismissRequest () -> Unit: 닫힘 콜백입니다.
- * @param modifier Modifier: 외형 조정 Modifier입니다.
+ * @param onDismissRequest () -> Unit: 모달이 닫힐 때 호출되는 콜백입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param background Color: 배경 색상입니다.
- * @param type ModalType: 시트 유형 (Flexible, Fixed 등)입니다.
+ * @param type ModalType: 모달의 형태입니다.
  * @param modalSize ModalSize: 콘텐츠 패딩 등을 조절하는 크기 설정입니다.
  * @param dismissOnClickOutside Boolean: 외부 클릭 시 닫힘 여부입니다.
- * @param topBar @Composable (() -> Unit)?: 상단 바입니다.
- * @param bottomBar @Composable (() -> Unit)?: 하단 바입니다.
- * @param content @Composable () -> Unit: 본문 콘텐츠입니다.
+ * @param topBar (@Composable () -> Unit)?: 상단 바 슬롯입니다.
+ * @param bottomBar (@Composable () -> Unit)?: 하단 바 슬롯입니다.
+ * @param content (@Composable () -> Unit): 본문 콘텐츠 슬롯입니다.
  */
 @Composable
 fun WantedModalBottomSheet(

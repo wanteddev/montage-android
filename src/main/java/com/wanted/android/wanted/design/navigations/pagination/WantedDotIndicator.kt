@@ -43,27 +43,30 @@ import kotlin.math.abs
 import kotlin.math.floor
 
 /**
- * 페이지네이션용 dot indicator를 표시하는 컴포저블입니다.
+ * WantedDotIndicator
  *
- * 현재 페이지 위치를 중심으로 일정 개수의 dot을 보여주며, 선택 상태에 따라 색상, 크기, 애니메이션이 다르게 표시됩니다.
- * `type`이 `Normal`일 경우 배경이 채워진 형태, `White`일 경우 테두리만 있는 흰색 스타일로 구성됩니다.
- * 애니메이션 중에도 전체 인디케이터의 너비가 고정되어 덜컹거림을 방지합니다.
+ * 페이지네이션용 Dot Indicator 컴포넌트입니다.
+ *
+ * 현재 페이지 위치를 중심으로 일정 개수의 dot을 표시하며,
+ * 선택 상태에 따라 크기와 색상이 애니메이션으로 변경됩니다.
  *
  * 사용 예시:
  * ```kotlin
+ * var currentPage by remember { mutableIntStateOf(0) }
+ *
  * WantedDotIndicator(
  *     totalPageCount = 10,
  *     visibleDotCount = 5,
- *     currentIndex = 2
+ *     currentIndex = currentPage
  * )
  * ```
  *
  * @param totalPageCount Int: 전체 페이지 수입니다.
- * @param visibleDotCount Int: 화면에 표시할 최대 dot 수입니다. 인디케이터는 이 개수의 점을 표시할 수 있는 고정된 너비를 가집니다.
- * @param currentIndex Int: 현재 선택된 페이지 index입니다.
- * @param modifier Modifier: 배치와 외형을 위한 Modifier입니다.
- * @param size WantedPaginationContract.WantedDotIndicatorSize: dot의 크기를 결정합니다. 기본값은 Medium입니다.
- * @param type WantedPaginationContract.WantedDotIndicatorType: dot 스타일 타입입니다. 기본값은 Normal입니다.
+ * @param visibleDotCount Int: 화면에 표시할 최대 dot 개수입니다.
+ * @param currentIndex Int: 현재 선택된 페이지 인덱스입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param size WantedDotIndicatorSize: dot의 크기입니다.
+ * @param type WantedDotIndicatorType: dot의 스타일 타입입니다.
  */
 @Composable
 fun WantedDotIndicator(

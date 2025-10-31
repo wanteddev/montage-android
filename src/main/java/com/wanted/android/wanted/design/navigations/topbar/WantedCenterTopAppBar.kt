@@ -32,30 +32,6 @@ import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
-/**
- * 중앙 정렬된 타이틀을 포함하는 상단 앱바입니다.
- *
- * 앱바 유형(Normal, Extended)에 따라 레이아웃이 달라지며, 아이콘, 타이틀, 액션을 설정할 수 있습니다.
- *
- * 사용 예시:
- * ```kotlin
- * WantedCenterTopAppBar(
- *     title = { Text("타이틀") },
- *     navigationIcon = { Icon(...) },
- *     actions = { IconButton(...) }
- * )
- * ```
- *
- * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
- * @param windowInsets WindowInsets: 인셋을 적용하여 상태바 등 시스템 UI를 고려한 여백을 처리합니다.
- * @param background Color: 앱바의 배경 색상입니다.
- * @param variant Variant: 앱바의 유형으로 Normal 또는 Extended를 설정할 수 있습니다.
- * @param scrollableState ScrollableState?: 스크롤 상태를 반영하여 divider 표시 여부를 조절합니다.
- * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 영역에 표시할 컴포저블입니다.
- * @param title @Composable (() -> Unit)?: 중앙 타이틀 영역에 표시할 컴포저블입니다.
- * @param actions @Composable RowScope.() -> Unit: 우측 액션 버튼 영역입니다.
- */
-
 @Composable
 private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,

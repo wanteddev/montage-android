@@ -48,32 +48,37 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 스크롤 가능한 탭 레이아웃을 제공하는 컴포저블입니다.
+ * WantedScrollableTabRow
  *
- * 좌우 gradient 효과, 우측 아이콘, 가변 너비를 지원하며,
- * 선택된 탭은 SecondaryIndicator로 강조됩니다.
+ * 스크롤 가능한 탭 레이아웃 컴포넌트입니다.
+ *
+ * 좌우 gradient 효과, 우측 아이콘을 지원하며, 선택된 탭은 하단 인디케이터로 강조됩니다.
  *
  * 사용 예시:
  * ```kotlin
+ * var selectedIndex by remember { mutableIntStateOf(0) }
+ *
  * WantedScrollableTabRow(
  *     itemCount = 5,
- *     selectedTabIndex = 2,
- *     content = { index -> "탭$index" }
+ *     selectedTabIndex = selectedIndex,
+ *     content = { index -> "탭$index" },
+ *     onClickItem = { selectedIndex = it }
  * )
  * ```
  *
  * @param itemCount Int: 탭 항목 수입니다.
  * @param selectedTabIndex Int: 현재 선택된 탭 인덱스입니다.
- * @param modifier Modifier: 레이아웃 설정용 Modifier입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param disableIndexList List<Int>: 비활성화할 탭 인덱스 리스트입니다.
  * @param tabSize TabSize: 탭 크기 설정입니다.
- * @param horizontalPadding Boolean: 양쪽 여백을 둘지 여부입니다.
- * @param isLeftGradient Boolean: 왼쪽에 gradient를 표시할지 여부입니다.
- * @param isRightGradient Boolean: 오른쪽에 gradient를 표시할지 여부입니다.
+ * @param horizontalPadding Boolean: 양쪽 여백 적용 여부입니다.
+ * @param isLeftGradient Boolean: 왼쪽 gradient 표시 여부입니다.
+ * @param isRightGradient Boolean: 오른쪽 gradient 표시 여부입니다.
  * @param gradientColor Color: gradient 색상입니다.
- * @param scrollState ScrollState: 외부에서 전달받은 스크롤 상태입니다.
- * @param onClickItem (index: Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
- * @param rightIcon @Composable ((Dp) -> Unit)? : 탭 우측에 추가할 아이콘 슬롯입니다.
- * @param content (index: Int) -> String: 각 탭의 텍스트를 반환합니다.
+ * @param scrollState ScrollState: 스크롤 상태를 관리하는 객체입니다.
+ * @param onClickItem (Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 탭 우측에 추가할 아이콘 슬롯입니다.
+ * @param content (Int) -> String: 각 탭의 텍스트를 반환하는 함수입니다.
  */
 @Composable
 fun WantedScrollableTabRow(

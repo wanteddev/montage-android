@@ -20,25 +20,29 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 
 /**
- * TopAppBar에 사용되는 아이콘 버튼 컴포저블입니다.
+ * WantedTopAppBarIconButton
  *
- * Floating 타입에 따라 다양한 배경 스타일이 적용됩니다.
+ * TopAppBar에 사용되는 아이콘 버튼 컴포넌트입니다.
+ *
+ * Variant에 따라 다양한 스타일이 적용됩니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedTopAppBarIconButton(
- *     painter = painterResource(id = R.drawable.ic_normal_arrow_left_svg),
- *     onClick = { /* 클릭 동작 */ }
+ *     painter = painterResource(id = R.drawable.icon_normal_arrow_left),
+ *     onClick = { /* 클릭 처리 */ }
  * )
  * ```
  *
  * @param painter Painter: 아이콘으로 표시할 이미지입니다.
- * @param modifier Modifier: 버튼의 크기, 외형, 배치를 조정하는 Modifier입니다.
- * @param variant Variant: 앱바 타입으로 스타일에 영향을 미칩니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param variant Variant: 앱바 형태입니다.
  * @param enabled Boolean: 버튼 활성화 여부입니다.
  * @param interactionSource MutableInteractionSource: 사용자 인터랙션을 처리하는 객체입니다.
  * @param tint Color: 아이콘 색상입니다.
- * @param onClick () -> Unit: 버튼 클릭 시 실행되는 콜백입니다.
+ * @param badgeAlignment Alignment: 배지 정렬 위치입니다.
+ * @param badge (@Composable () -> Unit)?: 배지 콘텐츠입니다.
+ * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
  */
 @Composable
 fun WantedTopAppBarIconButton(

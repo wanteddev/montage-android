@@ -38,27 +38,38 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.launch
 
 /**
- * 커스텀 애니메이션과 로티 인디케이터가 포함된 Pull-to-Refresh 컴포저블입니다.
+ * WantedPullToRefreshBox
  *
- * 시스템 다크 모드 여부에 따라 Lottie 애셋이 자동 전환되며, 유저가 스크롤을 아래로 당길 때
- * 부드러운 그래픽과 함께 새로고침 로직을 트리거할 수 있습니다.
+ * Pull-to-Refresh 기능을 제공하는 컴포넌트입니다.
+ *
+ * 시스템 다크 모드에 따라 Lottie 애니메이션이 자동으로 전환되며,
+ * 사용자가 화면을 아래로 당겨 새로고침을 실행할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
- * val isRefreshing by remember { mutableStateOf(false) }
+ * var isRefreshing by remember { mutableStateOf(false) }
+ *
  * WantedPullToRefreshBox(
  *     isRefreshing = isRefreshing,
- *     onRefresh = { /* 새로고침 처리 */ }
+ *     onRefresh = {
+ *         isRefreshing = true
+ *         // 새로고침 처리
+ *         isRefreshing = false
+ *     }
  * ) {
- *     LazyColumn { ... }
+ *     LazyColumn {
+ *         items(list) { item ->
+ *             Text(text = item)
+ *         }
+ *     }
  * }
  * ```
  *
- * @param isRefreshing Boolean: 현재 새로고침 중인지 여부를 나타냅니다.
- * @param onRefresh () -> Unit: 유저가 당겨서 새로고침을 요청했을 때 호출되는 콜백입니다.
- * @param modifier Modifier: 외형 및 배치 설정용 modifier입니다.
- * @param state PullToRefreshState: Pull-to-Refresh 상태를 관리하는 객체입니다. 기본값은 `rememberPullToRefreshState()`입니다.
- * @param content @Composable () -> Unit: 새로고침 박스 내부에 배치할 UI 콘텐츠입니다.
+ * @param isRefreshing Boolean: 현재 새로고침 중인지 여부입니다.
+ * @param onRefresh () -> Unit: 사용자가 당겨서 새로고침을 요청했을 때 호출되는 콜백입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param state PullToRefreshState: Pull-to-Refresh 상태를 관리하는 객체입니다.
+ * @param content @Composable BoxScope.() -> Unit: 새로고침 박스 내부에 배치할 콘텐츠입니다.
  */
 @Composable
 fun WantedPullToRefreshBox(
@@ -142,7 +153,7 @@ fun WantedPullToRefreshBox(
                     translationY = when {
                         isRefresh -> animateTransitionY
                         // 들어갈때 Container 위치
-                        isPullEnd -> state.distanceFraction  * (SIZE_HEIGHT * 0.5f).toPx()
+                        isPullEnd -> state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
                         // 땡겼을때 Container 위치
                         else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 3).toPx() }
                     }

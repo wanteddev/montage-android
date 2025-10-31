@@ -161,14 +161,6 @@ fun ScrollableFlexTabRow(
     }
 }
 
-/**
- * Data class that contains information about a tab's position on screen, used for calculating
- * where to place the indicator that shows which tab is selected.
- *
- * @property left the left edge's x position from the start of the [TabRow]
- * @property right the right edge's x position from the start of the [TabRow]
- * @property width the width of this tab
- */
 @Immutable
 class TabPosition internal constructor(val left: Dp, val width: Dp) {
     val right: Dp get() = left + width
@@ -222,9 +214,6 @@ private enum class TabSlots {
     Indicator
 }
 
-/**
- * Class holding onto state needed for [ScrollableTabRow]
- */
 class ScrollableTabData(
     private val scrollState: ScrollState,
     private val coroutineScope: CoroutineScope
@@ -257,11 +246,7 @@ class ScrollableTabData(
         }
     }
 
-    /**
-     * @return the offset required to horizontally center the tab inside this TabRow.
-     * If the tab is at the start / end, and there is not enough space to fully centre the tab, this
-     * will just clamp to the min / max position given the max width.
-     */
+
     private fun TabPosition.calculateTabOffset(
         density: Density,
         edgeOffset: Int,
@@ -282,14 +267,8 @@ class ScrollableTabData(
 
 private val ScrollableTabRowMinimumTabWidth = 90.dp
 
-/**
- * The default padding from the starting edge before a tab in a [ScrollableTabRow].
- */
 private val ScrollableTabRowPadding = 52.dp
 
-/**
- * [AnimationSpec] used when scrolling to a tab that is not fully visible.
- */
 private val ScrollableTabRowScrollSpec: AnimationSpec<Float> = tween(
     durationMillis = 250,
     easing = FastOutSlowInEasing

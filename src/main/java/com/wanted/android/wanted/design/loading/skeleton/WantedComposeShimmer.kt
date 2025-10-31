@@ -14,18 +14,24 @@ import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 
 /**
- * 사각형 형태의 스켈레톤 UI를 구성하는 컴포저블입니다.
+ * shimmer
  *
- * 기본적으로 shimmer 애니메이션이 적용되며, 배경 색상과 shape 커스터마이징이 가능합니다.
+ * 깜박이는 shimmer 애니메이션을 적용하는 Modifier 확장 함수입니다.
+ *
+ * 투명도를 주기적으로 변경하여 깜박이는 효과를 제공합니다.
+ * 주로 스켈레톤 UI에 사용됩니다.
  *
  * 사용 예시:
  * ```kotlin
- * WantedSkeletonRectangle(modifier = Modifier.size(200.dp))
+ * Box(
+ *     modifier = Modifier
+ *         .size(200.dp)
+ *         .shimmer()
+ * )
  * ```
  *
- * @param modifier Modifier: 외형 및 배치를 조정합니다.
- * @param shape RoundedCornerShape: 사각형의 모서리 형태를 지정합니다.
- * @param color Color: 배경 색상입니다.
+ * @param colorRes Int: 적용할 색상 리소스 ID입니다.
+ * @return Modifier: shimmer 애니메이션이 적용된 Modifier입니다.
  */
 fun Modifier.shimmer(
     colorRes: Int = R.color.background_normal_normal, // 기본 색상 리소스

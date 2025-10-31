@@ -18,20 +18,23 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 /**
- * 진행 상태를 나타내는 LinearProgressIndicator 컴포넌트입니다.
+ * WantedLinearProgressIndicator
  *
- * 지정된 `currentProgress` 값을 기준으로 전체 너비의 2dp 높이로 진행 바가 렌더링되며,
- * 색상은 디자인 시스템의 `primary_normal`과 `fill_normal`을 사용합니다.
+ * 진행 상태를 나타내는 선형 프로그레스 바 컴포넌트입니다.
+ *
+ * 0.0 ~ 1.0 사이의 값으로 진행률을 표시하며, 높이는 2dp로 고정됩니다.
  *
  * 사용 예시:
  * ```kotlin
+ * var progress by remember { mutableFloatStateOf(0.3f) }
+ *
  * WantedLinearProgressIndicator(
- *     currentProgress = 0.3f
+ *     currentProgress = progress
  * )
  * ```
  *
- * @param currentProgress Float: 진행률 (0.0 ~ 1.0)입니다. 0은 0%, 1은 100%를 의미합니다.
- * @param modifier Modifier: 레이아웃 및 외형을 조정하기 위한 Modifier입니다. 기본값은 Modifier입니다.
+ * @param currentProgress Float: 진행률입니다. 0.0은 0%, 1.0은 100%를 의미합니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  */
 @Composable
 fun WantedLinearProgressIndicator(

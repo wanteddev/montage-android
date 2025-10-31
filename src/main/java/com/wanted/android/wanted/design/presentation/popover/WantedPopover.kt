@@ -50,29 +50,37 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * 사용자가 지정한 콘텐츠에 대해 팝오버를 표시하는 Composable입니다.
- * 팝오버는 특정 위치에 나타나며, 다양한 정렬 옵션과 위치 설정을 지원합니다.
+ * WantedPopover
+ *
+ * 커스텀 콘텐츠를 포함한 팝오버 컴포넌트입니다.
+ *
+ * 특정 위치에 팝오버를 표시하며, 다양한 정렬 옵션을 지원합니다.
  *
  * 사용 예시:
  * ```kotlin
  * val popoverState = rememberPopoverState()
+ *
  * WantedPopover(
  *     modifier = Modifier,
  *     state = popoverState,
  *     align = WantedPopoverAlign.Center,
  *     body = { Text("팝오버 내용") },
- *     content = { Button("클릭", onClick = { popoverState.show() }) }
+ *     content = {
+ *         Button(onClick = { popoverState.show() }) {
+ *             Text("클릭")
+ *         }
+ *     }
  * )
  * ```
  *
- * @param modifier Modifier를 통한 외형 스타일 지정입니다.
- * @param windowInsets 윈도우 인셋 설정입니다. 기본값은 0입니다.
- * @param state 팝오버의 표시/숨김 상태를 관리하는 상태 객체입니다.
- * @param align 팝오버의 정렬 방식입니다. (Left, Center, Right)
- * @param positionTop 팝오버를 위쪽에 표시할지 여부입니다.
- * @param always 팝오버가 항상 표시될지 여부입니다. true인 경우 외부 클릭으로 닫히지 않습니다.
- * @param body 팝오버 내부에 표시할 콘텐츠입니다.
- * @param content 팝오버가 연결될 기준 콘텐츠입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param state WantedSimplePopoverState?: 팝오버의 표시/숨김 상태를 관리하는 객체입니다.
+ * @param align WantedPopoverAlign: 팝오버의 정렬 방식입니다.
+ * @param positionTop Boolean: 팝오버를 위쪽에 표시할지 여부입니다.
+ * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
+ * @param body (@Composable () -> Unit): 팝오버 내부 콘텐츠 슬롯입니다.
+ * @param content (@Composable () -> Unit): 팝오버가 연결될 기준 콘텐츠 슬롯입니다.
  */
 @Composable
 fun WantedPopover(
@@ -336,34 +344,46 @@ private fun createPopupProperties(always: Boolean): PopupProperties {
 }
 
 /**
- * 텍스트와 헤딩을 포함한 기본적인 팝오버를 표시하는 Composable입니다.
- * 텍스트, 헤딩, 닫기 버튼, 액션 버튼 등의 다양한 옵션을 제공합니다.
+ * WantedPopover
+ *
+ * 텍스트와 헤딩을 포함한 기본 팝오버 컴포넌트입니다.
+ *
+ * 텍스트, 헤딩, 닫기 버튼, 액션 버튼 등을 제공합니다.
  *
  * 사용 예시:
  * ```kotlin
  * val popoverState = rememberPopoverState()
+ *
  * WantedPopover(
  *     modifier = Modifier,
  *     text = "팝오버 내용 텍스트",
  *     heading = "제목",
  *     state = popoverState,
  *     closeButton = true,
- *     action = { Button("확인") { } },
- *     content = { Button("클릭", onClick = { popoverState.show() }) }
+ *     action = {
+ *         Button(onClick = { popoverState.dismiss() }) {
+ *             Text("확인")
+ *         }
+ *     },
+ *     content = {
+ *         Button(onClick = { popoverState.show() }) {
+ *             Text("클릭")
+ *         }
+ *     }
  * )
  * ```
  *
- * @param modifier Modifier를 통한 외형 스타일 지정입니다.
- * @param text 팝오버에 표시할 본문 텍스트입니다.
- * @param heading 팝오버에 표시할 헤딩 텍스트입니다. 빈 문자열인 경우 표시되지 않습니다.
- * @param state 팝오버의 표시/숨김 상태를 관리하는 상태 객체입니다.
- * @param windowInsets 윈도우 인셋 설정입니다. 기본값은 시스템 바입니다.
- * @param align 팝오버의 정렬 방식입니다. (Left, Center, Right)
- * @param closeButton 닫기 버튼 표시 여부입니다.
- * @param positionTop 팝오버를 위쪽에 표시할지 여부입니다.
- * @param always 팝오버가 항상 표시될지 여부입니다. true인 경우 외부 클릭으로 닫히지 않습니다.
- * @param action 팝오버 하단에 표시할 액션 버튼들입니다.
- * @param content 팝오버가 연결될 기준 콘텐츠입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param text String: 팝오버에 표시할 본문 텍스트입니다.
+ * @param heading String: 팝오버에 표시할 헤딩 텍스트입니다. 빈 문자열인 경우 표시되지 않습니다.
+ * @param state WantedSimplePopoverState?: 팝오버의 표시/숨김 상태를 관리하는 객체입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param align WantedPopoverAlign: 팝오버의 정렬 방식입니다.
+ * @param closeButton Boolean: 닫기 버튼 표시 여부입니다.
+ * @param positionTop Boolean: 팝오버를 위쪽에 표시할지 여부입니다.
+ * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
+ * @param action (@Composable RowScope.() -> Unit)?: 팝오버 하단에 표시할 액션 버튼 슬롯입니다.
+ * @param content (@Composable () -> Unit): 팝오버가 연결될 기준 콘텐츠 슬롯입니다.
  */
 @Composable
 fun WantedPopover(
@@ -557,8 +577,9 @@ private fun WantedPopoverLayout(
 }
 
 /**
+ * rememberPopoverState
+ *
  * 팝오버 상태를 관리하는 State 객체를 생성하고 기억합니다.
- * 팝오버의 표시/숨김 상태를 관리하는 상태 객체를 생성합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -571,10 +592,22 @@ private fun WantedPopoverLayout(
  * popoverState.dismiss()
  * ```
  *
- * @param initialVisible 초기 표시 상태입니다. 기본값은 false입니다.
- * @return 팝오버 상태를 관리하는 WantedSimplePopoverState 객체
+ * @param initialVisible Boolean: 초기 표시 상태입니다.
+ * @return WantedSimplePopoverState: 팝오버 상태를 관리하는 객체입니다.
  */
 @Composable
 fun rememberPopoverState(initialVisible: Boolean = false): WantedSimplePopoverState {
     return WantedSimplePopoverStateImpl(rememberWantedPopoverStateHolder(initialVisible))
+}
+
+/**
+ * enum class WantedPopoverAlign
+ *
+ * 팝오버의 정렬 방식을 정의하는 enum 클래스입니다.
+ * Left, Center, Right 세 가지 정렬 방식이 존재합니다.
+ */
+enum class WantedPopoverAlign {
+    Left,
+    Center,
+    Right
 }

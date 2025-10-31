@@ -81,10 +81,12 @@ import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
 
 /**
- * 사용자 정의 Tooltip 컴포저블입니다.
+ * WantedTooltip
  *
- * 앵커 요소 주변에 텍스트를 표시하는 툴팁을 제공하며, 크기, 정렬, 표시 여부를 제어할 수 있습니다.
- * 화면 경계를 고려하여 자동으로 위치를 조정하고, 화살표(caret)를 통해 앵커와의 연관성을 시각적으로 표현합니다.
+ * 커스텀 툴팁 컴포넌트입니다.
+ *
+ * 앵커 요소 주변에 텍스트를 표시하며, 화면 경계를 고려하여 자동으로 위치를 조정합니다.
+ * 화살표를 통해 앵커와의 연관성을 시각적으로 표현합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -95,8 +97,7 @@ import kotlinx.coroutines.launch
  *     tooltipState = tooltipState,
  *     text = "이것은 도움말 텍스트입니다.",
  *     size = WantedTooltipSize.Medium,
- *     align = WantedTooltipAlign.Center,
- *     always = false
+ *     align = WantedTooltipAlign.Center
  * ) {
  *     Icon(
  *         painter = painterResource(id = R.drawable.ic_help),
@@ -106,13 +107,14 @@ import kotlinx.coroutines.launch
  * }
  * ```
  *
- * @param modifier 툴팁 컨테이너의 외형 및 배치를 제어하는 Modifier입니다.
- * @param tooltipState 툴팁의 표시/숨김 상태를 관리하는 상태 객체입니다. 기본값은 `rememberTooltipState()`입니다.
- * @param text 툴팁에 표시할 텍스트입니다. 최대 3줄까지 표시되며, 초과 시 말줄임표(...)로 처리됩니다.
- * @param size 툴팁의 크기를 지정합니다. Small 또는 Medium 중 선택할 수 있으며, 기본값은 Medium입니다.
- * @param align 앵커 요소에 대한 툴팁의 정렬 방식입니다. Left, Center, Right 중 선택할 수 있으며, 기본값은 Left입니다.
- * @param always true일 경우 툴팁이 항상 표시되며 사용자 상호작용으로 닫을 수 없습니다. 기본값은 false입니다.
- * @param content 툴팁을 트리거하는 앵커 콘텐츠입니다. 툴팁 상태를 수동으로 제어해야 합니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param tooltipState WantedTooltipState: 툴팁의 표시/숨김 상태를 관리하는 객체입니다.
+ * @param text String: 툴팁에 표시할 텍스트입니다. 최대 3줄까지 표시되며, 초과 시 말줄임표로 처리됩니다.
+ * @param size WantedTooltipSize: 툴팁의 크기입니다.
+ * @param align WantedTooltipAlign: 앵커 요소에 대한 툴팁의 정렬 방식입니다.
+ * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
+ * @param positionTop Boolean: 툴팁을 위쪽에 표시할지 여부입니다.
+ * @param content (@Composable () -> Unit): 툴팁을 트리거하는 앵커 콘텐츠 슬롯입니다.
  */
 @Composable
 fun WantedTooltip(
@@ -467,37 +469,6 @@ private fun drawableResourceToBitmap(
     return bitmap
 }
 
-/**
- * 텍스트와 버튼, 닫기 아이콘, 화살표 등을 포함할 수 있는 사용자 정의 Tooltip 컴포저블입니다.
- *
- * 머터리얼 `TooltipBox`를 기반으로 하며, 텍스트 설명과 함께 선택적으로 "더 알아보기" 버튼과 닫기 아이콘을 추가할 수 있습니다.
- * 툴팁에 화살표 표시 여부도 설정할 수 있으며, 상태 관리를 위해 `TooltipState`를 사용합니다.
- *
- * 사용 예시 :
- * ```kotlin
- * WantedTooltip(
- *     text = "툴팁 내용입니다.",
- *     action = "더 보기",
- *     isShowCloseButton = true,
- *     content = {
- *         Icon(
- *             painter = painterResource(id = R.drawable.ic_info),
- *             contentDescription = null
- *         )
- *     },
- *     state = remember { TooltipState(true) }
- * )
- * ```
- *
- * @param text String: 툴팁에 표시할 텍스트입니다. 최대 3줄까지 표시됩니다.
- * @param modifier Modifier: 툴팁 외형 및 배치 제어를 위한 Modifier입니다.
- * @param action String?: 우측 하단에 표시할 보조 액션 버튼 텍스트입니다. null일 경우 표시되지 않습니다.
- * @param isShowCloseButton Boolean: true일 경우 닫기 아이콘을 표시합니다.
- * @param isShowArrow Boolean: true일 경우 앵커를 가리키는 화살표를 표시합니다.
- * @param state TooltipState: 툴팁의 상태를 제어하는 객체입니다.
- * @param onClickAction (() -> Unit)?: 보조 액션 버튼 클릭 시 호출되는 콜백입니다.
- * @param content () -> Unit: 툴팁을 보여줄 기준 콘텐츠입니다. 클릭 시 툴팁이 열립니다.
- */
 @Deprecated(
     message = "Use the new WantedTooltip with WantedTooltipState instead",
     replaceWith = ReplaceWith(
@@ -803,6 +774,13 @@ private fun CacheDrawScope.drawCaretWithPath(
     }
 }
 
+/**
+ * interface WantedTooltipState
+ *
+ * 툴팁의 표시/숨김 상태를 관리하는 인터페이스입니다.
+ *
+ * 툴팁을 표시하거나 숨기기 위한 메서드를 제공하며, 현재 표시 상태를 확인할 수 있습니다.
+ */
 interface WantedTooltipState {
     fun show()
     fun dismiss()
@@ -830,7 +808,25 @@ private class WantedTooltipStateImpl(
         get() = _visibleState.value
 }
 
-
+/**
+ * rememberTooltipState
+ *
+ * 툴팁 상태를 관리하는 State 객체를 생성하고 기억합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * val tooltipState = rememberTooltipState(initialVisible = false)
+ *
+ * // 툴팁 표시
+ * tooltipState.show()
+ *
+ * // 툴팁 숨김
+ * tooltipState.dismiss()
+ * ```
+ *
+ * @param initialVisible Boolean: 초기 표시 상태입니다.
+ * @return WantedTooltipState: 툴팁 상태를 관리하는 객체입니다.
+ */
 @Composable
 fun rememberTooltipState(initialVisible: Boolean = false): WantedTooltipState =
     remember { WantedTooltipStateImpl(initialVisible) }
@@ -839,11 +835,23 @@ fun rememberTooltipState(initialVisible: Boolean = false): WantedTooltipState =
 private const val SpacingBetweenTooltipAndAnchor = 8
 private const val SpacingBetweenTooltipAndAnchorNotArrow = 2
 
+/**
+ * enum class WantedTooltipSize
+ *
+ * 툴팁의 크기를 정의하는 enum 클래스입니다.
+ * Small, Medium 두 가지 크기가 존재합니다.
+ */
 enum class WantedTooltipSize {
     Small,
     Medium
 }
 
+/**
+ * enum class WantedTooltipAlign
+ *
+ * 툴팁의 정렬 방식을 정의하는 enum 클래스입니다.
+ * Left, Center, Right 세 가지 정렬 방식이 존재합니다.
+ */
 enum class WantedTooltipAlign {
     Left,
     Center,

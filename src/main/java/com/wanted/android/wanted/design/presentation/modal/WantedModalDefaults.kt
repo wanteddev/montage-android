@@ -31,24 +31,22 @@ import com.wanted.android.wanted.design.util.pxToDp
 /**
  * object WantedModalDefaults
  *
- * 모달(Modal) UI의 기본 구성 요소 및 유틸리티 기능을 제공하는 객체입니다.
+ * 모달 컴포넌트의 기본 구성 요소를 제공하는 객체입니다.
  */
 object WantedModalDefaults {
     /**
      * DragHandle
      *
-     * 드래그 가능한 핸들 표시를 위한 컴포저블입니다.
-     *
-     * 시트 상단에 표시되는 손잡이 형태의 UI를 그리며, 색상과 모양을 커스터마이징할 수 있습니다.
+     * BottomSheet 상단에 표시되는 드래그 핸들 컴포넌트입니다.
      *
      * 사용 예시:
      * ```kotlin
      * WantedModalDefaults.DragHandle()
      * ```
      *
-     * @param modifier `Modifier`: 핸들의 위치 및 크기를 조정하기 위한 Modifier입니다.
-     * @param color `Color`: 핸들의 배경 색상입니다. 기본값은 `background_elevated_normal`입니다.
-     * @param shape `Shape`: 핸들의 모양입니다. 기본값은 `MaterialTheme.shapes.extraLarge`입니다.
+     * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+     * @param color Color: 핸들의 배경 색상입니다.
+     * @param shape Shape: 핸들의 모양입니다.
      */
     @Composable
     fun DragHandle(

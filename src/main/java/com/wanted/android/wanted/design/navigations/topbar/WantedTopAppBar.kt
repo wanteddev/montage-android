@@ -45,18 +45,21 @@ import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarL
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-
 /**
- * 일반 TopAppBar 형식을 제공합니다. 정렬/타입에 따라 내부 레이아웃이 달라집니다.
+ * WantedTopAppBar
  *
- * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
- * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
+ * 기본 TopAppBar 컴포넌트입니다.
+ *
+ * 다양한 Variant를 지원하며, 스크롤 상태에 따라 하단 Divider가 표시됩니다.
+ *
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param variant Variant: 앱바 형태입니다.
  * @param background Color: 앱바 배경 색상입니다.
- * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
- * @param title @Composable (() -> Unit)?: 타이틀 컴포저블입니다.
- * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
- * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+ * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
+ * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
  */
 @Composable
 fun WantedTopAppBar(
@@ -137,9 +140,11 @@ fun WantedTopAppBar(
 }
 
 /**
- * 통합 상단 앱바 컴포저블로, 일반형, Floating형, Extended형을 포함합니다.
+ * WantedTopAppBar
  *
- * 타이틀 정렬, 배경, 스크롤 상태, 좌우 아이콘 등을 설정할 수 있습니다.
+ * 문자열 타이틀을 받는 TopAppBar 컴포넌트입니다.
+ *
+ * 타이틀 정렬을 좌측 또는 중앙으로 설정할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -150,15 +155,15 @@ fun WantedTopAppBar(
  * )
  * ```
  *
- * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
- * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param variant Variant: 앱바 형태입니다.
  * @param background Color: 앱바 배경 색상입니다.
- * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
- * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
- * @param title String: 타이틀로 표시할 텍스트입니다.
- * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
- * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
+ * @param titleAlignCenter Boolean: 타이틀 중앙 정렬 여부입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param title String: 타이틀 텍스트입니다.
+ * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+ * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
  */
 @Composable
 fun WantedTopAppBar(
@@ -210,25 +215,29 @@ fun WantedTopAppBar(
 }
 
 /**
- * 뒤로 가기 아이콘이 포함된 앱바를 제공합니다.
+ * WantedBackTopAppBar
+ *
+ * 뒤로 가기 아이콘이 포함된 TopAppBar 컴포넌트입니다.
+ *
+ * 좌측에 뒤로 가기 아이콘이 고정으로 배치됩니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedBackTopAppBar(
  *     title = "타이틀",
- *     onClickBack = { /* 뒤로가기 처리 */ }
+ *     onClickBack = { /* 뒤로 가기 처리 */ }
  * )
  * ```
  *
- * @param modifier Modifier: 외형 및 배치를 위한 Modifier입니다.
- * @param windowInsets WindowInsets: 인셋을 적용합니다.
- * @param variant Variant: 앱바 유형(Normal, Floating, Display, Search)입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param variant Variant: 앱바 형태입니다.
  * @param background Color: 앱바 배경 색상입니다.
- * @param titleAlignCenter Boolean: 타이틀을 중앙 정렬할지 여부입니다.
- * @param scrollableState ScrollableState?: 스크롤 상태 정보입니다.
- * @param title String: 타이틀로 표시할 텍스트입니다.
- * @param actions @Composable RowScope.() -> Unit: 우측 액션 영역입니다.
- * @param onClickBack () -> Unit: 뒤로가기 아이콘 클릭 시 호출되는 콜백입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param titleAlignCenter Boolean: 타이틀 중앙 정렬 여부입니다.
+ * @param title String: 타이틀 텍스트입니다.
+ * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+ * @param onClickBack () -> Unit: 뒤로 가기 버튼 클릭 시 호출되는 콜백입니다.
  */
 @Composable
 fun WantedBackTopAppBar(

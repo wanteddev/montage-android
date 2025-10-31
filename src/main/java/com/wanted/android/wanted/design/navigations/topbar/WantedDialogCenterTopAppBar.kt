@@ -22,9 +22,11 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * 중앙 정렬 타이틀을 가진 다이얼로그용 앱바입니다.
+ * WantedDialogCenterTopAppBar
  *
- * 일반 앱바와 다르게 타이틀이 가운데 정렬되며 다양한 스타일을 지원합니다.
+ * 중앙 정렬 타이틀을 가진 다이얼로그용 TopAppBar 컴포넌트입니다.
+ *
+ * 타이틀이 중앙에 정렬되며, 다양한 Variant를 지원합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -34,14 +36,14 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * )
  * ```
  *
- * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
- * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
  * @param background Color: 앱바 배경 색상입니다.
- * @param variant Variant: 앱바 유형 (Normal, Floating, Extended)입니다.
- * @param scrollableState ScrollableState?: 스크롤 상태입니다.
+ * @param variant Variant: 앱바 형태입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
  * @param title String: 타이틀 텍스트입니다.
- * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
- * @param actions @Composable (RowScope.() -> Unit)?: 우측 액션 컴포저블입니다.
+ * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+ * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
  */
 @Composable
 fun WantedDialogCenterTopAppBar(
@@ -85,24 +87,28 @@ fun WantedDialogCenterTopAppBar(
 }
 
 /**
- * 중앙 정렬 타이틀과 닫기 버튼이 포함된 다이얼로그용 앱바입니다.
+ * WantedDialogCenterCloseTopAppBar
+ *
+ * 중앙 정렬 타이틀과 닫기 버튼이 포함된 다이얼로그용 TopAppBar 컴포넌트입니다.
+ *
+ * 우측에 닫기 아이콘이 고정으로 배치됩니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedDialogCenterCloseTopAppBar(
  *     title = "제목",
- *     onClickBack = { /* 닫기 처리 */ }
+ *     onClickClose = { /* 닫기 처리 */ }
  * )
  * ```
  *
- * @param modifier Modifier: 앱바 외형 및 배치를 조정하는 Modifier입니다.
- * @param windowInsets WindowInsets: 인셋 정보를 적용합니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
  * @param background Color: 앱바 배경 색상입니다.
- * @param variant Variant: 앱바 유형 (Normal, Floating, Extended)입니다.
- * @param scrollableState ScrollableState?: 스크롤 상태입니다.
+ * @param variant Variant: 앱바 형태입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
  * @param title String: 중앙 타이틀 텍스트입니다.
- * @param navigationIcon @Composable (() -> Unit)?: 좌측 아이콘 컴포저블입니다.
- * @param onClickClose () -> Unit: 닫기 아이콘 클릭 시 콜백입니다.
+ * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+ * @param onClickClose () -> Unit: 닫기 버튼 클릭 시 호출되는 콜백입니다.
  */
 @Composable
 fun WantedDialogCenterCloseTopAppBar(

@@ -21,16 +21,19 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 /**
- * 단일 탭 항목을 구성하는 텍스트 기반 컴포저블입니다.
+ * WantedTabItem
  *
- * 선택 상태 및 텍스트 레이아웃 정보, 클릭 처리 등을 포함합니다.
+ * 단일 탭 항목을 구성하는 컴포넌트입니다.
  *
- * @param tabSize TabSize: 탭의 텍스트 스타일 및 패딩을 결정합니다.
+ * 선택 상태에 따라 텍스트 스타일이 변경되며, 클릭 이벤트를 처리합니다.
+ *
+ * @param tabSize TabSize: 탭의 텍스트 크기입니다.
  * @param title String: 탭에 표시할 텍스트입니다.
  * @param active Boolean: 선택 여부입니다.
- * @param modifier Modifier: 외형 설정용 Modifier입니다.
- * @param onTextLayout ((TextLayoutResult) -> Unit)? : 텍스트 레이아웃 결과 콜백입니다.
- * @param onClick () -> Unit: 클릭 시 호출됩니다.
+ * @param enable Boolean: 활성화 여부입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param onTextLayout ((TextLayoutResult) -> Unit)?: 텍스트 레이아웃 결과를 전달하는 콜백입니다.
+ * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
  */
 @Composable
 fun WantedTabItem(

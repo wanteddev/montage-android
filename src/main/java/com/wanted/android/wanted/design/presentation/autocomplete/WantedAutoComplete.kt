@@ -34,20 +34,25 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-
 /**
- * 섹션별 아이템 및 입력 컴포저블을 구성할 수 있는 자동완성 드롭다운 컴포저블입니다.
+ * WantedAutoComplete
  *
- * 드롭다운 내부에서 섹션 타이틀 및 아이템을 표시하고,
- * 상단 및 하단에 커스텀 입력 필드를 배치할 수 있습니다.
- * 스크롤 상태에 따라 현재 섹션의 타이틀을 상단에 고정하여 보여줍니다.
+ * 섹션별 아이템을 구성할 수 있는 자동완성 드롭다운 컴포넌트입니다.
+ *
+ * 섹션 타이틀과 아이템을 표시하고, 상단 및 하단에 커스텀 콘텐츠를 배치할 수 있습니다.
+ * 스크롤 시 현재 섹션의 타이틀이 상단에 고정됩니다.
  *
  * 사용 예시:
  * ```kotlin
- * ExposedDropdownMenuBox {
+ * var expanded by remember { mutableStateOf(false) }
+ *
+ * ExposedDropdownMenuBox(
+ *     expanded = expanded,
+ *     onExpandedChange = { expanded = it }
+ * ) {
  *     WantedAutoComplete(
- *         expended = true,
- *         onExpandedChange = { /* 확장 상태 변경 */ },
+ *         expanded = expanded,
+ *         onExpandedChange = { expanded = it },
  *         sectionCount = 2,
  *         sectionTitle = { section -> "섹션 $section" },
  *         sectionItemCount = { section -> 3 },
@@ -59,21 +64,21 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * ```
  *
  * @receiver ExposedDropdownMenuBoxScope: 드롭다운 메뉴 범위 내에서 호출되어야 합니다.
- * @param expended Boolean: 드롭다운 확장 여부입니다.
+ * @param expanded Boolean: 드롭다운 확장 여부입니다.
  * @param onExpandedChange (Boolean) -> Unit: 확장 상태가 변경될 때 호출되는 콜백입니다.
  * @param sectionCount Int: 표시할 섹션의 총 개수입니다.
- * @param sectionItemCount (section: Int) -> Int: 각 섹션별 아이템 수를 반환하는 함수입니다.
- * @param sectionItem @Composable (section: Int, index: Int) -> Unit: 섹션별 아이템 컴포저블입니다.
- * @param modifier Modifier: 드롭다운 전체에 적용할 Modifier입니다.
+ * @param sectionItemCount (Int) -> Int: 각 섹션별 아이템 개수를 반환하는 함수입니다.
+ * @param sectionItem (@Composable (Int, Int) -> Unit): 섹션별 아이템 컴포넌트입니다. 첫 번째 파라미터는 섹션 인덱스, 두 번째는 아이템 인덱스입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param containerColor Color: 드롭다운 배경 색상입니다.
- * @param sectionTitleHorizontalPadding Dp: 섹션 타이틀 좌우 패딩입니다.
- * @param sectionTitle ((section: Int) -> String)?: 섹션별 타이틀 텍스트를 반환하는 함수입니다. nullable.
- * @param topDirectInput @Composable (() -> Unit)?: 드롭다운 상단 고정 영역입니다. nullable.
- * @param bottomDirectInput @Composable (() -> Unit)?: 드롭다운 하단 영역입니다. nullable.
+ * @param sectionTitleHorizontalPadding Dp: 섹션 타이틀의 좌우 패딩입니다.
+ * @param sectionTitle ((Int) -> String)?: 섹션별 타이틀 텍스트를 반환하는 함수입니다.
+ * @param topDirectInput (@Composable () -> Unit)?: 드롭다운 상단 고정 영역 콘텐츠입니다.
+ * @param bottomDirectInput (@Composable () -> Unit)?: 드롭다운 하단 영역 콘텐츠입니다.
  */
 @Composable
 fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
-    expended: Boolean,
+    expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     sectionCount: Int,
     sectionItemCount: (section: Int) -> Int,
@@ -104,11 +109,11 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     LaunchedEffect(scrollState.value) {
         currentSection.intValue = sectionOffsets.filter {
             it.value <= (scrollState.value + with(density) {
-                TITLE_VERTICAL_PADDING.dp.toPx()
+                4.dp.toPx()
                 +if (title.value.isEmpty()) {
                     0.dp.toPx()
                 } else {
-                    TITLE_VERTICAL_PADDING.dp.toPx() + TITLE_VERTICAL_PADDING.dp.toPx()
+                    4.dp.toPx() + 4.dp.toPx()
                 }
             })
         }.maxOfOrNull { it.key } ?: -1
@@ -120,11 +125,11 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         scrollState = scrollState,
         containerColor = containerColor,
         shape = RoundedCornerShape(16.dp),
-        expanded = expended,
+        expanded = expanded,
         shadowElevation = 1.dp,
         border = BorderStroke(1.dp, colorResource(R.color.line_solid_normal)),
         onDismissRequest = {
-            onExpandedChange(expended)
+            onExpandedChange(expanded)
         }
     ) {
         topDirectInput?.let {

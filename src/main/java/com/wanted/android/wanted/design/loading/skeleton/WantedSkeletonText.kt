@@ -32,17 +32,22 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  */
 
 /**
- * 다양한 길이와 정렬을 지원하는 텍스트형 스켈레톤 UI입니다.
+ * WantedSkeletonText
  *
- * enum을 이용해 텍스트 폭 및 정렬 방식을 지정할 수 있습니다.
+ * 텍스트형 스켈레톤 UI 컴포넌트입니다.
+ *
+ * 다양한 길이 비율과 정렬 방식을 지원하며, shimmer 애니메이션이 자동으로 적용됩니다.
  *
  * 사용 예시:
  * ```kotlin
- * WantedSkeletonText(length = WantedSkeletonLength.Ratio75, align = WantedSkeAlign.Left)
+ * WantedSkeletonText(
+ *     length = WantedSkeletonLength.Ratio75,
+ *     align = WantedSkeAlign.Left
+ * )
  * ```
  *
  * @param length WantedSkeletonLength: 텍스트 길이 비율입니다.
- * @param modifier Modifier: 외형 및 레이아웃 조정용입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param align WantedSkeAlign: 정렬 방식입니다.
  * @param shape RoundedCornerShape: 모서리 곡률입니다.
  */
@@ -62,13 +67,14 @@ fun WantedSkeletonText(
 }
 
 /**
- * 커스텀 비율 기반으로 텍스트 스켈레톤을 생성하는 오버로드 함수입니다.
+ * WantedSkeletonText
  *
- * 내부 레이아웃은 ConstraintLayout과 Row를 활용해 정렬을 제어하며,
- * shimmer 애니메이션이 기본 적용됩니다.
+ * 커스텀 비율 기반의 텍스트형 스켈레톤 UI 컴포넌트입니다.
  *
- * @param widthRadio Float: 텍스트 박스의 너비 비율입니다. (0f ~ 1f)
- * @param modifier Modifier: 외형 및 레이아웃 조정용입니다.
+ * widthRadio 파라미터를 통해 너비 비율을 직접 지정할 수 있습니다.
+ *
+ * @param widthRadio Float: 텍스트 박스의 너비 비율입니다. 0.0 ~ 1.0 사이의 값을 사용합니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param align WantedSkeAlign: 정렬 방식입니다.
  * @param shape RoundedCornerShape: 스켈레톤 박스의 모서리 곡률입니다.
  * @param color Color: 스켈레톤 박스의 배경 색상입니다.
@@ -122,12 +128,10 @@ fun WantedSkeletonText(
 }
 
 /**
- * 텍스트형 스켈레톤의 너비 비율을 정의하는 enum 클래스입니다.
+ * enum class WantedSkeletonLength
  *
- * - `Ratio100`: 100% 너비
- * - `Ratio75`: 75% 너비
- * - `Ratio50`: 50% 너비
- * - `Ratio25`: 25% 너비
+ * 텍스트형 스켈레톤의 너비 비율을 정의하는 enum 클래스입니다.
+ * Ratio100, Ratio75, Ratio50, Ratio25 네 가지 비율이 존재합니다.
  */
 enum class WantedSkeletonLength(
     val radio: Float
@@ -139,11 +143,10 @@ enum class WantedSkeletonLength(
 }
 
 /**
- * 텍스트형 스켈레톤의 정렬 방식을 지정하는 enum 클래스입니다.
+ * enum class WantedSkeAlign
  *
- * - `Left`: 좌측 정렬
- * - `Center`: 중앙 정렬
- * - `Right`: 우측 정렬
+ * 텍스트형 스켈레톤의 정렬 방식을 정의하는 enum 클래스입니다.
+ * Left, Center, Right 세 가지 정렬이 존재합니다.
  */
 enum class WantedSkeAlign {
     Left,

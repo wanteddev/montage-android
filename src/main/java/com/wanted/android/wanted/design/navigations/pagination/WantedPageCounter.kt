@@ -28,23 +28,27 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 /**
- * 현재 페이지와 전체 페이지 수를 함께 표시하는 페이지 카운터 컴포저블입니다.
+ * WantedPageCounter
  *
- * `2 / 10` 형식으로 페이지 정보를 출력하며, 일반형과 alternative 스타일(투명 배경) 중 선택할 수 있습니다.
+ * 현재 페이지와 전체 페이지 수를 표시하는 페이지 카운터 컴포넌트입니다.
+ *
+ * "2 / 10" 형식으로 페이지 정보를 표시하며, 일반형과 alternative 스타일을 선택할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
+ * var currentPage by remember { mutableIntStateOf(1) }
+ *
  * WantedPageCounter(
  *     totalPageCount = 10,
- *     currentIndex = 2,
+ *     currentIndex = currentPage,
  *     isAlternative = true
  * )
  * ```
  *
  * @param totalPageCount Int: 전체 페이지 수입니다.
  * @param currentIndex Int: 현재 페이지 인덱스입니다.
- * @param modifier Modifier: 배치 및 외형 설정을 위한 Modifier입니다.
- * @param size WantedPageCounterSize: 크기 설정입니다 (Small 또는 Normal).
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param size WantedPageCounterSize: 컴포넌트의 크기입니다.
  * @param isAlternative Boolean: alternative 배경 스타일 적용 여부입니다.
  */
 @Composable
