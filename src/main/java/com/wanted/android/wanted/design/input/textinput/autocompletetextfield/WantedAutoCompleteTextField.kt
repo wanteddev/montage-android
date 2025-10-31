@@ -65,7 +65,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param minLines Int: 최소 줄 수입니다.
  * @param maxWordCount Int: 입력 가능한 최대 글자 수입니다.
  * @param requiredBadge Boolean: 필수 입력 뱃지 여부입니다.
- * @param expended Boolean: 자동완성 드롭다운의 확장 상태입니다.
+ * @param expanded Boolean: 자동완성 드롭다운의 확장 상태입니다.
  * @param anchorPadding Dp: 드롭다운과 필드 간 패딩입니다.
  * @param dropDownMaxHeight Dp: 드롭다운 최대 높이입니다.
  * @param sectionTitleHorizontalPadding Dp: 섹션 제목의 좌우 여백입니다.
@@ -104,7 +104,7 @@ fun WantedAutoCompleteTextField(
     minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
-    expended: Boolean = false,
+    expanded: Boolean = false,
     anchorPadding: Dp = 0.dp,
     dropDownMaxHeight: Dp = 200.dp,
     sectionTitleHorizontalPadding: Dp = 20.dp,
@@ -126,7 +126,7 @@ fun WantedAutoCompleteTextField(
 ) {
     ExposedDropdownMenuBox(
         modifier = modifier,
-        expanded = expended,
+        expanded = expanded,
         onExpandedChange = {
             onExpandedChange(it && text.isNotEmpty())
         }
@@ -172,7 +172,7 @@ fun WantedAutoCompleteTextField(
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
-                expended = expended,
+                expanded = expanded,
                 onExpandedChange = {
                     onExpandedChange(false)
                 },
@@ -212,7 +212,7 @@ fun WantedAutoCompleteTextField(
  * @param minLines Int: 최소 줄 수입니다.
  * @param maxWordCount Int: 최대 입력 글자 수입니다.
  * @param requiredBadge Boolean: 필수 입력 뱃지 여부입니다.
- * @param expended Boolean: 드롭다운 확장 상태입니다.
+ * @param expanded Boolean: 드롭다운 확장 상태입니다.
  * @param anchorPadding Dp: 필드와 드롭다운 간 간격입니다.
  * @param dropDownMaxHeight Dp: 드롭다운 최대 높이입니다.
  * @param sectionTitleHorizontalPadding Dp: 섹션 제목 여백입니다.
@@ -250,7 +250,7 @@ fun WantedAutoCompleteTextField(
     minLines: Int = 1,
     maxWordCount: Int = 2000,
     requiredBadge: Boolean = false,
-    expended: Boolean = false,
+    expanded: Boolean = false,
     anchorPadding: Dp = 0.dp,
     dropDownMaxHeight: Dp = 200.dp,
     sectionTitleHorizontalPadding: Dp = 20.dp,
@@ -271,7 +271,7 @@ fun WantedAutoCompleteTextField(
 ) {
     ExposedDropdownMenuBox(
         modifier = modifier,
-        expanded = expended,
+        expanded = expanded,
         onExpandedChange = {
             onExpandedChange(it && value.text.isNotEmpty())
         }
@@ -317,7 +317,7 @@ fun WantedAutoCompleteTextField(
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
-                expended = expended,
+                expanded = expanded,
                 onExpandedChange = {
                     onExpandedChange(false)
                 },
@@ -349,7 +349,7 @@ private fun WantedAutoCompleteTextInputPreview() {
                     text = "ㅁㄴㅇ",
                     placeholder = "텍스트를 입력해 주세요.",
                     rightButton = "텍스트",
-                    expended = false,
+                    expanded = false,
                     onValueChange = {
                     },
                     onClickRightButton = {
