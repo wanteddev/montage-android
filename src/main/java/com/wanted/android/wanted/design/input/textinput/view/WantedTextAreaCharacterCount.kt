@@ -13,19 +13,6 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_74
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
-/**
- * WantedTextAreaCharacterCount
- *
- * TextArea 하단에 표시되는 글자 수 카운터 컴포넌트입니다.
- *
- * 현재 입력된 글자 수와 최대 글자 수를 "현재/최대" 형식으로 표시합니다.
- *
- * @param current Int: 현재 입력된 글자 수입니다.
- * @param maxWordCount Int: 입력 가능한 최대 글자 수입니다.
- * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param error Boolean: 오류 상태 여부입니다. true인 경우 현재 글자 수가 빨간색으로 표시됩니다.
- * @param enable Boolean: 활성화 여부입니다.
- */
 @Composable
 fun WantedTextAreaCharacterCount(
     current: Int,

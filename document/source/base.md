@@ -1,4 +1,6 @@
 /**
+* fun String.accent(...)
+*
 * 문자열 내에서 특정 부분 텍스트를 강조하여 AnnotatedString을 생성합니다.
 *
 * 전체 문자열에서 subText를 찾아 지정된 textStyle을 적용합니다.
@@ -18,6 +20,8 @@
 */
 
 /**
+* fun String.accent(...)
+*
 * 문자열 내에서 여러 부분 텍스트를 강조하여 AnnotatedString을 생성합니다.
 *
 * 전체 문자열에서 여러 개의 subText를 찾아 지정된 textStyle을 적용합니다.
@@ -37,6 +41,8 @@
 */
 
 /**
+* fun Modifier.getBorderModifier(...)
+*
 * 컴포넌트에 테두리 스타일을 적용하는 Modifier 확장 함수입니다.
 *
 * 원형 또는 둥근 모서리 형태에 대해 테두리 없음, 외곽선, 내부선 타입을 지원합니다.
@@ -75,6 +81,8 @@
 */
 
 /**
+* fun Modifier.wantedDropShadow(...)
+*
 * 컴포넌트에 드롭 섀도우 효과를 적용하는 Modifier 확장 함수입니다.
 *
 * WantedShadowStyle을 사용하여 미리 정의된 섀도우 스타일을 적용합니다.
@@ -94,6 +102,8 @@
 */
 
 /**
+* fun Modifier.wantedDropShadowSpread(...)
+*
 * 컴포넌트에 확산형 드롭 섀도우 효과를 적용하는 Modifier 확장 함수입니다.
 *
 * WantedShadowSpreadStyle을 사용하여 확산형 섀도우 스타일을 적용합니다.
@@ -130,6 +140,8 @@
 */
 
 /**
+* abstract fun getShadow()
+*
 * 섀도우 토큰을 반환하는 함수입니다.
 * 하위 클래스에서 구현해야 합니다.
 *
@@ -137,6 +149,8 @@
 */
 
 /**
+* data class XSmall
+*
 * XSmall 섀도우 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -144,6 +158,8 @@
 */
 
 /**
+* data class Small
+*
 * Small 섀도우 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -151,6 +167,8 @@
 */
 
 /**
+* data class Medium
+*
 * Medium 섀도우 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -158,6 +176,8 @@
 */
 
 /**
+* data class Large
+*
 * Large 섀도우 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -165,6 +185,8 @@
 */
 
 /**
+* data class XLarge
+*
 * XLarge 섀도우 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -186,6 +208,8 @@
 */
 
 /**
+* abstract fun getShadow()
+*
 * 섀도우 토큰을 반환하는 함수입니다.
 * 하위 클래스에서 구현해야 합니다.
 *
@@ -193,6 +217,8 @@
 */
 
 /**
+* data class Small
+*
 * Small 확산형 섀도우 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
@@ -200,6 +226,8 @@
 */
 
 /**
+* data class Medium
+*
 * Medium 확산형 섀도우 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.

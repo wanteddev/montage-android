@@ -1,5 +1,5 @@
 /**
-* object WantedSegmentedDefaults
+* object WantedSegmentedContract
 *
 * SegmentedControl 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
 */
@@ -179,4 +179,17 @@
 * @param isSelected Boolean: 항목의 선택 여부입니다.
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
 * @param icon (@Composable () -> Unit)?: 항목 왼쪽에 표시할 선택적 아이콘 Composable입니다.
+*/
+
+/**
+* object WantedSegmentedDefaults
+*
+* SegmentedControl 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
+*/
+
+/**
+* enum class SegmentedSize
+*
+* SegmentedControl의 크기를 정의하는 enum 클래스입니다.
+* Small, Medium, Large 세 가지 크기가 존재합니다.
 */

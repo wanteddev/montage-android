@@ -112,3 +112,51 @@
 * @param neutralButtonDefault WantedButtonDefault: 추가 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
 * @return WantedActionAreaDefault: 설정된 WantedActionAreaDefault 인스턴스를 반환합니다.
 */
+
+/**
+* enum class ActionAreaType
+*
+* 액션 영역의 타입을 정의하는 Enum 클래스입니다.
+* Strong, Neutral, Cancel 세 가지 타입이 존재합니다.
+*/
+
+/**
+* data class WantedActionAreaDefault
+*
+* ActionArea에 필요한 버튼 기본 스타일을 정의한 데이터 클래스입니다.
+* 각 버튼의 WantedButtonDefault를 개별적으로 설정할 수 있습니다.
+*
+* @param type ActionAreaType: 액션 영역 타입입니다.
+* @param positiveButtonDefault WantedButtonDefault: 메인 액션 버튼 스타일을 설정합니다.
+* @param negativeButtonDefault WantedButtonDefault: 서브 액션 버튼 스타일을 설정합니다.
+* @param neutralButtonDefault WantedButtonDefault: 추가 액션 버튼 스타일을 설정합니다.
+*/
+
+/**
+* object WantedActionAreaDefaults
+*
+* WantedActionAreaDefault의 기본값을 제공하는 객체입니다.
+* 액션 영역 타입에 따라 적절한 버튼 스타일을 자동으로 설정합니다.
+*/
+
+/**
+* fun getDefault(...)
+*
+* WantedActionAreaDefault의 기본 설정을 생성합니다.
+*
+* 액션 영역 타입에 따라 positive, negative, neutral 버튼의 기본 스타일을 자동으로 설정합니다.
+* 각 버튼의 스타일을 개별적으로 커스터마이징할 수도 있습니다.
+*
+* 사용 예시:
+* ```kotlin
+* val config = WantedActionAreaDefaults.getDefault(
+*     type = ActionAreaType.Strong
+* )
+* ```
+*
+* @param type ActionAreaType: 액션 영역의 타입입니다. 기본값은 ActionAreaType.Strong입니다.
+* @param positiveButtonDefault WantedButtonDefault: 메인 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
+* @param negativeButtonDefault WantedButtonDefault: 서브 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
+* @param neutralButtonDefault WantedButtonDefault: 추가 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
+* @return WantedActionAreaDefault: 설정된 WantedActionAreaDefault 인스턴스를 반환합니다.
+*/
