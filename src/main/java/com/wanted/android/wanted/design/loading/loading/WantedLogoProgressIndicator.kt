@@ -29,12 +29,13 @@ class WantedLogoProgressIndicator @JvmOverloads constructor(
 }
 
 /**
- * 다이얼로그를 통한 Wanted 로고 로딩 표시 컴포저블입니다.
+ * WantedLogoProgressIndicator
  *
- * 외부 dismiss를 막는 속성을 포함한 Dialog 위에 로고 애니메이션이 표시됩니다.
+ * Wanted 로고 Lottie 애니메이션을 표시하는 컴포넌트입니다.
  *
- * @param onDismissRequest () -> Unit: 다이얼로그 닫기 요청 콜백입니다.
- * @param properties DialogProperties: Dialog 구성 속성입니다.
+ * 시스템 다크 모드 설정에 따라 자동으로 라이트/다크 테마의 로고 애니메이션이 표시됩니다.
+ *
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  */
 @Composable
 fun WantedLogoProgressIndicator(modifier: Modifier = Modifier) {

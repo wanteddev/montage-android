@@ -16,9 +16,11 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
- * 화면 중앙에 원형 로딩 인디케이터를 표시하는 컴포저블입니다.
+ * WantedCircularLoading
  *
- * dim 배경 포함 여부, 크기, 색상을 설정할 수 있으며 전체 화면에 로딩을 표시할 때 사용합니다.
+ * 화면 중앙에 원형 로딩 인디케이터를 표시하는 컴포넌트입니다.
+ *
+ * dim 배경 포함 여부, 크기, 색상을 설정할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -29,7 +31,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * )
  * ```
  *
- * @param modifier Modifier: 외형 및 배치 설정입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param circleColor Color: 로딩 인디케이터 색상입니다.
  * @param dimColor Color: 배경 dim 색상입니다.
  * @param size Dp: 로딩 인디케이터 크기입니다.

@@ -35,23 +35,28 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 
 /**
- * 단일 값 선택을 위한 Slider 컴포저블입니다.
+ * WantedSlider
  *
- * 사용자가 슬라이더를 이동시켜 하나의 값을 선택할 수 있도록 구성된 UI 컴포넌트입니다.
- * 내부적으로 `WantedRangeSlider`를 사용하여 단일 값에 맞게 범위를 구성합니다.
+ * 단일 값을 선택할 수 있는 Slider 컴포넌트입니다.
  *
- * 사용 예시 :
+ * 사용자가 슬라이더를 이동하여 하나의 값을 선택할 수 있습니다.
+ *
+ * 사용 예시:
  * ```kotlin
+ * var sliderValue by remember { mutableFloatStateOf(30f) }
+ *
  * WantedSlider(
- *     value = 30f,
+ *     value = sliderValue,
  *     valueRange = 0f..100f,
- *     onValueChange = { value -> /* 처리 */ }
+ *     header = "볼륨",
+ *     label = "${sliderValue.toInt()}",
+ *     onValueChange = { sliderValue = it }
  * )
  * ```
  *
  * @param value Float: 현재 선택된 값입니다.
  * @param valueRange ClosedFloatingPointRange<Float>: 슬라이더가 선택할 수 있는 값의 범위입니다.
- * @param modifier Modifier: 레이아웃 및 스타일을 조정할 수 있습니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param header String: 상단에 표시할 헤더 텍스트입니다.
  * @param label String: 하단에 표시할 라벨 텍스트입니다.
  * @param enabled Boolean: 슬라이더 활성화 여부입니다.
@@ -82,23 +87,29 @@ fun WantedSlider(
 }
 
 /**
- * 범위 선택이 가능한 Slider 컴포저블입니다.
+ * WantedSlider
  *
- * 사용자가 슬라이더의 양 끝을 조절하여 범위를 선택할 수 있는 UI 컴포넌트입니다.
- * 내부적으로 `WantedRangeSlider`를 사용하여 범위 선택 슬라이더로 동작합니다.
+ * 범위를 선택할 수 있는 Slider 컴포넌트입니다.
  *
- * 사용 예시 :
+ * 사용자가 슬라이더의 양 끝을 조절하여 최소값과 최대값을 선택할 수 있습니다.
+ *
+ * 사용 예시:
  * ```kotlin
+ * var rangeValue by remember { mutableStateOf(10f..90f) }
+ *
  * WantedSlider(
- *     value = 10f..90f,
+ *     value = rangeValue,
  *     valueRange = 0f..100f,
- *     onValueChange = { range -> /* 처리 */ }
+ *     header = "가격 범위",
+ *     labelMin = "${rangeValue.start.toInt()}만원",
+ *     labelMax = "${rangeValue.endInclusive.toInt()}만원",
+ *     onValueChange = { rangeValue = it }
  * )
  * ```
  *
  * @param value ClosedFloatingPointRange<Float>: 현재 선택된 값의 범위입니다.
  * @param valueRange ClosedFloatingPointRange<Float>: 선택 가능한 값의 최소/최대 범위입니다.
- * @param modifier Modifier: 레이아웃 및 스타일을 조정할 수 있습니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param header String: 상단에 표시할 헤더 텍스트입니다.
  * @param labelMin String: 최소값 라벨 텍스트입니다.
  * @param labelMax String: 최대값 라벨 텍스트입니다.

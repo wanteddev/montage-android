@@ -3,9 +3,7 @@ package com.wanted.android.wanted.design.input.select
 /**
  * object WantedSelectContract
  *
- * 셀렉트(Select) 컴포넌트에서 사용되는 UI 설정 값을 정의하는 객체입니다.
- *
- * 선택 렌더링 방식과 선택 UI 스타일을 제어할 수 있는 enum 클래스를 포함합니다.
+ * 셀렉트(Select) 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
  */
 object WantedSelectContract {
     /**

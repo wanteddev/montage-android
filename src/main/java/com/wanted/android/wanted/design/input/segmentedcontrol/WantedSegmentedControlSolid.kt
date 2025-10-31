@@ -50,10 +50,11 @@ import kotlinx.coroutines.launch
 
 
 /**
+ * WantedSegmentedControlSolid
+ *
  * 문자열 리스트 기반의 Solid 스타일 Segmented Control 컴포넌트입니다.
  *
- * 선택된 항목을 강조 표시하며, 내부적으로 애니메이션 되는 Knob과 함께 사용됩니다.
- * 항목은 텍스트 기반으로 자동 생성되며, 클릭 시 인덱스가 콜백으로 반환됩니다.
+ * 선택된 항목을 강조 표시하며, 애니메이션되는 Knob으로 선택 상태를 표현합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -69,9 +70,9 @@ import kotlinx.coroutines.launch
  *
  * @param items List<String>: 표시할 항목 텍스트 리스트입니다.
  * @param selectedIndex Int: 현재 선택된 항목의 인덱스입니다.
- * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
- * @param size SegmentedSize: 항목의 사이즈 설정입니다 (Small, Medium, Large).
- * @param onClick (index: Int) -> Unit: 항목 클릭 시 선택 인덱스를 반환하는 콜백입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param size SegmentedSize: 컴포넌트의 크기입니다. Small, Medium, Large 중 선택할 수 있습니다.
+ * @param onClick (Int) -> Unit: 항목 클릭 시 선택된 인덱스를 전달하는 콜백 함수입니다.
  */
 @Composable
 fun WantedSegmentedControlSolid(
@@ -100,19 +101,24 @@ fun WantedSegmentedControlSolid(
 
 
 /**
- * 사용자 정의 항목(item slot)과 애니메이션 Knob이 포함된 Solid 스타일 Segmented Control 컴포넌트입니다.
+ * WantedSegmentedControlSolid
+ *
+ * 사용자 정의 항목으로 구성할 수 있는 Solid 스타일 Segmented Control 컴포넌트입니다.
  *
  * 각 항목을 커스텀 Composable로 구성할 수 있으며, 선택 애니메이션은 Knob 위치 이동으로 표현됩니다.
  *
  * 사용 예시:
  * ```kotlin
+ * var selectedIndex by remember { mutableIntStateOf(0) }
+ *
  * WantedSegmentedControlSolid(
  *     itemCount = 3,
  *     selectedIndex = selectedIndex,
  *     item = { index ->
  *         WantedSegmentedControlSolidItem(
  *             title = "옵션 $index",
- *             isSelected = index == selectedIndex
+ *             isSelected = index == selectedIndex,
+ *             icon = { Icon(...) }
  *         )
  *     },
  *     onClick = { selectedIndex = it }
@@ -120,11 +126,11 @@ fun WantedSegmentedControlSolid(
  * ```
  *
  * @param itemCount Int: 표시할 항목 개수입니다.
- * @param selectedIndex Int: 현재 선택된 항목 인덱스입니다.
- * @param item (index: Int) -> Unit: 항목 렌더링을 위한 Composable 슬롯입니다.
- * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
- * @param size SegmentedSize: 항목 크기 설정입니다.
- * @param onClick (index: Int) -> Unit: 클릭 시 호출되는 콜백입니다.
+ * @param selectedIndex Int: 현재 선택된 항목의 인덱스입니다.
+ * @param item @Composable (Int) -> Unit: 각 항목을 렌더링하는 Composable 슬롯입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param size SegmentedSize: 컴포넌트의 크기입니다. Small, Medium, Large 중 선택할 수 있습니다.
+ * @param onClick (Int) -> Unit: 항목 클릭 시 선택된 인덱스를 전달하는 콜백 함수입니다.
  */
 @Composable
 fun WantedSegmentedControlSolid(
