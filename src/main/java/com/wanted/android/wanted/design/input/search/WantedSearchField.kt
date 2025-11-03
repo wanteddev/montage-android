@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
@@ -309,7 +310,13 @@ private fun SearchTextField(
                                     )
                                 },
                                 onClick = {
-                                    onValueChange(value.copy(""))
+                                    onValueChange(
+                                        value.copy(
+                                            text = "",
+                                            selection = TextRange.Zero,
+                                            composition = null
+                                        )
+                                    )
                                 }
                             )
 
