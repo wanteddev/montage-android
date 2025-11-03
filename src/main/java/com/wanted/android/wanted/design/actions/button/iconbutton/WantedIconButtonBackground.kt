@@ -172,27 +172,27 @@ private fun WantedIconButtonBackgroundPreview() {
             ) {
                 WantedIconButtonBackground(
                     modifier = Modifier.size(24.dp),
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     onClick = {}
                 )
 
                 WantedIconButtonBackground(
                     modifier = Modifier.size(24.dp),
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     alternative = true,
                     onClick = {}
                 )
 
                 WantedIconButtonBackground(
                     modifier = Modifier.size(24.dp),
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     enabled = false,
                     onClick = {}
                 )
 
                 WantedIconButtonBackground(
                     modifier = Modifier.size(24.dp),
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     alternative = true,
                     enabled = false,
                     onClick = {}

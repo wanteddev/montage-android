@@ -101,13 +101,13 @@ private fun WantedIconButtonNormalPreview() {
 
                 WantedIconButtonNormal(
                     modifier = Modifier.size(24.dp),
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     onClick = {}
                 )
 
                 WantedIconButtonNormal(
                     modifier = Modifier.size(24.dp),
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     pushBadge = {
                         WantedPushBadge()
                     },

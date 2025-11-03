@@ -153,20 +153,20 @@ private fun WantedIconButtonOutlinedPreview() {
                 WantedIconButtonOutlined(
                     modifier = Modifier,
                     size = WantedIconButtonSize.Medium,
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     onClick = {}
                 )
 
                 WantedIconButtonOutlined(
                     modifier = Modifier,
                     size = WantedIconButtonSize.Small,
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     onClick = {}
                 )
 
                 WantedIconButtonOutlined(
                     modifier = Modifier.size(40.dp),
-                    icon = R.drawable.graphic_company_12dp_svg,
+                    icon = R.drawable.icon_normal_company,
                     onClick = {}
                 )
             }
