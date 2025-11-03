@@ -38,7 +38,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * @param size FilterChipSize: Chip의 크기를 설정합니다.
  * @param variant FilterChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
  * @param isActive Boolean: Chip의 활성화 여부입니다.
- * @param isEnable Boolean: Chip의 사용 가능 여부입니다.
+ * @param isEnabled Boolean: Chip의 사용 가능 여부입니다.
  * @param iconColor Color: 아이콘의 색상입니다.
  * @param backgroundColor Color: 배경 색상입니다.
  * @param borderColor Color: 테두리 색상입니다.
@@ -49,14 +49,14 @@ data class WantedFilterChipDefault(
     val size: FilterChipSize = FilterChipSize.Medium,
     val variant: FilterChipVariant = FilterChipVariant.Solid,
     override val isActive: Boolean = false,
-    override val isEnable: Boolean = true,
+    override val isEnabled: Boolean = true,
     override val iconColor: Color,
     override val backgroundColor: Color,
     override val borderColor: Color,
     override val textStyle: TextStyle
 ): WantedChipDefault(
     isActive = isActive,
-    isEnable = isEnable,
+    isEnabled = isEnabled,
     iconColor = iconColor,
     backgroundColor = backgroundColor,
     borderColor = borderColor,
@@ -121,7 +121,7 @@ object WantedFilterChipDefaults {
         size = size,
         variant = variant,
         isActive = isActive,
-        isEnable = isEnable,
+        isEnabled = isEnable,
         iconColor = iconColor,
         backgroundColor = backgroundColor,
         borderColor = borderColor,

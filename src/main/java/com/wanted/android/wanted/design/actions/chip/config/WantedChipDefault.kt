@@ -12,7 +12,7 @@ import androidx.compose.ui.text.TextStyle
  * 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
  *
  * @param isActive Boolean: Chip의 활성화(선택) 여부입니다.
- * @param isEnable Boolean: Chip의 사용 가능 여부입니다.
+ * @param isEnabled Boolean: Chip의 사용 가능 여부입니다.
  * @param iconColor Color: 아이콘의 색상입니다.
  * @param backgroundColor Color: 배경 색상입니다.
  * @param borderColor Color: 테두리 색상입니다.
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.TextStyle
  */
 open class WantedChipDefault(
     open val isActive: Boolean = false,
-    open val isEnable: Boolean = true,
+    open val isEnabled: Boolean = true,
     open val iconColor: Color,
     open val backgroundColor: Color,
     open val borderColor: Color,

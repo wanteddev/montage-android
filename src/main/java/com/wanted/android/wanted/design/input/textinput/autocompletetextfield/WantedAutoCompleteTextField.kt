@@ -173,7 +173,7 @@ fun WantedAutoCompleteTextField(
                     .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
                 expanded = expanded,
-                onExpandedChange = {
+                onDismissRequest = {
                     onExpandedChange(false)
                 },
                 sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,
@@ -318,7 +318,7 @@ fun WantedAutoCompleteTextField(
                     .heightIn(max = dropDownMaxHeight),
                 containerColor = colorResource(R.color.background_normal_normal),
                 expanded = expanded,
-                onExpandedChange = {
+                onDismissRequest = {
                     onExpandedChange(false)
                 },
                 sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,

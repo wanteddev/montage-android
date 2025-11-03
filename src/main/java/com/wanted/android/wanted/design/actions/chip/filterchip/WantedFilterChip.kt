@@ -143,7 +143,7 @@ fun WantedFilterChip(
         size = chipDefault.size,
         variant = chipDefault.variant,
         isActive = chipDefault.isActive,
-        isEnable = chipDefault.isEnable,
+        isEnable = chipDefault.isEnabled,
         chipDefault = chipDefault,
         content = {
             Row(
@@ -225,7 +225,7 @@ private fun WantedFilterChip(
                         color = chipDefault.backgroundColor.copy(OPACITY_12)
                     )
                 },
-                enabled = chipDefault.isEnable
+                enabled = chipDefault.isEnabled
             ) {
                 onClick?.invoke()
             },

@@ -65,7 +65,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  *
  * @receiver ExposedDropdownMenuBoxScope: 드롭다운 메뉴 범위 내에서 호출되어야 합니다.
  * @param expanded Boolean: 드롭다운 확장 여부입니다.
- * @param onExpandedChange (Boolean) -> Unit: 확장 상태가 변경될 때 호출되는 콜백입니다.
+ * @param onDismissRequest (Boolean) -> Unit: 확장 상태가 변경될 때 호출되는 콜백입니다.
  * @param sectionCount Int: 표시할 섹션의 총 개수입니다.
  * @param sectionItemCount (Int) -> Int: 각 섹션별 아이템 개수를 반환하는 함수입니다.
  * @param sectionItem (@Composable (Int, Int) -> Unit): 섹션별 아이템 컴포넌트입니다. 첫 번째 파라미터는 섹션 인덱스, 두 번째는 아이템 인덱스입니다.
@@ -79,7 +79,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 @Composable
 fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
+    onDismissRequest: (Boolean) -> Unit,
     sectionCount: Int,
     sectionItemCount: (section: Int) -> Int,
     sectionItem: @Composable (section: Int, index: Int) -> Unit,
@@ -129,7 +129,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         shadowElevation = 1.dp,
         border = BorderStroke(1.dp, colorResource(R.color.line_solid_normal)),
         onDismissRequest = {
-            onExpandedChange(expanded)
+            onDismissRequest(false)
         }
     ) {
         topDirectInput?.let {
@@ -213,5 +213,3 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         }
     }
 }
-
-private const val TITLE_VERTICAL_PADDING = 4
