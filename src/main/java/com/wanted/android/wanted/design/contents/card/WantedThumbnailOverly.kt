@@ -102,8 +102,9 @@ private fun WantedThumbnailOverlyPreview() {
                         WantedTouchArea(
                             content = {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.button_bookmark_line_svg),
-                                    contentDescription = ""
+                                    painter = painterResource(id = R.drawable.icon_normal_bookmark),
+                                    contentDescription = "",
+                                    tint = colorResource(R.color.static_white)
                                 )
                             },
                             onClick = {}
@@ -117,8 +118,9 @@ private fun WantedThumbnailOverlyPreview() {
                         WantedTouchArea(
                             content = {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.button_bookmark_line_svg),
-                                    contentDescription = ""
+                                    painter = painterResource(id = R.drawable.icon_normal_bookmark),
+                                    contentDescription = "",
+                                    tint = colorResource(R.color.static_white)
                                 )
                             },
                             onClick = {}
@@ -133,8 +135,9 @@ private fun WantedThumbnailOverlyPreview() {
                         WantedTouchArea(
                             content = {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.button_bookmark_line_svg),
-                                    contentDescription = ""
+                                    painter = painterResource(id = R.drawable.icon_normal_bookmark),
+                                    contentDescription = "",
+                                    tint = colorResource(R.color.static_white)
                                 )
                             },
                             onClick = {}

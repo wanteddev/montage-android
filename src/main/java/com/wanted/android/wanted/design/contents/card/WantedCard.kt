@@ -303,7 +303,7 @@ private fun WantedCardSkeletonPreview() {
                     ),
                     overlayToggleIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.button_bookmark_fill_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_bookmark_fill),
                             tint = colorResource(R.color.primary_normal),
                             contentDescription = ""
                         )

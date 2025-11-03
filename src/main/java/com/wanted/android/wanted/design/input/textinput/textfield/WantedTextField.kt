@@ -427,7 +427,7 @@ private fun WantedTextInputPreview() {
                     leadingIcon = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_check),
                             contentDescription = ""
                         )
                     }
@@ -440,21 +440,24 @@ private fun WantedTextInputPreview() {
                     leadingIcon = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
+                            tint = colorResource(R.color.primary_normal),
                             contentDescription = ""
                         )
                     },
                     trailingIcon = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
+                            tint = colorResource(R.color.primary_normal),
                             contentDescription = ""
                         )
                     },
                     trailingContent = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(id = R.drawable.button_check_circle_fill_12dp_svg),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
+                            tint = colorResource(R.color.primary_normal),
                             contentDescription = ""
                         )
                     }

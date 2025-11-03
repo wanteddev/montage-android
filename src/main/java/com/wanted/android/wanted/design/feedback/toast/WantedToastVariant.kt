@@ -44,7 +44,7 @@ sealed class WantedToastVariant(
     data object Positive : WantedToastVariant(
         R.drawable.icon_normal_circle_check_fill,
         R.color.green_60,
-        backgroundResourceId = R.drawable.ic_normal_circle_check_filler_svg
+        backgroundResourceId = R.drawable.icon_normal_circle_check_filler_svg
     )
 
     /**
@@ -56,7 +56,7 @@ sealed class WantedToastVariant(
     data object Cautionary : WantedToastVariant(
         R.drawable.icon_normal_triangle_exclamation_fill,
         R.color.orange_60,
-        backgroundResourceId = R.drawable.ic_normal_triangle_exclamation_filler_svg
+        backgroundResourceId = R.drawable.icon_normal_triangle_exclamation_filler_svg
     )
 
     /**
@@ -68,6 +68,6 @@ sealed class WantedToastVariant(
     data object Negative : WantedToastVariant(
         R.drawable.icon_normal_circle_close_fill,
         R.color.red_60,
-        backgroundResourceId = R.drawable.ic_normal_circle_exclamation_filler_svg
+        backgroundResourceId = R.drawable.icon_normal_circle_exclamation_filler_svg
     )
 }
