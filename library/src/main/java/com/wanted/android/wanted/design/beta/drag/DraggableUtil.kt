@@ -191,7 +191,7 @@ data class DraggableItem(val index: Int)
 
 @Stable
 fun Modifier.dragItem(dragDropState: DragDropState?) = this.then(
-    pointerInput(dragDropState) {
+    Modifier.pointerInput(dragDropState) {
         detectTapGestures(
             onPress = {
                 dragDropState?.onDragEnable()

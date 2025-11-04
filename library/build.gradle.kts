@@ -1,26 +1,23 @@
-import extension.default
-import extension.defaultKotlinOptions
-
 plugins {
-    id(libs.plugins.android.library.get().pluginId)
-    id(libs.plugins.kotlin.android.get().pluginId)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.plugin.compose)
-    id(libs.plugins.android.compose.get().pluginId)
 }
 
 android {
-    default()
+    namespace = "com.wanted.android.designsystem"
+    compileSdk = 35
+    buildToolsVersion = "35.0.1"
 
-    kotlinOptions {
-        defaultKotlinOptions()
+    defaultConfig {
+        minSdk = 26
+        targetSdk = 35
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
-    buildFeatures.run {
-        viewBinding = true
-    }
-
-    buildTypes.run {
-        getByName(AppContract.BuildType.Release.type) {
+    buildTypes {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -29,7 +26,43 @@ android {
         }
     }
 
-    namespace = "com.wanted.android.designsystem"
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-opt-in=kotlin.ExperimentalUnsignedTypes",
+            "-opt-in=kotlinx.coroutines.FlowPreview",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+            "-opt-in=androidx.compose.runtime.ExperimentalComposeApi",
+            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+            "-opt-in=com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        )
+    }
+
+    buildFeatures {
+        compose = true
+        viewBinding = true
+    }
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/LICENSE.md",
+                "/META-INF/LICENSE-notice.md"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -37,18 +70,24 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(libs.androidx.appcompat)
-
+    implementation(libs.androidx.core)
     implementation(libs.androidx.vectordrawable)
-
     implementation(libs.androidx.constraintlayout)
-
-    implementation(libs.lottie.compose)
-
+    implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.google.material)
 
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+
+    implementation(libs.lottie.compose)
+    implementation(libs.glide.compose)
     implementation(libs.accompanist.systemuicontroller)
 
-    implementation(libs.glide.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
 val extractDesignSystemJavadocToMd by tasks.registering {
@@ -146,15 +185,12 @@ val mergeDesignSystemJavadocByPackage by tasks.registering {
 
     // 합친 결과는 같은 destDir에 저장
     val destDir = layout.buildDirectory.dir("docs/designsystem-javadoc-md").get().asFile
-//    val mergeDir = layout.buildDirectory.dir("docs/merge")
-
     inputs.dir(destDir)
 
-    val outputDir =  layout.projectDirectory.dir("document/source")
+    val outputDir = layout.projectDirectory.dir("document/source")
     outputs.dir(outputDir)
 
     doLast {
-        // root package folder
         val rootPkgDir = File(destDir, "com/wanted/android/")
         val outputBase = outputDir.asFile
         if (!rootPkgDir.exists()) {
@@ -175,7 +211,7 @@ val mergeDesignSystemJavadocByPackage by tasks.registering {
                 val pkgName = if (rel.isEmpty())
                     "com.wanted.android.wanted.design"
                 else
-                    rel.replace('/','.').split('.').last()
+                    rel.replace('/', '.').split('.').last()
 
                 // merged file path: <destDir>/<pkgName>.md
                 val merged = File(outputBase, "$pkgName.md")
@@ -190,6 +226,9 @@ val mergeDesignSystemJavadocByPackage by tasks.registering {
 
 
 /**
+ * 디자인 시스템 문서화 자동화 스크립트
+ * master에 merge 될 때 자동으로 실행되도록 설정되어있음.
+ *
  * 실행 커멘드
  * ./gradlew :core:wanted-library-design-system:extractDesignSystemJavadocToMd
  * ./gradlew :core:wanted-library-design-system:mergeDesignSystemJavadocByPackage
