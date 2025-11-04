@@ -58,7 +58,7 @@ internal fun WantedSelectChip(
                     colorRes = when {
                         !enable -> R.color.label_disable
                         error -> R.color.status_negative
-                        else -> R.color.label_normal
+                        else -> R.color.label_alternative
                     },
                     style = DesignSystemTheme.typography.caption1Medium
                 )
