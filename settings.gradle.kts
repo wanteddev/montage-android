@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "wanted-library-design-system"
+rootProject.name = "montage-android"
 include(":library")

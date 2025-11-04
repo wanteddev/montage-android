@@ -1,6 +1,6 @@
-# Wanted Design System Library
+# Montage Android Design System Library
 
-원티드 Android 디자인 시스템 라이브러리
+montage-android 디자인 시스템 라이브러리
 
 ## 소개
 
@@ -13,14 +13,14 @@
 메인 프로젝트의 `settings.gradle.kts`:
 
 ```kotlin
-include(":core:wanted-library-design-system:library")
+include(":core:montage-android:library")
 ```
 
 `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation(project(":core:wanted-library-design-system:library"))
+    implementation(project(":core:montage-android:library"))
 }
 ```
 
