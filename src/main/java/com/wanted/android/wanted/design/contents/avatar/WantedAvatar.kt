@@ -83,7 +83,7 @@ fun WantedAvatar(
             WantedAvatarPerson(
                 modifier = modifier,
                 model = model,
-                placeHolder = placeHolder ?: R.drawable.ic_avatar_placeholder_person,
+                placeHolder = placeHolder ?: R.drawable.icon_avatar_placeholder_person,
                 size = size,
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
@@ -98,7 +98,7 @@ fun WantedAvatar(
             WantedAvatar(
                 modifier = modifier,
                 model = model,
-                placeHolder = placeHolder ?: R.drawable.ic_avatar_placeholder_company,
+                placeHolder = placeHolder ?: R.drawable.icon_avatar_placeholder_company,
                 size = size,
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
@@ -113,7 +113,7 @@ fun WantedAvatar(
             WantedAvatar(
                 modifier = modifier,
                 model = model,
-                placeHolder = placeHolder ?: R.drawable.ic_avatar_placeholder_academic,
+                placeHolder = placeHolder ?: R.drawable.icon_avatar_placeholder_academic,
                 size = size,
                 isDrawableRes = isDrawableRes,
                 isIcon = isIcon,
@@ -305,7 +305,7 @@ private fun WantedAvatarPreview() {
                 WantedAvatar(
                     modifier = Modifier,
                     model = null,
-                    placeHolder = R.drawable.ic_avatar_placeholder_person,
+                    placeHolder = R.drawable.icon_avatar_placeholder_person,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
@@ -314,8 +314,8 @@ private fun WantedAvatarPreview() {
                 )
                 WantedAvatar(
                     modifier = Modifier,
-                    model = R.drawable.ic_avatar_placeholder_person,
-                    placeHolder = R.drawable.ic_avatar_placeholder_person,
+                    model = R.drawable.icon_avatar_placeholder_person,
+                    placeHolder = R.drawable.icon_avatar_placeholder_person,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
@@ -324,8 +324,8 @@ private fun WantedAvatarPreview() {
 
                 WantedAvatar(
                     modifier = Modifier,
-                    model = R.drawable.ic_avatar_placeholder_person,
-                    placeHolder = R.drawable.ic_avatar_placeholder_person,
+                    model = R.drawable.icon_avatar_placeholder_person,
+                    placeHolder = R.drawable.icon_avatar_placeholder_person,
                     size = WantedAvatarSize.Medium,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,

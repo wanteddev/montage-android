@@ -324,15 +324,13 @@ private fun CheckboxImpl(
                 .padding(3.dp),
             painter = painterResource(
                 if (value == ToggleableState.Indeterminate) {
-                    R.drawable.icon_checkbox_indeterminate
+                    R.drawable.icon_normal_line_horizontal
                 } else {
-                    R.drawable.icon_checkbox_checked
+                    R.drawable.icon_normal_check
                 }
             ),
             contentDescription = "checkBox_check",
-            colorFilter = ColorFilter.tint(
-                color = checkmarkColor
-            )
+            colorFilter = ColorFilter.tint(color = checkmarkColor)
         )
     }
 }

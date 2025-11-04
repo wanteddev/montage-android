@@ -112,11 +112,11 @@ private fun WantedAvatarPreview() {
                 WantedAvatarGroup(
                     modifier = Modifier,
                     modelList = listOf(
-                        R.drawable.ic_avatar_placeholder_person,
-                        R.drawable.ic_avatar_placeholder_person,
-                        R.drawable.ic_avatar_placeholder_person
+                        R.drawable.icon_avatar_placeholder_person,
+                        R.drawable.icon_avatar_placeholder_person,
+                        R.drawable.icon_avatar_placeholder_person
                     ),
-                    placeHolder = R.drawable.ic_avatar_placeholder_person,
+                    placeHolder = R.drawable.icon_avatar_placeholder_person,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
@@ -126,11 +126,11 @@ private fun WantedAvatarPreview() {
                 WantedAvatarGroup(
                     modifier = Modifier,
                     modelList = listOf(
-                        R.drawable.ic_avatar_placeholder_person,
-                        R.drawable.ic_avatar_placeholder_person,
-                        R.drawable.ic_avatar_placeholder_person
+                        R.drawable.icon_avatar_placeholder_person,
+                        R.drawable.icon_avatar_placeholder_person,
+                        R.drawable.icon_avatar_placeholder_person
                     ),
-                    placeHolder = R.drawable.ic_avatar_placeholder_person,
+                    placeHolder = R.drawable.icon_avatar_placeholder_person,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
@@ -140,11 +140,11 @@ private fun WantedAvatarPreview() {
                 WantedAvatarGroup(
                     modifier = Modifier,
                     modelList = listOf(
-                        R.drawable.ic_avatar_placeholder_company,
-                        R.drawable.ic_avatar_placeholder_company,
-                        R.drawable.ic_avatar_placeholder_company
+                        R.drawable.icon_avatar_placeholder_company,
+                        R.drawable.icon_avatar_placeholder_company,
+                        R.drawable.icon_avatar_placeholder_company
                     ),
-                    placeHolder = R.drawable.ic_avatar_placeholder_company,
+                    placeHolder = R.drawable.icon_avatar_placeholder_company,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Company,
                     isDrawableRes = true,
@@ -154,11 +154,11 @@ private fun WantedAvatarPreview() {
                 WantedAvatarGroup(
                     modifier = Modifier,
                     modelList = listOf(
-                        R.drawable.ic_avatar_placeholder_company,
-                        R.drawable.ic_avatar_placeholder_company,
-                        R.drawable.ic_avatar_placeholder_company
+                        R.drawable.icon_avatar_placeholder_company,
+                        R.drawable.icon_avatar_placeholder_company,
+                        R.drawable.icon_avatar_placeholder_company
                     ),
-                    placeHolder = R.drawable.ic_avatar_placeholder_company,
+                    placeHolder = R.drawable.icon_avatar_placeholder_company,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Company,
                     isDrawableRes = true,
@@ -168,11 +168,11 @@ private fun WantedAvatarPreview() {
                 WantedAvatarGroup(
                     modifier = Modifier,
                     modelList = listOf(
-                        R.drawable.ic_avatar_placeholder_academic,
-                        R.drawable.ic_avatar_placeholder_academic,
-                        R.drawable.ic_avatar_placeholder_academic
+                        R.drawable.icon_avatar_placeholder_academic,
+                        R.drawable.icon_avatar_placeholder_academic,
+                        R.drawable.icon_avatar_placeholder_academic
                     ),
-                    placeHolder = R.drawable.ic_avatar_placeholder_academic,
+                    placeHolder = R.drawable.icon_avatar_placeholder_academic,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
@@ -182,11 +182,11 @@ private fun WantedAvatarPreview() {
                 WantedAvatarGroup(
                     modifier = Modifier,
                     modelList = listOf(
-                        R.drawable.ic_avatar_placeholder_academic,
-                        R.drawable.ic_avatar_placeholder_academic,
-                        R.drawable.ic_avatar_placeholder_academic
+                        R.drawable.icon_avatar_placeholder_academic,
+                        R.drawable.icon_avatar_placeholder_academic,
+                        R.drawable.icon_avatar_placeholder_academic
                     ),
-                    placeHolder = R.drawable.ic_avatar_placeholder_academic,
+                    placeHolder = R.drawable.icon_avatar_placeholder_academic,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
@@ -197,11 +197,11 @@ private fun WantedAvatarPreview() {
                 WantedAvatarGroup(
                     modifier = Modifier,
                     modelList = listOf(
-                        R.drawable.ic_avatar_placeholder_person,
-                        R.drawable.ic_avatar_placeholder_person,
-                        R.drawable.ic_avatar_placeholder_person
+                        R.drawable.icon_avatar_placeholder_person,
+                        R.drawable.icon_avatar_placeholder_person,
+                        R.drawable.icon_avatar_placeholder_person
                     ),
-                    placeHolder = R.drawable.ic_avatar_placeholder_person,
+                    placeHolder = R.drawable.icon_avatar_placeholder_person,
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,

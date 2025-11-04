@@ -47,7 +47,8 @@ fun WantedPersonAvatar(
             contentScale = ContentScale.Crop,
             contentDescription = "Profile Image"
         ) {
-            it.placeholder(R.drawable.profile_default).error(R.drawable.profile_default)
+            it.placeholder(R.drawable.profile_default)
+                .error(R.drawable.profile_default)
                 .circleCrop()
         }
     }
