@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Elevation -->
+    <dimen name="shadow_normal">1dp</dimen>
+    <dimen name="shadow_emphasize">3dp</dimen>
+    <dimen name="shadow_strong">6dp</dimen>
+    <dimen name="shadow_heavy">12dp</dimen>
+
+    <!-- Divider Height -->
+    <dimen name="divider_height">1dp</dimen>
+
+    <!-- Margin -->
+    <dimen name="margin_1">1dp</dimen>
+    <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_36">36dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_44">44dp</dimen>
+    <dimen name="margin_48">48dp</dimen>
+
+    <!-- Padding -->
+    <dimen name="padding_1">1dp</dimen>
+    <dimen name="padding_2">2dp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="padding_24">24dp</dimen>
+    <dimen name="padding_28">28dp</dimen>
+    <dimen name="padding_32">32dp</dimen>
+    <dimen name="padding_36">36dp</dimen>
+    <dimen name="padding_40">40dp</dimen>
+    <dimen name="padding_44">44dp</dimen>
+    <dimen name="padding_48">48dp</dimen>
+
+    <!-- Opacity -->
+    <item name="opacity_0" format="float" type="dimen">0</item>
+    <item name="opacity_5" format="float" type="dimen">0.05</item>
+    <item name="opacity_8" format="float" type="dimen">0.08</item>
+    <item name="opacity_12" format="float" type="dimen">0.12</item>
+    <item name="opacity_16" format="float" type="dimen">0.16</item>
+    <item name="opacity_22" format="float" type="dimen">0.22</item>
+    <item name="opacity_28" format="float" type="dimen">0.28</item>
+    <item name="opacity_35" format="float" type="dimen">0.35</item>
+    <item name="opacity_43" format="float" type="dimen">0.43</item>
+    <item name="opacity_52" format="float" type="dimen">0.52</item>
+    <item name="opacity_61" format="float" type="dimen">0.61</item>
+    <item name="opacity_74" format="float" type="dimen">0.74</item>
+    <item name="opacity_88" format="float" type="dimen">0.88</item>
+    <item name="opacity_97" format="float" type="dimen">0.97</item>
+    <item name="opacity_100" format="float" type="dimen">1</item>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Indeterminate -->
+    <item android:drawable="@drawable/ic_normal_checkbox_partial_svg" app:state_indeterminate="true" />
+
+    <!-- Checked -->
+    <item android:drawable="@drawable/ic_normal_checkbox_checked_svg" android:state_checked="true" />
+
+    <!-- Unchecked -->
+    <item android:drawable="@drawable/ic_normal_checkbox_unchecked_svg" android:state_checked="false" />
+</selector>

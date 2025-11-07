@@ -1,0 +1,47 @@
+---
+title: pull-to-refresh-box
+description: 커스텀 애니메이션과 로티 인디케이터가 포함된 Pull-to-Refresh 컴포저블입니다.
+image: /components/pull-to-refresh-box/design/thumbnail.png
+createdAt: 2023-11-01
+---
+
+## WantedPullToRefreshBox
+커스텀 애니메이션과 로티 인디케이터가 포함된 Pull-to-Refresh 컴포저블입니다. 시스템 다크 모드 여부에 따라 Lottie 애셋이 자동 전환되며, 유저가 스크롤을 아래로 당길 때 부드러운 그래픽과 함께 새로고침 로직을 트리거할 수 있습니다.
+
+## 사용 예시
+```kotlin
+val isRefreshing by remember { mutableStateOf(false) }
+WantedPullToRefreshBox(
+    isRefreshing = isRefreshing,
+    onRefresh = { /* 새로고침 처리 */ }
+) {
+    LazyColumn { ... }
+}
+```
+
+### 파라미터
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| isRefreshing | `Boolean` | 현재 새로고침 중인지 여부를 나타냅니다. |
+| onRefresh | `() -> Unit` | 유저가 당겨서 새로고침을 요청했을 때 호출되는 콜백입니다. |
+| modifier | `Modifier` | 외형 및 배치 설정용 modifier입니다. |
+| state | `PullToRefreshState` | Pull-to-Refresh 상태를 관리하는 객체입니다. 기본값은 `rememberPullToRefreshState()`입니다. |
+| content | `@Composable () -> Unit` | 새로고침 박스 내부에 배치할 UI 콘텐츠입니다. |
+
+---
+
+## Enum 설명
+### ActionAreaType
+| 값 | 설명 |
+|:---|:---|
+| Strong | 강한 강조의 액션 영역 타입 |
+| Neutral | 중립적인 액션 영역 타입 |
+| Cancel | 취소 타입의 액션 영역 |
+
+---
+
+## Note
+WantedActionAreaDefault는 ActionArea에 필요한 버튼 기본 스타일을 묶어둔 데이터 클래스입니다. 각 버튼의 WantedButtonDefault를 개별 설정할 수 있습니다.
+
+## Warning
+Deprecated - 더 이상 사용되지 않음. 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.
