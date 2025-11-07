@@ -43,6 +43,9 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 /**
  * 하단에 위치한 액션 버튼 영역을 생성합니다.
  *
+ *asdfasdf
+ * asdf
+ *
  *
  * positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달드립니다.
  * variant 영역을 통해 상단에 부가 요소를 렌더링할 수 있습니다.
