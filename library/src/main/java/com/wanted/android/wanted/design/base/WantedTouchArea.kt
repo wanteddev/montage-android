@@ -88,11 +88,6 @@ fun WantedTouchArea(
     content: @Composable BoxScope.() -> Unit,
     onClick: (() -> Unit)? = null
 ) {
-    /**
-     * preview가 아니고 innerTouch가 되어야 할경우만 계산한다.
-     * view를 계산하게되면 간혹 IllegalStateException 발생
-     * java.lang.IllegalStateException: Asking for intrinsic measurements of SubcomposeLayout layouts is not supported.
-     */
     val calculateContentSize = !LocalInspectionMode.current && enabledInnerTouch
     val contentHeight = remember { mutableStateOf(0.dp) }
     val contentWidth = remember { mutableStateOf(0.dp) }
