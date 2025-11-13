@@ -1,56 +1,37 @@
 ---
-title: snackbar-host
-description: 앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다.
-image: /components/snackbar-host/design/thumbnail.png
-createdAt: 2023-11-01
+title: SnackBar
+description: 앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트
 ---
 
 ## WantedSnackBar
-앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다. `SnackbarHostState`를 받아 `SnackbarData.visuals`가 `WantedSnackbarVisuals`인 경우 커스텀 레이아웃으로, 아닌 경우 기본 스낵바 텍스트와 버튼만 사용해 표시합니다.
+앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다.
 
-## 사용 예시
+`WantedSnackbarVisuals`를 사용하면 아이콘과 설명이 포함된 커스텀 레이아웃으로 표시되고, 기본 `SnackbarVisuals`를 사용하면 표준 스낵바 형태로 표시됩니다.
+
 ```kotlin
 val snackbarHostState = remember { SnackbarHostState() }
 WantedSnackBar(snackbarHostState = snackbarHostState)
 ```
 
-### 파라미터
+### Parameters
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| snackbarHostState | `SnackbarHostState` | 스낵바 표시 상태를 제어합니다. |
-| modifier | `Modifier` | 스낵바 전체 레이아웃 조정 Modifier입니다. |
+| snackbarHostState | SnackbarHostState | 스낵바 표시 상태를 제어합니다. |
+| modifier | Modifier | 스낵바 전체 레이아웃 조정 Modifier입니다. |
 
----
-
-## 클래스 설명
+## Class
 ### WantedSnackbarVisuals
-Wanted 전용 스낵바 메시지와 UI 요소를 지정하는 클래스입니다. 기본 메시지 외에 부가 설명, 아이콘, 패딩 등을 커스터마이징할 수 있습니다.
+Wanted 전용 스낵바 메시지와 UI 요소를 지정하는 클래스입니다.
 
-### 파라미터
+기본 메시지 외에 부가 설명, 아이콘, 패딩 등을 커스터마이징할 수 있습니다.
+
+#### Parameters
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| message | `String` | 스낵바에 표시될 기본 메시지입니다. |
-| actionLabel | `String?` | 버튼에 표시될 텍스트입니다. |
-| duration | `SnackbarDuration` | 스낵바 노출 지속 시간입니다. |
-| withDismissAction | `Boolean` | 닫기 액션 포함 여부입니다. |
-| description | `String` | 추가 설명 텍스트입니다. |
-| padding | `PaddingValues` | 스낵바 콘텐츠에 적용될 패딩입니다. |
-| icon | `@Composable (() -> Unit)?` | 스낵바 좌측에 표시할 아이콘입니다. |
-
----
-
-## Enum 설명
-### ActionAreaType
-| 값 | 설명 |
-|:---|:---|
-| Strong | 강한 강조의 액션 영역 타입 |
-| Neutral | 중립적인 액션 영역 타입 |
-| Cancel | 취소 타입의 액션 영역 |
-
----
-
-## Note
-WantedActionAreaDefault는 ActionArea에 필요한 버튼 기본 스타일을 묶어둔 데이터 클래스입니다. 각 버튼의 WantedButtonDefault를 개별 설정할 수 있습니다.
-
-## Warning
-Deprecated - 더 이상 사용되지 않음. 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.
+| message | String | 스낵바에 표시될 기본 메시지입니다. |
+| actionLabel | String? | 버튼에 표시될 텍스트입니다. |
+| duration | SnackbarDuration | 스낵바 노출 지속 시간입니다. |
+| withDismissAction | Boolean | 닫기 액션 포함 여부입니다. |
+| description | String | 추가 설명 텍스트입니다. |
+| padding | PaddingValues | 스낵바 콘텐츠에 적용될 패딩입니다. |
+| icon | (@Composable () -> Unit)? | 스낵바 좌측에 표시할 아이콘입니다. |

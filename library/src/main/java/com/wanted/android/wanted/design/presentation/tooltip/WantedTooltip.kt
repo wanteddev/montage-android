@@ -197,7 +197,7 @@ fun WantedTooltip(
                 contentWidth = contentWidth,
                 tooltipWidth = tooltipWidth,
                 screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
-                paddingPx = with(density) { 20.dp.toPx() }.toInt()
+                paddingPx = with(density) { 2.dp.toPx() }.toInt()
             )
 
             Popup(
@@ -387,6 +387,7 @@ private fun calculateTooltipOffsetX(
         }
     }
 
+
     return adjustedOffsetX
 }
 
@@ -397,17 +398,22 @@ private fun calculateCaretPositionX(
     caretPaddingHorizontalPx: Float,
     caretWidthPx: Float
 ): Float {
+    val center = contentWidth / 2f
+    // caret의 중심점이 가리켜야 할 content 상의 위치
     val contentAnchorX = when (align) {
         WantedTooltipAlign.Left -> {
-            caretPaddingHorizontalPx + caretWidthPx
+            val result = caretPaddingHorizontalPx + caretWidthPx
+            if (result > center) center else result
         }
 
         WantedTooltipAlign.Center -> {
-            contentWidth / 2f
+            // 중앙 정렬: content의 정중앙
+            center
         }
 
         WantedTooltipAlign.Right -> {
-            contentWidth - caretPaddingHorizontalPx - caretWidthPx
+            val result = contentWidth - caretPaddingHorizontalPx - caretWidthPx
+            if (result < center) center else result
         }
     }
 

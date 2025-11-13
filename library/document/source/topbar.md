@@ -1,0 +1,224 @@
+
+/**
+* WantedTopAppBar
+*
+* 기본 TopAppBar 컴포넌트입니다.
+*
+* 다양한 Variant를 지원하며, 스크롤 상태에 따라 하단 Divider가 표시됩니다.
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param background Color: 앱바 배경 색상입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
+* @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+  */
+
+/**
+* WantedTopAppBar
+*
+* 문자열 타이틀을 받는 TopAppBar 컴포넌트입니다.
+*
+* 타이틀 정렬을 좌측 또는 중앙으로 설정할 수 있습니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedTopAppBar(
+*     title = "타이틀",
+*     navigationIcon = { Icon(...) },
+*     actions = { IconButton(...) }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param background Color: 앱바 배경 색상입니다.
+* @param titleAlignCenter Boolean: 타이틀 중앙 정렬 여부입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param title String: 타이틀 텍스트입니다.
+* @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+  */
+
+/**
+* WantedBackTopAppBar
+*
+* 뒤로 가기 아이콘이 포함된 TopAppBar 컴포넌트입니다.
+*
+* 좌측에 뒤로 가기 아이콘이 고정으로 배치됩니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedBackTopAppBar(
+*     title = "타이틀",
+*     onClickBack = { /* 뒤로 가기 처리 */ }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param background Color: 앱바 배경 색상입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param titleAlignCenter Boolean: 타이틀 중앙 정렬 여부입니다.
+* @param title String: 타이틀 텍스트입니다.
+* @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+* @param onClickBack () -> Unit: 뒤로 가기 버튼 클릭 시 호출되는 콜백입니다.
+  */
+
+/**
+* object WantedTopAppBarContract
+*
+* TopAppBar 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
+  */
+
+/**
+* enum class Variant
+*
+* TopAppBar의 형태를 정의하는 enum 클래스입니다.
+* Normal, Display, Floating, Search 네 가지 형태가 존재합니다.
+  */
+
+/**
+* object WantedTopAppBarDefaults
+*
+* TopAppBar 컴포넌트의 기본값을 제공하는 객체입니다.
+  */
+
+/**
+* TopAppBar에 적용되는 기본 WindowInsets입니다.
+* 시스템 바의 수평 및 상단 영역만 포함합니다.
+*
+* @return WindowInsets: 시스템 바 인셋 중 수평 및 상단 영역을 포함한 WindowInsets입니다.
+  */
+
+/**
+* WantedTopAppBarIconButton
+*
+* TopAppBar에 사용되는 아이콘 버튼 컴포넌트입니다.
+*
+* Variant에 따라 다양한 스타일이 적용됩니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedTopAppBarIconButton(
+*     painter = painterResource(id = R.drawable.icon_normal_arrow_left),
+*     onClick = { /* 클릭 처리 */ }
+* )
+* ```
+*
+* @param painter Painter: 아이콘으로 표시할 이미지입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param enabled Boolean: 버튼 활성화 여부입니다.
+* @param interactionSource MutableInteractionSource: 사용자 인터랙션을 처리하는 객체입니다.
+* @param tint Color: 아이콘 색상입니다.
+* @param badgeAlignment Alignment: 배지 정렬 위치입니다.
+* @param badge (@Composable () -> Unit)?: 배지 콘텐츠입니다.
+* @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
+  */
+
+
+/**
+* WantedDialogCenterTopAppBar
+*
+* 중앙 정렬 타이틀을 가진 다이얼로그용 TopAppBar 컴포넌트입니다.
+*
+* 타이틀이 중앙에 정렬되며, 다양한 Variant를 지원합니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedDialogCenterTopAppBar(
+*     title = "다이얼로그 제목",
+*     actions = { IconButton(...) }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param background Color: 앱바 배경 색상입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param title String: 타이틀 텍스트입니다.
+* @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+*/
+
+/**
+* WantedDialogCenterCloseTopAppBar
+*
+* 중앙 정렬 타이틀과 닫기 버튼이 포함된 다이얼로그용 TopAppBar 컴포넌트입니다.
+*
+* 우측에 닫기 아이콘이 고정으로 배치됩니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedDialogCenterCloseTopAppBar(
+*     title = "제목",
+*     onClickClose = { /* 닫기 처리 */ }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param background Color: 앱바 배경 색상입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param title String: 중앙 타이틀 텍스트입니다.
+* @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param onClickClose () -> Unit: 닫기 버튼 클릭 시 호출되는 콜백입니다.
+*/
+
+/**
+* WantedDialogTopAppBar
+*
+* 다이얼로그용 TopAppBar 컴포넌트입니다.
+*
+* 타이틀과 좌우 컴포넌트를 설정할 수 있습니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedDialogTopAppBar(
+*     title = "다이얼로그 제목",
+*     navigationIcon = { Icon(...) },
+*     actions = { IconButton(...) }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param background Color: 앱바 배경 색상입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param title String: 타이틀 텍스트입니다.
+* @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+*/
+
+/**
+* WantedDialogCloseTopAppBar
+*
+* 닫기 버튼이 포함된 다이얼로그용 TopAppBar 컴포넌트입니다.
+*
+* 우측에 닫기 아이콘이 고정으로 배치됩니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedDialogCloseTopAppBar(
+*     title = "제목",
+*     onClickClose = { /* 닫기 처리 */ }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param background Color: 앱바 배경 색상입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param title String: 타이틀 텍스트입니다.
+* @param onClickClose () -> Unit: 닫기 버튼 클릭 시 호출되는 콜백입니다.
+*/

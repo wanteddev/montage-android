@@ -1,120 +1,213 @@
 ---
-title: action-area
-description: 하단에 위치한 액션 버튼 영역을 생성합니다.
-image: /components/action-area/design/thumbnail.png
-createdAt: 2023-11-01
+title: Modal
+description: 다양한 형태의 모달 컴포넌트를 제공하는 WantedModal
 ---
 
-## WantedActionArea
-하단에 위치한 액션 버튼 영역을 생성합니다. positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달합니다. variant 영역을 통해 상단에 부가 요소를 렌더링할 수 있습니다.
+## WantedModal
+상단 앱바와 확인/취소 버튼을 포함한 기본 모달 컴포넌트입니다.
 
-## 사용 예시
 ```kotlin
-WantedActionArea(
-    type = ActionAreaType.Strong,
-    positive = "확인",
-    onClickPositive = { /* 처리 */ },
-    negative = "취소",
-    onClickNegative = { /* 처리 */ },
-    neutral = "건너뛰기",
-    onClickNeutral = { /* 처리 */ }
+var showModal by remember { mutableStateOf(true) }
+
+if (showModal) {
+    WantedModal(
+        topBar = { WantedDialogTopAppBar(title = "제목") },
+        positive = "확인",
+        onClickPositive = { showModal = false },
+        onDismissRequest = { showModal = false },
+        content = { Text("내용") }
+    )
+}
+```
+
+### Parameters
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| onDismissRequest | () -> Unit | 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다. |
+| modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+| type | ModalType | 모달의 형태입니다. |
+| properties | DialogProperties | Dialog 속성입니다. |
+| shape | RoundedCornerShape | 모달의 모서리 둥글기입니다. |
+| topBar | (@Composable () -> Unit)? | 상단 앱바 슬롯입니다. |
+| positive | String? | 확인 버튼 텍스트입니다. |
+| negative | String? | 취소 버튼 텍스트입니다. |
+| onClickPositive | (() -> Unit)? | 확인 버튼 클릭 시 호출되는 콜백입니다. |
+| onClickNegative | (() -> Unit)? | 취소 버튼 클릭 시 호출되는 콜백입니다. |
+| content | (@Composable BoxScope.() -> Unit) | 본문 콘텐츠 슬롯입니다. |
+
+## Overload
+커스텀 하단 바를 포함한 모달 컴포넌트입니다. 확인/취소 버튼 대신 커스텀 bottomBar를 사용할 수 있습니다.
+
+```kotlin
+var showModal by remember { mutableStateOf(true) }
+
+if (showModal) {
+    WantedModal(
+        topBar = { WantedDialogTopAppBar(title = "제목") },
+        bottomBar = {
+            Button(onClick = { showModal = false }) {
+                Text("닫기")
+            }
+        },
+        onDismissRequest = { showModal = false },
+        content = { Text("내용") }
+    )
+}
+```
+<details>
+  <summary>Parameters</summary>
+  
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | onDismissRequest | () -> Unit | 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다. |
+  | modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+  | type | ModalType | 모달의 형태입니다. |
+  | properties | DialogProperties | Dialog 속성입니다. |
+  | shape | RoundedCornerShape | 모달의 모서리 둥글기입니다. |
+  | topBar | (@Composable () -> Unit)? | 상단 앱바 슬롯입니다. |
+  | bottomBar | (@Composable () -> Unit)? | 하단 바 슬롯입니다. |
+  | content | (@Composable BoxScope.() -> Unit) | 본문 콘텐츠 슬롯입니다. |
+</details>
+
+LazyColumn 기반의 스크롤 가능한 모달 컴포넌트입니다. 많은 양의 콘텐츠를 스크롤하여 표시할 수 있습니다.
+
+```kotlin
+var showModal by remember { mutableStateOf(true) }
+
+if (showModal) {
+    WantedModal(
+        topBar = { WantedDialogTopAppBar(title = "제목") },
+        onDismissRequest = { showModal = false },
+        lazyContent = {
+            items(20) { index ->
+                Text("아이템 $index")
+            }
+        }
+    )
+}
+```
+<details>
+  <summary>Parameters</summary>
+  
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | onDismissRequest | () -> Unit | 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다. |
+  | modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+  | type | ModalType | 모달의 형태입니다. |
+  | properties | DialogProperties | Dialog 속성입니다. |
+  | shape | RoundedCornerShape | 모달의 모서리 둥글기입니다. |
+  | topBar | (@Composable () -> Unit)? | 상단 앱바 슬롯입니다. |
+  | bottomBar | (@Composable () -> Unit)? | 하단 바 슬롯입니다. |
+  | lazyContent | (LazyListScope.() -> Unit) | LazyColumn 콘텐츠 슬롯입니다. |
+</details>
+
+## Advanced
+### WantedModalBottomSheet
+BottomSheet 형태의 모달 컴포넌트입니다. 시스템 BottomSheet 또는 커스텀 드래그 가능한 BottomSheet를 사용할 수 있습니다.
+
+```kotlin
+var showSheet by remember { mutableStateOf(false) }
+
+Button(onClick = { showSheet = true }) {
+    Text("시트 열기")
+}
+
+WantedModalBottomSheet(
+    isShow = showSheet,
+    onDismissRequest = { showSheet = false },
+    content = { Text("시트 내용") }
 )
 ```
 
-### 파라미터
+#### Parameters
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| type | `ActionAreaType` | 액션 영역의 타입을 설정합니다. |
-| positive | `String` | 메인(긍정) 액션 버튼 텍스트입니다. |
-| onClickPositive | `() -> Unit` | 메인 액션 버튼 클릭 콜백입니다. |
-| negative | `String` | 서브(부정) 액션 버튼 텍스트입니다. |
-| onClickNegative | `() -> Unit` | 서브 액션 버튼 클릭 콜백입니다. |
-| neutral | `String` | 추가(중립) 액션 버튼 텍스트입니다. |
-| onClickNeutral | `() -> Unit` | 추가 액션 버튼 클릭 콜백입니다. |
-| caption | `String?` | 액션 영역 상단에 표시할 캡션입니다. |
-| scrollableState | `ScrollableState?` | 스크롤 가능한 경우 상태를 전달합니다. |
-| modifier | `Modifier` | Modifier를 설정합니다. |
-| background | `Boolean` | 배경 그라데이션 표시 여부를 지정합니다. |
-| safeArea | `Boolean` | SafeArea를 적용할지 여부를 지정합니다. |
-| gradationColor | `Color?` | 배경 그라데이션 색상을 설정합니다. |
-| variant | `@Composable (() -> Unit)?` | 추가적으로 표시할 컴포넌트입니다. |
+| isShow | Boolean | 모달 표시 여부입니다. |
+| onDismissRequest | () -> Unit | 모달이 닫힐 때 호출되는 콜백입니다. |
+| modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+| background | Color | 배경 색상입니다. |
+| type | ModalType | 모달의 형태입니다. |
+| modalSize | ModalSize | 콘텐츠 패딩 등을 조절하는 크기 설정입니다. |
+| dismissOnClickOutside | Boolean | 외부 클릭 시 닫힘 여부입니다. |
+| topBar | (@Composable () -> Unit)? | 상단 바 슬롯입니다. |
+| bottomBar | (@Composable () -> Unit)? | 하단 바 슬롯입니다. |
+| content | (@Composable () -> Unit) | 본문 콘텐츠 슬롯입니다. |
 
----
+## Object
+### WantedModalContract
+모달 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
 
-## WantedActionArea (Slot을 활용한 커스텀 버튼 전달 방식)
-Slot을 활용하여 커스텀 버튼을 직접 전달하는 방식의 액션 영역입니다. 버튼 스타일, 배치 등을 완전히 제어할 수 있습니다.
+## Sealed Class
+### ModalType
+모달의 형태를 정의하는 sealed 클래스입니다.
 
-### 사용 예시
-```kotlin
-WantedActionArea(
-    type = ActionAreaType.Strong,
-    positive = {
-        CustomMainButton(onClick = { ... })
-    },
-    negative = {
-        CustomSecondaryButton(onClick = { ... })
-    }
-)
-```
-
-### 파라미터
-| 이름 | 타입 | 설명 |
-|:---|:---|:---|
-| type | `ActionAreaType` | 액션 영역의 타입을 설정합니다. |
-| safeArea | `Boolean` | SafeArea를 적용할지 여부를 지정합니다. |
-| background | `Boolean` | 배경 그라데이션 표시 여부를 지정합니다. |
-| gradationColor | `Color?` | 배경 그라데이션 색상을 설정합니다. |
-| caption | `String?` | 액션 영역 상단에 표시할 캡션입니다. |
-| scrollableState | `ScrollableState?` | 스크롤 가능한 경우 상태를 전달합니다. |
-| modifier | `Modifier` | Modifier를 설정합니다. |
-| positive | `@Composable (() -> Unit)?` | 메인(긍정) 액션 버튼 Slot입니다. |
-| negative | `@Composable (() -> Unit)?` | 서브(부정) 액션 버튼 Slot입니다. |
-| neutral | `@Composable (() -> Unit)?` | 추가(중립) 액션 버튼 Slot입니다. |
-| variant | `@Composable (() -> Unit)?` | 추가적으로 표시할 컴포넌트입니다. |
-
----
-
-## Warning
-Deprecated - 더 이상 사용되지 않음. 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.
-
-## 사용 예시
-```kotlin
-WantedActionArea(
-    positive = "확인",
-    onClickPositive = { ... },
-    actionAreaDefault = WantedActionAreaDefaults.getDefault()
-)
-```
-
-### 파라미터
-| 이름 | 타입 | 설명 |
-|:---|:---|:---|
-| positive | `String` | 메인 액션 버튼 텍스트입니다. |
-| onClickPositive | `() -> Unit` | 메인 액션 버튼 클릭 콜백입니다. |
-| negative | `String` | 서브 액션 버튼 텍스트입니다. |
-| onClickNegative | `() -> Unit` | 서브 액션 버튼 클릭 콜백입니다. |
-| neutral | `String` | 추가 액션 버튼 텍스트입니다. |
-| onClickNeutral | `() -> Unit` | 추가 액션 버튼 클릭 콜백입니다. |
-| actionAreaDefault | `WantedActionAreaDefault` | 버튼 스타일 기본값을 설정합니다. |
-| safeArea | `Boolean` | SafeArea를 적용할지 여부를 지정합니다. |
-| background | `Boolean` | 배경 그라데이션 표시 여부를 지정합니다. |
-| gradationColor | `Color?` | 배경 그라데이션 색상을 설정합니다. |
-| scrollableState | `ScrollableState?` | 스크롤 가능한 경우 상태를 전달합니다. |
-| caption | `String?` | 액션 영역 상단에 표시할 캡션입니다. |
-| variant | `@Composable (() -> Unit)?` | 추가적으로 표시할 컴포넌트입니다. |
-| modifier | `Modifier` | Modifier를 설정합니다. |
-
----
-
-## Enum 설명
-### ActionAreaType
 | 값 | 설명 |
 |:---|:---|
-| Strong | 강한 강조의 액션 영역 타입 |
-| Neutral | 중립적인 액션 영역 타입 |
-| Cancel | 취소 타입의 액션 영역 |
+| Flexible | 콘텐츠 크기에 따라 자동으로 조정되는 유동형 모달입니다. |
+| FixedWrapContent | 콘텐츠 높이에 맞게 조정되는 고정형 모달입니다. |
+| Fixed | 특정 높이를 갖는 고정형 모달입니다. |
+| FixedFullScreen | 화면 전체를 덮는 고정형 모달입니다. |
+| FixedRatio | 화면 비율을 기준으로 높이가 설정되는 고정형 모달입니다. |
 
----
+## Data Class
+### FixedWrapContent
+콘텐츠 높이에 맞게 조정되는 고정형 모달입니다.
 
-## Note
-WantedActionAreaDefault는 ActionArea에 필요한 버튼 기본 스타일을 묶어둔 데이터 클래스입니다. 각 버튼의 WantedButtonDefault를 개별 설정할 수 있습니다.
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| isCloseable | Boolean | 닫기 가능 여부입니다. |
+| isSystemBottomSheet | Boolean | 시스템 BottomSheet 사용 여부입니다. |
+
+### Fixed
+특정 높이를 갖는 고정형 모달입니다.
+
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| height | Dp | 모달의 높이입니다. |
+| isCloseable | Boolean | 닫기 가능 여부입니다. |
+| isSystemBottomSheet | Boolean | 시스템 BottomSheet 사용 여부입니다. |
+
+### FixedFullScreen
+화면 전체를 덮는 고정형 모달입니다.
+
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| isCloseable | Boolean | 닫기 가능 여부입니다. |
+| isSystemBottomSheet | Boolean | 시스템 BottomSheet 사용 여부입니다. |
+
+### FixedRatio
+화면 비율을 기준으로 높이가 설정되는 고정형 모달입니다.
+
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| ratio | Float | 0.0 ~ 1.0 사이의 높이 비율입니다. |
+| isCloseable | Boolean | 닫기 가능 여부입니다. |
+| isSystemBottomSheet | Boolean | 시스템 BottomSheet 사용 여부입니다. |
+
+## Enum
+### ModalSize
+모달의 여백 및 패딩을 정의하는 enum 클래스입니다.
+
+| 값 | 설명 |
+|:---|:---|
+| Medium | 콘텐츠 패딩이 중간 크기입니다. |
+| Large | 콘텐츠 패딩이 큰 크기입니다. |
+| XLarge | 콘텐츠 패딩이 매우 큰 크기입니다. |
+
+## Object
+### WantedModalDefaults
+모달 컴포넌트의 기본 구성 요소를 제공하는 객체입니다.
+
+#### DragHandle
+BottomSheet 상단에 표시되는 드래그 핸들 컴포넌트입니다.
+
+```kotlin
+WantedModalDefaults.DragHandle()
+```
+
+#### Parameters
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+| color | Color | 핸들의 배경 색상입니다. |
+| shape | Shape | 핸들의 모양입니다. |
