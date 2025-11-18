@@ -59,4 +59,4 @@ jobs:
           fi
           
           echo "🔄 변경된 파일이 있습니다. runKdocScriptAll 실행..."
-          ./gradlew :core:wanted-library-design-system:runKdocScriptAll
+          ./gradlew :library:runKdocScriptAll
