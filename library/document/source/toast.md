@@ -1,42 +1,3 @@
-
-/**
-* SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
-*
-* `WantedToastVisuals`를 사용하면 variant와 아이콘이 포함된 토스트로 표시되고,
-* 기본 `SnackbarVisuals`를 사용하면 메시지만 표시됩니다.
-*
-* 사용 예시:
-* ```kotlin
-* val snackbarHostState = remember { SnackbarHostState() }
-* WantedToast(snackbarHostState = snackbarHostState)
-* ```
-*
-* @param snackbarHostState SnackbarHostState Snackbar 상태를 관리합니다.
-* @param modifier Modifier 외형을 조정합니다.
-* @param windowInsets WindowInsets 시스템 인셋 대응을 위한 설정입니다.
-  */
-
-/**
-* sealed class WantedToastVariant
-*
-* Toast 메시지의 시각적 스타일을 정의하는 sealed 클래스입니다.
-*
-* 각 타입은 고유의 아이콘 리소스 및 색상 리소스를 포함하고 있으며, 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
-*
-* 제공되는 토스트 스타일은 다음과 같습니다:
-* - Message: 일반 메시지 (아이콘 없음)입니다.
-* - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
-* - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
-* - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
-*
-* @property resourceId Int 표시할 아이콘 리소스의 ID입니다.
-* @property tinColor Int 아이콘에 적용될 색상 리소스의 ID입니다.
-* @property backgroundResourceId Int? 배경 이미지 리소스의 ID입니다.
-* @property backgroundTintColor Int 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
-  */
-
-
-
 /**
 * object WantedGlobalToastManager
 *
@@ -109,6 +70,42 @@
 
 /**
 * 긴 시간 (10초)입니다.
+*/
+
+/**
+* SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
+*
+* `WantedToastVisuals`를 사용하면 variant와 아이콘이 포함된 토스트로 표시되고,
+* 기본 `SnackbarVisuals`를 사용하면 메시지만 표시됩니다.
+*
+* 사용 예시:
+* ```kotlin
+* val snackbarHostState = remember { SnackbarHostState() }
+* WantedToast(snackbarHostState = snackbarHostState)
+* ```
+*
+* @param snackbarHostState SnackbarHostState Snackbar 상태를 관리합니다.
+* @param modifier Modifier 외형을 조정합니다.
+* @param windowInsets WindowInsets 시스템 인셋 대응을 위한 설정입니다.
+*/
+
+/**
+* sealed class WantedToastVariant
+*
+* Toast 메시지의 시각적 스타일을 정의하는 sealed 클래스입니다.
+*
+* 각 타입은 고유의 아이콘 리소스 및 색상 리소스를 포함하고 있으며, 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
+*
+* 제공되는 토스트 스타일은 다음과 같습니다:
+* - Message: 일반 메시지 (아이콘 없음)입니다.
+* - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
+* - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
+* - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
+*
+* @property resourceId Int 표시할 아이콘 리소스의 ID입니다.
+* @property tinColor Int 아이콘에 적용될 색상 리소스의 ID입니다.
+* @property backgroundResourceId Int? 배경 이미지 리소스의 ID입니다.
+* @property backgroundTintColor Int 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
 */
 
 /**
