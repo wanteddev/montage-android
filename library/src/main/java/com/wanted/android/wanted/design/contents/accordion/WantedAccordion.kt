@@ -28,7 +28,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * 아코디언 형태로 확장/축소가 가능한 UI 컴포넌트입니다.
- * 테스트
+ *
  * 사용자는 제목(Title) 영역을 클릭하여 추가 설명(Description)과 콘텐츠(Content)를 확장하거나 축소할 수 있습니다.
  * FAQ, 설정 메뉴, 리스트 등 다양한 인터페이스에서 유용하게 활용됩니다.
  *
