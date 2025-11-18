@@ -28,7 +28,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedAccordion
- *asdf
+ *
  * 아코디언 형태로 확장/축소가 가능한 UI 컴포넌트입니다.
  *
  * 사용자는 제목(Title) 영역을 클릭하여 추가 설명(Description)과 콘텐츠(Content)를 확장하거나 축소할 수 있습니다.
