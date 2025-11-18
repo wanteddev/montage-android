@@ -40,31 +40,7 @@ jobs:
             kotlin -version
           fi
 
-      - name: Read Versions from Properties
-        id: versions
-        run: |
-          VERSION=$(grep '^version=' library/publish.properties | cut -d'=' -f2)
-          BEFORE_VERSION=$(grep '^beforeVersion=' library/publish.properties | cut -d'=' -f2)
-          
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "BEFORE_VERSION=$BEFORE_VERSION" >> $GITHUB_ENV
-          
-          if [ "$(printf '%s\n' "$BEFORE_VERSION" "$VERSION" | sort -V | head -n1)" != "$VERSION" ]; then
-            echo "version_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "version_changed=false" >> $GITHUB_OUTPUT
-          fi
-
-      - uses: actions/checkout@v4
-        if: steps.versions.outputs.version_changed == 'true'
-        with:
-          ref: ${{ github.ref_name }}
-          token: ${{ secrets.WANTED_DEV_TOKEN }}
-          fetch-depth: 0
-          clean: false
-
       - name: Update Design System Document
-        if: steps.versions.outputs.version_changed == 'true'
         run: |
           ./gradlew \
             :library:extractDesignSystemJavadocToMd \
@@ -72,7 +48,6 @@ jobs:
           sleep 1
 
       - name: Update DS Document mdx
-        if: steps.versions.outputs.version_changed == 'true'
         run: |
           echo "📂 변경된 DS 문서 파일을 처리합니다..."
           # 변경된 source 파일만 추출
@@ -85,32 +60,3 @@ jobs:
           
           echo "🔄 변경된 파일이 있습니다. runKdocScriptAll 실행..."
           ./gradlew :core:wanted-library-design-system:runKdocScriptAll
-
-      - name: Update beforeVersion to match version
-        if: steps.versions.outputs.version_changed == 'true'
-        run: |
-          # 크로스 플랫폼 호환 방식
-          if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i '' "s/^beforeVersion=.*/beforeVersion=${VERSION}/" library/publish.properties
-          else
-            sed -i "s/^beforeVersion=.*/beforeVersion=${VERSION}/" library/publish.properties
-          fi
-
-      - name: Commit & Push Design System Docs
-        if: steps.versions.outputs.version_changed == 'true'
-        run: |
-          git config --local user.name "deploy-bot"
-          
-          # 변경된 source 및 mdx 스테이징
-          git add library/document/source
-          git add library/document/md
-          git add library/publish.properties
-          
-          if git diff --cached --quiet; then
-            echo "No doc changes to commit"
-            exit 0
-          fi
-
-          # 커밋 메시지에 'docs:'를 포함시켜 무한 루프를 방지합니다.
-          git commit -m "docs: update Design System documentation and mdx"
-          git push
