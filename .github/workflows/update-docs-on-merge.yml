@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           clean: false
-          fetch-depth: 1
+          fetch-depth: 2
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "📂 변경된 DS 문서 파일을 처리합니다..."
           # 변경된 source 파일만 추출
-          CHANGED_FILES=$(git status --porcelain | awk '{print $2}' | grep '^core/wanted-library-design-system/document/source/' || true)
+          CHANGED_FILES=$(git status --porcelain | awk '{print $2}' | grep '^library/document/source/' || true)
           
           if [ -z "$CHANGED_FILES" ]; then
             echo "✅ 변경된 문서 없음. 스킵."
