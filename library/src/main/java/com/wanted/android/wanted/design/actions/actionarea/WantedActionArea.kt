@@ -41,10 +41,12 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
- * 하단에 위치한 액션 버튼 영역을 생성합니다.
+ * WantedActionArea
  *
- * positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달드립니다.
- * variant 영역을 통해 상단에 부가 요소를 렌더링할 수 있습니다.
+ * 하단 액션 버튼 영역을 생성합니다.
+ *
+ * 버튼은 positive, negative, neutral 텍스트로 생성하며, 각 버튼에 클릭 콜백을 전달할 수 있습니다.
+ * 또한, Variant 속성을 활용하여 상단 영역에 부가적인 요소를 렌더링할 수 있습니다.
  *
  * 사용 예시 :
  * ```kotlin
@@ -154,8 +156,10 @@ fun WantedActionArea(
 
 
 /**
- * Slot을 활용하여 커스텀 버튼을 직접 전달하는 방식의 액션 영역입니다.
- * 버튼 스타일 및 배치를 완전히 제어할 수 있습니다.
+ * WantedActionArea
+ *
+ * Slot을 활용하여 커스텀 버튼을 직접 전달할 수 있습니다.
+ * 버튼의 스타일 및 배치를 완전히 자유롭게 제어할 수 있습니다.
  *
  * 사용 예시 :
  * ```kotlin

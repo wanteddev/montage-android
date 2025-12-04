@@ -23,10 +23,10 @@ import androidx.core.view.WindowInsetsCompat
 /**
  * object WantedGlobalToastManager
  *
- * 앱 전역에서 토스트를 관리하는 싱글톤 매니저입니다.
+ * 앱 전역에서 Toast를 관리하는 싱글톤 매니저입니다.
  *
- * Activity 생명주기를 추적하여 현재 활성화된 화면에 토스트를 표시하며,
- * 키보드 및 네비게이션 바 높이에 맞춰 자동으로 패딩을 조정합니다.
+ * Activity 생명주기를 추적하여 현재 활성화된 화면에 Toast를 표시하며,
+ * 키보드 및 Navigation bar 높이에 맞춰 자동으로 패딩을 조정합니다.
  *
  * 사용 예시:
  * ```
@@ -55,7 +55,7 @@ object WantedGlobalToastManager {
     /**
      * fun initialize(...)
      *
-     * 토스트 매니저를 초기화합니다.
+     * Toast 매니저를 초기화합니다.
      *
      * Application 생명주기에 콜백을 등록하여 Activity 상태를 추적합니다.
      * 반드시 Application 클래스에서 한 번만 호출해야 합니다.
@@ -104,12 +104,12 @@ object WantedGlobalToastManager {
     /**
      *  fun showToast(...)
      *
-     * 커스텀 컴포저블 콘텐츠로 토스트를 표시합니다.
+     * 커스텀 컴포넌트 콘텐츠로 Toast를 표시합니다.
      *
-     * 이전에 표시 중이던 토스트는 자동으로 취소되며, 지정된 시간 후에 자동으로 사라집니다.
+     * 이전에 표시 중이던 Toast는 자동으로 취소되며, 지정된 시간 후에 자동으로 사라집니다.
      *
-     * @param duration ToastDuration 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
-     * @param content (@Composable () -> Unit) 표시할 컴포저블 콘텐츠입니다.
+     * @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
+     * @param content (@Composable () -> Unit): 표시할 컴포넌트 콘텐츠입니다.
      */
     fun showToast(duration: ToastDuration = ToastDuration.Short, content: @Composable () -> Unit) {
         if (!isInitialized) return
@@ -142,16 +142,15 @@ object WantedGlobalToastManager {
     /**
      * fun showToast(...)
      *
-     * 텍스트와 스타일을 지정하여 토스트를 표시합니다.
+     * 텍스트와 스타일을 지정하여 Toast를 표시합니다.
      *
-     * WantedToastImpl을 사용하여 표준 형태의 토스트를 표시합니다.
-     * variant를 통해 메시지 타입(긍정, 주의, 부정 등)을 지정할 수 있습니다.
+     * Variant를 통해 메시지 타입(긍정, 주의, 부정 등)을 지정할 수 있습니다.
      *
-     * @param text String 토스트에 표시할 메시지입니다.
-     * @param duration ToastDuration 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
-     * @param padding PaddingValues 토스트에 적용할 패딩입니다. 기본값은 하단 20dp입니다.
-     * @param variant WantedToastVariant 토스트 스타일입니다. 기본값은 Message입니다.
-     * @param icon (@Composable () -> Unit)? 사용자 정의 아이콘입니다.
+     * @param text String: 토스트에 표시할 메시지입니다.
+     * @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
+     * @param padding PaddingValues: 토스트에 적용할 패딩입니다. 기본값은 하단 20dp입니다.
+     * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+     * @param icon (@Composable () -> Unit)?: 사용자 정의 아이콘입니다.
      */
     fun showToast(
         text: String,
@@ -257,17 +256,11 @@ object WantedGlobalToastManager {
  *
  * 토스트가 화면에 표시될 시간을 정의합니다.
  *
- * @property mills Long 토스트 표시 시간(밀리초)입니다.
+ * - Short: 짧은 시간 (3초)입니다.
+ * - Long: 긴 시간 (10초)입니다.
  */
 enum class ToastDuration(val mills: Long) {
-    /**
-     * 짧은 시간 (3초)입니다.
-     */
     Short(3000L),
-
-    /**
-     * 긴 시간 (10초)입니다.
-     */
     Long(10000L);
 }
 

@@ -22,9 +22,9 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 /**
  * WantedSkeletonRectangle
  *
- * 사각형 스켈레톤 UI 컴포넌트입니다.
+ * 사각형 Skeleton 컴포넌트입니다.
  *
- * 로딩 상태를 표현할 때 사용되며, shimmer 애니메이션이 자동으로 적용됩니다.
+ * Shimmer 애니메이션이 자동으로 적용됩니다.
  *
  * 사용 예시:
  * ```kotlin

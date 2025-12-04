@@ -36,13 +36,16 @@ import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
+ * WantedToast
  *
- * `WantedToastVisuals`를 사용하면 variant와 아이콘이 포함된 토스트로 표시되고,
- * 기본 `SnackbarVisuals`를 사용하면 메시지만 표시됩니다.
+ * SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포넌트입니다.
+ *
+ * WantedToastVisuals 를 사용하면 Variant와 아이콘이 포함된 Toast로 표시되고
+ * 기본 SnackbarVisuals 를 를 사용하면 메시지만 표시됩니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -50,9 +53,9 @@ import kotlinx.coroutines.launch
  * WantedToast(snackbarHostState = snackbarHostState)
  * ```
  *
- * @param snackbarHostState SnackbarHostState Snackbar 상태를 관리합니다.
- * @param modifier Modifier 외형을 조정합니다.
- * @param windowInsets WindowInsets 시스템 인셋 대응을 위한 설정입니다.
+ * @param snackbarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
+ * @param modifier Modifier: 외형을 조정합니다.
+ * @param windowInsets WindowInsets: 시스템 인셋 대응을 위한 설정입니다.
  */
 @Composable
 fun WantedToast(
@@ -168,6 +171,49 @@ private fun WantedToastLayout(
                 content()
             }
         }
+    }
+}
+
+
+
+/**
+ * fun SnackbarHostState.showToast(...)
+ *
+ * Wanted 스타일의 Toast를 표시하는 확장 함수입니다.
+ *
+ * WantedToastVisuals를 사용하여 표시하며,
+ * Variant를 통해 메시지 타입(긍정, 주의, 부정 등)을 지정할 수 있습니다.
+ * 이미 표시 중인 Toast가 있다면 자동으로 닫고 새로운 Toast를 표시합니다.
+ *
+ * 사용 예시:
+ * ```
+ * val snackbarHostState = remember { SnackbarHostState() }
+ * val scope = rememberCoroutineScope()
+ *
+ * snackbarHostState.showToast(
+ *     scope = scope,
+ *     message = "저장되었습니다.",
+ *     variant = WantedToastVariant.Positive
+ * )
+ * ```
+ *
+ * @param scope CoroutineScope: 코루틴을 실행할 스코프입니다.
+ * @param message String: 토스트에 표시할 메시지입니다.
+ * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+ */
+fun SnackbarHostState.showToast(
+    scope: CoroutineScope,
+    message: String,
+    variant: WantedToastVariant = WantedToastVariant.Message,
+) {
+    scope.launch {
+        currentSnackbarData?.dismiss()
+        showSnackbar(
+            visuals = WantedToastVisuals(
+                message = message,
+                variant = variant
+            )
+        )
     }
 }
 

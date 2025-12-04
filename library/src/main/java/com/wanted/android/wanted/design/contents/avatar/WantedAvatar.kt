@@ -24,16 +24,17 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.base.getBorderModifier
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarSize
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarType
-import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgeSize
+import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeSize
 import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 사용자, 회사, 학력 등의 다양한 유형의 아바타(Avatar)를 표시하는 컴포저블입니다.
+ * WantedAvatar
+ * 사용자, 회사, 학력 등 다양한 유형의 아바타를 표시하는 컴포넌트입니다.
  *
- * 이미지, 아이콘, 그룹 아바타, 알림 뱃지(PushBadge) 등 다양한 스타일을 지원합니다.
- * 클릭 이벤트(onClick) 및 플레이스홀더 이미지 설정이 가능합니다.
+ * 이미지, 아이콘, 그룹 아바타, 알림 뱃지 등 다양한 스타일을 지원합니다.
+ * 클릭 이벤트 및 플레이스 홀더 이미지를 설정할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -50,6 +51,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * ```
  *
  * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
+ * @param modifier Modifier: 아바타의 크기, 외형, 배치를 조정하는 Modifier입니다.
  * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
  * @param model Any?: 표시할 이미지 모델입니다 (URL 또는 Drawable ID).
  * @param placeHolder Int?: 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다.
@@ -58,7 +60,6 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
  * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
  * @param borderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
- * @param modifier Modifier: 아바타의 크기, 외형, 배치를 조정하는 Modifier입니다.
  * @param onClick (() -> Unit)?: 아바타 클릭 시 호출될 콜백 함수입니다.
  *
  * @see WantedAvatarType
@@ -67,6 +68,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedAvatar(
     type: WantedAvatarType,
+    modifier: Modifier = Modifier,
     size: WantedAvatarSize = WantedAvatarSize.Small,
     model: Any? = null,
     @DrawableRes placeHolder: Int? = null,
@@ -75,7 +77,6 @@ fun WantedAvatar(
     isGroup: Boolean = false,
     pushBadge: Boolean = false,
     borderColor: Color = colorResource(id = R.color.background_normal_normal),
-    modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     when (type) {

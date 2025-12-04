@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChip
-import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipSize
-import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChipContract.ActionChipVariant
+import com.wanted.android.wanted.design.actions.chip.WantedChip
+import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
+import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -42,9 +42,9 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 /**
  * WantedCategory
  *
- * 선택 가능한 액션칩 목록을 표시하는 카테고리 컴포넌트입니다.
+ * 선택 가능한 Chip 목록을 표시하는 컴포넌트입니다.
  *
- * 문자열 리스트를 기반으로 액션칩을 구성하며, 선택 상태를 관리할 수 있습니다.
+ * 문자열 리스트를 기반으로 Chip을 구성하며, 선택 상태를 관리할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -101,22 +101,22 @@ fun WantedCategory(
         rightIcon = rightIcon,
         content = {
             itemsIndexed(itemList) { index, item ->
-                WantedActionChip(
+                WantedChip(
                     text = item,
                     variant = if (selectedList.contains(item)) {
                         if (isAlternative) {
-                            ActionChipVariant.Outlined
+                            ChipVariant.Outlined
                         } else {
-                            ActionChipVariant.Solid
+                            ChipVariant.Solid
                         }
                     } else {
-                        ActionChipVariant.Outlined
+                        ChipVariant.Outlined
                     },
                     size = when (size) {
-                        Size.Small -> ActionChipSize.XSmall
-                        Size.Medium -> ActionChipSize.Small
-                        Size.Large -> ActionChipSize.Medium
-                        Size.XLarge -> ActionChipSize.Large
+                        Size.Small -> ChipSize.XSmall
+                        Size.Medium -> ChipSize.Small
+                        Size.Large -> ChipSize.Medium
+                        Size.XLarge -> ChipSize.Large
                     },
                     isActive = selectedList.contains(item),
                     isEnable = !disableItemList.contains(item),
@@ -132,7 +132,7 @@ fun WantedCategory(
 /**
  * WantedCategory
  *
- * 사용자 정의 콘텐츠로 구성할 수 있는 카테고리 컴포넌트입니다.
+ * 사용자 정의 콘텐츠로 구성할 수 있는 Category 컴포넌트입니다.
  *
  * LazyListScope를 통해 항목을 직접 구성할 수 있으며, 그라디언트 효과와 우측 아이콘을 지원합니다.
  *
@@ -320,14 +320,14 @@ private fun WantedCategoryPreview() {
                     size = Size.Medium,
                     content = {
                         itemsIndexed(itemList) { index, item ->
-                            WantedActionChip(
+                            WantedChip(
                                 text = item,
                                 variant = if (index == 0) {
-                                    ActionChipVariant.Solid
+                                    ChipVariant.Solid
                                 } else {
-                                    ActionChipVariant.Outlined
+                                    ChipVariant.Outlined
                                 },
-                                size = ActionChipSize.Small,
+                                size = ChipSize.Small,
                                 isActive = index == 0
                             )
                         }

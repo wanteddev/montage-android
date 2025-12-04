@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
 /**
  * object WantedListCellDefaults
  *
- * WantedListCell 컴포넌트에 사용되는 세로 패딩 및 인터랙션 패딩 관련 설정을 정의하는 객체입니다.
+ * WantedListCell 컴포넌트에 사용되는 수직 패딩 및 인터랙션 패딩 관련 설정을 정의하는 객체입니다.
  */
 object WantedListCellDefaults {
 
@@ -34,7 +34,7 @@ object WantedListCellDefaults {
     /**
      * sealed class InteractionPadding
      *
-     * 셀 내부의 상호작용 요소(예: 클릭 영역)에 적용되는 패딩 값을 정의하는 sealed 클래스입니다.
+     * Cell 내부의 상호작용 요소(e.g. 클릭 영역)에 적용되는 패딩 값을 정의합는 sealed 클래스입니다.
      *
      * - Default: fillWidth 옵션에 따라 12dp 또는 20dp를 적용합니다.
      * - Custom: 개발자가 직접 패딩 값을 지정할 수 있습니다.

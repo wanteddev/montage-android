@@ -25,10 +25,12 @@ import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
- * 원형 배경 없이 단순한 아이콘만을 표시하는 기본 아이콘 버튼입니다.
+ * WantedIconButtonNormal
  *
- * 필요 시 우측 상단에 PushBadge 컴포저블을 함께 표시할 수 있으며,
- * 터치 영역은 `WantedTouchArea`를 통해 넉넉하게 설정되어 있습니다.
+ * 배경을 제외하고 아이콘만을 표시하는 기본 아이콘 버튼입니다.
+ *
+ * 필요 시 우측 상단에 PushBadge 컴포넌트을 함께 표시할 수 있으며,
+ * 터치 영역은 `WantedTouchArea`를 통해 보장되어 있습니다.
  *
  * 사용 예시 :
  * ```kotlin
@@ -46,7 +48,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param modifier Modifier: 버튼 외형 및 배치를 제어하는 Modifier입니다.
  * @param enabled Boolean: 버튼의 활성화 여부입니다. false일 경우 비활성 색상으로 표시됩니다.
  * @param tint Color: 아이콘의 색상입니다. 기본값은 label_normal입니다.
- * @param pushBadge (@Composable () -> Unit)?: 우측 상단에 표시될 PushBadge 등 컴포저블입니다.
+ * @param pushBadge (@Composable () -> Unit)?: 우측 상단에 표시될 PushBadge 등 컴포넌트입니다.
  * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
  */
 @Composable

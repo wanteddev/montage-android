@@ -26,10 +26,12 @@ import com.wanted.android.wanted.design.util.OPACITY_28
 import com.wanted.android.wanted.design.util.OPACITY_61
 
 /**
- * 재생(Play) 아이콘을 원형 배지로 감싸서 표시하는 컴포저블입니다.
+ * WantedPlayBadge
  *
- * 회색 계열 배경과 흰색 플레이 아이콘으로 구성되며, 크기 및 대체 색상 사용 여부를 설정할 수 있습니다.
- * `Size`에 따라 배지와 아이콘의 크기가 달라집니다.
+ * 재생 아이콘을 시각적으로 구분할 수 있도록 표시하는 컴포넌트입니다.
+ *
+ * 배경과 아이콘으로 구성되며, 크기 및 대체 색상 사용 여부를 설정할 수 있습니다.
+ * Size에 따라 전체 크기와 아이콘 크기가 달라집니다.
  *
  * 사용 예시:
  * ```kotlin

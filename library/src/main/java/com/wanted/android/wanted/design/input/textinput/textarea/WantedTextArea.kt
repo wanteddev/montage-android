@@ -42,7 +42,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
-import com.wanted.android.wanted.design.actions.chip.actionchip.WantedActionChip
+import com.wanted.android.wanted.design.actions.chip.WantedChip
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.textinput.view.ComponentTitle
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaCharacterCount
@@ -57,10 +57,12 @@ import java.text.BreakIterator
 
 
 /**
- * 텍스트 영역 입력 필드 컴포저블입니다. (String 기반)
+ * WantedTextArea
  *
- * 여러 줄의 텍스트 입력이 필요한 경우 사용되며, 버튼, 아이콘, 타이틀, 설명 등을 유연하게 조합할 수 있습니다.
- * 내부적으로 `TextFieldValue`를 상태로 관리하며 `onValueChange`를 통해 외부에 값을 전달합니다.
+ * 여러 줄의 텍스트 입력이 필요한 경우 사용하는 입력 컴포넌트입니다.
+ *
+ * 버튼, 아이콘, 타이틀, 설명 등을 유연하게 조합할 수 있습니다.
+ * 내부적으로 TextFieldValue를 상태로 관리하며 onValueChange를 통해 외부에 값을 전달합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -233,9 +235,11 @@ fun WantedTextArea(
 }
 
 /**
- * 텍스트 영역 입력 필드 컴포저블입니다. (TextFieldValue 기반)
+ * WantedTextArea
  *
- * 커서, 선택 영역 등 복잡한 상태를 다룰 수 있는 `TextFieldValue`를 사용합니다.
+ * 텍스트 입력 컴포넌트입니다.
+ *
+ * 커서, 선택 영역 등 복잡한 상태를 다룰 수 있는 TextFieldValue를 사용합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -719,7 +723,7 @@ private fun WantedTextAreaPreview() {
                     placeholder = "텍스트를 입력해 주세요.",
                     minLines = 4,
                     trailingContent = {
-                        WantedActionChip(text = "WantedActionChip")
+                        WantedChip(text = "WantedActionChip")
                     }
                 )
 
@@ -727,7 +731,7 @@ private fun WantedTextAreaPreview() {
                     text = "입력한 텍스트",
                     placeholder = "텍스트를 입력해 주세요.",
                     leadingContent = {
-                        WantedActionChip(text = "WantedActionChip")
+                        WantedChip(text = "WantedActionChip")
                     }
                 )
             }

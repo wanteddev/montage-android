@@ -34,10 +34,12 @@ import com.wanted.android.wanted.design.util.OPACITY_61
 import com.wanted.android.wanted.design.util.OPACITY_88
 
 /**
- * 아이콘에 배경 원형 효과와 터치 영역을 추가한 아이콘 버튼입니다.
+ * WantedIconButton
  *
- * 활성/비활성 상태, 대체 배경 여부, 아이콘 색상 등 시각적 스타일을 지정할 수 있으며,
- * 터치 영역이 확대되어 사용자 편의성을 높입니다.
+ * 아이콘을 버튼 요소로 사용하기 위해 확대된 터치 영역을 제공합니다.
+ *
+ * 활성/비활성 상태, 배경 스타일, 아이콘 색상 등 다양한 시각적 스타일을 지정할 수 있으며,
+ * 넓은 터치 영역을 통해 사용자 편의성을 높입니다.
  *
  * 사용 예시:
  * ```kotlin

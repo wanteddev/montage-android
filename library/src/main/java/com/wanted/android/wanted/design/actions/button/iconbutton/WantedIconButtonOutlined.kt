@@ -25,6 +25,8 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
 
 /**
+ * WantedIconButtonOutlined
+ *
  * WantedIconButtonSize를 기반으로 하는 Outlined 스타일의 아이콘 버튼입니다.
  *
  * 아이콘의 크기와 패딩을 enum으로 간편하게 설정할 수 있으며, 외곽선과 배경, 텍스트 색상 등을 상태별로 지정할 수 있습니다.
@@ -81,9 +83,11 @@ fun WantedIconButtonOutlined(
 
 
 /**
+ * WantedIconButtonOutlined
+ *
  * 패딩을 수동으로 지정할 수 있는 Outlined 아이콘 버튼입니다.
  *
- * 이 함수는 size 대신 Modifier 크기 및 padding을 직접 지정하여 좀 더 유연한 스타일링이 가능합니다.
+ * 이 함수는 Size 대신 Modifier 크기 및 패딩을 직접 지정하여 더 유연한 스타일링이 가능합니다.
  *
  * 사용 예시:
  * ```kotlin

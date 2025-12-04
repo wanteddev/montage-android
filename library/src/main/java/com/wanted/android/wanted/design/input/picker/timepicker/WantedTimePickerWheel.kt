@@ -33,7 +33,7 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedNumberPicker
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedStringPicker
-import com.wanted.android.wanted.design.presentation.modal.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -41,10 +41,12 @@ import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 시간(AM/PM, 시, 분)을 휠 형태로 선택할 수 있는 다이얼로그입니다.
+ * WantedTimePickerWheel
  *
- * 사용자는 오전/오후(AM/PM), 시(hour), 분(minute)을 각각 휠 컴포넌트를 통해 선택할 수 있습니다.
- * `WantedNumberPicker` 및 `WantedStringPicker`를 활용하여 시각적인 휠 선택 UI를 제공합니다.
+ * 시간(AM/PM, 시, 분)을 Wheel 형태로 선택할 수 있는 Dialog입니다.
+ *
+ * 사용자는 오전/오후(AM/PM), 시(hour), 분(minute)을 각각 Wheel을 통해 선택할 수 있습니다.
+ * WantedNumberPicker 및 WantedStringPicker를 활용하여 선택 UI를 제공합니다.
  * 선택 완료 후 확인 버튼을 누르면 콜백으로 선택 값이 전달되며, 취소 또는 외부 클릭 시 닫힙니다.
  *
  * 사용 예시:
@@ -58,20 +60,20 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *     onSelected = { isAm, hour, minute ->
  *         // 시간 선택 처리
  *     },
- *     onDismissRequest = { /* 다이얼로그 닫기 처리 */ }
+ *     onDismissRequest = { /* Dialog 닫기 처리 */ }
  * )
  * ```
  *
- * @param isAm Boolean 초기 오전/오후 여부입니다. true이면 AM, false이면 PM입니다
- * @param hour Int 초기 선택된 시(hour)입니다
- * @param minute Int 초기 선택된 분(minute)입니다
- * @param confirm String 확인 버튼에 표시할 텍스트입니다
- * @param cancel String 취소 버튼에 표시할 텍스트입니다
- * @param modifier Modifier 외형을 설정하는 Modifier입니다
- * @param title String 다이얼로그 상단에 표시될 제목입니다. 기본값은 빈 문자열입니다
- * @param default WantedTimePickerWheelDefault 시간 선택 휠에 대한 기본 설정 값입니다
- * @param onSelected (Boolean, Int, Int) -> Unit 시간 선택 완료 시 호출되는 콜백입니다. 파라미터는 (isAm, hour, minute) 순입니다
- * @param onDismissRequest () -> Unit 다이얼로그 닫기 요청 시 호출되는 콜백입니다
+ * @param isAm Boolean: 초기 오전/오후 여부입니다. true이면 AM, false이면 PM입니다
+ * @param hour Int: 초기 선택된 시(hour)입니다
+ * @param minute Int: 초기 선택된 분(minute)입니다
+ * @param confirm String: 확인 버튼에 표시할 텍스트입니다
+ * @param cancel String: 취소 버튼에 표시할 텍스트입니다
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다
+ * @param title String: Dialog 상단에 표시될 제목입니다. 기본값은 빈 문자열입니다
+ * @param default WantedTimePickerWheelDefault: 시간 선택 휠에 대한 기본 설정 값입니다
+ * @param onSelected (Boolean, Int, Int) -> Unit: 시간 선택 완료 시 호출되는 콜백입니다. 파라미터는 (isAm, hour, minute) 순입니다
+ * @param onDismissRequest () -> Unit: Dialog 닫기 요청 시 호출되는 콜백입니다
  */
 @Composable
 fun WantedTimePickerWheel(

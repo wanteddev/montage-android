@@ -23,7 +23,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 /**
  * WantedTabItem
  *
- * 단일 탭 항목을 구성하는 컴포넌트입니다.
+ * 단일 Tab 항목을 구성하는 컴포넌트입니다.
  *
  * 선택 상태에 따라 텍스트 스타일이 변경되며, 클릭 이벤트를 처리합니다.
  *

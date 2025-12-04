@@ -16,9 +16,9 @@ import com.wanted.android.designsystem.R
 /**
  * WantedCircularProgressIndicator
  *
- * 커스터마이징 가능한 원형 로딩 인디케이터 컴포넌트입니다.
+ * 커스터마이징 가능한 원형 Loading Indicator입니다.
  *
- * 기본 크기는 24dp이며, 선 두께는 전체 크기의 10%로 자동 계산됩니다.
+ * 기본 크기는 24dp이며, 선 굵기는 전체 크기의 10%로 자동 적용됩니다.
  *
  * 사용 예시:
  * ```kotlin

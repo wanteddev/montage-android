@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.input.control.CheckBoxState
+import com.wanted.android.wanted.design.input.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.input.WantedInput
 import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme

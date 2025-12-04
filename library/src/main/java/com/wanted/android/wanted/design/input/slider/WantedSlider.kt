@@ -39,7 +39,7 @@ import kotlin.math.roundToInt
  *
  * 단일 값을 선택할 수 있는 Slider 컴포넌트입니다.
  *
- * 사용자가 슬라이더를 이동하여 하나의 값을 선택할 수 있습니다.
+ * 사용자가 Thumb을 이동하여 하나의 값을 선택할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -55,11 +55,11 @@ import kotlin.math.roundToInt
  * ```
  *
  * @param value Float: 현재 선택된 값입니다.
- * @param valueRange ClosedFloatingPointRange<Float>: 슬라이더가 선택할 수 있는 값의 범위입니다.
+ * @param valueRange ClosedFloatingPointRange<Float>: Slider가 선택할 수 있는 값의 범위입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param header String: 상단에 표시할 헤더 텍스트입니다.
  * @param label String: 하단에 표시할 라벨 텍스트입니다.
- * @param enabled Boolean: 슬라이더 활성화 여부입니다.
+ * @param enabled Boolean: Slider 활성화 여부입니다.
  * @param onValueChange (Float) -> Unit: 값이 변경될 때 호출되는 콜백입니다.
  */
 @Composable
@@ -91,7 +91,7 @@ fun WantedSlider(
  *
  * 범위를 선택할 수 있는 Slider 컴포넌트입니다.
  *
- * 사용자가 슬라이더의 양 끝을 조절하여 최소값과 최대값을 선택할 수 있습니다.
+ * 사용자가 양 끝Thumb을 조절하여 최소값과 최대값을 선택할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -113,7 +113,7 @@ fun WantedSlider(
  * @param header String: 상단에 표시할 헤더 텍스트입니다.
  * @param labelMin String: 최소값 라벨 텍스트입니다.
  * @param labelMax String: 최대값 라벨 텍스트입니다.
- * @param enabled Boolean: 슬라이더 활성화 여부입니다.
+ * @param enabled Boolean: Slider 활성화 여부입니다.
  * @param onValueChange (ClosedFloatingPointRange<Float>) -> Unit: 값이 변경될 때 호출되는 콜백입니다.
  */
 @Composable

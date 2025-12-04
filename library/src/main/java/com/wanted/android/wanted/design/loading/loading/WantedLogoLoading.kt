@@ -15,7 +15,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 /**
  * WantedLogoLoading
  *
- * Wanted 로고 기반의 로딩 애니메이션을 표시하는 컴포넌트입니다.
+ * Wanted 심볼 로딩 애니메이션을 표시하는 컴포넌트입니다.
  *
  * isUseDim이 true인 경우 Dialog 기반으로 dim 처리된 로딩 화면이 표시됩니다.
  *
@@ -59,9 +59,9 @@ private fun WantedLogoLoading(
 /**
  * WantedLogoLoadingDialog
  *
- * Dialog 기반의 Wanted 로고 로딩 컴포넌트입니다.
+ * Dialog 기반의 Wanted 심볼 로딩 컴포넌트입니다.
  *
- * 외부 터치나 백 버튼으로 닫히지 않도록 설정된 Dialog에 로고 애니메이션이 표시됩니다.
+ * 외부 터치나 뒤로가기로 닫히지 않도록 설정된 Dialog에 로고 애니메이션이 표시됩니다.
  *
  * @param onDismissRequest () -> Unit: 다이얼로그 닫기 요청 시 호출되는 콜백입니다.
  * @param properties DialogProperties: Dialog 속성 설정입니다.

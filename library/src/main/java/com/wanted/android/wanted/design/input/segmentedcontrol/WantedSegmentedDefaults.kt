@@ -8,15 +8,17 @@ import com.wanted.android.wanted.design.input.segmentedcontrol.WantedSegmentedDe
 /**
  * object WantedSegmentedDefaults
  *
- * SegmentedControl 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
+ * SegmentedControl 컴포넌트에서 사용하는 설정값을 정의하는 객체입니다.
  */
 object WantedSegmentedDefaults {
 
     /**
      * enum class SegmentedSize
      *
-     * SegmentedControl의 크기를 정의하는 enum 클래스입니다.
-     * Small, Medium, Large 세 가지 크기가 존재합니다.
+     * SegmentedControl 의 크기를 정의하는 enum 클래스입니다.
+     * - Small: 작은 사이즈입니다.
+     * - Medium: 중간 사이즈입니다.
+     * - Large: 큰 사이즈입니다.
      */
     enum class SegmentedSize {
         Small,

@@ -28,17 +28,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgePosition
-import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgeSize
-import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeContract.PushBadgeVariant
+import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgePosition
+import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeSize
+import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * 아이콘이나 UI 요소에 붙여 표시되는 푸시 배지 컴포저블입니다.
+ * WantedPushBadge
  *
- * `Dot`, `Number`, `New` 타입 중 하나를 선택할 수 있으며, 배지 위치, 사이즈, 색상 등을 설정할 수 있습니다.
- * 새로운 알림, 수량 표시, 간단한 포인트 강조 등에 적합합니다.
+ * 아이콘이나 UI 요소에 붙여 표시되는 Push badge 컴포넌트입니다.
+ *
+ * Dot, Number, New 타입 중 하나를 선택할 수 있으며, 위치, 사이즈, 색상 등을 설정할 수 있습니다.
+ * 새로운 알림, 수량 표시, 강조 용도로 사용할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin

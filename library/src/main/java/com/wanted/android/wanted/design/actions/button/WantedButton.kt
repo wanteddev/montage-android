@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
+import com.wanted.android.wanted.design.actions.button.textbutton.WantedTextButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
@@ -34,7 +35,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * @param text String: 버튼에 표시할 텍스트입니다.
  * @param modifier Modifier: Modifier를 통해 버튼 외형을 조정합니다.
- * @param type ButtonType: 버튼의 타입(PRIMARY, SECONDARY, ASSISTIVE)을 지정합니다.
+ * @param type ButtonType: 버튼의 타입(PRIMARY, ASSISTIVE)을 지정합니다.
  * @param size ButtonSize: 버튼의 크기(LARGE, MEDIUM, SMALL)를 지정합니다.
  * @param variant ButtonVariant: 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다.
  * @param enabled Boolean: 버튼의 활성화 여부를 지정합니다.
@@ -102,7 +103,7 @@ fun WantedButton(
                 modifier = modifier,
                 text = text,
                 size = size,
-                type = type,
+                color = type,
                 enabled = enabled,
                 isLoading = isLoading,
                 buttonDefault = WantedButtonDefaults.getDefault(

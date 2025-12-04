@@ -41,8 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.input.control.CheckBoxSize
-import com.wanted.android.wanted.design.input.control.WantedCheckBox
+import com.wanted.android.wanted.design.input.input.control.CheckBoxSize
+import com.wanted.android.wanted.design.input.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.navigations.tab.WantedTabDefaults.TabSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -50,9 +50,9 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 /**
  * WantedScrollableTabRow
  *
- * 스크롤 가능한 탭 레이아웃 컴포넌트입니다.
+ * 스크롤할 수 있는 Tab 레이아웃 컴포넌트입니다
  *
- * 좌우 gradient 효과, 우측 아이콘을 지원하며, 선택된 탭은 하단 인디케이터로 강조됩니다.
+ * 좌우 그라디언트 효과, 우측 아이콘을 지원하며, 선택된 Tab은 하단 Indicator로 강조합니다.
  *
  * 사용 예시:
  * ```kotlin

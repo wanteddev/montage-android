@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 /**
  * data class WantedCardDefault
  *
- * 카드 UI의 스켈레톤 표시 여부를 지정하는 데이터 클래스입니다.
+ * 스켈레톤 표시 여부를 지정하는 데이터 클래스입니다.
  *
- * 각 항목별로 스켈레톤을 표시할지 여부를 설정합니다.
+ * 각 항목별로 스켈레톤 표시 여부를 설정합니다.
  *
  * @param topContentSkeleton Boolean: 상단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
  * @param captionSkeleton Boolean: 메인 캡션에 스켈레톤을 표시할지 여부입니다.
@@ -34,7 +34,7 @@ object WantedCardDefaults {
      *
      * 기본 스켈레톤 설정값을 반환하는 Compose 함수입니다.
      *
-     * 각 항목에 대해 스켈레톤 UI를 표시할지 여부를 설정할 수 있습니다.
+     * 각 항목에 대해 스켈레톤 UI 표시 여부를 설정할 수 있습니다.
      *
      * 사용 예시:
      * ```kotlin
