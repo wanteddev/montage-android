@@ -1,8 +1,9 @@
 /**
-* 사용자, 회사, 학력 등의 다양한 유형의 아바타(Avatar)를 표시하는 컴포저블입니다.
+* WantedAvatar
+* 사용자, 회사, 학력 등 다양한 유형의 아바타를 표시하는 컴포넌트입니다.
 *
-* 이미지, 아이콘, 그룹 아바타, 알림 뱃지(PushBadge) 등 다양한 스타일을 지원합니다.
-* 클릭 이벤트(onClick) 및 플레이스홀더 이미지 설정이 가능합니다.
+* 이미지, 아이콘, 그룹 아바타, 알림 뱃지 등 다양한 스타일을 지원합니다.
+* 클릭 이벤트 및 플레이스 홀더 이미지를 설정할 수 있습니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -19,6 +20,7 @@
 * ```
 *
 * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
+* @param modifier Modifier: 아바타의 크기, 외형, 배치를 조정하는 Modifier입니다.
 * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
 * @param model Any?: 표시할 이미지 모델입니다 (URL 또는 Drawable ID).
 * @param placeHolder Int?: 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다.
@@ -27,7 +29,6 @@
 * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
 * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
 * @param borderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
-* @param modifier Modifier: 아바타의 크기, 외형, 배치를 조정하는 Modifier입니다.
 * @param onClick (() -> Unit)?: 아바타 클릭 시 호출될 콜백 함수입니다.
 *
 * @see WantedAvatarType
@@ -37,7 +38,7 @@
 /**
 * object WantedAvatarDefaults
 *
-* 아바타 컴포넌트에 사용되는 크기와 유형 관련 설정을 정의하는 객체입니다.
+* Avatar에 사용되는 크기와 유형 관련 설정을 정의하는 객체입니다.
 *
 * 다양한 사이즈와 타입을 설정하여 아바타 UI 요소를 유연하게 구성할 수 있도록 지원합니다.
 */
@@ -45,19 +46,9 @@
 /**
 * sealed class WantedAvatarSize
 *
-* 아바타의 크기 및 모서리 반경 정보를 포함하는 sealed 클래스입니다.
+* Avatar의 크기 및 모서리 반경 정보를 포함하는 sealed 클래스입니다.
 *
 * 각 사이즈는 data object로 구체화되어 있으며, 아바타의 가로/세로 크기와 모서리 반경이 함께 정의됩니다.
-*
-* 포함된 사이즈 값:
-* - XSmall: 24dp 크기, 6dp 모서리 반경입니다.
-* - Small: 32dp 크기, 6dp 모서리 반경입니다.
-* - Medium: 40dp 크기, 8dp 모서리 반경입니다.
-* - Large: 48dp 크기, 10dp 모서리 반경입니다.
-* - XLarge: 56dp 크기, 12dp 모서리 반경입니다.
-*
-* @property size Dp: 아바타의 가로/세로 크기입니다.
-* @property cornerRadius Dp: 아바타 모서리의 반경입니다.
 *
 * @see WantedAvatar
 */
@@ -90,12 +81,6 @@
 * data object XLarge
 *
 * 56dp 크기, 12dp 모서리 반경의 가장 큰 아바타 크기입니다.
-*/
-
-/**
-* companion object
-*
-* 정의된 모든 아바타 크기를 포함하는 리스트입니다.
 */
 
 /**

@@ -1,10 +1,10 @@
 /**
-* fun WantedSnackBar(..)
+* WantedSnackBar
 *
-* 앱 전역에서 사용할 수 있는 커스텀 스낵바 호스트입니다.
+* 앱 전역에서 사용할 수 있는 커스텀 Snackbar 호스트입니다.
 *
-* `WantedSnackbarVisuals`를 사용하면 아이콘과 설명이 포함된 커스텀 레이아웃으로 표시되고,
-* 기본 `SnackbarVisuals`를 사용하면 표준 스낵바 형태로 표시됩니다.
+* WantedSnackbarVisuals 사용 시 아이콘과 설명이 포함된 커스텀 레이아웃으로 표시되며,
+* 기본 SnackbarVisuals를 사용 시 표준 형태로 표시됩니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -17,9 +17,32 @@
 */
 
 /**
-* class WantedSnackbarVisuals
+* fun SnackbarHostState.showSnackbar(...)
 *
-* Wanted 전용 스낵바 메시지와 UI 요소를 지정하는 클래스입니다.
+* Wanted 스타일의 Snackbar를 표시하는 확장 함수입니다.
+*
+* WantedSnackbarVisuals를 사용하여 표시하며,
+* 이미 표시 중인 Snackbar가 있다면 자동으로 닫고 새로운 Snackbar를 표시합니다.
+*
+* 사용 예시:
+* ```
+* val snackbarHostState = remember { SnackbarHostState() }
+* val scope = rememberCoroutineScope()
+*
+* snackbarHostState.showSnackbar(
+*     scope = scope,
+*     message = "저장되었습니다."
+* )
+* ```
+*
+* @param scope CoroutineScope 코루틴을 실행할 스코프입니다.
+* @param message String 스낵바에 표시할 메시지입니다.
+*/
+
+/**
+* WantedSnackbarVisuals
+*
+* Wanted 전용 Snackbar 메시지와 UI 요소를 지정하는 클래스입니다.
 *
 * 기본 메시지 외에 부가 설명, 아이콘, 패딩 등을 커스터마이징할 수 있습니다.
 *

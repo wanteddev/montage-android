@@ -1,8 +1,8 @@
 /**
-* 세로형 카드 컴포저블입니다.
+* WantedCard
+* 기본 카드 컴포넌트로, 로딩 상태(isLoading)에 따라 Skeleton 또는 실제 콘텐츠를 렌더링합니다.
 *
-* 로딩 상태(isLoading)에 따라 Skeleton 또는 실제 콘텐츠를 렌더링하며,
-* 썸네일, 오버레이 캡션, 타이틀, 캡션, 서브캡션, 추가 캡션, 상/하단 커스텀 콘텐츠를 지원합니다.
+* 썸네일, 오버레이 캡션, 타이틀, 캡션, 서브 캡션, 추가 캡션, 상/하단 커스텀 콘텐츠를 지원합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -27,17 +27,17 @@
 * @param isLoading Boolean: 로딩 상태 여부입니다. true이면 skeleton UI가 렌더링됩니다.
 * @param cardDefault WantedCardDefault: skeleton 모드에서 사용할 설정값입니다.
 * @param overlayToggleIcon (@Composable () -> Unit)?: 썸네일 오버레이에 포함될 토글 아이콘입니다.
-* @param topContent (@Composable () -> Unit)?: 카드 상단 타이틀 위에 추가 표시할 컴포저블입니다.
-* @param bottomContent (@Composable () -> Unit)?: 카드 하단에 추가 표시할 컴포저블입니다.
+* @param topContent (@Composable () -> Unit)?: 카드 상단 타이틀 위에 추가 표시할 컴포넌트입니다.
+* @param bottomContent (@Composable () -> Unit)?: 카드 하단에 추가 표시할 컴포넌트입니다.
 * @param onClick () -> Unit: 카드 전체 클릭 시 호출되는 콜백입니다.
 */
 
 /**
 * data class WantedCardDefault
 *
-* 카드 UI의 스켈레톤 표시 여부를 지정하는 데이터 클래스입니다.
+* 스켈레톤 표시 여부를 지정하는 데이터 클래스입니다.
 *
-* 각 항목별로 스켈레톤을 표시할지 여부를 설정합니다.
+* 각 항목별로 스켈레톤 표시 여부를 설정합니다.
 *
 * @param topContentSkeleton Boolean: 상단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
 * @param captionSkeleton Boolean: 메인 캡션에 스켈레톤을 표시할지 여부입니다.
@@ -56,7 +56,7 @@
 *
 * 기본 스켈레톤 설정값을 반환하는 Compose 함수입니다.
 *
-* 각 항목에 대해 스켈레톤 UI를 표시할지 여부를 설정할 수 있습니다.
+* 각 항목에 대해 스켈레톤 UI 표시 여부를 설정할 수 있습니다.
 *
 * 사용 예시:
 * ```kotlin

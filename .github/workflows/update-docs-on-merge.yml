@@ -53,16 +53,15 @@ jobs:
           # 변경된 source 파일만 추출
           CHANGED_FILES=$(git status --porcelain | awk '{print $2}' | grep '^library/document/source/' || true)
           
-#          if [ -z "$CHANGED_FILES" ]; then
-#            echo "✅ 변경된 문서 없음. 스킵."
-#            exit 0
-#          fi
-#
-#          echo "🔄 변경된 파일이 있습니다. runKdocScriptAll 실행..."
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "✅ 변경된 문서 없음. 스킵."
+            exit 0
+          fi
+
+          echo "🔄 변경된 파일이 있습니다. runKdocScriptAll 실행..."
           ./gradlew :library:runKdocScriptAll
 
       - name: Commit & Push Design System Docs
-        if: steps.versions.outputs.version_changed == 'true'
         run: |
           git config --local user.name "deploy-bot"
 

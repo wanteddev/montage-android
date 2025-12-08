@@ -1,8 +1,10 @@
 /**
+* WantedSegmentedControl
+*
 * 텍스트 리스트를 기반으로 하는 Segmented Control 컴포넌트입니다.
 *
-* 아이템들을 테두리 형태로 구분하여 선택할 수 있으며, 선택된 항목의 인덱스를 콜백으로 전달합니다.
-* 내부적으로 `WantedSegmentedControlOutlinedItem`을 사용하며, 선택 상태에 따라 스타일이 변경됩니다.
+* 아이템을 구분하여 선택할 수 있으며, 선택된 항목의 인덱스를 콜백으로 전달합니다.
+* 내부적으로 WantedSegmentedControlOutlinedItem을 사용하며, 선택 상태에 따라 스타일이 변경됩니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -20,13 +22,15 @@
 * @param selectedIndex Int: 선택된 항목의 인덱스입니다.
 * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
 * @param size WantedSegmentedDefaults.SegmentedSize: 세그먼트의 크기입니다 (Small, Medium, Large).
-* @param onClick (index: Int) -> Unit: 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다.
+* @param onClick (Int) -> Unit: 항목 클릭 시 선택된 인덱스를 반환하는 콜백입니다.
 */
 
 /**
-* 사용자 정의 슬롯 방식으로 구성할 수 있는 Segmented Control 컴포저블입니다.
+* WantedSegmentedControl
 *
-* 항목 수와 개별 항목 Composable을 입력받아 세그먼트를 구성하며,
+* 사용자 정의 Slot 방식으로 구성할 수 있는 Segmented Control 컴포넌트입니다.
+*
+* 항목 수와 개별 항목을 입력받아 세그먼트를 구성하며,
 * 클릭 시 콜백을 통해 선택된 인덱스를 반환합니다.
 *
 * 사용 예시:
@@ -44,10 +48,10 @@
 * ```
 *
 * @param itemCount Int: 표시할 항목의 수입니다.
-* @param item (index: Int) -> Unit: 각 인덱스에 대응하는 항목 Composable 슬롯입니다.
+* @param item (Int) -> Unit: 각 인덱스에 대응하는 항목 Composable 슬롯입니다.
 * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
 * @param size WantedSegmentedDefaults.SegmentedSize: 세그먼트 크기 설정입니다.
-* @param onClick (index: Int) -> Unit: 항목 클릭 시 호출되는 콜백입니다.
+* @param onClick (Int) -> Unit: 항목 클릭 시 호출되는 콜백입니다.
 */
 
 /**
@@ -113,7 +117,7 @@
 *
 * 사용자 정의 항목으로 구성할 수 있는 Solid 스타일 Segmented Control 컴포넌트입니다.
 *
-* 각 항목을 커스텀 Composable로 구성할 수 있으며, 선택 애니메이션은 Knob 위치 이동으로 표현됩니다.
+* 각 항목을 커스텀 컴포넌트로 구성할 수 있으며, 선택 애니메이션은 Knob 위치 이동으로 표현됩니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -171,12 +175,14 @@
 /**
 * object WantedSegmentedDefaults
 *
-* SegmentedControl 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
+* SegmentedControl 컴포넌트에서 사용하는 설정값을 정의하는 객체입니다.
 */
 
 /**
 * enum class SegmentedSize
 *
-* SegmentedControl의 크기를 정의하는 enum 클래스입니다.
-* Small, Medium, Large 세 가지 크기가 존재합니다.
+* SegmentedControl 의 크기를 정의하는 enum 클래스입니다.
+* - Small: 작은 사이즈입니다.
+* - Medium: 중간 사이즈입니다.
+* - Large: 큰 사이즈입니다.
 */

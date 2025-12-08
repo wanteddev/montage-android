@@ -1,8 +1,10 @@
 /**
-* 숫자 범위를 기준으로 자동 생성된 리스트를 사용하여 숫자를 선택할 수 있는 휠 형태의 NumberPicker입니다.
+* WantedNumberPicker
 *
-* `start`부터 `end`까지 지정한 `step` 간격의 숫자를 리스트로 생성하여 표시하며, 선택한 값은 콜백으로 반환됩니다.
-* 내부적으로 `WantedStringPicker`를 사용하여 시각적인 휠 선택 UI를 제공합니다.
+* 숫자 범위를 기준으로 자동 생성된 리스트를 사용하여 숫자를 선택할 수 있는 Wheel 형태의 NumberPicker입니다.
+*
+* start부터 end까지 지정한 step 간격의 숫자를 리스트로 생성하여 표시하며, 선택한 값은 콜백으로 반환됩니다.
+* 내부적으로 WantedStringPicker를 사용하여 Wheel UI를 제공합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -17,23 +19,25 @@
 * )
 * ```
 *
-* @param start 시작 숫자입니다
-* @param end 종료 숫자입니다
-* @param step 숫자 간격입니다
-* @param modifier 외형을 설정하는 Modifier입니다
-* @param itemList 내부에서 자동 생성된 숫자 리스트입니다
-* @param selectedValue 기본 선택값입니다
-* @param enableMinValue 선택 가능 최소값입니다
-* @param enableMaxValue 선택 가능 최대값입니다
-* @param pagerState 스크롤 상태를 관리하는 Pager 상태입니다
-* @param textStyle 숫자 텍스트의 스타일입니다
-* @param itemSize 각 항목의 높이입니다
-* @param visibleCount 화면에 표시될 항목 수입니다
-* @param userScrollEnabled 사용자의 스크롤 가능 여부입니다
-* @param onSelect 선택 이벤트 콜백입니다
+* @param start Int: 시작 숫자입니다
+* @param end Int: 종료 숫자입니다
+* @param step Int: 숫자 간격입니다
+* @param modifier Modifier: 외형을 설정하는 Modifier입니다
+* @param itemList List<Int>: 내부에서 자동 생성된 숫자 리스트입니다
+* @param selectedValue Int: 기본 선택값입니다
+* @param enableMinValue Int: 선택 가능 최소값입니다
+* @param enableMaxValue Int: 선택 가능 최대값입니다
+* @param pagerState PagerState: 스크롤 상태를 관리하는 Pager 상태입니다
+* @param textStyle TextStyle: 숫자 텍스트의 스타일입니다
+* @param itemSize Dp: 각 항목의 높이입니다
+* @param visibleCount Int: 화면에 표시될 항목 수입니다
+* @param userScrollEnabled Boolean: 사용자의 스크롤 가능 여부입니다
+* @param onSelect (Int, Int, Boolean) -> Unit: 선택 이벤트 콜백입니다
 */
 
 /**
+* WantedNumberPicker
+*
 * 숫자 리스트를 직접 전달하여 사용할 수 있는 NumberPicker 컴포넌트입니다.
 *
 * 전달된 리스트에서 인덱스를 기준으로 선택하며, 선택 상태는 콜백으로 전달됩니다.
@@ -50,14 +54,14 @@
 * )
 * ```
 *
-* @param modifier 외형을 설정하는 Modifier입니다
-* @param itemList 표시할 숫자 리스트입니다
-* @param selectedIndex 선택된 인덱스입니다
-* @param enableStartIndex 선택 가능한 시작 인덱스입니다
-* @param enableEndIndex 선택 가능한 종료 인덱스입니다
-* @param pagerState 스크롤 상태를 관리하는 Pager 상태입니다
-* @param textStyle 숫자 텍스트 스타일입니다
-* @param itemSize 각 항목의 높이입니다
-* @param visibleCount 화면에 표시할 항목 개수입니다
-* @param onSelect 선택 이벤트 콜백입니다
+* @param modifier Modifier: 외형을 설정하는 Modifier입니다
+* @param itemList List<Int>: 표시할 숫자 리스트입니다
+* @param selectedIndex Int: 선택된 인덱스입니다
+* @param enableStartIndex Int: 선택 가능한 시작 인덱스입니다
+* @param enableEndIndex Int: 선택 가능한 종료 인덱스입니다
+* @param pagerState PagerState: 스크롤 상태를 관리하는 Pager 상태입니다
+* @param textStyle TextStyle: 숫자 텍스트 스타일입니다
+* @param itemSize Dp: 각 항목의 높이입니다
+* @param visibleCount Int: 화면에 표시할 항목 개수입니다
+* @param onSelect (Int, Boolean) -> Unit: 선택 이벤트 콜백입니다
 */

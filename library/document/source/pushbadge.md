@@ -39,10 +39,55 @@
 */
 
 /**
-* 아이콘이나 UI 요소에 붙여 표시되는 푸시 배지 컴포저블입니다.
+* object PushBadgeTypes
+* Push badge Type 클래스입니다.
 *
-* `Dot`, `Number`, `New` 타입 중 하나를 선택할 수 있으며, 배지 위치, 사이즈, 색상 등을 설정할 수 있습니다.
-* 새로운 알림, 수량 표시, 간단한 포인트 강조 등에 적합합니다.
+* 이 클래스는 Push badge의 표시 유형, 크기, 위치를 정의하는 열거형 클래스들을 포함합니다.
+*/
+
+/**
+* enum class PushBadgeVariant
+*
+* Push 배지의 표시 유형을 정의합니다.
+*
+* - Dot: 작은 점 형태의 배지를 표시합니다.
+* - Number: 숫자 형태로 개수를 표시합니다.
+* - New: "N" 텍스트를 통해 새로운 항목을 표시합니다.
+*/
+
+/**
+* enum class PushBadgeSize
+*
+* Push 배지의 크기를 정의합니다.
+*
+* - XSmall: 가장 작은 크기로 텍스트가 작게 표시됩니다.
+* - Small: 중간 크기의 배지입니다.
+* - Medium: 가장 큰 배지로 강조 표시 시 적합합니다.
+*/
+
+/**
+* enum class PushBadgePosition
+*
+* Push 배지를 배치할 위치를 정의하는 열거형 클래스입니다.
+*
+* - TopStart: 상단의 좌측 위치입니다.
+* - TopCenter: 상단의 중앙 위치입니다.
+* - TopEnd: 상단의 우측 위치입니다.
+* - MiddleStart: 중앙의 좌측 위치입니다.
+* - MiddleCenter: 중앙의 중앙 위치입니다.
+* - MiddleEnd: 중앙의 우측 위치입니다.
+* - BottomStart: 하단의 좌측 위치입니다.
+* - BottomCenter: 하단의 중앙 위치입니다.
+* - BottomEnd: 하단의 우측 위치입니다.
+*/
+
+/**
+* WantedPushBadge
+*
+* 아이콘이나 UI 요소에 붙여 표시되는 Push badge 컴포넌트입니다.
+*
+* Dot, Number, New 타입 중 하나를 선택할 수 있으며, 위치, 사이즈, 색상 등을 설정할 수 있습니다.
+* 새로운 알림, 수량 표시, 강조 용도로 사용할 수 있습니다.
 *
 * 사용 예시:
 * ```kotlin
