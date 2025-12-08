@@ -1,8 +1,11 @@
 /**
-* 텍스트 입력을 위한 커스텀 TextField 컴포저블입니다. (String 기반)
+* WantedTextField
 *
-* `TextFieldValue`가 아닌 문자열 기반으로 값을 주고받는 방식입니다.
+* 텍스트 입력을 위한 커스텀 Text field 컴포넌트입니다.
+*
+* TextFieldValue가 아닌 문자열 기반으로 값을 주고받는 방식입니다.
 * 에러, 완료 상태, 우측 버튼, 아이콘, 설명, 포커스 등을 커스터마이징할 수 있습니다.
+*
 *
 * 사용 예시:
 * ```kotlin
@@ -40,9 +43,11 @@
 */
 
 /**
-* 텍스트 입력을 위한 커스텀 TextField 컴포저블입니다. (TextFieldValue 기반)
+* WantedTextField
 *
-* 커서 위치 및 선택 영역 처리를 위해 `TextFieldValue` 객체를 사용합니다.
+* Text field 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
+*
+* 커서 위치 및 선택 영역 처리를 위해 TextFieldValue 객체를 사용합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -88,12 +93,15 @@
 * enum class Status
 *
 * TextField의 상태를 정의하는 enum 클래스입니다.
-* Normal, Positive, Negative 세 가지 상태가 존재합니다.
+* - Normal: 일반 상태입니다.
+* - Positive: 긍정 상태입니다.
+* - Negative: 부정 상태입니다.
 */
 
 /**
 * enum class RightVariant
 *
 * TextField 우측 버튼의 스타일을 정의하는 enum 클래스입니다.
-* Normal, Assistive 두 가지 스타일이 존재합니다.
+* - Normal: 일반 스타일입니다.
+* - Assistive: 보조 스타일입니다.
 */

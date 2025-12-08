@@ -1,49 +1,10 @@
-
-/**
-* SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포저블입니다.
-*
-* `WantedToastVisuals`를 사용하면 variant와 아이콘이 포함된 토스트로 표시되고,
-* 기본 `SnackbarVisuals`를 사용하면 메시지만 표시됩니다.
-*
-* 사용 예시:
-* ```kotlin
-* val snackbarHostState = remember { SnackbarHostState() }
-* WantedToast(snackbarHostState = snackbarHostState)
-* ```
-*
-* @param snackbarHostState SnackbarHostState Snackbar 상태를 관리합니다.
-* @param modifier Modifier 외형을 조정합니다.
-* @param windowInsets WindowInsets 시스템 인셋 대응을 위한 설정입니다.
-  */
-
-/**
-* sealed class WantedToastVariant
-*
-* Toast 메시지의 시각적 스타일을 정의하는 sealed 클래스입니다.
-*
-* 각 타입은 고유의 아이콘 리소스 및 색상 리소스를 포함하고 있으며, 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
-*
-* 제공되는 토스트 스타일은 다음과 같습니다:
-* - Message: 일반 메시지 (아이콘 없음)입니다.
-* - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
-* - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
-* - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
-*
-* @property resourceId Int 표시할 아이콘 리소스의 ID입니다.
-* @property tinColor Int 아이콘에 적용될 색상 리소스의 ID입니다.
-* @property backgroundResourceId Int? 배경 이미지 리소스의 ID입니다.
-* @property backgroundTintColor Int 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
-  */
-
-
-
 /**
 * object WantedGlobalToastManager
 *
-* 앱 전역에서 토스트를 관리하는 싱글톤 매니저입니다.
+* 앱 전역에서 Toast를 관리하는 싱글톤 매니저입니다.
 *
-* Activity 생명주기를 추적하여 현재 활성화된 화면에 토스트를 표시하며,
-* 키보드 및 네비게이션 바 높이에 맞춰 자동으로 패딩을 조정합니다.
+* Activity 생명주기를 추적하여 현재 활성화된 화면에 Toast를 표시하며,
+* 키보드 및 Navigation bar 높이에 맞춰 자동으로 패딩을 조정합니다.
 *
 * 사용 예시:
 * ```
@@ -61,7 +22,7 @@
 /**
 * fun initialize(...)
 *
-* 토스트 매니저를 초기화합니다.
+* Toast 매니저를 초기화합니다.
 *
 * Application 생명주기에 콜백을 등록하여 Activity 상태를 추적합니다.
 * 반드시 Application 클래스에서 한 번만 호출해야 합니다.
@@ -72,27 +33,26 @@
 /**
 *  fun showToast(...)
 *
-* 커스텀 컴포저블 콘텐츠로 토스트를 표시합니다.
+* 커스텀 컴포넌트 콘텐츠로 Toast를 표시합니다.
 *
-* 이전에 표시 중이던 토스트는 자동으로 취소되며, 지정된 시간 후에 자동으로 사라집니다.
+* 이전에 표시 중이던 Toast는 자동으로 취소되며, 지정된 시간 후에 자동으로 사라집니다.
 *
-* @param duration ToastDuration 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
-* @param content (@Composable () -> Unit) 표시할 컴포저블 콘텐츠입니다.
+* @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
+* @param content (@Composable () -> Unit): 표시할 컴포넌트 콘텐츠입니다.
 */
 
 /**
 * fun showToast(...)
 *
-* 텍스트와 스타일을 지정하여 토스트를 표시합니다.
+* 텍스트와 스타일을 지정하여 Toast를 표시합니다.
 *
-* WantedToastImpl을 사용하여 표준 형태의 토스트를 표시합니다.
-* variant를 통해 메시지 타입(긍정, 주의, 부정 등)을 지정할 수 있습니다.
+* Variant를 통해 메시지 타입(긍정, 주의, 부정 등)을 지정할 수 있습니다.
 *
-* @param text String 토스트에 표시할 메시지입니다.
-* @param duration ToastDuration 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
-* @param padding PaddingValues 토스트에 적용할 패딩입니다. 기본값은 하단 20dp입니다.
-* @param variant WantedToastVariant 토스트 스타일입니다. 기본값은 Message입니다.
-* @param icon (@Composable () -> Unit)? 사용자 정의 아이콘입니다.
+* @param text String: 토스트에 표시할 메시지입니다.
+* @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
+* @param padding PaddingValues: 토스트에 적용할 패딩입니다. 기본값은 하단 20dp입니다.
+* @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+* @param icon (@Composable () -> Unit)?: 사용자 정의 아이콘입니다.
 */
 
 /**
@@ -100,15 +60,73 @@
 *
 * 토스트가 화면에 표시될 시간을 정의합니다.
 *
-* @property mills Long 토스트 표시 시간(밀리초)입니다.
+* - Short: 짧은 시간 (3초)입니다.
+* - Long: 긴 시간 (10초)입니다.
 */
 
 /**
-* 짧은 시간 (3초)입니다.
+* WantedToast
+*
+* SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포넌트입니다.
+*
+* WantedToastVisuals 를 사용하면 Variant와 아이콘이 포함된 Toast로 표시되고
+* 기본 SnackbarVisuals 를 를 사용하면 메시지만 표시됩니다.
+*
+* 사용 예시:
+* ```kotlin
+* val snackbarHostState = remember { SnackbarHostState() }
+* WantedToast(snackbarHostState = snackbarHostState)
+* ```
+*
+* @param snackbarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
+* @param modifier Modifier: 외형을 조정합니다.
+* @param windowInsets WindowInsets: 시스템 인셋 대응을 위한 설정입니다.
 */
 
 /**
-* 긴 시간 (10초)입니다.
+* fun SnackbarHostState.showToast(...)
+*
+* Wanted 스타일의 Toast를 표시하는 확장 함수입니다.
+*
+* WantedToastVisuals를 사용하여 표시하며,
+* Variant를 통해 메시지 타입(긍정, 주의, 부정 등)을 지정할 수 있습니다.
+* 이미 표시 중인 Toast가 있다면 자동으로 닫고 새로운 Toast를 표시합니다.
+*
+* 사용 예시:
+* ```
+* val snackbarHostState = remember { SnackbarHostState() }
+* val scope = rememberCoroutineScope()
+*
+* snackbarHostState.showToast(
+*     scope = scope,
+*     message = "저장되었습니다.",
+*     variant = WantedToastVariant.Positive
+* )
+* ```
+*
+* @param scope CoroutineScope: 코루틴을 실행할 스코프입니다.
+* @param message String: 토스트에 표시할 메시지입니다.
+* @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+*/
+
+/**
+* sealed class WantedToastVariant
+*
+* Toast 메시지의 시각적 스타일을 정의하는 sealed 클래스입니다.
+*
+* 각 타입은 고유의 아이콘 리소스 및 색상 리소스를 포함하고 있으며,
+* 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
+*
+* 제공되는 Toast 스타일은 다음과 같습니다:
+* - Message: 일반 메시지 (아이콘 없음)입니다.
+* - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
+* - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
+* - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
+*
+* @property resourceId Int: 표시할 아이콘 리소스의 ID입니다.
+* @property tinColor Int: 아이콘에 적용될 색상 리소스의 ID입니다.
+* @property backgroundResourceId Int?: 배경 이미지 리소스의 ID입니다.
+* @property backgroundTintColor Int: 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
 */
 
 /**
@@ -145,10 +163,10 @@
 *
 * 메시지, 아이콘, variant 설정 등을 포함하며 SnackbarVisuals를 확장합니다.
 *
-* @param message String 토스트에 표시할 메시지입니다.
-* @param actionLabel String 액션 버튼에 표시할 텍스트입니다.
-* @param duration SnackbarDuration 토스트 노출 시간입니다.
-* @param withDismissAction Boolean 닫기 액션 여부입니다.
-* @param variant WantedToastVariant 메시지 타입을 나타내는 스타일 variant입니다.
-* @param icon (@Composable () -> Unit)? 사용자 정의 아이콘 슬롯입니다.
+* @param message String: 토스트에 표시할 메시지입니다.
+* @param actionLabel String: 액션 버튼에 표시할 텍스트입니다.
+* @param duration SnackbarDuration: 토스트 노출 시간입니다.
+* @param withDismissAction Boolean: 닫기 액션 여부입니다.
+* @param variant WantedToastVariant: 메시지 타입을 나타내는 스타일 variant입니다.
+* @param icon (@Composable () -> Unit)?: 사용자 정의 아이콘 슬롯입니다.
 */

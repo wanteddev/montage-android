@@ -1,10 +1,9 @@
 /**
-* WantedProgressTrackerHorizontal
+* WantedProgressTracker
 *
 * 수평형 단계 진행 표시 컴포넌트입니다.
 *
 * 전체 단계 수와 현재 진행 단계를 기준으로 진행 바와 단계 라벨을 표시합니다.
-* 각 단계는 완료/진행 중/예정 상태로 구분되어 표시됩니다.
 *
 * 사용 예시:
 * ```kotlin

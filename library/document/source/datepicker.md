@@ -1,4 +1,6 @@
 /**
+* WantedDatePicker
+*
 * 날짜를 선택할 수 있는 DatePicker 다이얼로그를 제공합니다.
 *
 * 사용자는 날짜를 선택하고 확인 또는 취소할 수 있으며, 선택된 날짜는 콜백을 통해 전달됩니다.
@@ -18,15 +20,17 @@
 * )
 * ```
 *
-* @param confirm String 확인 버튼에 표시할 텍스트입니다.
-* @param cancel String 취소 버튼에 표시할 텍스트입니다.
-* @param datePickerState DatePickerState 선택된 날짜 및 UI 상태를 관리하는 상태 객체입니다. 기본값은 `rememberDatePickerState()`입니다.
-* @param dateFormatter DatePickerFormatter 날짜 포맷터로, 선택된 날짜의 포맷을 지정합니다. 기본값은 `DatePickerDefaults.dateFormatter()`입니다.
-* @param onDateSelected (Long?) -> Unit 날짜 선택 완료 시 호출되는 콜백입니다. 선택된 날짜의 Unix 타임스탬프(Long) 또는 null이 전달됩니다.
-* @param onDismiss () -> Unit 다이얼로그가 닫힐 때 호출되는 콜백입니다.
+* @param confirm String: 확인 버튼에 표시할 텍스트입니다.
+* @param cancel String: 취소 버튼에 표시할 텍스트입니다.
+* @param datePickerState DatePickerState: 선택된 날짜 및 UI 상태를 관리하는 상태 객체입니다. 기본값은 `rememberDatePickerState()`입니다.
+* @param dateFormatter DatePickerFormatter :날짜 포맷터로, 선택된 날짜의 포맷을 지정합니다. 기본값은 `DatePickerDefaults.dateFormatter()`입니다.
+* @param onDateSelected (Long?) -> Unit: 날짜 선택 완료 시 호출되는 콜백입니다. 선택된 날짜의 Unix 타임스탬프(Long) 또는 null이 전달됩니다.
+* @param onDismiss () -> Unit: 다이얼로그가 닫힐 때 호출되는 콜백입니다.
 */
 
 /**
+* WantedDatePickerWheel
+*
 * 연도 및 월을 선택할 수 있는 휠 형태의 날짜 선택 모달입니다.
 *
 * 사용자는 연도와 월을 각각 NumberPicker를 통해 선택할 수 있으며, 확인/취소 버튼을 통해 선택 값을 확정하거나 취소할 수 있습니다.
@@ -49,15 +53,15 @@
 * )
 * ```
 *
-* @param title String 다이얼로그 상단에 표시될 제목 텍스트입니다.
-* @param confirm String 확인 버튼 텍스트입니다.
-* @param cancel String 취소 버튼 텍스트입니다.
-* @param selectedYear Int 초기 선택된 연도입니다.
-* @param selectedMonth Int 초기 선택된 월입니다.
-* @param modifier Modifier 외형을 설정하는 Modifier입니다.
-* @param default WantedDatePickerWheelDefault 날짜 휠 설정을 지정하는 기본값 객체입니다.
-* @param onSelect (year: Int, month: Int) -> Unit 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다.
-* @param onDismissRequest () -> Unit 다이얼로그가 닫힐 때 호출되는 콜백입니다.
+* @param title String: 다이얼로그 상단에 표시될 제목 텍스트입니다.
+* @param confirm String: 확인 버튼 텍스트입니다.
+* @param cancel String: 취소 버튼 텍스트입니다.
+* @param selectedYear Int: 초기 선택된 연도입니다.
+* @param selectedMonth Int: 초기 선택된 월입니다.
+* @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+* @param default WantedDatePickerWheelDefault: 날짜 휠 설정을 지정하는 기본값 객체입니다.
+* @param onSelect (Int, Int) -> Unit: 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다.
+* @param onDismissRequest () -> Unit: 다이얼로그가 닫힐 때 호출되는 콜백입니다.
 */
 
 /**
@@ -67,13 +71,13 @@
 *
 * 연도와 월 범위, 사용 가능한 최소/최대 값, 비활성 날짜 표시 여부를 지정할 수 있습니다.
 *
-* @param startYear Int 휠에 표시할 시작 연도입니다.
-* @param endYear Int 휠에 표시할 종료 연도입니다.
-* @param enableMinYear Int 선택 가능한 최소 연도입니다.
-* @param enableMaxYear Int 선택 가능한 최대 연도입니다.
-* @param enableMinMonth Int 선택 가능한 최소 월입니다.
-* @param enableMaxMonth Int 선택 가능한 최대 월입니다.
-* @param isHideDisableDate Boolean 비활성 날짜를 숨길지 여부입니다.
+* @param startYear Int: 휠에 표시할 시작 연도입니다.
+* @param endYear Int: 휠에 표시할 종료 연도입니다.
+* @param enableMinYear Int: 선택 가능한 최소 연도입니다.
+* @param enableMaxYear Int: 선택 가능한 최대 연도입니다.
+* @param enableMinMonth Int: 선택 가능한 최소 월입니다.
+* @param enableMaxMonth Int: 선택 가능한 최대 월입니다.
+* @param isHideDisableDate Boolean: 비활성 날짜를 숨길지 여부입니다.
 */
 
 /**
@@ -105,12 +109,12 @@
 * )
 * ```
 *
-* @param startYear Int 휠 선택기에서 표시할 시작 연도입니다. 기본값은 1900입니다.
-* @param endYear Int 휠 선택기에서 표시할 종료 연도입니다. 기본값은 2100입니다. `startYear`보다 작으면 자동으로 `startYear`로 보정됩니다.
-* @param enableMinYear Int 선택 가능한 최소 연도입니다. 기본값은 1900입니다.
-* @param enableMaxYear Int 선택 가능한 최대 연도입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다.
-* @param enableMinMonth Int 선택 가능한 최소 월입니다. 기본값은 1월입니다.
-* @param enableMaxMonth Int 선택 가능한 최대 월입니다. `enableMinMonth`보다 작으면 자동으로 `enableMinMonth`로 보정됩니다.
-* @param isHideDisableDate Boolean 선택 불가능한 날짜를 숨길지 여부를 설정합니다. 기본값은 false입니다.
-* @return WantedDatePickerWheelDefault 설정된 날짜 선택 휠 기본값 객체입니다.
+* @param startYear Int: 휠 선택기에서 표시할 시작 연도입니다. 기본값은 1900입니다.
+* @param endYear Int: 휠 선택기에서 표시할 종료 연도입니다. 기본값은 2100입니다. `startYear`보다 작으면 자동으로 `startYear`로 보정됩니다.
+* @param enableMinYear Int: 선택 가능한 최소 연도입니다. 기본값은 1900입니다.
+* @param enableMaxYear Int: 선택 가능한 최대 연도입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다.
+* @param enableMinMonth Int: 선택 가능한 최소 월입니다. 기본값은 1월입니다.
+* @param enableMaxMonth Int: 선택 가능한 최대 월입니다. `enableMinMonth`보다 작으면 자동으로 `enableMinMonth`로 보정됩니다.
+* @param isHideDisableDate Boolean: 선택 불가능한 날짜를 숨길지 여부를 설정합니다. 기본값은 false입니다.
+* @return WantedDatePickerWheelDefault: 설정된 날짜 선택 휠 기본값 객체입니다.
 */

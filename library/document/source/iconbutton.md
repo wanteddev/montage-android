@@ -1,8 +1,10 @@
 /**
-* 아이콘에 배경 원형 효과와 터치 영역을 추가한 아이콘 버튼입니다.
+* WantedIconButton
 *
-* 활성/비활성 상태, 대체 배경 여부, 아이콘 색상 등 시각적 스타일을 지정할 수 있으며,
-* 터치 영역이 확대되어 사용자 편의성을 높입니다.
+* 아이콘을 버튼 요소로 사용하기 위해 확대된 터치 영역을 제공합니다.
+*
+* 활성/비활성 상태, 배경 스타일, 아이콘 색상 등 다양한 시각적 스타일을 지정할 수 있으며,
+* 넓은 터치 영역을 통해 사용자 편의성을 높입니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -24,10 +26,12 @@
 */
 
 /**
-* 원형 배경 없이 단순한 아이콘만을 표시하는 기본 아이콘 버튼입니다.
+* WantedIconButtonNormal
 *
-* 필요 시 우측 상단에 PushBadge 컴포저블을 함께 표시할 수 있으며,
-* 터치 영역은 `WantedTouchArea`를 통해 넉넉하게 설정되어 있습니다.
+* 배경을 제외하고 아이콘만을 표시하는 기본 아이콘 버튼입니다.
+*
+* 필요 시 우측 상단에 PushBadge 컴포넌트을 함께 표시할 수 있으며,
+* 터치 영역은 `WantedTouchArea`를 통해 보장되어 있습니다.
 *
 * 사용 예시 :
 * ```kotlin
@@ -45,11 +49,13 @@
 * @param modifier Modifier: 버튼 외형 및 배치를 제어하는 Modifier입니다.
 * @param enabled Boolean: 버튼의 활성화 여부입니다. false일 경우 비활성 색상으로 표시됩니다.
 * @param tint Color: 아이콘의 색상입니다. 기본값은 label_normal입니다.
-* @param pushBadge (@Composable () -> Unit)?: 우측 상단에 표시될 PushBadge 등 컴포저블입니다.
+* @param pushBadge (@Composable () -> Unit)?: 우측 상단에 표시될 PushBadge 등 컴포넌트입니다.
 * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
 */
 
 /**
+* WantedIconButtonOutlined
+*
 * WantedIconButtonSize를 기반으로 하는 Outlined 스타일의 아이콘 버튼입니다.
 *
 * 아이콘의 크기와 패딩을 enum으로 간편하게 설정할 수 있으며, 외곽선과 배경, 텍스트 색상 등을 상태별로 지정할 수 있습니다.
@@ -77,9 +83,11 @@
 */
 
 /**
+* WantedIconButtonOutlined
+*
 * 패딩을 수동으로 지정할 수 있는 Outlined 아이콘 버튼입니다.
 *
-* 이 함수는 size 대신 Modifier 크기 및 padding을 직접 지정하여 좀 더 유연한 스타일링이 가능합니다.
+* 이 함수는 Size 대신 Modifier 크기 및 패딩을 직접 지정하여 더 유연한 스타일링이 가능합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -105,18 +113,17 @@
 */
 
 /**
+* enum class WantedIconButtonSize
+*
 * 아이콘 버튼의 크기 및 내부 패딩을 정의하는 enum 클래스입니다.
 *
-* Medium - 표준 사이즈 (40dp)로, 대부분의 UI에 적합합니다.
-* Small - 소형 사이즈 (32dp)로, 공간이 제한된 영역에 적합합니다.
-*
-* 각 값은 버튼의 전체 크기(size)와 아이콘과 배경 간의 간격을 나타내는 padding을 제공합니다.
-*
-* @param size Dp: 버튼의 전체 크기입니다.
-* @param padding Dp: 아이콘 내부 패딩입니다.
+* - Medium: 표준 사이즈 (40dp)로, 대부분의 UI에 적합합니다.
+* - Small: 소형 사이즈 (32dp)로, 공간이 제한된 영역에 적합합니다.
 */
 
 /**
+* WantedIconButtonSolid
+*
 * WantedIconButtonSize를 사용하여 간편하게 크기와 패딩을 지정할 수 있는 Solid 스타일 아이콘 버튼입니다.
 *
 * 원형 배경과 흰색 아이콘을 기본으로 하며, 배경 및 아이콘 색상은 커스터마이징이 가능합니다.
@@ -140,6 +147,8 @@
 */
 
 /**
+* WantedIconButtonSolid
+*
 * 크기와 패딩을 직접 지정할 수 있는 Solid 스타일 아이콘 버튼입니다.
 *
 * 배경, 아이콘 색상 및 클릭 이벤트를 자유롭게 설정할 수 있습니다.

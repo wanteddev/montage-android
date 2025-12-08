@@ -1,120 +1,203 @@
 ---
-title: action-area
-description: 하단에 위치한 액션 버튼 영역을 생성합니다.
-image: /components/action-area/design/thumbnail.png
-createdAt: 2023-11-01
+title: Chip
+description: 사용자가 선택할 수 있는 Chip 컴포넌트를 생성합니다.
 ---
 
-## WantedActionArea
-하단에 위치한 액션 버튼 영역을 생성합니다. positive, negative, neutral 텍스트를 통해 버튼을 생성하며, 각 클릭 콜백도 함께 전달합니다. variant 영역을 통해 상단에 부가 요소를 렌더링할 수 있습니다.
+## WantedChip
+사용자가 선택할 수 있는 Chip 컴포넌트를 생성합니다.
+텍스트, 아이콘, 크기, 활성화 여부 등의 다양한 설정을 지원합니다.
 
-## 사용 예시
 ```kotlin
-WantedActionArea(
-    type = ActionAreaType.Strong,
-    positive = "확인",
-    onClickPositive = { /* 처리 */ },
-    negative = "취소",
-    onClickNegative = { /* 처리 */ },
-    neutral = "건너뛰기",
-    onClickNeutral = { /* 처리 */ }
+WantedChip(
+    text = "텍스트",
+    leftIcon = R.drawable.ic_sample_icon,
+    rightIcon = R.drawable.ic_sample_icon,
+    onClick = { /* 클릭 처리 */ }
 )
 ```
 
-### 파라미터
+### Parameters
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| type | `ActionAreaType` | 액션 영역의 타입을 설정합니다. |
-| positive | `String` | 메인(긍정) 액션 버튼 텍스트입니다. |
-| onClickPositive | `() -> Unit` | 메인 액션 버튼 클릭 콜백입니다. |
-| negative | `String` | 서브(부정) 액션 버튼 텍스트입니다. |
-| onClickNegative | `() -> Unit` | 서브 액션 버튼 클릭 콜백입니다. |
-| neutral | `String` | 추가(중립) 액션 버튼 텍스트입니다. |
-| onClickNeutral | `() -> Unit` | 추가 액션 버튼 클릭 콜백입니다. |
-| caption | `String?` | 액션 영역 상단에 표시할 캡션입니다. |
-| scrollableState | `ScrollableState?` | 스크롤 가능한 경우 상태를 전달합니다. |
-| modifier | `Modifier` | Modifier를 설정합니다. |
-| background | `Boolean` | 배경 그라데이션 표시 여부를 지정합니다. |
-| safeArea | `Boolean` | SafeArea를 적용할지 여부를 지정합니다. |
-| gradationColor | `Color?` | 배경 그라데이션 색상을 설정합니다. |
-| variant | `@Composable (() -> Unit)?` | 추가적으로 표시할 컴포넌트입니다. |
+| text | String | 표시할 텍스트입니다. |
+| modifier | Modifier | Modifier를 통한 외형 스타일 지정입니다. |
+| size | ChipSize | Chip의 크기를 설정합니다. |
+| variant | ChipVariant | Chip의 스타일 변형입니다 (Solid, Outlined). |
+| isActive | Boolean | 선택 여부 상태입니다. |
+| isEnable | Boolean | 사용 가능 여부입니다. |
+| leftIcon | Int? | 왼쪽에 표시할 아이콘 리소스 ID입니다. |
+| rightIcon | Int? | 오른쪽에 표시할 아이콘 리소스 ID입니다. |
+| interactionSource | MutableInteractionSource | 클릭 시의 상호작용 상태입니다. |
+| onClick | (() -> Unit)? | 클릭 시 실행되는 콜백입니다. |
 
----
+## Overload
+커스텀 스타일을 적용할 수 있는 Chip 컴포넌트를 생성합니다.
+기본 스타일 외에 WantedChipDefault를 통한 직접 설정이 가능합니다.
 
-## WantedActionArea (Slot을 활용한 커스텀 버튼 전달 방식)
-Slot을 활용하여 커스텀 버튼을 직접 전달하는 방식의 액션 영역입니다. 버튼 스타일, 배치 등을 완전히 제어할 수 있습니다.
-
-### 사용 예시
 ```kotlin
-WantedActionArea(
-    type = ActionAreaType.Strong,
-    positive = {
-        CustomMainButton(onClick = { ... })
-    },
-    negative = {
-        CustomSecondaryButton(onClick = { ... })
-    }
+WantedChip(
+    text = "커스텀 텍스트",
+    chipDefault = customChipDefault,
+    onClick = { /* 클릭 처리 */ }
+)
+```
+<details>
+  <summary>Parameters</summary>
+
+
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | text | String | 표시할 텍스트입니다. |
+  | modifier | Modifier | Modifier를 통한 스타��� 지정입니다. |
+  | leftIcon | Int? | 왼쪽 아이콘 리소스 ID입니다. |
+  | rightIcon | Int? | 오른쪽 아이콘 리소스 ID입니다. |
+  | chipDefault | WantedChipDefault | 직접 지정한 Chip 스타일입니다. |
+  | interactionSource | MutableInteractionSource | 클릭 상호작용을 위한 상태 객체입니다. |
+  | onClick | (() -> Unit)? | 클릭 시 실행될 콜백입니다. |
+
+</details>
+<br />
+
+좌우 아이콘과 텍스트 Content를 포함한 Chip Layout을 구성합니다.
+직접 Chip 기본 스타일 및 구성요소를 입력할 수 있습니다.
+
+```kotlin
+WantedChip(
+    content = { Text("Content") },
+    leftIcon = { Icon(...) },
+    rightIcon = { Icon(...) }
+)
+```
+<details>
+  <summary>Parameters</summary>
+
+
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | modifier | Modifier | Modifier를 통한 외형 스타일 지정입니다. |
+  | size | ChipSize | Chip 크기 설정입니다. |
+  | variant | ChipVariant | Chip 스타일 변형입니다. |
+  | isActive | Boolean | 활성화 여부입니다. |
+  | isEnable | Boolean | 사용 가능 여부입니다. |
+  | chipDefault | WantedChipDefault | Chip 스타일 객체입니다. |
+  | interactionSource | MutableInteractionSource | 터치 인터랙션 제어용 객체입니다. |
+  | content | (@Composable () -> Unit) | 텍스트 또는 기타 Composable 콘텐츠입니다. |
+  | leftIcon | (@Composable (() -> Unit)?) | 좌측 아이콘 Composable입니다. |
+  | rightIcon | (@Composable (() -> Unit)?) | 우측 아이콘 Composable입니다. |
+  | onClick | (() -> Unit)? | 클릭 이벤트 콜백입니다. |
+
+</details>
+<br />
+
+open class WantedChipDefault
+Chip 컴포넌트의 기본 스타일을 정의하는 베이스 클래스입니다.
+이 클래스는 다양한 Chip 타입들이 상속하여 사용할 수 있는 공통 속성을 제공합니다.
+활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
+
+<details>
+  <summary>Parameters</summary>
+
+
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | isActive | Boolean | Chip의 활성화(선택) 여부입니다. |
+  | isEnabled | Boolean | Chip의 사용 가능 여부입니다. |
+  | iconColor | Color | 아이콘의 색상입니다. |
+  | backgroundColor | Color | 배경 색상입니다. |
+  | borderColor | Color | 테두리 색상입니다. |
+  | textStyle | TextStyle | 텍스트 스타일입니다. |
+
+</details>
+
+## Advanced
+### WantedChipContract
+Chip에 대한 전반적인 계약(Contract)을 정의하는 객체입니다.
+이 객체는 Chip의 시각적 변형 및 크기에 대한 enum 클래스를 포함합니다.
+
+### WantedChipDefault
+WantedChip의 기본 스타일을 정의하는 데이터 클래스입니다.
+크기, 스타일 변형, 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
+
+```kotlin
+val chipDefault = WantedChipDefault(
+    size = ChipSize.Medium,
+    variant = ChipVariant.Solid,
+    isActive = true,
+    isEnable = true,
+    iconColor = Color.Black,
+    backgroundColor = Color.White,
+    borderColor = Color.Gray,
+    textStyle = TextStyle.Default
 )
 ```
 
-### 파라미터
-| 이름 | 타입 | 설명 |
-|:---|:---|:---|
-| type | `ActionAreaType` | 액션 영역의 타입을 설정합니다. |
-| safeArea | `Boolean` | SafeArea를 적용할지 여부를 지정합니다. |
-| background | `Boolean` | 배경 그라데이션 표시 여부를 지정합니다. |
-| gradationColor | `Color?` | 배경 그라데이션 색상을 설정합니다. |
-| caption | `String?` | 액션 영역 상단에 표시할 캡션입니다. |
-| scrollableState | `ScrollableState?` | 스크롤 가능한 경우 상태를 전달합니다. |
-| modifier | `Modifier` | Modifier를 설정합니다. |
-| positive | `@Composable (() -> Unit)?` | 메인(긍정) 액션 버튼 Slot입니다. |
-| negative | `@Composable (() -> Unit)?` | 서브(부정) 액션 버튼 Slot입니다. |
-| neutral | `@Composable (() -> Unit)?` | 추가(중립) 액션 버튼 Slot입니다. |
-| variant | `@Composable (() -> Unit)?` | 추가적으로 표시할 컴포넌트입니다. |
+<details>
+  <summary>Properties</summary>
 
----
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | size | ChipSize | Chip의 크기를 설정합니다. |
+  | variant | ChipVariant | Chip의 스타일 변형입니다 (Solid, Outlined). |
+  | isActive | Boolean | Chip의 활성화 여부입니다. |
+  | isEnable | Boolean | Chip의 사용 가능 여부입니다. |
+  | iconColor | Color | 아이콘의 색상입니다. |
+  | backgroundColor | Color | 배경 색상입니다. |
+  | borderColor | Color | 테두리 색상입니다. |
+  | textStyle | TextStyle | 텍스트 스타일입니다. |
 
-## Warning
-Deprecated - 더 이상 사용되지 않음. 대신 Slot 방식을 사용하는 WantedActionArea를 사용하세요.
+</details>
+<br />
+### WantedChipDefaults
+WantedChip의 기본 스타일을 제공하는 객체입니다.
 
-## 사용 예시
+### getDefault
+기본 스타일에 맞춰 WantedChipDefault 객체를 생성합니다.
+Compose 환경에 따라 Chip의 스타일을 동적으로 결정합니다.
+
 ```kotlin
-WantedActionArea(
-    positive = "확인",
-    onClickPositive = { ... },
-    actionAreaDefault = WantedActionAreaDefaults.getDefault()
+val chipDefault = WantedChipDefaults.getDefault(
+    size = ChipSize.Medium,
+    variant = ChipVariant.Solid
 )
 ```
 
-### 파라미터
-| 이름 | 타입 | 설명 |
-|:---|:---|:---|
-| positive | `String` | 메인 액션 버튼 텍스트입니다. |
-| onClickPositive | `() -> Unit` | 메인 액션 버튼 클릭 콜백입니다. |
-| negative | `String` | 서브 액션 버튼 텍스트입니다. |
-| onClickNegative | `() -> Unit` | 서브 액션 버튼 클릭 콜백입니다. |
-| neutral | `String` | 추가 액션 버튼 텍스트입니다. |
-| onClickNeutral | `() -> Unit` | 추가 액션 버튼 클릭 콜백입니다. |
-| actionAreaDefault | `WantedActionAreaDefault` | 버튼 스타일 기본값을 설정합니다. |
-| safeArea | `Boolean` | SafeArea를 적용할지 여부를 지정합니다. |
-| background | `Boolean` | 배경 그라데이션 표시 여부를 지정합니다. |
-| gradationColor | `Color?` | 배경 그라데이션 색상을 설정합니다. |
-| scrollableState | `ScrollableState?` | 스크롤 가능한 경우 상태를 전달합니다. |
-| caption | `String?` | 액션 영역 상단에 표시할 캡션입니다. |
-| variant | `@Composable (() -> Unit)?` | 추가적으로 표시할 컴포넌트입니다. |
-| modifier | `Modifier` | Modifier를 설정합니다. |
+<details>
+  <summary>Parameters</summary>
 
----
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | size | ChipSize | Chip의 크기를 설정합니다. |
+  | variant | ChipVariant | Chip의 스타일 변형입니다 (Solid, Outlined). |
+  | isActive | Boolean | 활성화 여부입니다. |
+  | isEnable | Boolean | 사용 가능 여부입니다. |
+  | iconColor | Color | 아이콘의 색상입니다. |
+  | backgroundColor | Color | 배경 색상입니다. |
+  | borderColor | Color | 테두리 색상입니다. |
+  | textStyle | TextStyle | 텍스트 스타일입니다. |
 
-## Enum 설명
-### ActionAreaType
+</details>
+<br />
+<details>
+  <summary>Return</summary>
+
+  | 타입 | 설명 |
+  |:---|:---|
+  | WantedChipDefault | 설정된 WantedChipDefault 객체를 반환합니다. |
+
+</details>
+<br />
+
+## Enum
+### ChipVariant
 | 값 | 설명 |
 |:---|:---|
-| Strong | 강한 강조의 액션 영역 타입 |
-| Neutral | 중립적인 액션 영역 타입 |
-| Cancel | 취소 타입의 액션 영역 |
+| Solid | 배경이 채워진 형태입니다. |
+| Outlined | 테두리만 있는 형태입니다. |
 
----
-
-## Note
-WantedActionAreaDefault는 ActionArea에 필요한 버튼 기본 스타일을 묶어둔 데이터 클래스입니다. 각 버튼의 WantedButtonDefault를 개별 설정할 수 있습니다.
+### ChipSize
+| 값 | 설명 |
+|:---|:---|
+| Large | 큰 사이즈입니다. |
+| Medium | 중간 사이즈입니다. |
+| Small | 작은 사이즈입니다. |
+| XSmall | 가장 작은 사이즈입니다. |
