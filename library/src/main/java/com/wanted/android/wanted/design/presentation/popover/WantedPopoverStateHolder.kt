@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 /**
  * interface WantedSimplePopoverState
  *
- * 팝오버의 표시/숨김 상태를 관리하는 인터페이스입니다.
+ * Popover의 표시/숨김 상태를 관리하는 인터페이스입니다.
  */
 @Stable
 interface WantedSimplePopoverState {
@@ -19,7 +19,6 @@ interface WantedSimplePopoverState {
     val isVisible: Boolean
 }
 
-// 팝오버 상태 데이터 클래스 (internal)
 @Stable
 internal data class WantedPopoverState(
     val isVisible: Boolean = false,
@@ -35,7 +34,6 @@ internal data class WantedPopoverState(
     val overlapBottom: Boolean = false
 )
 
-// 내부용 StateHolder 인터페이스 (internal)
 @Stable
 internal interface WantedPopoverStateHolder {
     val state: WantedPopoverState

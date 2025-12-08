@@ -1,77 +1,89 @@
 ---
-title: dot-indicator
-description: 페이지네이션용 dot indicator를 표시하는 컴포저블입니다.
-image: /components/dot-indicator/design/thumbnail.png
-createdAt: 2023-11-01
+title: Pagination
+description: 페이지네이션을 위한 Dot Indicator 및 Page Counter 컴포넌트
 ---
 
 ## WantedDotIndicator
-페이지네이션용 dot indicator를 표시하는 컴포저블입니다. 현재 페이지 위치를 중심으로 일정 개수의 dot을 보여주며, 선택 상태에 따라 색상, 크기, 애니메이션이 다르게 표시됩니다.
+페이지네이션용 Dot Indicator 컴포넌트입니다.
 
-## 사용 예시
+현재 페이지 위치를 중심으로 일정 개수의 dot을 표시하며, 선택 상태에 따라 크기와 색상이 애니메이션으로 변경됩니다.
+
 ```kotlin
+var currentPage by remember { mutableIntStateOf(0) }
+
 WantedDotIndicator(
     totalPageCount = 10,
     visibleDotCount = 5,
-    currentIndex = 2
+    currentIndex = currentPage
 )
 ```
 
-### 파라미터
+### Parameters
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| totalPageCount | `Int` | 전체 페이지 수입니다. |
-| visibleDotCount | `Int` | 화면에 표시할 최대 dot 수입니다. |
-| currentIndex | `Int` | 현재 선택된 페이지 index입니다. |
-| modifier | `Modifier` | 배치와 외형을 위한 Modifier입니다. |
-| size | `WantedDotIndicatorSize` | dot의 크기를 결정합니다. 기본값은 Medium입니다. |
-| type | `WantedDotIndicatorType` | dot 스타일 타입입니다. 기본값은 Normal입니다. |
-
----
+| totalPageCount | Int | 전체 페이지 수입니다. |
+| visibleDotCount | Int | 화면에 표시할 최대 dot 개수입니다. |
+| currentIndex | Int | 현재 선택된 페이지 인덱스입니다. |
+| modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+| size | WantedDotIndicatorSize | dot의 크기입니다. |
+| type | WantedDotIndicatorType | dot의 스타일 타입입니다. |
 
 ## WantedPageCounter
-현재 페이지와 전체 페이지 수를 함께 표시하는 페이지 카운터 컴포저블입니다. `2 / 10` 형식으로 페이지 정보를 출력하며, 일반형과 alternative 스타일(투명 배경) 중 선택할 수 있습니다.
+현재 페이지와 전체 페이지 수를 표시하는 페이지 카운터 컴포넌트입니다.
 
-## 사용 예시
+"2 / 10" 형식으로 페이지 정보를 표시하며, 일반형과 alternative 스타일을 선택할 수 있습니다.
+
 ```kotlin
+var currentPage by remember { mutableIntStateOf(1) }
+
 WantedPageCounter(
     totalPageCount = 10,
-    currentIndex = 2,
+    currentIndex = currentPage,
     isAlternative = true
 )
 ```
 
-### 파라미터
+### Parameters
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| totalPageCount | `Int` | 전체 페이지 수입니다. |
-| currentIndex | `Int` | 현재 페이지 인덱스입니다. |
-| modifier | `Modifier` | 배치 및 외형 설정을 위한 Modifier입니다. |
-| size | `WantedPageCounterSize` | 크기 설정입니다 (Small 또는 Normal). |
-| isAlternative | `Boolean` | alternative 배경 스타일 적용 여부입니다. |
+| totalPageCount | Int | 전체 페이지 수입니다. |
+| currentIndex | Int | 현재 페이지 인덱스입니다. |
+| modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+| size | WantedPageCounterSize | 컴포넌트의 크기입니다. |
+| isAlternative | Boolean | alternative 배경 스타일 적용 여부입니다. |
 
----
+## Object
+### WantedPaginationDefaults
+페이지네이션 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
 
-## Enum 설명
+## Enum
 ### WantedDotIndicatorSize
+Dot Indicator의 크기를 정의하는 enum 클래스입니다.
+
 | 값 | 설명 |
 |:---|:---|
-| Small | 2~6dp 범위의 작은 크기 |
-| Medium | 6~10dp 범위의 중간 크기 |
+| Small | 작은 크기의 dot입니다. |
+| Medium | 중간 크기의 dot입니다. |
 
 ### WantedDotIndicatorType
+Dot Indicator의 스타일을 정의하는 enum 클래스입니다.
+
 | 값 | 설명 |
 |:---|:---|
-| Normal | 배경이 채워진 원형 스타일 |
-| White | 흰색 테두리와 반투명 배경 스타일 |
+| Normal | 일반 스타일의 dot입니다. |
+| White | 흰색 스타일의 dot입니다. |
 
 ### WantedPageCounterSize
+페이지 카운터의 크기를 정의하는 enum 클래스입니다.
+
 | 값 | 설명 |
 |:---|:---|
-| Small | 좌우 10dp, 상하 4dp, 간격 3dp |
-| Normal | 좌우 12dp, 상하 6dp, 간격 4dp |
+| Small | 작은 크기의 페이지 카운터입니다. |
+| Normal | 일반 크기의 페이지 카운터입니다. |
 
----
-
-## Note
-object WantedPaginationContract는 페이지네이션 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다. Dot indicator, Page counter와 관련된 시각적 스타일과 크기를 제어할 수 있는 enum 클래스를 포함합니다.
+#### Properties
+| 이름 | 타입 | 설명 |
+|:---|:---|:---|
+| paddingHorizontal | Dp | 좌우 패딩 값입니다. |
+| paddingVertical | Dp | 상하 패딩 값입니다. |
+| space | Dp | 항목 간 간격입니다. |

@@ -3,9 +3,9 @@ package com.wanted.android.wanted.design.input.input
 /**
  * object WantedInputDefaults
  *
- * WantedInput 컴포저블에서 사용되는 입력 필드 관련 설정을 정의하는 객체입니다.
+ * WantedInput 컴포넌트에서 사용되는 입력 필드 관련 설정을 정의하는 객체입니다.
  *
- * 입력 컴포넌트의 사이즈와 타입을 명확히 지정할 수 있도록 enum 클래스를 포함하고 있습니다.
+ * 입력 컴포넌트의 사이즈와 타입을 명확히 지정할 수 있도록 enum 클래스를 포함합니다.
  */
 object WantedInputDefaults {
 

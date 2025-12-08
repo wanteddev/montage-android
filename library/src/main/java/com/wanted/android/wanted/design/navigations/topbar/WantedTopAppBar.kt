@@ -52,6 +52,15 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  *
  * 다양한 Variant를 지원하며, 스크롤 상태에 따라 하단 Divider가 표시됩니다.
  *
+ * 사용 예시:
+ * ```kotlin
+ * WantedTopAppBar(
+ *     title = { Text(...) },
+ *     navigationIcon = { Icon(...) },
+ *     actions = { IconButton(...) }
+ * )
+ * ```
+ *
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
  * @param variant Variant: 앱바 형태입니다.

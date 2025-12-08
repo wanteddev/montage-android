@@ -1,0 +1,62 @@
+name: Update Design System Docs on Merge
+
+# 이 워크플로우의 트리거 조건
+on:
+  push:
+    branches:
+      - main        # release/v{버전} 브랜치에 push(merge)될 때 실행
+
+jobs:
+  # 기존 CI 파일에 있던 디자인 시스템 문서 업데이트 Job을 그대로 가져옵니다.
+  update_ds_docs:
+    name: Update and Commit Design System Docs
+    runs-on: self-hosted
+    timeout-minutes: 30
+
+    # 중요: 무한 루프 방지
+    # 봇이 커밋한 메시지에 'docs:'가 포함되어 있으면 이 Job을 실행하지 않습니다.
+    if: "contains(github.event.head_commit.message, 'docs:') == false"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: false
+          fetch-depth: 2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Install Kotlin
+        run: |
+          if ! command -v kotlin &> /dev/null; then
+            echo " Kotlin이 설치되어 있지 않습니다. Homebrew로 설치를 시작합니다..."
+            brew install kotlin
+            echo " Kotlin 설치 완료"
+          else
+            echo " Kotlin이 이미 설치되어 있습니다."
+            kotlin -version
+          fi
+
+      - name: Update Design System Document
+        run: |
+          ./gradlew \
+            :library:extractDesignSystemJavadocToMd \
+            :library:mergeDesignSystemJavadocByPackage
+          sleep 1
+
+      - name: Update DS Document mdx
+        run: |
+          echo "📂 변경된 DS 문서 파일을 처리합니다..."
+          # 변경된 source 파일만 추출
+          CHANGED_FILES=$(git status --porcelain | awk '{print $2}' | grep '^library/document/source/' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "✅ 변경된 문서 없음. 스킵."
+            exit 0
+          fi
+          
+          echo "🔄 변경된 파일이 있습니다. runKdocScriptAll 실행..."
+          ./gradlew :library:runKdocScriptAll

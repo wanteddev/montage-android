@@ -13,7 +13,10 @@ object WantedTopAppBarContract {
      * enum class Variant
      *
      * TopAppBar의 형태를 정의하는 enum 클래스입니다.
-     * Normal, Display, Floating, Search 네 가지 형태가 존재합니다.
+     * - Normal: 일반 형태입니다.
+     * - Display: 디스플레이 형태입니다.
+     * - Floating: 플로팅 형태입니다.
+     * - Search: 검색 형태입니다.
      */
     enum class Variant {
         Normal,

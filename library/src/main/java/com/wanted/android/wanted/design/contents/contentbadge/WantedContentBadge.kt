@@ -113,7 +113,9 @@ class WantedContentBadge @JvmOverloads constructor(
 }
 
 /**
- * 텍스트와 아이콘, 배경 스타일을 조합하여 콘텐츠 배지를 구성하는 컴포저블입니다.
+ * WantedContentBadge
+ *
+ * 텍스트와 아이콘, 배경 스타일을 조합하여 Content badge를 구성하는 컴포넌트입니다.
  *
  * Accent 또는 Neutral 컬러 테마를 선택할 수 있으며, 크기와 테두리 스타일을 설정할 수 있습니다.
  * 클릭 이벤트, 좌우 아이콘 표시 등 다양한 커스터마이징이 가능합니다.
@@ -464,9 +466,6 @@ private fun PreviewContentBadges() {
             ) {
 
 
-                /**
-                 * NORMAL
-                 */
                 Text(text = "NORMAL")
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -537,9 +536,6 @@ private fun PreviewContentBadges() {
                     )
                 }
 
-                /**
-                 * MEDIUM
-                 */
                 Text(text = "MEDIUM")
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -610,9 +606,6 @@ private fun PreviewContentBadges() {
                     )
                 }
 
-                /**
-                 * LARGE
-                 */
                 Text(text = "LARGE")
                 Row(
                     modifier = Modifier.fillMaxWidth(),

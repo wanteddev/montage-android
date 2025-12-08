@@ -20,7 +20,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 /**
  * WantedSkeletonCircle
  *
- * 원형 스켈레톤 UI 컴포넌트입니다.
+ * 원형 Skeleton 컴포넌트입니다.
  *
  * 내부적으로 WantedSkeletonRectangle을 CircleShape로 설정하여 사용합니다.
  *

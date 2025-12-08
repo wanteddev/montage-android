@@ -6,9 +6,9 @@ import androidx.compose.ui.unit.dp
 /**
  * object WantedPlayBadgeDefaults
  *
- * 재생 배지(PlayBadge) 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
+ * Play badge 컴포넌트에서 사용되는 설정값을 정의하는 객체입니다.
  *
- * 주로 배지의 크기와 관련된 정보를 제공합니다.
+ * 주로 badge의 크기와 관련된 정보를 제공합니다.
  */
 object WantedPlayBadgeDefaults {
 

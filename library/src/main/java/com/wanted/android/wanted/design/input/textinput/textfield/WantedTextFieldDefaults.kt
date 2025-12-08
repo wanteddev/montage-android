@@ -13,7 +13,9 @@ object WantedTextFieldDefaults {
      * enum class Status
      *
      * TextField의 상태를 정의하는 enum 클래스입니다.
-     * Normal, Positive, Negative 세 가지 상태가 존재합니다.
+     * - Normal: 일반 상태입니다.
+     * - Positive: 긍정 상태입니다.
+     * - Negative: 부정 상태입니다.
      */
     enum class Status {
         Normal,
@@ -25,7 +27,8 @@ object WantedTextFieldDefaults {
      * enum class RightVariant
      *
      * TextField 우측 버튼의 스타일을 정의하는 enum 클래스입니다.
-     * Normal, Assistive 두 가지 스타일이 존재합니다.
+     * - Normal: 일반 스타일입니다.
+     * - Assistive: 보조 스타일입니다.
      */
     enum class RightVariant {
         Normal,

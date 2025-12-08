@@ -1,89 +1,80 @@
 ---
-title: category
-description: 카테고리 컴포넌트 및 그라디언트 배경 색상 지정
-image: /components/category/design/thumbnail.png
-createdAt: 2023-11-01
----
-
-## LocalCategoryGradationColor
-카테고리 좌우 그라디언트 배경 색상 지정을 위한 CompositionLocal 래퍼입니다. `CompositionLocalProvider`를 통해 원하는 색상을 주입하여 내부 그라디언트 표현에 사용됩니다.
-
-## 사용 예시
-```kotlin
-CompositionLocalProvider(LocalCategoryGradationColor provides Color.Red) {
-    ...
-}
-```
-
-### 파라미터
-| 이름 | 타입 | 설명 |
-|:---|:---|:---|
-| current | `Color` | 현재 CompositionLocal에 저장된 색상입니다. |
-
+title: Category
+description: 선택 가능한 액션칩 목록을 표시하는 카테고리 컴포넌트
 ---
 
 ## WantedCategory
-선택형 액션칩 목록을 표시하는 카테고리 컴포넌트입니다. 전달된 문자열 리스트를 기반으로 원하는 크기, 스타일, 정렬 및 선택 상태로 액션칩을 구성합니다.
+선택 가능한 액션칩 목록을 표시하는 카테고리 컴포넌트입니다.
 
-## 사용 예시
+문자열 리스트를 기반으로 액션칩을 구성하며, 선택 상태를 관리할 수 있습니다.
+
 ```kotlin
+var selectedList by remember { mutableStateOf(listOf("태그1")) }
+
 WantedCategory(
-    itemList = listOf("태그1", "태그2"),
-    selectedList = listOf("태그1"),
-    onClick = { tag, selected -> ... }
+    itemList = listOf("태그1", "태그2", "태그3"),
+    selectedList = selectedList,
+    onClick = { item, isSelected ->
+        selectedList = if (isSelected) {
+            selectedList + item
+        } else {
+            selectedList - item
+        }
+    }
 )
 ```
 
-### 파라미터
+### Parameters
 | 이름 | 타입 | 설명 |
 |:---|:---|:---|
-| itemList | `List<String>` | 표시할 문자열 목록입니다. |
-| selectedList | `List<String>` | 선택된 항목 리스트입니다. |
-| modifier | `Modifier` | 레이아웃 설정용 Modifier입니다. |
-| state | `LazyListState` | 내부 LazyRow 상태를 제어하는 객체입니다. |
-| size | `Size` | 카테고리 항목 크기입니다. |
-| horizontalPadding | `Boolean` | 좌우 여백 여부입니다. |
-| isVerticalPadding | `Boolean` | 상하 여백 여부입니다. |
-| isAlternative | `Boolean` | 선택 시 Outlined 스타일 적용 여부입니다. |
-| gradientColor | `Color` | 좌우 그라디언트 배경 색상입니다. |
-| rightIcon | `(@Composable (Dp) -> Unit)?` | 우측에 표시할 아이콘 슬롯입니다. |
-| onClick | `(item: String, isSelected: Boolean) -> Unit` | 항목 클릭 시 선택 상태를 포함하여 호출됩니다. |
+| itemList | List<String> | 표시할 항목 문자열 리스트입니다. |
+| selectedList | List<String> | 선택된 항목 리스트입니다. |
+| modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+| disableItemList | List<String> | 비활성화할 항목 리스트입니다. |
+| state | LazyListState | LazyRow의 스크롤 상태를 관리하는 객체입니다. |
+| size | Size | 카테고리 항목의 크기입니다. |
+| horizontalPadding | Boolean | 좌우 여백 적용 여부입니다. |
+| isVerticalPadding | Boolean | 상하 여백 적용 여부입니다. |
+| isAlternative | Boolean | 선택 시 Outlined 스타일 적용 여부입니다. |
+| gradientColor | Color | 좌우 그라디언트 배경 색상입니다. |
+| rightIcon | (@Composable (Dp) -> Unit)? | 우측에 표시할 아이콘 슬롯입니다. |
+| onClick | (String, Boolean) -> Unit | 항목 클릭 시 호출되는 콜백입니다. 선택된 항목과 선택 여부를 전달합니다. |
 
----
+## Overload
+사용자 정의 콘텐츠로 구성할 수 있는 카테고리 컴포넌트입니다.
 
-## WantedCategory (사용자 정의 콘텐츠)
-사용자 정의 콘텐츠로 구성할 수 있는 카테고리 컴포넌트입니다. LazyListScope 기반으로 직접 항목을 구성할 수 있으며, 좌우 그라디언트 및 아이콘 슬롯도 제공합니다.
+LazyListScope를 통해 항목을 직접 구성할 수 있으며, 그라디언트 효과와 우측 아이콘을 지원합니다.
 
-## 사용 예시
 ```kotlin
 WantedCategory {
-    items(10) {
-        WantedActionChip(...)
+    items(tagList) { tag ->
+        WantedActionChip(
+            text = tag,
+            onClick = { /* 처리 */ }
+        )
     }
 }
 ```
+<details>
+  <summary>Parameters</summary>
+  
+  | 이름 | 타입 | 설명 |
+  |:---|:---|:---|
+  | modifier | Modifier | 컴포넌트에 적용할 Modifier입니다. |
+  | state | LazyListState | LazyRow의 스크롤 상태를 관리하는 객체입니다. |
+  | size | Size | 액션칩의 크기 및 여백 설정입니다. |
+  | horizontalPadding | Boolean | 좌우 패딩 적용 여부입니다. |
+  | isVerticalPadding | Boolean | 상하 패딩 적용 여부입니다. |
+  | gradientColor | Color | 좌우 그라디언트 색상입니다. |
+  | rightIcon | (@Composable (Dp) -> Unit)? | 우측 아이콘 슬롯입니다. |
+  | content | LazyListScope.() -> Unit | 내부 아이템을 구성하는 블록입니다. |
+</details>
 
-### 파라미터
-| 이름 | 타입 | 설명 |
-|:---|:---|:---|
-| modifier | `Modifier` | 레이아웃 설정용 Modifier입니다. |
-| state | `LazyListState` | LazyRow의 스크롤 상태입니다. |
-| size | `Size` | 액션칩 크기 및 여백 설정입니다. |
-| horizontalPadding | `Boolean` | 좌우 패딩 여부입니다. |
-| isVerticalPadding | `Boolean` | 상하 패딩 여부입니다. |
-| gradientColor | `Color` | 좌우 그라디언트 색상입니다. |
-| rightIcon | `(@Composable (Dp) -> Unit)?` | 우측 아이콘 슬롯입니다. |
-| content | `LazyListScope.() -> Unit` | 내부 아이템 UI 구성 블록입니다. |
-
----
-
-## Enum 설명
+## Enum
 ### Size
 | 값 | 설명 |
 |:---|:---|
-| Small | 세로 패딩 8dp, 수평 간격 4dp |
-| Medium | 세로 패딩 8dp, 수평 간격 6dp |
-| Large | 세로 패딩 10dp, 수평 간격 8dp |
-| XLarge | 세로 패딩 10dp, 수평 간격 10dp |
-
----
+| Small | 카테고리 항목의 작은 크기 |
+| Medium | 카테고리 항목의 중간 크기 |
+| Large | 카테고리 항목의 큰 크기 |
+| XLarge | 카테고리 항목의 매우 큰 크기 |

@@ -50,7 +50,7 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  *
  * 단일 항목을 선택할 수 있는 Select 컴포넌트입니다.
  *
- * 선택 가능한 항목을 BottomSheet로 제공하며, 선택 시 콜백으로 결과를 반환합니다.
+ * 선택 가능한 항목을 Bottom sheet로 제공하며, 선택 시 콜백으로 결과를 반환합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -134,7 +134,7 @@ fun WantedSelect(
  *
  * WantedSelectData를 사용하는 단일 항목 선택 컴포넌트입니다.
  *
- * 선택된 항목을 화면에 표시하고, 클릭 시 BottomSheet를 통해 항목을 선택할 수 있습니다.
+ * 선택된 항목을 화면에 표시하고, 클릭 시 Bottom sheet를 통해 항목을 선택할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -264,9 +264,9 @@ fun WantedSelect(
 /**
  * WantedSelect
  *
- * 여러 항목을 선택할 수 있는 멀티 셀렉트 컴포넌트입니다.
+ * 여러 항목을 선택할 수 있는 Multi select 컴포넌트입니다.
  *
- * 선택된 항목들을 Chip 또는 텍스트 형태로 표시하며, 클릭 시 BottomSheet 형태의 다중 선택 다이얼로그를 표시합니다.
+ * 선택된 항목들을 Chip 또는 텍스트 형태로 표시하며, 클릭 시 Bottom sheet 형태의 다중 선택 Dialog를 표시합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -388,7 +388,7 @@ fun WantedSelect(
 /**
  * WantedSelectWithString
  *
- * 문자열 리스트 기반의 멀티 셀렉트 컴포넌트입니다.
+ * 문자열 리스트 기반의 Multi select 컴포넌트입니다.
  *
  * 여러 개의 문자열 값을 선택하고, 선택된 항목을 Chip 또는 텍스트 형태로 표시합니다.
  *

@@ -25,6 +25,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 /**
+ * WantedIconButtonSolid
+ *
  * WantedIconButtonSize를 사용하여 간편하게 크기와 패딩을 지정할 수 있는 Solid 스타일 아이콘 버튼입니다.
  *
  * 원형 배경과 흰색 아이콘을 기본으로 하며, 배경 및 아이콘 색상은 커스터마이징이 가능합니다.
@@ -69,6 +71,8 @@ fun WantedIconButtonSolid(
 
 
 /**
+ * WantedIconButtonSolid
+ *
  * 크기와 패딩을 직접 지정할 수 있는 Solid 스타일 아이콘 버튼입니다.
  *
  * 배경, 아이콘 색상 및 클릭 이벤트를 자유롭게 설정할 수 있습니다.

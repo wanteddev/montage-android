@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
  *
  * 연도와 월 범위, 사용 가능한 최소/최대 값, 비활성 날짜 표시 여부를 지정할 수 있습니다.
  *
- * @param startYear Int 휠에 표시할 시작 연도입니다.
- * @param endYear Int 휠에 표시할 종료 연도입니다.
- * @param enableMinYear Int 선택 가능한 최소 연도입니다.
- * @param enableMaxYear Int 선택 가능한 최대 연도입니다.
- * @param enableMinMonth Int 선택 가능한 최소 월입니다.
- * @param enableMaxMonth Int 선택 가능한 최대 월입니다.
- * @param isHideDisableDate Boolean 비활성 날짜를 숨길지 여부입니다.
+ * @param startYear Int: 휠에 표시할 시작 연도입니다.
+ * @param endYear Int: 휠에 표시할 종료 연도입니다.
+ * @param enableMinYear Int: 선택 가능한 최소 연도입니다.
+ * @param enableMaxYear Int: 선택 가능한 최대 연도입니다.
+ * @param enableMinMonth Int: 선택 가능한 최소 월입니다.
+ * @param enableMaxMonth Int: 선택 가능한 최대 월입니다.
+ * @param isHideDisableDate Boolean: 비활성 날짜를 숨길지 여부입니다.
  */
 data class WantedDatePickerWheelDefault(
     val startYear: Int = 1900,
@@ -57,14 +57,14 @@ object WantedDatePickerWheelDefaults {
      * )
      * ```
      *
-     * @param startYear Int 휠 선택기에서 표시할 시작 연도입니다. 기본값은 1900입니다.
-     * @param endYear Int 휠 선택기에서 표시할 종료 연도입니다. 기본값은 2100입니다. `startYear`보다 작으면 자동으로 `startYear`로 보정됩니다.
-     * @param enableMinYear Int 선택 가능한 최소 연도입니다. 기본값은 1900입니다.
-     * @param enableMaxYear Int 선택 가능한 최대 연도입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다.
-     * @param enableMinMonth Int 선택 가능한 최소 월입니다. 기본값은 1월입니다.
-     * @param enableMaxMonth Int 선택 가능한 최대 월입니다. `enableMinMonth`보다 작으면 자동으로 `enableMinMonth`로 보정됩니다.
-     * @param isHideDisableDate Boolean 선택 불가능한 날짜를 숨길지 여부를 설정합니다. 기본값은 false입니다.
-     * @return WantedDatePickerWheelDefault 설정된 날짜 선택 휠 기본값 객체입니다.
+     * @param startYear Int: 휠 선택기에서 표시할 시작 연도입니다. 기본값은 1900입니다.
+     * @param endYear Int: 휠 선택기에서 표시할 종료 연도입니다. 기본값은 2100입니다. `startYear`보다 작으면 자동으로 `startYear`로 보정됩니다.
+     * @param enableMinYear Int: 선택 가능한 최소 연도입니다. 기본값은 1900입니다.
+     * @param enableMaxYear Int: 선택 가능한 최대 연도입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다.
+     * @param enableMinMonth Int: 선택 가능한 최소 월입니다. 기본값은 1월입니다.
+     * @param enableMaxMonth Int: 선택 가능한 최대 월입니다. `enableMinMonth`보다 작으면 자동으로 `enableMinMonth`로 보정됩니다.
+     * @param isHideDisableDate Boolean: 선택 불가능한 날짜를 숨길지 여부를 설정합니다. 기본값은 false입니다.
+     * @return WantedDatePickerWheelDefault: 설정된 날짜 선택 휠 기본값 객체입니다.
      */
     @Composable
     fun getDefault(

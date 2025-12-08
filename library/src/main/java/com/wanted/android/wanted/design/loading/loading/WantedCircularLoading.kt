@@ -18,7 +18,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 /**
  * WantedCircularLoading
  *
- * 화면 중앙에 원형 로딩 인디케이터를 표시하는 컴포넌트입니다.
+ * 화면 중앙에 원형으로 로딩 상태를 안내하는 컴포넌트입니다.
  *
  * dim 배경 포함 여부, 크기, 색상을 설정할 수 있습니다.
  *

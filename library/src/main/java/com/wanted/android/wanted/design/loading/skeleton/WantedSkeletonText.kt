@@ -26,17 +26,12 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
-
-/**
- * 피그마 : https://www.figma.com/design/7RHtWV3Pw6I98UEDjbx5V1/0-Component?node-id=23703-75675&m=dev
- */
-
 /**
  * WantedSkeletonText
  *
- * 텍스트형 스켈레톤 UI 컴포넌트입니다.
+ * 텍스트를 표현하는 Skeleton 컴포넌트입니다.
  *
- * 다양한 길이 비율과 정렬 방식을 지원하며, shimmer 애니메이션이 자동으로 적용됩니다.
+ * 다양한 길이 비율과 정렬 방식을 지원하며, Shimmer 애니메이션이 자동으로 적용됩니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -69,7 +64,7 @@ fun WantedSkeletonText(
 /**
  * WantedSkeletonText
  *
- * 커스텀 비율 기반의 텍스트형 스켈레톤 UI 컴포넌트입니다.
+ * 커스텀 비율 기반의 텍스트를 표현하는 Skeleton 컴포넌트입니다.
  *
  * widthRadio 파라미터를 통해 너비 비율을 직접 지정할 수 있습니다.
  *
@@ -131,7 +126,10 @@ fun WantedSkeletonText(
  * enum class WantedSkeletonLength
  *
  * 텍스트형 스켈레톤의 너비 비율을 정의하는 enum 클래스입니다.
- * Ratio100, Ratio75, Ratio50, Ratio25 네 가지 비율이 존재합니다.
+ * - Ratio100: 100% 너비 비율입니다.
+ * - Ratio75: 75% 너비 비율입니다.
+ * - Ratio50: 50% 너비 비율입니다.
+ * - Ratio25: 25% 너비 비율입니다.
  */
 enum class WantedSkeletonLength(
     val radio: Float
@@ -146,7 +144,9 @@ enum class WantedSkeletonLength(
  * enum class WantedSkeAlign
  *
  * 텍스트형 스켈레톤의 정렬 방식을 정의하는 enum 클래스입니다.
- * Left, Center, Right 세 가지 정렬이 존재합니다.
+ * - Left: 왼쪽 정렬입니다.
+ * - Center: 가운데 정렬입니다.
+ * - Right: 오른쪽 정렬입니다.
  */
 enum class WantedSkeAlign {
     Left,

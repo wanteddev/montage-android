@@ -22,9 +22,9 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 /**
  * WantedTabRow
  *
- * 고정형 탭 레이아웃 컴포넌트입니다.
+ * 고정형 Tab 레이아웃 컴포넌트입니다.
  *
- * 탭 항목들이 전체 너비에 균등하게 배치되며, 선택된 탭은 하단 인디케이터로 강조됩니다.
+ * Tab 항목들이 전체 너비에 균등하게 배치되며, 선택된 Tab은 하단 Indicator로 강조합니다.
  *
  * 사용 예시:
  * ```kotlin

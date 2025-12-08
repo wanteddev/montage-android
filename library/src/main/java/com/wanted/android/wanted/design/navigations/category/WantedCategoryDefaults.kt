@@ -13,11 +13,15 @@ object WantedCategoryDefaults {
     /**
      * enum class Size
      *
-     * 카테고리 항목의 크기 및 여백을 정의하는 enum 클래스입니다.
-     * Small, Medium, Large, XLarge 네 가지 크기가 존재합니다.
+     * 카테고리 항목의 크기 및 여백을 정의하는 Enum 클래스입니다.
      *
-     * @property verticalPadding Dp: 항목의 세로 패딩입니다.
-     * @property horizontalSpacing Dp: 항목 간 수평 간격입니다.
+     * 카테고리 항목의 시각적 크기와 간격을 결정할 때 사용됩니다. UI 요구사항에 따라 다음의 네 가지 옵션을 제공합니다:
+     * - Small: 작은 크기의 카테고리 항목입니다.
+     * - Medium: 중간 크기의 카테고리 항목입니다.
+     * - Large: 큰 크기의 카테고리 항목입니다.
+     * - XLarge: 매우 큰 크기의 카테고리 항목입니다.
+     *
+     * @see WantedCategoryDefault
      */
     enum class Size(
         val verticalPadding: Dp,

@@ -105,7 +105,7 @@ fun WantedSegmentedControlSolid(
  *
  * 사용자 정의 항목으로 구성할 수 있는 Solid 스타일 Segmented Control 컴포넌트입니다.
  *
- * 각 항목을 커스텀 Composable로 구성할 수 있으며, 선택 애니메이션은 Knob 위치 이동으로 표현됩니다.
+ * 각 항목을 커스텀 컴포넌트로 구성할 수 있으며, 선택 애니메이션은 Knob 위치 이동으로 표현됩니다.
  *
  * 사용 예시:
  * ```kotlin

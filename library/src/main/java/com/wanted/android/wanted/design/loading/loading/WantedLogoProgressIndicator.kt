@@ -31,9 +31,9 @@ class WantedLogoProgressIndicator @JvmOverloads constructor(
 /**
  * WantedLogoProgressIndicator
  *
- * Wanted 로고 Lottie 애니메이션을 표시하는 컴포넌트입니다.
+ * Wanted 심볼 Lottie 애니메이션을 표시하는 컴포넌트입니다.
  *
- * 시스템 다크 모드 설정에 따라 자동으로 라이트/다크 테마의 로고 애니메이션이 표시됩니다.
+ * 시스템 다크 모드 설정에 따라 자동으로 라이트/다크 테마의 로딩 애니메이션이 표시됩니다.
  *
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  */

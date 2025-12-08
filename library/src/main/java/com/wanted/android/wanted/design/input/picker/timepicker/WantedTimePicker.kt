@@ -40,11 +40,13 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 import java.util.Calendar
 
 /**
- * 시계 및 입력 형식을 지원하는 시간 선택 다이얼로그입니다.
+ * WantedTimePicker
  *
- * 사용자는 시계 기반 또는 직접 입력 기반의 시간 선택 UI를 전환하여 사용할 수 있으며,
- * 선택 후 확인/취소 버튼으로 결과를 확정하거나 다이얼로그를 닫을 수 있습니다.
- * 내부적으로 `TimePicker` 또는 `TimeInput`을 사용하며, 선택 모드 전환 버튼을 제공합니다.
+ * 시계 및 입력 형식을 지원하는 시간 선택 Dialog입니다.
+ *
+ * 사용자는 Wheel, Input, Dial 형식으로 전환하여 사용할 수 있습니다.
+ * 선택 후 확인/취소 버튼으로 결과를 확정하거나 Dialog를 닫을 수 있습니다.
+ * 내부적으로 TimePicker 또는 TimeInput을 사용하며, 선택 모드 전환 버튼을 제공합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -54,20 +56,20 @@ import java.util.Calendar
  *     cancel = "취소",
  *     onClickConfirm = { /* 확인 처리 */ },
  *     onClickCancel = { /* 취소 처리 */ },
- *     onDismissRequest = { /* 다이얼로그 종료 처리 */ },
+ *     onDismissRequest = { /* Dialog 종료 처리 */ },
  *     onClickChangeMode = { /* 입력 형식 전환 처리 */ },
  *     isEnableClock = true
  * )
  * ```
  *
- * @param title String 다이얼로그 상단 제목 텍스트입니다
- * @param confirm String 확인 버튼 텍스트입니다
- * @param onClickConfirm () -> Unit 확인 버튼 클릭 시 호출되는 콜백입니다
- * @param onClickChangeMode () -> Unit 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다
- * @param onDismissRequest () -> Unit 다이얼로그 외부 클릭 또는 닫기 시 호출되는 콜백입니다
- * @param cancel String? 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다
- * @param isEnableClock Boolean true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다
- * @param onClickCancel () -> Unit 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다
+ * @param title String: Dialog 상단 제목 텍스트입니다
+ * @param confirm String: 확인 버튼 텍스트입니다
+ * @param onClickConfirm () -> Unit: 확인 버튼 클릭 시 호출되는 콜백입니다
+ * @param onClickChangeMode () -> Unit: 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다
+ * @param onDismissRequest () -> Unit: Dialog 외부 클릭 또는 닫기 시 호출되는 콜백입니다
+ * @param cancel String?: 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다
+ * @param isEnableClock Boolean: true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다
+ * @param onClickCancel () -> Unit: 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다
  */
 @Composable
 fun WantedTimePicker(

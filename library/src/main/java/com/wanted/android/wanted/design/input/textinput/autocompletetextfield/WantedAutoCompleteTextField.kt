@@ -33,9 +33,11 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 /**
- * 자동완성 기능이 포함된 TextField 컴포저블입니다. (String 기반)
+ * WantedAutoCompleteTextField
  *
- * 입력값을 기반으로 드롭다운 자동완성 리스트를 표시합니다.
+ * 자동완성 기능이 포함된 Text field 컴포넌트입니다.
+ *
+ * 입력값을 기반으로 Dropdown 자동완성 리스트를 표시합니다.
  * 섹션별 아이템, 제목, 직접 입력 슬롯 등 다양한 확장이 가능합니다.
  *
  * 사용 예시:
@@ -109,7 +111,7 @@ fun WantedAutoCompleteTextField(
     dropDownMaxHeight: Dp = 200.dp,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionCount: Int = 1,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -189,11 +191,23 @@ fun WantedAutoCompleteTextField(
 }
 
 /**
- * 자동완성 기능이 포함된 TextField 컴포저블입니다. (TextFieldValue 기반)
+ * WantedAutoCompleteTextField
  *
- * 커서 및 선택 영역 제어가 필요한 경우 `TextFieldValue`를 통해 입력 상태를 관리합니다.
- * 나머지 기능은 `String` 기반 버전과 동일합니다.
+ * 자동완성 기능이 포함된 Text field 컴포넌트입니다.
  *
+ * 커서 및 선택 영역 제어가 필요한 경우 TextFieldValue를 통해 입력 상태를 관리합니다.
+ * 나머지 기능은 String 기반 버전과 동일합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedAutoCompleteTextField(
+ *     value = input,
+ *     sectionItemCount = { 1 },
+ *     sectionItem = { section, index -> ... },
+ *     onExpandedChange = { expanded = it },
+ *     onValueChange = { input = it }
+ * )
+ * ```
  * @param value TextFieldValue: 입력된 값 및 커서 상태입니다.
  * @param onValueChange (TextFieldValue) -> Unit: 입력 값 변경 콜백입니다.
  * @param sectionItemCount (Int) -> Int: 섹션별 아이템 수입니다.
@@ -255,7 +269,7 @@ fun WantedAutoCompleteTextField(
     dropDownMaxHeight: Dp = 200.dp,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionCount: Int = 1,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = colorResource(id = R.color.background_transparent_alternative),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,

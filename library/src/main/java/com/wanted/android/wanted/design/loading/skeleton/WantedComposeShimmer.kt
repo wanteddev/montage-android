@@ -13,26 +13,6 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 
-/**
- * shimmer
- *
- * 깜박이는 shimmer 애니메이션을 적용하는 Modifier 확장 함수입니다.
- *
- * 투명도를 주기적으로 변경하여 깜박이는 효과를 제공합니다.
- * 주로 스켈레톤 UI에 사용됩니다.
- *
- * 사용 예시:
- * ```kotlin
- * Box(
- *     modifier = Modifier
- *         .size(200.dp)
- *         .shimmer()
- * )
- * ```
- *
- * @param colorRes Int: 적용할 색상 리소스 ID입니다.
- * @return Modifier: shimmer 애니메이션이 적용된 Modifier입니다.
- */
 fun Modifier.shimmer(
     colorRes: Int = R.color.background_normal_normal, // 기본 색상 리소스
 ): Modifier = composed {

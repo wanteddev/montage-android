@@ -4,7 +4,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 
 /**
- * Data class representing a select item data model used in WantedSelect and WantedMultiSelect.
+ * data class WantedSelectData
  *
  * WantedSelect, WantedMultiSelect에서 사용되는 선택 항목 데이터 모델입니다.
  *
