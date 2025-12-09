@@ -13,14 +13,14 @@ montage-android 디자인 시스템 라이브러리
 메인 프로젝트의 `settings.gradle.kts`:
 
 ```kotlin
-include(":core:montage-android:library")
+include(":montage-android:library")
 ```
 
 `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation(project(":core:montage-android:library"))
+    implementation(project(":montage-android:library"))
 }
 ```
 
