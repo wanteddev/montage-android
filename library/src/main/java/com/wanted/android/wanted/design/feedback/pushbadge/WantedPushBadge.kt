@@ -1,6 +1,7 @@
 package com.wanted.android.wanted.design.feedback.pushbadge
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,13 +72,41 @@ fun WantedPushBadge(
     background: Color = colorResource(id = R.color.primary_normal),
     contentColor: Color = colorResource(id = R.color.static_white)
 ) {
+    WantedPushBadgeBorder(
+        modifier = modifier,
+        variant = variant,
+        size = size,
+        position = position,
+        count = count,
+        background = background,
+        contentColor = contentColor,
+        bordered = false
+    )
+}
+
+@Composable
+fun WantedPushBadgeBorder(
+    modifier: Modifier = Modifier,
+    variant: PushBadgeVariant = PushBadgeVariant.Dot,
+    size: PushBadgeSize = PushBadgeSize.XSmall,
+    position: PushBadgePosition = PushBadgePosition.TopEnd,
+    count: String = "",
+    bordered: Boolean = true,
+    borderWidth: Dp = 2.dp,
+    background: Color = colorResource(id = R.color.primary_normal),
+    contentColor: Color = colorResource(id = R.color.static_white),
+    borderColor: Color = colorResource(id = R.color.static_white)
+) {
     when (variant) {
         PushBadgeVariant.Dot -> {
             PushBadgeDot(
                 modifier = modifier,
                 size = size,
                 position = position,
-                background = background
+                background = background,
+                bordered = bordered,
+                borderWidth = if (!bordered) 0.dp else borderWidth,
+                borderColor = borderColor
             )
         }
 
@@ -88,7 +117,10 @@ fun WantedPushBadge(
                 size = size,
                 position = position,
                 background = background,
-                contentColor = contentColor
+                contentColor = contentColor,
+                bordered = bordered,
+                borderWidth = borderWidth,
+                borderColor = borderColor
             )
         }
 
@@ -99,7 +131,10 @@ fun WantedPushBadge(
                 size = size,
                 position = position,
                 background = background,
-                contentColor = contentColor
+                contentColor = contentColor,
+                bordered = bordered,
+                borderWidth = borderWidth,
+                borderColor = borderColor
             )
         }
     }
@@ -110,17 +145,30 @@ private fun PushBadgeDot(
     size: PushBadgeSize,
     position: PushBadgePosition,
     background: Color,
+    bordered: Boolean = true,
+    borderWidth: Dp = if (!bordered) 0.dp else 1.dp,
+    borderColor: Color = colorResource(id = R.color.static_white),
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
+
+    val borderModifier = if (bordered) {
+        Modifier
+            .border(borderWidth, borderColor, CircleShape)
+            .padding(0.2.dp)
+            .padding(borderWidth - 0.2.dp)
+    } else {
+        Modifier
+    }
+
     Box(
         modifier = modifier
             .size(20.dp)
             .padding(
                 when (size) {
-                    PushBadgeSize.XSmall -> 8.dp
-                    PushBadgeSize.Small -> 7.dp
-                    PushBadgeSize.Medium -> 6.dp
+                    PushBadgeSize.XSmall -> 8.dp - borderWidth
+                    PushBadgeSize.Small -> 7.dp - borderWidth
+                    PushBadgeSize.Medium -> 6.dp - borderWidth
                 }
             )
             .offset {
@@ -129,10 +177,15 @@ private fun PushBadgeDot(
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(background, shape = CircleShape)
-        )
+            modifier = borderModifier,
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(background, shape = CircleShape)
+            )
+        }
     }
 }
 
@@ -169,20 +222,28 @@ private fun PushBadgeImpl(
     position: PushBadgePosition,
     background: Color,
     contentColor: Color,
+    bordered: Boolean = true,
+    borderWidth: Dp = 2.dp,
+    borderColor: Color = colorResource(id = R.color.static_white),
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
-    val badgeSize = remember(size) { mutableStateOf(Pair(20.dp, 20.dp)) }
+    val badgeSize = remember(size) {
+        mutableStateOf(Pair(20.dp, 20.dp))
+    }
+
+    val borderModifier = if (bordered) {
+        Modifier
+            .border(borderWidth, borderColor, CircleShape)
+            .padding(0.2.dp)
+            .padding(borderWidth - 0.2.dp)
+    } else {
+        Modifier
+    }
 
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
-            .defaultMinSize(
-                when (size) {
-                    PushBadgeSize.XSmall -> 16.dp
-                    PushBadgeSize.Small -> 20.dp
-                    PushBadgeSize.Medium -> 24.dp
-                }
-            )
             .offset {
                 getOffset(
                     density,
@@ -191,23 +252,39 @@ private fun PushBadgeImpl(
                     badgeSize.value.second
                 )
             }
+            .then(borderModifier)
             .background(background, shape = CircleShape)
+            .defaultMinSize(
+                when (size) {
+                    PushBadgeSize.XSmall -> 16.dp
+                    PushBadgeSize.Small -> 20.dp
+                    PushBadgeSize.Medium -> 24.dp
+                }
+            )
             .padding(
                 when (size) {
                     PushBadgeSize.XSmall -> 1.dp
-                    PushBadgeSize.Small -> 3.dp
-                    PushBadgeSize.Medium -> 2.dp
+                    PushBadgeSize.Small -> 2.dp
+                    PushBadgeSize.Medium -> 3.dp
                 }
             )
             .onGloballyPositioned { coordinates ->
                 with(density) {
                     badgeSize.value =
-                        Pair(coordinates.size.width.toDp(), coordinates.size.height.toDp())
+                        if (bordered) {
+                            Pair(
+                                coordinates.size.width.toDp() + borderWidth * 2,
+                                coordinates.size.height.toDp() + borderWidth * 2
+                            )
+                        } else {
+                            Pair(coordinates.size.width.toDp(), coordinates.size.height.toDp())
+                        }
+
                 }
-            },
-        contentAlignment = Alignment.Center
+            }
     ) {
         Text(
+            modifier = Modifier.padding(horizontal = 2.dp),
             text = text,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
@@ -231,7 +308,8 @@ private fun WantedPushBadgePreview() {
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(20.dp),
+                        .padding(20.dp)
+                        .background(Color.White),
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
                     PushBadgePosition.entries.forEach {
@@ -247,7 +325,8 @@ private fun WantedPushBadgePreview() {
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(20.dp),
+                        .padding(20.dp)
+                        .background(Color.White),
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
                     PushBadgePosition.entries.forEach {
@@ -265,7 +344,8 @@ private fun WantedPushBadgePreview() {
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(20.dp),
+                        .padding(20.dp)
+                        .background(Color.White),
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
 

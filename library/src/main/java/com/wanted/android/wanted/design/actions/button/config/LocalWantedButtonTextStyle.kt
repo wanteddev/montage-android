@@ -36,14 +36,6 @@ internal class WantedButtonTextStyleLoaderImpl : WantedButtonTextStyleLoader {
                         else -> WantedTextStyle.BODY1_BOLD
                     }
 
-                    ButtonVariant.OUTLINED -> {
-                        when (size) {
-                            ButtonSize.LARGE -> WantedTextStyle.BODY1_MEDIUM
-                            ButtonSize.MEDIUM -> WantedTextStyle.BODY2_MEDIUM
-                            ButtonSize.SMALL -> WantedTextStyle.LABEL2_MEDIUM
-                        }
-                    }
-
                     else -> if (type == ButtonType.PRIMARY) {
                         when (size) {
                             ButtonSize.LARGE -> WantedTextStyle.BODY1_BOLD
