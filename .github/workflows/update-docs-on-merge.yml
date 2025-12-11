@@ -71,16 +71,21 @@ jobs:
       - name: Commit & Push Design System Docs
         run: |
           git config --local user.name "deploy-bot"
+          git config --local user.email "deploy-bot@github.com"
 
-          # 변경된 source 및 mdx 스테이징
-          git add library/document/source
-          git add library/document/md
-          git add library/publish.properties
+          # 변경된 파일만 스테이징 (존재하는 경우에만)
+          [ -d "library/document/source" ] && git add library/document/source || echo "⚠️ library/document/source not found, skipping"
+          [ -d "library/document/md" ] && git add library/document/md || echo "⚠️ library/document/md not found, skipping"
+          [ -f "library/publish.properties" ] && git add library/publish.properties || echo "⚠️ library/publish.properties not found, skipping"
 
+          # 변경사항이 있는지 확인
           if git diff --cached --quiet; then
-            echo "No doc changes to commit"
+            echo "✅ No doc changes to commit"
             exit 0
           fi
 
+          echo "📝 Committing changes..."
           git commit -m "docs: update Design System documentation and mdx"
+          
+          echo "🚀 Pushing changes..."
           git push
