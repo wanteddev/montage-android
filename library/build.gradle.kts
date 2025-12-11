@@ -140,11 +140,6 @@ afterEvaluate {
         enabled = false
     }
 
-    val sourceJar by tasks.registering(Jar::class) {
-        from(android.sourceSets["main"].java.srcDirs)
-        archiveClassifier.set("sources")
-    }
-
     publishing {
         publications {
             create<MavenPublication>("release") {
@@ -153,9 +148,6 @@ afterEvaluate {
                 groupId = libGroupId
                 artifactId = libArtifactId
                 version = libVersion
-
-                // Add sources jar
-                artifact(sourceJar)
 
                 pom {
                     name.set(libArtifactId)
@@ -196,14 +188,6 @@ afterEvaluate {
                 }
             }
         }
-    }
-
-    // Fix task dependency issue - ensure sourceJar runs before publication tasks
-    tasks.matching {
-        it.name.startsWith("generateMetadataFileFor") ||
-                it.name.startsWith("generatePomFileFor")
-    }.configureEach {
-        dependsOn(sourceJar)
     }
 }
 
