@@ -83,33 +83,35 @@ jobs:
           TAG_NAME="v${{env.VERSION_CODE}}"
           
           # 릴리즈가 이미 존재하는지 확인
-          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+          RELEASE_CHECK=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/wanteddev/montage-android/releases/tags/${TAG_NAME}")
+          
+          if [ "$RELEASE_CHECK" = "200" ]; then
             echo "⚠️ Release $TAG_NAME already exists. Skipping release creation."
           else
             echo "✅ Creating GitHub release: $TAG_NAME"
           
-            # Release notes 생성
-            cat > release_notes.md << EOF
-          🚀 Design System Release ${{env.VERSION_CODE}}
-          
-          ## Changes
-          - Published to GitHub Packages
-          - GroupId: com.wanteddev
-          - ArtifactId: montage-android
-          - Version: ${{env.VERSION_CODE}}
-          
-          ## Installation
-          \`\`\`gradle
-          dependencies {
-              implementation("com.wanteddev:montage-android:${{env.VERSION_CODE}}")
+            # JSON payload 파일 생성
+            cat > release_payload.json << 'JSONEOF'
+          {
+            "tag_name": "v${{env.VERSION_CODE}}",
+            "name": "Release v${{env.VERSION_CODE}}",
+            "body": "🚀 Design System Release ${{env.VERSION_CODE}}\n\n## Changes\n- Published to GitHub Packages\n- GroupId: com.wanteddev\n- ArtifactId: montage-android\n- Version: ${{env.VERSION_CODE}}\n\n## Installation\n```gradle\ndependencies {\n    implementation(\"com.wanteddev:montage-android:${{env.VERSION_CODE}}\")\n}\n```",
+            "draft": false,
+            "prerelease": false,
+            "target_commitish": "main"
           }
-          \`\`\`
-          EOF
+          JSONEOF
           
-            gh release create "$TAG_NAME" \
-              --title "Release $TAG_NAME" \
-              --notes-file release_notes.md \
-              --target main
+            # GitHub API로 Release 생성
+            curl -X POST \
+              -H "Authorization: token ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Content-Type: application/json" \
+              "https://api.github.com/repos/wanteddev/montage-android/releases" \
+              -d @release_payload.json
           
             echo "🎉 Release $TAG_NAME created successfully"
           fi
