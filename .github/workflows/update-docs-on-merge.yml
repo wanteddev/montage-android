@@ -40,6 +40,13 @@ jobs:
             kotlin -version
           fi
 
+      - name: Clean and Build Project
+        run: |
+          echo "🧹 프로젝트 클린 중..."
+          ./gradlew clean
+          echo "🔨 프로젝트 빌드 중..."
+          ./gradlew build -x test
+
       - name: Update Design System Document
         run: |
           ./gradlew \
@@ -77,3 +84,47 @@ jobs:
 
           git commit -m "docs: update Design System documentation and mdx"
           git push
+
+      - name: Read version from publish.properties
+        id: read_version
+        run: |
+          VERSION=$(grep '^version=' library/publish.properties | cut -d'=' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📌 Detected version: $VERSION"
+
+      - name: Create and Push Tag
+        run: |
+          VERSION=${{ steps.read_version.outputs.version }}
+          TAG_NAME="v$VERSION"
+          
+          git config --local user.name "deploy-bot"
+          git config --local user.email "deploy-bot@github.com"
+          
+          # 태그가 이미 존재하는지 확인
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "⚠️ Tag $TAG_NAME already exists. Skipping tag creation."
+          else
+            echo "✅ Creating tag: $TAG_NAME"
+            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+            git push origin "$TAG_NAME"
+            echo "🚀 Tag $TAG_NAME pushed successfully"
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=${{ steps.read_version.outputs.version }}
+          TAG_NAME="v$VERSION"
+          
+          # 릴리즈가 이미 존재하는지 확인
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            echo "⚠️ Release $TAG_NAME already exists. Skipping release creation."
+          else
+            echo "✅ Creating GitHub release: $TAG_NAME"
+            gh release create "$TAG_NAME" \
+              --title "Release $TAG_NAME" \
+              --notes "Design System Release $VERSION" \
+              --target main
+            echo "🎉 Release $TAG_NAME created successfully"
+          fi
