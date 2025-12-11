@@ -17,10 +17,13 @@ jobs:
     permissions:
       contents: write
       packages: write
+      actions: read
     steps:
       - uses: actions/checkout@v3
         with:
           ref: main
+          token: ${{ secrets.WANTED_DEV_TOKEN }}
+          fetch-depth: 0
 
       - name: Set VersionInfo from publish.properties
         run: |
@@ -51,10 +54,27 @@ jobs:
           ./gradlew :library:publishReleasePublicationToGithubPackagesRepository --stacktrace
 
       - name: Create & Push Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
         run: |
           git config --local user.name "deploy-bot"
-          git tag v${{env.VERSION_CODE}}
-          git push origin --tags
+          git config --local user.email "deploy-bot@github.com"
+          
+          # 이미 존재하는 태그는 건너뛰기
+          if git rev-parse "v${{env.VERSION_CODE}}" >/dev/null 2>&1; then
+            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists locally"
+          else
+            echo "✅ Creating tag v${{env.VERSION_CODE}}"
+            git tag v${{env.VERSION_CODE}}
+          fi
+          
+          # 원격에 태그가 없는 경우만 푸시
+          if git ls-remote --tags origin | grep -q "refs/tags/v${{env.VERSION_CODE}}"; then
+            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists on remote, skipping push"
+          else
+            echo "🚀 Pushing tag v${{env.VERSION_CODE}}"
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/wanteddev/montage-android.git v${{env.VERSION_CODE}}
+          fi
 
       - uses: release-drafter/release-drafter@master
         with:
