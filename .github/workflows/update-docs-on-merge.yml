@@ -40,6 +40,13 @@ jobs:
             kotlin -version
           fi
 
+      - name: Clean and Build Project
+        run: |
+          echo "🧹 프로젝트 클린 중..."
+          ./gradlew clean
+          echo "🔨 프로젝트 빌드 중..."
+          ./gradlew build -x test
+
       - name: Update Design System Document
         run: |
           ./gradlew \

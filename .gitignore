@@ -19,3 +19,5 @@ captures/
 .cxx/
 *.hprof
 .DS_Store
+/private/github.properties
+/private/

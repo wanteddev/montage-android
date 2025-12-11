@@ -7,3 +7,10 @@ plugins {
 tasks.register("clean", Delete::class) {
     delete(rootProject.layout.buildDirectory)
 }
+
+
+afterEvaluate {
+    afterEvaluate {
+        project.apply("$rootDir/gradle/common.gradle")
+    }
+}
