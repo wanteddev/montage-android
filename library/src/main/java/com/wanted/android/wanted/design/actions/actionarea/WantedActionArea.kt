@@ -44,7 +44,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
  * WantedActionArea
  *
  * 하단 액션 버튼 영역을 생성합니다.
- * test
+ *
  * 버튼은 positive, negative, neutral 텍스트로 생성하며, 각 버튼에 클릭 콜백을 전달할 수 있습니다.
  * 또한, Variant 속성을 활용하여 상단 영역에 부가적인 요소를 렌더링할 수 있습니다.
  *
