@@ -135,9 +135,7 @@ val buildAar by tasks.registering {
 afterEvaluate {
     // Disable lint analysis tasks to avoid Kotlin 2.0 FIR compatibility issues
     tasks.matching {
-        it.name.contains("lintAnalyze") ||
-                it.name.contains("lintReport") ||
-                it.name == "lint"
+        it.name.contains("lint", ignoreCase = true)
     }.configureEach {
         enabled = false
     }
@@ -198,6 +196,14 @@ afterEvaluate {
                 }
             }
         }
+    }
+
+    // Fix task dependency issue - ensure sourceJar runs before publication tasks
+    tasks.matching {
+        it.name.startsWith("generateMetadataFileFor") ||
+                it.name.startsWith("generatePomFileFor")
+    }.configureEach {
+        dependsOn(sourceJar)
     }
 }
 
