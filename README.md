@@ -122,8 +122,6 @@ This project uses the following open source libraries:
   Material Design components (Apache 2.0)
 - **[Lottie](https://github.com/airbnb/lottie-android)** - Animation library by Airbnb (Apache 2.0)
 - **[Glide](https://github.com/bumptech/glide)** - Image loading library (BSD, MIT, Apache 2.0)
-- **[Accompanist](https://github.com/google/accompanist)** - Compose utilities by Google (Apache
-  2.0)
 
 For complete license information, see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
@@ -250,7 +248,6 @@ fun MyScreen() {
   Material Design 컴포넌트 (Apache 2.0)
 - **[Lottie](https://github.com/airbnb/lottie-android)** - Airbnb의 애니메이션 라이브러리 (Apache 2.0)
 - **[Glide](https://github.com/bumptech/glide)** - 이미지 로딩 라이브러리 (BSD, MIT, Apache 2.0)
-- **[Accompanist](https://github.com/google/accompanist)** - Google의 Compose 유틸리티 (Apache 2.0)
 
 전체 라이선스 정보는 [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)를 참고하세요.
 

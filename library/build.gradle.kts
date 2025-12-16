@@ -100,7 +100,6 @@ dependencies {
 
     implementation(libs.lottie.compose)
     implementation(libs.glide.compose)
-    implementation(libs.accompanist.systemuicontroller)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
