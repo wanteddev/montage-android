@@ -19,12 +19,6 @@ Compose.
 At Wanted, we dream of a world where every working person can work more authentically. To take one
 step closer to that dream, we created this design system.
 
-### Features
-
-- 🎭 **Material Design 3** - Built on top of Material Design 3 guidelines
-- 🚀 **Jetpack Compose** - Fully built with Jetpack Compose
-- 📱 **Android Native** - Optimized for Android platform
-
 ### Requirements
 
 - Android API Level 26 (Android 8.0) or higher
@@ -146,12 +140,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 Montage Android는 Jetpack Compose로 구축된 최신 Android 디자인 시스템 라이브러리입니다.
 
 원티드가 꿈꿔온 세상은, 모든 일하는 사람이 더 나답게 일할 수 있는 세상입니다. 그 꿈에 한 걸음 더 다가가기 위해, 우리는 디자인 시스템을 만들었습니다.
-
-### 주요 기능
-
-- 🎭 **Material Design 3** - Material Design 3 가이드라인 기반
-- 🚀 **Jetpack Compose** - Jetpack Compose로 완전히 구축
-- 📱 **Android 네이티브** - Android 플랫폼에 최적화
 
 ### 요구사항
 
