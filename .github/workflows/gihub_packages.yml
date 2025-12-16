@@ -94,14 +94,14 @@ jobs:
           
           ## Changes
           - Published to GitHub Packages
-          - GroupId: com.wanteddev
+          - GroupId: com.wanted.android
           - ArtifactId: montage-android
           - Version: ${{env.VERSION_CODE}}
           
           ## Installation
           \`\`\`gradle
           dependencies {
-              implementation("com.wanteddev:montage-android:${{env.VERSION_CODE}}")
+              implementation("com.wanted.android:montage-android:${{env.VERSION_CODE}}")
           }
           \`\`\`
           EOF
