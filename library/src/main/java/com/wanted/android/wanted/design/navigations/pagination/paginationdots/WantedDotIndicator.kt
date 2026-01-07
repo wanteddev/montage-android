@@ -27,10 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.BorderType
 import com.wanted.android.wanted.design.base.getBorderModifier
 import com.wanted.android.wanted.design.navigations.pagination.paginationdots.WantedPaginationDotDefaults.IndicatorDotSize
@@ -186,9 +184,9 @@ private fun IndicatorDot(
 
     val backgroundColor by animateColorAsState(
         targetValue = if (currentIndex == index) {
-            colorResource(id = R.color.label_normal)
+            DesignSystemTheme.colors.labelNormal
         } else {
-            colorResource(id = R.color.label_normal).copy(OPACITY_16)
+            DesignSystemTheme.colors.labelNormal.copy(OPACITY_16)
         },
         animationSpec = tween(
             durationMillis = 200,
@@ -291,9 +289,9 @@ private fun IndicatorBorder(
 
     val backgroundColor by animateColorAsState(
         targetValue = if (currentIndex == index) {
-            colorResource(id = R.color.static_white)
+            DesignSystemTheme.colors.staticWhite
         } else {
-            colorResource(id = R.color.static_white).copy(alpha = OPACITY_52)
+            DesignSystemTheme.colors.staticWhite.copy(alpha = OPACITY_52)
         },
         animationSpec = tween(
             durationMillis = 200,
@@ -304,9 +302,9 @@ private fun IndicatorBorder(
 
     val borderColor by animateColorAsState(
         targetValue = if (currentIndex == index) {
-            colorResource(id = R.color.line_normal_neutral)
+            DesignSystemTheme.colors.lineNormalNeutral
         } else {
-            colorResource(id = R.color.line_normal_neutral).copy(OPACITY_8)
+            DesignSystemTheme.colors.lineNormalNeutral.copy(OPACITY_8)
         },
         animationSpec = tween(
             durationMillis = 200,

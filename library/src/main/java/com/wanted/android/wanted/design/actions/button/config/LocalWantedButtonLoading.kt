@@ -4,13 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.ButtonVariant
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 
 
 val LocalWantedButtonLoading = WantedButtonLoadingCompositionLocal()
@@ -43,7 +42,7 @@ internal class WantedButtonLoadingLoaderImpl : WantedButtonLoadingLoader {
         type: ButtonType,
         enabled: Boolean
     ): Color = when (type) {
-        ButtonType.ASSISTIVE -> colorResource(R.color.label_assistive)
+        ButtonType.ASSISTIVE -> DesignSystemTheme.colors.labelAssistive
         else -> LocalWantedButtonContent.current.getContentColor(shape, type, enabled)
     }
 }

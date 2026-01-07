@@ -30,18 +30,17 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedDropShadow
-import com.wanted.android.wanted.design.input.textinput.view.ComponentTitle
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectBottomSheet
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.input.select.view.WantedSelectBottomSheet
 import com.wanted.android.wanted.design.input.select.view.WantedSelectContentLayout
 import com.wanted.android.wanted.design.input.select.view.WantedSelectLayout
 import com.wanted.android.wanted.design.input.select.view.WantedSelectPlaceHolder
+import com.wanted.android.wanted.design.input.textinput.view.ComponentTitle
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
@@ -225,17 +224,15 @@ fun WantedSelect(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp),
-                    text = selectData?.text ?: "",
+                    text = selectData.text,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = WantedTextStyle(
-                        colorRes = if (enabled) {
-                            R.color.label_normal
-                        } else {
-                            R.color.label_alternative
-                        },
-                        style = DesignSystemTheme.typography.body1Regular
-                    )
+                    style = DesignSystemTheme.typography.body1Regular,
+                    color = if (enabled) {
+                        DesignSystemTheme.colors.labelNormal
+                    } else {
+                        DesignSystemTheme.colors.labelAlternative
+                    }
                 )
             }
         }
@@ -531,21 +528,21 @@ private fun WantedSelectImpl(
                             shape = RoundedCornerShape(12.dp),
                             color = when {
                                 negative || focused -> {
-                                    colorResource(id = R.color.background_normal_normal)
+                                    DesignSystemTheme.colors.backgroundNormalNormal
                                         .copy(alpha = OPACITY_43)
                                 }
 
-                                else -> colorResource(R.color.transparent)
+                                else -> DesignSystemTheme.colors.transparent
                             },
                             width = if (focused) 2.dp else 1.dp
                         )
                         .border(
                             shape = RoundedCornerShape(12.dp),
                             color = when {
-                                !enabled -> colorResource(R.color.line_normal_alternative)
-                                negative -> colorResource(R.color.status_negative).copy(OPACITY_43)
-                                focused -> colorResource(R.color.primary_normal).copy(OPACITY_43)
-                                else -> colorResource(R.color.line_normal_neutral)
+                                !enabled -> DesignSystemTheme.colors.lineNormalAlternative
+                                negative -> DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
+                                focused -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
+                                else -> DesignSystemTheme.colors.lineNormalNeutral
                             },
                             width = if (focused) 2.dp else 1.dp
                         )
@@ -554,7 +551,7 @@ private fun WantedSelectImpl(
                             if (enabled) {
                                 background
                             } else {
-                                colorResource(R.color.fill_alternative)
+                                DesignSystemTheme.colors.fillAlternative
                             }
                         )
                         .clickOnce(
@@ -600,7 +597,7 @@ private fun WantedSelectImpl(
                                     .size(24.dp)
                                     .padding(1.dp),
                                 painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
-                                tint = colorResource(id = R.color.status_negative),
+                                tint = DesignSystemTheme.colors.statusNegative,
                                 contentDescription = ""
                             )
                         }
@@ -616,13 +613,11 @@ private fun WantedSelectImpl(
             {
                 Text(
                     text = description,
-                    style = WantedTextStyle(
-                        colorRes = when {
-                            enabled && negative -> R.color.status_negative
-                            else -> R.color.label_alternative
-                        },
-                        style = DesignSystemTheme.typography.caption1Regular
-                    ),
+                    style = DesignSystemTheme.typography.caption1Regular,
+                    color = when {
+                        enabled && negative -> DesignSystemTheme.colors.statusNegative
+                        else -> DesignSystemTheme.colors.labelAlternative
+                    },
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -639,9 +634,9 @@ private fun getSelectRippleEffect(
     enabled: Boolean = true,
 ) = when {
     !enabled -> null
-    negative -> wantedRippleEffect(colorResource(id = R.color.status_negative))
-    focused -> wantedRippleEffect(colorResource(id = R.color.primary_normal))
-    else -> wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12))
+    negative -> wantedRippleEffect(DesignSystemTheme.colors.statusNegative)
+    focused -> wantedRippleEffect(DesignSystemTheme.colors.primaryNormal)
+    else -> wantedRippleEffect(DesignSystemTheme.colorsOpacity.labelNormalOpacity12)
 }
 
 val LocalWantedSelectBackground = WantedWantedSelectBackgroundCompositionLocal()

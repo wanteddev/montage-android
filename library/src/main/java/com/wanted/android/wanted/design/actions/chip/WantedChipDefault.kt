@@ -8,7 +8,6 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.OPACITY_5
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * data class WantedChipDefault
@@ -155,17 +154,17 @@ object WantedChipDefaults {
     ): Color = when (variant) {
         WantedChipContract.ChipVariant.Solid -> {
             when {
-                !isEnable -> colorResource(id = R.color.interaction_disable)
-                isActive -> colorResource(id = R.color.inverse_background)
-                else -> colorResource(id = R.color.fill_alternative)
+                !isEnable -> DesignSystemTheme.colors.interactionDisable
+                isActive -> DesignSystemTheme.colors.inverseBackground
+                else -> DesignSystemTheme.colors.fillAlternative
             }
         }
 
         WantedChipContract.ChipVariant.Outlined -> {
             when {
-                !isEnable -> colorResource(id = R.color.transparent)
-                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
-                else -> colorResource(id = R.color.transparent)
+                !isEnable -> DesignSystemTheme.colors.transparent
+                isActive -> DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_5)
+                else -> DesignSystemTheme.colors.transparent
             }
         }
     }
@@ -178,17 +177,17 @@ object WantedChipDefaults {
     ): Color = when (variant) {
         WantedChipContract.ChipVariant.Solid -> {
             when {
-                !isEnable -> colorResource(id = R.color.transparent)
-                isActive -> colorResource(id = R.color.transparent)
-                else -> colorResource(id = R.color.transparent)
+                !isEnable -> DesignSystemTheme.colors.transparent
+                isActive -> DesignSystemTheme.colors.transparent
+                else -> DesignSystemTheme.colors.transparent
             }
         }
 
         WantedChipContract.ChipVariant.Outlined -> {
             when {
-                !isEnable -> colorResource(id = R.color.line_normal_neutral)
-                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_43)
-                else -> colorResource(id = R.color.line_normal_neutral)
+                !isEnable -> DesignSystemTheme.colors.lineNormalNeutral
+                isActive -> DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_43)
+                else -> DesignSystemTheme.colors.lineNormalNeutral
             }
         }
     }
@@ -199,9 +198,8 @@ object WantedChipDefaults {
         variant: WantedChipContract.ChipVariant = LocalWantedChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
-    ): TextStyle = WantedTextStyle(
-        colorRes = getChipActionTextColor(variant, isActive, isEnable),
-        style = getChipActionTextStyle(size)
+    ): TextStyle = getChipActionTextStyle(size).copy(
+        color = getChipActionTextColor(variant, isActive, isEnable)
     )
 
 
@@ -210,21 +208,21 @@ object WantedChipDefaults {
         variant: WantedChipContract.ChipVariant = LocalWantedChipVariant.current,
         isActive: Boolean = LocalWantedChipActive.current,
         isEnable: Boolean = LocalWantedChipEnable.current
-    ): Int {
+    ): Color {
         return when (variant) {
             WantedChipContract.ChipVariant.Solid -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.inverse_label
-                    else -> R.color.label_normal
+                    !isEnable -> DesignSystemTheme.colors.labelDisable
+                    isActive -> DesignSystemTheme.colors.inverseLabel
+                    else -> DesignSystemTheme.colors.labelNormal
                 }
             }
 
             WantedChipContract.ChipVariant.Outlined -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.primary_normal
-                    else -> R.color.label_normal
+                    !isEnable -> DesignSystemTheme.colors.labelDisable
+                    isActive -> DesignSystemTheme.colors.primaryNormal
+                    else -> DesignSystemTheme.colors.labelNormal
                 }
             }
         }

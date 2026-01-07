@@ -24,7 +24,6 @@ import com.wanted.android.wanted.design.util.OPACITY_28
 import com.wanted.android.wanted.design.util.OPACITY_35
 import com.wanted.android.wanted.design.util.OPACITY_52
 import com.wanted.android.wanted.design.util.OPACITY_61
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 /**
@@ -67,14 +66,11 @@ fun WantedPageCounter(
             Text(
                 text = currentIndex.toString(),
                 maxLines = 1,
-                style = WantedTextStyle(
-                    colorRes = R.color.label_alternative,
-                    style = when (size) {
-                        WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Bold
-                        WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Bold
-                    }
-                ),
-                color = colorResource(R.color.static_white)
+                style = when (size) {
+                    WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Bold
+                    WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Bold
+                },
+                color = DesignSystemTheme.colors.staticWhite
 
             )
         },
@@ -82,17 +78,11 @@ fun WantedPageCounter(
             Text(
                 text = totalPageCount.toString(),
                 maxLines = 1,
-                style = WantedTextStyle(
-                    colorRes = R.color.label_alternative,
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_alternative,
-                        style = when (size) {
-                            WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Bold
-                            WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Bold
-                        }
-                    )
-                ),
-                color = colorResource(R.color.static_white)
+                style = when (size) {
+                    WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Bold
+                    WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Bold
+                },
+                color = DesignSystemTheme.colors.staticWhite
             )
         }
     )
@@ -111,8 +101,8 @@ private fun PageCounterLayout(
             .background(colorResource(R.color.cool_neutral_30).copy(OPACITY_61))
     } else {
         Modifier
-            .background(colorResource(R.color.static_white).copy(OPACITY_35))
-            .background(colorResource(R.color.static_black).copy(OPACITY_28))
+            .background(DesignSystemTheme.colors.staticWhite.copy(OPACITY_35))
+            .background(DesignSystemTheme.colors.staticBlack.copy(OPACITY_28))
     }
 
     Row(
@@ -132,14 +122,11 @@ private fun PageCounterLayout(
         Text(
             modifier = Modifier.alpha(if (isAlternative) OPACITY_28 else OPACITY_52),
             text = "/",
-            style = WantedTextStyle(
-                colorRes = R.color.label_alternative,
-                style = when (size) {
-                    WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Regular
-                    WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Regular
-                }
-            ),
-            color = colorResource(R.color.static_white)
+            style = when (size) {
+                WantedPageCounterSize.Small -> DesignSystemTheme.typography.label2Regular
+                WantedPageCounterSize.Normal -> DesignSystemTheme.typography.body2Regular
+            },
+            color = DesignSystemTheme.colors.staticWhite
         )
 
         totalPageCount()

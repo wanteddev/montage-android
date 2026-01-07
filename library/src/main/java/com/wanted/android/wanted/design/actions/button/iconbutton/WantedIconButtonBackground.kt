@@ -24,9 +24,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_22
 import com.wanted.android.wanted.design.util.OPACITY_35
 import com.wanted.android.wanted.design.util.OPACITY_5
@@ -112,7 +112,7 @@ private fun Modifier.background(
     val localDensity = LocalDensity.current
     val modifier = when {
         !enabled -> {
-            val color = colorResource(id = R.color.fill_alternative)
+            val color = DesignSystemTheme.colors.fillAlternative
             Modifier.drawBehind {
                 drawCircle(
                     color = color,
@@ -137,8 +137,8 @@ private fun Modifier.background(
         }
 
         else -> {
-            val color = colorResource(id = R.color.static_white).copy(OPACITY_35)
-            val color1 = colorResource(id = R.color.static_black).copy(OPACITY_5)
+            val color = DesignSystemTheme.colors.staticWhite.copy(OPACITY_35)
+            val color1 = DesignSystemTheme.colors.staticBlack.copy(OPACITY_5)
             Modifier.drawBehind {
                 drawCircle(
                     color = color,

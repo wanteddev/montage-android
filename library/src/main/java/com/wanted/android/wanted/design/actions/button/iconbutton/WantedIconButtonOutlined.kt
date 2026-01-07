@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -58,12 +57,12 @@ fun WantedIconButtonOutlined(
     size: WantedIconButtonSize,
     modifier: Modifier,
     enabled: Boolean = true,
-    outlineColor: Color = colorResource(id = R.color.line_normal_neutral),
-    disableOutlineColor: Color = colorResource(id = R.color.line_normal_neutral),
-    tint: Color = colorResource(id = R.color.label_normal),
-    disableTint: Color = colorResource(id = R.color.label_disable),
-    background: Color = colorResource(id = R.color.transparent),
-    disableBackground: Color = colorResource(id = R.color.transparent),
+    outlineColor: Color = DesignSystemTheme.colors.lineNormalNeutral,
+    disableOutlineColor: Color = DesignSystemTheme.colors.lineNormalNeutral,
+    tint: Color = DesignSystemTheme.colors.labelNormal,
+    disableTint: Color = DesignSystemTheme.colors.labelDisable,
+    background: Color = DesignSystemTheme.colors.transparent,
+    disableBackground: Color = DesignSystemTheme.colors.transparent,
     onClick: () -> Unit = {},
 ) {
     WantedIconButtonOutlined(
@@ -117,12 +116,12 @@ fun WantedIconButtonOutlined(
     modifier: Modifier = Modifier,
     padding: Dp = 10.dp,
     enabled: Boolean = true,
-    outlineColor: Color = colorResource(id = R.color.line_normal_neutral),
-    disableOutlineColor: Color = colorResource(id = R.color.line_normal_neutral),
-    tint: Color = colorResource(id = R.color.label_normal),
-    disableTint: Color = colorResource(id = R.color.label_disable),
-    background: Color = colorResource(id = R.color.transparent),
-    disableBackground: Color = colorResource(id = R.color.transparent),
+    outlineColor: Color = DesignSystemTheme.colors.lineNormalNeutral,
+    disableOutlineColor: Color = DesignSystemTheme.colors.lineNormalNeutral,
+    tint: Color = DesignSystemTheme.colors.labelNormal,
+    disableTint: Color = DesignSystemTheme.colors.labelDisable,
+    background: Color = DesignSystemTheme.colors.transparent,
+    disableBackground: Color = DesignSystemTheme.colors.transparent,
     onClick: () -> Unit = {},
 ) {
     Icon(

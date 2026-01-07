@@ -76,7 +76,7 @@ fun WantedAvatar(
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
     pushBadge: Boolean = false,
-    borderColor: Color = colorResource(id = R.color.background_normal_normal),
+    borderColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     onClick: (() -> Unit)? = null
 ) {
     when (type) {
@@ -137,7 +137,7 @@ internal fun WantedAvatarPerson(
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
     isIcon: Boolean = false,
-    borderColor: Color = colorResource(id = R.color.background_normal_normal),
+    borderColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     pushBadge: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
@@ -191,7 +191,7 @@ private fun WantedAvatar(
     isDrawableRes: Boolean = false,
     isIcon: Boolean = false,
     isGroup: Boolean = false,
-    borderColor: Color = colorResource(id = R.color.background_normal_normal),
+    borderColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     pushBadge: Boolean,
     onClick: (() -> Unit)? = null
 ) {

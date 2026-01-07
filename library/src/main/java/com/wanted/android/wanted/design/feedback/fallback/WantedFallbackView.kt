@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,7 +33,6 @@ import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * 이미지, 제목, 설명, 버튼 등을 조합하여 비어 있는 상태를 안내하는 컴포넌트입니다.
@@ -291,9 +289,8 @@ private fun WantedFallbackLayout(
             ) {
                 heading?.let {
                     ProvideTextStyle(
-                        value = WantedTextStyle(
-                            colorRes = R.color.label_normal,
-                            style = DesignSystemTheme.typography.heading2Bold
+                        value = DesignSystemTheme.typography.heading2Bold.copy(
+                            color = DesignSystemTheme.colors.labelNormal
                         )
                     ) {
                         heading()
@@ -302,9 +299,8 @@ private fun WantedFallbackLayout(
 
                 description?.let {
                     ProvideTextStyle(
-                        value = WantedTextStyle(
-                            colorRes = R.color.label_alternative,
-                            style = DesignSystemTheme.typography.body1ReadingRegular
+                        value = DesignSystemTheme.typography.body1ReadingRegular.copy(
+                            color = DesignSystemTheme.colors.labelAlternative
                         )
                     ) {
                         description()
@@ -353,7 +349,7 @@ private fun WantedFallbackViewPreview() {
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(CircleShape)
-                                .background(colorResource(id = R.color.label_disable))
+                                .background(DesignSystemTheme.colors.labelDisable)
                                 .padding(10.dp),
                             painter = painterResource(id = R.drawable.icon_normal_camera_fill),
                             contentScale = ContentScale.Crop,
@@ -393,7 +389,7 @@ private fun WantedFallbackViewHorizontalPreview() {
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(CircleShape)
-                                .background(colorResource(id = R.color.label_disable))
+                                .background(DesignSystemTheme.colors.labelDisable)
                                 .padding(10.dp),
                             painter = painterResource(id = R.drawable.icon_normal_camera_fill),
                             contentScale = ContentScale.Crop,
@@ -433,7 +429,7 @@ private fun WantedFallbackViewVerticalPreview() {
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(CircleShape)
-                                .background(colorResource(id = R.color.label_disable))
+                                .background(DesignSystemTheme.colors.labelDisable)
                                 .padding(10.dp),
                             painter = painterResource(id = R.drawable.icon_normal_camera_fill),
                             contentScale = ContentScale.Crop,

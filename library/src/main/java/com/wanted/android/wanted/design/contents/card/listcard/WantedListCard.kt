@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
@@ -110,7 +109,7 @@ fun WantedListCard(
                                 .height(64.dp)
                                 .aspectRatio(cardDefault.ratio)
                                 .background(
-                                    color = colorResource(id = R.color.fill_normal)
+                                    color = DesignSystemTheme.colors.fillNormal
                                         .copy(OPACITY_8)
                                 ),
                         )
@@ -209,10 +208,10 @@ private fun WantedCardHorizontalLayout(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = colorResource(id = R.color.fill_alternative))
+                .background(color = DesignSystemTheme.colors.fillAlternative)
                 .border(
                     width = 1.dp,
-                    color = colorResource(id = R.color.line_solid_alternative),
+                    color = DesignSystemTheme.colors.lineSolidAlternative,
                     shape = RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.TopStart
@@ -322,7 +321,7 @@ private fun WantedCardPreview() {
                                 Icon(
                                     painter = painterResource(id = R.drawable.icon_normal_bookmark),
                                     contentDescription = "",
-                                    tint = colorResource(R.color.static_white)
+                                    tint = DesignSystemTheme.colors.staticWhite
                                 )
                             },
                             onClick = {}

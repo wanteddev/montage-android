@@ -6,6 +6,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
 
@@ -83,8 +84,8 @@ internal class WantedButtonContentLoaderImpl : WantedButtonContentLoader {
         enabled: Boolean
     ): Color = when (variant) {
         ButtonVariant.SOLID -> getSolidBackgroundColor(type, enabled)
-        ButtonVariant.OUTLINED -> colorResource(id = R.color.transparent)
-        ButtonVariant.TEXT -> colorResource(id = R.color.transparent)
+        ButtonVariant.OUTLINED -> DesignSystemTheme.colors.transparent
+        ButtonVariant.TEXT -> DesignSystemTheme.colors.transparent
     }
 
     @Composable

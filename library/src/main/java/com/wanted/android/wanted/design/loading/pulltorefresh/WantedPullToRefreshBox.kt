@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.loading.pulltorefresh
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.RepeatMode
@@ -84,13 +85,6 @@ fun WantedPullToRefreshBox(
     var isRefresh by remember(isRefreshing) { mutableStateOf(isRefreshing) }
     var isPullEnd by remember { mutableStateOf(true) }
     val density = LocalDensity.current
-    val animateTransitionY by animateFloatAsState(
-        when {
-            isRefresh -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 2).toPx() }
-            isPullEnd -> 0f
-            else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 3).toPx() }
-        }, label = "animateTransitionY"
-    )
 
     // Alpha 애니메이션
     val alpha by rememberInfiniteTransition(label = "").animateFloat(
@@ -107,12 +101,12 @@ fun WantedPullToRefreshBox(
     )
 
     // Refresh 상태 관리
-    LaunchedEffect(state.distanceFraction) {
+    LaunchedEffect(state.distanceFraction, state.isAnimating) {
         if (state.distanceFraction <= 0f) {
             isPullEnd = false
         }
 
-        if (!isRefresh && state.distanceFraction > 1.1f) {
+        if (state.isAnimating && !isRefresh && state.distanceFraction > 1.1f) {
             isRefresh = true
             scope.launch {
                 scale.animateTo(
@@ -135,7 +129,7 @@ fun WantedPullToRefreshBox(
         modifier = modifier,
         isRefreshing = isRefresh,
         state = state,
-        onRefresh = onRefresh,
+        onRefresh = {},
         indicator = {
             RefreshIndicator(
                 state = state,
@@ -151,11 +145,23 @@ fun WantedPullToRefreshBox(
                 .align(Alignment.TopCenter)
                 .graphicsLayer {
                     translationY = when {
-                        isRefresh -> animateTransitionY
+                        isRefresh -> {
+                            val result = state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 2).toPx() }
+                            Log.d("WantedPullToRefreshBox", "animateTransitionY isRefresh ${state.distanceFraction}  $result")
+                            state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 2).toPx() }
+                        }
                         // 들어갈때 Container 위치
-                        isPullEnd -> state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
+                        isPullEnd -> {
+                            val result = state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
+                            Log.d("WantedPullToRefreshBox", "animateTransitionY isPullEnd ${state.distanceFraction}  $result")
+                            state.distanceFraction * (SIZE_HEIGHT * 0.5f).toPx()
+                        }
                         // 땡겼을때 Container 위치
-                        else -> state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 3).toPx() }
+                        else -> {
+                            val result = state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 3).toPx() }
+                            Log.d("WantedPullToRefreshBox", "animateTransitionY else  ${state.distanceFraction}  $result")
+                            state.distanceFraction * with(density) { ((SIZE_HEIGHT + INDICATOR_PADDING) * 3).toPx() }
+                        }
                     }
                     clip = true
                 }

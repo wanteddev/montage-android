@@ -3,14 +3,13 @@ package com.wanted.android.wanted.design.presentation.modal.view
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
-import com.wanted.android.wanted.design.util.ButtonVariant
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
+import com.wanted.android.wanted.design.util.ButtonVariant
 
 
 @Composable
@@ -50,7 +49,7 @@ internal fun WantedAlertDialogButton(
                     type = ButtonType.ASSISTIVE,
                     size = ButtonSize.SMALL,
                 ).copy(
-                    contentColor = colorResource(id = R.color.status_negative)
+                    contentColor = DesignSystemTheme.colors.statusNegative
                 ),
                 onClick = { onClick() }
             )

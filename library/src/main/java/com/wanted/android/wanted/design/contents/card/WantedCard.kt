@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
@@ -177,10 +176,10 @@ private fun WantedCardLayout(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = colorResource(id = R.color.fill_alternative))
+                .background(color = DesignSystemTheme.colors.fillAlternative)
                 .border(
                     width = 1.dp,
-                    color = colorResource(id = R.color.line_solid_alternative),
+                    color = DesignSystemTheme.colors.lineSolidAlternative,
                     shape = RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.TopStart
@@ -304,7 +303,7 @@ private fun WantedCardSkeletonPreview() {
                     overlayToggleIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_normal_bookmark_fill),
-                            tint = colorResource(R.color.primary_normal),
+                            tint = DesignSystemTheme.colors.primaryNormal,
                             contentDescription = ""
                         )
                     }

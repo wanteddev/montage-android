@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
@@ -129,7 +128,7 @@ fun WantedSegmentedControlOutlined(
                 .border(
                     width = 1.dp,
                     shape = RoundedCornerShape(10.dp),
-                    color = colorResource(id = R.color.line_normal_normal)
+                    color = DesignSystemTheme.colors.lineNormalNormal
                 ),
             horizontalArrangement = Arrangement.spacedBy(-(1).dp)
         ) {
@@ -152,7 +151,7 @@ fun WantedSegmentedControlOutlined(
                     itemCount - 1 -> Unit
                     else -> {
                         VerticalDivider(
-                            color = colorResource(id = R.color.line_normal_normal)
+                            color = DesignSystemTheme.colors.lineNormalNormal
                         )
                     }
                 }

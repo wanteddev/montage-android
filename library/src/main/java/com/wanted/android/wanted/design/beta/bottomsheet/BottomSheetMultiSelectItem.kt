@@ -19,14 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 fun BottomSheetMultiSelectItem(
@@ -51,18 +49,16 @@ fun BottomSheetMultiSelectItem(
                 .wrapContentHeight()
                 .padding(vertical = 12.dp),
             text = text,
-            style = WantedTextStyle(
-                colorRes = if (isSelect) {
-                    R.color.label_strong
-                } else {
-                    R.color.label_neutral
-                },
-                style = if (isSelect) {
-                    DesignSystemTheme.typography.body1Bold
-                } else {
-                    DesignSystemTheme.typography.body1Medium
-                }
-            )
+            style = if (isSelect) {
+                DesignSystemTheme.typography.body1Bold
+            } else {
+                DesignSystemTheme.typography.body1Medium
+            },
+            color = if (isSelect) {
+                DesignSystemTheme.colors.labelStrong
+            } else {
+                DesignSystemTheme.colors.labelNeutral
+            }
         )
 
 
@@ -72,9 +68,9 @@ fun BottomSheetMultiSelectItem(
                 .clip(CircleShape)
                 .background(
                     color = if (isSelect) {
-                        colorResource(id = R.color.primary_normal)
+                        DesignSystemTheme.colors.primaryNormal
                     } else {
-                        colorResource(id = R.color.transparent)
+                        DesignSystemTheme.colors.transparent
                     },
                     shape = CircleShape
                 )
@@ -82,9 +78,9 @@ fun BottomSheetMultiSelectItem(
                     shape = CircleShape,
                     width = 1.5.dp,
                     color = if (isSelect) {
-                        colorResource(id = R.color.transparent)
+                        DesignSystemTheme.colors.transparent
                     } else {
-                        colorResource(id = R.color.line_normal_neutral)
+                        DesignSystemTheme.colors.lineNormalNeutral
                     }
                 ),
             contentAlignment = Alignment.Center
@@ -95,7 +91,7 @@ fun BottomSheetMultiSelectItem(
                         .size(16.dp),
                     painter = painterResource(id = R.drawable.icon_normal_check),
                     contentDescription = "",
-                    tint = colorResource(id = R.color.static_white)
+                    tint = DesignSystemTheme.colors.staticWhite
                 )
             }
 

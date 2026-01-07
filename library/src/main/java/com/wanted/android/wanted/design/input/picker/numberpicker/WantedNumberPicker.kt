@@ -41,10 +41,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * WantedNumberPicker
@@ -100,9 +98,8 @@ fun WantedNumberPicker(
         initialPage = itemList.indexOf(selectedValue).let { if (it == -1) 0 else it },
         initialPageOffsetFraction = 0f
     ) { itemList.size },
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = R.color.label_normal,
-        style    = DesignSystemTheme.typography.heading1Medium
+    textStyle: TextStyle = DesignSystemTheme.typography.heading1Medium.copy(
+        color = DesignSystemTheme.colors.labelNormal
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
@@ -187,9 +184,8 @@ fun WantedNumberPicker(
     ) {
         itemList.size
     },
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = R.color.label_normal,
-        style = DesignSystemTheme.typography.heading1Medium
+    textStyle: TextStyle = DesignSystemTheme.typography.heading1Medium.copy(
+        color = DesignSystemTheme.colors.labelNormal
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
@@ -221,9 +217,8 @@ fun WantedStringPicker(
         initialPage = selectedIndex,
         initialPageOffsetFraction = 0f
     ) { itemList.size },
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = R.color.label_normal,
-        style    = DesignSystemTheme.typography.heading1Medium
+    textStyle: TextStyle = DesignSystemTheme.typography.heading1Medium.copy(
+        color = DesignSystemTheme.colors.labelNormal
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
@@ -338,18 +333,12 @@ private fun PickerContent(
             },
         text = title,
         textAlign = TextAlign.Center,
-        style = WantedTextStyle(
-            colorRes = if (enabled) {
-                if (pagerState.currentPage == page) {
-                    R.color.label_normal
-                } else {
-                    R.color.label_assistive
-                }
-            } else {
-                R.color.label_disable
-            },
-            style = DesignSystemTheme.typography.heading1Medium
-        )
+        style = DesignSystemTheme.typography.heading1Medium,
+        color = when {
+            !enabled -> DesignSystemTheme.colors.labelDisable
+            pagerState.currentPage == page -> DesignSystemTheme.colors.labelNormal
+            else -> DesignSystemTheme.colors.labelAssistive
+        }
     )
 }
 

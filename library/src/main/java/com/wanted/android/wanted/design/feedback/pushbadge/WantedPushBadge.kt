@@ -22,13 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgePosition
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeSize
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeVariant
@@ -69,8 +67,8 @@ fun WantedPushBadge(
     size: PushBadgeSize = PushBadgeSize.XSmall,
     position: PushBadgePosition = PushBadgePosition.TopEnd,
     count: String = "",
-    background: Color = colorResource(id = R.color.primary_normal),
-    contentColor: Color = colorResource(id = R.color.static_white)
+    background: Color = DesignSystemTheme.colors.primaryNormal,
+    contentColor: Color = DesignSystemTheme.colors.staticWhite
 ) {
     WantedPushBadgeBorder(
         modifier = modifier,
@@ -93,9 +91,9 @@ fun WantedPushBadgeBorder(
     count: String = "",
     bordered: Boolean = true,
     borderWidth: Dp = 2.dp,
-    background: Color = colorResource(id = R.color.primary_normal),
-    contentColor: Color = colorResource(id = R.color.static_white),
-    borderColor: Color = colorResource(id = R.color.static_white)
+    background: Color = DesignSystemTheme.colors.primaryNormal,
+    contentColor: Color = DesignSystemTheme.colors.staticWhite,
+    borderColor: Color = DesignSystemTheme.colors.staticWhite
 ) {
     when (variant) {
         PushBadgeVariant.Dot -> {
@@ -147,7 +145,7 @@ private fun PushBadgeDot(
     background: Color,
     bordered: Boolean = true,
     borderWidth: Dp = if (!bordered) 0.dp else 1.dp,
-    borderColor: Color = colorResource(id = R.color.static_white),
+    borderColor: Color = DesignSystemTheme.colors.staticWhite,
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
@@ -224,7 +222,7 @@ private fun PushBadgeImpl(
     contentColor: Color,
     bordered: Boolean = true,
     borderWidth: Dp = 2.dp,
-    borderColor: Color = colorResource(id = R.color.static_white),
+    borderColor: Color = DesignSystemTheme.colors.staticWhite,
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current

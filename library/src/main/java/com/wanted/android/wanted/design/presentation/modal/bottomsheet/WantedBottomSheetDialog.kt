@@ -38,15 +38,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -123,7 +122,7 @@ fun WantedBottomSheetDialog(
 fun WantedBottomSheetLayout(
     modalSize: ModalSize,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = colorResource(R.color.background_elevated_normal),
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     shadowElevation: Dp = 4.dp,
     topBar: @Composable (() -> Unit)?,
     bottomBar: @Composable (() -> Unit)?,
@@ -134,7 +133,7 @@ fun WantedBottomSheetLayout(
         modifier = modifier,
         shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
         shadowElevation = shadowElevation,
-        color = colorResource(id = R.color.background_normal_normal)
+        color = DesignSystemTheme.colors.backgroundNormalNormal
     ) {
         Column(Modifier.fillMaxWidth()) {
             WantedDialogLayout(

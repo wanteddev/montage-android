@@ -27,7 +27,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -43,7 +42,6 @@ import com.wanted.android.wanted.design.navigations.topbar.view.WantedDisplayTop
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedOverLayoutDivider
 import com.wanted.android.wanted.design.navigations.topbar.view.WantedTopAppBarLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedTopAppBar
@@ -75,7 +73,7 @@ fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
-    background: Color = colorResource(R.color.background_normal_normal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
@@ -91,7 +89,7 @@ fun WantedTopAppBar(
             modifier
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(background, colorResource(R.color.transparent))
+                        colors = listOf(background, DesignSystemTheme.colors.transparent)
                     )
                 )
                 .padding(bottom = 16.dp)
@@ -179,7 +177,7 @@ fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
-    background: Color = colorResource(R.color.background_normal_normal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -253,7 +251,7 @@ fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
-    background: Color = colorResource(R.color.background_normal_normal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     scrollableState: ScrollableState? = null,
     titleAlignCenter: Boolean = false,
     title: String = "",
@@ -284,7 +282,7 @@ fun WantedSearchTopAppBar(
     value: TextFieldValue,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     scrollableState: ScrollableState? = null,
     placeholder: String = "",
     enabled: Boolean = true,
@@ -295,9 +293,12 @@ fun WantedSearchTopAppBar(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     focused: State<Boolean>? = null,
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-        style = DesignSystemTheme.typography.body1Regular
+    textStyle: TextStyle = DesignSystemTheme.typography.body1Regular.copy(
+        color = if (enabled) {
+            DesignSystemTheme.colors.labelNormal
+        } else {
+            DesignSystemTheme.colors.labelAlternative
+        }
     ),
     cursorBrush: Brush = SolidColor(textStyle.color),
     focusRequester: FocusRequester? = null,
@@ -350,7 +351,7 @@ fun WantedSearchTopAppBar(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     scrollableState: ScrollableState? = null,
     placeholder: String = "",
     enabled: Boolean = true,
@@ -361,9 +362,12 @@ fun WantedSearchTopAppBar(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     focused: State<Boolean>? = null,
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-        style = DesignSystemTheme.typography.body1Regular
+    textStyle: TextStyle = DesignSystemTheme.typography.body1Regular.copy(
+        color = if (enabled) {
+            DesignSystemTheme.colors.labelNormal
+        } else {
+            DesignSystemTheme.colors.labelAlternative
+        }
     ),
     cursorBrush: Brush = SolidColor(textStyle.color),
     focusRequester: FocusRequester? = null,

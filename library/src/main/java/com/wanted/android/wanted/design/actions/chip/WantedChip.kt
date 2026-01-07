@@ -27,23 +27,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
+import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.chipIconSize
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.chipPadding
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.chipTextPadding
-import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
-import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.getchipRadius
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.OPACITY_22
 import com.wanted.android.wanted.design.util.OPACITY_5
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
@@ -240,7 +238,7 @@ fun WantedChip(
                 interactionSource = interactionSource,
                 indication = if (chipDefault.variant == ChipVariant.Solid) {
                     wantedRippleEffect(
-                        color = colorResource(id = R.color.label_normal).copy(
+                        color = DesignSystemTheme.colors.labelNormal.copy(
                             OPACITY_12
                         )
                     )
@@ -318,7 +316,7 @@ private fun ChipPreView() {
     DesignSystemTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = colorResource(id = R.color.background_normal_normal)
+            color = DesignSystemTheme.colors.backgroundNormalNormal
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
@@ -634,12 +632,11 @@ private fun ChipPreView() {
                                     isActive = false,
                                     size = ChipSize.Small,
                                     isEnable = true,
-                                    textStyle = WantedTextStyle(
-                                        colorRes = R.color.status_negative,
-                                        style = DesignSystemTheme.typography.label1Medium
+                                    textStyle = DesignSystemTheme.typography.label1Medium.copy(
+                                        DesignSystemTheme.colors.statusNegative
                                     ),
-                                    iconColor = colorResource(id = R.color.status_negative),
-                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                    iconColor = DesignSystemTheme.colors.statusNegative,
+                                    backgroundColor = DesignSystemTheme.colors.statusNegative
                                         .copy(OPACITY_12)
                                 )
                             )
@@ -652,12 +649,11 @@ private fun ChipPreView() {
                                     isActive = false,
                                     size = ChipSize.Small,
                                     isEnable = true,
-                                    textStyle = WantedTextStyle(
-                                        colorRes = R.color.status_negative,
-                                        style = DesignSystemTheme.typography.label1Medium
+                                    textStyle = DesignSystemTheme.typography.label1Medium.copy(
+                                        DesignSystemTheme.colors.statusNegative
                                     ),
-                                    iconColor = colorResource(id = R.color.status_negative),
-                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                    iconColor = DesignSystemTheme.colors.statusNegative,
+                                    backgroundColor = DesignSystemTheme.colors.statusNegative
                                         .copy(OPACITY_12)
                                 )
                             )
@@ -668,14 +664,13 @@ private fun ChipPreView() {
                                     isActive = false,
                                     size = ChipSize.Small,
                                     isEnable = true,
-                                    textStyle = WantedTextStyle(
-                                        colorRes = R.color.status_negative,
-                                        style = DesignSystemTheme.typography.label1Medium
+                                    textStyle = DesignSystemTheme.typography.label1Medium.copy(
+                                        DesignSystemTheme.colors.statusNegative
                                     ),
-                                    iconColor = colorResource(id = R.color.status_negative),
-                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                    iconColor = DesignSystemTheme.colors.statusNegative,
+                                    backgroundColor = DesignSystemTheme.colors.statusNegative
                                         .copy(OPACITY_12),
-                                    borderColor = colorResource(id = R.color.status_negative)
+                                    borderColor = DesignSystemTheme.colors.statusNegative
                                         .copy(OPACITY_22)
                                 )
                             )
@@ -688,16 +683,14 @@ private fun ChipPreView() {
                                     isActive = false,
                                     size = ChipSize.Small,
                                     isEnable = false,
-                                    textStyle = WantedTextStyle(
-                                        colorRes = R.color.status_negative,
-                                        style = DesignSystemTheme.typography.label1Medium,
-                                        alpha = OPACITY_12
+                                    textStyle = DesignSystemTheme.typography.label1Medium.copy(
+                                        DesignSystemTheme.colors.statusNegative.copy(OPACITY_12)
                                     ),
-                                    iconColor = colorResource(id = R.color.status_negative)
+                                    iconColor = DesignSystemTheme.colors.statusNegative
                                         .copy(OPACITY_12),
-                                    backgroundColor = colorResource(id = R.color.status_negative)
+                                    backgroundColor = DesignSystemTheme.colors.statusNegative
                                         .copy(OPACITY_5),
-                                    borderColor = colorResource(id = R.color.status_negative)
+                                    borderColor = DesignSystemTheme.colors.statusNegative
                                         .copy(OPACITY_12)
                                 )
                             )

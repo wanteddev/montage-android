@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.state.ToggleableState
@@ -171,22 +170,22 @@ private fun WantedCheckBoxImpl(
                         width = 1.5.dp,
                         color = when {
                             enabled && checkState == CheckBoxState.Unchecked -> {
-                                colorResource(id = R.color.line_normal_normal)
+                                DesignSystemTheme.colors.lineNormalNormal
                             }
 
                             !enabled && checkState == CheckBoxState.Unchecked -> {
-                                colorResource(id = R.color.line_normal_normal).copy(0.1f)
+                                DesignSystemTheme.colors.lineNormalNormal.copy(0.1f)
                             }
 
-                            else -> colorResource(id = R.color.transparent)
+                            else -> DesignSystemTheme.colors.transparent
                         },
                         shape = shape
                     )
                     .background(
                         color = when {
-                            checkState == CheckBoxState.Unchecked -> colorResource(id = R.color.transparent)
-                            enabled -> colorResource(id = R.color.primary_normal)
-                            else -> colorResource(id = R.color.primary_normal).copy(OPACITY_43)
+                            checkState == CheckBoxState.Unchecked -> DesignSystemTheme.colors.transparent
+                            enabled -> DesignSystemTheme.colors.primaryNormal
+                            else -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
                         }
                     ),
                 contentAlignment = Alignment.Center
@@ -205,7 +204,7 @@ private fun WantedCheckBoxImpl(
                         ),
                         contentDescription = "checkBox_check",
                         colorFilter = ColorFilter.tint(
-                            color = colorResource(id = R.color.static_white)
+                            color = DesignSystemTheme.colors.staticWhite
                         )
                     )
                 }
@@ -234,9 +233,9 @@ fun WantedCheckBox(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: CheckboxColors = CheckboxDefaults.colors(
-        uncheckedColor = colorResource(id = R.color.line_normal_neutral),
-        checkedColor = colorResource(id = R.color.primary_normal),
-        checkmarkColor = colorResource(id = R.color.static_white)
+        uncheckedColor = DesignSystemTheme.colors.lineNormalNeutral,
+        checkedColor = DesignSystemTheme.colors.primaryNormal,
+        checkmarkColor = DesignSystemTheme.colors.staticWhite
     ),
     onCheckedChange: (Boolean) -> Unit = {},
 ) {

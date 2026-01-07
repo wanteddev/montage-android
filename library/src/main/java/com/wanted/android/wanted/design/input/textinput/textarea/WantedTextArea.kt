@@ -52,7 +52,6 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import java.text.BreakIterator
 
 
@@ -173,7 +172,7 @@ fun WantedTextArea(
                         textFieldValueState = newTextFieldValueState
 
                         val stringChangedSinceLastInvocation =
-                                lastTextValue != newTextFieldValueState.text
+                            lastTextValue != newTextFieldValueState.text
                         lastTextValue = newTextFieldValueState.text
 
                         if (stringChangedSinceLastInvocation) {
@@ -204,7 +203,7 @@ fun WantedTextArea(
                         textFieldValueState = newTextFieldValueState
 
                         val stringChangedSinceLastInvocation =
-                                lastTextValue != newTextFieldValueState.text
+                            lastTextValue != newTextFieldValueState.text
                         lastTextValue = newTextFieldValueState.text
 
                         if (stringChangedSinceLastInvocation) {
@@ -219,13 +218,11 @@ fun WantedTextArea(
             {
                 Text(
                     text = description,
-                    style = WantedTextStyle(
-                        colorRes = when {
-                            enabled && negative -> R.color.status_negative
-                            else -> R.color.label_alternative
-                        },
-                        style = DesignSystemTheme.typography.caption1Regular
-                    ),
+                    style = DesignSystemTheme.typography.caption1Regular,
+                    color = when {
+                        enabled && negative -> DesignSystemTheme.colors.statusNegative
+                        else -> DesignSystemTheme.colors.labelAlternative
+                    },
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -330,13 +327,11 @@ fun WantedTextArea(
             {
                 Text(
                     text = description,
-                    style = WantedTextStyle(
-                        colorRes = when {
-                            enabled && negative -> R.color.status_negative
-                            else -> R.color.label_alternative
-                        },
-                        style = DesignSystemTheme.typography.caption1Regular
-                    ),
+                    style = DesignSystemTheme.typography.caption1Regular,
+                    color = when {
+                        enabled && negative -> DesignSystemTheme.colors.statusNegative
+                        else -> DesignSystemTheme.colors.labelAlternative
+                    },
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -406,12 +401,11 @@ fun WantedTextArea(
             {
                 Text(
                     text = description,
-                    style = WantedTextStyle(
-                        colorRes = when {
-                            enabled && negative -> R.color.status_negative
-                            else -> R.color.label_alternative
-                        },
-                        style = DesignSystemTheme.typography.caption1Regular
+                    style = DesignSystemTheme.typography.caption1Regular.copy(
+                        color = when {
+                            enabled && negative -> DesignSystemTheme.colors.statusNegative
+                            else -> DesignSystemTheme.colors.labelAlternative
+                        }
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -500,7 +494,7 @@ private fun WantedTextAreaContent(
     maxWordCount: Int = 2000,
     enabledOverflowText: Boolean = false,
     isGraphemeClusterCount: Boolean = false, // 커서 숫자로 판단 - 이모지 때문
-    cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
+    cursorBrush: Brush = SolidColor(DesignSystemTheme.colors.primaryNormal),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -538,10 +532,10 @@ private fun WantedTextAreaContent(
                 .border(
                     shape = RoundedCornerShape(12.dp),
                     color = when {
-                        !enabled -> colorResource(R.color.line_normal_neutral)
-                        negative -> colorResource(R.color.status_negative).copy(OPACITY_43)
-                        focused.value -> colorResource(R.color.primary_normal).copy(OPACITY_43)
-                        else -> colorResource(R.color.line_normal_neutral)
+                        !enabled -> DesignSystemTheme.colors.lineNormalNeutral
+                        negative -> DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
+                        focused.value -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
+                        else -> DesignSystemTheme.colors.lineNormalNeutral
                     },
                     width = if (focused.value) 2.dp else 1.dp
                 )
@@ -549,10 +543,10 @@ private fun WantedTextAreaContent(
                     shape = RoundedCornerShape(12.dp),
                     color = when {
                         negative || focused.value -> {
-                            colorResource(id = R.color.background_normal_normal)
+                            DesignSystemTheme.colors.backgroundNormalNormal
                         }
 
-                        else -> colorResource(R.color.transparent)
+                        else -> DesignSystemTheme.colors.transparent
                     },
                     width = if (focused.value) 2.dp else 1.dp
                 )
@@ -560,7 +554,7 @@ private fun WantedTextAreaContent(
                     if (enabled) {
                         background
                     } else {
-                        colorResource(R.color.fill_alternative)
+                        DesignSystemTheme.colors.fillAlternative
                     }
                 )
                 .height(IntrinsicSize.Min),
@@ -579,9 +573,12 @@ private fun WantedTextAreaContent(
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
                     cursorBrush = cursorBrush,
-                    textStyle = WantedTextStyle(
-                        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-                        style = DesignSystemTheme.typography.body1Regular
+                    textStyle = DesignSystemTheme.typography.body1Regular.copy(
+                        color = if (enabled) {
+                            DesignSystemTheme.colors.labelNormal
+                        } else {
+                            DesignSystemTheme.colors.labelAlternative
+                        }
                     ),
                     onValueChange = {
 
@@ -605,10 +602,12 @@ private fun WantedTextAreaContent(
                                 {
                                     Text(
                                         text = placeholder,
-                                        style = WantedTextStyle(
-                                            colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
-                                            style = DesignSystemTheme.typography.body1Regular
-                                        )
+                                        style = DesignSystemTheme.typography.body1Regular,
+                                        color = if (enabled) {
+                                            DesignSystemTheme.colors.labelAssistive
+                                        } else {
+                                            DesignSystemTheme.colors.labelDisable
+                                        }
                                     )
                                 }
                             } else {

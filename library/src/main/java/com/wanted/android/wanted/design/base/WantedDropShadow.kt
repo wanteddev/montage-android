@@ -26,10 +26,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShadowSpreadStyle
 import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShadowStyle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -64,8 +62,8 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedDropShadow(
     modifier: Modifier = Modifier,
-    background: Color = colorResource(id = R.color.background_normal_normal),
-    dropShadowColor: Color = colorResource(id = R.color.static_black).copy(0.03f),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    dropShadowColor: Color = DesignSystemTheme.colors.staticBlack.copy(0.03f),
     blur: Dp = 1.dp,
     shape: Shape
 ) {
@@ -579,7 +577,7 @@ private fun WantedDropShadowPreview() {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
-                    .background(colorResource(R.color.background_normal_alternative))
+                    .background(DesignSystemTheme.colors.backgroundNormalAlternative)
                     .fillMaxSize()
                     .padding(20.dp)
                     .verticalScroll(rememberScrollState()),
@@ -593,7 +591,7 @@ private fun WantedDropShadowPreview() {
                         .wantedDropShadow(
                             style = WantedShadowStyle
                                 .XLarge()
-                                .copy(backgroundColor = colorResource(R.color.transparent))
+                                .copy(backgroundColor = DesignSystemTheme.colors.transparent)
                         )
                 )
 

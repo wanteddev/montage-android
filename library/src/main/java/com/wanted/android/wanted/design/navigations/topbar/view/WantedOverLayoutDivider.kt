@@ -5,14 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.res.colorResource
-import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 @Composable
 internal fun WantedOverLayoutDivider(
     modifier: Modifier = Modifier,
-    color: Color = colorResource(R.color.line_normal_neutral)
+    color: Color = DesignSystemTheme.colors.lineNormalNeutral
 ) {
     Layout(
         modifier = modifier,

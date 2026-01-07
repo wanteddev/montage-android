@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.navigations.tab.WantedTabDefaults.TabSize
@@ -90,7 +89,7 @@ fun WantedScrollableTabRow(
     horizontalPadding: Boolean = false,
     isLeftGradient: Boolean = false,
     isRightGradient: Boolean = false,
-    gradientColor: Color = colorResource(R.color.background_normal_normal),
+    gradientColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     scrollState: ScrollState = rememberScrollState(),
     onClickItem: (index: Int) -> Unit = {},
     rightIcon: @Composable ((Dp) -> Unit)? = null,
@@ -149,8 +148,8 @@ private fun WantedScrollableFlexTabRow(
         dividerFitTab = false,
         edgePadding = if (horizontalPadding) 20.dp else 0.dp,
         minItemWidth = 32.dp,
-        contentColor = colorResource(id = R.color.transparent),
-        containerColor = colorResource(id = R.color.transparent),
+        contentColor = DesignSystemTheme.colors.transparent,
+        containerColor = DesignSystemTheme.colors.transparent,
         horizontalArrange = 24.dp,
         indicator = { tabPositions ->
             val tabPosition = tabPositions.getOrNull(selectedTabIndex)
@@ -161,7 +160,7 @@ private fun WantedScrollableFlexTabRow(
                         tabWidth = tabWidths[selectedTabIndex],
                     ),
                     height = 2.dp,
-                    color = colorResource(id = R.color.label_strong)
+                    color = DesignSystemTheme.colors.labelStrong
                 )
             }
         },
@@ -202,7 +201,7 @@ private fun WantedTabLayout(
     ) {
         HorizontalDivider(
             modifier = Modifier.align(Alignment.BottomStart),
-            color = colorResource(R.color.line_normal_alternative)
+            color = DesignSystemTheme.colors.lineNormalAlternative
         )
 
         Row(
@@ -243,7 +242,7 @@ private fun WantedTabLayout(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
                                         LocalTabGradationColor.current,
-                                        colorResource(id = android.R.color.transparent)
+                                        DesignSystemTheme.colors.transparent
                                     )
                                 )
                             )
@@ -264,7 +263,7 @@ private fun WantedTabLayout(
                             .background(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
-                                        colorResource(id = android.R.color.transparent),
+                                        DesignSystemTheme.colors.transparent,
                                         LocalTabGradationColor.current
                                     )
                                 )

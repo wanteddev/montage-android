@@ -6,9 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedSelectPlaceHolder(
@@ -21,13 +19,11 @@ internal fun WantedSelectPlaceHolder(
         text = placeHolder,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        style = WantedTextStyle(
-            colorRes = if (enabled) {
-                R.color.label_assistive
-            } else {
-                R.color.label_disable
-            },
-            style = DesignSystemTheme.typography.body1Regular
-        )
+        style = DesignSystemTheme.typography.body1Regular,
+        color = if (enabled) {
+            DesignSystemTheme.colors.labelAssistive
+        } else {
+            DesignSystemTheme.colors.labelDisable
+        }
     )
 }

@@ -16,15 +16,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_8
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * 아코디언 형태로 확장/축소가 가능한 컴포넌트입니다.
@@ -71,13 +68,11 @@ fun WantedAccordion(
     modifier: Modifier = Modifier,
     titleMaxLine: Int = Int.MAX_VALUE,
     description: String? = null,
-    titleStyle: TextStyle = WantedTextStyle(
-        colorRes = R.color.label_normal,
-        style = DesignSystemTheme.typography.body2Bold
+    titleStyle: TextStyle = DesignSystemTheme.typography.body2Bold.copy(
+        color = DesignSystemTheme.colors.labelNormal
     ),
-    descriptionStyle: TextStyle = WantedTextStyle(
-        colorRes = R.color.label_neutral,
-        style = DesignSystemTheme.typography.label1Regular
+    descriptionStyle: TextStyle = DesignSystemTheme.typography.label1Regular.copy(
+        color = DesignSystemTheme.colors.labelNeutral
     ),
     isExpanded: Boolean = false,
     fillWidth: Boolean = false,
@@ -194,7 +189,7 @@ private fun AccordionLayout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter),
-                color = colorResource(R.color.line_normal_alternative)
+                color = DesignSystemTheme.colors.lineNormalAlternative
             )
         }
     }
@@ -222,7 +217,7 @@ private fun WantedAccordionPreview() {
                                 .fillMaxWidth()
                                 .height(100.dp)
                                 .background(
-                                    color = colorResource(R.color.accent_background_violet)
+                                    color = DesignSystemTheme.colors.accentBackgroundViolet
                                         .copy(OPACITY_8)
                                 )
                         )
@@ -242,7 +237,7 @@ private fun WantedAccordionPreview() {
                                 .fillMaxWidth()
                                 .height(100.dp)
                                 .background(
-                                    color = colorResource(R.color.accent_background_violet)
+                                    color = DesignSystemTheme.colors.accentBackgroundViolet
                                         .copy(OPACITY_8)
                                 )
                         )

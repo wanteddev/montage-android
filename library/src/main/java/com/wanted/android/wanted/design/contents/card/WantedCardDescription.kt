@@ -16,14 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonLength
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonRectangle
 import com.wanted.android.wanted.design.loading.skeleton.WantedSkeletonText
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 @Composable
@@ -142,9 +140,8 @@ internal fun WantedCardDescriptionLayout(
         }
 
         ProvideTextStyle(
-            value = WantedTextStyle(
-                colorRes = R.color.label_normal,
-                style = DesignSystemTheme.typography.body2Bold
+            value = DesignSystemTheme.typography.body2Bold.copy(
+                color = DesignSystemTheme.colors.labelNormal
             )
         ) {
             title()
@@ -152,9 +149,8 @@ internal fun WantedCardDescriptionLayout(
         }
 
         ProvideTextStyle(
-            value = WantedTextStyle(
-                colorRes = R.color.label_alternative,
-                style = DesignSystemTheme.typography.label2Medium
+            value = DesignSystemTheme.typography.label2Medium.copy(
+                color = DesignSystemTheme.colors.labelAlternative
             )
         ) {
             caption?.invoke()

@@ -23,21 +23,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedNumberPicker
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedStringPicker
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.ButtonSize
+import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
@@ -127,7 +125,7 @@ fun WantedTimePickerWheel(
                 text = title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = colorResource(R.color.label_alternative)
+                color = DesignSystemTheme.colors.labelAlternative
             )
         },
         bottomBar = {
@@ -242,7 +240,7 @@ private fun TimePickerLayout(
         Box(
             Modifier
                 .background(
-                    color = colorResource(R.color.fill_normal),
+                    color = DesignSystemTheme.colors.fillNormal,
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(vertical = 4.dp)

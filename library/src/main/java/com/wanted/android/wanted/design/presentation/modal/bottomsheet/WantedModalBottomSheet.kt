@@ -11,16 +11,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults.heightModifier
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.draggable.WantedDraggableModalBottomSheet
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
  * WantedModalBottomSheet
@@ -60,7 +59,7 @@ fun WantedModalBottomSheet(
     isShow: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    background: Color = colorResource(id = R.color.background_elevated_normal),
+    background: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     type: ModalType = ModalType.Flexible,
     modalSize: ModalSize = ModalSize.Medium,
     dismissOnClickOutside: Boolean = true,

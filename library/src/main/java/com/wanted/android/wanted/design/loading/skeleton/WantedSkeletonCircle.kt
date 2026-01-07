@@ -10,11 +10,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 /**
@@ -37,7 +35,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 fun WantedSkeletonCircle(
     modifier: Modifier = Modifier,
-    color: Color = colorResource(id = R.color.fill_normal)
+    color: Color = DesignSystemTheme.colors.fillNormal
 ) {
     WantedSkeletonRectangle(
         modifier = modifier,

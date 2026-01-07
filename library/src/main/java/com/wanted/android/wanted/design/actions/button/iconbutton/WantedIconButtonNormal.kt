@@ -15,14 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * WantedIconButtonNormal
@@ -56,7 +55,7 @@ fun WantedIconButtonNormal(
     @DrawableRes icon: Int,
     modifier: Modifier,
     enabled: Boolean = true,
-    tint: Color = colorResource(id = R.color.label_normal),
+    tint: Color = DesignSystemTheme.colors.labelNormal,
     pushBadge: @Composable (() -> Unit)? = null,
     onClick: () -> Unit = {}
 ) {
@@ -66,7 +65,7 @@ fun WantedIconButtonNormal(
                 modifier = modifier,
                 painter = painterResource(id = icon),
                 contentDescription = "",
-                tint = if (enabled) tint else colorResource(id = R.color.label_disable),
+                tint = if (enabled) tint else DesignSystemTheme.colors.labelDisable,
             )
 
             pushBadge?.let {

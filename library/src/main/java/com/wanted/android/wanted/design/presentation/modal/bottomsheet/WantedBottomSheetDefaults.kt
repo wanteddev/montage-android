@@ -19,13 +19,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.pxToDp
 
 /**
@@ -51,7 +50,7 @@ object WantedBottomSheetDefaults {
     @Composable
     fun DragHandle(
         modifier: Modifier = Modifier.Companion,
-        color: Color = colorResource(id = R.color.background_elevated_normal),
+        color: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
         shape: Shape = MaterialTheme.shapes.extraLarge,
     ) {
         Surface(
@@ -65,7 +64,7 @@ object WantedBottomSheetDefaults {
                     .size(width = 40.dp, height = 5.dp)
                     .clip(RoundedCornerShape(1000.dp))
                     .background(
-                        colorResource(id = R.color.fill_strong),
+                        DesignSystemTheme.colors.fillStrong,
                         androidx.compose.foundation.shape.RoundedCornerShape(1000.dp)
                     )
 

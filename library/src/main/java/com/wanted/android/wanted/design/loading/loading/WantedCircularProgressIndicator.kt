@@ -9,9 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
  * WantedCircularProgressIndicator
@@ -35,7 +34,7 @@ import com.wanted.android.designsystem.R
 @Composable
 fun WantedCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = colorResource(id = R.color.line_solid_normal),
+    color: Color = DesignSystemTheme.colors.lineSolidNormal,
 ) {
 
     // 기본 size 28  custom 가능/ 선 굵기 퍼센트로

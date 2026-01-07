@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -47,7 +46,6 @@ import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextFieldDefaults.RightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 
 
@@ -69,8 +67,8 @@ internal fun WantedCustomTextField(
     rightButtonVariant: RightVariant,
     modifier: Modifier = Modifier,
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
-    cursorBrush: Brush = SolidColor(colorResource(R.color.primary_normal)),
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    cursorBrush: Brush = SolidColor(DesignSystemTheme.colors.primaryNormal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     rightButton: String? = null,
     trailingContent: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -107,7 +105,7 @@ internal fun WantedCustomTextField(
                     if (enabled) {
                         background
                     } else {
-                        colorResource(R.color.fill_alternative)
+                        DesignSystemTheme.colors.fillAlternative
                     }
                 )
                 .height(IntrinsicSize.Min),
@@ -124,11 +122,11 @@ internal fun WantedCustomTextField(
                             ),
                             color = when {
                                 error || focused.value -> {
-                                    colorResource(id = R.color.background_normal_normal)
+                                    DesignSystemTheme.colors.backgroundNormalNormal
                                         .copy(alpha = OPACITY_43)
                                 }
 
-                                else -> colorResource(R.color.transparent)
+                                else -> DesignSystemTheme.colors.transparent
                             },
                             width = if (focused.value) 2.dp else 1.dp
                         )
@@ -142,10 +140,13 @@ internal fun WantedCustomTextField(
                                 )
                             } ?: run { RoundedCornerShape(12.dp) },
                             color = when {
-                                !enabled -> colorResource(R.color.line_normal_alternative)
-                                error -> colorResource(R.color.status_negative).copy(OPACITY_43)
-                                focused.value -> colorResource(R.color.primary_normal).copy(OPACITY_43)
-                                else -> colorResource(R.color.line_normal_neutral)
+                                !enabled -> DesignSystemTheme.colors.lineNormalAlternative
+                                error -> DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
+                                focused.value -> DesignSystemTheme.colors.primaryNormal.copy(
+                                    OPACITY_43
+                                )
+
+                                else -> DesignSystemTheme.colors.lineNormalNeutral
                             },
                             width = if (focused.value) 2.dp else 1.dp
                         )
@@ -166,9 +167,12 @@ internal fun WantedCustomTextField(
                     interactionSource = interactionSource,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
-                    textStyle = WantedTextStyle(
-                        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-                        style = DesignSystemTheme.typography.body1Regular
+                    textStyle = DesignSystemTheme.typography.body1Regular.copy(
+                        color = if (enabled) {
+                            DesignSystemTheme.colors.labelNormal
+                        } else {
+                            DesignSystemTheme.colors.labelAlternative
+                        }
                     ),
                     onValueChange = {
                         when {
@@ -186,10 +190,12 @@ internal fun WantedCustomTextField(
                                 {
                                     Text(
                                         text = placeholder,
-                                        style = WantedTextStyle(
-                                            colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
-                                            style = DesignSystemTheme.typography.body1Regular
-                                        )
+                                        style = DesignSystemTheme.typography.body1Regular,
+                                        color = if (enabled) {
+                                            DesignSystemTheme.colors.labelAssistive
+                                        } else {
+                                            DesignSystemTheme.colors.labelDisable
+                                        },
                                     )
                                 }
                             } else {
@@ -202,7 +208,7 @@ internal fun WantedCustomTextField(
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
                                             painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
-                                            tint = colorResource(id = R.color.status_negative),
+                                            tint = DesignSystemTheme.colors.statusNegative,
                                             contentDescription = ""
                                         )
                                     }
@@ -213,7 +219,7 @@ internal fun WantedCustomTextField(
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
                                             painter = painterResource(R.drawable.icon_normal_circle_check_fill),
-                                            tint = colorResource(id = R.color.primary_normal),
+                                            tint = DesignSystemTheme.colors.primaryNormal,
                                             contentDescription = ""
                                         )
                                     }
@@ -229,7 +235,7 @@ internal fun WantedCustomTextField(
                                                     onValueChange(value.copy(""))
                                                 },
                                             painter = painterResource(R.drawable.icon_normal_circle_close_fill),
-                                            tint = colorResource(id = R.color.label_assistive),
+                                            tint = DesignSystemTheme.colors.labelAssistive,
                                             contentDescription = ""
                                         )
                                     }
@@ -258,9 +264,15 @@ internal fun WantedCustomTextField(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        if (isVisibleVerticalDivider(rightButtonEnabled, enabled, error, focused.value)) {
+                        if (isVisibleVerticalDivider(
+                                rightButtonEnabled,
+                                enabled,
+                                error,
+                                focused.value
+                            )
+                        ) {
                             VerticalDivider(
-                                color = colorResource(id = R.color.line_normal_neutral),
+                                color = DesignSystemTheme.colors.lineNormalNeutral,
                                 thickness = 1.dp
                             )
                         }
@@ -268,9 +280,9 @@ internal fun WantedCustomTextField(
                         WantedTextFieldButton(
                             modifier = Modifier.background(
                                 if (rightButtonEnabled) {
-                                    colorResource(id = R.color.transparent)
+                                    DesignSystemTheme.colors.transparent
                                 } else {
-                                    colorResource(id = R.color.fill_alternative)
+                                    DesignSystemTheme.colors.fillAlternative
                                 }
                             ),
                             title = rightButton,
@@ -385,14 +397,12 @@ private fun WantedTextFieldButton(
         textAlign = TextAlign.Center,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        style = WantedTextStyle(
-            colorRes = when {
-                !enable -> R.color.label_assistive
-                rightButtonVariant == RightVariant.Assistive -> R.color.label_normal
-                else -> R.color.primary_normal
-            },
-            style = DesignSystemTheme.typography.body1Bold
-        )
+        style = DesignSystemTheme.typography.body1Bold,
+        color = when {
+            !enable -> DesignSystemTheme.colors.labelAssistive
+            rightButtonVariant == RightVariant.Assistive -> DesignSystemTheme.colors.labelNormal
+            else -> DesignSystemTheme.colors.primaryNormal
+        }
     )
 }
 

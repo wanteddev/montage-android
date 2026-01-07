@@ -3,344 +3,185 @@ package com.wanted.android.wanted.design.theme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
 
-private val DefaultColors = WantedColors(
-    staticWhite = Color(0xffffffff),
-    staticBlack = Color(0xff000000),
 
-    primaryNormal = Color(0xff0066FF),
-    primaryStrong = Color(0xff005EEB),
-    primaryHeavy = Color(0xff0054D1),
+data class WantedColorScheme(
+    val staticWhite: Color = Color.Transparent,
+    val staticBlack: Color = Color.Transparent,
 
-    labelNormal = Color(0xff171719),
-    labelStrong = Color(0xff000000),
-    labelNeutral = Color(0xE02E2F33),
-    labelAlternative = Color(0x9C37383C),
-    labelAssistive = Color(0x4737383C),
-    labelDisable = Color(0x2937383C),
+    val primaryNormal: Color = Color.Transparent,
+    val primaryStrong: Color = Color.Transparent,
+    val primaryHeavy: Color = Color.Transparent,
 
-    backgroundNormalNormal = Color(0xffffffff),
-    backgroundNormalAlternative = Color(0xffF7F7F8),
-    backgroundElevatedNormal = Color(0xffffffff),
-    backgroundElevatedAlternative = Color(0xffF7F7F8),
+    val labelNormal: Color = Color.Transparent,
+    val labelStrong: Color = Color.Transparent,
+    val labelNeutral: Color = Color.Transparent,
+    val labelAlternative: Color = Color.Transparent,
+    val labelAssistive: Color = Color.Transparent,
+    val labelDisable: Color = Color.Transparent,
 
-    interactionInactive = Color(0xff989BA2),
-    interactionDisable = Color(0xffF4F4F5),
+    val backgroundNormalNormal: Color = Color.Transparent,
+    val backgroundNormalAlternative: Color = Color.Transparent,
+    val backgroundElevatedNormal: Color = Color.Transparent,
+    val backgroundElevatedAlternative: Color = Color.Transparent,
 
-    lineNormalNormal = Color(0x3870737C),
-    lineNormalNeutral = Color(0x2970737C),
-    lineNormalAlternative = Color(0x1470737C),
-    lineSolidNormal = Color(0xffE1E2E4),
-    lineSolidNeutral = Color(0xffEAEBEC),
-    lineSolidAlternative = Color(0xffF4F4F5),
+    val interactionInactive: Color = Color.Transparent,
+    val interactionDisable: Color = Color.Transparent,
 
-    statusPositive = Color(0xff00BF40),
-    statusCautionary = Color(0xffFF9200),
-    statusNegative = Color(0xffFF4242),
+    val lineNormalNormal: Color = Color.Transparent,
+    val lineNormalNeutral: Color = Color.Transparent,
+    val lineNormalAlternative: Color = Color.Transparent,
+    val lineSolidNormal: Color = Color.Transparent,
+    val lineSolidNeutral: Color = Color.Transparent,
+    val lineSolidAlternative: Color = Color.Transparent,
 
-    accentLime = Color(0xff58CF04),
-    accentCyan = Color(0xff00BDDE),
-    accentLightBlue = Color(0xff00AEFF),
-    accentViolet = Color(0xff6541F2),
-    accentPurple = Color(0xffCB59FF),
-    accentPink = Color(0xffF553DA),
-    accentRedOrange = Color(0xffFF5E00),
+    val statusPositive: Color = Color.Transparent,
+    val statusNegative: Color = Color.Transparent,
+    val statusCautionary: Color = Color.Transparent,
 
-    inversePrimary = Color(0xff3385FF),
-    inverseBackground = Color(0xff1B1C1E),
-    inverseLabel = Color(0xffF7F7F8),
+    val accentBackgroundLime: Color = Color.Transparent,
+    val accentBackgroundCyan: Color = Color.Transparent,
+    val accentBackgroundLightBlue: Color = Color.Transparent,
+    val accentBackgroundViolet: Color = Color.Transparent,
+    val accentBackgroundPurple: Color = Color.Transparent,
+    val accentBackgroundPink: Color = Color.Transparent,
+    val accentBackgroundRedOrange: Color = Color.Transparent,
 
-    fillNormal = Color(0x1470737C),
-    fillStrong = Color(0x2970737C),
-    fillAlternative = Color(0x0D70737C),
-    materialDimmer = Color(0x85171719),
+    val accentForegroundRed: Color = Color.Transparent,
+    val accentForegroundRedOrange: Color = Color.Transparent,
+    val accentForegroundOrange: Color = Color.Transparent,
+    val accentForegroundLime: Color = Color.Transparent,
+    val accentForegroundGreen: Color = Color.Transparent,
+    val accentForegroundCyan: Color = Color.Transparent,
+    val accentForegroundLightBlue: Color = Color.Transparent,
+    val accentForegroundBlue: Color = Color.Transparent,
+    val accentForegroundViolet: Color = Color.Transparent,
+    val accentForegroundPurple: Color = Color.Transparent,
+    val accentForegroundPink: Color = Color.Transparent,
+
+    val inversePrimary: Color = Color.Transparent,
+    val inverseBackground: Color = Color.Transparent,
+    val inverseLabel: Color = Color.Transparent,
+
+    val fillNormal: Color = Color.Transparent,
+    val fillStrong: Color = Color.Transparent,
+    val fillAlternative: Color = Color.Transparent,
+
+    val materialDimmer: Color = Color.Transparent,
+
+    val transparent: Color = Color.Transparent
 )
 
-@Composable
-fun getDesignSystemColor() = WantedColors(
-    staticWhite = colorResource(id = R.color.static_white),
-    staticBlack = colorResource(id = R.color.static_black),
+val AppWantedColorScheme: WantedColorScheme
+    @Composable
+    get() = WantedColorScheme(
+        staticWhite = colorResource(id = R.color.static_white),
+        staticBlack = colorResource(id = R.color.static_black),
 
-    primaryNormal = colorResource(id = R.color.primary_normal),
-    primaryStrong = colorResource(id = R.color.primary_strong),
-    primaryHeavy = colorResource(id = R.color.primary_heavy),
+        primaryNormal = colorResource(id = R.color.primary_normal),
+        primaryStrong = colorResource(id = R.color.primary_strong),
+        primaryHeavy = colorResource(id = R.color.primary_heavy),
 
-    labelNormal = colorResource(id = R.color.label_normal),
-    labelStrong = colorResource(id = R.color.label_strong),
-    labelNeutral = colorResource(id = R.color.label_neutral),
-    labelAlternative = colorResource(id = R.color.label_alternative),
-    labelAssistive = colorResource(id = R.color.label_assistive),
-    labelDisable = colorResource(id = R.color.label_disable),
+        labelNormal = colorResource(id = R.color.label_normal),
+        labelStrong = colorResource(id = R.color.label_strong),
+        labelNeutral = colorResource(id = R.color.label_neutral),
+        labelAlternative = colorResource(id = R.color.label_alternative),
+        labelAssistive = colorResource(id = R.color.label_assistive),
+        labelDisable = colorResource(id = R.color.label_disable),
 
-    backgroundNormalNormal = colorResource(id = R.color.background_normal_normal),
-    backgroundNormalAlternative = colorResource(id = R.color.background_normal_alternative),
-    backgroundElevatedNormal = colorResource(id = R.color.background_elevated_normal),
-    backgroundElevatedAlternative = colorResource(id = R.color.background_elevated_alternative),
+        backgroundNormalNormal = colorResource(id = R.color.background_normal_normal),
+        backgroundNormalAlternative = colorResource(id = R.color.background_normal_alternative),
+        backgroundElevatedNormal = colorResource(id = R.color.background_elevated_normal),
+        backgroundElevatedAlternative = colorResource(id = R.color.background_elevated_alternative),
 
-    interactionInactive = colorResource(id = R.color.interaction_inactive),
-    interactionDisable = colorResource(id = R.color.interaction_disable),
+        interactionInactive = colorResource(id = R.color.interaction_inactive),
+        interactionDisable = colorResource(id = R.color.interaction_disable),
 
-    lineNormalNormal = colorResource(id = R.color.line_normal_normal),
-    lineNormalNeutral = colorResource(id = R.color.line_solid_neutral),
-    lineNormalAlternative = colorResource(id = R.color.line_normal_alternative),
-    lineSolidNormal = colorResource(id = R.color.line_solid_normal),
-    lineSolidNeutral = colorResource(id = R.color.line_solid_neutral),
-    lineSolidAlternative = colorResource(id = R.color.line_solid_alternative),
+        lineNormalNormal = colorResource(id = R.color.line_normal_normal),
+        lineNormalNeutral = colorResource(id = R.color.line_normal_neutral),
+        lineNormalAlternative = colorResource(id = R.color.line_normal_alternative),
+        lineSolidNormal = colorResource(id = R.color.line_solid_normal),
+        lineSolidNeutral = colorResource(id = R.color.line_solid_neutral),
+        lineSolidAlternative = colorResource(id = R.color.line_solid_alternative),
 
-    statusPositive = colorResource(id = R.color.status_positive),
-    statusNegative = colorResource(id = R.color.status_negative),
-    statusCautionary = colorResource(id = R.color.status_cautionary),
+        statusPositive = colorResource(id = R.color.status_positive),
+        statusNegative = colorResource(id = R.color.status_negative),
+        statusCautionary = colorResource(id = R.color.status_cautionary),
 
-    accentLime = colorResource(id = R.color.accent_background_lime),
-    accentCyan = colorResource(id = R.color.accent_background_cyan),
-    accentLightBlue = colorResource(id = R.color.accent_background_lightblue),
-    accentViolet = colorResource(id = R.color.accent_background_violet),
-    accentPurple = colorResource(id = R.color.accent_background_purple),
-    accentPink = colorResource(id = R.color.accent_background_pink),
-    accentRedOrange = colorResource(id = R.color.accent_background_redorange),
+        accentBackgroundLime = colorResource(R.color.accent_background_lime),
+        accentBackgroundCyan = colorResource(R.color.accent_background_cyan),
+        accentBackgroundLightBlue = colorResource(R.color.accent_background_lightblue),
+        accentBackgroundViolet = colorResource(R.color.accent_background_violet),
+        accentBackgroundPurple = colorResource(R.color.accent_background_purple),
+        accentBackgroundPink = colorResource(R.color.accent_background_pink),
+        accentBackgroundRedOrange = colorResource(R.color.accent_background_redorange),
 
-    inversePrimary = colorResource(id = R.color.inverse_primary),
-    inverseLabel = colorResource(id = R.color.inverse_label),
-    inverseBackground = colorResource(id = R.color.inverse_background),
+        accentForegroundRed = colorResource(R.color.accent_foreground_red),
+        accentForegroundRedOrange = colorResource(R.color.accent_foreground_redorange),
+        accentForegroundOrange = colorResource(R.color.accent_foreground_orange),
+        accentForegroundLime = colorResource(R.color.accent_foreground_lime),
+        accentForegroundGreen = colorResource(R.color.accent_foreground_green),
+        accentForegroundCyan = colorResource(R.color.accent_foreground_cyan),
+        accentForegroundLightBlue = colorResource(R.color.accent_foreground_lightblue),
+        accentForegroundBlue = colorResource(R.color.accent_foreground_blue),
+        accentForegroundViolet = colorResource(R.color.accent_foreground_violet),
+        accentForegroundPurple = colorResource(R.color.accent_foreground_purple),
+        accentForegroundPink = colorResource(R.color.accent_foreground_pink),
 
-    fillNormal = colorResource(id = R.color.fill_normal),
-    fillStrong = colorResource(id = R.color.fill_strong),
-    fillAlternative = colorResource(id = R.color.fill_alternative),
-    materialDimmer = colorResource(id = R.color.material_dimmer),
-)
+        inversePrimary = colorResource(id = R.color.inverse_primary),
+        inverseLabel = colorResource(id = R.color.inverse_label),
+        inverseBackground = colorResource(id = R.color.inverse_background),
 
-@Stable
-class WantedColors(
-    staticWhite: Color,
-    staticBlack: Color,
+        fillNormal = colorResource(id = R.color.fill_normal),
+        fillStrong = colorResource(id = R.color.fill_strong),
+        fillAlternative = colorResource(id = R.color.fill_alternative),
 
-    primaryNormal: Color,
-    primaryStrong: Color,
-    primaryHeavy: Color,
+        materialDimmer = colorResource(id = R.color.material_dimmer),
+    )
 
-    labelNormal: Color,
-    labelStrong: Color,
-    labelNeutral: Color,
-    labelAlternative: Color,
-    labelAssistive: Color,
-    labelDisable: Color,
+internal val LocalWantedColorScheme = WantedColorSchemeLocal()
 
-    backgroundNormalNormal: Color,
-    backgroundNormalAlternative: Color,
-    backgroundElevatedNormal: Color,
-    backgroundElevatedAlternative: Color,
-
-    interactionInactive: Color,
-    interactionDisable: Color,
-
-    lineNormalNormal: Color,
-    lineNormalNeutral: Color,
-    lineNormalAlternative: Color,
-    lineSolidNormal: Color,
-    lineSolidNeutral: Color,
-    lineSolidAlternative: Color,
-
-    statusPositive: Color,
-    statusNegative: Color,
-    statusCautionary: Color,
-
-    accentLime: Color,
-    accentCyan: Color,
-    accentLightBlue: Color,
-    accentViolet: Color,
-    accentPurple: Color,
-    accentPink: Color,
-    accentRedOrange: Color,
-
-    inversePrimary: Color,
-    inverseBackground: Color,
-    inverseLabel: Color,
-
-    fillNormal: Color,
-    fillStrong: Color,
-    fillAlternative: Color,
-    materialDimmer: Color,
+@JvmInline
+value class WantedColorSchemeLocal internal constructor(
+    private val delegate: ProvidableCompositionLocal<WantedColorScheme> = staticCompositionLocalOf { WantedColorScheme() }
 ) {
-    var staticWhite by mutableStateOf(staticWhite)
-        private set
-    var staticBlack by mutableStateOf(staticBlack)
-        private set
+    val current: WantedColorScheme
+        @Composable get() = delegate.current
 
-    var primaryNormal by mutableStateOf(primaryNormal)
-        private set
-    var primaryStrong by mutableStateOf(primaryStrong)
-        private set
-    var primaryHeavy by mutableStateOf(primaryHeavy)
-        private set
+    infix fun provides(value: WantedColorScheme) = delegate provides value
 
-    var labelNormal by mutableStateOf(labelNormal)
-        private set
-    var labelStrong by mutableStateOf(labelStrong)
-        private set
-    var labelNeutral by mutableStateOf(labelNeutral)
-        private set
-    var labelAlternative by mutableStateOf(labelAlternative)
-        private set
-    var labelAssistive by mutableStateOf(labelAssistive)
-        private set
-    var labelDisable by mutableStateOf(labelDisable)
-        private set
 
-    var backgroundNormalNormal by mutableStateOf(backgroundNormalNormal)
-        private set
-    var backgroundNormalAlternative by mutableStateOf(backgroundNormalAlternative)
-        private set
-    var backgroundElevatedNormal by mutableStateOf(backgroundElevatedNormal)
-        private set
-    var backgroundElevatedAlternative by mutableStateOf(backgroundElevatedAlternative)
-        private set
-
-    var interactionInactive by mutableStateOf(interactionInactive)
-        private set
-    var interactionDisable by mutableStateOf(interactionDisable)
-        private set
-
-    var lineNormalNormal by mutableStateOf(lineNormalNormal)
-        private set
-    var lineNormalNeutral by mutableStateOf(lineNormalNeutral)
-        private set
-    var lineNormalAlternative by mutableStateOf(lineNormalAlternative)
-        private set
-    var lineSolidNormal by mutableStateOf(lineSolidNormal)
-        private set
-    var lineSolidNeutral by mutableStateOf(lineSolidNeutral)
-        private set
-    var lineSolidAlternative by mutableStateOf(lineSolidAlternative)
-        private set
-
-    var statusPositive by mutableStateOf(statusPositive)
-        private set
-    var statusNegative by mutableStateOf(statusNegative)
-        private set
-    var statusCautionary by mutableStateOf(statusCautionary)
-        private set
-
-    var accentLime by mutableStateOf(accentLime)
-        private set
-    var accentCyan by mutableStateOf(accentCyan)
-        private set
-    var accentLightBlue by mutableStateOf(accentLightBlue)
-        private set
-    var accentViolet by mutableStateOf(accentViolet)
-        private set
-    var accentPurple by mutableStateOf(accentPurple)
-        private set
-    var accentPink by mutableStateOf(accentPink)
-        private set
-    var accentRedOrange by mutableStateOf(accentRedOrange)
-        private set
-
-    var inversePrimary by mutableStateOf(inversePrimary)
-        private set
-    var inverseBackground by mutableStateOf(inverseBackground)
-        private set
-    var inverseLabel by mutableStateOf(inverseLabel)
-        private set
-
-    var fillNormal by mutableStateOf(fillNormal)
-        private set
-    var fillStrong by mutableStateOf(fillStrong)
-        private set
-    var fillAlternative by mutableStateOf(fillAlternative)
-        private set
-    var materialDimmer by mutableStateOf(materialDimmer)
-        private set
-
-    fun update(other: WantedColors) {
-        staticWhite = other.staticWhite
-        staticBlack = other.staticBlack
-
-        primaryNormal = other.primaryNormal
-        primaryStrong = other.primaryStrong
-        primaryHeavy = other.primaryHeavy
-
-        labelNormal = other.labelNormal
-        labelStrong = other.labelStrong
-        labelNeutral = other.labelNeutral
-        labelAlternative = other.labelAlternative
-        labelAssistive = other.labelAssistive
-        labelDisable = other.labelDisable
-
-        backgroundNormalNormal = other.backgroundNormalNormal
-        backgroundNormalAlternative = other.backgroundNormalAlternative
-        backgroundElevatedNormal = other.backgroundElevatedNormal
-        backgroundElevatedAlternative = other.backgroundElevatedAlternative
-
-        interactionInactive = other.interactionInactive
-        interactionDisable = other.interactionDisable
-
-        lineNormalNormal = other.lineNormalNormal
-        lineNormalNeutral = other.lineNormalNeutral
-        lineNormalAlternative = other.lineNormalAlternative
-        lineSolidNormal = other.lineSolidNormal
-        lineSolidNeutral = other.lineSolidNeutral
-        lineSolidAlternative = other.lineSolidAlternative
-
-        statusPositive = other.statusPositive
-        statusNegative = other.statusNegative
-        statusCautionary = other.statusCautionary
-
-        accentLime = other.accentLime
-        accentCyan = other.accentCyan
-        accentLightBlue = other.accentLightBlue
-        accentViolet = other.accentViolet
-        accentPurple = other.accentPurple
-        accentPink = other.accentPink
-        accentRedOrange = other.accentRedOrange
-
-        inversePrimary = other.inversePrimary
-        inverseBackground = other.inverseBackground
-        inverseLabel = other.inverseLabel
-
-        fillNormal = other.fillNormal
-        fillStrong = other.fillStrong
-        fillAlternative = other.fillAlternative
-        materialDimmer = other.materialDimmer
-    }
-
-    fun getColor(isDarkTheme: Boolean) = if (isDarkTheme) {
+    @Composable
+    fun getSystemColor(isDarkTheme: Boolean) = if (isDarkTheme) {
         darkColorScheme(
-            primary = primaryNormal,
-            secondary = primaryNormal,
-            background = backgroundNormalNormal,
-            surface = backgroundNormalNormal,
-            error = backgroundNormalNormal,
-            onPrimary = labelNormal,
-            onSecondary = labelNormal,
-            onBackground = labelNormal,
-            onSurface = labelNormal,
-            onError = statusNegative,
+            primary = current.primaryNormal,
+            secondary = current.primaryNormal,
+            background = current.backgroundNormalNormal,
+            surface = current.backgroundNormalNormal,
+            error = current.backgroundNormalNormal,
+            onPrimary = current.labelNormal,
+            onSecondary = current.labelNormal,
+            onBackground = current.labelNormal,
+            onSurface = current.labelNormal,
+            onError = current.statusNegative,
         )
     } else {
         lightColorScheme(
-            primary = primaryNormal,
-            secondary = primaryNormal,
-            background = backgroundNormalNormal,
-            surface = backgroundNormalNormal,
-            error = backgroundNormalNormal,
-            onPrimary = labelNormal,
-            onSecondary = labelNormal,
-            onBackground = labelNormal,
-            onSurface = labelNormal,
-            onError = statusNegative
+            primary = current.primaryNormal,
+            secondary = current.primaryNormal,
+            background = current.backgroundNormalNormal,
+            surface = current.backgroundNormalNormal,
+            error = current.backgroundNormalNormal,
+            onPrimary = current.labelNormal,
+            onSecondary = current.labelNormal,
+            onBackground = current.labelNormal,
+            onSurface = current.labelNormal,
+            onError = current.statusNegative
         )
     }
-}
-
-// preview
-internal val LocalWantedColor = staticCompositionLocalOf {
-    DefaultColors
 }

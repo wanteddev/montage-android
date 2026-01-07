@@ -19,9 +19,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.contents.playtime.playbadge.WantedPlayBadgeDefaults.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_28
 import com.wanted.android.wanted.design.util.OPACITY_61
 
@@ -56,7 +56,7 @@ fun WantedPlayBadge(
         modifier = modifier
             .size(size.container)
             .clip(CircleShape)
-            .background(colorResource(R.color.transparent)),
+            .background(DesignSystemTheme.colors.transparent),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -78,7 +78,7 @@ fun WantedPlayBadge(
             painter = painterResource(R.drawable.icon_normal_play),
             modifier = Modifier.size(size.icon),
             contentDescription = "",
-            tint = colorResource(R.color.static_white)
+            tint = DesignSystemTheme.colors.staticWhite
         )
     }
 

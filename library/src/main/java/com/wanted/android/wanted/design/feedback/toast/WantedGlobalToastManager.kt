@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 /**
@@ -160,12 +161,14 @@ object WantedGlobalToastManager {
         icon: @Composable (() -> Unit)? = null
     ) {
         showToast(duration) {
-            WantedToastImpl(
-                text = text,
-                modifier = Modifier.padding(padding),
-                variant = variant,
-                icon = icon
-            )
+            DesignSystemTheme {
+                WantedToastImpl(
+                    text = text,
+                    modifier = Modifier.padding(padding),
+                    variant = variant,
+                    icon = icon
+                )
+            }
         }
     }
 

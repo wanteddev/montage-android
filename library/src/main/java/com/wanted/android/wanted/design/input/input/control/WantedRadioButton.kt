@@ -18,10 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.google.android.material.radiobutton.MaterialRadioButton
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -79,15 +77,15 @@ internal fun WantedRadioButton(
                         },
                         color = if (checked) {
                             if (enabled) {
-                                colorResource(id = R.color.primary_normal)
+                                DesignSystemTheme.colors.primaryNormal
                             } else {
-                                colorResource(id = R.color.primary_normal).copy(OPACITY_43)
+                                DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
                             }
                         } else {
                             if (enabled) {
-                                colorResource(id = R.color.line_normal_normal)
+                                DesignSystemTheme.colors.lineNormalNormal
                             } else {
-                                colorResource(id = R.color.line_normal_normal).copy(0.1f)
+                                DesignSystemTheme.colors.lineNormalNormal.copy(0.1f)
                             }
                         },
                         shape = CircleShape

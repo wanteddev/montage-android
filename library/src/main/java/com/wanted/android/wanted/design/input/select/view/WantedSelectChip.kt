@@ -21,11 +21,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_5
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
 internal fun WantedSelectChip(
@@ -54,14 +53,12 @@ internal fun WantedSelectChip(
                 text = text,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                style = WantedTextStyle(
-                    colorRes = when {
-                        !enable -> R.color.label_disable
-                        error -> R.color.status_negative
-                        else -> R.color.label_alternative
-                    },
-                    style = DesignSystemTheme.typography.caption1Medium
-                )
+                style = DesignSystemTheme.typography.caption1Medium,
+                color =  when {
+                    !enable -> DesignSystemTheme.colors.labelDisable
+                    error -> DesignSystemTheme.colors.statusNegative
+                    else -> DesignSystemTheme.colors.labelAlternative
+                }
             )
         },
         trailingIcon = {
@@ -153,7 +150,7 @@ private fun WantedSelectChipPreview() {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
-                            tint = colorResource(id = R.color.status_cautionary),
+                            tint = DesignSystemTheme.colors.statusCautionary,
                             contentDescription = ""
                         )
                     },

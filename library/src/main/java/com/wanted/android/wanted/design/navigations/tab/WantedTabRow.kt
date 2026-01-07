@@ -13,9 +13,7 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
@@ -66,16 +64,16 @@ fun WantedTabRow(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                     height = 1.dp,
                     color = if (disableIndexList.contains(selectedTabIndex)) {
-                        colorResource(id = R.color.fill_alternative)
+                        DesignSystemTheme.colors.fillAlternative
                     } else {
-                        colorResource(id = R.color.label_strong)
+                        DesignSystemTheme.colors.labelStrong
                     }
 
                 )
             }
         },
         divider = {
-            HorizontalDivider(color = colorResource(R.color.line_normal_alternative))
+            HorizontalDivider(color = DesignSystemTheme.colors.lineNormalAlternative)
         },
         tabs = {
             for (index in 0 until itemSize) {

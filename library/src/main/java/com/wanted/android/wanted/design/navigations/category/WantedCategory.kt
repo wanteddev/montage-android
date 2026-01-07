@@ -26,12 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.chip.WantedChip
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
@@ -87,7 +85,7 @@ fun WantedCategory(
     horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
     isAlternative: Boolean = false,
-    gradientColor: Color = colorResource(R.color.background_normal_normal),
+    gradientColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     rightIcon: @Composable ((Dp) -> Unit)? = null,
     onClick: (item: String, isSelected: Boolean) -> Unit
 ) {
@@ -164,7 +162,7 @@ fun WantedCategory(
     size: Size = Size.Medium,
     horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
-    gradientColor: Color = colorResource(R.color.background_normal_normal),
+    gradientColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     rightIcon: @Composable ((Dp) -> Unit)? = null,
     content: LazyListScope.() -> Unit
 ) {
@@ -249,7 +247,7 @@ private fun WantedCategoryLayout(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
                                         LocalCategoryGradationColor.current,
-                                        colorResource(id = android.R.color.transparent)
+                                        DesignSystemTheme.colors.transparent
                                     )
                                 )
                             )
@@ -270,7 +268,7 @@ private fun WantedCategoryLayout(
                             .background(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
-                                        colorResource(id = android.R.color.transparent),
+                                        DesignSystemTheme.colors.transparent,
                                         LocalCategoryGradationColor.current
                                     )
                                 )

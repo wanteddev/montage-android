@@ -14,7 +14,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -22,7 +21,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_5
 
 @Composable
@@ -92,8 +91,8 @@ fun Modifier.getBorderModifier(
     borderType: BorderType,
     cornerRadius: Dp = 0.dp,
     borderWidth: Dp = 1.dp,
-    borderColor: Color = colorResource(id = R.color.label_normal).copy(OPACITY_5),
-    backgroundColor: Color = colorResource(id = R.color.static_white)
+    borderColor: Color = DesignSystemTheme.colors.labelNormal.copy(OPACITY_5),
+    backgroundColor: Color = DesignSystemTheme.colors.staticWhite
 ) = this.then(
     when (borderType) {
         BorderType.None -> {

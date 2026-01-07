@@ -13,11 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
  * WantedTopAppBarIconButton
@@ -111,7 +110,7 @@ interface WantedTopBarIconTintLoader {
 private open class WantedTopBarIconTintImpl() : WantedTopBarIconTintLoader {
     @Composable
     override fun getColor(): Color {
-        return colorResource(R.color.label_normal)
+        return DesignSystemTheme.colors.labelNormal
     }
 }
 

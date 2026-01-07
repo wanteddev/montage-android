@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_5
 
 @Composable
@@ -22,13 +22,13 @@ fun WantedPersonAvatar(
     modifier: Modifier = Modifier,
     profileImageUrl: String?,
     size: Dp,
-    borderColor: Color = colorResource(id = R.color.label_normal).copy(alpha = OPACITY_5),
+    borderColor: Color = DesignSystemTheme.colors.labelNormal.copy(alpha = OPACITY_5),
     alpha: Float = 1f,
 ) {
     val baseModifier = Modifier
         .size(size)
         .clip(CircleShape)
-        .background(color = colorResource(id = R.color.background_normal_normal))
+        .background(color = DesignSystemTheme.colors.backgroundNormalNormal)
         .border(
             width = 1.dp,
             color = borderColor,

@@ -9,13 +9,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import java.util.regex.Pattern
 
 @Composable
@@ -24,7 +23,7 @@ fun CustomLinkifyText(
     text: String,
     style: TextStyle = LocalTextStyle.current,
     linkStyle: SpanStyle = SpanStyle(
-        color = colorResource(id = R.color.primary_normal),
+        color = DesignSystemTheme.colors.primaryNormal,
         textDecoration = TextDecoration.Underline
     ),
     onClickLink: ((url: String) -> Unit)? = null

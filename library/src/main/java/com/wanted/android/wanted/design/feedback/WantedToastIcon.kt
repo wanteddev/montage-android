@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -31,7 +30,7 @@ internal fun WantedToastIcon(
     tint: Color,
     modifier: Modifier = Modifier,
     @DrawableRes backgroundResourceId: Int? = null,
-    backgroundColor: Color = colorResource(id = R.color.static_white),
+    backgroundColor: Color = DesignSystemTheme.colors.staticWhite,
     size: Dp = 22.dp
 ) {
     Box(
@@ -80,13 +79,13 @@ private fun WantedCommonIconPreview() {
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_exclamation_fill,
-                    tint = colorResource(id = R.color.status_negative)
+                    tint = DesignSystemTheme.colors.statusNegative
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_check_fill,
-                    tint = colorResource(id = R.color.primary_normal)
+                    tint = DesignSystemTheme.colors.primaryNormal
                 )
 
                 WantedToastIcon(
@@ -95,19 +94,19 @@ private fun WantedCommonIconPreview() {
                         .clip(CircleShape)
                         .clickOnce { },
                     resourceId = R.drawable.icon_normal_circle_close_fill,
-                    tint = colorResource(id = R.color.label_alternative)
+                    tint = DesignSystemTheme.colors.labelAlternative
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_exclamation_fill,
-                    tint = colorResource(id = R.color.status_cautionary)
+                    tint = DesignSystemTheme.colors.statusCautionary
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_check_fill,
-                    tint = colorResource(id = R.color.status_positive)
+                    tint = DesignSystemTheme.colors.statusPositive
                 )
             }
         }

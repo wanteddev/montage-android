@@ -33,10 +33,9 @@ import androidx.constraintlayout.compose.Dimension
 import com.bumptech.glide.integration.compose.GlideImage
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.select.LocalWantedSelectBackground
-import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelectData
+import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedMultiSelectContents(
@@ -259,13 +258,11 @@ private fun WantedMultiSelectText(
         text = valueList.joinToString(separator = ", ") { value -> value.text },
         maxLines = if (overflow) Int.MAX_VALUE else 1,
         overflow = TextOverflow.Ellipsis,
-        style = WantedTextStyle(
-            colorRes = if (enabled) {
-                R.color.label_normal
-            } else {
-                R.color.label_alternative
-            },
-            style = DesignSystemTheme.typography.body1Regular
-        )
+        style = DesignSystemTheme.typography.body1Regular,
+        color = if (enabled) {
+            DesignSystemTheme.colors.labelNormal
+        } else {
+            DesignSystemTheme.colors.labelAlternative
+        }
     )
 }

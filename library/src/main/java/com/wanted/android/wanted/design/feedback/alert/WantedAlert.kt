@@ -14,16 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.presentation.modal.view.WantedAlertDialogButton
 import com.wanted.android.wanted.design.presentation.modal.view.WantedAlertDialogButtonType
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * 확인 및 취소 버튼이 있는 기본 알림 dialog입니다.
@@ -115,25 +112,23 @@ private fun WantedAlertDialogLayout(
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(colorResource(id = R.color.background_elevated_normal))
+            .background(DesignSystemTheme.colors.backgroundElevatedNormal)
     ) {
         Column(
             modifier = Modifier.padding(28.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = R.color.label_normal,
-                    style = DesignSystemTheme.typography.heading2Bold
+                value = DesignSystemTheme.typography.heading2Bold.copy(
+                    color = DesignSystemTheme.colors.labelNormal
                 )
             ) {
                 title?.invoke()
             }
 
             ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = R.color.label_alternative,
-                    style = DesignSystemTheme.typography.body2Regular
+                value = DesignSystemTheme.typography.body2Regular.copy(
+                    color = DesignSystemTheme.colors.labelAlternative
                 )
             ) {
                 message()

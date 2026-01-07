@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +40,7 @@ import com.wanted.android.wanted.design.actions.button.config.buttonWidth
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -137,7 +137,7 @@ internal fun WantedOutlinedButton(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(
-                    colorResource(id = R.color.label_normal_opacity12)
+                    DesignSystemTheme.colorsOpacity.labelNormalOpacity12
                 ),
                 enabled = enabled,
                 onClick = {
@@ -228,7 +228,7 @@ private fun PreviewOutlinedButtons() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .background(colorResource(id = R.color.background_normal_normal)),
+            .background(DesignSystemTheme.colors.backgroundNormalNormal),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -269,7 +269,7 @@ private fun PreviewOutlinedButtons() {
 fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -301,7 +301,7 @@ fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
 private fun PreviewWantedOutlinedButtonLoading() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -339,7 +339,7 @@ private fun PreviewWantedOutlinedButtonLoading() {
 private fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -382,7 +382,7 @@ private fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
 private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -425,7 +425,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
 private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -468,7 +468,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
 private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -515,7 +515,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
 private fun PreviewWantedOutlinedButtonMediumEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -554,7 +554,7 @@ private fun PreviewWantedOutlinedButtonMediumEnable() {
 private fun PreviewWantedOutlinedButtonLargeEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -593,7 +593,7 @@ private fun PreviewWantedOutlinedButtonLargeEnable() {
 private fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -632,7 +632,7 @@ private fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
 private fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -675,7 +675,7 @@ private fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
 private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -722,7 +722,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
 private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -769,7 +769,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
 private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -820,7 +820,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
 private fun PreviewWantedOutlinedButtonMediumDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -863,7 +863,7 @@ private fun PreviewWantedOutlinedButtonMediumDisable() {
 private fun PreviewWantedOutlinedButtonLargeDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -906,7 +906,7 @@ private fun PreviewWantedOutlinedButtonLargeDisable() {
 private fun PreviewWantedOutlinedButtonLargeMaxWidthDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

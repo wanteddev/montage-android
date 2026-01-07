@@ -47,9 +47,7 @@ import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_12
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.util.getTextStyle
 import com.wanted.android.wanted.design.util.wantedRippleEffect
 
 class WantedContentBadge @JvmOverloads constructor(
@@ -170,7 +168,7 @@ fun WantedContentBadge(
             .clickOnce(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = if (color == ContentBadgeColor.Neutral) {
-                    wantedRippleEffect(colorResource(id = R.color.label_normal).copy(OPACITY_12))
+                    wantedRippleEffect(DesignSystemTheme.colors.labelNormal.copy(OPACITY_12))
                 } else {
                     wantedRippleEffect(accentDefault.backgroundColor.copy(OPACITY_12))
                 },
@@ -261,7 +259,8 @@ fun WantedContentBadgeOld(
         }
         leadingDrawable?.let {
             Image(
-                painter = painterResource(id = it), modifier = Modifier.getContentBadgeDrawableSize(size),
+                painter = painterResource(id = it),
+                modifier = Modifier.getContentBadgeDrawableSize(size),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 colorFilter = ColorFilter.tint(textColor)
@@ -373,7 +372,7 @@ private fun getBackground(
     return if (type == ContentBadgeType.Solid) {
         default.backgroundColor
     } else {
-        colorResource(id = R.color.transparent)
+        DesignSystemTheme.colors.transparent
     }
 }
 
@@ -384,7 +383,7 @@ private fun getOutlineColor(
     default: WantedContentBadgeDefault,
 ): Color {
     return if (type == ContentBadgeType.Solid) {
-        colorResource(id = R.color.transparent)
+        DesignSystemTheme.colors.transparent
     } else {
         default.outLineColor
     }
@@ -399,23 +398,20 @@ private fun getContentColor(
 
 
 private fun getPadding(size: ContentBadgeSize): Pair<Dp, Dp> =
-        when (size) {
-            ContentBadgeSize.XSmall -> Pair(4.dp, 3.dp)
-            ContentBadgeSize.Small -> Pair(8.dp, 4.dp)
-            ContentBadgeSize.Large -> Pair(12.dp, 6.dp)
-        }
+    when (size) {
+        ContentBadgeSize.XSmall -> Pair(4.dp, 3.dp)
+        ContentBadgeSize.Small -> Pair(8.dp, 4.dp)
+        ContentBadgeSize.Large -> Pair(12.dp, 6.dp)
+    }
 
 @Composable
 private fun getContentBadgeTypography(
     size: ContentBadgeSize,
-): TextStyle =
-        getTextStyle(
-            textStyle = when (size) {
-                ContentBadgeSize.Large -> WantedTextStyle.LABEL2_MEDIUM
-                ContentBadgeSize.Small -> WantedTextStyle.CAPTION1_MEDIUM
-                ContentBadgeSize.XSmall -> WantedTextStyle.CAPTION2_MEDIUM
-            }
-        )
+): TextStyle = when (size) {
+    ContentBadgeSize.Large -> DesignSystemTheme.typography.label2Medium
+    ContentBadgeSize.Small -> DesignSystemTheme.typography.caption1Medium
+    ContentBadgeSize.XSmall -> DesignSystemTheme.typography.caption2Medium
+}
 
 @Composable
 private fun Modifier.getContentBadgeDrawableSize(
@@ -454,13 +450,13 @@ private fun PreviewContentBadges() {
     DesignSystemTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = colorResource(id = R.color.background_normal_normal)
+            color = DesignSystemTheme.colors.backgroundNormalNormal
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .background(colorResource(id = R.color.background_normal_normal)),
+                    .background(DesignSystemTheme.colors.backgroundNormalNormal),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {

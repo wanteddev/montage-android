@@ -21,10 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.input.segmentedcontrol.WantedSegmentedDefaults.SegmentedSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * WantedSegmentedControlSolidItem
@@ -101,18 +100,16 @@ fun WantedSegmentedControlSolidItem(
                     text = title,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
-                    style = WantedTextStyle(
-                        colorRes = if (isSelected) {
-                            R.color.label_normal
-                        } else {
-                            R.color.label_alternative
-                        },
-                        style = when (LocalWantedSegmentedSize.current) {
-                            SegmentedSize.Small -> DesignSystemTheme.typography.label2Medium
-                            SegmentedSize.Medium -> DesignSystemTheme.typography.body2Medium
-                            SegmentedSize.Large -> DesignSystemTheme.typography.headline2Medium
-                        }
-                    )
+                    style = when (LocalWantedSegmentedSize.current) {
+                        SegmentedSize.Small -> DesignSystemTheme.typography.label2Medium
+                        SegmentedSize.Medium -> DesignSystemTheme.typography.body2Medium
+                        SegmentedSize.Large -> DesignSystemTheme.typography.headline2Medium
+                    },
+                    color = if (isSelected) {
+                        DesignSystemTheme.colors.labelNormal
+                    } else {
+                        DesignSystemTheme.colors.labelAlternative
+                    }
                 )
             }
         }
@@ -176,7 +173,7 @@ private fun WantedSegmentedControlItemPreview() {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
-                            tint = colorResource(id = R.color.primary_normal),
+                            tint = DesignSystemTheme.colors.primaryNormal,
                             contentDescription = ""
                         )
                     }

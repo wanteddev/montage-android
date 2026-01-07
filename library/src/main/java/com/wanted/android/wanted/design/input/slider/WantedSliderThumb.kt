@@ -31,14 +31,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_12
 
 @Composable
@@ -46,8 +44,8 @@ internal fun WantedSliderThumb(
     thumbSize: Dp,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    contentColor: Color = colorResource(id = R.color.primary_normal),
-    borderColor: Color = colorResource(id = R.color.background_normal_normal),
+    contentColor: Color = DesignSystemTheme.colors.primaryNormal,
+    borderColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     onDragStart: (Offset) -> Unit = {},
     onDragEnd: () -> Unit = {},
     onDragCancel: () -> Unit = {},
@@ -58,7 +56,7 @@ internal fun WantedSliderThumb(
             .indication(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(
-                    color = colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_12)
+                    color = DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_12)
                 )
             )
             .then(modifier),
@@ -183,7 +181,7 @@ private fun WantedSliderThumbArea(
                     indication = ripple(
                         bounded = true,
                         radius = contentWidth.value,
-                        color = colorResource(id = R.color.primary_normal).copy(0.18f)
+                        color = DesignSystemTheme.colors.primaryNormal.copy(0.18f)
                     ),
                 ),
             content = {

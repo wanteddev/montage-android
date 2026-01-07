@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +38,7 @@ import com.wanted.android.wanted.design.actions.button.config.buttonWidth
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -166,7 +166,7 @@ fun WantedTextButton(
         rippleColor = if (color == ButtonType.PRIMARY) {
             buttonDefault.contentColor.copy(alpha = OPACITY_12)
         } else {
-            colorResource(id = R.color.label_normal_opacity12)
+            DesignSystemTheme.colorsOpacity.labelNormalOpacity12
         },
         content = {
             WantedTextContent(
@@ -295,7 +295,7 @@ private fun PreviewTextButtons() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .background(colorResource(id = R.color.background_normal_normal)),
+            .background(DesignSystemTheme.colors.backgroundNormalNormal),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -369,7 +369,7 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnableNoBackground() {
 private fun PreviewWantedTextButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -410,7 +410,7 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnable() {
 private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -437,7 +437,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
 private fun PreviewWantedTextButtonSmallRightDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -464,7 +464,7 @@ private fun PreviewWantedTextButtonSmallRightDrawableEnable() {
 private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -493,7 +493,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
 private fun PreviewWantedTextButtonMediumEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -518,7 +518,7 @@ private fun PreviewWantedTextButtonMediumEnable() {
 private fun PreviewWantedTextButtonLargeEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -543,7 +543,7 @@ private fun PreviewWantedTextButtonLargeEnable() {
 private fun PreviewWantedTextButtonLargeMaxWidthEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -568,7 +568,7 @@ private fun PreviewWantedTextButtonLargeMaxWidthEnable() {
 private fun PreviewWantedTextButtonSmallNoDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -595,7 +595,7 @@ private fun PreviewWantedTextButtonSmallNoDrawableDisable() {
 private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -624,7 +624,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
 private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -653,7 +653,7 @@ private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
 private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -684,7 +684,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
 private fun PreviewWantedTextButtonMediumDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -711,7 +711,7 @@ private fun PreviewWantedTextButtonMediumDisable() {
 private fun PreviewWantedTextButtonLargeDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -738,7 +738,7 @@ private fun PreviewWantedTextButtonLargeDisable() {
 private fun PreviewWantedTextButtonLargeMaxWidthDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

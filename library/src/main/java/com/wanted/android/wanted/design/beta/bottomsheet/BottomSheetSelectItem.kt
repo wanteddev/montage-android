@@ -13,13 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.input.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.input.WantedInput
 import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputVariant
+import com.wanted.android.wanted.design.input.input.control.CheckBoxState
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 
 @Composable
@@ -45,14 +43,12 @@ fun BottomSheetSelectItem(
                 .wrapContentHeight()
                 .padding(vertical = 12.dp),
             text = text,
-            style = WantedTextStyle(
-                colorRes = R.color.label_normal,
-                style = if (isSelect) {
-                    DesignSystemTheme.typography.body1Bold
-                } else {
-                    DesignSystemTheme.typography.body1Medium
-                }
-            )
+            style = if (isSelect) {
+                DesignSystemTheme.typography.body1Bold
+            } else {
+                DesignSystemTheme.typography.body1Medium
+            },
+            color = DesignSystemTheme.colors.labelNormal
         )
 
         WantedInput(

@@ -35,7 +35,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -47,7 +46,6 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.input.search.WantedSearchFieldDefaults.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * 검색 입력 필드 컴포넌트입니다.
@@ -95,9 +93,12 @@ fun WantedSearchField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-        style = DesignSystemTheme.typography.body1Regular
+    textStyle: TextStyle = DesignSystemTheme.typography.body1Regular.copy(
+        color = if (enabled) {
+            DesignSystemTheme.colors.labelNormal
+        } else {
+            DesignSystemTheme.colors.labelAlternative
+        }
     ),
     cursorBrush: Brush = SolidColor(textStyle.color),
     focusRequester: FocusRequester = FocusRequester(),
@@ -190,9 +191,12 @@ fun WantedSearchField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     focused: State<Boolean> = interactionSource.collectIsFocusedAsState(),
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = if (enabled) R.color.label_normal else R.color.label_alternative,
-        style = DesignSystemTheme.typography.body1Regular
+    textStyle: TextStyle = DesignSystemTheme.typography.body1Regular.copy(
+        color = if (enabled) {
+            DesignSystemTheme.colors.labelNormal
+        } else {
+            DesignSystemTheme.colors.labelAlternative
+        }
     ),
     cursorBrush: Brush = SolidColor(textStyle.color),
     focusRequester: FocusRequester = FocusRequester(),
@@ -240,7 +244,7 @@ private fun SearchTextField(
         modifier = modifier
             .focusRequester(focusRequester)
             .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(R.color.fill_normal))
+            .background(DesignSystemTheme.colors.fillNormal)
             .defaultMinSize(minHeight = size.minHeight)
             .fillMaxWidth()
             .padding(size.padding),
@@ -270,10 +274,12 @@ private fun SearchTextField(
                     {
                         Text(
                             text = placeholder,
-                            style = WantedTextStyle(
-                                colorRes = if (enabled) R.color.label_assistive else R.color.label_disable,
-                                style = DesignSystemTheme.typography.body1Regular
-                            )
+                            style = DesignSystemTheme.typography.body1Regular,
+                            color = if (enabled) {
+                                DesignSystemTheme.colors.labelAssistive
+                            } else {
+                                DesignSystemTheme.colors.labelDisable
+                            }
                         )
                     }
                 } else {
@@ -284,9 +290,9 @@ private fun SearchTextField(
                         modifier = Modifier.fillMaxSize(),
                         painter = painterResource(R.drawable.icon_normal_search),
                         tint = if (enabled) {
-                            colorResource(id = R.color.label_alternative)
+                            DesignSystemTheme.colors.labelAlternative
                         } else {
-                            colorResource(id = R.color.label_assistive)
+                            DesignSystemTheme.colors.labelAssistive
                         },
                         contentDescription = null
                     )
@@ -305,7 +311,7 @@ private fun SearchTextField(
                                             .fillMaxSize()
                                             .clip(CircleShape),
                                         painter = painterResource(R.drawable.icon_normal_circle_close_fill),
-                                        tint = colorResource(id = R.color.label_assistive),
+                                        tint = DesignSystemTheme.colors.labelAssistive,
                                         contentDescription = null
                                     )
                                 },

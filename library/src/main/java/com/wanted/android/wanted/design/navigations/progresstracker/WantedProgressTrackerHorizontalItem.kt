@@ -15,15 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.dpToSp
 
 
@@ -50,14 +48,12 @@ internal fun WantedProgressTrackerHorizontalItem(
         if (label.isNotEmpty()) {
             Text(
                 text = label,
-                style = WantedTextStyle(
-                    colorRes = if (!enabled || completed) {
-                        R.color.label_alternative
-                    } else {
-                        R.color.label_normal
-                    },
-                    style = DesignSystemTheme.typography.label2Bold
-                ),
+                style = DesignSystemTheme.typography.label2Bold,
+                color = if (!enabled || completed) {
+                    DesignSystemTheme.colors.labelAlternative
+                } else {
+                    DesignSystemTheme.colors.labelNormal
+                },
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center
@@ -78,12 +74,12 @@ internal fun WantedProgressTrackerStep(
         modifier = modifier
             .size(20.dp)
             .clip(CircleShape)
-            .background(colorResource(R.color.static_white))
+            .background(DesignSystemTheme.colors.staticWhite)
             .background(
                 when {
-                    completed -> colorResource(R.color.primary_normal)
-                    enabled -> colorResource(R.color.primary_normal)
-                    else -> colorResource(R.color.label_assistive)
+                    completed -> DesignSystemTheme.colors.primaryNormal
+                    enabled -> DesignSystemTheme.colors.primaryNormal
+                    else -> DesignSystemTheme.colors.labelAssistive
                 }
             ),
         contentAlignment = Alignment.Center
@@ -92,16 +88,14 @@ internal fun WantedProgressTrackerStep(
             Icon(
                 modifier = Modifier.size(14.dp),
                 painter = painterResource(R.drawable.icon_normal_check_thick),
-                tint = colorResource(R.color.static_white),
+                tint = DesignSystemTheme.colors.staticWhite,
                 contentDescription = ""
             )
         } else {
             Text(
                 text = step,
-                style = WantedTextStyle(
-                    colorRes = R.color.static_white,
-                    style = DesignSystemTheme.typography.caption1Bold
-                ),
+                style = DesignSystemTheme.typography.caption1Bold,
+                color = DesignSystemTheme.colors.staticWhite,
                 fontSize = 12.dp.dpToSp()
             )
         }

@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,7 +30,6 @@ import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -150,9 +148,9 @@ private fun WantedSnackBarLayout(
             .wrapContentHeight()
             .widthIn(max = 420.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(id = R.color.background_normal_normal))
-            .background(colorResource(id = R.color.inverse_background).copy(0.52f))
-            .background(colorResource(id = R.color.primary_normal).copy(0.05f))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.inverseBackground.copy(0.52f))
+            .background(DesignSystemTheme.colors.primaryNormal.copy(0.05f))
             .padding(start = 16.dp, end = 11.dp)
             .padding(vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -172,18 +170,16 @@ private fun WantedSnackBarLayout(
                 .padding(horizontal = 2.dp, vertical = 5.dp),
         ) {
             ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = R.color.static_white,
-                    style = DesignSystemTheme.typography.body2Bold
+                value = DesignSystemTheme.typography.body2Bold.copy(
+                    color = DesignSystemTheme.colors.staticWhite
                 )
             ) {
                 headingSlot()
             }
 
             ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = R.color.static_white,
-                    style = DesignSystemTheme.typography.label2Regular
+                value = DesignSystemTheme.typography.label2Regular.copy(
+                    color = DesignSystemTheme.colors.staticWhite
                 )
             ) {
                 descriptionSlot()
@@ -193,9 +189,8 @@ private fun WantedSnackBarLayout(
         Spacer(modifier = Modifier.size(7.dp))
 
         ProvideTextStyle(
-            value = WantedTextStyle(
-                colorRes = R.color.static_white,
-                style = DesignSystemTheme.typography.body2Bold
+            value = DesignSystemTheme.typography.body2Bold.copy(
+                color = DesignSystemTheme.colors.staticWhite
             )
         ) {
             buttonTextSlot()
@@ -259,7 +254,7 @@ private fun WantedSnackBarDescriptionExtraContentPreview() {
                             painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier
                                 .size(32.dp),
-                            tint = colorResource(id = R.color.design_default_color_error)
+                            tint = DesignSystemTheme.colors.statusNegative
                         )
                     },
                     onClick = {}
@@ -274,7 +269,7 @@ private fun WantedSnackBarDescriptionExtraContentPreview() {
                             contentDescription = "icon",
                             painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier.fillMaxSize(),
-                            tint = colorResource(id = R.color.design_default_color_error)
+                            tint = DesignSystemTheme.colors.statusNegative
                         )
                     },
                     onClick = {}

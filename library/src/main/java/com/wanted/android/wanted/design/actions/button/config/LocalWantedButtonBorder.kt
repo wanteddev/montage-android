@@ -5,9 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonVariant
 
@@ -33,7 +32,7 @@ internal class WantedButtonBorderLoaderImpl : WantedButtonBorderLoader {
         variant: ButtonVariant,
     ): Color = when (variant) {
         ButtonVariant.OUTLINED -> getOutlineContentColor()
-        else -> colorResource(id = R.color.transparent)
+        else -> DesignSystemTheme.colors.transparent
     }
 
     @Composable
@@ -49,7 +48,7 @@ internal class WantedButtonBorderLoaderImpl : WantedButtonBorderLoader {
     )
 
     @Composable
-    fun getOutlineContentColor() = colorResource(id = R.color.line_normal_neutral)
+    fun getOutlineContentColor() = DesignSystemTheme.colors.lineNormalNeutral
 }
 
 @JvmInline

@@ -24,13 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.DevicePreviews
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
@@ -171,10 +168,12 @@ private fun WantedRangeSlider(
                         .wrapContentHeight(),
                     textAlign = TextAlign.Center,
                     text = header,
-                    style = WantedTextStyle(
-                        colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
-                        style = DesignSystemTheme.typography.headline2Bold
-                    )
+                    style = DesignSystemTheme.typography.headline2Bold,
+                    color = if (enabled) {
+                        DesignSystemTheme.colors.labelNormal
+                    } else {
+                        DesignSystemTheme.colors.labelDisable
+                    },
                 )
             }
         } else null,
@@ -187,12 +186,12 @@ private fun WantedRangeSlider(
                 valueRange = valueRange,
                 enabled = enabled,
                 colors = SliderDefaults.colors(
-                    thumbColor = colorResource(id = R.color.primary_normal),
-                    disabledThumbColor = colorResource(id = R.color.interaction_disable),
-                    activeTrackColor = colorResource(id = R.color.primary_normal),
-                    disabledActiveTrackColor = colorResource(id = R.color.interaction_disable),
-                    activeTickColor = colorResource(id = R.color.fill_strong),
-                    disabledActiveTickColor = colorResource(id = R.color.interaction_disable)
+                    thumbColor = DesignSystemTheme.colors.primaryNormal,
+                    disabledThumbColor = DesignSystemTheme.colors.interactionDisable,
+                    activeTrackColor = DesignSystemTheme.colors.primaryNormal,
+                    disabledActiveTrackColor = DesignSystemTheme.colors.interactionDisable,
+                    activeTickColor = DesignSystemTheme.colors.fillStrong,
+                    disabledActiveTickColor = DesignSystemTheme.colors.interactionDisable
                 ),
                 thumbSize = ThumbRadius * 2,
                 isRange = isRange,
@@ -279,9 +278,12 @@ private fun SliderLayout(
     ) {
         header?.let {
             ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = if (isEnable) R.color.label_normal else R.color.label_disable,
-                    style = DesignSystemTheme.typography.headline2Bold
+                value = DesignSystemTheme.typography.headline2Bold.copy(
+                    color = if (isEnable) {
+                        DesignSystemTheme.colors.labelNormal
+                    } else {
+                        DesignSystemTheme.colors.labelDisable
+                    }
                 )
             ) {
                 header.invoke()
@@ -299,9 +301,12 @@ private fun SliderLayout(
 
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 ProvideTextStyle(
-                    value = WantedTextStyle(
-                        colorRes = if (isEnable) R.color.label_normal else R.color.label_disable,
-                        style = DesignSystemTheme.typography.label1Medium
+                    value = DesignSystemTheme.typography.label1Medium.copy(
+                        color = if (isEnable) {
+                            DesignSystemTheme.colors.labelNormal
+                        } else {
+                            DesignSystemTheme.colors.labelDisable
+                        }
                     )
                 ) {
                     minLabel?.invoke(this, maxWidth.value)

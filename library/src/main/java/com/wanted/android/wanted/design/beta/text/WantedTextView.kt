@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.core.content.ContextCompat
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.getTextStyle
 
@@ -56,7 +56,7 @@ class WantedTextView @JvmOverloads constructor(
 fun TextView(
     text: String = "",
     textStyle: WantedTextStyle = WantedTextStyle.BODY1_REGULAR,
-    textColor: Color = colorResource(id = R.color.label_normal),
+    textColor: Color = DesignSystemTheme.colors.labelNormal,
     modifier: Modifier = Modifier.wrapContentSize(),
     onClick: (() -> Unit)? = null
 ) {

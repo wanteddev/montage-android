@@ -30,10 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -88,7 +86,7 @@ fun WantedTimePicker(
         WantedTimePickerContent(
             modifier = Modifier
                 .clip(RoundedCornerShape(28.dp))
-                .background(colorResource(R.color.background_elevated_normal)),
+                .background(DesignSystemTheme.colors.backgroundElevatedNormal),
             isEnableClock = isEnableClock,
             title = title,
             confirm = confirm,
@@ -126,7 +124,7 @@ private fun WantedTimePickerContent(
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelMedium,
-                color = colorResource(R.color.label_alternative)
+                color = DesignSystemTheme.colors.labelAlternative
             )
         },
         content = {
@@ -139,8 +137,8 @@ private fun WantedTimePickerContent(
                 TimeInput(
                     state = timePickerState,
                     colors = getWantedTimePickerDefaults(
-                        timeSelectorSelectedContainerColor = colorResource(R.color.transparent),
-                        timeSelectorSelectedContentColor = colorResource(R.color.label_normal)
+                        timeSelectorSelectedContainerColor = DesignSystemTheme.colors.transparent,
+                        timeSelectorSelectedContentColor = DesignSystemTheme.colors.labelNormal
                     )
                 )
             }
@@ -184,7 +182,7 @@ private fun TimepickerButton(
                 modifier = Modifier,
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
-                color = colorResource(R.color.primary_normal)
+                color = DesignSystemTheme.colors.primaryNormal
             )
         },
         onClick = {
@@ -211,7 +209,7 @@ private fun TimepickerModeChangeButton(
                         .size(40.dp)
                         .padding(8.dp),
                     imageVector = Icons.Outlined.Keyboard,
-                    tint = colorResource(R.color.label_alternative),
+                    tint = DesignSystemTheme.colors.labelAlternative,
                     contentDescription = ""
                 )
             } else {
@@ -220,7 +218,7 @@ private fun TimepickerModeChangeButton(
                         .size(40.dp)
                         .padding(8.dp),
                     imageVector = Icons.Outlined.AccessTime,
-                    tint = colorResource(R.color.label_alternative),
+                    tint = DesignSystemTheme.colors.labelAlternative,
                     contentDescription = ""
                 )
             }
@@ -271,37 +269,37 @@ private fun TimePickerLayout(
 
 @Composable
 private fun getWantedTimePickerDefaults(
-    timeSelectorSelectedContainerColor: Color = colorResource(R.color.primary_normal),
-    timeSelectorSelectedContentColor: Color = colorResource(R.color.static_white),
+    timeSelectorSelectedContainerColor: Color = DesignSystemTheme.colors.primaryNormal,
+    timeSelectorSelectedContentColor: Color = DesignSystemTheme.colors.staticWhite,
 ) = TimePickerDefaults.colors(
     // 시계 동그란 배경
-    clockDialColor = colorResource(R.color.fill_alternative),
+    clockDialColor = DesignSystemTheme.colors.fillAlternative,
     // 시계 선택된 숫자 색상
-    clockDialSelectedContentColor = colorResource(R.color.static_white),
+    clockDialSelectedContentColor = DesignSystemTheme.colors.staticWhite,
     // 시계 선택 되지 않은 숫자 색상
-    clockDialUnselectedContentColor = colorResource(R.color.label_normal),
+    clockDialUnselectedContentColor = DesignSystemTheme.colors.labelNormal,
     // 시계 초침
-    selectorColor = colorResource(R.color.primary_normal),
+    selectorColor = DesignSystemTheme.colors.primaryNormal,
     // 시간 선택기의 배경 색상.
-    containerColor = colorResource(R.color.background_elevated_normal),
+    containerColor = DesignSystemTheme.colors.backgroundElevatedNormal,
     // 오전 / 오후 barder 색상
-    periodSelectorBorderColor = colorResource(R.color.line_normal_normal),
+    periodSelectorBorderColor = DesignSystemTheme.colors.lineNormalNormal,
     // 오전 / 오후 select 배경
-    periodSelectorSelectedContainerColor = colorResource(R.color.fill_normal),
+    periodSelectorSelectedContainerColor = DesignSystemTheme.colors.fillNormal,
     //오전 / 오후 unSelect 배경
-    periodSelectorUnselectedContainerColor = colorResource(R.color.background_elevated_normal),
+    periodSelectorUnselectedContainerColor = DesignSystemTheme.colors.backgroundElevatedNormal,
     // 오전 / 오후 select text
-    periodSelectorSelectedContentColor = colorResource(R.color.label_normal),
+    periodSelectorSelectedContentColor = DesignSystemTheme.colors.labelNormal,
     // 오전 / 오후 unselect text
-    periodSelectorUnselectedContentColor = colorResource(R.color.label_alternative),
+    periodSelectorUnselectedContentColor = DesignSystemTheme.colors.labelAlternative,
     // 시간 선택기의 select 배경
     timeSelectorSelectedContainerColor = timeSelectorSelectedContainerColor,
     // 시간 선택기의 unSelect 배경
-    timeSelectorUnselectedContainerColor = colorResource(R.color.fill_normal),
+    timeSelectorUnselectedContainerColor = DesignSystemTheme.colors.fillNormal,
     // 시간 선택기의 select text
     timeSelectorSelectedContentColor = timeSelectorSelectedContentColor,
     // 시간 선택기의 select text
-    timeSelectorUnselectedContentColor = colorResource(R.color.label_normal)
+    timeSelectorUnselectedContentColor = DesignSystemTheme.colors.labelNormal
 )
 
 @DevicePreviews
@@ -313,7 +311,7 @@ private fun WantedTimePickerPreview() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp)
-                    .background(colorResource(R.color.background_elevated_normal)),
+                    .background(DesignSystemTheme.colors.backgroundElevatedNormal),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
 

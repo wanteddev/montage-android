@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +38,7 @@ import com.wanted.android.wanted.design.actions.button.config.buttonWidth
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonLayout
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -133,7 +133,7 @@ internal fun WantedSolidButton(
             .clip(buttonDefault.borderShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = wantedRippleEffect(colorResource(id = R.color.label_normal_opacity12)),
+                indication = wantedRippleEffect(DesignSystemTheme.colorsOpacity.labelNormalOpacity12),
                 enabled = buttonDefault.enabled,
                 onClick = {
                     if (!isLoading) {
@@ -218,7 +218,7 @@ private fun PreviewSolidButtons() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .background(colorResource(id = R.color.background_normal_normal)),
+            .background(DesignSystemTheme.colors.backgroundNormalNormal),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -260,7 +260,7 @@ private fun PreviewSolidButtons() {
 private fun PreviewWantedSolidButtonIconOnlySmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -294,7 +294,7 @@ private fun PreviewWantedSolidButtonIconOnlySmallNoDrawableEnable() {
 private fun PreviewWantedSolidButtonLoading() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -332,7 +332,7 @@ private fun PreviewWantedSolidButtonLoading() {
 private fun PreviewWantedSolidButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -375,7 +375,7 @@ private fun PreviewWantedSolidButtonSmallNoDrawableEnable() {
 private fun PreviewWantedSolidButtonSmallLeftDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -418,7 +418,7 @@ private fun PreviewWantedSolidButtonSmallLeftDrawableEnable() {
 private fun PreviewWantedSolidButtonSmallRightDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -461,7 +461,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableEnable() {
 private fun PreviewWantedSolidButtonSmallTwoDrawablesEnable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -509,7 +509,7 @@ private fun PreviewWantedSolidButtonMediumEnable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -549,7 +549,7 @@ private fun PreviewWantedSolidButtonLargeEnable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -590,7 +590,7 @@ private fun PreviewWantedSolidButtonLargeMaxWidthEnable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -629,7 +629,7 @@ private fun PreviewWantedSolidButtonLargeMaxWidthEnable() {
 private fun PreviewWantedSolidButtonSmallNoDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -672,7 +672,7 @@ private fun PreviewWantedSolidButtonSmallNoDrawableDisable() {
 private fun PreviewWantedSolidButtonSmallLeftDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -720,7 +720,7 @@ private fun PreviewWantedSolidButtonSmallRightDrawableDisable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -768,7 +768,7 @@ private fun PreviewWantedSolidButtonSmallTwoDrawablesDisable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -821,7 +821,7 @@ private fun PreviewWantedSolidButtonMediumDisable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -865,7 +865,7 @@ private fun PreviewWantedSolidButtonLargeDisable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -909,7 +909,7 @@ private fun PreviewWantedSolidButtonLargeMaxWidthDisable() {
 
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.background_normal_normal))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

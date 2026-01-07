@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +35,7 @@ import com.wanted.android.wanted.design.util.clickOnce
 @Composable
 internal fun WantedDialogTwoButtonImpl(
     modifier: Modifier = Modifier,
-    background: Color = colorResource(R.color.background_elevated_normal),
+    background: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     positiveButtonType: ButtonType = ButtonType.PRIMARY,
@@ -102,7 +101,7 @@ private fun WantedDialogPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.background_elevated_normal_opacity12))
+                .background(DesignSystemTheme.colorsOpacity.backgroundElevatedNormalOpacity12)
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
@@ -146,7 +145,7 @@ private fun WantedDialogSizePreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.background_elevated_normal_opacity12))
+                .background(DesignSystemTheme.colorsOpacity.backgroundElevatedNormalOpacity12)
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
@@ -196,7 +195,7 @@ private fun WantedDialogScrollablePreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.background_elevated_normal_opacity12))
+                .background(DesignSystemTheme.colorsOpacity.backgroundElevatedNormalOpacity12)
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
@@ -226,7 +225,7 @@ private fun WantedDialogTopBarPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.background_elevated_normal_opacity12))
+                .background(DesignSystemTheme.colorsOpacity.backgroundElevatedNormalOpacity12)
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {

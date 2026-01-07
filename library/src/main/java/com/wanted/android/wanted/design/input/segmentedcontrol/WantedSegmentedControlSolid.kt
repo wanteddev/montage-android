@@ -36,16 +36,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.base.WantedDropShadow
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_28
+import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
 
 
@@ -208,8 +207,8 @@ private fun WantedSegmentedControlSolidKnob(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(10.dp))
-                .background(colorResource(id = R.color.background_elevated_normal))
-                .background(colorResource(id = R.color.static_white).copy(alpha = OPACITY_28))
+                .background(DesignSystemTheme.colors.backgroundElevatedNormal)
+                .background(DesignSystemTheme.colors.staticWhite.copy(alpha = OPACITY_28))
         )
     }
 }
@@ -224,7 +223,7 @@ private fun WantedSegmentControlSolidLayout(
         modifier = modifier
             .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(id = R.color.fill_normal))
+            .background(DesignSystemTheme.colors.fillNormal)
             .padding(3.dp)
 
     ) {

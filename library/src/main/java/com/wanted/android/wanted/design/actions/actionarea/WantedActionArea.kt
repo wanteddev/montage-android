@@ -29,16 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedActionArea
@@ -96,7 +94,7 @@ fun WantedActionArea(
     background: Boolean = false,
     safeArea: Boolean = true,
     divider: Boolean = false,
-    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
+    gradationColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     onClickNegative: (() -> Unit)? = null,
     onClickNeutral: (() -> Unit)? = null,
     extra: @Composable (() -> Unit)? = null
@@ -131,12 +129,17 @@ fun WantedActionArea(
         neutral = onClickNeutral?.let {
             {
                 WantedButton(
-                    modifier = if (type == ActionAreaType.Strong) {
-                        Modifier
+                    modifier = Modifier.wrapContentSize(),
+                    variant = if (type == ActionAreaType.Strong) {
+                        ButtonVariant.TEXT
                     } else {
-                        Modifier.wrapContentSize()
+                        ButtonVariant.OUTLINED
                     },
-                    variant = ButtonVariant.OUTLINED,
+                    size = if (type == ActionAreaType.Strong) {
+                        ButtonSize.SMALL
+                    } else {
+                        ButtonSize.LARGE
+                    },
                     type = ButtonType.ASSISTIVE,
                     text = neutral.orEmpty(),
                     enabled = isEnableNeutral,
@@ -174,13 +177,14 @@ fun WantedActionArea(
  * )
  * ```
  *
+ * @param modifier Modifier: Modifier를 설정합니다.
  * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
  * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
  * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
  * @param gradationColor Color: 배경 그라데이션 색상을 설정합니다.
  * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
  * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
- * @param modifier Modifier: Modifier를 설정합니다.
+ * @param divider Boolean: 구분선 표시 여부를 지정합니다.
  * @param positive (@Composable () -> Unit): 메인(긍정) 액션 버튼 Slot입니다.
  * @param negative (@Composable (() -> Unit)?): 서브(부정) 액션 버튼 Slot입니다.
  * @param neutral (@Composable (() -> Unit)?): 추가(중립) 액션 버튼 Slot입니다.
@@ -188,13 +192,13 @@ fun WantedActionArea(
  */
 @Composable
 fun WantedActionArea(
+    modifier: Modifier = Modifier,
     type: ActionAreaType = ActionAreaType.Strong,
     safeArea: Boolean = true,
     background: Boolean = false,
-    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
+    gradationColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     caption: String? = null,
     scrollableState: ScrollableState? = null,
-    modifier: Modifier = Modifier,
     divider: Boolean = false,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)? = null,
@@ -234,7 +238,7 @@ fun WantedActionArea(
     safeArea: Boolean = true,
     divider: Boolean = false,
     background: Boolean = false,
-    gradationColor: Color = colorResource(id = R.color.background_normal_normal),
+    gradationColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     scrollableState: ScrollableState? = null,
     caption: String? = null,
     extra: @Composable (() -> Unit)? = null,
@@ -319,7 +323,7 @@ private fun WantedActionAreaLayout(
     ) {
         extra?.let {
             if (divider) {
-                HorizontalDivider(color = colorResource(id = R.color.line_normal_neutral))
+                HorizontalDivider(color = DesignSystemTheme.colors.lineNormalNeutral)
             }
 
             Box(
@@ -608,9 +612,8 @@ private fun CaptionLayout(
         contentAlignment = Alignment.Center
     ) {
         ProvideTextStyle(
-            value = WantedTextStyle(
-                colorRes = R.color.label_alternative,
-                style = DesignSystemTheme.typography.label2Regular
+            value = DesignSystemTheme.typography.label2Regular.copy(
+                color = DesignSystemTheme.colors.labelAlternative
             )
         ) {
             caption()

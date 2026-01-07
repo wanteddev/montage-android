@@ -10,7 +10,6 @@ import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonCon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.OPACITY_5
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * data class WantedFilterButtonDefault
@@ -200,17 +199,17 @@ object WantedFilterButtonDefaults {
     ): Color = when (variant) {
         FilterButtonVariant.Solid -> {
             when {
-                !isEnable -> colorResource(id = R.color.interaction_disable)
-                isActive -> colorResource(id = R.color.inverse_background)
-                else -> colorResource(id = R.color.fill_alternative)
+                !isEnable -> DesignSystemTheme.colors.interactionDisable
+                isActive -> DesignSystemTheme.colors.inverseBackground
+                else -> DesignSystemTheme.colors.fillAlternative
             }
         }
 
         FilterButtonVariant.Outlined -> {
             when {
-                !isEnable -> colorResource(id = R.color.transparent)
-                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
-                else -> colorResource(id = R.color.transparent)
+                !isEnable -> DesignSystemTheme.colors.transparent
+                isActive -> DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_5)
+                else -> DesignSystemTheme.colors.transparent
             }
         }
     }
@@ -223,17 +222,17 @@ object WantedFilterButtonDefaults {
     ): Color = when (variant) {
         FilterButtonVariant.Solid -> {
             when {
-                !isEnable -> colorResource(id = R.color.transparent)
-                isActive -> colorResource(id = R.color.transparent)
-                else -> colorResource(id = R.color.transparent)
+                !isEnable -> DesignSystemTheme.colors.transparent
+                isActive -> DesignSystemTheme.colors.transparent
+                else -> DesignSystemTheme.colors.transparent
             }
         }
 
         FilterButtonVariant.Outlined -> {
             when {
-                !isEnable -> colorResource(id = R.color.line_normal_neutral)
-                isActive -> colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_43)
-                else -> colorResource(id = R.color.line_normal_neutral)
+                !isEnable -> DesignSystemTheme.colors.lineNormalNeutral
+                isActive -> DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_43)
+                else -> DesignSystemTheme.colors.lineNormalNeutral
             }
         }
     }
@@ -244,32 +243,30 @@ object WantedFilterButtonDefaults {
         variant: FilterButtonVariant = LocalWantedFilterButtonVariant.current,
         isActive: Boolean = LocalWantedFilterButtonActive.current,
         isEnable: Boolean = LocalWantedFilterButtonEnable.current
-    ): TextStyle = WantedTextStyle(
-        colorRes = getChipFilterTextColor(variant, isActive, isEnable),
-        style = getChipFilterTextStyle(size)
+    ): TextStyle = getChipFilterTextStyle(size).copy(
+        color = getChipFilterTextColor(variant, isActive, isEnable)
     )
-
 
     @Composable
     private fun getChipFilterTextColor(
         variant: FilterButtonVariant = LocalWantedFilterButtonVariant.current,
         isActive: Boolean = LocalWantedFilterButtonActive.current,
         isEnable: Boolean = LocalWantedFilterButtonEnable.current
-    ): Int {
+    ): Color {
         return when (variant) {
             FilterButtonVariant.Solid -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.inverse_label
-                    else -> R.color.label_normal
+                    !isEnable -> DesignSystemTheme.colors.labelDisable
+                    isActive -> DesignSystemTheme.colors.inverseLabel
+                    else -> DesignSystemTheme.colors.labelNormal
                 }
             }
 
             FilterButtonVariant.Outlined -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.primary_normal
-                    else -> R.color.label_normal
+                    !isEnable -> DesignSystemTheme.colors.labelDisable
+                    isActive -> DesignSystemTheme.colors.primaryNormal
+                    else -> DesignSystemTheme.colors.labelNormal
                 }
             }
         }

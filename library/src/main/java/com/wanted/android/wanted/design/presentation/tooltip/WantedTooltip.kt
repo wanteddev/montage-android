@@ -54,7 +54,6 @@ import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
@@ -76,7 +75,6 @@ import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.OPACITY_61
 import com.wanted.android.wanted.design.util.OPACITY_88
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 import kotlinx.coroutines.launch
 
@@ -140,9 +138,9 @@ fun WantedTooltip(
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
 
-    val backgroundColor = colorResource(id = R.color.background_normal_normal)
-    val color = colorResource(id = R.color.inverse_background).copy(OPACITY_88)
-    val color1 = colorResource(id = R.color.primary_normal).copy(OPACITY_5)
+    val backgroundColor = DesignSystemTheme.colors.backgroundNormalNormal
+    val color = DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88)
+    val color1 = DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5)
 
     var contentPositionY by remember { mutableFloatStateOf(0f) }
     var contentPositionX by remember { mutableFloatStateOf(0f) }
@@ -435,9 +433,9 @@ private fun WantedTooltipLayout(
             )
             .padding(vertical = spacingBetweenTooltipAndAnchor)
             .clip(RoundedCornerShape(if (size == WantedTooltipSize.Small) 6.dp else 8.dp))
-            .background(colorResource(id = R.color.background_normal_normal))
-            .background(colorResource(id = R.color.inverse_background).copy(OPACITY_88))
-            .background(colorResource(id = R.color.primary_normal).copy(OPACITY_5))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88))
+            .background(DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5))
             .padding(
                 horizontal = if (size == WantedTooltipSize.Small) 8.dp else 10.dp,
                 vertical = if (size == WantedTooltipSize.Small) 5.dp else 10.dp
@@ -445,13 +443,12 @@ private fun WantedTooltipLayout(
             .padding(horizontal = if (size == WantedTooltipSize.Small) 0.dp else 2.dp)
     ) {
         ProvideTextStyle(
-            value = WantedTextStyle(
-                colorRes = R.color.inverse_label,
-                style = if (size == WantedTooltipSize.Small) {
-                    DesignSystemTheme.typography.caption2Medium
-                } else {
-                    DesignSystemTheme.typography.label1Medium
-                }
+            value = if (size == WantedTooltipSize.Small) {
+                DesignSystemTheme.typography.caption2Medium
+            } else {
+                DesignSystemTheme.typography.label1Medium
+            }.copy(
+                DesignSystemTheme.colors.inverseLabel
             )
         ) {
             text()
@@ -495,9 +492,9 @@ fun WantedTooltip(
 ) {
     val scope = rememberCoroutineScope()
 
-    val backgroundColor = colorResource(id = R.color.background_normal_normal)
-    val color = colorResource(id = R.color.inverse_background).copy(OPACITY_88)
-    val color1 = colorResource(id = R.color.primary_normal).copy(OPACITY_5)
+    val backgroundColor = DesignSystemTheme.colors.backgroundNormalNormal
+    val color = DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88)
+    val color1 = DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5)
 
     TooltipBox(
         modifier = modifier,
@@ -541,10 +538,8 @@ fun WantedTooltip(
                         text = text,
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
-                        style = WantedTextStyle(
-                            colorRes = R.color.inverse_label,
-                            style = DesignSystemTheme.typography.label1Medium
-                        )
+                        style = DesignSystemTheme.typography.label1Medium,
+                        color = DesignSystemTheme.colors.inverseLabel
                     )
 
                 },
@@ -561,7 +556,7 @@ fun WantedTooltip(
                                 }
                                 .padding(2.dp),
                             painter = painterResource(id = R.drawable.icon_normal_close),
-                            tint = colorResource(id = R.color.inverse_label).copy(alpha = OPACITY_61),
+                            tint = DesignSystemTheme.colors.inverseLabel.copy(alpha = OPACITY_61),
                             contentDescription = ""
                         )
                     }
@@ -576,7 +571,7 @@ fun WantedTooltip(
                                 type = ButtonType.ASSISTIVE,
                                 size = ButtonSize.SMALL,
                             ).copy(
-                                contentColor = colorResource(id = R.color.inverse_label).copy(alpha = OPACITY_61)
+                                contentColor = DesignSystemTheme.colors.inverseLabel.copy(alpha = OPACITY_61)
                             ),
                             onClick = {
                                 onClickAction?.invoke()
@@ -611,9 +606,9 @@ private fun WantedTooltipContentsLayout(
     onClose: @Composable (() -> Unit)?,
     action: @Composable (() -> Unit)?
 ) {
-    val backgroundColor = colorResource(id = R.color.background_normal_normal)
-    val color = colorResource(id = R.color.inverse_background).copy(OPACITY_88)
-    val color1 = colorResource(id = R.color.primary_normal).copy(OPACITY_5)
+    val backgroundColor = DesignSystemTheme.colors.backgroundNormalNormal
+    val color = DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88)
+    val color1 = DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5)
 
     Column(
         modifier = modifier

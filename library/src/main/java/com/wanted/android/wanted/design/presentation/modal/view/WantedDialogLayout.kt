@@ -12,17 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 @Composable
 internal fun WantedDialogLayout(
     modalSize: ModalSize,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = colorResource(R.color.background_elevated_normal),
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: (@Composable () -> Unit)? = null,

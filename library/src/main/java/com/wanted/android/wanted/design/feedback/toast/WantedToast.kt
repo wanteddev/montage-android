@@ -35,7 +35,6 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.WantedToastIcon
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -142,9 +141,9 @@ private fun WantedToastLayout(
             .wrapContentHeight()
             .widthIn(max = 420.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(id = R.color.background_normal_normal))
-            .background(colorResource(id = R.color.inverse_background).copy(0.52f))
-            .background(colorResource(id = R.color.primary_normal).copy(0.05f))
+            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.inverseBackground.copy(0.52f))
+            .background(DesignSystemTheme.colors.primaryNormal.copy(0.05f))
             .padding(horizontal = 16.dp, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -163,9 +162,8 @@ private fun WantedToastLayout(
             contentAlignment = Alignment.CenterStart
         ) {
             ProvideTextStyle(
-                value = WantedTextStyle(
-                    colorRes = R.color.static_white,
-                    style = DesignSystemTheme.typography.body2Bold
+                value = DesignSystemTheme.typography.body2Bold.copy(
+                    color = DesignSystemTheme.colors.staticWhite
                 )
             ) {
                 content()
@@ -173,7 +171,6 @@ private fun WantedToastLayout(
         }
     }
 }
-
 
 
 /**
@@ -280,7 +277,7 @@ private fun ToastNormalPreview() {
                             contentDescription = "icon",
                             painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier.size(22.dp),
-                            tint = colorResource(id = R.color.design_default_color_error)
+                            tint = DesignSystemTheme.colors.statusNegative
                         )
                     },
                     text = "메시지에 마침표를 찍어요."

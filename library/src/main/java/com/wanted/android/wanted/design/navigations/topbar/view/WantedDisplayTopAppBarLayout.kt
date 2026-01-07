@@ -19,14 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 internal fun WantedDisplayTopAppBarLayout(
@@ -98,9 +96,8 @@ private fun TopBarTitle(
         contentAlignment = Alignment.CenterStart
     ) {
         ProvideTextStyle(
-            value = WantedTextStyle(
-                colorRes = R.color.label_strong,
-                style = DesignSystemTheme.typography.title3Bold
+            value = DesignSystemTheme.typography.title3Bold.copy(
+                color = DesignSystemTheme.colors.labelStrong
             )
         ) {
             title()
@@ -116,7 +113,7 @@ private fun WantedDisplayTopAppBarLayoutPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.background_normal_normal)),
+                .background(DesignSystemTheme.colors.backgroundNormalNormal),
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 

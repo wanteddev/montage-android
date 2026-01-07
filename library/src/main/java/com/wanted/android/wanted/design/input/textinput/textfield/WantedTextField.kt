@@ -30,7 +30,6 @@ import com.wanted.android.wanted.design.input.textinput.view.WantedCustomTextFie
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextInputLayout
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedTextField
@@ -154,7 +153,7 @@ fun WantedTextField(
                     textFieldValueState = newTextFieldValueState
 
                     val stringChangedSinceLastInvocation =
-                            lastTextValue != newTextFieldValueState.text
+                        lastTextValue != newTextFieldValueState.text
                     lastTextValue = newTextFieldValueState.text
 
                     if (stringChangedSinceLastInvocation) {
@@ -168,13 +167,14 @@ fun WantedTextField(
             {
                 Text(
                     text = description,
-                    style = WantedTextStyle(
-                        colorRes = when {
-                            enabled && status == WantedTextFieldDefaults.Status.Negative -> R.color.status_negative
-                            else -> R.color.label_alternative
-                        },
-                        style = DesignSystemTheme.typography.caption1Regular
-                    ),
+                    style = DesignSystemTheme.typography.caption1Regular,
+                    color = when {
+                        enabled && status == WantedTextFieldDefaults.Status.Negative -> {
+                            DesignSystemTheme.colors.statusNegative
+                        }
+
+                        else -> DesignSystemTheme.colors.labelAlternative
+                    },
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -292,13 +292,14 @@ fun WantedTextField(
             {
                 Text(
                     text = description,
-                    style = WantedTextStyle(
-                        colorRes = when {
-                            enabled && status == WantedTextFieldDefaults.Status.Negative -> R.color.status_negative
-                            else -> R.color.label_alternative
-                        },
-                        style = DesignSystemTheme.typography.caption1Regular
-                    ),
+                    style = DesignSystemTheme.typography.caption1Regular,
+                    color = when {
+                        enabled && status == WantedTextFieldDefaults.Status.Negative -> {
+                            DesignSystemTheme.colors.statusNegative
+                        }
+
+                        else -> DesignSystemTheme.colors.labelAlternative
+                    },
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -446,7 +447,7 @@ private fun WantedTextInputPreview() {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
-                            tint = colorResource(R.color.primary_normal),
+                            tint = DesignSystemTheme.colors.primaryNormal,
                             contentDescription = ""
                         )
                     },
@@ -454,7 +455,7 @@ private fun WantedTextInputPreview() {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
-                            tint = colorResource(R.color.primary_normal),
+                            tint = DesignSystemTheme.colors.primaryNormal,
                             contentDescription = ""
                         )
                     },
@@ -462,7 +463,7 @@ private fun WantedTextInputPreview() {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
-                            tint = colorResource(R.color.primary_normal),
+                            tint = DesignSystemTheme.colors.primaryNormal,
                             contentDescription = ""
                         )
                     }

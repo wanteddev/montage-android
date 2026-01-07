@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -21,7 +20,6 @@ import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContra
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedDialogTopAppBar
@@ -52,7 +50,7 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun WantedDialogTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    background: Color = colorResource(R.color.background_elevated_normal),
+    background: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -78,10 +76,8 @@ fun WantedDialogTopAppBar(
                     text = title,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_strong,
-                        style = DesignSystemTheme.typography.headline2Bold
-                    )
+                    style = DesignSystemTheme.typography.headline2Bold,
+                    color = DesignSystemTheme.colors.labelStrong
                 )
             }
         },
@@ -117,7 +113,7 @@ fun WantedDialogTopAppBar(
 fun WantedDialogCloseTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    background: Color = colorResource(R.color.background_elevated_normal),
+    background: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -143,10 +139,8 @@ fun WantedDialogCloseTopAppBar(
                     text = title,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_strong,
-                        style = DesignSystemTheme.typography.headline2Bold
-                    )
+                    style = DesignSystemTheme.typography.headline2Bold,
+                    color = DesignSystemTheme.colors.labelStrong
                 )
             }
         },

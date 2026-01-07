@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -29,7 +28,6 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.toAnnotatedString
 
 /**
@@ -74,7 +72,9 @@ fun WantedListCell(
     caption: String = "",
     fillWidth: Boolean = false,
     verticalPadding: WantedListCellDefaults.VerticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
-    interactionPadding: WantedListCellDefaults.InteractionPadding = WantedListCellDefaults.InteractionPadding.Default(fillWidth),
+    interactionPadding: WantedListCellDefaults.InteractionPadding = WantedListCellDefaults.InteractionPadding.Default(
+        fillWidth
+    ),
     divider: Boolean = false,
     isEnable: Boolean = true,
     selected: Boolean = false,
@@ -146,7 +146,9 @@ fun WantedListCell(
     annotatedCaption: AnnotatedString = AnnotatedString(""),
     fillWidth: Boolean = false,
     verticalPadding: WantedListCellDefaults.VerticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
-    interactionPadding: WantedListCellDefaults.InteractionPadding = WantedListCellDefaults.InteractionPadding.Default(fillWidth),
+    interactionPadding: WantedListCellDefaults.InteractionPadding = WantedListCellDefaults.InteractionPadding.Default(
+        fillWidth
+    ),
     divider: Boolean = false,
     isEnable: Boolean = true,
     selected: Boolean = false,
@@ -188,7 +190,7 @@ fun WantedListCell(
                 if (divider) {
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = if (fillWidth) 20.dp else 0.dp),
-                        color = colorResource(id = R.color.line_normal_alternative)
+                        color = DesignSystemTheme.colors.lineNormalAlternative
                     )
                 }
             }
@@ -225,16 +227,14 @@ private fun WantedListCellImpl(
                 text = text,
                 maxLines = textMaxLine,
                 overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
-                style = WantedTextStyle(
-                    colorRes = when {
-                        selected -> R.color.primary_normal
-                        else -> R.color.label_normal
-                    },
-                    style = when {
-                        titleStyle != null -> titleStyle
-                        else -> DesignSystemTheme.typography.body1Regular
-                    }
-                )
+                style = when {
+                    titleStyle != null -> titleStyle
+                    else -> DesignSystemTheme.typography.body1Regular
+                },
+                color = when {
+                    selected -> DesignSystemTheme.colors.primaryNormal
+                    else -> DesignSystemTheme.colors.labelNormal
+                }
             )
         },
         caption = if (caption.isNotEmpty()) {
@@ -243,13 +243,11 @@ private fun WantedListCellImpl(
                     text = caption,
                     maxLines = if (ellipsis) 1 else Int.MAX_VALUE,
                     overflow = if (ellipsis) TextOverflow.Ellipsis else TextOverflow.Clip,
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_alternative,
-                        style = when {
-                            captionStyle != null -> captionStyle
-                            else -> DesignSystemTheme.typography.label2Regular
-                        }
-                    )
+                    style = when {
+                        captionStyle != null -> captionStyle
+                        else -> DesignSystemTheme.typography.label2Regular
+                    },
+                    color = DesignSystemTheme.colors.labelAlternative
                 )
             }
         } else null,
@@ -259,7 +257,7 @@ private fun WantedListCellImpl(
             {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_normal_chevron_right_tight_small),
-                    tint = colorResource(id = R.color.label_assistive),
+                    tint = DesignSystemTheme.colors.labelAssistive,
                     contentDescription = ""
                 )
             }

@@ -20,12 +20,9 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 /**
@@ -86,7 +83,7 @@ fun WantedProgressTrackerVertical(
                     VerticalDivider()
 
                     if (index < (currentStep - 1)) {
-                        VerticalDivider(color = colorResource(R.color.primary_normal))
+                        VerticalDivider(color = DesignSystemTheme.colors.primaryNormal)
                     }
                 }
             }
@@ -130,13 +127,12 @@ private fun WantedProgressTrackerLabel(
             if (labelText.isNotEmpty()) {
                 Text(
                     text = labelText,
-                    style = WantedTextStyle(
-                        colorRes = if (enabled || completed) {
-                            R.color.label_alternative
+                    style = DesignSystemTheme.typography.label2Bold.copy(
+                        if (enabled || completed) {
+                            DesignSystemTheme.colors.labelAlternative
                         } else {
-                            R.color.label_normal
-                        },
-                        style = DesignSystemTheme.typography.label2Bold
+                            DesignSystemTheme.colors.labelNormal
+                        }
                     )
                 )
             }

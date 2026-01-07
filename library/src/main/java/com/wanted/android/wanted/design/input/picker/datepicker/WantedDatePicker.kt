@@ -22,9 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
@@ -77,7 +75,7 @@ fun WantedDatePicker(
                         modifier = Modifier,
                         text = confirm,
                         style = MaterialTheme.typography.labelLarge,
-                        color = colorResource(R.color.primary_normal)
+                        color = DesignSystemTheme.colors.primaryNormal
                     )
                 },
                 onClick = {
@@ -94,7 +92,7 @@ fun WantedDatePicker(
                         modifier = Modifier,
                         text = cancel,
                         style = MaterialTheme.typography.labelLarge,
-                        color = colorResource(R.color.primary_normal)
+                        color = DesignSystemTheme.colors.primaryNormal
                     )
                 },
                 onClick = {
@@ -115,58 +113,58 @@ fun WantedDatePicker(
 @Composable
 private fun getWantedDatePickerDefaults() = DatePickerDefaults.colors(
     // 날짜 선택기 배경에 사용되는 색상
-    containerColor = colorResource(R.color.background_normal_normal),
+    containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
     // 날짜 선택기 제목에 사용되는 색상 (날짜 선택)
-    titleContentColor = colorResource(R.color.label_alternative),
+    titleContentColor = DesignSystemTheme.colors.labelAlternative,
     // 날짜 선택기 헤드라인에 사용되는 색상 (선택한 날짜)
-    headlineContentColor = colorResource(R.color.label_normal),
+    headlineContentColor = DesignSystemTheme.colors.labelNormal,
     // DateRangePicker에 월이 표시될 때 나타나는 월 및 연도 하위 제목 레이블에 사용되는 색상.
-    subheadContentColor = colorResource(R.color.label_normal),
+    subheadContentColor = DesignSystemTheme.colors.labelNormal,
     // 요일 글자에 사용되는 색상
-    weekdayContentColor = colorResource(R.color.label_normal),
+    weekdayContentColor = DesignSystemTheme.colors.labelNormal,
     // DatePicker에 표시될 때 연도 선택 메뉴 버튼과 월 화살표 탐색에 사용되는 콘텐츠 색상.
-    navigationContentColor = colorResource(R.color.label_normal),
+    navigationContentColor = DesignSystemTheme.colors.labelNormal,
     // 연도 항목 텍스트 색상
-    yearContentColor = colorResource(R.color.label_normal),
+    yearContentColor = DesignSystemTheme.colors.labelNormal,
     // 연도 항목 텍스트 비활성화 색상
-    disabledYearContentColor = colorResource(R.color.label_disable),
+    disabledYearContentColor = DesignSystemTheme.colors.labelDisable,
     // 연도를 선택할 때 현재 연도 텍스트 색상
-    currentYearContentColor = colorResource(R.color.label_normal),
+    currentYearContentColor = DesignSystemTheme.colors.labelNormal,
     // 연도를 선택할 때 선택된 연도 텍스트
-    selectedYearContentColor = colorResource(R.color.static_white),
+    selectedYearContentColor = DesignSystemTheme.colors.staticWhite,
     // 연도를 선택할 때 선택된 연도 비활성화 텍스트
-    disabledSelectedYearContentColor = colorResource(R.color.label_disable),
+    disabledSelectedYearContentColor = DesignSystemTheme.colors.labelDisable,
     // 선택된 연도 항목 컨테이너에 사용된 색상
-    selectedYearContainerColor = colorResource(R.color.primary_normal),
+    selectedYearContainerColor = DesignSystemTheme.colors.primaryNormal,
     // 달력 일 텍스트 색상
-    dayContentColor = colorResource(R.color.label_normal),
+    dayContentColor = DesignSystemTheme.colors.labelNormal,
     // 달력 일 텍스트 비활성화 색상
-    disabledDayContentColor = colorResource(R.color.label_disable),
+    disabledDayContentColor = DesignSystemTheme.colors.labelDisable,
     // 달력 일 선택한 텍스트 색상
-    selectedDayContentColor = colorResource(R.color.static_white),
+    selectedDayContentColor = DesignSystemTheme.colors.staticWhite,
     // 달력 일 선택한 텍스트 비활성화 색상
-    disabledSelectedDayContentColor = colorResource(R.color.static_white),
+    disabledSelectedDayContentColor = DesignSystemTheme.colors.staticWhite,
     // 달력 일 선택한 배경 색상
-    selectedDayContainerColor = colorResource(R.color.primary_normal),
+    selectedDayContainerColor = DesignSystemTheme.colors.primaryNormal,
     // 달력 일 선택한 배경 비활성화 색상
-    disabledSelectedDayContainerColor = colorResource(R.color.label_disable),
+    disabledSelectedDayContainerColor = DesignSystemTheme.colors.labelDisable,
     // 현재 날짜를 표시하는 요일 텍스트 색상
-    todayContentColor = colorResource(R.color.primary_normal),
+    todayContentColor = DesignSystemTheme.colors.primaryNormal,
     // 현재 날짜를 표시하는 요일 테두리 색상
-    todayDateBorderColor = colorResource(R.color.primary_normal),
+    todayDateBorderColor = DesignSystemTheme.colors.primaryNormal,
     // 날짜 범위 선택 범위 내에 있는 요일에 사용되는 텍스트 색상
-    dayInSelectionRangeContentColor = colorResource(R.color.static_white),
+    dayInSelectionRangeContentColor = DesignSystemTheme.colors.staticWhite,
     // 날짜 범위 선택 범위 내에 있는 요일에 사용되는 배경 색상
-    dayInSelectionRangeContainerColor = colorResource(R.color.primary_normal),
+    dayInSelectionRangeContainerColor = DesignSystemTheme.colors.primaryNormal,
     // 날짜 선택기에서 사용되는 구분선에 사용되는 색상
-    dividerColor = colorResource(R.color.line_normal_normal),
+    dividerColor = DesignSystemTheme.colors.lineNormalNormal,
     dateTextFieldColors = TextFieldDefaults.colors(
-        focusedContainerColor = colorResource(R.color.background_normal_normal),
-        unfocusedContainerColor = colorResource(R.color.background_normal_normal),
-        errorContainerColor = colorResource(R.color.interaction_disable),
-        focusedIndicatorColor = colorResource(R.color.primary_normal),
-        focusedLabelColor = colorResource(R.color.label_alternative),
-        unfocusedLabelColor = colorResource(R.color.label_alternative),
+        focusedContainerColor = DesignSystemTheme.colors.backgroundNormalNormal,
+        unfocusedContainerColor = DesignSystemTheme.colors.backgroundNormalNormal,
+        errorContainerColor = DesignSystemTheme.colors.interactionDisable,
+        focusedIndicatorColor = DesignSystemTheme.colors.primaryNormal,
+        focusedLabelColor = DesignSystemTheme.colors.labelAlternative,
+        unfocusedLabelColor = DesignSystemTheme.colors.labelAlternative,
     )
 )
 

@@ -8,16 +8,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 /**
@@ -52,28 +49,16 @@ fun WantedTabItem(
             Text(
                 modifier = Modifier,
                 text = title,
-                style = WantedTextStyle(
-                    colorRes = if(!enable) {
-                        R.color.label_disable
-                    } else if (active) {
-                        R.color.label_strong
-                    } else {
-                        R.color.label_assistive
-                    },
-                    style = when (tabSize) {
-                        WantedTabDefaults.TabSize.Large -> {
-                            DesignSystemTheme.typography.heading2Bold
-                        }
-
-                        WantedTabDefaults.TabSize.Medium -> {
-                            DesignSystemTheme.typography.headline2Bold
-                        }
-
-                        else -> {
-                            DesignSystemTheme.typography.body2Bold
-                        }
-                    }
-                ),
+                style = when (tabSize) {
+                    WantedTabDefaults.TabSize.Large -> DesignSystemTheme.typography.heading2Bold
+                    WantedTabDefaults.TabSize.Medium -> DesignSystemTheme.typography.headline2Bold
+                    else -> DesignSystemTheme.typography.body2Bold
+                },
+                color = when {
+                    !enable -> DesignSystemTheme.colors.labelDisable
+                    active -> DesignSystemTheme.colors.labelStrong
+                    else -> DesignSystemTheme.colors.labelAssistive
+                },
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -85,7 +70,7 @@ fun WantedTabItem(
         horizontalPadding = 12.dp,
         verticalPadding = if (tabSize == WantedTabDefaults.TabSize.Large) 14.dp else 12.dp,
         isUseRipple = false,
-        rippleColor = colorResource(R.color.transparent),
+        rippleColor = DesignSystemTheme.colors.transparent,
         onClick = onClick
     )
 

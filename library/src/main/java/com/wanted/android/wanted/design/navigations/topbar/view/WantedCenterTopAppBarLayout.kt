@@ -21,9 +21,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastFirst
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlin.math.roundToInt
 
 @Composable
@@ -64,9 +62,8 @@ internal fun WantedCenterTopAppBarLayout(
             ) {
                 title?.let {
                     ProvideTextStyle(
-                        value = WantedTextStyle(
-                            colorRes = R.color.label_strong,
-                            style = DesignSystemTheme.typography.headline2Bold
+                        value = DesignSystemTheme.typography.headline2Bold.copy(
+                            color = DesignSystemTheme.colors.labelStrong
                         )
                     ) {
                         title()
@@ -93,11 +90,11 @@ internal fun WantedCenterTopAppBarLayout(
         }
     ) { measurables, constraints ->
         val navigationIconPlaceable =
-                measurables.fastFirst { it.layoutId == "navigationIcon" }
-                    .measure(constraints.copy(minWidth = 0))
+            measurables.fastFirst { it.layoutId == "navigationIcon" }
+                .measure(constraints.copy(minWidth = 0))
         val actionIconsPlaceable =
-                measurables.fastFirst { it.layoutId == "actionIcons" }
-                    .measure(constraints.copy(minWidth = 0))
+            measurables.fastFirst { it.layoutId == "actionIcons" }
+                .measure(constraints.copy(minWidth = 0))
 
         val maxTitleWidth = if (constraints.maxWidth == Constraints.Infinity) {
             constraints.maxWidth
@@ -106,8 +103,8 @@ internal fun WantedCenterTopAppBarLayout(
                 .coerceAtLeast(0)
         }
         val titlePlaceable =
-                measurables.fastFirst { it.layoutId == "title" }
-                    .measure(constraints.copy(minWidth = 0, maxWidth = maxTitleWidth))
+            measurables.fastFirst { it.layoutId == "title" }
+                .measure(constraints.copy(minWidth = 0, maxWidth = maxTitleWidth))
 
         val layoutHeight = height.floatValue.roundToInt()
 

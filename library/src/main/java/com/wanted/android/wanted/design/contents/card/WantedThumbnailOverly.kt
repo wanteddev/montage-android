@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -26,7 +25,6 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_35
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
@@ -40,8 +38,8 @@ internal fun WantedThumbnailOverly(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        colorResource(id = R.color.static_black).copy(alpha = OPACITY_35),
-                        colorResource(id = android.R.color.transparent)
+                        DesignSystemTheme.colors.staticBlack.copy(alpha = OPACITY_35),
+                        DesignSystemTheme.colors.transparent
                     )
                 ),
                 shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
@@ -59,10 +57,8 @@ internal fun WantedThumbnailOverly(
                     text = title,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = WantedTextStyle(
-                        colorRes = R.color.static_white,
-                        style = DesignSystemTheme.typography.caption1Bold
-                    )
+                    style = DesignSystemTheme.typography.caption1Bold,
+                    color = DesignSystemTheme.colors.staticWhite
                 )
             }
         }
@@ -104,7 +100,7 @@ private fun WantedThumbnailOverlyPreview() {
                                 Icon(
                                     painter = painterResource(id = R.drawable.icon_normal_bookmark),
                                     contentDescription = "",
-                                    tint = colorResource(R.color.static_white)
+                                    tint = DesignSystemTheme.colors.staticWhite
                                 )
                             },
                             onClick = {}
@@ -120,7 +116,7 @@ private fun WantedThumbnailOverlyPreview() {
                                 Icon(
                                     painter = painterResource(id = R.drawable.icon_normal_bookmark),
                                     contentDescription = "",
-                                    tint = colorResource(R.color.static_white)
+                                    tint = DesignSystemTheme.colors.staticWhite
                                 )
                             },
                             onClick = {}
@@ -137,7 +133,7 @@ private fun WantedThumbnailOverlyPreview() {
                                 Icon(
                                     painter = painterResource(id = R.drawable.icon_normal_bookmark),
                                     contentDescription = "",
-                                    tint = colorResource(R.color.static_white)
+                                    tint = DesignSystemTheme.colors.staticWhite
                                 )
                             },
                             onClick = {}

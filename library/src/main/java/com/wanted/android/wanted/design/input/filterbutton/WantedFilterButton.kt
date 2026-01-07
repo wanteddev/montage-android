@@ -218,7 +218,7 @@ private fun WantedFilterButton(
                 interactionSource = interactionSource,
                 indication = if (filterButtonDefault.variant == FilterButtonVariant.Solid) {
                     wantedRippleEffect(
-                        color = colorResource(id = R.color.label_normal).copy(
+                        color = DesignSystemTheme.colors.labelNormal.copy(
                             OPACITY_12
                         )
                     )
@@ -282,7 +282,7 @@ private fun FilterButtonPreView() {
     DesignSystemTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = colorResource(id = R.color.background_normal_normal)
+            color = DesignSystemTheme.colors.backgroundNormalNormal
         ) {
 
             Column(

@@ -43,15 +43,14 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.noRippleClickable
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -67,7 +66,7 @@ internal fun WantedDraggableModalBottomSheet(
         )
     },
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
-    contentColor: Color = colorResource(R.color.background_elevated_normal),
+    contentColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     shape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     dragHandle: @Composable (() -> Unit)? = { WantedBottomSheetDefaults.DragHandle() },
     content: @Composable () -> Unit

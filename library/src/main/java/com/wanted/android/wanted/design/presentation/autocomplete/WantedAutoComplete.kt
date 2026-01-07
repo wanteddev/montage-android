@@ -25,14 +25,11 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedAutoComplete
@@ -84,7 +81,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     sectionItemCount: (section: Int) -> Int,
     sectionItem: @Composable (section: Int, index: Int) -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = colorResource(R.color.background_elevated_normal),
+    containerColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionTitle: ((section: Int) -> String)? = null,
     topDirectInput: @Composable (() -> Unit)? = null,
@@ -127,7 +124,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         shape = RoundedCornerShape(16.dp),
         expanded = expanded,
         shadowElevation = 1.dp,
-        border = BorderStroke(1.dp, colorResource(R.color.line_solid_normal)),
+        border = BorderStroke(1.dp, DesignSystemTheme.colors.lineSolidNormal),
         onDismissRequest = {
             onDismissRequest(false)
         }
@@ -161,10 +158,8 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                     .padding(horizontal = 1.dp)
                     .padding(vertical = 4.dp),
                 text = title.value,
-                style = WantedTextStyle(
-                    colorRes = R.color.label_alternative,
-                    style = DesignSystemTheme.typography.caption1Bold
-                )
+                style = DesignSystemTheme.typography.caption1Bold,
+                color = DesignSystemTheme.colors.labelAlternative
             )
 
             Spacer(modifier = Modifier.size(4.dp))
@@ -188,10 +183,8 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                             .padding(horizontal = 1.dp)
                             .padding(vertical = 4.dp),
                         text = sectionTitle(section),
-                        style = WantedTextStyle(
-                            colorRes = R.color.label_alternative,
-                            style = DesignSystemTheme.typography.caption1Bold
-                        )
+                        style = DesignSystemTheme.typography.caption1Bold,
+                        color = DesignSystemTheme.colors.labelAlternative
                     )
                 }
 

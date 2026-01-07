@@ -23,7 +23,6 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.contents.sectionheader.WantedSectionHeaderDefaults.Size
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedSectionHeader
@@ -66,17 +65,16 @@ fun WantedSectionHeader(
 ) {
     val density = LocalDensity.current
     val style = textStyle ?: run {
-        WantedTextStyle(
-            colorRes = if (size == Size.XSmall) {
-                R.color.label_alternative
+        when (size) {
+            Size.Large -> DesignSystemTheme.typography.title3Bold
+            Size.Medium -> DesignSystemTheme.typography.heading2Bold
+            Size.Small -> DesignSystemTheme.typography.headline2Bold
+            Size.XSmall -> DesignSystemTheme.typography.label1Bold
+        }.copy(
+            color = if (size == Size.XSmall) {
+                DesignSystemTheme.colors.labelAlternative
             } else {
-                R.color.label_strong
-            },
-            style = when (size) {
-                Size.Large -> DesignSystemTheme.typography.title3Bold
-                Size.Medium -> DesignSystemTheme.typography.heading2Bold
-                Size.Small -> DesignSystemTheme.typography.headline2Bold
-                Size.XSmall -> DesignSystemTheme.typography.label1Bold
+                DesignSystemTheme.colors.labelStrong
             }
         )
     }

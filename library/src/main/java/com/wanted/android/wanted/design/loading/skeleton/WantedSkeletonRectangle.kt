@@ -13,11 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * WantedSkeletonRectangle
@@ -42,7 +40,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 fun WantedSkeletonRectangle(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(3.dp),
-    color: Color = colorResource(id = R.color.fill_normal)
+    color: Color = DesignSystemTheme.colors.fillNormal
 ) {
     Box(
         modifier = modifier

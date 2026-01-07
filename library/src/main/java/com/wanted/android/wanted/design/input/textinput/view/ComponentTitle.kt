@@ -9,9 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
@@ -28,10 +26,8 @@ internal fun ComponentTitle(
         Text(
             modifier = Modifier.weight(1f, fill = false),
             text = title,
-            style = WantedTextStyle(
-                colorRes = R.color.label_neutral,
-                style = DesignSystemTheme.typography.label1Bold
-            ),
+            style = DesignSystemTheme.typography.label1Bold,
+            color = DesignSystemTheme.colors.labelNeutral,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -40,10 +36,8 @@ internal fun ComponentTitle(
             Text(
                 modifier = Modifier.wrapContentSize(),
                 text = "*",
-                style = WantedTextStyle(
-                    colorRes = R.color.status_negative,
-                    style = DesignSystemTheme.typography.label1Medium
-                ),
+                style = DesignSystemTheme.typography.label1Medium,
+                color = DesignSystemTheme.colors.statusNegative,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

@@ -14,14 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
-import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
 /**
@@ -54,8 +53,8 @@ fun WantedIconButtonSolid(
     size: WantedIconButtonSize,
     modifier: Modifier,
     enabled: Boolean = true,
-    tint: Color = colorResource(id = R.color.static_white),
-    background: Color = colorResource(id = R.color.primary_normal),
+    tint: Color = DesignSystemTheme.colors.staticWhite,
+    background: Color = DesignSystemTheme.colors.primaryNormal,
     onClick: () -> Unit = {}
 ) {
     WantedIconButtonSolid(
@@ -101,19 +100,19 @@ fun WantedIconButtonSolid(
     modifier: Modifier,
     enabled: Boolean = true,
     padding: Dp = 10.dp,
-    tint: Color = colorResource(id = R.color.static_white),
-    background: Color = colorResource(id = R.color.primary_normal),
+    tint: Color = DesignSystemTheme.colors.staticWhite,
+    background: Color = DesignSystemTheme.colors.primaryNormal,
     onClick: () -> Unit = {}
 ) {
     Icon(
         modifier = modifier
             .clip(CircleShape)
-            .background(if (enabled) background else colorResource(id = R.color.fill_normal))
+            .background(if (enabled) background else DesignSystemTheme.colors.fillNormal)
             .clickOnce(enabled) { onClick() }
             .padding(padding),
         painter = painterResource(id = icon),
         contentDescription = "",
-        tint = if (enabled) tint else colorResource(id = R.color.label_disable)
+        tint = if (enabled) tint else DesignSystemTheme.colors.labelDisable
     )
 }
 

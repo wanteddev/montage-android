@@ -36,7 +36,6 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
@@ -47,7 +46,6 @@ import androidx.compose.ui.window.PopupProperties
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedPopover
@@ -277,7 +275,7 @@ private fun PopoverPopup(
 
     val popoverSpacingPx = with(density) { 8.dp.toPx().toInt() }
 
-    val popupOffset = calculatePopupOffset(popoverState, windowInsetsBottomPx,  popoverSpacingPx)
+    val popupOffset = calculatePopupOffset(popoverState, windowInsetsBottomPx, popoverSpacingPx)
 
     val popupProperties = createPopupProperties(always)
 
@@ -455,10 +453,8 @@ private fun PopoverHeader(
             text = heading,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            style = WantedTextStyle(
-                colorRes = R.color.label_normal,
-                style = DesignSystemTheme.typography.body2Bold
-            )
+            style = DesignSystemTheme.typography.body2Bold,
+            color = DesignSystemTheme.colors.labelNormal
         )
 
         if (closeButton && onDismiss != null) {
@@ -484,10 +480,8 @@ private fun PopoverBody(
                 .padding(vertical = 2.dp)
                 .weight(1f),
             text = text,
-            style = WantedTextStyle(
-                colorRes = R.color.label_neutral,
-                style = DesignSystemTheme.typography.label2Medium
-            ),
+            style = DesignSystemTheme.typography.label2Medium,
+            color = DesignSystemTheme.colors.labelNeutral,
             overflow = TextOverflow.Ellipsis
         )
 
@@ -520,7 +514,7 @@ private fun PopoverCloseButton(onDismiss: () -> Unit) {
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_normal_close),
                 contentDescription = null,
-                tint = colorResource(R.color.label_normal)
+                tint = DesignSystemTheme.colors.labelNormal
             )
         }
     )
@@ -537,7 +531,7 @@ private fun WantedPopoverLayout(
         modifier = modifier
             .sizeIn(minWidth = 140.dp, maxWidth = 360.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(colorResource(id = R.color.background_elevated_normal))
+            .background(DesignSystemTheme.colors.backgroundElevatedNormal)
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         Column(

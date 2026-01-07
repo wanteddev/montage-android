@@ -10,11 +10,9 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 
 /**
@@ -46,8 +44,8 @@ fun WantedLinearProgressIndicator(
         modifier = modifier
             .fillMaxWidth()
             .height(2.dp),
-        color = colorResource(R.color.primary_normal),
-        trackColor = colorResource(R.color.fill_normal),
+        color = DesignSystemTheme.colors.primaryNormal,
+        trackColor = DesignSystemTheme.colors.fillNormal,
         progress = { currentProgress }
     )
 }

@@ -17,11 +17,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
  * WantedProgressTracker
@@ -67,8 +65,8 @@ fun WantedProgressTrackerHorizontal(
                         else -> (1f / (stepCount - 1)) * (currentStep - 1)
                     }
                 },
-                trackColor = colorResource(R.color.line_solid_normal),
-                color = colorResource(R.color.primary_normal)
+                trackColor = DesignSystemTheme.colors.lineSolidNormal,
+                color = DesignSystemTheme.colors.primaryNormal
             )
         },
         step = { index ->

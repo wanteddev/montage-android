@@ -173,7 +173,7 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
-                containerColor = colorResource(R.color.background_normal_normal),
+                containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
                 expanded = expanded,
                 onDismissRequest = {
                     onExpandedChange(false)
@@ -330,7 +330,7 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
-                containerColor = colorResource(R.color.background_normal_normal),
+                containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
                 expanded = expanded,
                 onDismissRequest = {
                     onExpandedChange(false)

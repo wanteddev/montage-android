@@ -8,10 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_74
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
 fun WantedTextAreaCharacterCount(
@@ -28,26 +26,22 @@ fun WantedTextAreaCharacterCount(
         Text(
             modifier = Modifier.alpha(OPACITY_74),
             text = "$current",
-            style = WantedTextStyle(
-                colorRes = when {
-                    !enable -> R.color.label_disable
-                    error -> R.color.status_negative
-                    else -> R.color.label_alternative
-                },
-                style = DesignSystemTheme.typography.label2Medium
-            )
+            style = DesignSystemTheme.typography.label2Medium,
+            color = when {
+                !enable -> DesignSystemTheme.colors.labelDisable
+                error -> DesignSystemTheme.colors.statusNegative
+                else -> DesignSystemTheme.colors.labelAlternative
+            }
         )
 
         Text(
             modifier = Modifier.alpha(OPACITY_74),
             text = "/$maxWordCount",
-            style = WantedTextStyle(
-                colorRes =  when {
-                    !enable -> R.color.label_disable
-                    else -> R.color.label_alternative
-                },
-                style = DesignSystemTheme.typography.label2Medium
-            )
+            style = DesignSystemTheme.typography.label2Medium,
+            color = when {
+                !enable -> DesignSystemTheme.colors.labelDisable
+                else -> DesignSystemTheme.colors.labelAlternative
+            }
         )
     }
 }

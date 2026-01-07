@@ -19,12 +19,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
-import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.input.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputSize
+import com.wanted.android.wanted.design.input.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
 @Composable
@@ -90,9 +88,8 @@ private fun WantedInputLayoutPreview() {
                 WantedInputLayout(
                     modifier = Modifier,
                     size = WantedInputSize.Medium,
-                    textStyle = WantedTextStyle(
-                        colorRes = R.color.label_alternative,
-                        style = DesignSystemTheme.typography.caption1Medium
+                    textStyle = DesignSystemTheme.typography.caption1Medium.copy(
+                        DesignSystemTheme.colors.labelAlternative
                     ),
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
@@ -106,9 +103,8 @@ private fun WantedInputLayoutPreview() {
                 WantedInputLayout(
                     modifier = Modifier,
                     size = WantedInputSize.Medium,
-                    textStyle = WantedTextStyle(
-                        colorRes = R.color.label_alternative,
-                        style = DesignSystemTheme.typography.caption1Medium
+                    textStyle = DesignSystemTheme.typography.caption1Medium.copy(
+                        DesignSystemTheme.colors.labelAlternative
                     ),
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
@@ -122,9 +118,8 @@ private fun WantedInputLayoutPreview() {
                 WantedInputLayout(
                     modifier = Modifier,
                     size = WantedInputSize.Medium,
-                    textStyle = WantedTextStyle(
-                        colorRes = R.color.label_normal,
-                        style = DesignSystemTheme.typography.label1Regular
+                    textStyle = DesignSystemTheme.typography.label1Regular.copy(
+                        DesignSystemTheme.colors.labelNormal
                     ),
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
@@ -143,9 +138,8 @@ private fun WantedInputLayoutPreview() {
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
-                    textStyle = WantedTextStyle(
-                        colorRes = R.color.label_normal,
-                        style = DesignSystemTheme.typography.label1Regular
+                    textStyle = DesignSystemTheme.typography.label1Regular.copy(
+                        DesignSystemTheme.colors.labelNormal
                     ),
                     tight = false,
                     label = {

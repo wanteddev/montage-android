@@ -20,17 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.WantedTextStyle
+import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.clickOnce
 
 
 @Composable
@@ -104,9 +102,8 @@ private fun AccordionHeaderPreview() {
                         .fillMaxWidth(),
                     verticalPadding = VerticalPadding.Padding12,
                     title = "제목ㅁㄴ ㅏ이ㅓㅗ ㅁ나ㅣㅓㅇ롸ㅣㅁ 너ㅗㅇ 라ㅣ머농 라ㅣㅓㅁ노 ㅇ리ㅏㅓㅗㅁㄴ이ㅏ 러ㅗㅁ나ㅣㅓㅇ 로",
-                    style = WantedTextStyle(
-                        colorRes = R.color.label_normal,
-                        style = DesignSystemTheme.typography.body2Bold
+                    style = DesignSystemTheme.typography.body2Bold.copy(
+                        color = DesignSystemTheme.colors.labelNormal
                     ),
                     fillWidth = false,
                     leadingIcon = {
@@ -124,7 +121,7 @@ private fun AccordionHeaderPreview() {
                             } else {
                                 painterResource(R.drawable.icon_normal_chevron_down)
                             },
-                            tint = colorResource(R.color.label_normal),
+                            tint = DesignSystemTheme.colors.labelNormal,
                             contentDescription = ""
                         )
                     },

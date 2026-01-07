@@ -32,11 +32,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
@@ -116,9 +114,9 @@ internal fun WantedSwitch(
             .clip(RoundedCornerShape(32.dp))
             .background(
                 if (isChecked) {
-                    colorResource(id = R.color.primary_normal)
+                    DesignSystemTheme.colors.primaryNormal
                 } else {
-                    colorResource(id = R.color.fill_strong)
+                    DesignSystemTheme.colors.fillStrong
                 }
             )
             .width(width)
@@ -137,7 +135,7 @@ internal fun WantedSwitch(
                         radius = thumbSize / 2
                     )
                 )
-                .background(colorResource(id = R.color.static_white), CircleShape),
+                .background(DesignSystemTheme.colors.staticWhite, CircleShape),
 
             contentAlignment = Alignment.Center
         ) {
@@ -153,7 +151,7 @@ private fun WantedSwitchPreview() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(colorResource(id = R.color.background_normal_normal))
+                    .background(DesignSystemTheme.colors.backgroundNormalNormal)
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {

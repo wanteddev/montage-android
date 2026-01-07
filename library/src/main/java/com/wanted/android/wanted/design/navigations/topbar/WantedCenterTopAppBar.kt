@@ -36,7 +36,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(id = R.color.background_normal_normal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -66,7 +66,7 @@ private fun WantedCenterTopAppBar(
 private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(id = R.color.background_elevated_normal),
+    background: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     title: String = "",
@@ -94,7 +94,7 @@ private fun WantedCenterBackTopAppBar(
 fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    background: Color = colorResource(R.color.background_normal_normal),
+    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
@@ -111,7 +111,7 @@ fun WantedCenterTopAppBar(
             modifier
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(background, colorResource(R.color.transparent))
+                        colors = listOf(background, DesignSystemTheme.colors.transparent)
                     )
                 )
                 .padding(bottom = 16.dp)
@@ -166,7 +166,7 @@ private fun WantedCenterTopAppBarPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.background_normal_normal)),
+                .background(DesignSystemTheme.colors.backgroundNormalNormal),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 

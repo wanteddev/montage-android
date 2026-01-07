@@ -13,9 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShadowStyle
 import com.wanted.android.wanted.design.base.wantedDropShadow
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -62,15 +60,15 @@ fun Modifier.framedStyle(
                 status == WantedFramedStyleStatus.Negative
                         || status == WantedFramedStyleStatus.Selected -> {
                     if (enabled) {
-                        colorResource(id = R.color.background_normal_normal)
+                        DesignSystemTheme.colors.backgroundNormalNormal
                             .copy(alpha = OPACITY_43)
                     } else {
-                        colorResource(id = R.color.background_normal_normal)
+                        DesignSystemTheme.colors.backgroundNormalNormal
                             .copy(alpha = 0.185f)
                     }
                 }
 
-                else -> colorResource(R.color.transparent)
+                else -> DesignSystemTheme.colors.transparent
             },
             width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
         )
@@ -79,21 +77,21 @@ fun Modifier.framedStyle(
             color = when (status) {
                 WantedFramedStyleStatus.Negative -> {
                     if (enabled) {
-                        colorResource(R.color.status_negative).copy(OPACITY_43)
+                        DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
                     } else {
-                        colorResource(R.color.status_negative).copy(0.185f)
+                        DesignSystemTheme.colors.statusNegative.copy(0.185f)
                     }
                 }
 
                 WantedFramedStyleStatus.Selected -> {
                     if (enabled) {
-                        colorResource(R.color.primary_normal).copy(OPACITY_43)
+                        DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
                     } else {
-                        colorResource(R.color.primary_normal).copy(0.185f)
+                        DesignSystemTheme.colors.primaryNormal.copy(0.185f)
                     }
                 }
 
-                else -> colorResource(R.color.line_normal_neutral)
+                else -> DesignSystemTheme.colors.lineNormalNeutral
             },
             width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
         )

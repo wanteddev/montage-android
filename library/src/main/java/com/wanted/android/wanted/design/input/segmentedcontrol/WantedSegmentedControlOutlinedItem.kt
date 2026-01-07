@@ -28,12 +28,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.input.segmentedcontrol.WantedSegmentedDefaults.SegmentedSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
 import com.wanted.android.wanted.design.util.OPACITY_5
-import com.wanted.android.wanted.design.util.WantedTextStyle
 
 /**
  * WantedSegmentedControlOutlinedItem
@@ -87,9 +86,9 @@ fun WantedSegmentedControlOutlinedItem(
 
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
-            colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_5)
+            DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_5)
         } else {
-            colorResource(id = R.color.transparent)
+            DesignSystemTheme.colors.transparent
         },
         animationSpec = tween(durationMillis = 500),
         label = ""
@@ -97,9 +96,9 @@ fun WantedSegmentedControlOutlinedItem(
 
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) {
-            colorResource(id = R.color.primary_normal).copy(alpha = OPACITY_43)
+            DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_43)
         } else {
-            colorResource(id = R.color.transparent)
+            DesignSystemTheme.colors.transparent
         },
         animationSpec = tween(durationMillis = 500),
         label = ""
@@ -158,18 +157,16 @@ fun WantedSegmentedControlOutlinedItem(
                 text = title,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
-                style = WantedTextStyle(
-                    colorRes = if (isSelected) {
-                        R.color.primary_normal
-                    } else {
-                        R.color.label_alternative
-                    },
-                    style = when (LocalWantedSegmentedSize.current) {
-                        SegmentedSize.Small -> DesignSystemTheme.typography.label2Medium
-                        SegmentedSize.Medium -> DesignSystemTheme.typography.body2Medium
-                        SegmentedSize.Large -> DesignSystemTheme.typography.headline2Medium
-                    }
-                )
+                style = when (LocalWantedSegmentedSize.current) {
+                    SegmentedSize.Small -> DesignSystemTheme.typography.label2Medium
+                    SegmentedSize.Medium -> DesignSystemTheme.typography.body2Medium
+                    SegmentedSize.Large -> DesignSystemTheme.typography.headline2Medium
+                },
+                color = if (isSelected) {
+                    DesignSystemTheme.colors.primaryNormal
+                } else {
+                    DesignSystemTheme.colors.labelAlternative
+                }
             )
         }
 

@@ -21,16 +21,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputSize
+import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputVariant
 import com.wanted.android.wanted.design.input.input.control.CheckBoxSize
 import com.wanted.android.wanted.design.input.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.input.control.CheckBoxStyle
 import com.wanted.android.wanted.design.input.input.control.WantedCheckBox
-import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputSize
-import com.wanted.android.wanted.design.input.input.WantedInputDefaults.WantedInputVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.WantedTextStyle
 import com.wanted.android.wanted.design.util.clickOnce
 
 
@@ -73,21 +71,23 @@ fun WantedInput(
     bold: Boolean = false,
     enabled: Boolean = true,
     tight: Boolean = false,
-    textStyle: TextStyle = WantedTextStyle(
-        colorRes = if (enabled) R.color.label_normal else R.color.label_disable,
-        style = if (size == WantedInputSize.Medium) {
-            if (bold) {
-                DesignSystemTheme.typography.body2Bold
-            } else {
-                DesignSystemTheme.typography.body2Regular
-            }
-
+    textStyle: TextStyle = if (size == WantedInputSize.Medium) {
+        if (bold) {
+            DesignSystemTheme.typography.body2Bold
         } else {
-            if (bold) {
-                DesignSystemTheme.typography.label1Bold
-            } else {
-                DesignSystemTheme.typography.label1Regular
-            }
+            DesignSystemTheme.typography.body2Regular
+        }
+    } else {
+        if (bold) {
+            DesignSystemTheme.typography.label1Bold
+        } else {
+            DesignSystemTheme.typography.label1Regular
+        }
+    }.copy(
+        color = if (enabled) {
+            DesignSystemTheme.colors.labelNormal
+        } else {
+            DesignSystemTheme.colors.labelDisable
         }
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
