@@ -29,6 +29,8 @@ data class WantedColorScheme(
     val backgroundNormalAlternative: Color = Color.Transparent,
     val backgroundElevatedNormal: Color = Color.Transparent,
     val backgroundElevatedAlternative: Color = Color.Transparent,
+    val backgroundTransparentNormal: Color = Color.Transparent,
+    val backgroundTransparentAlternative: Color = Color.Transparent,
 
     val interactionInactive: Color = Color.Transparent,
     val interactionDisable: Color = Color.Transparent,
@@ -98,6 +100,8 @@ val AppWantedColorScheme: WantedColorScheme
         backgroundNormalAlternative = colorResource(id = R.color.background_normal_alternative),
         backgroundElevatedNormal = colorResource(id = R.color.background_elevated_normal),
         backgroundElevatedAlternative = colorResource(id = R.color.background_elevated_alternative),
+        backgroundTransparentNormal = colorResource(id = R.color.background_transparent_normal),
+        backgroundTransparentAlternative = colorResource(id = R.color.background_transparent_alternative),
 
         interactionInactive = colorResource(id = R.color.interaction_inactive),
         interactionDisable = colorResource(id = R.color.interaction_disable),
