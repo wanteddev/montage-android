@@ -28,6 +28,13 @@ android {
         }
     }
 
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -149,7 +156,7 @@ afterEvaluate {
                 version = libVersion
 
                 pom {
-                    name.set(libArtifactId)
+                    name.set("Montage Android Design System")
                     description.set("Montage Android Design System Library")
                     url.set("https://github.com/wanteddev/montage-android")
 
