@@ -1,6 +1,7 @@
 # Montage Android Design System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![](https://jitpack.io/v/wanteddev/montage-android.svg)](https://jitpack.io/#wanteddev/montage-android)
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-Latest-brightgreen.svg)](https://developer.android.com/jetpack/compose)
@@ -27,22 +28,16 @@ step closer to that dream, we created this design system.
 
 ### Installation
 
-#### Option 1: GitHub Packages (Recommended)
+#### Option 1: JitPack (Recommended)
 
-Add the GitHub Packages repository to your `settings.gradle.kts`:
+Add the JitPack repository to your `settings.gradle.kts`:
 
 ```kotlin
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://maven.pkg.github.com/wanteddev/montage-android")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
-                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.token") as String?
-            }
-        }
+        maven { url = uri("https://jitpack.io") }
     }
 }
 ```
@@ -51,7 +46,7 @@ Add the dependency to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.wanted.android:montage-android:1.0.0")
+    implementation("com.github.wanteddev:montage-android:3.1.0")
 }
 ```
 
@@ -149,22 +144,16 @@ Montage Android는 Jetpack Compose로 구축된 최신 Android 디자인 시스�
 
 ### 설치 방법
 
-#### 방법 1: GitHub Packages (권장)
+#### 방법 1: JitPack (권장)
 
-`settings.gradle.kts`에 GitHub Packages 저장소를 추가합니다:
+`settings.gradle.kts`에 JitPack 저장소를 추가합니다:
 
 ```kotlin
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://maven.pkg.github.com/wanteddev/montage-android")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user") as String?
-                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.token") as String?
-            }
-        }
+        maven { url = uri("https://jitpack.io") }
     }
 }
 ```
@@ -173,7 +162,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.wanted.android:montage-android:1.0.0")
+    implementation("com.github.wanteddev:montage-android:3.1.0")
 }
 ```
 
@@ -245,9 +234,9 @@ fun MyScreen() {
 
 ### 지원
 
-- 📚 문서: [https://montage.wanted.co.kr/](https://montage.wanted.co.kr/)
-- 📫 이슈: [GitHub Issues](https://github.com/wanteddev/montage-android/issues)
-- 💬 토론: [GitHub Discussions](https://github.com/wanteddev/montage-android/discussions)
+- **문서**: [https://montage.wanted.co.kr/](https://montage.wanted.co.kr/)
+- **이슈**: [GitHub Issues](https://github.com/wanteddev/montage-android/issues)
+
 
 ---
 
