@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Indeterminate -->
+    <item android:color="@color/primary_normal" app:state_indeterminate="true" />
+
+    <!-- Checked -->
+    <item android:color="@color/primary_normal" android:state_checked="true" />
+
+    <!-- Unchecked -->
+    <item android:color="@color/line_normal_normal" android:state_checked="false" />
+</selector>

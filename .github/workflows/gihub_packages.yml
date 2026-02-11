@@ -1,0 +1,115 @@
+name: CD
+on:
+  repository_dispatch:
+    types: [ deploy ]
+
+  push:
+    branches:
+      - 'main'
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    permissions:
+      contents: write
+      packages: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          token: ${{ secrets.WANTED_DEV_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set VersionInfo from publish.properties
+        run: |
+          grep "version=" library/publish.properties | \
+          cut -d '=' -f2 | tr -d ' ' | \
+          xargs -I {} echo "VERSION_CODE={}" >> $GITHUB_ENV
+
+      - name: Print Version
+        run: |
+          echo ${{env.VERSION_CODE}}
+
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: build
+        run: |
+          ./gradlew :library:assembleRelease
+
+      - name: publish
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+        run: |
+          ./gradlew :library:publishReleasePublicationToGithubPackagesRepository --stacktrace
+
+      - name: Create & Push Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+        run: |
+          git config --local user.name "deploy-bot"
+          git config --local user.email "deploy-bot@github.com"
+          
+          # 이미 존재하는 태그는 건너뛰기
+          if git rev-parse "v${{env.VERSION_CODE}}" >/dev/null 2>&1; then
+            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists locally"
+          else
+            echo "✅ Creating tag v${{env.VERSION_CODE}}"
+            git tag v${{env.VERSION_CODE}}
+          fi
+          
+          # 원격에 태그가 없는 경우만 푸시
+          if git ls-remote --tags origin | grep -q "refs/tags/v${{env.VERSION_CODE}}"; then
+            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists on remote, skipping push"
+          else
+            echo "🚀 Pushing tag v${{env.VERSION_CODE}}"
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/wanteddev/montage-android.git v${{env.VERSION_CODE}}
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+        run: |
+          TAG_NAME="v${{env.VERSION_CODE}}"
+          
+          # 릴리즈가 이미 존재하는지 확인
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            echo "⚠️ Release $TAG_NAME already exists. Skipping release creation."
+          else
+            echo "✅ Creating GitHub release: $TAG_NAME"
+          
+            # Release notes 생성
+            cat > release_notes.md << EOF
+          🚀 Design System Release ${{env.VERSION_CODE}}
+          
+          ## Changes
+          - Published to GitHub Packages
+          - GroupId: com.wanted.android
+          - ArtifactId: montage-android
+          - Version: ${{env.VERSION_CODE}}
+          
+          ## Installation
+          \`\`\`gradle
+          dependencies {
+              implementation("com.wanted.android:montage-android:${{env.VERSION_CODE}}")
+          }
+          \`\`\`
+          EOF
+          
+            gh release create "$TAG_NAME" \
+              --title "Release $TAG_NAME" \
+              --notes-file release_notes.md \
+              --target main
+          
+            echo "🎉 Release $TAG_NAME created successfully"
+          fi
