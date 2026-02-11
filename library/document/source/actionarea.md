@@ -58,13 +58,14 @@
 * )
 * ```
 *
+* @param modifier Modifier: Modifier를 설정합니다.
 * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
 * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
 * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
 * @param gradationColor Color: 배경 그라데이션 색상을 설정합니다.
 * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
 * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
-* @param modifier Modifier: Modifier를 설정합니다.
+* @param divider Boolean: 구분선 표시 여부를 지정합니다.
 * @param positive (@Composable () -> Unit): 메인(긍정) 액션 버튼 Slot입니다.
 * @param negative (@Composable (() -> Unit)?): 서브(부정) 액션 버튼 Slot입니다.
 * @param neutral (@Composable (() -> Unit)?): 추가(중립) 액션 버튼 Slot입니다.
