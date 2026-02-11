@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.github.wanteddev:montage-android:3.1.0")
+    implementation("com.github.wanteddev:montage-android:latestVersion")
 }
 ```
 
