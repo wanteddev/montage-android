@@ -58,6 +58,7 @@
 *
 * @param onDismissRequest () -> Unit: 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다.
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param size ModalSize: 모달의 크기입니다.
 * @param type ModalType: 모달의 형태입니다.
 * @param properties DialogProperties: Dialog 속성입니다.
 * @param shape RoundedCornerShape: 모달의 모서리 둥글기입니다.
@@ -92,6 +93,7 @@
 *
 * @param onDismissRequest () -> Unit: 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다.
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param size ModalSize: 모달의 크기입니다.
 * @param type ModalType: 모달의 형태입니다.
 * @param properties DialogProperties: Dialog 속성입니다.
 * @param shape RoundedCornerShape: 모달의 모서리 둥글기입니다.

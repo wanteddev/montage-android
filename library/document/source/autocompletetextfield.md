@@ -39,8 +39,8 @@
 * @param sectionTitleHorizontalPadding Dp: 섹션 제목의 좌우 여백입니다.
 * @param sectionCount Int: 자동완성 섹션 수입니다.
 * @param background Color: 배경 색상입니다.
+* @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
 * @param interactionSource MutableInteractionSource: 포커스 등 상태 추적용입니다.
-* @param focused State<Boolean>: 포커스 상태입니다.
 * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
 * @param sectionTitle ((Int) -> String)?: 섹션 제목 반환 함수입니다.
@@ -96,8 +96,8 @@
 * @param sectionTitleHorizontalPadding Dp: 섹션 제목 여백입니다.
 * @param sectionCount Int: 섹션 수입니다.
 * @param background Color: 배경 색입니다.
+* @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
 * @param interactionSource MutableInteractionSource: 포커스 상태 추적용입니다.
-* @param focused State<Boolean>: 포커스 여부입니다.
 * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
 * @param sectionTitle ((Int) -> String)?: 섹션 제목 제공 함수입니다.

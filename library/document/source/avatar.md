@@ -29,6 +29,8 @@
 * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
 * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
 * @param borderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
+* @param alignment Alignment: 이미지의 정렬 방식입니다.
+* @param contentScale ContentScale: 이미지의 크기 조정 방식입니다.
 * @param onClick (() -> Unit)?: 아바타 클릭 시 호출될 콜백 함수입니다.
 *
 * @see WantedAvatarType

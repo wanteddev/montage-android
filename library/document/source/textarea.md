@@ -38,6 +38,7 @@
 * @param keyboardOptions KeyboardOptions: 키보드 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 설정입니다.
 * @param background Color: 배경 색상입니다.
+* @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
 * @param onClickRightButton () -> Unit: 우측 버튼 클릭 콜백입니다.
 * @param onValueChange (String) -> Unit: 값 변경 콜백입니다.
 */
@@ -75,4 +76,5 @@
 * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 설정입니다.
 * @param background Color: 배경 색상입니다.
+* @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
 */

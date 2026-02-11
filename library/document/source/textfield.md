@@ -35,6 +35,7 @@
 * @param keyboardOptions KeyboardOptions: 키보드 동작 옵션입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션에 대한 핸들링입니다.
 * @param background Color: 텍스트 필드 배경 색상입니다.
+* @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
 * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
 * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
 * @param trailingContent ((Dp) -> Unit)?: 우측 버튼 외 영역에 들어갈 커스텀 콘텐츠입니다.
@@ -79,6 +80,7 @@
 * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
 * @param background Color: 배경 색상입니다.
+* @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
 */
 
 /**
