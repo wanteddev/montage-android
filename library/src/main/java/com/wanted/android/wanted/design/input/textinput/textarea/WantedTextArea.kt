@@ -443,6 +443,7 @@ private fun WantedTextArea(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     background: Color = colorResource(id = R.color.background_transparent_alternative),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     onClickRightButton: () -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit = {}
 ) {
@@ -462,6 +463,7 @@ private fun WantedTextArea(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         background = background,
+        visualTransformation = visualTransformation,
         leftContent = {
             WantedTextAreaCharacterCount(
                 current = if (isGraphemeClusterCount) {
