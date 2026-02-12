@@ -4,6 +4,8 @@ Wanted Lab Design System for Android
 
 [English](GETTING_STARTED.en.md) | [한국어](GETTING_STARTED.kr.md)
 
+![hero](https://static.wanted.co.kr/montage-github/thumbnail.png)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![](https://jitpack.io/v/wanteddev/montage-android.svg)](https://jitpack.io/#wanteddev/montage-android)
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
