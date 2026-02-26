@@ -155,8 +155,35 @@ fun WantedDialogCloseTopAppBar(
     )
 }
 
+
+/**
+ * WantedDialogTopAppBar
+ *
+ * 닫기 버튼이 포함된 다이얼로그용 TopAppBar 컴포넌트입니다.
+ *
+ * 우측에 닫기 아이콘이 고정으로 배치됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedDialogTopAppBar(
+ *     title = "제목",
+ *     navigationIcon = { },
+ *     actions = { }
+ * )
+ * ```
+ *
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param backgroundColor Color: 앱바 배경 색상입니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+ * @param variant Variant: 앱바 형태입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+ * @param title (@Composable () -> Unit)?: 타이틀 텍스트 슬롯입니다.
+ * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+ */
 @Composable
-internal fun WantedDialogTopAppBar(
+fun WantedDialogTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
