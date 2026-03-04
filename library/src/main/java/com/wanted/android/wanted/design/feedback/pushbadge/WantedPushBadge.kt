@@ -143,10 +143,10 @@ private fun PushBadgeDot(
     size: PushBadgeSize,
     position: PushBadgePosition,
     background: Color,
+    modifier: Modifier = Modifier,
     bordered: Boolean = true,
     borderWidth: Dp = if (!bordered) 0.dp else 1.dp,
     borderColor: Color = DesignSystemTheme.colors.staticWhite,
-    modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
 

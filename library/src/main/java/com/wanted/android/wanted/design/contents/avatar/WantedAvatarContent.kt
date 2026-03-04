@@ -7,6 +7,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.bumptech.glide.integration.compose.GlideImage
@@ -27,7 +28,8 @@ internal fun WantedAvatarContent(
             Icon(
                 modifier = modifier,
                 painter = painterResource(id = model),
-                contentDescription = ""
+                contentDescription = "",
+                tint = Color.Unspecified
             )
         } else {
             GlideImage(
@@ -45,12 +47,14 @@ internal fun WantedAvatarContent(
         placeHolder?.let {
             Icon(
                 modifier = modifier,
-                painter = painterResource(id = placeHolder), contentDescription = ""
+                painter = painterResource(id = placeHolder),
+                contentDescription = "",
+                tint = Color.Unspecified
             )
         } ?: run {
             Box(
                 modifier = modifier
-                    .background(DesignSystemTheme.colors.fillNormal)
+                    .background(DesignSystemTheme.colors.staticWhite)
             )
         }
     }

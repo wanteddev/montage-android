@@ -24,7 +24,6 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.base.getBorderModifier
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarSize
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarType
-import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeSize
 import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
@@ -55,7 +54,6 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
  * @param model Any?: 표시할 이미지 모델입니다 (URL 또는 Drawable ID).
  * @param placeHolder Int?: 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다.
- * @param isIcon Boolean: 아바타 안쪽에 추가 보더를 적용할지 여부를 설정합니다.
  * @param isDrawableRes Boolean: model이 Drawable 리소스 ID일 경우 true로 설정합니다.
  * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
  * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
@@ -74,7 +72,6 @@ fun WantedAvatar(
     size: WantedAvatarSize = WantedAvatarSize.Small,
     model: Any? = null,
     @DrawableRes placeHolder: Int? = null,
-    isIcon: Boolean = false,
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
     pushBadge: Boolean = false,
@@ -91,7 +88,6 @@ fun WantedAvatar(
                 placeHolder = placeHolder ?: R.drawable.icon_avatar_placeholder_person,
                 size = size,
                 isDrawableRes = isDrawableRes,
-                isIcon = isIcon,
                 isGroup = isGroup,
                 borderColor = borderColor,
                 pushBadge = pushBadge,
@@ -108,7 +104,6 @@ fun WantedAvatar(
                 placeHolder = placeHolder ?: R.drawable.icon_avatar_placeholder_company,
                 size = size,
                 isDrawableRes = isDrawableRes,
-                isIcon = isIcon,
                 isGroup = isGroup,
                 borderColor = borderColor,
                 pushBadge = pushBadge,
@@ -125,7 +120,6 @@ fun WantedAvatar(
                 placeHolder = placeHolder ?: R.drawable.icon_avatar_placeholder_academic,
                 size = size,
                 isDrawableRes = isDrawableRes,
-                isIcon = isIcon,
                 isGroup = isGroup,
                 borderColor = borderColor,
                 pushBadge = pushBadge,
@@ -146,8 +140,7 @@ internal fun WantedAvatarPerson(
     size: WantedAvatarSize,
     isDrawableRes: Boolean = false,
     isGroup: Boolean = false,
-    isIcon: Boolean = false,
-    borderColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    borderColor: Color = DesignSystemTheme.colors.lineNormalAlternative,
     pushBadge: Boolean = false,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
@@ -170,7 +163,7 @@ internal fun WantedAvatarPerson(
                     .getBorderModifier(
                         size = size.size,
                         isCircleShape = true,
-                        borderType = if (isIcon) BorderType.InnerLine else BorderType.None
+                        borderType = BorderType.InnerLine
                     ),
                 model = model,
                 placeHolder = placeHolder,
@@ -181,15 +174,7 @@ internal fun WantedAvatarPerson(
         },
         pushBadge = if (pushBadge) {
             {
-                WantedPushBadge(
-                    size = when (size) {
-                        WantedAvatarSize.XSmall -> PushBadgeSize.XSmall
-                        WantedAvatarSize.Small -> PushBadgeSize.XSmall
-                        WantedAvatarSize.Medium -> PushBadgeSize.Small
-                        WantedAvatarSize.Large -> PushBadgeSize.Small
-                        WantedAvatarSize.XLarge -> PushBadgeSize.Medium
-                    }
-                )
+                WantedPushBadge(size = size.badgeSize)
             }
         } else null,
         onClick = onClick
@@ -203,9 +188,8 @@ private fun WantedAvatar(
     @DrawableRes placeHolder: Int? = null,
     size: WantedAvatarSize,
     isDrawableRes: Boolean = false,
-    isIcon: Boolean = false,
     isGroup: Boolean = false,
-    borderColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    borderColor: Color = DesignSystemTheme.colors.lineNormalAlternative,
     pushBadge: Boolean,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
@@ -231,7 +215,7 @@ private fun WantedAvatar(
                         size = size.size,
                         isCircleShape = false,
                         cornerRadius = size.cornerRadius,
-                        borderType = if (isIcon) BorderType.InnerLine else BorderType.None
+                        borderType = BorderType.InnerLine
                     ),
                 model = model,
                 placeHolder = placeHolder,
@@ -242,15 +226,7 @@ private fun WantedAvatar(
         },
         pushBadge = if (pushBadge) {
             {
-                WantedPushBadge(
-                    size = when (size) {
-                        WantedAvatarSize.XSmall -> PushBadgeSize.XSmall
-                        WantedAvatarSize.Small -> PushBadgeSize.XSmall
-                        WantedAvatarSize.Medium -> PushBadgeSize.Small
-                        WantedAvatarSize.Large -> PushBadgeSize.Small
-                        WantedAvatarSize.XLarge -> PushBadgeSize.Medium
-                    }
-                )
+                WantedPushBadge(size = size.badgeSize)
             }
         } else null,
         onClick = onClick
@@ -341,16 +317,6 @@ private fun WantedAvatarPreview() {
                     onClick = {}
                 )
 
-                WantedAvatar(
-                    modifier = Modifier,
-                    model = R.drawable.icon_avatar_placeholder_person,
-                    placeHolder = R.drawable.icon_avatar_placeholder_person,
-                    size = WantedAvatarSize.Medium,
-                    type = WantedAvatarType.Person,
-                    isDrawableRes = true,
-                    isIcon = true,
-                    onClick = {}
-                )
 
                 WantedAvatar(
                     modifier = Modifier,
@@ -366,7 +332,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.Medium,
                     type = WantedAvatarType.Company,
                     isDrawableRes = true,
-                    isIcon = true,
                     onClick = {}
                 )
 
@@ -375,7 +340,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.Medium,
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
-                    isIcon = true,
                     onClick = {}
                 )
 
@@ -384,7 +348,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.Medium,
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
-                    isIcon = true,
                     pushBadge = true,
                     onClick = {}
                 )

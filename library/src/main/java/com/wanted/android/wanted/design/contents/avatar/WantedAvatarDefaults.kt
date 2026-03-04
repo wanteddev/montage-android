@@ -2,6 +2,7 @@ package com.wanted.android.wanted.design.contents.avatar
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes
 
 
 /**
@@ -23,42 +24,59 @@ object WantedAvatarDefaults {
      */
     sealed class WantedAvatarSize(
         open val size: Dp,
-        open val cornerRadius: Dp
+        open val cornerRadius: Dp,
+        open val badgeSize: PushBadgeTypes.PushBadgeSize
     ) {
         /**
          * data object XSmall
          *
          * 24dp 크기, 6dp 모서리 반경의 가장 작은 아바타 크기입니다.
          */
-        data object XSmall : WantedAvatarSize(24.dp, 6.dp)
+        data object XSmall : WantedAvatarSize(24.dp, 6.dp, PushBadgeTypes.PushBadgeSize.XSmall)
 
         /**
          * data object Small
          *
-         * 32dp 크기, 6dp 모서리 반경의 작은 아바타 크기입니다.
+         * 32dp 크기, 8dp 모서리 반경의 작은 아바타 크기입니다.
          */
-        data object Small : WantedAvatarSize(32.dp, 6.dp)
+        data object Small : WantedAvatarSize(32.dp, 8.dp, PushBadgeTypes.PushBadgeSize.XSmall)
 
         /**
          * data object Medium
          *
-         * 40dp 크기, 8dp 모서리 반경의 중간 아바타 크기입니다.
+         * 40dp 크기, 10dp 모서리 반경의 중간 아바타 크기입니다.
          */
-        data object Medium : WantedAvatarSize(40.dp, 8.dp)
+        data object Medium : WantedAvatarSize(40.dp, 10.dp, PushBadgeTypes.PushBadgeSize.Small)
 
         /**
          * data object Large
          *
-         * 48dp 크기, 10dp 모서리 반경의 큰 아바타 크기입니다.
+         * 48dp 크기, 12dp 모서리 반경의 큰 아바타 크기입니다.
          */
-        data object Large : WantedAvatarSize(48.dp, 10.dp)
+        data object Large : WantedAvatarSize(48.dp, 12.dp, PushBadgeTypes.PushBadgeSize.Small)
 
         /**
          * data object XLarge
          *
-         * 56dp 크기, 12dp 모서리 반경의 가장 큰 아바타 크기입니다.
+         * 56dp 크기, 14dp 모서리 반경의 가장 큰 아바타 크기입니다.
          */
-        data object XLarge : WantedAvatarSize(56.dp, 12.dp)
+        data object XLarge : WantedAvatarSize(56.dp, 14.dp, PushBadgeTypes.PushBadgeSize.Medium)
+
+
+        /**
+         * data class Custom
+         *
+         * 크기, 모서리 반경, 뱃지 크기를 커스텀 할 수 있는 아바타 크기입니다.
+         */
+        data class Custom(
+            override val size: Dp,
+            override val cornerRadius: Dp,
+            override val badgeSize: PushBadgeTypes.PushBadgeSize = when {
+                size <= 36.dp -> PushBadgeTypes.PushBadgeSize.XSmall
+                size <= 52.dp -> PushBadgeTypes.PushBadgeSize.Small
+                else -> PushBadgeTypes.PushBadgeSize.Medium
+            }
+        ) : WantedAvatarSize(size, cornerRadius, badgeSize)
 
         companion object {
             val entries: List<WantedAvatarSize> = listOf(XSmall, Small, Medium, Large, XLarge)

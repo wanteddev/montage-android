@@ -91,8 +91,9 @@ fun Modifier.getBorderModifier(
     borderType: BorderType,
     cornerRadius: Dp = 0.dp,
     borderWidth: Dp = 1.dp,
-    borderColor: Color = DesignSystemTheme.colors.labelNormal.copy(OPACITY_5),
-    backgroundColor: Color = DesignSystemTheme.colors.staticWhite
+    borderColor: Color = DesignSystemTheme.colors.staticWhite,
+    innerBorderColor: Color = DesignSystemTheme.colors.lineNormalAlternative,
+    backgroundColor: Color = DesignSystemTheme.colors.staticWhite,
 ) = this.then(
     when (borderType) {
         BorderType.None -> {
@@ -149,7 +150,7 @@ fun Modifier.getBorderModifier(
                     .background(color = backgroundColor)
                     .border(
                         width = borderWidth,
-                        color = borderColor,
+                        color = innerBorderColor,
                         shape = CircleShape
                     )
             } else {
@@ -158,7 +159,7 @@ fun Modifier.getBorderModifier(
                     .background(color = backgroundColor)
                     .border(
                         width = borderWidth,
-                        color = borderColor,
+                        color = innerBorderColor,
                         shape = RoundedCornerShape(cornerRadius)
                     )
             }

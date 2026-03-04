@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatar
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarSize
@@ -43,7 +42,6 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *     size = WantedAvatarSize.Medium,
  *     type = WantedAvatarType.Person,
  *     isDrawableRes = true,
- *     isIcon = false
  * )
  * ```
  *
@@ -52,7 +50,6 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param type WantedAvatarType: 아바타의 유형(Person, Company, Academic)을 지정합니다.
  * @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
  * @param placeHolder Int?: 이미지 로딩 실패 시 사용할 Drawable 리소스 ID입니다.
- * @param isIcon Boolean: 아바타 내부에 Inner 보더를 적용할지 여부입니다.
  * @param isDrawableRes Boolean: modelList 항목이 Drawable 리소스인지 여부입니다.
  * @param trailingContent (@Composable (Dp) -> Unit)?: 아바타 그룹 오른쪽에 추가적으로 표시할 콘텐츠입니다.
  */
@@ -64,7 +61,6 @@ fun WantedAvatarGroup(
     type: WantedAvatarType,
     modifier: Modifier = Modifier,
     @DrawableRes placeHolder: Int? = null,
-    isIcon: Boolean = false,
     isDrawableRes: Boolean = false,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
@@ -72,16 +68,26 @@ fun WantedAvatarGroup(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy((8).dp),
+        horizontalArrangement = Arrangement.spacedBy(
+            when (size) {
+                WantedAvatarSize.XSmall -> (6).dp
+                else -> (8).dp
+            }
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = Modifier.weight(1f, fill = false),
-            horizontalArrangement = Arrangement.spacedBy((-6).dp),
+            horizontalArrangement = Arrangement.spacedBy(
+                when (size) {
+                    WantedAvatarSize.XSmall -> (-6).dp
+                    else -> (-8).dp
+                }
+            ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            modelList.forEachIndexed { index, any ->
-                Box(modifier = Modifier.zIndex(modelList.size - index.toFloat())) {
+            modelList.forEach { any ->
+                Box(modifier = Modifier) {
                     WantedAvatar(
                         modifier = Modifier,
                         model = any,
@@ -89,7 +95,6 @@ fun WantedAvatarGroup(
                         size = size,
                         type = type,
                         isGroup = true,
-                        isIcon = isIcon,
                         alignment = alignment,
                         contentScale = contentScale,
                         isDrawableRes = isDrawableRes
@@ -128,7 +133,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
-                    isIcon = false
                 )
 
                 WantedAvatarGroup(
@@ -142,7 +146,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
-                    isIcon = true
                 )
 
                 WantedAvatarGroup(
@@ -156,7 +159,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Company,
                     isDrawableRes = true,
-                    isIcon = false
                 )
 
                 WantedAvatarGroup(
@@ -170,7 +172,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Company,
                     isDrawableRes = true,
-                    isIcon = true
                 )
 
                 WantedAvatarGroup(
@@ -184,7 +185,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
-                    isIcon = false
                 )
 
                 WantedAvatarGroup(
@@ -198,7 +198,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Academic,
                     isDrawableRes = true,
-                    isIcon = true
                 )
 
 
@@ -213,7 +212,6 @@ private fun WantedAvatarPreview() {
                     size = WantedAvatarSize.XLarge,
                     type = WantedAvatarType.Person,
                     isDrawableRes = true,
-                    isIcon = false,
                     trailingContent = {
                         Text(text = "외 1명")
                     }
