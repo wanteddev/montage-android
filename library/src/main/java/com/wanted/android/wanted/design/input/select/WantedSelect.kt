@@ -27,9 +27,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedDropShadow
+import com.wanted.android.wanted.design.base.WantedDropShadowDefaults
+import com.wanted.android.wanted.design.base.wantedDropShadow
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectBottomSheet
 import com.wanted.android.wanted.design.input.select.view.WantedMultiSelectContents
 import com.wanted.android.wanted.design.input.select.view.WantedSelectBottomSheet
@@ -501,29 +501,9 @@ private fun WantedSelectImpl(
         },
         select = {
             ConstraintLayout {
-                val (shadow, select) = createRefs()
-                WantedDropShadow(
-                    Modifier
-                        .constrainAs(shadow) {
-                            top.linkTo(select.top)
-                            bottom.linkTo(select.bottom)
-                            start.linkTo(select.start)
-                            end.linkTo(select.end)
-                            width = Dimension.fillToConstraints
-                            height = Dimension.fillToConstraints
-                        },
-                    background = background,
-                    shape = RoundedCornerShape(12.dp)
-                )
-
                 WantedSelectContentLayout(
                     modifier = Modifier
-                        .constrainAs(select) {
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
+                        .wantedDropShadow(WantedDropShadowDefaults.WantedShadowStyle.XSmall())
                         .border(
                             shape = RoundedCornerShape(12.dp),
                             color = when {

@@ -44,9 +44,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.base.WantedDropShadow
+import com.wanted.android.wanted.design.base.WantedDropShadowDefaults
+import com.wanted.android.wanted.design.base.wantedDropShadow
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextFieldDefaults.RightVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_43
@@ -83,28 +83,9 @@ internal fun WantedCustomTextField(
     focusRequester: FocusRequester = FocusRequester()
 ) {
     ConstraintLayout {
-        val (shadow, textField) = createRefs()
-        WantedDropShadow(
-            Modifier
-                .constrainAs(shadow) {
-                    top.linkTo(textField.top)
-                    bottom.linkTo(textField.bottom)
-                    start.linkTo(textField.start)
-                    end.linkTo(textField.end)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                },
-            background = background,
-            shape = RoundedCornerShape(12.dp)
-        )
         WantedCustomTextFieldLayout(
             modifier = modifier
-                .constrainAs(textField) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
+                .wantedDropShadow(WantedDropShadowDefaults.WantedShadowStyle.XSmall())
                 .clip(RoundedCornerShape(12.dp))
                 .background(
                     if (enabled) {
