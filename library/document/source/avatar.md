@@ -24,7 +24,6 @@
 * @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
 * @param model Any?: 표시할 이미지 모델입니다 (URL 또는 Drawable ID).
 * @param placeHolder Int?: 로딩 실패 시 표시할 기본 이미지 리소스 ID입니다.
-* @param isIcon Boolean: 아바타 안쪽에 추가 보더를 적용할지 여부를 설정합니다.
 * @param isDrawableRes Boolean: model이 Drawable 리소스 ID일 경우 true로 설정합니다.
 * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
 * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
@@ -64,25 +63,31 @@
 /**
 * data object Small
 *
-* 32dp 크기, 6dp 모서리 반경의 작은 아바타 크기입니다.
+* 32dp 크기, 8dp 모서리 반경의 작은 아바타 크기입니다.
 */
 
 /**
 * data object Medium
 *
-* 40dp 크기, 8dp 모서리 반경의 중간 아바타 크기입니다.
+* 40dp 크기, 10dp 모서리 반경의 중간 아바타 크기입니다.
 */
 
 /**
 * data object Large
 *
-* 48dp 크기, 10dp 모서리 반경의 큰 아바타 크기입니다.
+* 48dp 크기, 12dp 모서리 반경의 큰 아바타 크기입니다.
 */
 
 /**
 * data object XLarge
 *
-* 56dp 크기, 12dp 모서리 반경의 가장 큰 아바타 크기입니다.
+* 56dp 크기, 14dp 모서리 반경의 가장 큰 아바타 크기입니다.
+*/
+
+/**
+* data class Custom
+*
+* 크기, 모서리 반경, 뱃지 크기를 커스텀 할 수 있는 아바타 크기입니다.
 */
 
 /**

@@ -34,7 +34,6 @@
 * @param isGraphemeClusterCount Boolean: 문자 수 대신 grapheme cluster 기준으로 글자 수를 셉니다.
 * @param requiredBadge Boolean: 필수 입력 뱃지 표시 여부입니다.
 * @param interactionSource MutableInteractionSource: 포커스 등 인터랙션 추적용입니다.
-* @param focused State<Boolean>: 포커스 상태입니다.
 * @param keyboardOptions KeyboardOptions: 키보드 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 설정입니다.
 * @param background Color: 배경 색상입니다.
@@ -72,7 +71,6 @@
 * @param requiredBadge Boolean: 필수 입력 여부입니다.
 * @param isGraphemeClusterCount Boolean: grapheme cluster 기준 글자 수 사용 여부입니다.
 * @param interactionSource MutableInteractionSource: 포커스 등 인터랙션 추적용입니다.
-* @param focused State<Boolean>: 포커스 상태입니다.
 * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 설정입니다.
 * @param background Color: 배경 색상입니다.
