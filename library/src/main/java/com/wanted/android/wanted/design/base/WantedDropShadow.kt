@@ -46,7 +46,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * ```kotlin
  * WantedDropShadow(
  *     modifier = Modifier.size(100.dp),
- *     background = Color.White,
+ *     background = Color.Transparent,
  *     dropShadowColor = Color.Black.copy(0.1f),
  *     blur = 2.dp,
  *     shape = RoundedCornerShape(12.dp)
@@ -62,7 +62,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedDropShadow(
     modifier: Modifier = Modifier,
-    background: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    background: Color = DesignSystemTheme.colors.transparent,
     dropShadowColor: Color = DesignSystemTheme.colors.staticBlack.copy(0.03f),
     blur: Dp = 1.dp,
     shape: Shape
@@ -308,11 +308,11 @@ object WantedDropShadowDefaults {
          * XSmall Shadow 스타일을 반환하는 데이터 클래스입니다.
          *
          * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
          */
         data class XSmall(
             override val borderRadius: Dp = 12.dp,
-            override val backgroundColor: Color = Color.White
+            override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowStyle(borderRadius, backgroundColor) {
             // 성능을 위해 lazy로 shadow 리스트 생성
             private val shadowList by lazy {
@@ -336,11 +336,11 @@ object WantedDropShadowDefaults {
          * Small Shadow 스타일을 반환하는 데이터 클래스입니다.
          *
          * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
          */
         data class Small(
             override val borderRadius: Dp = 12.dp,
-            override val backgroundColor: Color = Color.White
+            override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowStyle(borderRadius, backgroundColor) {
             private val shadowList by lazy {
                 listOf(
@@ -370,11 +370,11 @@ object WantedDropShadowDefaults {
          * Medium Shadow 스타일을 반환하는 데이터 클래스입니다.
          *
          * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
          */
         data class Medium(
             override val borderRadius: Dp = 12.dp,
-            override val backgroundColor: Color = Color.White
+            override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowStyle(borderRadius, backgroundColor) {
             private val shadowList by lazy {
                 listOf(
@@ -404,11 +404,11 @@ object WantedDropShadowDefaults {
          * Large Shadow 스타일을 반환하는 데이터 클래스입니다.
          *
          * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
          */
         data class Large(
             override val borderRadius: Dp = 12.dp,
-            override val backgroundColor: Color = Color.White
+            override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowStyle(borderRadius, backgroundColor) {
             private val shadowList by lazy {
                 listOf(
@@ -438,11 +438,11 @@ object WantedDropShadowDefaults {
          * XLarge Shadow 스타일을 반환하는 데이터 클래스입니다.
          *
          * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
          */
         data class XLarge(
             override val borderRadius: Dp = 12.dp,
-            override val backgroundColor: Color = Color.White
+            override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowStyle(borderRadius, backgroundColor) {
             private val shadowList by lazy {
                 listOf(
@@ -499,11 +499,11 @@ object WantedDropShadowDefaults {
          * Small 확산형 Shadow 스타일을 반환하는 데이터 클래스입니다.
          *
          * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
          */
         data class Small(
             override val borderRadius: Dp = 12.dp,
-            override val backgroundColor: Color = Color.White
+            override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowSpreadStyle(borderRadius, backgroundColor) {
             private val shadowList by lazy {
                 listOf(
@@ -526,11 +526,11 @@ object WantedDropShadowDefaults {
          * Medium 확산형 Shadow 스타일을 반환하는 데이터 클래스입니다.
          *
          * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+         * @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
          */
         data class Medium(
             override val borderRadius: Dp = 12.dp,
-            override val backgroundColor: Color = Color.White
+            override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowSpreadStyle(borderRadius, backgroundColor) {
             private val shadowList by lazy {
                 listOf(
