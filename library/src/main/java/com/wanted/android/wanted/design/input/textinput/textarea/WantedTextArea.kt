@@ -39,7 +39,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedChip
@@ -153,7 +152,7 @@ fun WantedTextArea(
         textField = {
             if (leadingContent == null && trailingContent == null) {
                 WantedTextArea(
-                    modifier = Modifier,
+                    modifier = modifier,
                     value = textFieldValue,
                     negative = negative,
                     enabled = enabled,
@@ -185,7 +184,7 @@ fun WantedTextArea(
                 )
             } else {
                 WantedTextAreaContent(
-                    modifier = Modifier,
+                    modifier = modifier,
                     value = textFieldValue,
                     negative = negative,
                     enabled = enabled,
@@ -514,105 +513,101 @@ private fun WantedTextAreaContent(
     rightContent: @Composable (() -> Unit)? = null,
     onValueChange: (TextFieldValue) -> Unit
 ) {
-    ConstraintLayout(modifier = modifier) {
+    WantedTextAreaLayout(
+        modifier = modifier
+            .wantedDropShadow(WantedDropShadowDefaults.WantedShadowStyle.XSmall())
+            .clip(RoundedCornerShape(12.dp))
+            .border(
+                shape = RoundedCornerShape(12.dp),
+                color = when {
+                    !enabled -> DesignSystemTheme.colors.lineNormalNeutral
+                    negative -> DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
+                    focused.value -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
+                    else -> DesignSystemTheme.colors.lineNormalNeutral
+                },
+                width = if (focused.value) 2.dp else 1.dp
+            )
+            .border(
+                shape = RoundedCornerShape(12.dp),
+                color = when {
+                    negative || focused.value -> {
+                        DesignSystemTheme.colors.backgroundNormalNormal
+                    }
 
-        WantedTextAreaLayout(
-            modifier = Modifier
-                .wantedDropShadow(WantedDropShadowDefaults.WantedShadowStyle.XSmall())
-                .clip(RoundedCornerShape(12.dp))
-                .border(
-                    shape = RoundedCornerShape(12.dp),
-                    color = when {
-                        !enabled -> DesignSystemTheme.colors.lineNormalNeutral
-                        negative -> DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
-                        focused.value -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
-                        else -> DesignSystemTheme.colors.lineNormalNeutral
-                    },
-                    width = if (focused.value) 2.dp else 1.dp
-                )
-                .border(
-                    shape = RoundedCornerShape(12.dp),
-                    color = when {
-                        negative || focused.value -> {
-                            DesignSystemTheme.colors.backgroundNormalNormal
-                        }
-
-                        else -> DesignSystemTheme.colors.transparent
-                    },
-                    width = if (focused.value) 2.dp else 1.dp
-                )
-                .background(
-                    if (enabled) {
-                        background
+                    else -> DesignSystemTheme.colors.transparent
+                },
+                width = if (focused.value) 2.dp else 1.dp
+            )
+            .background(
+                if (enabled) {
+                    background
+                } else {
+                    DesignSystemTheme.colors.fillAlternative
+                }
+            ),
+        textField = {
+            BasicTextField(
+                value = value,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+                maxLines = maxLines,
+                minLines = minLines,
+                enabled = enabled,
+                visualTransformation = visualTransformation,
+                interactionSource = interactionSource,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                cursorBrush = cursorBrush,
+                textStyle = DesignSystemTheme.typography.body1Regular.copy(
+                    color = if (enabled) {
+                        DesignSystemTheme.colors.labelNormal
                     } else {
-                        DesignSystemTheme.colors.fillAlternative
+                        DesignSystemTheme.colors.labelAlternative
                     }
-                )
-                .height(IntrinsicSize.Min),
-            textField = {
-                BasicTextField(
-                    value = value,
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp)
-                        .padding(vertical = 12.dp)
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester),
-                    maxLines = maxLines,
-                    minLines = minLines,
-                    enabled = enabled,
-                    visualTransformation = visualTransformation,
-                    interactionSource = interactionSource,
-                    keyboardOptions = keyboardOptions,
-                    keyboardActions = keyboardActions,
-                    cursorBrush = cursorBrush,
-                    textStyle = DesignSystemTheme.typography.body1Regular.copy(
-                        color = if (enabled) {
-                            DesignSystemTheme.colors.labelNormal
+                ),
+                onValueChange = {
+
+                    when {
+                        isGraphemeClusterCount && graphemeClusterCount(text = it.text) <= maxWordCount -> {
+                            onValueChange(it)
+                        }
+
+                        enabledOverflowText -> onValueChange(it)
+                        it.text.length <= maxWordCount -> onValueChange(it)
+                        it.text.length < value.text.length -> onValueChange(it)
+                        it.text == value.text -> onValueChange(it)
+                        else -> onValueChange(value)
+                    }
+                },
+                decorationBox = { innerTextField ->
+                    DecorationBox(
+                        modifier = Modifier,
+                        innerTextField = innerTextField,
+                        placeholder = if (value.text.isEmpty() && placeholder.isNotEmpty()) {
+                            {
+                                Text(
+                                    text = placeholder,
+                                    style = DesignSystemTheme.typography.body1Regular,
+                                    color = if (enabled) {
+                                        DesignSystemTheme.colors.labelAssistive
+                                    } else {
+                                        DesignSystemTheme.colors.labelDisable
+                                    }
+                                )
+                            }
                         } else {
-                            DesignSystemTheme.colors.labelAlternative
+                            null
                         }
-                    ),
-                    onValueChange = {
-
-                        when {
-                            isGraphemeClusterCount && graphemeClusterCount(text = it.text) <= maxWordCount -> {
-                                onValueChange(it)
-                            }
-
-                            enabledOverflowText -> onValueChange(it)
-                            it.text.length <= maxWordCount -> onValueChange(it)
-                            it.text.length < value.text.length -> onValueChange(it)
-                            it.text == value.text -> onValueChange(it)
-                            else -> onValueChange(value)
-                        }
-                    },
-                    decorationBox = { innerTextField ->
-                        DecorationBox(
-                            modifier = Modifier,
-                            innerTextField = innerTextField,
-                            placeholder = if (value.text.isEmpty() && placeholder.isNotEmpty()) {
-                                {
-                                    Text(
-                                        text = placeholder,
-                                        style = DesignSystemTheme.typography.body1Regular,
-                                        color = if (enabled) {
-                                            DesignSystemTheme.colors.labelAssistive
-                                        } else {
-                                            DesignSystemTheme.colors.labelDisable
-                                        }
-                                    )
-                                }
-                            } else {
-                                null
-                            }
-                        )
-                    }
-                )
-            },
-            leftContent = leftContent,
-            rightContent = rightContent
-        )
-    }
+                    )
+                }
+            )
+        },
+        leftContent = leftContent,
+        rightContent = rightContent
+    )
 }
 
 
