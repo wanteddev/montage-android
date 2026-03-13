@@ -10,7 +10,7 @@
 * ```kotlin
 * WantedDropShadow(
 *     modifier = Modifier.size(100.dp),
-*     background = Color.White,
+*     background = Color.Transparent,
 *     dropShadowColor = Color.Black.copy(0.1f),
 *     blur = 2.dp,
 *     shape = RoundedCornerShape(12.dp)
@@ -100,7 +100,7 @@
 * XSmall Shadow 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
 */
 
 /**
@@ -109,7 +109,7 @@
 * Small Shadow 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
 */
 
 /**
@@ -118,7 +118,7 @@
 * Medium Shadow 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
 */
 
 /**
@@ -127,7 +127,7 @@
 * Large Shadow 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
 */
 
 /**
@@ -136,7 +136,7 @@
 * XLarge Shadow 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
 */
 
 /**
@@ -167,7 +167,7 @@
 * Small 확산형 Shadow 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
 */
 
 /**
@@ -176,7 +176,7 @@
 * Medium 확산형 Shadow 스타일을 반환하는 데이터 클래스입니다.
 *
 * @param borderRadius Dp: 테두리의 반경입니다. 기본값은 12.dp입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.White입니다.
+* @param backgroundColor Color: 배경 색상입니다. 기본값은 Color.Transparent입니다.
 */
 
 /**
