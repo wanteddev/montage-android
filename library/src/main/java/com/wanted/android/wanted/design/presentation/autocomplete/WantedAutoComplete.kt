@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExposedDropdownMenuBoxScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,8 +27,10 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.zIndex
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
@@ -84,6 +87,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     containerColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionTitle: ((section: Int) -> String)? = null,
+    anchorPadding: Dp = 0.dp,
     topDirectInput: @Composable (() -> Unit)? = null,
     bottomDirectInput: @Composable (() -> Unit)? = null
 ) {
@@ -116,7 +120,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         }.maxOfOrNull { it.key } ?: -1
     }
 
-    ExposedDropdownMenu(
+    DropdownMenu(
         modifier = modifier
             .padding(horizontal = 8.dp),
         scrollState = scrollState,
@@ -125,6 +129,8 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         expanded = expanded,
         shadowElevation = 1.dp,
         border = BorderStroke(1.dp, DesignSystemTheme.colors.lineSolidNormal),
+        offset = DpOffset(x = 0.dp, y = anchorPadding),
+        properties = PopupProperties(focusable = false),
         onDismissRequest = {
             onDismissRequest(false)
         }

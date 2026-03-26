@@ -221,7 +221,8 @@ private fun WantedAvatarPreview() {
                     buttonDefault = WantedButtonDefaults.getDefault(
                         variant = ButtonVariant.OUTLINED,
                         type = ButtonType.PRIMARY,
-                        size = ButtonSize.MEDIUM
+                        size = ButtonSize.MEDIUM,
+                        leftIconTintColor = DesignSystemTheme.colors.primaryNormal
                     ),
                     onClick = { }
                 )
