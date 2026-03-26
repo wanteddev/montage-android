@@ -79,3 +79,7 @@
 * - Center: 중앙 정렬입니다.
 * - Right: 오른쪽 정렬입니다.
 */
+
+/**
+* Modifier extension for drawing caret (arrow) on tooltip
+*/
