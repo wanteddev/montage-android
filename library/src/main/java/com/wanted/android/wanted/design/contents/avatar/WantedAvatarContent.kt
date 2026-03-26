@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
@@ -37,11 +38,10 @@ internal fun WantedAvatarContent(
                 model = model,
                 contentDescription = "",
                 alignment = alignment,
-                contentScale = contentScale
-            ) {
-                it.placeholder(placeHolder ?: 0)
-                    .error(placeHolder ?: 0)
-            }
+                contentScale = contentScale,
+                loading = placeHolder?.let { placeholder(it) },
+                failure = placeHolder?.let { placeholder(it) },
+            )
         }
     } ?: run {
         placeHolder?.let {

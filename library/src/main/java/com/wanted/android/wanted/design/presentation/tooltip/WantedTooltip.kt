@@ -491,6 +491,7 @@ fun WantedTooltip(
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
+    var anchorLayoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
     val backgroundColor = DesignSystemTheme.colors.backgroundNormalNormal
     val color = DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88)
@@ -504,7 +505,7 @@ fun WantedTooltip(
             val configuration = LocalConfiguration.current
             val customModifier = if (isShowArrow) {
                 Modifier
-                    .drawCaret { anchorLayoutCoordinates ->
+                    .drawCaret(anchorLayoutCoordinates) {
                         drawCaretWithPath(
                             density = density,
                             configuration = configuration,
@@ -586,6 +587,9 @@ fun WantedTooltip(
             Box(
                 modifier = Modifier
                     .wrapContentSize()
+                    .onGloballyPositioned { coordinates ->
+                        anchorLayoutCoordinates = coordinates
+                    }
                     .clickOnce {
                         scope.launch {
                             state.show()
@@ -860,4 +864,14 @@ enum class WantedTooltipAlign {
     Left,
     Center,
     Right
+}
+
+/**
+ * Modifier extension for drawing caret (arrow) on tooltip
+ */
+private fun Modifier.drawCaret(
+    anchorLayoutCoordinates: LayoutCoordinates?,
+    onDraw: CacheDrawScope.() -> DrawResult
+): Modifier = this.drawWithCache {
+    onDraw()
 }
