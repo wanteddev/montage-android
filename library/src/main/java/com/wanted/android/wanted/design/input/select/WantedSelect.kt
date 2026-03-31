@@ -26,7 +26,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.base.WantedDropShadowDefaults
 import com.wanted.android.wanted.design.base.wantedDropShadow
@@ -500,93 +499,90 @@ private fun WantedSelectImpl(
             }
         },
         select = {
-            ConstraintLayout {
-                WantedSelectContentLayout(
-                    modifier = Modifier
-                        .wantedDropShadow(WantedDropShadowDefaults.WantedShadowStyle.XSmall())
-                        .border(
-                            shape = RoundedCornerShape(12.dp),
-                            color = when {
-                                negative || focused -> {
-                                    DesignSystemTheme.colors.backgroundNormalNormal
-                                        .copy(alpha = OPACITY_43)
-                                }
-
-                                else -> DesignSystemTheme.colors.transparent
-                            },
-                            width = if (focused) 2.dp else 1.dp
-                        )
-                        .border(
-                            shape = RoundedCornerShape(12.dp),
-                            color = when {
-                                !enabled -> DesignSystemTheme.colors.lineNormalAlternative
-                                negative -> DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
-                                focused -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
-                                else -> DesignSystemTheme.colors.lineNormalNeutral
-                            },
-                            width = if (focused) 2.dp else 1.dp
-                        )
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(
-                            if (enabled) {
-                                background
-                            } else {
-                                DesignSystemTheme.colors.fillAlternative
+            WantedSelectContentLayout(
+                modifier = Modifier
+                    .wantedDropShadow(WantedDropShadowDefaults.WantedShadowStyle.XSmall())
+                    .border(
+                        shape = RoundedCornerShape(12.dp),
+                        color = when {
+                            negative || focused -> {
+                                DesignSystemTheme.colors.backgroundNormalNormal
+                                    .copy(alpha = OPACITY_43)
                             }
-                        )
-                        .clickOnce(
-                            enabled = enabled,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = getSelectRippleEffect(
-                                enabled = enabled,
-                                focused = focused,
-                                negative = negative
-                            )
-                        ) {
-                            onClick()
+
+                            else -> DesignSystemTheme.colors.transparent
+                        },
+                        width = if (focused) 2.dp else 1.dp
+                    )
+                    .border(
+                        shape = RoundedCornerShape(12.dp),
+                        color = when {
+                            !enabled -> DesignSystemTheme.colors.lineNormalAlternative
+                            negative -> DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
+                            focused -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
+                            else -> DesignSystemTheme.colors.lineNormalNeutral
+                        },
+                        width = if (focused) 2.dp else 1.dp
+                    )
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        if (enabled) {
+                            background
+                        } else {
+                            DesignSystemTheme.colors.fillAlternative
                         }
-                        .padding(12.dp),
-                    leadingIcon = leadingIcon,
-                    contents = {
-                        contents()
-                    },
-                    rightButton = {
+                    )
+                    .clickOnce(
+                        enabled = enabled,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = getSelectRippleEffect(
+                            enabled = enabled,
+                            focused = focused,
+                            negative = negative
+                        )
+                    ) {
+                        onClick()
+                    }
+                    .padding(12.dp),
+                leadingIcon = leadingIcon,
+                contents = {
+                    contents()
+                },
+                rightButton = {
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        painter = painterResource(
+                            id = if (focused) {
+                                R.drawable.icon_normal_chevron_up_thick_small
+                            } else {
+                                R.drawable.icon_normal_chevron_down_thick_small
+                            }
+                        ),
+                        tint = colorResource(
+                            id = if (enabled) {
+                                R.color.label_alternative
+                            } else {
+                                R.color.label_disable
+                            }
+                        ),
+                        contentDescription = ""
+                    )
+                },
+                trailingIcon = if (negative && !focused && enabled) {
+                    {
                         Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            painter = painterResource(
-                                id = if (focused) {
-                                    R.drawable.icon_normal_chevron_up_thick_small
-                                } else {
-                                    R.drawable.icon_normal_chevron_down_thick_small
-                                }
-                            ),
-                            tint = colorResource(
-                                id = if (enabled) {
-                                    R.color.label_alternative
-                                } else {
-                                    R.color.label_disable
-                                }
-                            ),
+                            modifier = Modifier
+                                .size(24.dp)
+                                .padding(1.dp),
+                            painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
+                            tint = DesignSystemTheme.colors.statusNegative,
                             contentDescription = ""
                         )
-                    },
-                    trailingIcon = if (negative && !focused && enabled) {
-                        {
-                            Icon(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .padding(1.dp),
-                                painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
-                                tint = DesignSystemTheme.colors.statusNegative,
-                                contentDescription = ""
-                            )
-                        }
-                    } else {
-                        null
                     }
-                )
-
-            }
+                } else {
+                    null
+                }
+            )
 
         },
         description = description?.let {
