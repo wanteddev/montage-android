@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "montage-android"
 include(":library")
+include(":sample")
