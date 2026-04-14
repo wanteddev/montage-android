@@ -26,6 +26,7 @@ import com.wanted.android.montage.sample.input.textinput.autocompletetextfield.D
 import com.wanted.android.montage.sample.input.textinput.autocompletetextfield.DSWantedAutoCompleteTextFieldDemoScreenContract.DSWantedAutoCompleteTextFieldDemoViewState
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
@@ -293,7 +294,9 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenLayout(
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
-        preview()
+        DSWantedPreviewContainer {
+            preview()
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 

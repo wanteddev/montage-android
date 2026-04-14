@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.designsystem.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
@@ -406,7 +407,9 @@ private fun DSWantedDialogTopAppBarDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
-            preview()
+            DSWantedPreviewContainer {
+                preview()
+            }
         }
 
         Column(

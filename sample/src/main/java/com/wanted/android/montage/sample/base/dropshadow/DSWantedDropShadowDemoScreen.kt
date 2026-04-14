@@ -45,6 +45,7 @@ import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShad
 import com.wanted.android.wanted.design.base.wantedDropShadow
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -242,17 +243,7 @@ private fun DSWantedDropShadowDemoScreenLayout(
             )
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = colorResource(R.color.line_normal_normal),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(20.dp),
-            contentAlignment = Alignment.Center
-        ) {
+        DSWantedPreviewContainer {
             preview()
         }
 

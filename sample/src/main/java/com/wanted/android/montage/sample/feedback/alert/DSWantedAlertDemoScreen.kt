@@ -1,22 +1,18 @@
 package com.wanted.android.montage.sample.feedback.alert
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +21,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.montage.sample.feedback.alert.DSWantedAlertDemoScreenContract.DSWantedAlertDemoEvent
 import com.wanted.android.montage.sample.feedback.alert.DSWantedAlertDemoScreenContract.DSWantedAlertDemoViewEvent
 import com.wanted.android.montage.sample.feedback.alert.DSWantedAlertDemoScreenContract.DSWantedAlertDemoViewState
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.alert.WantedAlert
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
@@ -125,17 +122,7 @@ private fun DSWantedAlertDemoScreenLayout(
 			)
 		)
 
-		Box(
-			modifier = Modifier
-				.fillMaxWidth()
-				.border(
-					width = 1.dp,
-					color = colorResource(R.color.line_normal_normal),
-					shape = RoundedCornerShape(8.dp)
-				)
-				.padding(20.dp),
-			contentAlignment = Alignment.Center
-		) {
+		DSWantedPreviewContainer {
 			WantedButton(
 				modifier = Modifier.fillMaxWidth(),
 				text = "Alert 보기",

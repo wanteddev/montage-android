@@ -35,6 +35,7 @@ import com.wanted.android.montage.sample.loading.pulltorefresh.DSWantedPullToRef
 import com.wanted.android.montage.sample.loading.pulltorefresh.DSWantedPullToRefreshDemoScreenContract.DSWantedPullToRefreshDemoViewState
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
@@ -208,16 +209,7 @@ private fun DSWantedPullToRefreshDemoScreenLayout(
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = colorResource(R.color.line_normal_normal),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(20.dp)
-        ) {
+        DSWantedPreviewContainer {
             preview()
         }
 

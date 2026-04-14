@@ -37,6 +37,7 @@ import com.wanted.android.wanted.design.contents.listcell.WantedListCell
 import com.wanted.android.wanted.design.contents.listcell.WantedListCellDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -261,18 +262,8 @@ private fun DSWantedListCellDemoScreenLayout(
 			)
 		)
 
-		Box(
-			modifier = Modifier
-				.fillMaxWidth()
-				.border(
-					width = 1.dp,
-					color = colorResource(R.color.line_normal_normal),
-					shape = RoundedCornerShape(8.dp)
-				)
-				.padding(20.dp),
-			contentAlignment = Alignment.Center
-		) {
-			preview()
+		DSWantedPreviewContainer {
+		    preview()
 		}
 
 		Spacer(Modifier.size(10.dp))
