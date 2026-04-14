@@ -1,7 +1,6 @@
 package com.wanted.android.montage.sample.feedback.fallback
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,6 +32,7 @@ import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewD
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoSideEffect
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoViewEvent
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoViewState
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.fallback.WantedFallbackButtonVariant
@@ -343,17 +342,7 @@ private fun DSWantedFallbackViewDemoScreenLayout(
             )
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = colorResource(R.color.line_normal_normal),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(20.dp),
-            contentAlignment = Alignment.Center
-        ) {
+        DSWantedPreviewContainer {
             preview()
         }
 

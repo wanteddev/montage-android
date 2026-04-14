@@ -27,6 +27,7 @@ import com.wanted.android.montage.sample.navigations.paginationdots.DSWantedPagi
 import com.wanted.android.montage.sample.navigations.paginationdots.DSWantedPaginationDotsDemoScreenContract.DSWantedPaginationDotsDemoViewEvent
 import com.wanted.android.montage.sample.navigations.paginationdots.DSWantedPaginationDotsDemoScreenContract.DSWantedPaginationDotsDemoViewState
 import com.wanted.android.montage.sample.ui.DevicePreviews
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
 import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
@@ -283,7 +284,9 @@ private fun DSWantedPaginationDotsDemoScreenLayout(
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
-        preview()
+        DSWantedPreviewContainer {
+            preview()
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 

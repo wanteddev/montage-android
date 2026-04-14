@@ -27,6 +27,7 @@ import com.wanted.android.montage.sample.navigations.pagecounter.DSWantedPageCou
 import com.wanted.android.montage.sample.navigations.pagecounter.DSWantedPageCounterDemoScreenContract.DSWantedPageCounterDemoViewEvent
 import com.wanted.android.montage.sample.navigations.pagecounter.DSWantedPageCounterDemoScreenContract.DSWantedPageCounterDemoViewState
 import com.wanted.android.montage.sample.ui.DevicePreviews
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
 import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
@@ -260,7 +261,9 @@ private fun DSWantedPageCounterDemoScreenLayout(
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
-        preview()
+        DSWantedPreviewContainer {
+            preview()
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 
