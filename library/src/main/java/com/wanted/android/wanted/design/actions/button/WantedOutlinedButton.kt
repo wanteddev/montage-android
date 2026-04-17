@@ -99,16 +99,18 @@ class WantedOutlinedButton @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        WantedOutlinedButton(
-            text = text,
-            modifier = Modifier.getButtonWidth(buttonWidth = buttonWidth),
-            type = buttonType,
-            size = size,
-            enabled = buttonStatus,
-            leadingDrawable = if (leftDrawable != 0) leftDrawable else null,
-            trailingDrawable = if (rightDrawable != 0) rightDrawable else null,
-            onClick = onClickListener
-        )
+        DesignSystemTheme {
+            WantedOutlinedButton(
+                text = text,
+                modifier = Modifier.getButtonWidth(buttonWidth = buttonWidth),
+                type = buttonType,
+                size = size,
+                enabled = buttonStatus,
+                leadingDrawable = if (leftDrawable != 0) leftDrawable else null,
+                trailingDrawable = if (rightDrawable != 0) rightDrawable else null,
+                onClick = onClickListener
+            )
+        }
     }
 }
 

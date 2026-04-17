@@ -1,8 +1,7 @@
 package com.wanted.android.wanted.design.presentation.autocomplete
 
-import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,15 +19,19 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
-import androidx.compose.ui.layout.positionInRoot
+
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShadowStyle
+import com.wanted.android.wanted.design.base.wantedDropShadow
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
@@ -84,6 +87,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     containerColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionTitle: ((section: Int) -> String)? = null,
+    anchorPadding: Dp = 0.dp,
     topDirectInput: @Composable (() -> Unit)? = null,
     bottomDirectInput: @Composable (() -> Unit)? = null
 ) {
@@ -94,6 +98,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     val sectionOffsets = remember { mutableStateMapOf<Int, Int>() }
     val density = LocalDensity.current
     val title = remember { mutableStateOf("") }
+    val sectionItemsSnapshot = List(sectionCount) { section -> sectionItemCount(section) }
 
     LaunchedEffect(currentSection.intValue) {
         title.value = if (currentSection.intValue == -1) {
@@ -103,11 +108,10 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         }
     }
 
-    LaunchedEffect(scrollState.value) {
+    LaunchedEffect(scrollState.value, title.value, sectionOffsets.size, sectionItemsSnapshot) {
         currentSection.intValue = sectionOffsets.filter {
             it.value <= (scrollState.value + with(density) {
-                4.dp.toPx()
-                +if (title.value.isEmpty()) {
+                4.dp.toPx() + if (title.value.isEmpty()) {
                     0.dp.toPx()
                 } else {
                     4.dp.toPx() + 4.dp.toPx()
@@ -116,15 +120,33 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         }.maxOfOrNull { it.key } ?: -1
     }
 
+    LaunchedEffect(expanded, sectionCount, sectionItemsSnapshot) {
+        sectionOffsets.clear()
+        currentSection.intValue = -1
+        if (expanded) {
+            scrollState.scrollTo(0)
+        }
+    }
+
+    val dropdownShape = RoundedCornerShape(16.dp)
+
     ExposedDropdownMenu(
         modifier = modifier
-            .padding(horizontal = 8.dp),
+            .padding(vertical = anchorPadding)
+            .wantedDropShadow(
+                WantedShadowStyle.XSmall().copy(
+                    borderRadius = 16.dp,
+                    backgroundColor = containerColor
+                )
+            )
+            .border(1.dp, DesignSystemTheme.colors.lineSolidNormal, dropdownShape)
+            .clip(dropdownShape),
         scrollState = scrollState,
-        containerColor = containerColor,
-        shape = RoundedCornerShape(16.dp),
+        containerColor = Color.Transparent,
+        shape = RectangleShape,
         expanded = expanded,
-        shadowElevation = 1.dp,
-        border = BorderStroke(1.dp, DesignSystemTheme.colors.lineSolidNormal),
+        shadowElevation = 0.dp,
+        matchAnchorWidth = true,
         onDismissRequest = {
             onDismissRequest(false)
         }
@@ -167,18 +189,20 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         }
 
         repeat(sectionCount) { section ->
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(0.dp)
+                    .onGloballyPositioned {
+                        sectionOffsets[section] = it.positionInParent().y.toInt()
+                    }
+            )
+
             if (section != 0 || title.value.isEmpty()) {
                 sectionTitle?.let {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .onGloballyPositioned {
-                                Log.d(
-                                    "_SMY",
-                                    "onGloballyPositioned: ${it.positionInParent().y.toInt()}, ${it.positionInRoot().y.toInt()}, ${scrollState.value} "
-                                )
-                                sectionOffsets[section] = it.positionInParent().y.toInt()
-                            }
                             .padding(horizontal = sectionTitleHorizontalPadding)
                             .padding(horizontal = 1.dp)
                             .padding(vertical = 4.dp),
@@ -195,7 +219,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
             repeat(itemCount) { index ->
                 sectionItem(section, index)
 
-                if (itemCount != index - 1) {
+                if (index != itemCount - 1) {
                     Spacer(modifier = Modifier.size(4.dp))
                 }
             }

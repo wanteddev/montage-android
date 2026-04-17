@@ -3,17 +3,16 @@ package com.wanted.android.wanted.design.input.textinput.autocompletetextfield
 import android.annotation.SuppressLint
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -89,6 +88,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param sectionItem @Composable (Int, Int) -> Unit: 각 섹션의 아이템 UI를 정의합니다.
  */
 @SuppressLint("UnusedBoxWithConstraintsScope")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WantedAutoCompleteTextField(
     text: String,
@@ -135,61 +135,57 @@ fun WantedAutoCompleteTextField(
             onExpandedChange(it && text.isNotEmpty())
         }
     ) {
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            WantedTextField(
-                modifier = Modifier
-                    .padding(vertical = anchorPadding)
-                    .fillMaxWidth()
-                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
-                title = title,
-                text = text,
-                description = description,
-                requiredBadge = requiredBadge,
-                status = status,
-                enabled = enabled,
-                rightButtonEnabled = rightButtonEnabled,
-                maxLines = maxLines,
-                minLines = minLines,
-                maxWordCount = maxWordCount,
-                interactionSource = interactionSource,
-                focusRequester = focusRequester,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                background = background,
-                visualTransformation = visualTransformation,
-                rightButton = rightButton,
-                rightButtonVariant = rightButtonVariant,
-                placeholder = placeholder,
-                leadingIcon = leadingIcon,
-                trailingIcon = trailingIcon,
-                trailingContent = trailingContent,
-                onClickRightButton = onClickRightButton,
-                onValueChange = { text ->
-                    onExpandedChange(text.isNotEmpty())
-                    onValueChange(text)
-                },
-            )
+        WantedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable, enabled = true),
+            title = title,
+            text = text,
+            description = description,
+            requiredBadge = requiredBadge,
+            status = status,
+            enabled = enabled,
+            rightButtonEnabled = rightButtonEnabled,
+            maxLines = maxLines,
+            minLines = minLines,
+            maxWordCount = maxWordCount,
+            interactionSource = interactionSource,
+            focusRequester = focusRequester,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            background = background,
+            visualTransformation = visualTransformation,
+            rightButton = rightButton,
+            rightButtonVariant = rightButtonVariant,
+            placeholder = placeholder,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+            trailingContent = trailingContent,
+            onClickRightButton = onClickRightButton,
+            onValueChange = { text ->
+                onExpandedChange(text.isNotEmpty())
+                onValueChange(text)
+            },
+        )
 
-            WantedAutoComplete(
-                modifier = Modifier
-                    .width(maxWidth)
-                    .heightIn(max = dropDownMaxHeight),
-                containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
-                expanded = expanded,
-                onDismissRequest = {
-                    onExpandedChange(false)
-                },
-                sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,
-                sectionCount = sectionCount,
-                sectionTitle = sectionTitle,
-                sectionItemCount = sectionItemCount,
-                sectionItem = sectionItem,
-                topDirectInput = topDirectInput,
-                bottomDirectInput = bottomDirectInput
-            )
-        }
+        WantedAutoComplete(
+            modifier = Modifier
+                .exposedDropdownSize(matchAnchorWidth = true)
+                .heightIn(max = dropDownMaxHeight),
+            anchorPadding = anchorPadding,
+            containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
+            expanded = expanded,
+            onDismissRequest = {
+                onExpandedChange(false)
+            },
+            sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,
+            sectionCount = sectionCount,
+            sectionTitle = sectionTitle,
+            sectionItemCount = sectionItemCount,
+            sectionItem = sectionItem,
+            topDirectInput = topDirectInput,
+            bottomDirectInput = bottomDirectInput
+        )
     }
 }
 
@@ -248,6 +244,7 @@ fun WantedAutoCompleteTextField(
  * @param bottomDirectInput (() -> Unit)?: 드롭다운 하단 콘텐츠입니다.
  */
 @SuppressLint("UnusedBoxWithConstraintsScope")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WantedAutoCompleteTextField(
     value: TextFieldValue,
@@ -294,61 +291,57 @@ fun WantedAutoCompleteTextField(
             onExpandedChange(it && value.text.isNotEmpty())
         }
     ) {
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            WantedTextField(
-                modifier = Modifier
-                    .padding(vertical = anchorPadding)
-                    .fillMaxWidth()
-                    .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
-                title = title,
-                value = value,
-                description = description,
-                requiredBadge = requiredBadge,
-                status = status,
-                enabled = enabled,
-                rightButtonEnabled = rightButtonEnabled,
-                maxLines = maxLines,
-                minLines = minLines,
-                maxWordCount = maxWordCount,
-                interactionSource = interactionSource,
-                focusRequester = focusRequester,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                background = background,
-                visualTransformation = visualTransformation,
-                rightButton = rightButton,
-                rightButtonVariant = rightButtonVariant,
-                placeholder = placeholder,
-                leadingIcon = leadingIcon,
-                trailingIcon = trailingIcon,
-                trailingContent = trailingContent,
-                onClickRightButton = onClickRightButton,
-                onValueChange = { text ->
-                    onExpandedChange(text.text.isNotEmpty())
-                    onValueChange(text)
-                },
-            )
+        WantedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable, enabled = true),
+            title = title,
+            value = value,
+            description = description,
+            requiredBadge = requiredBadge,
+            status = status,
+            enabled = enabled,
+            rightButtonEnabled = rightButtonEnabled,
+            maxLines = maxLines,
+            minLines = minLines,
+            maxWordCount = maxWordCount,
+            interactionSource = interactionSource,
+            focusRequester = focusRequester,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            background = background,
+            visualTransformation = visualTransformation,
+            rightButton = rightButton,
+            rightButtonVariant = rightButtonVariant,
+            placeholder = placeholder,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+            trailingContent = trailingContent,
+            onClickRightButton = onClickRightButton,
+            onValueChange = { text ->
+                onExpandedChange(text.text.isNotEmpty())
+                onValueChange(text)
+            },
+        )
 
-            WantedAutoComplete(
-                modifier = Modifier
-                    .width(maxWidth)
-                    .heightIn(max = dropDownMaxHeight),
-                containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
-                expanded = expanded,
-                onDismissRequest = {
-                    onExpandedChange(false)
-                },
-                sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,
-                sectionCount = sectionCount,
-                sectionTitle = sectionTitle,
-                sectionItemCount = sectionItemCount,
-                sectionItem = sectionItem,
-                topDirectInput = topDirectInput,
-                bottomDirectInput = bottomDirectInput
-            )
-        }
+        WantedAutoComplete(
+            modifier = Modifier
+                .exposedDropdownSize(matchAnchorWidth = true)
+                .heightIn(max = dropDownMaxHeight),
+            anchorPadding = anchorPadding,
+            containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
+            expanded = expanded,
+            onDismissRequest = {
+                onExpandedChange(false)
+            },
+            sectionTitleHorizontalPadding = sectionTitleHorizontalPadding,
+            sectionCount = sectionCount,
+            sectionTitle = sectionTitle,
+            sectionItemCount = sectionItemCount,
+            sectionItem = sectionItem,
+            topDirectInput = topDirectInput,
+            bottomDirectInput = bottomDirectInput
+        )
     }
 }
 

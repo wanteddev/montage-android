@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -74,6 +75,7 @@ internal fun WantedDraggableModalBottomSheet(
     val coroutineScope = rememberCoroutineScope()
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     var layoutHeight by remember { mutableFloatStateOf(0f) }
+    val density = LocalDensity.current
 
     val currentDismissRequest by rememberUpdatedState(onDismissRequest)
 
@@ -88,8 +90,8 @@ internal fun WantedDraggableModalBottomSheet(
                 SheetValue.Hidden at layoutHeight
                 SheetValue.Expanded at 0f
             },
-            positionalThreshold = { d: Float -> d * 0.01f },
-            velocityThreshold = { 0f },
+            positionalThreshold = { d: Float -> d * 0.5f },
+            velocityThreshold = { with(density) { 125.dp.toPx() } },
             snapAnimationSpec = tween(),
             decayAnimationSpec = decayAnimationSpec
         )
@@ -158,9 +160,12 @@ internal fun WantedDraggableModalBottomSheet(
                             .offset {
                                 IntOffset(
                                     x = 0,
+                                    // dragHandle 플링 시 Expanded(0f) 너머 음수 오버슈트 방지
+                                    // 제거하면 dragHandle을 내렸다 올릴 때 시트가 위로 통통 튀는 것을 확인 가능
                                     y = dragState
                                         .requireOffset()
                                         .roundToInt()
+                                        .coerceAtLeast(0)
                                 )
                             }
                             .clip(shape)
@@ -203,6 +208,7 @@ internal fun WantedDraggableModalBottomSheet(
                                         y = dragState
                                             .requireOffset()
                                             .roundToInt()
+                                            .coerceAtLeast(0)
                                     )
                                 },
                             draggableState = dragState
