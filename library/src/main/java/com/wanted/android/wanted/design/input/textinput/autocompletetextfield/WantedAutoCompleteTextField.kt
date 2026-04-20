@@ -140,6 +140,7 @@ fun WantedAutoCompleteTextField(
         ) {
             WantedTextField(
                 modifier = Modifier
+                    .padding(vertical = anchorPadding)
                     .fillMaxWidth()
                     .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
                 title = title,
@@ -175,7 +176,6 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
-                anchorPadding = anchorPadding,
                 containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
                 expanded = expanded,
                 onDismissRequest = {
@@ -299,6 +299,7 @@ fun WantedAutoCompleteTextField(
         ) {
             WantedTextField(
                 modifier = Modifier
+                    .padding(vertical = anchorPadding)
                     .fillMaxWidth()
                     .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
                 title = title,
@@ -334,7 +335,6 @@ fun WantedAutoCompleteTextField(
                 modifier = Modifier
                     .width(maxWidth)
                     .heightIn(max = dropDownMaxHeight),
-                anchorPadding = anchorPadding,
                 containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
                 expanded = expanded,
                 onDismissRequest = {

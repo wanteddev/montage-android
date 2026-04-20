@@ -63,7 +63,6 @@ import com.wanted.android.wanted.design.util.OPACITY_88
  * @param variant Variant: 앱바 형태입니다.
  * @param backgroundColor Color: 앱바 배경 색상입니다.
  * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
- * @param titleAlignCenter Boolean: 타이틀 중앙 정렬 여부입니다.
  * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
  * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
@@ -76,93 +75,78 @@ fun WantedTopAppBar(
     variant: Variant = Variant.Normal,
     backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
     background: Boolean = true,
-    titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
-    if (titleAlignCenter) {
-        WantedCenterTopAppBar(
-            modifier = modifier,
-            windowInsets = windowInsets,
-            backgroundColor = backgroundColor,
-            background = background,
-            variant = variant,
-            scrollableState = scrollableState,
-            navigationIcon = navigationIcon,
-            title = title,
-            actions = actions
-        )
-    } else {
-        val isScrollBackground = remember { mutableStateOf(false) }
-        LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
-            isScrollBackground.value = scrollableState?.canScrollBackward == true
-        }
+    val isScrollBackground = remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = scrollableState?.canScrollBackward) {
+        isScrollBackground.value = scrollableState?.canScrollBackward == true
+    }
 
-        Box(
-            modifier = when {
-                variant == Variant.Floating && isScrollBackground.value
-                        || variant == Variant.Floating && background -> {
-                    modifier
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    backgroundColor.copy(alpha = OPACITY_88),
-                                    DesignSystemTheme.colors.transparent
-                                )
+    Box(
+        modifier = when {
+            variant == Variant.Floating && isScrollBackground.value
+                    || variant == Variant.Floating && background -> {
+                modifier
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                backgroundColor.copy(alpha = OPACITY_88),
+                                DesignSystemTheme.colors.transparent
                             )
                         )
-                        .padding(bottom = 16.dp)
-                }
-
-                !background && !isScrollBackground.value -> {
-                    modifier.background(DesignSystemTheme.colors.transparent)
-                }
-
-                else -> {
-                    modifier.background(backgroundColor)
-                }
+                    )
+                    .padding(bottom = 16.dp)
             }
-        ) {
-            CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
-                when (variant) {
-                    Variant.Normal -> {
-                        WantedTopAppBarLayout(
-                            modifier = Modifier
-                                .windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
 
-                    Variant.Display -> {
-                        WantedDisplayTopAppBarLayout(
-                            modifier = Modifier.windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
+            !background && !isScrollBackground.value -> {
+                modifier.background(DesignSystemTheme.colors.transparent)
+            }
 
-                    Variant.Floating -> {
-                        WantedTopAppBarLayout(
-                            modifier = Modifier.windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
+            else -> {
+                modifier.background(backgroundColor)
+            }
+        }
+    ) {
+        CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
+            when (variant) {
+                Variant.Normal -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier
+                            .windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
-                    Variant.Search -> {
-                        WantedTopAppBarLayout(
-                            modifier = Modifier.windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
+                Variant.Display -> {
+                    WantedDisplayTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                Variant.Floating -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                Variant.Search -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
                 }
             }
         }
@@ -198,7 +182,6 @@ fun WantedTopAppBar(
  */
 @Composable
 fun WantedTopAppBar(
-    title: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
@@ -206,6 +189,7 @@ fun WantedTopAppBar(
     background: Boolean = true,
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
+    title: String = "",
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {

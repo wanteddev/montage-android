@@ -7,14 +7,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.OPACITY_5
@@ -43,13 +41,15 @@ fun WantedPersonAvatar(
         GlideImage(
             modifier = Modifier
                 .size(size)
-                .clip(CircleShape)
-                .alpha(alpha),
+                .clip(CircleShape),
             model = profileImageUrl,
-            contentDescription = "Profile Image",
-            loading = placeholder(R.drawable.profile_default),
-            failure = placeholder(R.drawable.profile_default),
+            alpha = alpha,
             contentScale = ContentScale.Crop,
-        )
+            contentDescription = "Profile Image"
+        ) {
+            it.placeholder(R.drawable.profile_default)
+                .error(R.drawable.profile_default)
+                .circleCrop()
+        }
     }
 }
