@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "9.0.1"
-kotlin = "2.3.10"
-kotlin-compose-plugin = "2.3.10"
+kotlin = "2.3.20"
+kotlin-compose-plugin = "2.3.20"
 
 appcompat = "1.7.1"
 core = "1.15.0"
@@ -13,13 +13,14 @@ googleMaterial = "1.13.0"
 glideCompose = "1.0.0-beta08"
 lottie = "6.7.1"
 
-hilt = "2.59.1"
+hilt = "2.59.2"
 ksp = "2.3.6"
 navigationCompose = "2.9.0"
 lifecycleViewmodel = "2.9.0"
 kotlinxSerialization = "1.7.3"
 activityCompose = "1.10.1"
 hiltNavigationCompose = "1.2.0"
+composeBom = "2026.03.01"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -30,7 +31,7 @@ androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayoutCompose" }
 google-material = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
 
-androidx-compose-bom = "androidx.compose:compose-bom:2025.03.00"
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
