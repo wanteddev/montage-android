@@ -39,9 +39,7 @@ fun WantedBackTopAppBar(
                 onClick = onClickBack
             )
         },
-        title = {
-            Text(text = title)
-        },
+        title = title,
         actions = actions
     )
 }
