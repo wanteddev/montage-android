@@ -1,0 +1,71 @@
+package com.wanted.android.montage.sample.navigations.progressindicator
+
+import com.wanted.android.montage.sample.navigations.progressindicator.DSWantedProgressIndicatorDemoScreenContract.DSWantedProgressIndicatorDemoEvent
+import com.wanted.android.montage.sample.navigations.progressindicator.DSWantedProgressIndicatorDemoScreenContract.DSWantedProgressIndicatorDemoSideEffect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class DSWantedProgressIndicatorDemoViewModelTest {
+
+    @Test
+    fun `(Given)  ProgressIndicator 데모에서 옵션 변경 이벤트가 전달되면  (When)  이벤트를 처리하면  (Then)  뷰 상태가 업데이트된다 `() = runTest {
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(dispatcher)
+        try {
+            val viewModel = DSWantedProgressIndicatorDemoViewModel()
+
+            viewModel.setEvent(DSWantedProgressIndicatorDemoEvent.SetProgress(0.7f))
+            advanceUntilIdle()
+
+            assertTrue(viewModel.viewState.value.progress == 0.7f)
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test
+    fun `(Given)  ProgressIndicator 데모에서 코드 보기 이벤트가 전달되면  (When)  이벤트를 처리하면  (Then)  코드 문자열이 업데이트된다 `() = runTest {
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(dispatcher)
+        try {
+            val viewModel = DSWantedProgressIndicatorDemoViewModel()
+
+            viewModel.setEvent(DSWantedProgressIndicatorDemoEvent.ShowCode(true))
+            advanceUntilIdle()
+
+            val state = viewModel.viewState.value
+            assertTrue(state.isShowCode)
+            assertTrue(state.code.contains("WantedLinearProgressIndicator"))
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test
+    fun `(Given)  ProgressIndicator 데모에서 코드 복사 이벤트가 전달되면  (When)  이벤트를 처리하면  (Then)  코드 복사 사이드이펙트를 방출한다 `() = runTest {
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(dispatcher)
+        try {
+            val viewModel = DSWantedProgressIndicatorDemoViewModel()
+            val effectDeferred = async { viewModel.sideEffect.first() }
+
+            viewModel.setEvent(DSWantedProgressIndicatorDemoEvent.CopyCode)
+            advanceUntilIdle()
+
+            val effect = effectDeferred.await()
+            assertTrue(effect is DSWantedProgressIndicatorDemoSideEffect.CopyCode)
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+}

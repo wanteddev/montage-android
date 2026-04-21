@@ -1,17 +1,26 @@
 [versions]
-androidGradlePlugin = "8.13.0"
-kotlin = "2.0.21"
-kotlin-compose-plugin = "2.0.0"
+androidGradlePlugin = "9.0.1"
+kotlin = "2.3.20"
+kotlin-compose-plugin = "2.3.20"
 
 appcompat = "1.7.1"
 core = "1.15.0"
 constraintLayout = "2.2.1"
 constraintLayoutCompose = "1.1.1"
 vectordrawable = "1.2.0"
-googleMaterial = "1.12.0"
+googleMaterial = "1.13.0"
 
-glideCompose = "1.0.0-beta01"
-lottie = "6.6.0"
+glideCompose = "1.0.0-beta08"
+lottie = "6.7.1"
+
+hilt = "2.59.2"
+ksp = "2.3.6"
+navigationCompose = "2.9.0"
+lifecycleViewmodel = "2.9.0"
+kotlinxSerialization = "1.7.3"
+activityCompose = "1.10.1"
+hiltNavigationCompose = "1.2.0"
+composeBom = "2026.03.01"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -22,7 +31,7 @@ androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayoutCompose" }
 google-material = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
 
-androidx-compose-bom = "androidx.compose:compose-bom:2025.03.00"
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
@@ -33,7 +42,19 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glideCompose" }
 
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodel" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewmodel" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
 [plugins]
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-compose-plugin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
