@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -50,6 +51,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param cancel String?: 취소 버튼에 표시할 텍스트입니다. null일 경우 표시되지 않습니다.
  * @param onClickCancel (() -> Unit)?: 취소 버튼 클릭 시 호출되는 콜백입니다.
  * @param onDismissRequest () -> Unit: 다이얼로그 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다.
+ * @param applyPhraseLineBreak Boolean: true일 경우 message에 어절 단위 줄바꿈(`LineBreak.WordBreak.Phrase`)을 적용합니다.
  */
 @Composable
 fun WantedAlert(
@@ -62,6 +64,7 @@ fun WantedAlert(
     cancel: String? = null,
     onClickCancel: (() -> Unit)? = null,
     onDismissRequest: () -> Unit = {},
+    applyPhraseLineBreak: Boolean = false,
 ) {
     Dialog(
         onDismissRequest = { onDismissRequest() },
@@ -76,6 +79,7 @@ fun WantedAlert(
             message = {
                 Text(text = message)
             },
+            applyPhraseLineBreak = applyPhraseLineBreak,
             negative = cancel?.let {
                 {
                     WantedAlertDialogButton(
@@ -108,6 +112,7 @@ private fun WantedAlertDialogLayout(
     message: @Composable () -> Unit,
     positive: @Composable () -> Unit,
     negative: @Composable (() -> Unit)?,
+    applyPhraseLineBreak: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -126,11 +131,23 @@ private fun WantedAlertDialogLayout(
                 title?.invoke()
             }
 
-            ProvideTextStyle(
-                value = DesignSystemTheme.typography.body2Regular.copy(
-                    color = DesignSystemTheme.colors.labelAlternative
-                )
-            ) {
+            val messageStyle = DesignSystemTheme.typography.body2Regular.copy(
+                color = DesignSystemTheme.colors.labelAlternative
+            ).let { base ->
+                if (applyPhraseLineBreak) {
+                    base.copy(
+                        lineBreak = LineBreak(
+                            strategy = LineBreak.Strategy.HighQuality,
+                            strictness = LineBreak.Strictness.Strict,
+                            wordBreak = LineBreak.WordBreak.Phrase,
+                        )
+                    )
+                } else {
+                    base
+                }
+            }
+
+            ProvideTextStyle(value = messageStyle) {
                 message()
             }
         }

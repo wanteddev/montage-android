@@ -100,17 +100,15 @@ internal fun WantedDraggableModalBottomSheet(
     var isDialogVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(isShow) {
-        if (isShow && dragState.currentValue == SheetValue.Hidden) {
-            coroutineScope.launch {
+        if (isShow) {
+            if (!isDialogVisible) {
                 isDialogVisible = true
+            }
+            if (dragState.currentValue != SheetValue.Expanded) {
                 dragState.animateTo(SheetValue.Expanded)
             }
-        } else if (!isShow && dragState.currentValue == SheetValue.Expanded) {
-            coroutineScope.launch {
-                dragState.animateTo(SheetValue.Hidden)
-                currentDismissRequest()
-                isDialogVisible = false
-            }
+        } else if (dragState.currentValue != SheetValue.Hidden) {
+            dragState.animateTo(SheetValue.Hidden)
         }
     }
 
