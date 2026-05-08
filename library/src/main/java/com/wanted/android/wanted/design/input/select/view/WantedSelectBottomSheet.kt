@@ -59,14 +59,13 @@ internal fun WantedSelectBottomSheet(
                         verticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
                         text = item.text,
                         selected = selectItem.value == item,
-                        trailingContent = when {
-                            selectItem.value == item
-                                && selectType == WantedSelectDefaults.SelectType.CheckMark -> {
+                        trailingContent = when (selectType) {
+                            WantedSelectDefaults.SelectType.CheckMark -> {
                                 {
                                     WantedCheckMark(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checked = true,
+                                        checked = selectItem.value == item,
                                         thick = false,
                                         onCheckedChange = { }
                                     )
@@ -75,26 +74,24 @@ internal fun WantedSelectBottomSheet(
 
                             else -> null
                         },
-                        leadingContent = when {
-                            selectItem.value == item
-                                && selectType == WantedSelectDefaults.SelectType.CheckBox -> {
+                        leadingContent = when (selectType) {
+                            WantedSelectDefaults.SelectType.CheckBox -> {
                                 {
                                     WantedCheckBox(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checkState = CheckBoxState.Checked,
+                                        checkState = if (selectItem.value == item) CheckBoxState.Checked else CheckBoxState.Unchecked,
                                         onCheckedChange = { }
                                     )
                                 }
                             }
 
-                            selectItem.value == item
-                                && selectType == WantedSelectDefaults.SelectType.Radio -> {
+                            WantedSelectDefaults.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checked = true,
+                                        checked = selectItem.value == item,
                                         onCheckedChange = { }
                                     )
                                 }

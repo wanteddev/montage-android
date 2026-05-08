@@ -2,6 +2,7 @@ package com.wanted.android.wanted.design.input.input.control
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.google.android.material.radiobutton.MaterialRadioButton
@@ -24,6 +26,7 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_43
+import com.wanted.android.wanted.design.util.OPACITY_100
 
 class WantedRadioButton : MaterialRadioButton {
 
@@ -49,6 +52,22 @@ internal fun WantedRadioButton(
     onCheckedChange: (Boolean) -> Unit = {},
 ) {
 
+    val borderWidth = when {
+        checked && size == CheckBoxSize.Small -> 4.5.dp
+        checked && size == CheckBoxSize.Normal -> 6.dp
+        else -> 1.5.dp
+    }
+    val borderColor = if (checked) {
+        DesignSystemTheme.colors.primaryNormal
+    } else {
+        DesignSystemTheme.colors.lineNormalNormal
+    }
+    val componentAlpha = when {
+        enabled -> OPACITY_100
+        checked -> OPACITY_43
+        else -> 0.1f
+    }
+
     WantedTouchArea(
         modifier = modifier,
         enabled = enabled,
@@ -68,30 +87,21 @@ internal fun WantedRadioButton(
                     )
                     .padding(horizontal = if (tight) 0.dp else 2.dp)
                     .padding(vertical = 2.dp)
+                    .alpha(componentAlpha)
                     .clip(CircleShape)
-                    .border(
-                        width = when {
-                            checked && size == CheckBoxSize.Small -> 4.5.dp
-                            checked && size == CheckBoxSize.Normal -> 6.dp
-                            else -> 1.5.dp
-                        },
-                        color = if (checked) {
-                            if (enabled) {
-                                DesignSystemTheme.colors.primaryNormal
-                            } else {
-                                DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
-                            }
-                        } else {
-                            if (enabled) {
-                                DesignSystemTheme.colors.lineNormalNormal
-                            } else {
-                                DesignSystemTheme.colors.lineNormalNormal.copy(0.1f)
-                            }
-                        },
-                        shape = CircleShape
-                    ),
+                    .border(width = borderWidth, color = borderColor, shape = CircleShape),
                 contentAlignment = Alignment.Center
             ) {
+                if (checked) {
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .background(
+                                color = DesignSystemTheme.colors.staticWhite,
+                                shape = CircleShape,
+                            )
+                    )
+                }
             }
         }
     ) {
