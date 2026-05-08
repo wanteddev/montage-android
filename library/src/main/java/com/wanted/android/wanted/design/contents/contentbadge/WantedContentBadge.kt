@@ -331,9 +331,9 @@ private fun WantedContentBadgeLayout(
 
 @Composable
 private fun getRadius(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.Large -> 8.dp
-    ContentBadgeSize.Small -> 6.dp
-    ContentBadgeSize.XSmall -> 6.dp
+    ContentBadgeSize.Large -> 10.dp
+    ContentBadgeSize.Small -> 8.dp
+    ContentBadgeSize.XSmall -> 8.dp
 }
 
 @Composable
@@ -347,19 +347,19 @@ private fun getHorizontalPadding(size: ContentBadgeSize) = when (size) {
 private fun getVerticalPadding(size: ContentBadgeSize) = when (size) {
     ContentBadgeSize.XSmall -> 3.dp
     ContentBadgeSize.Small -> 4.dp
-    ContentBadgeSize.Large -> 7.dp
+    ContentBadgeSize.Large -> 5.dp
 }
 
 @Composable
 private fun getHorizontalAlimentSpace(size: ContentBadgeSize) = when (size) {
     ContentBadgeSize.XSmall -> 1.dp
-    ContentBadgeSize.Small -> 3.dp
+    ContentBadgeSize.Small -> 4.dp
     ContentBadgeSize.Large -> 4.dp
 }
 
 @Composable
 private fun getIconSize(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.Large -> 16.dp
+    ContentBadgeSize.Large -> 14.dp
     ContentBadgeSize.Small -> 13.dp
     ContentBadgeSize.XSmall -> 12.dp
 }
