@@ -1,0 +1,29 @@
+name: Auto Docs Sync/Deploy on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          owner: wanteddev
+          repositories: montage-web
+
+      - name: Trigger docs-deploy on sync branch
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run docs-sync.yml \
+            --repo wanteddev/montage-web \
+            --ref "main" \
+            -f platform=mobile \
+            -f deploy=true
