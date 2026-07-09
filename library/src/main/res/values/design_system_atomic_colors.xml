@@ -213,6 +213,17 @@
     <color name="cool_neutral_22_opacity88">#E02E2F33</color>
     <color name="cool_neutral_17_opacity61">#9C212225</color>
 
+    <color name="red_50_opacity8">#14FF4242</color>
+    <color name="red_60_opacity8">#14FF6363</color>
+    <color name="orange_50_opacity8">#14FF9200</color>
+    <color name="orange_60_opacity8">#14FFA938</color>
+    <color name="green_50_opacity8">#1400BF40</color>
+    <color name="green_60_opacity8">#141ED45A</color>
+    <color name="orange_50_opacity43">#6EFF9200</color>
+    <color name="orange_60_opacity43">#6EFFA938</color>
+    <color name="green_50_opacity43">#6E00BF40</color>
+    <color name="green_60_opacity43">#6E1ED45A</color>
+
     <color name="common_100_opacity_8">#14FFFFFF</color>
     <color name="common_100_opacity_28">#47FFFFFF</color>
 </resources>

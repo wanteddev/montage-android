@@ -32,6 +32,10 @@ data class WantedColorScheme(
     val backgroundTransparentNormal: Color = Color.Transparent,
     val backgroundTransparentAlternative: Color = Color.Transparent,
 
+    val backgroundStatusNegative: Color = Color.Transparent,
+    val backgroundStatusCautionary: Color = Color.Transparent,
+    val backgroundStatusPositive: Color = Color.Transparent,
+
     val interactionInactive: Color = Color.Transparent,
     val interactionDisable: Color = Color.Transparent,
 
@@ -41,6 +45,9 @@ data class WantedColorScheme(
     val lineSolidNormal: Color = Color.Transparent,
     val lineSolidNeutral: Color = Color.Transparent,
     val lineSolidAlternative: Color = Color.Transparent,
+
+    val lineStatusCautionaryNormal: Color = Color.Transparent,
+    val lineStatusPositiveNormal: Color = Color.Transparent,
 
     val statusPositive: Color = Color.Transparent,
     val statusNegative: Color = Color.Transparent,
@@ -103,6 +110,10 @@ val AppWantedColorScheme: WantedColorScheme
         backgroundTransparentNormal = colorResource(id = R.color.background_transparent_normal),
         backgroundTransparentAlternative = colorResource(id = R.color.background_transparent_alternative),
 
+        backgroundStatusNegative = colorResource(id = R.color.background_status_negative),
+        backgroundStatusCautionary = colorResource(id = R.color.background_status_cautionary),
+        backgroundStatusPositive = colorResource(id = R.color.background_status_positive),
+
         interactionInactive = colorResource(id = R.color.interaction_inactive),
         interactionDisable = colorResource(id = R.color.interaction_disable),
 
@@ -112,6 +123,9 @@ val AppWantedColorScheme: WantedColorScheme
         lineSolidNormal = colorResource(id = R.color.line_solid_normal),
         lineSolidNeutral = colorResource(id = R.color.line_solid_neutral),
         lineSolidAlternative = colorResource(id = R.color.line_solid_alternative),
+
+        lineStatusCautionaryNormal = colorResource(id = R.color.line_status_cautionary_normal),
+        lineStatusPositiveNormal = colorResource(id = R.color.line_status_positive_normal),
 
         statusPositive = colorResource(id = R.color.status_positive),
         statusNegative = colorResource(id = R.color.status_negative),

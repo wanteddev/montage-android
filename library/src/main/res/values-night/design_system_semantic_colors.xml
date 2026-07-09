@@ -27,6 +27,11 @@
     <color name="background_transparent_normal">@color/cool_neutral_17_opacity61</color>
     <color name="background_transparent_alternative">@color/cool_neutral_17_opacity61</color>
 
+    <!-- Background Status -->
+    <color name="background_status_negative">@color/red_60_opacity8</color>
+    <color name="background_status_cautionary">@color/orange_60_opacity8</color>
+    <color name="background_status_positive">@color/green_60_opacity8</color>
+
     <!-- Interaction -->
     <color name="interaction_inactive">@color/cool_neutral_40</color>
     <color name="interaction_disable">@color/cool_neutral_22</color>
@@ -38,6 +43,10 @@
     <color name="line_solid_normal">@color/cool_neutral_25</color>
     <color name="line_solid_neutral">@color/cool_neutral_23</color>
     <color name="line_solid_alternative">@color/cool_neutral_22</color>
+
+    <!-- Line Status -->
+    <color name="line_status_cautionary_normal">@color/orange_60_opacity43</color>
+    <color name="line_status_positive_normal">@color/green_60_opacity43</color>
 
     <!-- Status -->
     <color name="status_positive">@color/green_60</color>
