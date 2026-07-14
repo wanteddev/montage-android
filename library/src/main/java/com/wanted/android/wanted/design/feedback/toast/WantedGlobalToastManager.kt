@@ -184,14 +184,17 @@ object WantedGlobalToastManager {
         }
     }
 
-
     private fun addToastToActivity() {
         val rootView = getRootView() ?: return
 
-        toastView?.let { view ->
-            removeToastFromParent() // 기존 부모에서 제거
-            if (view.parent != null) return // 중복 추가 방지
-            addViewToRoot(rootView, view)
+        try {
+            toastView?.let { view ->
+                removeToastFromParent() // 기존 부모에서 제거
+                if (view.parent != null) return // 중복 추가 방지
+                addViewToRoot(rootView, view)
+            }
+        } catch (_: Exception) {
+            // 간헐적으로 rootView가 null이 되는 경우가 있어 예외 처리 추가
         }
     }
 

@@ -5,6 +5,12 @@ on:
   push:
     branches:
       - main        # release/v{버전} 브랜치에 push(merge)될 때 실행
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "워크플로우를 실행할 브랜치"
+        required: true
+        default: "main"
 
 jobs:
   # 기존 CI 파일에 있던 디자인 시스템 문서 업데이트 Job을 그대로 가져옵니다.
@@ -20,12 +26,13 @@ jobs:
     steps:
       - name: Checkout code
         run: |
+          TARGET_BRANCH="${{ github.event.inputs.branch || 'main' }}"
           if [ -d .git ]; then
-            git fetch origin main
-            git checkout main
-            git reset --hard origin/main
+            git fetch origin "$TARGET_BRANCH"
+            git checkout "$TARGET_BRANCH"
+            git reset --hard "origin/$TARGET_BRANCH"
           else
-            git clone --branch main https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/wanteddev/montage-android.git .
+            git clone --branch "$TARGET_BRANCH" https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/wanteddev/montage-android.git .
           fi
 
       - name: Verify Java

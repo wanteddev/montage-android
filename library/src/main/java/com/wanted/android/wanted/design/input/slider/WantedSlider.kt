@@ -150,6 +150,8 @@ private fun WantedRangeSlider(
     enabled: Boolean = true
 ) {
     val density = LocalDensity.current
+    val rangeStart = valueRange.start
+    val rangeSpan = (valueRange.endInclusive - valueRange.start).roundToInt().coerceAtLeast(1)
 
     val minOffsetX = remember { mutableFloatStateOf(0f) }
     val minTextWidth = remember { mutableFloatStateOf(0f) }
@@ -197,12 +199,17 @@ private fun WantedRangeSlider(
                 isRange = isRange,
                 trackHeight = TrackHeight,
                 onValueChange = { range ->
-                    minOffsetX.floatValue =
-                        getTextOffset(range.start, sliderWidth, minTextWidth.floatValue)
-                    maxOffsetX.floatValue = getTextOffset(
-                        range.endInclusive,
+                    minOffsetX.floatValue = getTextOffset(
+                        range.start - rangeStart,
                         sliderWidth,
-                        maxTextWidth.floatValue
+                        minTextWidth.floatValue,
+                        rangeSpan
+                    )
+                    maxOffsetX.floatValue = getTextOffset(
+                        range.endInclusive - rangeStart,
+                        sliderWidth,
+                        maxTextWidth.floatValue,
+                        rangeSpan
                     )
                     onValueChange(range)
 
@@ -226,9 +233,10 @@ private fun WantedRangeSlider(
                             minTextWidth.floatValue =
                                 with(density) { layoutCoordinates.size.width.toDp() }.value
                             minOffsetX.floatValue = getTextOffset(
-                                value.start,
+                                value.start - rangeStart,
                                 sliderWidth,
-                                minTextWidth.floatValue
+                                minTextWidth.floatValue,
+                                rangeSpan
                             )
                         },
                     text = labelMin
@@ -247,9 +255,10 @@ private fun WantedRangeSlider(
                                 with(density) { layoutCoordinates.size.width.toDp() }.value
 
                             maxOffsetX.floatValue = getTextOffset(
-                                value.endInclusive,
+                                value.endInclusive - rangeStart,
                                 sliderWidth,
-                                maxTextWidth.floatValue
+                                maxTextWidth.floatValue,
+                                rangeSpan
                             )
                         },
                     text = labelMax
