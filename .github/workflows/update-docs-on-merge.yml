@@ -56,7 +56,9 @@ jobs:
           echo "🧹 프로젝트 클린 중..."
           ./gradlew clean
           echo "🔨 프로젝트 빌드 중..."
-          ./gradlew build -x test
+          # lint 태스크 제외: 문서 추출용 컴파일만 필요하며,
+          # :sample:lintAnalyzeDebug 가 AGP local_aar_for_lint transform 버그로 실패하는 것을 회피
+          ./gradlew build -x test -x lint -x lintAnalyzeDebug -x lintAnalyzeRelease
 
       - name: Update Design System Document
         run: |
