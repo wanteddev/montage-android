@@ -29,7 +29,7 @@
 * @param overlayToggleIcon (@Composable () -> Unit)?: 썸네일 오버레이에 포함될 토글 아이콘입니다.
 * @param topContent (@Composable () -> Unit)?: 카드 상단 타이틀 위에 추가 표시할 컴포넌트입니다.
 * @param bottomContent (@Composable () -> Unit)?: 카드 하단에 추가 표시할 컴포넌트입니다.
-* @param onClick () -> Unit: 카드 전체 클릭 시 호출되는 콜백입니다.
+* @param onClick (() -> Unit)?: 카드 전체 클릭 시 호출되는 콜백입니다. null일 경우 클릭이 비활성화됩니다.
 */
 
 /**
