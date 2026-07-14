@@ -10,12 +10,46 @@ jobs:
     steps:
       - name: Generate GitHub App Token
         id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
-          owner: wanteddev
-          repositories: montage-web
+        env:
+          APP_ID: ${{ secrets.BOT_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          TARGET_REPO: wanteddev/montage-web
+        run: |
+          set -euo pipefail
+
+          b64url() { openssl base64 -A | tr '+/' '-_' | tr -d '='; }
+
+          # 1) JWT 생성 (RS256)
+          now=$(date +%s)
+          iat=$((now - 60))
+          exp=$((now + 540))
+          header=$(printf '{"alg":"RS256","typ":"JWT"}' | b64url)
+          payload=$(printf '{"iat":%d,"exp":%d,"iss":"%s"}' "$iat" "$exp" "$APP_ID" | b64url)
+          unsigned="${header}.${payload}"
+
+          key_file="$(mktemp)"
+          printf '%s\n' "$PRIVATE_KEY" > "$key_file"
+          signature=$(printf '%s' "$unsigned" | openssl dgst -sha256 -sign "$key_file" | b64url)
+          jwt="${unsigned}.${signature}"
+          rm -f "$key_file"
+
+          # 2) 대상 저장소의 App 설치 ID 조회
+          installation_id=$(curl -sf \
+            -H "Authorization: Bearer ${jwt}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${TARGET_REPO}/installation" \
+            | jq -r '.id')
+
+          # 3) 설치 액세스 토큰 발급 (montage-web 저장소로 스코프 제한)
+          token=$(curl -sf -X POST \
+            -H "Authorization: Bearer ${jwt}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/app/installations/${installation_id}/access_tokens" \
+            -d '{"repositories":["montage-web"]}' \
+            | jq -r '.token')
+
+          echo "::add-mask::${token}"
+          echo "token=${token}" >> "$GITHUB_OUTPUT"
 
       - name: Trigger docs-deploy on sync branch
         env:
