@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
@@ -103,6 +104,15 @@ object WantedGlobalToastManager {
     }
 
     /**
+     * PlayCoreDialogWrapperActivity(인앱리뷰) 등 라이브러리가 매니페스트에 머지해 넣는
+     * 플레인 [Activity]는 DecorView에 ViewTreeLifecycleOwner가 설정되지 않아
+     * ComposeView를 붙이는 순간 IllegalStateException으로 앱이 종료된다.
+     * ComposeView 부착의 실제 전제조건인 view tree의 LifecycleOwner 존재 여부를 직접 검사한다.
+     */
+    private fun Activity.canHostToast(): Boolean =
+        findViewById<ViewGroup>(android.R.id.content)?.findViewTreeLifecycleOwner() != null
+
+    /**
      *  fun showToast(...)
      *
      * 커스텀 컴포넌트 콘텐츠로 Toast를 표시합니다.
@@ -135,6 +145,7 @@ object WantedGlobalToastManager {
     }
 
     private fun attachToastToActivity() {
+        if (currentActivity?.canHostToast() != true) return
         removeToastFromParent()
         createToastView()
         addToastToActivity()

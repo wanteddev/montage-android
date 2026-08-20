@@ -112,6 +112,8 @@ import kotlinx.coroutines.launch
  * @param align WantedTooltipAlign: 앵커 요소에 대한 Tooltip 의 정렬 방식입니다.
  * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
  * @param positionTop Boolean: Tooltip 을 위쪽에 표시할지 여부입니다.
+ * @param screenEdgePadding Dp: Tooltip 이 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며,
+ * Tooltip 이 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
  * @param content (@Composable () -> Unit): Tooltip 을 트리거하는 앵커 콘텐츠 슬롯입니다.
  */
 @Composable
@@ -123,6 +125,7 @@ fun WantedTooltip(
     align: WantedTooltipAlign = WantedTooltipAlign.Left,
     always: Boolean = false,
     positionTop: Boolean = false,
+    screenEdgePadding: Dp = 2.dp,
     content: @Composable () -> Unit
 ) {
     val isVisible by tooltipState.visibleState
@@ -195,7 +198,7 @@ fun WantedTooltip(
                 contentWidth = contentWidth,
                 tooltipWidth = tooltipWidth,
                 screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
-                paddingPx = with(density) { 2.dp.toPx() }.toInt()
+                paddingPx = with(density) { screenEdgePadding.toPx() }.toInt()
             )
 
             Popup(
@@ -225,6 +228,7 @@ fun WantedTooltip(
                             tooltipWidth = coordinates.size.width
                             tooltipHeight = coordinates.size.height
 
+                            val halfCaretWidthPx = density.halfCaretWidthPx(size = size)
                             caretPositionX = calculateCaretPositionX(
                                 align = align,
                                 contentWidth = contentWidth,
@@ -233,6 +237,9 @@ fun WantedTooltip(
                                     if (size == WantedTooltipSize.Small) 1.dp.toPx() else 6.dp.toPx()
                                 },
                                 caretWidthPx = with(density) { 12.dp.toPx() }
+                            ).coerceIn(
+                                minimumValue = halfCaretWidthPx,
+                                maximumValue = tooltipWidth - halfCaretWidthPx
                             )
                         }
                         .drawWithCache {
@@ -354,6 +361,14 @@ private fun calculateTooltipOffsetX(
 ): Int {
     if (tooltipWidth == 0) return 0
 
+    // 좌·우 여백을 모두 주면 툴팁이 화면을 벗어나는 좁은 화면에서는 남는 공간만큼만 여백을 준다.
+    // 여백을 그대로 고집하면 툴팁이 화면 밖으로 밀려 잘린다.
+    // 음수 여백은 경계 판정을 반대로 뒤집어 툴팁을 화면 밖으로 내보내므로 0 아래로 내려가지 않게 한다.
+    val edgePaddingPx = paddingPx.coerceIn(
+        minimumValue = 0,
+        maximumValue = ((screenWidthPx - tooltipWidth) / 2).coerceAtLeast(0)
+    )
+
     val idealOffsetX = when (align) {
         WantedTooltipAlign.Left -> {
             0
@@ -372,12 +387,12 @@ private fun calculateTooltipOffsetX(
     val tooltipAbsoluteRight = tooltipAbsoluteLeft + tooltipWidth
 
     val adjustedOffsetX = when {
-        tooltipAbsoluteLeft < paddingPx -> {
-            (paddingPx - contentPositionX).toInt()
+        tooltipAbsoluteLeft < edgePaddingPx -> {
+            (edgePaddingPx - contentPositionX).toInt()
         }
 
-        tooltipAbsoluteRight > screenWidthPx - paddingPx -> {
-            (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
+        tooltipAbsoluteRight > screenWidthPx - edgePaddingPx -> {
+            (screenWidthPx - edgePaddingPx - tooltipWidth - contentPositionX).toInt()
         }
 
         else -> {
@@ -836,6 +851,15 @@ private class WantedTooltipStateImpl(
 fun rememberTooltipState(initialVisible: Boolean = false): WantedTooltipState =
     remember { WantedTooltipStateImpl(initialVisible) }
 
+
+/**
+ * 화살표를 툴팁 본체 안에 가둘 때 쓰는 여유값. [drawCaret] 이 실제로 그리는 화살표 폭의 절반이다.
+ *
+ * 화면 경계 보정으로 툴팁이 앵커에서 멀리 밀리면 화살표가 가리켜야 할 지점이 본체 밖(음수)까지
+ * 내려가, 화살표만 본체와 끊겨 보인다. 앵커가 화면 가장자리에서 여백보다 안쪽에 있을 때 발생한다.
+ */
+private fun Density.halfCaretWidthPx(size: WantedTooltipSize): Float =
+    if (size == WantedTooltipSize.Small) 7.dp.toPx() else 10.dp.toPx()
 
 private const val SpacingBetweenTooltipAndAnchor = 8
 private const val SpacingBetweenTooltipAndAnchorNotArrow = 2
