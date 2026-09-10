@@ -54,6 +54,14 @@ internal fun WantedSelectBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(items) { item ->
+                    // 행 어디를 눌러도(라디오 아이콘 포함) 같은 선택 동작이 되도록 로직을 공유한다
+                    val handleSelect = {
+                        if (confirmText.isEmpty()) {
+                            onSelect(item)
+                        } else {
+                            selectItem.value = item
+                        }
+                    }
                     WantedListCell(
                         modifier = Modifier,
                         verticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
@@ -88,27 +96,21 @@ internal fun WantedSelectBottomSheet(
                                 }
                             }
 
-                            selectItem.value == item
-                                    && selectType == WantedSelectDefaults.SelectType.Radio -> {
+                            // Radio 는 선택 여부와 무관하게 항시 노출한다 (미선택 항목은 빈 라디오) — 타 플랫폼과 동일 (DEF-2458)
+                            selectType == WantedSelectDefaults.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checked = true,
-                                        onCheckedChange = { }
+                                        checked = selectItem.value == item,
+                                        onCheckedChange = { handleSelect() }
                                     )
                                 }
                             }
 
                             else -> null
                         },
-                        onClick = {
-                            if (confirmText.isEmpty()) {
-                                onSelect(item)
-                            } else {
-                                selectItem.value = item
-                            }
-                        }
+                        onClick = handleSelect
                     )
                 }
             }

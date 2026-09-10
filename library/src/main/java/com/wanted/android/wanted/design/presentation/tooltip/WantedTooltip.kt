@@ -112,8 +112,7 @@ import kotlinx.coroutines.launch
  * @param align WantedTooltipAlign: 앵커 요소에 대한 Tooltip 의 정렬 방식입니다.
  * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
  * @param positionTop Boolean: Tooltip 을 위쪽에 표시할지 여부입니다.
- * @param screenEdgePadding Dp: Tooltip 이 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며,
- * Tooltip 이 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
+ * @param screenEdgePadding Dp: Tooltip 이 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며, 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
  * @param content (@Composable () -> Unit): Tooltip 을 트리거하는 앵커 콘텐츠 슬롯입니다.
  */
 @Composable

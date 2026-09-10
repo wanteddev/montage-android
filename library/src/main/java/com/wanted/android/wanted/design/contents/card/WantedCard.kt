@@ -46,7 +46,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param modifier Modifier: 레이아웃 및 스타일을 지정하는 Modifier입니다.
+ * @param modifier Modifier: 카드 최외곽 노드에 적용됩니다. 배경·테두리·클릭 영역이 모두 이 노드 기준입니다.
  * @param thumbnail (@Composable () -> Unit): 썸네일 이미지 영역입니다.
  * @param overlayCaption String: 썸네일 위에 오버레이로 표시할 텍스트입니다.
  * @param title String: 카드 타이틀 텍스트입니다.
@@ -54,7 +54,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param subCaption String: 추가 보조 캡션 텍스트입니다.
  * @param extraCaption String: 하단 추가 설명 텍스트입니다.
  * @param isLoading Boolean: 로딩 상태 여부입니다. true이면 skeleton UI가 렌더링됩니다.
- * @param cardDefault WantedCardDefault: skeleton 모드에서 사용할 설정값입니다.
+ * @param cardDefault WantedCardDefault: 스켈레톤 표시 여부와 카드 표면(배경색·모양·테두리·안쪽 여백) 설정을 담는 객체입니다.
  * @param overlayToggleIcon (@Composable () -> Unit)?: 썸네일 오버레이에 포함될 토글 아이콘입니다.
  * @param topContent (@Composable () -> Unit)?: 카드 상단 타이틀 위에 추가 표시할 컴포넌트입니다.
  * @param bottomContent (@Composable () -> Unit)?: 카드 하단에 추가 표시할 컴포넌트입니다.
@@ -78,7 +78,10 @@ fun WantedCard(
 ) {
     if (isLoading) {
         WantedCardSkeleton(
-            modifier = modifier,
+            modifier = modifier
+                .background(color = cardDefault.backgroundColor, shape = cardDefault.shape)
+                .cardBorder(cardDefault)
+                .padding(cardDefault.contentPadding),
             topContent = cardDefault.topContentSkeleton,
             caption = cardDefault.captionSkeleton,
             extraCaption = cardDefault.extraCaptionSkeleton,
@@ -87,9 +90,12 @@ fun WantedCard(
         )
     } else {
         WantedTouchArea(
+            modifier = modifier
+                .background(color = cardDefault.backgroundColor, shape = cardDefault.shape)
+                .cardBorder(cardDefault),
             content = {
                 WantedCardLayout(
-                    modifier = modifier,
+                    modifier = Modifier.padding(cardDefault.contentPadding),
                     thumbnail = thumbnail,
                     thumbnailOverlay = if (overlayCaption.isNotEmpty() || overlayToggleIcon != null) {
                         {
@@ -120,6 +126,7 @@ fun WantedCard(
             verticalPadding = 8.dp,
             horizontalPadding = 8.dp,
             enabledInnerTouch = true,
+            // WantedCard 고유 모양이라 cardDefault.interactionShape(가로형 카드 기준)를 쓰지 않는다.
             shape = RoundedCornerShape(
                 topStart = 20.dp,
                 topEnd = 20.dp,
@@ -327,3 +334,16 @@ private fun WantedCardSkeletonPreview() {
         }
     }
 }
+
+/**
+ * Modifier.cardBorder
+ *
+ * 카드 표면 테두리를 배경 위에 그립니다. cardDefault.border 가 null 이면 아무것도 적용하지 않습니다.
+ *
+ * background 다음에 호출해야 테두리가 배경에 가려지지 않습니다.
+ *
+ * @param cardDefault WantedCardDefault: 테두리와 모양 정보를 담은 설정 객체입니다.
+ * @return Modifier: 테두리가 적용된 Modifier 입니다.
+ */
+private fun Modifier.cardBorder(cardDefault: WantedCardDefault): Modifier =
+    cardDefault.border?.let { border(border = it, shape = cardDefault.shape) } ?: this
