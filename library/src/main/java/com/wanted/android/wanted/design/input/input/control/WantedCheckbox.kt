@@ -56,7 +56,7 @@ class WantedCheckBox : MaterialCheckBox {
 }
 
 @Composable
-internal fun WantedCheckBox(
+fun WantedCheckBox(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     size: CheckBoxSize = CheckBoxSize.Normal,

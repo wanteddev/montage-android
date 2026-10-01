@@ -289,7 +289,7 @@ private fun WantedFallbackLayout(
             ) {
                 heading?.let {
                     ProvideTextStyle(
-                        value = DesignSystemTheme.typography.heading2Bold.copy(
+                        value = DesignSystemTheme.typography.headline1Bold.copy(
                             color = DesignSystemTheme.colors.labelNormal
                         )
                     ) {
@@ -299,7 +299,7 @@ private fun WantedFallbackLayout(
 
                 description?.let {
                     ProvideTextStyle(
-                        value = DesignSystemTheme.typography.body1ReadingRegular.copy(
+                        value = DesignSystemTheme.typography.body2ReadingRegular.copy(
                             color = DesignSystemTheme.colors.labelAlternative
                         )
                     ) {
