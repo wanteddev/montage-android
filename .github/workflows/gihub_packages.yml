@@ -100,15 +100,27 @@ jobs:
           🚀 Design System Release ${{env.VERSION_CODE}}
           
           ## Changes
-          - Published to GitHub Packages
-          - GroupId: com.wanted.android
+          - Available on JitPack (built from tag v${{env.VERSION_CODE}})
+          - GroupId: com.github.wanteddev
           - ArtifactId: montage-android
-          - Version: ${{env.VERSION_CODE}}
-          
+          - Version: v${{env.VERSION_CODE}}
+
           ## Installation
-          \`\`\`gradle
+          \`settings.gradle.kts\`
+          \`\`\`kotlin
+          dependencyResolutionManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  maven { url = uri("https://jitpack.io") }
+              }
+          }
+          \`\`\`
+
+          \`build.gradle.kts\`
+          \`\`\`kotlin
           dependencies {
-              implementation("com.wanted.android:montage-android:${{env.VERSION_CODE}}")
+              implementation("com.github.wanteddev:montage-android:v${{env.VERSION_CODE}}")
           }
           \`\`\`
           EOF
