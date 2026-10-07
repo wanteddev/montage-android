@@ -67,7 +67,7 @@ internal fun WantedDraggableModalBottomSheet(
         )
     },
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
-    contentColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
+    contentColor: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
     shape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     dragHandle: @Composable (() -> Unit)? = { WantedBottomSheetDefaults.DragHandle() },
     content: @Composable () -> Unit
@@ -240,7 +240,6 @@ private fun WantedHandleTouchArea(
     ) { measurables, constraints ->
         val textPlaceable = measurables[0].measure(constraints)
 
-        // Calculate the expanded dimensions
         val expandedHeight = textPlaceable.height
 
         layout(textPlaceable.width, expandedHeight) {
@@ -270,7 +269,6 @@ private fun SetUpEdgeToEdgeDialog(
     window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     window.setDimAmount(dimAmount)
-    //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
     window.setSoftInputMode(
         if (Build.VERSION.SDK_INT >= 30) {

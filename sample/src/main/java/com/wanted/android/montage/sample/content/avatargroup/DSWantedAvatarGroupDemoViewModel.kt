@@ -4,16 +4,18 @@ import com.wanted.android.montage.sample.base.WantedStateViewModel
 import com.wanted.android.montage.sample.content.avatargroup.DSWantedAvatarGroupDemoScreenContract.DSWantedAvatarGroupDemoEvent
 import com.wanted.android.montage.sample.content.avatargroup.DSWantedAvatarGroupDemoScreenContract.DSWantedAvatarGroupDemoSideEffect
 import com.wanted.android.montage.sample.content.avatargroup.DSWantedAvatarGroupDemoScreenContract.DSWantedAvatarGroupDemoViewState
-import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarSize
-import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarType
+import com.wanted.android.montage.sample.content.avatargroup.DSWantedAvatarGroupDemoScreenContract.TrailingContentType
+import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-
 @HiltViewModel
-class DSWantedAvatarGroupDemoViewModel @Inject constructor(
-
-) : WantedStateViewModel<DSWantedAvatarGroupDemoEvent, DSWantedAvatarGroupDemoViewState, DSWantedAvatarGroupDemoSideEffect>() {
+class DSWantedAvatarGroupDemoViewModel @Inject constructor() :
+    WantedStateViewModel<
+        DSWantedAvatarGroupDemoEvent,
+        DSWantedAvatarGroupDemoViewState,
+        DSWantedAvatarGroupDemoSideEffect
+        >() {
     override fun setInitialState() = DSWantedAvatarGroupDemoViewState()
 
     override fun handleEvents(event: DSWantedAvatarGroupDemoEvent) {
@@ -25,9 +27,19 @@ class DSWantedAvatarGroupDemoViewModel @Inject constructor(
 
             DSWantedAvatarGroupDemoEvent.CopyCode -> copyCode()
             is DSWantedAvatarGroupDemoEvent.SetSize -> setState { copy(size = event.size) }
-            is DSWantedAvatarGroupDemoEvent.SetType -> setState { copy(type = event.type) }
-            is DSWantedAvatarGroupDemoEvent.SetShowTrailing -> setState { copy(showTrailing = event.show) }
+            is DSWantedAvatarGroupDemoEvent.SetAvatarCount -> setAvatarCount(event.count)
+            is DSWantedAvatarGroupDemoEvent.SetTrailingContentType -> {
+                setTrailingContentType(event.trailingContentType)
+            }
         }
+    }
+
+    private fun setAvatarCount(count: Int) {
+        setState { copy(avatarCount = count) }
+    }
+
+    private fun setTrailingContentType(trailingContentType: TrailingContentType) {
+        setState { copy(trailingContentType = trailingContentType) }
     }
 
     private fun copyCode() {
@@ -36,37 +48,26 @@ class DSWantedAvatarGroupDemoViewModel @Inject constructor(
 
     private fun getCode(): String {
         val state = viewState.value
-        val sizeString = when (state.size) {
-            WantedAvatarSize.XSmall -> "WantedAvatarSize.XSmall"
-            WantedAvatarSize.Small -> "WantedAvatarSize.Small"
-            WantedAvatarSize.Medium -> "WantedAvatarSize.Medium"
-            WantedAvatarSize.Large -> "WantedAvatarSize.Large"
-            WantedAvatarSize.XLarge -> "WantedAvatarSize.XLarge"
-            is WantedAvatarSize.Custom -> {
-                "WantedAvatarSize.Custom(size = ${state.size.size.value}.dp, cornerRadius = ${state.size.cornerRadius.value}.dp)"
+        val sizeString = "WantedAvatarGroupSize.${state.size.name}"
+        val overflowCount = (state.avatarCount - WantedAvatarDefaults.MAX_GROUP_VISIBLE_COUNT)
+            .coerceAtLeast(0)
+        val trailingContentLine = when (state.trailingContentType) {
+            TrailingContentType.None -> "trailingContent = null,"
+            TrailingContentType.Text -> {
+                "trailingContent = { WantedAvatarGroupTrailingText(text = \"외 ${overflowCount}명\") },"
             }
-        }
-        val typeString = when (state.type) {
-            WantedAvatarType.Person -> "WantedAvatarType.Person"
-            WantedAvatarType.Company -> "WantedAvatarType.Company"
-            WantedAvatarType.Academic -> "WantedAvatarType.Academic"
-        }
-        val trailingContentLine = if (state.showTrailing) {
-            "trailingContent = { maxHeight -> Text(\"+3\") },"
-        } else {
-            "trailingContent = null,"
+
+            TrailingContentType.TextButton -> {
+                "trailingContent = { WantedAvatarGroupTrailingTextButton(text = \"외 ${overflowCount}명\", onClick = {}) },"
+            }
         }
 
         return """
             WantedAvatarGroup(
-                modelList = listOf(
-                    R.drawable.icon_avatar_placeholder_person,
-                    R.drawable.icon_avatar_placeholder_person,
-                    R.drawable.icon_avatar_placeholder_person
-                ),
+                modelList = List(${state.avatarCount}) { R.drawable.icon_normal_person_fill },
                 size = $sizeString,
-                type = $typeString,
                 isDrawableRes = true,
+                contentDescription = "프로필 이미지",
                 $trailingContentLine
             )
         """.trimIndent()

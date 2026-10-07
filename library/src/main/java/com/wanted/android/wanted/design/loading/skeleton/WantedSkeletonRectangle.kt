@@ -40,7 +40,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 fun WantedSkeletonRectangle(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(3.dp),
-    color: Color = DesignSystemTheme.colors.fillNormal
+    color: Color = DesignSystemTheme.colors.surfaceNeutralSecondary
 ) {
     Box(
         modifier = modifier

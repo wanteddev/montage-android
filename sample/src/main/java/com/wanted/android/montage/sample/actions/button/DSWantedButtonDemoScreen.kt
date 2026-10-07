@@ -36,9 +36,8 @@ import com.wanted.android.montage.sample.actions.button.DSWantedButtonDemoScreen
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
@@ -111,7 +110,7 @@ fun DSWantedButtonDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedButtonDemoEvent.CopyCode)
@@ -127,7 +126,7 @@ fun DSWantedButtonDemoScreen(
     }
 
     if (viewState.isShowAll) {
-        WantedModal(
+        WantedPopup(
             positive = "확인",
             onClickPositive = {
                 viewModel.setEvent(DSWantedButtonDemoEvent.ShowAll(false))
@@ -165,7 +164,7 @@ private fun DSWantedButtonDemoScreenImpl(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -174,7 +173,7 @@ private fun DSWantedButtonDemoScreenImpl(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "모든 옵션 보기",
@@ -192,7 +191,6 @@ private fun DSWantedButtonDemoScreenImpl(
             modifier = Modifier.padding(innerPadding),
             preview = {
                 WantedButton(
-                    modifier = Modifier.fillMaxWidth(),
                     text = "preview",
                     variant = viewState.selectedButtonVariant,
                     type = viewState.selectedType,
@@ -346,12 +344,22 @@ private fun DSWantedButtonDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -369,7 +377,7 @@ private fun DSWantedButtonDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                    colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )

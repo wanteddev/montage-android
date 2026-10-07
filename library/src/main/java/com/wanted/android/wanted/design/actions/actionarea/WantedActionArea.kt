@@ -1,22 +1,24 @@
 package com.wanted.android.wanted.design.actions.actionarea
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,13 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonSize
-import com.wanted.android.wanted.design.util.ButtonType
-import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
@@ -43,60 +43,62 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * 하단 액션 버튼 영역을 생성합니다.
  *
- * 버튼은 positive, negative, neutral 텍스트로 생성하며, 각 버튼에 클릭 콜백을 전달할 수 있습니다.
+ * 버튼은 main, alternative, sub 텍스트로 생성하며, 각 버튼에 클릭 콜백을 전달할 수 있습니다.
  * 또한, Variant 속성을 활용하여 상단 영역에 부가적인 요소를 렌더링할 수 있습니다.
  *
  * 사용 예시 :
  * ```kotlin
  * WantedActionArea(
  *     type = ActionAreaType.Strong,
- *     positive = "확인",
- *     onClickPositive = { /* 처리 */ },
- *     negative = "취소",
- *     onClickNegative = { /* 처리 */ },
- *     neutral = "건너뛰기",
- *     onClickNeutral = { /* 처리 */ }
+ *     main = "확인",
+ *     onClickMain = { /* 처리 */ },
+ *     alternative = "취소",
+ *     onClickAlternative = { /* 처리 */ },
+ *     sub = "건너뛰기",
+ *     onClickSub = { /* 처리 */ }
  * )
  * ```
  *
  * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
- * @param positive String: 메인(긍정) 액션 버튼의 텍스트입니다.
- * @param isEnablePositive Boolean: 메인 액션 버튼의 활성화 여부입니다.
- * @param onClickPositive () -> Unit: 메인 액션 버튼 클릭 콜백입니다.
- * @param negative String?: 서브(부정) 액션 버튼의 텍스트입니다.
- * @param isEnableNegative Boolean: 서브 액션 버튼의 활성화 여부입니다.
- * @param neutral String?: 추가(중립) 액션 버튼의 텍스트입니다.
- * @param isEnableNeutral Boolean: 추가 액션 버튼의 활성화 여부입니다.
- * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
- * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
+ * @param main String: 메인 액션 버튼의 텍스트입니다.
  * @param modifier Modifier: Modifier를 설정합니다.
+ * @param isEnableMain Boolean: 메인 액션 버튼의 활성화 여부입니다.
+ * @param onClickMain () -> Unit: 메인 액션 버튼 클릭 콜백입니다.
+ * @param alternative String?: 대체 액션 버튼의 텍스트입니다.
+ * @param isEnableAlternative Boolean: 대체 액션 버튼의 활성화 여부입니다.
+ * @param sub String?: 보조 액션 버튼의 텍스트입니다.
+ * @param isEnableSub Boolean: 보조 액션 버튼의 활성화 여부입니다.
+ * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
+ * @param captionIcon Int?: 캡션 텍스트 앞에 표시할 아이콘 리소스입니다. 기본값은 아이콘 없음이며, 권장 아이콘은 [WantedActionAreaDefaults.CAPTION_ICON]입니다.
+ * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
  * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
  * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
- * @param divider Boolean: 구분선 표시 여부를 지정합니다.
- * @param gradationColor Color: 배경 그라데이션 색상을 설정합니다.
- * @param onClickNegative (() -> Unit)?: 서브 액션 버튼 클릭 콜백입니다.
- * @param onClickNeutral (() -> Unit)?: 추가 액션 버튼 클릭 콜백입니다.
+ * @param divider Boolean: 구분선 표시 여부를 지정합니다. extra가 있을 때만 표시됩니다.
+ * @param backgroundColor Color: Extra·버튼 영역의 배경색이자 sticky 그라데이션의 색상입니다. 그라데이션이 꺼져 있고 extra 도 없으면 배경을 칠하지 않습니다.
+ * @param onClickAlternative (() -> Unit)?: 대체 액션 버튼 클릭 콜백입니다.
+ * @param onClickSub (() -> Unit)?: 보조 액션 버튼 클릭 콜백입니다.
  * @param extra (@Composable () -> Unit)?: 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
 fun WantedActionArea(
     type: ActionAreaType,
-    positive: String,
-    isEnablePositive: Boolean = true,
-    onClickPositive: () -> Unit,
-    negative: String? = null,
-    isEnableNegative: Boolean = true,
-    neutral: String? = null,
-    isEnableNeutral: Boolean = true,
-    caption: String? = null,
-    scrollableState: ScrollableState? = null,
+    main: String,
     modifier: Modifier = Modifier,
+    isEnableMain: Boolean = true,
+    onClickMain: () -> Unit,
+    alternative: String? = null,
+    isEnableAlternative: Boolean = true,
+    sub: String? = null,
+    isEnableSub: Boolean = true,
+    caption: String? = null,
+    @DrawableRes captionIcon: Int? = null,
+    scrollableState: ScrollableState? = null,
     background: Boolean = false,
     safeArea: Boolean = true,
-    divider: Boolean = false,
-    gradationColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
-    onClickNegative: (() -> Unit)? = null,
-    onClickNeutral: (() -> Unit)? = null,
+    divider: Boolean = true,
+    backgroundColor: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
+    onClickAlternative: (() -> Unit)? = null,
+    onClickSub: (() -> Unit)? = null,
     extra: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
@@ -104,46 +106,42 @@ fun WantedActionArea(
         type = type,
         safeArea = safeArea,
         background = background,
-        gradationColor = gradationColor,
+        backgroundColor = backgroundColor,
         scrollableState = scrollableState,
-        positive = {
+        main = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
-                text = positive,
-                enabled = isEnablePositive,
-                onClick = onClickPositive
+                variant = WantedActionAreaDefaults.getMainButtonVariant(),
+                type = WantedActionAreaDefaults.getMainButtonType(type),
+                size = WantedActionAreaDefaults.getMainButtonSize(),
+                text = main,
+                enabled = isEnableMain,
+                onClick = onClickMain
             )
         },
-        negative = onClickNegative?.let {
+        alternative = onClickAlternative?.let {
             {
                 WantedButton(
                     modifier = Modifier.fillMaxWidth(),
-                    variant = ButtonVariant.OUTLINED,
-                    type = ButtonType.PRIMARY,
-                    text = negative.orEmpty(),
-                    enabled = isEnableNegative,
-                    onClick = onClickNegative
+                    variant = WantedActionAreaDefaults.getAlternativeButtonVariant(),
+                    type = WantedActionAreaDefaults.getAlternativeButtonType(),
+                    size = WantedActionAreaDefaults.getAlternativeButtonSize(),
+                    text = alternative.orEmpty(),
+                    enabled = isEnableAlternative,
+                    onClick = onClickAlternative
                 )
             }
         },
-        neutral = onClickNeutral?.let {
+        sub = onClickSub?.let {
             {
                 WantedButton(
                     modifier = Modifier.wrapContentSize(),
-                    variant = if (type == ActionAreaType.Strong) {
-                        ButtonVariant.TEXT
-                    } else {
-                        ButtonVariant.OUTLINED
-                    },
-                    size = if (type == ActionAreaType.Strong) {
-                        ButtonSize.SMALL
-                    } else {
-                        ButtonSize.LARGE
-                    },
-                    type = ButtonType.ASSISTIVE,
-                    text = neutral.orEmpty(),
-                    enabled = isEnableNeutral,
-                    onClick = onClickNeutral
+                    variant = WantedActionAreaDefaults.getSubButtonVariant(type),
+                    size = WantedActionAreaDefaults.getSubButtonSize(type),
+                    type = WantedActionAreaDefaults.getSubButtonType(type),
+                    text = sub.orEmpty(),
+                    enabled = isEnableSub,
+                    onClick = onClickSub
                 )
             }
         },
@@ -152,6 +150,7 @@ fun WantedActionArea(
                 Text(text = caption)
             }
         },
+        captionIcon = captionIcon,
         divider = divider,
         extra = extra
     )
@@ -168,10 +167,10 @@ fun WantedActionArea(
  * ```kotlin
  * WantedActionArea(
  *     type = ActionAreaType.Strong,
- *     positive = {
+ *     main = {
  *         CustomMainButton(onClick = { ... })
  *     },
- *     negative = {
+ *     alternative = {
  *         CustomSecondaryButton(onClick = { ... })
  *     }
  * )
@@ -181,13 +180,14 @@ fun WantedActionArea(
  * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
  * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
  * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
- * @param gradationColor Color: 배경 그라데이션 색상을 설정합니다.
+ * @param backgroundColor Color: Extra·버튼 영역의 배경색이자 sticky 그라데이션의 색상입니다. 그라데이션이 꺼져 있고 extra 도 없으면 배경을 칠하지 않습니다.
  * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
+ * @param captionIcon Int?: 캡션 텍스트 앞에 표시할 아이콘 리소스입니다. 기본값은 아이콘 없음이며, 권장 아이콘은 [WantedActionAreaDefaults.CAPTION_ICON]입니다.
  * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
- * @param divider Boolean: 구분선 표시 여부를 지정합니다.
- * @param positive (@Composable () -> Unit): 메인(긍정) 액션 버튼 Slot입니다.
- * @param negative (@Composable (() -> Unit)?): 서브(부정) 액션 버튼 Slot입니다.
- * @param neutral (@Composable (() -> Unit)?): 추가(중립) 액션 버튼 Slot입니다.
+ * @param divider Boolean: 구분선 표시 여부를 지정합니다. extra가 있을 때만 표시됩니다.
+ * @param main (@Composable () -> Unit): 메인 액션 버튼 Slot입니다.
+ * @param alternative (@Composable (() -> Unit)?): 대체 액션 버튼 Slot입니다.
+ * @param sub (@Composable (() -> Unit)?): 보조 액션 버튼 Slot입니다.
  * @param extra (@Composable (() -> Unit)?): 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
@@ -196,13 +196,14 @@ fun WantedActionArea(
     type: ActionAreaType = ActionAreaType.Strong,
     safeArea: Boolean = true,
     background: Boolean = false,
-    gradationColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
     caption: String? = null,
+    @DrawableRes captionIcon: Int? = null,
     scrollableState: ScrollableState? = null,
-    divider: Boolean = false,
-    positive: @Composable () -> Unit,
-    negative: @Composable (() -> Unit)? = null,
-    neutral: @Composable (() -> Unit)? = null,
+    divider: Boolean = true,
+    main: @Composable () -> Unit,
+    alternative: @Composable (() -> Unit)? = null,
+    sub: @Composable (() -> Unit)? = null,
     extra: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
@@ -210,16 +211,17 @@ fun WantedActionArea(
         type = type,
         safeArea = safeArea,
         background = background,
-        gradationColor = gradationColor,
+        backgroundColor = backgroundColor,
         scrollableState = scrollableState,
-        positive = positive,
-        negative = negative,
-        neutral = neutral,
+        main = main,
+        alternative = alternative,
+        sub = sub,
         caption = caption?.let {
             {
                 Text(text = caption)
             }
         },
+        captionIcon = captionIcon,
         divider = divider,
         extra = extra
     )
@@ -228,48 +230,48 @@ fun WantedActionArea(
 @Deprecated("Slot 방식의 WantedActionArea를 사용하시기 바랍니다.", level = DeprecationLevel.ERROR)
 @Composable
 fun WantedActionArea(
-    positive: String,
-    onClickPositive: () -> Unit,
-    negative: String? = null,
-    onClickNegative: (() -> Unit)? = null,
-    neutral: String? = null,
-    onClickNeutral: (() -> Unit)? = null,
+    main: String,
+    onClickMain: () -> Unit,
+    modifier: Modifier = Modifier,
+    alternative: String? = null,
+    onClickAlternative: (() -> Unit)? = null,
+    sub: String? = null,
+    onClickSub: (() -> Unit)? = null,
     actionAreaDefault: WantedActionAreaDefault = WantedActionAreaDefaults.getDefault(),
     safeArea: Boolean = true,
-    divider: Boolean = false,
+    divider: Boolean = true,
     background: Boolean = false,
-    gradationColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
     scrollableState: ScrollableState? = null,
     caption: String? = null,
-    extra: @Composable (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    extra: @Composable (() -> Unit)? = null
 ) {
     WantedActionAreaLayout(
         modifier = modifier,
         type = actionAreaDefault.type,
         safeArea = safeArea,
         background = background,
-        gradationColor = gradationColor,
+        backgroundColor = backgroundColor,
         scrollableState = scrollableState,
-        positive = {
+        main = {
             WantedButton(
                 modifier = Modifier.fillMaxWidth(),
-                text = positive,
-                buttonDefault = actionAreaDefault.positiveButtonDefault,
-                onClick = onClickPositive
+                text = main,
+                buttonDefault = actionAreaDefault.mainButtonDefault,
+                onClick = onClickMain
             )
         },
-        negative = onClickNegative?.let {
+        alternative = onClickAlternative?.let {
             {
                 WantedButton(
                     modifier = Modifier.fillMaxWidth(),
-                    text = negative.orEmpty(),
-                    buttonDefault = actionAreaDefault.negativeButtonDefault,
-                    onClick = onClickNegative
+                    text = alternative.orEmpty(),
+                    buttonDefault = actionAreaDefault.alternativeButtonDefault,
+                    onClick = onClickAlternative
                 )
             }
         },
-        neutral = onClickNeutral?.let {
+        sub = onClickSub?.let {
             {
                 WantedButton(
                     modifier = if (actionAreaDefault.type == ActionAreaType.Strong) {
@@ -277,9 +279,9 @@ fun WantedActionArea(
                     } else {
                         Modifier.fillMaxWidth()
                     },
-                    text = neutral.orEmpty(),
-                    buttonDefault = actionAreaDefault.neutralButtonDefault,
-                    onClick = onClickNeutral
+                    text = sub.orEmpty(),
+                    buttonDefault = actionAreaDefault.subButtonDefault,
+                    onClick = onClickSub
                 )
             }
         },
@@ -288,6 +290,7 @@ fun WantedActionArea(
                 Text(text = caption)
             }
         },
+        captionIcon = null,
         divider = divider,
         extra = extra
     )
@@ -299,15 +302,16 @@ private fun WantedActionAreaLayout(
     modifier: Modifier = Modifier,
     safeArea: Boolean,
     background: Boolean,
-    gradationColor: Color,
+    backgroundColor: Color,
     type: ActionAreaType,
     divider: Boolean,
     scrollableState: ScrollableState? = null,
     extra: @Composable (() -> Unit)?,
     caption: @Composable (() -> Unit)?,
-    positive: @Composable () -> Unit,
-    negative: @Composable (() -> Unit)?,
-    neutral: @Composable (() -> Unit)?
+    @DrawableRes captionIcon: Int?,
+    main: @Composable () -> Unit,
+    alternative: @Composable (() -> Unit)?,
+    sub: @Composable (() -> Unit)?
 ) {
     val isShowGradient = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = scrollableState?.canScrollForward) {
@@ -319,22 +323,29 @@ private fun WantedActionAreaLayout(
     }
 
     Column(
-        modifier = modifier,
+        modifier = modifier.actionAreaBackground(
+            background = background,
+            hasExtra = extra != null,
+            backgroundColor = backgroundColor
+        ),
     ) {
         extra?.let {
             if (divider) {
-                HorizontalDivider(color = DesignSystemTheme.colors.lineNormalNeutral)
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = DesignSystemTheme.colors.lineNeutralTertiary
+                )
             }
 
             Box(
                 modifier = if (safeArea) {
                     Modifier
-                        .padding(horizontal = 20.dp)
-                        .padding(top = 20.dp, bottom = 4.dp)
+                        .padding(horizontal = 24.dp)
+                        .padding(top = 20.dp)
                         .fillMaxWidth()
                 } else {
                     Modifier
-                        .padding(top = 20.dp, bottom = 4.dp)
+                        .padding(top = 20.dp)
                         .fillMaxWidth()
                 }
             ) {
@@ -371,7 +382,7 @@ private fun WantedActionAreaLayout(
                             end.linkTo(parent.end)
                             top.linkTo(box.top)
                         },
-                    color = gradationColor
+                    color = backgroundColor
                 )
             }
 
@@ -380,9 +391,10 @@ private fun WantedActionAreaLayout(
                     WantedActionStrongAreaLayout(
                         modifier = Modifier.then(contentModifier),
                         caption = caption,
-                        positive = positive,
-                        negative = negative,
-                        neutral = neutral
+                        captionIcon = captionIcon,
+                        main = main,
+                        alternative = alternative,
+                        sub = sub
                     )
                 }
 
@@ -390,9 +402,10 @@ private fun WantedActionAreaLayout(
                     WantedActionNeutralAreaLayout(
                         modifier = Modifier.then(contentModifier),
                         caption = caption,
-                        positive = positive,
-                        negative = negative,
-                        neutral = neutral
+                        captionIcon = captionIcon,
+                        main = main,
+                        alternative = alternative,
+                        sub = sub
                     )
                 }
 
@@ -400,14 +413,39 @@ private fun WantedActionAreaLayout(
                     WantedActionStrongAreaLayout(
                         modifier = Modifier.then(contentModifier),
                         caption = caption,
-                        positive = positive,
-                        negative = null,
-                        neutral = null
+                        captionIcon = captionIcon,
+                        main = main,
+                        alternative = null,
+                        sub = null
                     )
                 }
             }
         }
     }
+}
+
+/**
+ * Modifier.actionAreaBackground
+ *
+ * Extra 영역과 버튼 영역에 배경색을 칠합니다. 그라디언트가 꺼져 있고 Extra 도 없을 때만 배경을 걷어
+ * 페이지 배경이 그대로 비치게 둡니다(iOS 와 동일).
+ *
+ * 배경을 칠하지 않으면 다크모드에서 Extra 영역이 페이지 배경색으로 보이고,
+ * sticky 일 때 그라디언트 끝에 경계선이 생깁니다.
+ *
+ * @param background Boolean: 배경 그라데이션 표시 여부입니다.
+ * @param hasExtra Boolean: Extra 슬롯이 있는지 여부입니다.
+ * @param backgroundColor Color: 칠할 배경색입니다.
+ * @return Modifier: 배경이 적용된 Modifier 입니다.
+ */
+private fun Modifier.actionAreaBackground(
+    background: Boolean,
+    hasExtra: Boolean,
+    backgroundColor: Color
+): Modifier = if (background || hasExtra) {
+    this.background(color = backgroundColor)
+} else {
+    this
 }
 
 @Composable
@@ -448,7 +486,6 @@ fun WantedActionAreaGradation(
     ) { measurables, constraints ->
         val textPlaceable = measurables[0].measure(constraints)
 
-        // Calculate the expanded dimensions
         val expandedHeight = textPlaceable.height
 
         layout(textPlaceable.width, expandedHeight) {
@@ -464,9 +501,10 @@ fun WantedActionAreaGradation(
 private fun WantedActionStrongAreaLayout(
     modifier: Modifier = Modifier,
     caption: @Composable (() -> Unit)? = null,
-    positive: @Composable () -> Unit,
-    negative: @Composable (() -> Unit)? = null,
-    neutral: @Composable (() -> Unit)? = null
+    @DrawableRes captionIcon: Int? = null,
+    main: @Composable () -> Unit,
+    alternative: @Composable (() -> Unit)? = null,
+    sub: @Composable (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier,
@@ -479,15 +517,22 @@ private fun WantedActionStrongAreaLayout(
         caption?.let {
             CaptionLayout(
                 modifier = Modifier.padding(bottom = 8.dp),
-                caption = caption
+                caption = caption,
+                captionIcon = captionIcon
             )
         }
 
-        positive()
+        main()
 
-        negative?.invoke()
+        alternative?.invoke()
 
-        neutral?.invoke()
+        // 보조 액션(텍스트 버튼)은 위아래 8 여백을 갖는다. 여백이 없으면 대체 액션과의 간격이
+        // 좁아 보이고 영역 높이가 16 짧아진다.
+        sub?.let {
+            Box(modifier = Modifier.padding(vertical = SUB_ACTION_VERTICAL_PADDING)) {
+                sub()
+            }
+        }
     }
 }
 
@@ -495,9 +540,10 @@ private fun WantedActionStrongAreaLayout(
 private fun WantedActionNeutralAreaLayout(
     modifier: Modifier = Modifier,
     caption: @Composable (() -> Unit)? = null,
-    positive: @Composable () -> Unit,
-    negative: @Composable (() -> Unit)? = null,
-    neutral: @Composable (() -> Unit)? = null
+    @DrawableRes captionIcon: Int? = null,
+    main: @Composable () -> Unit,
+    alternative: @Composable (() -> Unit)? = null,
+    sub: @Composable (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier,
@@ -505,7 +551,10 @@ private fun WantedActionNeutralAreaLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         caption?.let {
-            CaptionLayout(caption = caption)
+            CaptionLayout(
+                caption = caption,
+                captionIcon = captionIcon
+            )
         }
 
         Row(
@@ -514,24 +563,22 @@ private fun WantedActionNeutralAreaLayout(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            neutral?.let {
-                Box(
-                    modifier = Modifier
-                        .defaultMinSize(84.dp)
-                        .wrapContentSize()
-                ) {
-                    neutral()
+            // 보조 액션은 라벨 길이에 맞춰 줄어든다. 최소 폭을 주면 좌우에 빈 공간이 생겨
+            // 대체 액션과의 간격이 12보다 넓어 보인다.
+            sub?.let {
+                Box(modifier = Modifier.wrapContentSize()) {
+                    sub()
                 }
             }
 
 
-            negative?.let {
+            alternative?.let {
                 Box(
                     modifier = Modifier
                         .weight(1f)
                         .wrapContentHeight()
                 ) {
-                    negative()
+                    alternative()
                 }
             }
 
@@ -540,7 +587,7 @@ private fun WantedActionNeutralAreaLayout(
                     .weight(1f)
                     .wrapContentHeight()
             ) {
-                positive()
+                main()
             }
         }
     }
@@ -550,9 +597,10 @@ private fun WantedActionNeutralAreaLayout(
 private fun WantedActionCompactAreaLayout(
     modifier: Modifier = Modifier,
     caption: @Composable (() -> Unit)? = null,
-    positive: @Composable () -> Unit,
-    negative: @Composable (() -> Unit)? = null,
-    neutral: @Composable (() -> Unit)? = null
+    @DrawableRes captionIcon: Int? = null,
+    main: @Composable () -> Unit,
+    alternative: @Composable (() -> Unit)? = null,
+    sub: @Composable (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier,
@@ -560,7 +608,10 @@ private fun WantedActionCompactAreaLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         caption?.let {
-            CaptionLayout(caption = caption)
+            CaptionLayout(
+                caption = caption,
+                captionIcon = captionIcon
+            )
         }
 
         Row(
@@ -569,24 +620,24 @@ private fun WantedActionCompactAreaLayout(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            neutral?.let {
+            sub?.let {
                 Box(
                     modifier = Modifier
                         .width(84.dp)
                         .wrapContentHeight()
                 ) {
-                    neutral?.invoke()
+                    sub?.invoke()
                 }
             }
 
 
-            negative?.let {
+            alternative?.let {
                 Box(
                     modifier = Modifier
                         .width(84.dp)
                         .wrapContentHeight()
                 ) {
-                    negative()
+                    alternative()
                 }
             }
 
@@ -596,7 +647,7 @@ private fun WantedActionCompactAreaLayout(
                     .width(84.dp)
                     .wrapContentHeight()
             ) {
-                positive()
+                main()
             }
         }
     }
@@ -605,21 +656,40 @@ private fun WantedActionCompactAreaLayout(
 @Composable
 private fun CaptionLayout(
     modifier: Modifier = Modifier,
-    caption: @Composable () -> Unit
+    caption: @Composable () -> Unit,
+    @DrawableRes captionIcon: Int? = null
 ) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        ProvideTextStyle(
-            value = DesignSystemTheme.typography.label2Regular.copy(
-                color = DesignSystemTheme.colors.labelAlternative
-            )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(CAPTION_ICON_SPACING),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            caption()
+            captionIcon?.let {
+                Icon(
+                    modifier = Modifier.size(CAPTION_ICON_SIZE),
+                    painter = painterResource(id = captionIcon),
+                    tint = DesignSystemTheme.colors.foregroundNeutralTertiary,
+                    contentDescription = null
+                )
+            }
+
+            ProvideTextStyle(
+                value = DesignSystemTheme.typography.label2Medium.copy(
+                    color = DesignSystemTheme.colors.foregroundNeutralTertiary
+                )
+            ) {
+                caption()
+            }
         }
     }
 }
+
+private val SUB_ACTION_VERTICAL_PADDING = 8.dp
+private val CAPTION_ICON_SIZE = 16.dp
+private val CAPTION_ICON_SPACING = 4.dp
 
 
 @DevicePreviews
@@ -635,12 +705,12 @@ private fun WantedActionAreaPreview() {
             ) {
                 WantedActionArea(
                     type = ActionAreaType.Strong,
-                    positive = "메인 액션",
-                    negative = "대체 액션",
-                    neutral = "보조 액션",
-                    onClickPositive = {},
-                    onClickNegative = {},
-                    onClickNeutral = {},
+                    main = "메인 액션",
+                    alternative = "대체 액션",
+                    sub = "보조 액션",
+                    onClickMain = {},
+                    onClickAlternative = {},
+                    onClickSub = {},
                     extra = {
                         Box(
                             modifier = Modifier
@@ -656,33 +726,43 @@ private fun WantedActionAreaPreview() {
                 WantedActionArea(
                     type = ActionAreaType.Neutral,
                     caption = "캡션",
-                    positive = "메인 액션",
-                    neutral = "보조 액션",
-                    onClickPositive = {},
-                    onClickNeutral = {}
+                    main = "메인 액션",
+                    sub = "보조 액션",
+                    onClickMain = {},
+                    onClickSub = {}
+                )
+
+                WantedActionArea(
+                    type = ActionAreaType.Strong,
+                    caption = "캡션",
+                    captionIcon = WantedActionAreaDefaults.CAPTION_ICON,
+                    main = "메인 액션",
+                    alternative = "대체 액션",
+                    onClickMain = {},
+                    onClickAlternative = {}
                 )
 
                 WantedActionArea(
                     type = ActionAreaType.Cancel,
                     caption = "캡션",
-                    positive = "메인 액션",
-                    negative = "대체 액션",
-                    neutral = "보조 액션",
-                    onClickPositive = {},
-                    onClickNegative = {},
-                    onClickNeutral = {}
+                    main = "메인 액션",
+                    alternative = "대체 액션",
+                    sub = "보조 액션",
+                    onClickMain = {},
+                    onClickAlternative = {},
+                    onClickSub = {}
                 )
 
                 WantedActionArea(
                     type = ActionAreaType.Cancel,
                     background = true,
                     caption = "캡션",
-                    positive = "메인 액션",
-                    negative = "대체 액션",
-                    neutral = "보조 액션",
-                    onClickPositive = {},
-                    onClickNegative = {},
-                    onClickNeutral = {}
+                    main = "메인 액션",
+                    alternative = "대체 액션",
+                    sub = "보조 액션",
+                    onClickMain = {},
+                    onClickAlternative = {},
+                    onClickSub = {}
                 )
             }
         }

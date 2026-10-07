@@ -35,7 +35,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedSkeletonCircle(
     modifier: Modifier = Modifier,
-    color: Color = DesignSystemTheme.colors.fillNormal
+    color: Color = DesignSystemTheme.colors.surfaceNeutralSecondary
 ) {
     WantedSkeletonRectangle(
         modifier = modifier,

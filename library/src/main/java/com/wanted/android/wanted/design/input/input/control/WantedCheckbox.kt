@@ -170,11 +170,11 @@ private fun WantedCheckBoxImpl(
                         width = 1.5.dp,
                         color = when {
                             enabled && checkState == CheckBoxState.Unchecked -> {
-                                DesignSystemTheme.colors.lineNormalNormal
+                                DesignSystemTheme.colors.lineNeutralPrimary
                             }
 
                             !enabled && checkState == CheckBoxState.Unchecked -> {
-                                DesignSystemTheme.colors.lineNormalNormal.copy(0.1f)
+                                DesignSystemTheme.colors.lineNeutralPrimary.copy(0.1f)
                             }
 
                             else -> DesignSystemTheme.colors.transparent
@@ -184,8 +184,8 @@ private fun WantedCheckBoxImpl(
                     .background(
                         color = when {
                             checkState == CheckBoxState.Unchecked -> DesignSystemTheme.colors.transparent
-                            enabled -> DesignSystemTheme.colors.primaryNormal
-                            else -> DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
+                            enabled -> DesignSystemTheme.colors.surfaceBrandPrimary
+                            else -> DesignSystemTheme.colors.surfaceBrandPrimary.copy(OPACITY_43)
                         }
                     ),
                 contentAlignment = Alignment.Center
@@ -233,8 +233,8 @@ fun WantedCheckBox(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: CheckboxColors = CheckboxDefaults.colors(
-        uncheckedColor = DesignSystemTheme.colors.lineNormalNeutral,
-        checkedColor = DesignSystemTheme.colors.primaryNormal,
+        uncheckedColor = DesignSystemTheme.colors.lineNeutralSecondary,
+        checkedColor = DesignSystemTheme.colors.surfaceBrandPrimary,
         checkmarkColor = DesignSystemTheme.colors.staticWhite
     ),
     onCheckedChange: (Boolean) -> Unit = {},
@@ -412,7 +412,6 @@ private fun CheckBox(
 
         }
 
-        // ------- enable
         Row(
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {

@@ -20,8 +20,7 @@ import com.wanted.android.wanted.design.contents.listcell.WantedListCell
 import com.wanted.android.wanted.design.input.textinput.autocompletetextfield.WantedAutoCompleteTextField
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextField
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextFieldDefaults
-import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextFieldDefaults.RightVariant
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 
@@ -29,7 +28,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 internal fun DSWantedTextFieldSampleModal(
     onDismissRequest: () -> Unit
 ) {
-    WantedModal(
+    WantedPopup(
         positive = "확인",
         onClickPositive = {
             onDismissRequest()
@@ -71,12 +70,12 @@ private fun DSWantedTextFieldSampleScreen(
             text = text1,
             anchorPadding = 8.dp,
             placeholder = "텍스트를 입력해 주세요.",
-            rightButton = "텍스트",
+            trailingButton = "텍스트",
             expanded = expanded,
             onValueChange = {
                 text1 = it
             },
-            onClickRightButton = {
+            onClickTrailingButton = {
                 expanded = true
             },
             sectionCount = 3,
@@ -92,7 +91,6 @@ private fun DSWantedTextFieldSampleScreen(
             sectionItem = { section, index ->
                 WantedListCell(
                     modifier = Modifier.fillMaxWidth(),
-                    fillWidth = true,
                     text = "dropdown"
                 ) {
                     expanded = false
@@ -101,7 +99,6 @@ private fun DSWantedTextFieldSampleScreen(
             topDirectInput = {
                 WantedListCell(
                     modifier = Modifier.fillMaxWidth(),
-                    fillWidth = true,
                     text = "dropdown"
                 ) {
                     expanded = false
@@ -141,11 +138,11 @@ private fun DSWantedTextFieldSampleScreen(
             description = description2.ifEmpty { null },
             text = text2,
             placeholder = "텍스트를 입력해 주세요.",
-            rightButton = "확인",
+            trailingButton = "확인",
             onValueChange = { value ->
                 text2 = value
             },
-            onClickRightButton = {
+            onClickTrailingButton = {
                 description2 = text2
             }
         )
@@ -164,13 +161,13 @@ private fun DSWantedTextFieldSampleScreen(
             title = "State Error + Description 변경",
             text = text4,
             placeholder = "텍스트를 입력해 주세요.",
-            rightButton = "텍스트",
+            trailingButton = "텍스트",
             description = description4.ifEmpty { null },
             status = WantedTextFieldDefaults.Status.Negative,
             onValueChange = { value ->
                 text4 = value
             },
-            onClickRightButton = {
+            onClickTrailingButton = {
                 description4 = text4
             }
         )
@@ -180,30 +177,28 @@ private fun DSWantedTextFieldSampleScreen(
             text = "입력한 텍스트",
             enabled = false,
             placeholder = "텍스트를 입력해 주세요.",
-            rightButton = "텍스트",
+            trailingButton = "텍스트",
             status = WantedTextFieldDefaults.Status.Negative
         )
 
         WantedTextField(
             text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
             placeholder = "텍스트를 입력해 주세요.",
-            rightButton = "텍스트",
-            rightButtonVariant = RightVariant.Assistive
+            trailingButton = "텍스트"
         )
 
         WantedTextField(
             text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
             placeholder = "텍스트를 입력해 주세요.",
-            rightButton = "텍스트",
-            rightButtonVariant = RightVariant.Assistive,
-            rightButtonEnabled = false
+            trailingButton = "텍스트",
+            trailingButtonEnabled = false
         )
 
         WantedTextField(
             text = "텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요. 텍스트를 입력해 주세요.",
             placeholder = "텍스트를 입력해 주세요.",
-            rightButton = "텍스트",
-            rightButtonEnabled = false
+            trailingButton = "텍스트",
+            trailingButtonEnabled = false
         )
     }
 }

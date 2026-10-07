@@ -59,7 +59,7 @@ class WantedContentBadge @JvmOverloads constructor(
     lateinit var size: ContentBadgeSize
     var text by mutableStateOf("")
     var type by mutableStateOf(ContentBadgeType.Solid)
-    var textColor by mutableStateOf(R.color.label_alternative)
+    var textColor by mutableStateOf(R.color.foreground_neutral_tertiary)
     var backgroundColor by mutableStateOf<Int?>(null)
     var lineColor by mutableStateOf<Int?>(null)
     var leftDrawable by mutableStateOf<Int?>(null)
@@ -80,7 +80,7 @@ class WantedContentBadge @JvmOverloads constructor(
                 )]
                 textColor = getResourceId(
                     R.styleable.WantedContentBadge_textColor,
-                    R.color.label_alternative
+                    R.color.foreground_neutral_tertiary
                 )
                 backgroundColor = getResourceId(R.styleable.WantedContentBadge_backgroundColor, 0)
                 backgroundAlpha = getFloat(R.styleable.WantedContentBadge_backgroundAlpha, 1f)
@@ -133,7 +133,7 @@ class WantedContentBadge @JvmOverloads constructor(
  * @param text String: 배지에 표시할 텍스트입니다.
  * @param modifier Modifier: 배지 외형과 배치를 설정합니다.
  * @param type ContentBadgeType: Solid 또는 Outlined 형식의 배지 스타일입니다.
- * @param size ContentBadgeSize: 배지 크기를 지정합니다 (XSmall, Small, Large).
+ * @param size ContentBadgeSize: 배지 크기를 지정합니다 (XSmall, Small, Medium).
  * @param color ContentBadgeColor: 컬러 테마를 지정합니다 (Neutral, Accent).
  * @param accentDefault WantedContentBadgeDefault: Accent 또는 Neutral 컬러 설정의 기본값을 지정합니다.
  * @param leadingDrawable Int?: 텍스트 왼쪽에 표시할 아이콘 리소스 ID입니다.
@@ -168,7 +168,7 @@ fun WantedContentBadge(
             .clickOnce(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = if (color == ContentBadgeColor.Neutral) {
-                    wantedRippleEffect(DesignSystemTheme.colors.labelNormal.copy(OPACITY_12))
+                    wantedRippleEffect(DesignSystemTheme.colors.foregroundNeutralPrimary.copy(OPACITY_12))
                 } else {
                     wantedRippleEffect(accentDefault.backgroundColor.copy(OPACITY_12))
                 },
@@ -243,7 +243,8 @@ fun WantedContentBadgeOld(
             .padding(horizontal = getPadding(size).first, vertical = getPadding(size).second),
         horizontalArrangement = Arrangement.spacedBy(
             space = when (size) {
-                ContentBadgeSize.Large -> 4.dp
+                ContentBadgeSize.Medium -> 4.dp
+                ContentBadgeSize.Large -> 4.dp // deprecated, Medium 과 동일
                 ContentBadgeSize.Small -> 3.dp
                 ContentBadgeSize.XSmall -> 2.dp
             }
@@ -331,7 +332,8 @@ private fun WantedContentBadgeLayout(
 
 @Composable
 private fun getRadius(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.Large -> 10.dp
+    ContentBadgeSize.Medium -> 10.dp
+    ContentBadgeSize.Large -> 10.dp // deprecated, Medium 과 동일
     ContentBadgeSize.Small -> 8.dp
     ContentBadgeSize.XSmall -> 8.dp
 }
@@ -340,26 +342,30 @@ private fun getRadius(size: ContentBadgeSize) = when (size) {
 private fun getHorizontalPadding(size: ContentBadgeSize) = when (size) {
     ContentBadgeSize.XSmall -> 6.dp
     ContentBadgeSize.Small -> 6.dp
-    ContentBadgeSize.Large -> 8.dp
+    ContentBadgeSize.Medium -> 8.dp
+    ContentBadgeSize.Large -> 8.dp // deprecated, Medium 과 동일
 }
 
 @Composable
 private fun getVerticalPadding(size: ContentBadgeSize) = when (size) {
     ContentBadgeSize.XSmall -> 3.dp
     ContentBadgeSize.Small -> 4.dp
-    ContentBadgeSize.Large -> 5.dp
+    ContentBadgeSize.Medium -> 5.dp
+    ContentBadgeSize.Large -> 5.dp // deprecated, Medium 과 동일
 }
 
 @Composable
 private fun getHorizontalAlimentSpace(size: ContentBadgeSize) = when (size) {
     ContentBadgeSize.XSmall -> 1.dp
     ContentBadgeSize.Small -> 4.dp
-    ContentBadgeSize.Large -> 4.dp
+    ContentBadgeSize.Medium -> 4.dp
+    ContentBadgeSize.Large -> 4.dp // deprecated, Medium 과 동일
 }
 
 @Composable
 private fun getIconSize(size: ContentBadgeSize) = when (size) {
-    ContentBadgeSize.Large -> 14.dp
+    ContentBadgeSize.Medium -> 14.dp
+    ContentBadgeSize.Large -> 14.dp // deprecated, Medium 과 동일
     ContentBadgeSize.Small -> 13.dp
     ContentBadgeSize.XSmall -> 12.dp
 }
@@ -401,14 +407,16 @@ private fun getPadding(size: ContentBadgeSize): Pair<Dp, Dp> =
     when (size) {
         ContentBadgeSize.XSmall -> Pair(4.dp, 3.dp)
         ContentBadgeSize.Small -> Pair(8.dp, 4.dp)
-        ContentBadgeSize.Large -> Pair(12.dp, 6.dp)
+        ContentBadgeSize.Medium -> Pair(12.dp, 6.dp)
+        ContentBadgeSize.Large -> Pair(12.dp, 6.dp) // deprecated, Medium 과 동일
     }
 
 @Composable
 private fun getContentBadgeTypography(
     size: ContentBadgeSize,
 ): TextStyle = when (size) {
-    ContentBadgeSize.Large -> DesignSystemTheme.typography.label2Medium
+    ContentBadgeSize.Medium -> DesignSystemTheme.typography.label2Medium
+    ContentBadgeSize.Large -> DesignSystemTheme.typography.label2Medium // deprecated, Medium 과 동일
     ContentBadgeSize.Small -> DesignSystemTheme.typography.caption1Medium
     ContentBadgeSize.XSmall -> DesignSystemTheme.typography.caption2Medium
 }
@@ -418,7 +426,11 @@ private fun Modifier.getContentBadgeDrawableSize(
     size: ContentBadgeSize
 ): Modifier = this.then(
     when (size) {
-        ContentBadgeSize.Large -> Modifier
+        ContentBadgeSize.Medium -> Modifier
+            .height(16.dp)
+            .wrapContentWidth()
+
+        ContentBadgeSize.Large -> Modifier // deprecated, Medium 과 동일
             .height(16.dp)
             .wrapContentWidth()
 
@@ -433,7 +445,16 @@ private fun Modifier.getContentBadgeDrawableSize(
 )
 
 enum class ContentBadgeSize {
-    XSmall, Small, Large
+    XSmall,
+    Small,
+    Medium,
+
+    @Deprecated(
+        message = "Large 는 Medium 으로 대체되었습니다. Medium 을 사용하세요.",
+        replaceWith = ReplaceWith("ContentBadgeSize.Medium"),
+        level = DeprecationLevel.WARNING,
+    )
+    Large,
 }
 
 enum class ContentBadgeType {
@@ -450,13 +471,13 @@ private fun PreviewContentBadges() {
     DesignSystemTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = DesignSystemTheme.colors.backgroundNormalNormal
+            color = DesignSystemTheme.colors.backgroundNeutralPrimary
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .background(DesignSystemTheme.colors.backgroundNormalNormal),
+                    .background(DesignSystemTheme.colors.backgroundNeutralPrimary),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -602,7 +623,7 @@ private fun PreviewContentBadges() {
                     )
                 }
 
-                Text(text = "LARGE")
+                Text(text = "MEDIUM")
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -610,28 +631,28 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.Large,
+                        size = ContentBadgeSize.Medium,
                         onClick = {}
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.Large,
+                        size = ContentBadgeSize.Medium,
                         leadingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.Large,
+                        size = ContentBadgeSize.Medium,
                         trailingDrawable = R.drawable.icon_normal_bookmark
                     )
 
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.Large,
+                        size = ContentBadgeSize.Medium,
                         leadingDrawable = R.drawable.icon_normal_bookmark,
                         trailingDrawable = R.drawable.icon_normal_bookmark
                     )
@@ -644,7 +665,7 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.Large,
+                        size = ContentBadgeSize.Medium,
                         color = ContentBadgeColor.Accent,
                         leadingDrawable = R.drawable.icon_normal_bookmark,
                         trailingDrawable = R.drawable.icon_normal_bookmark,
@@ -653,7 +674,7 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.Large,
+                        size = ContentBadgeSize.Medium,
                         type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.icon_normal_bookmark,
                         trailingDrawable = R.drawable.icon_normal_bookmark,
@@ -663,7 +684,7 @@ private fun PreviewContentBadges() {
                     WantedContentBadge(
                         modifier = Modifier,
                         text = "Badge",
-                        size = ContentBadgeSize.Large,
+                        size = ContentBadgeSize.Medium,
                         color = ContentBadgeColor.Accent,
                         type = ContentBadgeType.Outlined,
                         leadingDrawable = R.drawable.icon_normal_bookmark,

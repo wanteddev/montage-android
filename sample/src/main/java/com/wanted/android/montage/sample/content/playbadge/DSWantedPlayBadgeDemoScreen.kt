@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.content.playbadge.DSWantedPlayBadgeDemoScreenContract.DSWantedPlayBadgeDemoEvent
 import com.wanted.android.montage.sample.content.playbadge.DSWantedPlayBadgeDemoScreenContract.DSWantedPlayBadgeDemoSideEffect
@@ -36,9 +36,8 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.contents.playtime.playbadge.WantedPlayBadge
 import com.wanted.android.wanted.design.contents.playtime.playbadge.WantedPlayBadgeDefaults.Size
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -81,7 +80,7 @@ fun DSWantedPlayBadgeDemoScreen(
 	}
 
 	if (viewState.isShowCode) {
-		WantedModal(
+		WantedPopup(
 			positive = "코드 복사",
 			onClickPositive = {
 				viewModel.setEvent(DSWantedPlayBadgeDemoEvent.CopyCode)
@@ -114,7 +113,7 @@ private fun DSWantedPlayBadgeDemoScreenImpl(
 			WantedActionArea(
 				modifier = Modifier.navigationBarsPadding(),
 				background = true,
-				positive = {
+				main = {
 					WantedButton(
 						modifier = Modifier.fillMaxWidth(),
 						text = "코드 보기",
@@ -174,13 +173,23 @@ private fun DSWantedPlayBadgeDemoScreenLayout(
 		Text(
 			text = "Preview",
 			style = WantedTextStyle(
-				colorRes = R.color.label_strong,
+				colorRes = R.color.foreground_neutral_strong,
 				style = DesignSystemTheme.typography.heading2Bold
 			)
 		)
 
-		DSWantedPreviewContainer {
-		    preview()
+		Box(
+			modifier = Modifier
+				.fillMaxWidth()
+				.border(
+					width = 1.dp,
+					color = colorResource(com.wanted.android.montage.sample.R.color.line_neutral_primary),
+					shape = RoundedCornerShape(8.dp)
+				)
+				.padding(20.dp),
+			contentAlignment = Alignment.Center
+		) {
+			preview()
 		}
 
 		Spacer(Modifier.size(10.dp))
@@ -196,7 +205,7 @@ private fun DSWantedPlayBadgeDemoScreenLayout(
 				modifier = Modifier.align(Alignment.Start),
 				text = "Option",
 				style = WantedTextStyle(
-					colorRes = R.color.label_strong,
+					colorRes = R.color.foreground_neutral_strong,
 					style = DesignSystemTheme.typography.heading2Bold
 				)
 			)

@@ -65,8 +65,8 @@ fun WantedProgressTrackerHorizontal(
                         else -> (1f / (stepCount - 1)) * (currentStep - 1)
                     }
                 },
-                trackColor = DesignSystemTheme.colors.lineSolidNormal,
-                color = DesignSystemTheme.colors.primaryNormal
+                trackColor = DesignSystemTheme.colors.lineNeutralPrimaryOpaque,
+                color = DesignSystemTheme.colors.foregroundBrandPrimary
             )
         },
         step = { index ->

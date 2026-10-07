@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +35,7 @@ import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonCon
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.filterButtonIconSize
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.filterButtonPadding
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.filterButtonTextPadding
+import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.getFilterButtonActiveLabelSpacing
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.getFilterButtonHorizontalArrangement
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.getFilterButtonRadius
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
@@ -66,7 +66,7 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * @param variant FilterButtonVariant: FilterButton의 스타일입니다 (기본값: Solid).
  * @param isActive Boolean: FilterButton의 활성화 상태입니다.
  * @param isEnable Boolean: FilterButton의 사용 가능 상태입니다.
- * @param isExpend Boolean: 확장 가능 상태입니다 (아이콘 변경 목적).
+ * @param isExpanded Boolean: 확장 가능 상태입니다 (아이콘 변경 목적).
  * @param interactionSource MutableInteractionSource: 사용자 인터랙션 처리를 위한 객체입니다.
  * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
  */
@@ -79,7 +79,7 @@ fun WantedFilterButton(
     variant: FilterButtonVariant = FilterButtonVariant.Solid,
     isActive: Boolean = false,
     isEnable: Boolean = true,
-    isExpend: Boolean = false,
+    isExpanded: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: (() -> Unit)? = null,
 ) {
@@ -97,7 +97,7 @@ fun WantedFilterButton(
             filterButtonDefault = WantedFilterButtonDefaults
                 .getDefault()
                 .copy(iconColor = colorResource(id = WantedFilterButtonDefaults.getFilterIconColor())),
-            isExpanded = isExpend,
+            isExpanded = isExpanded,
             interactionSource = interactionSource,
             onClick = onClick
         )
@@ -150,7 +150,9 @@ fun WantedFilterButton(
         content = {
             Row(
                 modifier = Modifier.wrapContentSize(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(
+                    getFilterButtonActiveLabelSpacing(size = filterButtonDefault.size)
+                )
             ) {
                 Text(
                     modifier = Modifier.weight(1f, fill = false),
@@ -160,12 +162,13 @@ fun WantedFilterButton(
                 )
 
                 if (activeLabel.isNotEmpty()) {
+                    // activeLabel 은 본문 라벨과 같은 텍스트 스타일을 쓴다.
+                    // (ProvideTextStyle 로 내려오는 filterButtonDefault.textStyle 을 그대로 상속)
                     Text(
                         modifier = Modifier.wrapContentSize(),
                         text = activeLabel,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = filterButtonDefault.textStyle.merge(fontWeight = FontWeight.SemiBold)
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -216,16 +219,24 @@ private fun WantedFilterButton(
             )
             .clickOnce(
                 interactionSource = interactionSource,
-                indication = if (filterButtonDefault.variant == FilterButtonVariant.Solid) {
-                    wantedRippleEffect(
-                        color = DesignSystemTheme.colors.labelNormal.copy(
-                            OPACITY_12
+                indication = when {
+                    filterButtonDefault.variant == FilterButtonVariant.Solid && filterButtonDefault.isActive -> {
+                        wantedRippleEffect(
+                            color = DesignSystemTheme.colors.surfaceBrandPrimary.copy(OPACITY_12)
                         )
-                    )
-                } else {
-                    wantedRippleEffect(
-                        color = filterButtonDefault.backgroundColor.copy(OPACITY_12)
-                    )
+                    }
+
+                    filterButtonDefault.variant == FilterButtonVariant.Solid -> {
+                        wantedRippleEffect(
+                            color = DesignSystemTheme.colors.foregroundNeutralPrimary.copy(OPACITY_12)
+                        )
+                    }
+
+                    else -> {
+                        wantedRippleEffect(
+                            color = filterButtonDefault.backgroundColor.copy(OPACITY_12)
+                        )
+                    }
                 },
                 enabled = filterButtonDefault.isEnabled
             ) {
@@ -255,7 +266,7 @@ private fun WantedFilterButtonLayout(
         ProvideTextStyle(value = filterButtonDefault.textStyle) {
             Box(
                 modifier = Modifier
-                    .filterButtonTextPadding(filterButtonDefault.size)
+                    .filterButtonTextPadding()
                     .wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
@@ -282,7 +293,7 @@ private fun FilterButtonPreView() {
     DesignSystemTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = DesignSystemTheme.colors.backgroundNormalNormal
+            color = DesignSystemTheme.colors.backgroundNeutralPrimary
         ) {
 
             Column(
@@ -326,27 +337,27 @@ private fun FilterButtonPreView() {
                     WantedFilterButton(
                         text = "텍스트",
                         variant = FilterButtonVariant.Solid,
-                        isExpend = true,
+                        isExpanded = true,
                         size = FilterButtonSize.Medium
                     )
                     WantedFilterButton(
                         text = "텍스트",
                         variant = FilterButtonVariant.Solid,
                         isEnable = false,
-                        isExpend = true,
+                        isExpanded = true,
                         size = FilterButtonSize.Medium
                     )
                     WantedFilterButton(
                         text = "텍스트",
                         variant = FilterButtonVariant.Outlined,
-                        isExpend = true,
+                        isExpanded = true,
                         size = FilterButtonSize.Medium
                     )
                     WantedFilterButton(
                         text = "텍스트",
                         variant = FilterButtonVariant.Outlined,
                         isEnable = false,
-                        isExpend = true,
+                        isExpanded = true,
                         size = FilterButtonSize.Medium
                     )
                 }
@@ -358,7 +369,7 @@ private fun FilterButtonPreView() {
                     WantedFilterButton(
                         text = "텍스트",
                         variant = FilterButtonVariant.Solid,
-                        isExpend = true,
+                        isExpanded = true,
                         isActive = true,
                         size = FilterButtonSize.Medium
                     )
@@ -366,14 +377,14 @@ private fun FilterButtonPreView() {
                         text = "텍스트",
                         variant = FilterButtonVariant.Solid,
                         isEnable = false,
-                        isExpend = true,
+                        isExpanded = true,
                         isActive = true,
                         size = FilterButtonSize.Medium
                     )
                     WantedFilterButton(
                         text = "텍스트",
                         variant = FilterButtonVariant.Outlined,
-                        isExpend = true,
+                        isExpanded = true,
                         isActive = true,
                         size = FilterButtonSize.Medium
                     )
@@ -381,7 +392,7 @@ private fun FilterButtonPreView() {
                         text = "텍스트",
                         variant = FilterButtonVariant.Outlined,
                         isEnable = false,
-                        isExpend = true,
+                        isExpanded = true,
                         isActive = true,
                         size = FilterButtonSize.Medium
                     )
@@ -395,7 +406,7 @@ private fun FilterButtonPreView() {
                         text = "텍스트",
                         activeLabel = "1",
                         variant = FilterButtonVariant.Solid,
-                        isExpend = true,
+                        isExpanded = true,
                         size = FilterButtonSize.Medium
                     )
                     WantedFilterButton(
@@ -410,7 +421,7 @@ private fun FilterButtonPreView() {
                         text = "텍스트",
                         activeLabel = "일",
                         variant = FilterButtonVariant.Solid,
-                        isExpend = true,
+                        isExpanded = true,
                         isActive = true,
                         size = FilterButtonSize.Small
                     )
@@ -419,7 +430,7 @@ private fun FilterButtonPreView() {
                         activeLabel = "이",
                         variant = FilterButtonVariant.Outlined,
                         isEnable = false,
-                        isExpend = true,
+                        isExpanded = true,
                         isActive = true,
                         size = FilterButtonSize.Small
                     )

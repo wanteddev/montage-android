@@ -5,13 +5,11 @@ import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,21 +18,23 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.navigations.topbar.dialogtopbar.DSWantedDialogTopAppBarDemoScreenContract.DSWantedDialogTopAppBarDemoEvent
 import com.wanted.android.montage.sample.navigations.topbar.dialogtopbar.DSWantedDialogTopAppBarDemoScreenContract.DSWantedDialogTopAppBarDemoSideEffect
 import com.wanted.android.montage.sample.navigations.topbar.dialogtopbar.DSWantedDialogTopAppBarDemoScreenContract.DSWantedDialogTopAppBarDemoViewEvent
@@ -45,12 +45,13 @@ import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
 import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogCloseTopAppBar
+import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogSearchTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogTopAppBarContract.Variant
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
+import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedModalBottomSheet
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -135,7 +136,7 @@ fun DSWantedDialogTopAppBarDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedDialogTopAppBarDemoEvent.CopyCode)
@@ -158,7 +159,7 @@ fun DSWantedDialogTopAppBarDemoScreen(
             WantedModalBottomSheet(
                 isShow = viewState.isShowModal,
                 type = ModalType.Fixed(height = 600.dp, isSystemBottomSheet = false),
-                modalSize = if (viewState.variant == Variant.Floating) ModalSize.Custom else ModalSize.Medium,
+                sheetDefault = WantedBottomSheetDefaults.getWithoutContentPadding(),
                 onDismissRequest = {
                     viewModel.setEvent(DSWantedDialogTopAppBarDemoEvent.ShowModal(false))
                 },
@@ -169,7 +170,7 @@ fun DSWantedDialogTopAppBarDemoScreen(
                     )
                 },
                 topBar = {
-                    if (viewState.variant != Variant.Floating) {
+                    if (viewState.variant !is Variant.Floating) {
                         DemoDialogTopAppBar(
                             viewState = viewState,
                             scrollState = scrollState
@@ -178,7 +179,7 @@ fun DSWantedDialogTopAppBarDemoScreen(
                 }
             )
         } else {
-            WantedModal(
+            WantedPopup(
                 onDismissRequest = {
                     viewModel.setEvent(DSWantedDialogTopAppBarDemoEvent.ShowModal(false))
                 },
@@ -189,7 +190,7 @@ fun DSWantedDialogTopAppBarDemoScreen(
                     )
                 },
                 topBar = {
-                    if (viewState.variant != Variant.Floating) {
+                    if (viewState.variant !is Variant.Floating) {
                         DemoDialogTopAppBar(
                             viewState = viewState,
                             scrollState = scrollState
@@ -225,7 +226,7 @@ private fun DSWantedDialogTopAppBarDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -235,7 +236,7 @@ private fun DSWantedDialogTopAppBarDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -245,7 +246,7 @@ private fun DSWantedDialogTopAppBarDemoScreenContent(
                         }
                     )
                 },
-                negative = {
+                alternative = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -266,14 +267,15 @@ private fun DSWantedDialogTopAppBarDemoScreenContent(
                 .padding(vertical = 20.dp),
             variant = {
                 WantedSelect(
-                    value = "variant : ${viewState.variant.name}",
-                    selectedValue = viewState.variant.name,
-                    selectValueList = Variant.entries.map { it.name },
-                    onSelect = { variantName ->
+                    value = "variant : ${variantName(viewState.variant)}",
+                    selectedValue = variantName(viewState.variant),
+                    selectValueList = Variant.presets.map { variantName(it) },
+                    onSelect = { selected ->
+                        val variant = Variant.presets
+                            .firstOrNull { variantName(it) == selected }
+                            ?: Variant.Normal
                         onViewEvent(
-                            DSWantedDialogTopAppBarDemoViewEvent.OnSelectedVariant(
-                                Variant.valueOf(variantName)
-                            )
+                            DSWantedDialogTopAppBarDemoViewEvent.OnSelectedVariant(variant)
                         )
                     }
                 )
@@ -403,13 +405,11 @@ private fun DSWantedDialogTopAppBarDemoScreenLayout(
                 modifier = Modifier.padding(bottom = 16.dp),
                 text = "Preview",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
-            DSWantedPreviewContainer {
-                preview()
-            }
+            preview()
         }
 
         Column(
@@ -424,7 +424,7 @@ private fun DSWantedDialogTopAppBarDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
@@ -452,14 +452,16 @@ private fun DSWantedDialogTopAppBarPreview(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DesignSystemTheme.colors.backgroundNormalAlternative)
+            .background(DesignSystemTheme.colors.backgroundNeutralSecondary)
             .padding(20.dp)
     ) {
-        if (viewState.showCloseButton) {
+        if (viewState.variant is Variant.Search) {
+            DemoDialogSearchTopAppBar(viewState = viewState)
+        } else if (viewState.showCloseButton) {
             WantedDialogCloseTopAppBar(
                 variant = viewState.variant,
                 backgroundColor = if (viewState.backgroundColorEnabled) {
-                    DesignSystemTheme.colors.backgroundElevatedNormal
+                    DesignSystemTheme.colors.surfaceElevatedPrimary
                 } else {
                     Color.Transparent
                 },
@@ -480,7 +482,7 @@ private fun DSWantedDialogTopAppBarPreview(
             WantedDialogTopAppBar(
                 variant = viewState.variant,
                 backgroundColor = if (viewState.backgroundColorEnabled) {
-                    DesignSystemTheme.colors.backgroundElevatedNormal
+                    DesignSystemTheme.colors.surfaceElevatedPrimary
                 } else {
                     Color.Transparent
                 },
@@ -513,11 +515,13 @@ private fun DemoDialogTopAppBar(
     viewState: DSWantedDialogTopAppBarDemoViewState,
     scrollState: ScrollableState? = null
 ) {
-    if (viewState.showCloseButton) {
+    if (viewState.variant is Variant.Search) {
+        DemoDialogSearchTopAppBar(viewState = viewState, scrollState = scrollState)
+    } else if (viewState.showCloseButton) {
         WantedDialogCloseTopAppBar(
             variant = viewState.variant,
             backgroundColor = if (viewState.backgroundColorEnabled) {
-                DesignSystemTheme.colors.backgroundElevatedNormal
+                DesignSystemTheme.colors.surfaceElevatedPrimary
             } else {
                 Color.Transparent
             },
@@ -538,7 +542,7 @@ private fun DemoDialogTopAppBar(
         WantedDialogTopAppBar(
             variant = viewState.variant,
             backgroundColor = if (viewState.backgroundColorEnabled) {
-                DesignSystemTheme.colors.backgroundElevatedNormal
+                DesignSystemTheme.colors.surfaceElevatedPrimary
             } else {
                 Color.Transparent
             },
@@ -566,17 +570,42 @@ private fun DemoDialogTopAppBar(
 
 }
 
+// Variant.Search 는 제목 대신 검색 필드를, 우측에는 actions 대신 취소 텍스트 버튼을 둔다.
+@Composable
+private fun DemoDialogSearchTopAppBar(
+    viewState: DSWantedDialogTopAppBarDemoViewState,
+    scrollState: ScrollableState? = null
+) {
+    var keyword by remember { mutableStateOf("") }
+
+    WantedDialogSearchTopAppBar(
+        text = keyword,
+        backgroundColor = if (viewState.backgroundColorEnabled) {
+            DesignSystemTheme.colors.surfaceElevatedPrimary
+        } else {
+            Color.Transparent
+        },
+        background = viewState.background,
+        scrollableState = if (viewState.scrollable) scrollState else null,
+        placeholder = "검색어를 입력해 주세요.",
+        cancelText = "취소",
+        navigationIcon = if (viewState.navigationIcon) {
+            {
+                WantedTopAppBarIconButton(
+                    painter = painterResource(R.drawable.icon_normal_arrow_left),
+                    onClick = { }
+                )
+            }
+        } else null,
+        onValueChange = { keyword = it }
+    )
+}
+
 @Composable
 private fun DSWantedDialogTopAppBarModalContent(
     viewState: DSWantedDialogTopAppBarDemoViewState,
     scrollState: LazyListState
 ) {
-
-    val density = LocalDensity.current
-    val systemBarsTop = with(density) {
-        WindowInsets.systemBars.getTop(this).toDp()
-    }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -606,7 +635,7 @@ private fun DSWantedDialogTopAppBarModalContent(
             }
         }
 
-        if (viewState.variant == Variant.Floating) {
+        if (viewState.variant is Variant.Floating) {
             DemoDialogTopAppBar(
                 viewState = viewState,
                 scrollState = scrollState
@@ -625,3 +654,6 @@ private fun DSWantedDialogTopAppBarDemoScreenPreview() {
         )
     }
 }
+
+// sealed class 라 enum 의 name 이 없다. 선택 UI 표기는 클래스 이름으로 맞춘다.
+private fun variantName(variant: Variant): String = variant::class.simpleName.orEmpty()

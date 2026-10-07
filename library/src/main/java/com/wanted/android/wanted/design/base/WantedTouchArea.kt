@@ -163,8 +163,8 @@ fun WantedTouchArea(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
-                    width = Dimension.fillToConstraints  // Match width of text
-                    height = Dimension.fillToConstraints // Match height of text
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
                 }
                 .onGloballyPositioned { coordinates ->
                     if (!calculateContentSize) {
@@ -187,7 +187,6 @@ fun WantedTouchArea(
         ) { measurables, constraints ->
             val textPlaceable = measurables[0].measure(constraints)
 
-            // Calculate the expanded dimensions
             val expandedWidth = textPlaceable.width + (2 * horizontalPadding.toPx()).toInt()
             val expandedHeight = textPlaceable.height + (2 * verticalPadding.toPx()).toInt()
 

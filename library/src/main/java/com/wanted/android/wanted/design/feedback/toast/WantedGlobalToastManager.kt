@@ -62,7 +62,7 @@ object WantedGlobalToastManager {
      * Application 생명주기에 콜백을 등록하여 Activity 상태를 추적합니다.
      * 반드시 Application 클래스에서 한 번만 호출해야 합니다.
      *
-     * @param application Application Application 인스턴스입니다.
+     * @param application Application: Application 인스턴스입니다.
      */
     fun initialize(application: Application) {
         unregisterLifecycle(application)
@@ -161,14 +161,14 @@ object WantedGlobalToastManager {
      * @param text String: 토스트에 표시할 메시지입니다.
      * @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
      * @param padding PaddingValues: 토스트에 적용할 패딩입니다. 기본값은 하단 20dp입니다.
-     * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+     * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Normal입니다.
      * @param icon (@Composable () -> Unit)?: 사용자 정의 아이콘입니다.
      */
     fun showToast(
         text: String,
         duration: ToastDuration = ToastDuration.Short,
         padding: PaddingValues = PaddingValues(bottom = 20.dp),
-        variant: WantedToastVariant = WantedToastVariant.Message,
+        variant: WantedToastVariant = WantedToastVariant.Normal,
         icon: @Composable (() -> Unit)? = null
     ) {
         showToast(duration) {
@@ -191,7 +191,7 @@ object WantedGlobalToastManager {
                 setContent(content)
             }
         } else {
-            toastView?.setContent(content) // 내용 변경
+            toastView?.setContent(content)
         }
     }
 
@@ -200,7 +200,7 @@ object WantedGlobalToastManager {
 
         try {
             toastView?.let { view ->
-                removeToastFromParent() // 기존 부모에서 제거
+                removeToastFromParent()
                 if (view.parent != null) return // 중복 추가 방지
                 addViewToRoot(rootView, view)
             }
@@ -241,13 +241,13 @@ object WantedGlobalToastManager {
 
     private fun removeToastFromParent() {
         toastView?.let { view ->
-            (view.parent as? ViewGroup)?.removeView(view) // 부모에서 안전하게 제거
+            (view.parent as? ViewGroup)?.removeView(view)
         }
     }
 
     private fun removeToast() {
         removeToastFromParent()
-        toastView = null // 완전히 제거가 필요할 경우 null로 설정
+        toastView = null
     }
 
     private fun finishToast() {

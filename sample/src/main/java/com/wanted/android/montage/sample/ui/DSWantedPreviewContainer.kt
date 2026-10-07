@@ -8,9 +8,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 
 @Composable
 fun DSWantedPreviewContainer(
@@ -20,9 +21,10 @@ fun DSWantedPreviewContainer(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
             .border(
                 width = 1.dp,
-                color = colorResource(R.color.line_normal_normal),
+                color = colorResource(R.color.line_neutral_primary),
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(20.dp),

@@ -21,7 +21,6 @@ object DSWantedAutoCompleteTextFieldDemoScreenContract {
     }
 
     data class DSWantedAutoCompleteTextFieldDemoViewState(
-        val isLoading: Boolean = true,
         val text: String = "",
         val isShowCode: Boolean = false,
         val code: String = "",

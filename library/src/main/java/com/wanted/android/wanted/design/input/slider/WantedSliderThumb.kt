@@ -44,8 +44,8 @@ internal fun WantedSliderThumb(
     thumbSize: Dp,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    contentColor: Color = DesignSystemTheme.colors.primaryNormal,
-    borderColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    contentColor: Color = DesignSystemTheme.colors.surfaceBrandPrimary,
+    borderColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     onDragStart: (Offset) -> Unit = {},
     onDragEnd: () -> Unit = {},
     onDragCancel: () -> Unit = {},
@@ -56,7 +56,7 @@ internal fun WantedSliderThumb(
             .indication(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(
-                    color = DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_12)
+                    color = DesignSystemTheme.colors.surfaceBrandPrimary.copy(alpha = OPACITY_12)
                 )
             )
             .then(modifier),
@@ -116,7 +116,6 @@ private fun WantedSliderThumbArea(
                     )
                 }
                 .onGloballyPositioned { coordinates ->
-                    // Set column height using the LayoutCoordinates
                     contentWidth.value = with(localDensity) { coordinates.size.width.toDp() }
                 },
             contentAlignment = Alignment.Center
@@ -181,7 +180,7 @@ private fun WantedSliderThumbArea(
                     indication = ripple(
                         bounded = true,
                         radius = contentWidth.value,
-                        color = DesignSystemTheme.colors.primaryNormal.copy(0.18f)
+                        color = DesignSystemTheme.colors.surfaceBrandPrimary.copy(0.18f)
                     ),
                 ),
             content = {
@@ -190,7 +189,6 @@ private fun WantedSliderThumbArea(
         ) { measurables, constraints ->
             val textPlaceable = measurables[0].measure(constraints)
 
-            // Calculate the expanded dimensions
             val expandedWidth = textPlaceable.width + (2 * 6.dp.toPx()).toInt()
             val expandedHeight = textPlaceable.height + (2 * 6.dp.toPx()).toInt()
 

@@ -53,9 +53,8 @@ import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeColor
 import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeSize
 import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeType
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.OPACITY_8
@@ -136,7 +135,7 @@ fun DSWantedCardDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedCardDemoEvent.CopyCode)
@@ -157,7 +156,7 @@ fun DSWantedCardDemoScreen(
     }
 
     if (viewState.isShowAll) {
-        WantedModal(
+        WantedPopup(
             positive = "확인",
             onClickPositive = {
                 viewModel.setEvent(DSWantedCardDemoEvent.ShowAll(false))
@@ -195,7 +194,7 @@ private fun DSWantedCardDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -204,7 +203,7 @@ private fun DSWantedCardDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "모든 옵션 보기",
@@ -233,7 +232,7 @@ private fun DSWantedCardDemoScreenContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(4 / 3f)
-                                .background(colorResource(R.color.fill_normal).copy(OPACITY_8))
+                                .background(colorResource(R.color.surface_neutral_secondary).copy(OPACITY_8))
                         )
                     },
                     overlayToggleIcon = viewState.overlayToggleIcon.isNullOrBlock {
@@ -375,12 +374,22 @@ private fun DSWantedCardDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -397,7 +406,7 @@ private fun DSWantedCardDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                    colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )

@@ -1,30 +1,33 @@
 package com.wanted.android.montage.sample.feedback.alert
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.feedback.alert.DSWantedAlertDemoScreenContract.DSWantedAlertDemoEvent
 import com.wanted.android.montage.sample.feedback.alert.DSWantedAlertDemoScreenContract.DSWantedAlertDemoViewEvent
 import com.wanted.android.montage.sample.feedback.alert.DSWantedAlertDemoScreenContract.DSWantedAlertDemoViewState
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.alert.WantedAlert
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -117,12 +120,22 @@ private fun DSWantedAlertDemoScreenLayout(
 		Text(
 			text = "Preview",
 			style = WantedTextStyle(
-				colorRes = R.color.label_strong,
+				colorRes = R.color.foreground_neutral_strong,
 				style = DesignSystemTheme.typography.heading2Bold
 			)
 		)
 
-		DSWantedPreviewContainer {
+		Box(
+			modifier = Modifier
+				.fillMaxWidth()
+				.border(
+					width = 1.dp,
+					color = colorResource(R.color.line_neutral_primary),
+					shape = RoundedCornerShape(8.dp)
+				)
+				.padding(20.dp),
+			contentAlignment = Alignment.Center
+		) {
 			WantedButton(
 				modifier = Modifier.fillMaxWidth(),
 				text = "Alert 보기",
@@ -144,7 +157,7 @@ private fun DSWantedAlertDemoScreenLayout(
 				modifier = Modifier.align(Alignment.Start),
 				text = "Option",
 				style = WantedTextStyle(
-					colorRes = R.color.label_strong,
+					colorRes = R.color.foreground_neutral_strong,
 					style = DesignSystemTheme.typography.heading2Bold
 				)
 			)

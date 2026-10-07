@@ -23,7 +23,7 @@ class DSWantedFilterButtonDemoViewModel @Inject constructor(
 			is DSWantedFilterButtonDemoEvent.SetSize -> setState { copy(selectedSize = event.size) }
 			is DSWantedFilterButtonDemoEvent.SetActive -> setState { copy(isActive = event.isActive) }
 			is DSWantedFilterButtonDemoEvent.SetEnable -> setState { copy(isEnable = event.isEnable) }
-			is DSWantedFilterButtonDemoEvent.SetExpend -> setState { copy(isExpend = event.isExpend) }
+			is DSWantedFilterButtonDemoEvent.SetExpanded -> setState { copy(isExpanded = event.isExpanded) }
 		}
 	}
 
@@ -55,7 +55,7 @@ WantedFilterButton(
 	size = FilterButtonSize.${state.selectedSize.name}, ${getDefaultString(state.selectedSize == FilterButtonSize.Small)}
 	isActive = ${state.isActive}, ${getDefaultString(!state.isActive)}
 	isEnable = ${state.isEnable}, ${getDefaultString(state.isEnable)}
-	isExpend = ${state.isExpend}, ${getDefaultString(!state.isExpend)}
+	isExpanded = ${state.isExpanded}, ${getDefaultString(!state.isExpanded)}
 )
 		""".trimIndent()
 	}

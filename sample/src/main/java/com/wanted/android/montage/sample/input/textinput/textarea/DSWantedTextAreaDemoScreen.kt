@@ -21,7 +21,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -29,12 +32,13 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionPicker
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.getStateList
@@ -43,12 +47,12 @@ import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAr
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetEnabled
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetEnabledOverflowText
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetEnabledRequiredBadge
+import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetFormControl
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetGraphemeClusterCount
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetLeadingContent
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetNegative
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetRightButton
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetTextFieldValue
-import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetTitle
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.SetTrailingContent
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.ShowAll
 import com.wanted.android.montage.sample.input.textinput.textarea.DSWantedTextAreaDemoScreenContract.DSWantedTextAreaDemoEvent.ShowCode
@@ -63,11 +67,14 @@ import com.wanted.android.montage.sample.input.textinput.textarea.before.DSWante
 import com.wanted.android.montage.sample.toMap
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
+import com.wanted.android.wanted.design.input.formcontrol.WantedFormControl
+import com.wanted.android.wanted.design.input.formcontrol.WantedFormControlDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.input.textinput.textarea.WantedTextArea
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.input.textinput.textarea.WantedTextAreaDefaults
+import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaCharacterCount
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -95,7 +102,6 @@ fun DSWantedTextAreaDemoScreen(
         }
     }
 
-
     DSWantedTextAreaDemoScreenImpl(
         modifier = modifier,
         viewState = viewState,
@@ -108,23 +114,15 @@ fun DSWantedTextAreaDemoScreen(
             }
 
             is DSWantedTextAreaDemoViewEvent.OnChangeEnabledOverflowText -> {
-                viewModel.setEvent(
-                    SetEnabledOverflowText(viewEvent.enabledOverflowText)
-                )
+                viewModel.setEvent(SetEnabledOverflowText(viewEvent.enabledOverflowText))
             }
 
             is DSWantedTextAreaDemoViewEvent.OnChangeEnabledRequiredBadge -> {
-                viewModel.setEvent(
-                    SetEnabledRequiredBadge(viewEvent.enabledRequiredBadge)
-                )
+                viewModel.setEvent(SetEnabledRequiredBadge(viewEvent.enabledRequiredBadge))
             }
 
-
             is DSWantedTextAreaDemoViewEvent.OnChangeRightButton -> {
-                viewModel.setEvent(
-                    SetRightButton(viewEvent.enabledRightButton)
-                )
-
+                viewModel.setEvent(SetRightButton(viewEvent.enabledRightButton))
             }
 
             is DSWantedTextAreaDemoViewEvent.OnClickShowAll -> {
@@ -148,9 +146,7 @@ fun DSWantedTextAreaDemoScreen(
             }
 
             is DSWantedTextAreaDemoViewEvent.OnShowMaxWordCountPicker -> {
-                viewModel.setEvent(
-                    ShowMaxWordCountPicker(true)
-                )
+                viewModel.setEvent(ShowMaxWordCountPicker(true))
             }
 
             is DSWantedTextAreaDemoViewEvent.OnShowMinLinesPicker -> {
@@ -162,7 +158,7 @@ fun DSWantedTextAreaDemoScreen(
             }
 
             is DSWantedTextAreaDemoViewEvent.OnChangeTitle -> {
-                viewModel.setEvent(SetTitle(viewEvent.title))
+                viewModel.setEvent(DSWantedTextAreaDemoEvent.SetTitle(viewEvent.title))
             }
 
             is DSWantedTextAreaDemoViewEvent.OnChangeDescription -> {
@@ -170,35 +166,41 @@ fun DSWantedTextAreaDemoScreen(
             }
 
             is DSWantedTextAreaDemoViewEvent.OnChangeGraphemeClusterCount -> {
-                viewModel.setEvent(
-                    SetGraphemeClusterCount(viewEvent.isGraphemeClusterCount)
-                )
-            }
-
-            is DSWantedTextAreaDemoViewEvent.OnChangeLeadingContent -> {
-                viewModel.setEvent(
-                    SetLeadingContent(viewEvent.leadingContent)
-                )
+                viewModel.setEvent(SetGraphemeClusterCount(viewEvent.isGraphemeClusterCount))
             }
 
             is DSWantedTextAreaDemoViewEvent.OnChangeNegative -> {
                 viewModel.setEvent(SetNegative(viewEvent.negative))
             }
 
-            is DSWantedTextAreaDemoViewEvent.OnChangeTrailingContent -> {
-                viewModel.setEvent(
-                    SetTrailingContent(viewEvent.trailingContent)
-                )
-            }
-
             DSWantedTextAreaDemoViewEvent.OnClickFocus -> {
                 viewModel.setEvent(DSWantedTextAreaDemoEvent.Focus)
+            }
+
+            is DSWantedTextAreaDemoViewEvent.OnChangeSize -> {
+                viewModel.setEvent(DSWantedTextAreaDemoEvent.SetSize(viewEvent.size))
+            }
+
+            is DSWantedTextAreaDemoViewEvent.OnChangeResize -> {
+                viewModel.setEvent(DSWantedTextAreaDemoEvent.SetResize(viewEvent.resize))
+            }
+
+            is DSWantedTextAreaDemoViewEvent.OnChangeLeadingContent -> {
+                viewModel.setEvent(SetLeadingContent(viewEvent.enabled))
+            }
+
+            is DSWantedTextAreaDemoViewEvent.OnChangeTrailingContent -> {
+                viewModel.setEvent(SetTrailingContent(viewEvent.enabled))
+            }
+
+            is DSWantedTextAreaDemoViewEvent.OnChangeFormControl -> {
+                viewModel.setEvent(SetFormControl(viewEvent.enabled))
             }
         }
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedTextAreaDemoEvent.CopyCode)
@@ -217,7 +219,7 @@ fun DSWantedTextAreaDemoScreen(
     }
 
     if (viewState.isShowAll) {
-        WantedModal(
+        WantedPopup(
             positive = "확인",
             onClickPositive = {
                 viewModel.setEvent(ShowAll(false))
@@ -269,7 +271,7 @@ fun DSWantedTextAreaDemoScreen(
 
     if (viewState.isShowMaxWordCountPicker) {
         DSWantedOptionPicker(
-            title = "minLines",
+            title = "maxWordCount",
             selectedValue = viewState.maxWordCount,
             start = 1,
             end = 2000,
@@ -290,6 +292,9 @@ private fun DSWantedTextAreaDemoScreenImpl(
     focusRequester: FocusRequester,
     onViewEvent: (DSWantedTextAreaDemoViewEvent) -> Unit
 ) {
+    // WantedTextArea 는 TextFieldValue 를 받으므로 커서/선택 영역은 화면에서 보관한다.
+    // 텍스트 자체는 코드 생성·글자 수 표시를 위해 viewState 로도 올려보낸다.
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(viewState.text)) }
 
     Scaffold(
         modifier = modifier,
@@ -302,7 +307,7 @@ private fun DSWantedTextAreaDemoScreenImpl(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -311,7 +316,7 @@ private fun DSWantedTextAreaDemoScreenImpl(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -342,46 +347,72 @@ private fun DSWantedTextAreaDemoScreenImpl(
             modifier = Modifier.padding(innerPadding),
             preview = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    WantedTextArea(
-                        text = viewState.text,
-                        placeholder = "텍스트를 입력해 주세요.",
-                        title = if (viewState.title) "Title" else "",
-                        description = if (viewState.description) "Description" else "",
-                        rightButton = if (viewState.rightButton) "확인" else "",
-                        leadingContent = if (viewState.leadingContent) {
-                            {
-                                Icon(
-                                    modifier = Modifier.wrapContentSize(),
-                                    painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
-                                    tint = colorResource(R.color.primary_normal),
-                                    contentDescription = ""
-                                )
-                            }
-                        } else null,
-                        trailingContent = if (viewState.trailingContent) {
-                            {
-                                Icon(
-                                    modifier = Modifier.wrapContentSize(),
-                                    painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
-                                    tint = colorResource(R.color.primary_normal),
-                                    contentDescription = ""
-                                )
-                            }
-                        } else null,
-                        enabled = viewState.enabled,
-                        negative = viewState.negative,
-                        maxLines = viewState.maxLines,
-                        minLines = viewState.minLines,
-                        maxWordCount = viewState.maxWordCount,
-                        enabledOverflowText = viewState.enabledOverflowText,
-                        isGraphemeClusterCount = viewState.isGraphemeClusterCount,
-                        focusRequester = focusRequester,
-                        requiredBadge = viewState.requiredBadge,
-                        onClickRightButton = {},
-                        onValueChange = { value ->
-                            onViewEvent(DSWantedTextAreaDemoViewEvent.OnTextFieldValueChanged(value))
+                    val leadingSlot: (@Composable () -> Unit)? = if (viewState.leadingContent) {
+                        {
+                            WantedTextAreaCharacterCount(
+                                current = viewState.text.length,
+                                maxWordCount = viewState.maxWordCount,
+                                error = viewState.text.length > viewState.maxWordCount,
+                                enable = viewState.enabled
+                            )
                         }
-                    )
+                    } else null
+
+                    val textArea: @Composable () -> Unit = {
+                        // button 이 지정되면 trailingContent 슬롯을 대체하므로
+                        // 두 슬롯은 상호 배타적으로 전달한다.
+                        WantedTextArea(
+                            value = textFieldValue,
+                            placeholder = "텍스트를 입력해 주세요.",
+                            size = viewState.size,
+                            resize = viewState.resize,
+                            leadingContent = leadingSlot,
+                            button = if (viewState.rightButton) "확인" else null,
+                            trailingContent = if (!viewState.rightButton && viewState.trailingContent) {
+                                {
+                                    Icon(
+                                        modifier = Modifier.wrapContentSize(),
+                                        painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
+                                        tint = colorResource(R.color.foreground_brand_primary),
+                                        contentDescription = ""
+                                    )
+                                }
+                            } else null,
+                            enabled = viewState.enabled,
+                            status = viewState.negative.toTextAreaStatus(),
+                            maxLines = viewState.maxLines,
+                            minLines = viewState.minLines,
+                            maxWordCount = viewState.maxWordCount,
+                            enabledOverflowText = viewState.enabledOverflowText,
+                            isGraphemeClusterCount = viewState.isGraphemeClusterCount,
+                            focusRequester = focusRequester,
+                            onClickButton = {},
+                            onValueChange = { value ->
+                                textFieldValue = value
+                                onViewEvent(
+                                    DSWantedTextAreaDemoViewEvent.OnTextFieldValueChanged(value.text)
+                                )
+                            }
+                        )
+                    }
+
+                    if (viewState.formControl) {
+                        WantedFormControl(
+                            label = if (viewState.title) "Title" else "",
+                            required = viewState.requiredBadge,
+                            description = if (viewState.description) "Description" else null,
+                            size = viewState.size.toFormControlSize(),
+                            status = if (viewState.negative) {
+                                WantedFormControlDefaults.Status.Negative
+                            } else {
+                                WantedFormControlDefaults.Status.Normal
+                            },
+                            enabled = viewState.enabled,
+                            input = textArea
+                        )
+                    } else {
+                        textArea()
+                    }
 
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
@@ -391,38 +422,76 @@ private fun DSWantedTextAreaDemoScreenImpl(
                         }
                     )
                 }
-
+            },
+            size = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    WantedTextAreaDefaults.Size.entries.forEach { sizeOption ->
+                        WantedButton(
+                            modifier = Modifier.weight(1f),
+                            text = "size: ${sizeOption.name}",
+                            variant = if (viewState.size == sizeOption) ButtonVariant.SOLID else ButtonVariant.OUTLINED,
+                            onClick = {
+                                onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeSize(sizeOption))
+                            }
+                        )
+                    }
+                }
+            },
+            resize = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    WantedTextAreaDefaults.Resize.entries.forEach { resizeOption ->
+                        WantedButton(
+                            modifier = Modifier.weight(1f),
+                            text = resizeOption.name,
+                            variant = if (viewState.resize == resizeOption) ButtonVariant.SOLID else ButtonVariant.OUTLINED,
+                            onClick = {
+                                onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeResize(resizeOption))
+                            }
+                        )
+                    }
+                }
+            },
+            formControl = {
+                DSWantedOptionSwitchCell(
+                    text = "WantedFormControl : ${viewState.formControl}",
+                    checkState = viewState.formControl,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeFormControl(it))
+                    }
+                )
             },
             title = {
                 DSWantedOptionSwitchCell(
-                    text = "title : ${if (viewState.title) "Title" else null}",
+                    text = "label(title) : ${if (viewState.title) "Title" else null}" +
+                            formControlOnlyHint(viewState.formControl),
                     checkState = viewState.title,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeTitle(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeTitle(it))
                     }
                 )
             },
             description = {
                 DSWantedOptionSwitchCell(
-                    text = "description : ${if (viewState.description) "String" else null}",
+                    text = "description : ${if (viewState.description) "String" else null}" +
+                            formControlOnlyHint(viewState.formControl),
                     checkState = viewState.description,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeDescription(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeDescription(it))
                     }
                 )
             },
             rightButton = {
                 DSWantedOptionSwitchCell(
-                    text = "rightButton : ${if (viewState.rightButton) "String" else null}",
+                    text = "button : ${if (viewState.rightButton) "String" else null}",
                     checkState = viewState.rightButton,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeRightButton(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeRightButton(it))
                     }
                 )
             },
@@ -431,9 +500,7 @@ private fun DSWantedTextAreaDemoScreenImpl(
                     text = "leadingContent : ${viewState.leadingContent}",
                     checkState = viewState.leadingContent,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeLeadingContent(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeLeadingContent(it))
                     }
                 )
             },
@@ -442,9 +509,7 @@ private fun DSWantedTextAreaDemoScreenImpl(
                     text = "trailingContent : ${viewState.trailingContent}",
                     checkState = viewState.trailingContent,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeTrailingContent(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeTrailingContent(it))
                     }
                 )
             },
@@ -453,9 +518,7 @@ private fun DSWantedTextAreaDemoScreenImpl(
                     text = "enabled : ${viewState.enabled}",
                     checkState = viewState.enabled,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeEnabled(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeEnabled(it))
                     }
                 )
             },
@@ -464,16 +527,14 @@ private fun DSWantedTextAreaDemoScreenImpl(
                     text = "negative : ${viewState.negative}",
                     checkState = viewState.negative,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeNegative(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeNegative(it))
                     }
                 )
             },
             maxLines = {
                 WantedSelect(
                     value = "maxLines : ${viewState.maxLines}",
-                    focused = viewState.isShowMinLinesPicker,
+                    focused = viewState.isShowMaxLinePicker,
                     onClick = {
                         onViewEvent(DSWantedTextAreaDemoViewEvent.OnShowMaxLinePicker)
                     }
@@ -502,9 +563,7 @@ private fun DSWantedTextAreaDemoScreenImpl(
                     text = "enabledOverflowText : ${viewState.enabledOverflowText}",
                     checkState = viewState.enabledOverflowText,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeEnabledOverflowText(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeEnabledOverflowText(it))
                     }
                 )
             },
@@ -513,20 +572,17 @@ private fun DSWantedTextAreaDemoScreenImpl(
                     text = "isGraphemeClusterCount : ${if (viewState.isGraphemeClusterCount) "Icon" else null}",
                     checkState = viewState.isGraphemeClusterCount,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeGraphemeClusterCount(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeGraphemeClusterCount(it))
                     }
                 )
             },
             requiredBadge = {
                 DSWantedOptionSwitchCell(
-                    text = "requiredBadge : ${if (viewState.requiredBadge) "Icon" else null}",
+                    text = "required(requiredBadge) : ${if (viewState.requiredBadge) "Icon" else null}" +
+                            formControlOnlyHint(viewState.formControl),
                     checkState = viewState.requiredBadge,
                     onCheckChanged = {
-                        onViewEvent(
-                            DSWantedTextAreaDemoViewEvent.OnChangeEnabledRequiredBadge(it)
-                        )
+                        onViewEvent(DSWantedTextAreaDemoViewEvent.OnChangeEnabledRequiredBadge(it))
                     }
                 )
             },
@@ -547,6 +603,9 @@ private fun DSWantedTextAreaDemoScreenImpl(
 private fun DSWantedTextAreaDemoScreenLayout(
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
+    size: @Composable () -> Unit,
+    resize: @Composable () -> Unit,
+    formControl: @Composable () -> Unit,
     title: @Composable () -> Unit,
     description: @Composable () -> Unit,
     rightButton: @Composable () -> Unit,
@@ -569,12 +628,22 @@ private fun DSWantedTextAreaDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -587,15 +656,20 @@ private fun DSWantedTextAreaDemoScreenLayout(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Text(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            size()
+
+            resize()
+
+            formControl()
 
             title()
 
@@ -650,46 +724,82 @@ private fun DSWantedAllTextArea(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         items(list) { values ->
-            WantedTextArea(
-                text = values["text"].toString(),
-                placeholder = "placeholder",
-                title = if (values["title"] as Boolean) "Title" else "",
-                description = if (values["description"] as Boolean) "Description" else "",
-                rightButton = if (values["rightButton"] as Boolean) "확인" else "",
-                leadingContent = if (values["leadingContent"] as Boolean) {
-                    {
-                        Icon(
-                            modifier = Modifier.wrapContentSize(),
-                            painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
-                            tint = colorResource(R.color.primary_normal),
-                            contentDescription = ""
-                        )
-                    }
-                } else null,
-                trailingContent = if (values["trailingContent"] as Boolean) {
-                    {
-                        Icon(
-                            modifier = Modifier.wrapContentSize(),
-                            painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
-                            tint = colorResource(R.color.primary_normal),
-                            contentDescription = ""
-                        )
-                    }
-                } else null,
-                enabled = values["enabled"] as Boolean,
-                negative = values["negative"] as Boolean,
-                maxLines = values["maxLines"] as Int,
-                minLines = values["minLines"] as Int,
-                maxWordCount = values["maxWordCount"] as Int,
-                enabledOverflowText = values["enabledOverflowText"] as Boolean,
-                isGraphemeClusterCount = values["isGraphemeClusterCount"] as Boolean,
-                requiredBadge = values["requiredBadge"] as Boolean,
-                onClickRightButton = {},
-                onValueChange = { value -> }
-            )
+            val leadingSlot: (@Composable () -> Unit)? = if (values["leadingContent"] as Boolean) {
+                {
+                    WantedTextAreaCharacterCount(
+                        current = values["text"].toString().length,
+                        maxWordCount = values["maxWordCount"] as Int,
+                        error = values["text"].toString().length > values["maxWordCount"] as Int,
+                        enable = values["enabled"] as Boolean
+                    )
+                }
+            } else null
+
+            val rightButton = values["rightButton"] as Boolean
+            val negative = values["negative"] as Boolean
+            val enabled = values["enabled"] as Boolean
+
+            val textArea: @Composable () -> Unit = {
+                // button 이 지정되면 trailingContent 슬롯을 대체하므로
+                // 두 슬롯은 상호 배타적으로 전달한다.
+                WantedTextArea(
+                    value = TextFieldValue(values["text"].toString()),
+                    placeholder = "placeholder",
+                    size = viewState.size,
+                    resize = viewState.resize,
+                    leadingContent = leadingSlot,
+                    button = if (rightButton) "확인" else null,
+                    trailingContent = if (!rightButton && values["trailingContent"] as Boolean) {
+                        {
+                            Icon(
+                                modifier = Modifier.wrapContentSize(),
+                                painter = painterResource(id = R.drawable.icon_normal_circle_check_fill),
+                                tint = colorResource(R.color.foreground_brand_primary),
+                                contentDescription = ""
+                            )
+                        }
+                    } else null,
+                    enabled = enabled,
+                    status = negative.toTextAreaStatus(),
+                    maxLines = values["maxLines"] as Int,
+                    minLines = values["minLines"] as Int,
+                    maxWordCount = values["maxWordCount"] as Int,
+                    enabledOverflowText = values["enabledOverflowText"] as Boolean,
+                    isGraphemeClusterCount = values["isGraphemeClusterCount"] as Boolean,
+                    onClickButton = {},
+                    onValueChange = { }
+                )
+            }
+
+            if (viewState.formControl) {
+                WantedFormControl(
+                    label = if (values["title"] as Boolean) "Title" else "",
+                    required = values["requiredBadge"] as Boolean,
+                    description = if (values["description"] as Boolean) "Description" else null,
+                    size = viewState.size.toFormControlSize(),
+                    status = if (negative) {
+                        WantedFormControlDefaults.Status.Negative
+                    } else {
+                        WantedFormControlDefaults.Status.Normal
+                    },
+                    enabled = enabled,
+                    input = textArea
+                )
+            } else {
+                textArea()
+            }
         }
     }
 }
+
+private fun WantedTextAreaDefaults.Size.toFormControlSize(): WantedFormControlDefaults.Size =
+    when (this) {
+        WantedTextAreaDefaults.Size.Large -> WantedFormControlDefaults.Size.Large
+        WantedTextAreaDefaults.Size.Medium -> WantedFormControlDefaults.Size.Medium
+    }
+
+private fun formControlOnlyHint(formControlEnabled: Boolean): String =
+    if (formControlEnabled) "" else " (WantedFormControl 필요)"
 
 
 @DevicePreviews
@@ -698,8 +808,15 @@ private fun DSWantedTextAreaDemoScreenPreview() {
     DesignSystemTheme {
         DSWantedTextAreaDemoScreenImpl(
             viewState = DSWantedTextAreaDemoViewState(),
-            focusRequester = FocusRequester(),
+            focusRequester = remember { FocusRequester() },
             onViewEvent = { }
         )
     }
+}
+
+/** 데모의 negative 스위치를 컴포넌트 Status 로 변환합니다. */
+private fun Boolean.toTextAreaStatus(): WantedTextAreaDefaults.Status = if (this) {
+    WantedTextAreaDefaults.Status.Negative
+} else {
+    WantedTextAreaDefaults.Status.Normal
 }

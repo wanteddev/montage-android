@@ -30,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.DSWantedSnackBarDemoEvent
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.DSWantedSnackBarDemoSideEffect
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.DSWantedSnackBarDemoViewEvent
@@ -40,9 +40,8 @@ import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.snackbar.WantedSnackBar
 import com.wanted.android.wanted.design.feedback.snackbar.WantedSnackbarVisuals
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -89,7 +88,7 @@ fun DSWantedSnackBarDemoScreen(
                                         contentDescription = "icon",
                                         painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                                         modifier = Modifier.size(32.dp),
-                                        tint = DesignSystemTheme.colors.statusNegative
+                                        tint = DesignSystemTheme.colors.foregroundNegativePrimary
                                     )
                                 }
                             )
@@ -131,7 +130,7 @@ fun DSWantedSnackBarDemoScreen(
     )
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedSnackBarDemoEvent.CopyCode)
@@ -168,7 +167,7 @@ private fun DSWantedSnackBarDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                negative = {
+                alternative = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -177,7 +176,7 @@ private fun DSWantedSnackBarDemoScreenContent(
                         }
                     )
                 },
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -278,12 +277,22 @@ private fun DSWantedSnackBarDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -300,7 +309,7 @@ private fun DSWantedSnackBarDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )

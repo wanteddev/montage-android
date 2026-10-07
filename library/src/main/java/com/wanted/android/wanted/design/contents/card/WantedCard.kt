@@ -183,10 +183,10 @@ private fun WantedCardLayout(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = DesignSystemTheme.colors.fillAlternative)
+                .background(color = DesignSystemTheme.colors.surfaceNeutralTertiary)
                 .border(
                     width = 1.dp,
-                    color = DesignSystemTheme.colors.lineSolidAlternative,
+                    color = DesignSystemTheme.colors.lineNeutralTertiaryOpaque,
                     shape = RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.TopStart
@@ -310,7 +310,7 @@ private fun WantedCardSkeletonPreview() {
                     overlayToggleIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_normal_bookmark_fill),
-                            tint = DesignSystemTheme.colors.primaryNormal,
+                            tint = DesignSystemTheme.colors.foregroundBrandPrimary,
                             contentDescription = ""
                         )
                     }

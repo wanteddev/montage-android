@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -39,16 +38,20 @@ internal class WantedButtonBorderLoaderImpl : WantedButtonBorderLoader {
     override fun getBorderShape(
         variant: ButtonVariant,
         size: ButtonSize
-    ) = RoundedCornerShape(
-        when (size) {
-            ButtonSize.LARGE -> if (variant == ButtonVariant.TEXT) 10.dp else 12.dp
-            ButtonSize.MEDIUM -> 10.dp
-            ButtonSize.SMALL -> 8.dp
-        }
-    )
+    ): RoundedCornerShape {
+        val radius = DesignSystemTheme.radius
+        return RoundedCornerShape(
+            when (size) {
+                ButtonSize.LARGE -> if (variant == ButtonVariant.TEXT) radius.radius10 else radius.radius14
+                ButtonSize.MEDIUM -> if (variant == ButtonVariant.TEXT) radius.radius8 else radius.radius12
+                ButtonSize.SMALL -> if (variant == ButtonVariant.TEXT) radius.radius8 else radius.radius10
+                ButtonSize.XSMALL -> radius.radius8
+            }
+        )
+    }
 
     @Composable
-    fun getOutlineContentColor() = DesignSystemTheme.colors.lineNormalNeutral
+    fun getOutlineContentColor() = DesignSystemTheme.colors.lineNeutralSecondary
 }
 
 @JvmInline

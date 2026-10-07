@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearchTopAppBarDemoScreenContract.DSWantedSearchTopAppBarDemoEvent
 import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearchTopAppBarDemoScreenContract.DSWantedSearchTopAppBarDemoSideEffect
@@ -33,9 +33,8 @@ import com.wanted.android.wanted.design.input.search.WantedSearchFieldDefaults.S
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextField
 import com.wanted.android.wanted.design.navigations.topbar.WantedSearchTopAppBar
-import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -98,7 +97,7 @@ fun DSWantedSearchTopAppBarDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedSearchTopAppBarDemoEvent.CopyCode)
@@ -130,7 +129,7 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
             WantedSearchTopAppBar(
                 text = viewState.searchText,
                 backgroundColor = if (viewState.background) {
-                    colorResource(R.color.background_normal_normal)
+                    colorResource(R.color.background_neutral_primary)
                 } else {
                     colorResource(R.color.transparent)
                 },
@@ -140,7 +139,6 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
                 actions = if (viewState.actions) {
                     {
                         WantedTopAppBarIconButton(
-                            variant = Variant.Search,
                             painter = painterResource(R.drawable.icon_normal_share),
                             onClick = { }
                         )
@@ -158,7 +156,7 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -168,7 +166,7 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
                         }
                     )
                 },
-                negative = {
+                alternative = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -195,7 +193,7 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
                     Text(
                         text = "placeholder",
                         style = WantedTextStyle(
-                            colorRes = R.color.label_normal,
+                            colorRes = R.color.foreground_neutral_primary,
                             style = DesignSystemTheme.typography.body2Regular
                         )
                     )
@@ -216,14 +214,9 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
                 WantedSelect(
                     value = "size : ${getSizeName(viewState.size)}",
                     selectedValue = getSizeName(viewState.size),
-                    selectValueList = listOf("Small", "Medium", "Custom"),
+                    selectValueList = SIZE_LIST.map { getSizeName(it) },
                     onSelect = { sizeName ->
-                        val newSize = when (sizeName) {
-                            "Small" -> Size.Small()
-                            "Medium" -> Size.Medium()
-                            "Custom" -> Size.Custom()
-                            else -> Size.Medium()
-                        }
+                        val newSize = SIZE_LIST.first { getSizeName(it) == sizeName }
                         onViewEvent(DSWantedSearchTopAppBarDemoViewEvent.OnChangeSize(newSize))
                     }
                 )
@@ -284,7 +277,7 @@ private fun DSWantedSearchTopAppBarDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
@@ -298,12 +291,11 @@ private fun DSWantedSearchTopAppBarDemoScreenLayout(
     }
 }
 
-private fun getSizeName(size: Size): String {
-    return when (size) {
-        is Size.Small -> "Small"
-        is Size.Medium -> "Medium"
-        is Size.Custom -> "Custom"
-    }
+private val SIZE_LIST = listOf(Size.Large, Size.Medium)
+
+private fun getSizeName(size: Size): String = when (size) {
+    Size.Large -> "Large"
+    Size.Medium -> "Medium"
 }
 
 @DevicePreviews

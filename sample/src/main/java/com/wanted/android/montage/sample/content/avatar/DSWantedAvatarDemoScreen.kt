@@ -1,5 +1,6 @@
 package com.wanted.android.montage.sample.content.avatar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.content.avatar.DSWantedAvatarDemoScreenContract.DSWantedAvatarDemoEvent
+import com.wanted.android.montage.sample.content.avatar.DSWantedAvatarDemoScreenContract.DSWantedAvatarDemoModel
 import com.wanted.android.montage.sample.content.avatar.DSWantedAvatarDemoScreenContract.DSWantedAvatarDemoSideEffect
 import com.wanted.android.montage.sample.content.avatar.DSWantedAvatarDemoScreenContract.DSWantedAvatarDemoViewEvent
 import com.wanted.android.montage.sample.content.avatar.DSWantedAvatarDemoScreenContract.DSWantedAvatarDemoViewState
@@ -39,12 +41,12 @@ import com.wanted.android.wanted.design.contents.avatar.WantedAvatar
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarSize
 import com.wanted.android.wanted.design.contents.avatar.WantedAvatarDefaults.WantedAvatarType
 import com.wanted.android.wanted.design.contents.avatar.avatargroup.WantedAvatarGroup
+import com.wanted.android.wanted.design.contents.avatar.avatargroup.WantedAvatarGroupDefaults.WantedAvatarGroupSize
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeSize
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.input.slider.WantedSlider
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -92,10 +94,6 @@ fun DSWantedAvatarDemoScreen(
                 viewModel.setEvent(DSWantedAvatarDemoEvent.SetIsGroup(viewEvent.isGroup))
             }
 
-            is DSWantedAvatarDemoViewEvent.OnChangeIsIcon -> {
-                viewModel.setEvent(DSWantedAvatarDemoEvent.SetIsIcon(viewEvent.isIcon))
-            }
-
             is DSWantedAvatarDemoViewEvent.OnClickShowAll -> {
                 viewModel.setEvent(DSWantedAvatarDemoEvent.ShowAll(true))
             }
@@ -104,26 +102,19 @@ fun DSWantedAvatarDemoScreen(
                 viewModel.setEvent(DSWantedAvatarDemoEvent.CopyCode)
             }
 
-            is DSWantedAvatarDemoViewEvent.OnChangeCustomSize -> {
-                viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomSize(viewEvent.size))
-            }
-
-            is DSWantedAvatarDemoViewEvent.OnChangeCustomCornerRadius -> {
-                viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomCornerRadius(viewEvent.cornerRadius))
-            }
-
-            is DSWantedAvatarDemoViewEvent.OnChangeCustomBadgeSize -> {
-                viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomBadgeSize(viewEvent.badgeSize))
-            }
-
+            is DSWantedAvatarDemoViewEvent.OnSelectModel,
+            is DSWantedAvatarDemoViewEvent.OnChangeColoredBackground,
+            is DSWantedAvatarDemoViewEvent.OnChangeCustomSize,
+            is DSWantedAvatarDemoViewEvent.OnChangeCustomCornerRadius,
+            is DSWantedAvatarDemoViewEvent.OnChangeCustomBadgeSize,
             is DSWantedAvatarDemoViewEvent.OnChangeCustomBadgeSizeDefault -> {
-                viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomBadgeSizeDefault(viewEvent.isDefault))
+                handleOptionViewEvent(viewEvent, viewModel)
             }
         }
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedAvatarDemoEvent.CopyCode)
@@ -139,7 +130,7 @@ fun DSWantedAvatarDemoScreen(
     }
 
     if (viewState.isShowAll) {
-        WantedModal(
+        WantedPopup(
             positive = "확인",
             onClickPositive = {
                 viewModel.setEvent(DSWantedAvatarDemoEvent.ShowAll(false))
@@ -156,6 +147,39 @@ fun DSWantedAvatarDemoScreen(
                 }
             }
         )
+    }
+}
+
+private fun handleOptionViewEvent(
+    viewEvent: DSWantedAvatarDemoViewEvent,
+    viewModel: DSWantedAvatarDemoViewModel
+) {
+    when (viewEvent) {
+        is DSWantedAvatarDemoViewEvent.OnSelectModel -> {
+            viewModel.setEvent(DSWantedAvatarDemoEvent.SetModel(viewEvent.model))
+        }
+
+        is DSWantedAvatarDemoViewEvent.OnChangeColoredBackground -> {
+            viewModel.setEvent(DSWantedAvatarDemoEvent.SetColoredBackground(viewEvent.isColoredBackground))
+        }
+
+        is DSWantedAvatarDemoViewEvent.OnChangeCustomSize -> {
+            viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomSize(viewEvent.size))
+        }
+
+        is DSWantedAvatarDemoViewEvent.OnChangeCustomCornerRadius -> {
+            viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomCornerRadius(viewEvent.cornerRadius))
+        }
+
+        is DSWantedAvatarDemoViewEvent.OnChangeCustomBadgeSize -> {
+            viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomBadgeSize(viewEvent.badgeSize))
+        }
+
+        is DSWantedAvatarDemoViewEvent.OnChangeCustomBadgeSizeDefault -> {
+            viewModel.setEvent(DSWantedAvatarDemoEvent.SetCustomBadgeSizeDefault(viewEvent.isDefault))
+        }
+
+        else -> Unit
     }
 }
 
@@ -176,7 +200,7 @@ private fun DSWantedAvatarDemoScreenImpl(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -185,7 +209,7 @@ private fun DSWantedAvatarDemoScreenImpl(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "모든 옵션 보기",
@@ -200,22 +224,16 @@ private fun DSWantedAvatarDemoScreenImpl(
     ) { innerPadding ->
         DSWantedAvatarDemoScreenLayout(
             modifier = Modifier.padding(innerPadding),
+            isColoredBackground = viewState.isColoredBackground,
             preview = {
                 if (viewState.isGroup) {
-                    WantedAvatarGroup(
-                        modelList = listOf(
-                            R.drawable.icon_avatar_placeholder_person,
-                            R.drawable.icon_avatar_placeholder_person,
-                            R.drawable.icon_avatar_placeholder_person
-                        ),
-                        size = viewState.selectedSize,
-                        type = viewState.selectedType,
-                        isDrawableRes = true
-                    )
+                    DSWantedAvatarGroupPreview(size = viewState.selectedSize, model = viewState.selectedModel)
                 } else {
                     WantedAvatar(
                         type = viewState.selectedType,
                         size = viewState.selectedSize,
+                        model = viewState.selectedModel.toAvatarModel(),
+                        isDrawableRes = viewState.selectedModel == DSWantedAvatarDemoModel.Image,
                         pushBadge = viewState.pushBadge,
                         isGroup = viewState.isGroup,
                         onClick = {
@@ -238,6 +256,27 @@ private fun DSWantedAvatarDemoScreenImpl(
                             )
                         )
                     },
+                )
+            },
+            model = {
+                WantedSelect(
+                    value = "Model : ${viewState.selectedModel.name}",
+                    selectedValue = viewState.selectedModel.name,
+                    selectValueList = viewState.modelList.map { it.name },
+                    onSelect = {
+                        onViewEvent(
+                            DSWantedAvatarDemoViewEvent.OnSelectModel(DSWantedAvatarDemoModel.valueOf(it))
+                        )
+                    },
+                )
+            },
+            coloredBackground = {
+                DSWantedOptionSwitchCell(
+                    text = "coloredBackground : ${viewState.isColoredBackground}",
+                    checkState = viewState.isColoredBackground,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedAvatarDemoViewEvent.OnChangeColoredBackground(it))
+                    }
                 )
             },
             size = {
@@ -268,15 +307,6 @@ private fun DSWantedAvatarDemoScreenImpl(
                     checkState = viewState.isGroup,
                     onCheckChanged = {
                         onViewEvent(DSWantedAvatarDemoViewEvent.OnChangeIsGroup(it))
-                    }
-                )
-            },
-            isIcon = {
-                DSWantedOptionSwitchCell(
-                    text = "isIcon : ${viewState.isIcon}",
-                    checkState = viewState.isIcon,
-                    onCheckChanged = {
-                        onViewEvent(DSWantedAvatarDemoViewEvent.OnChangeIsIcon(it))
                     }
                 )
             },
@@ -361,20 +391,13 @@ private fun DSWantedAllAvatar(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         if (viewState.isGroup) {
-                            WantedAvatarGroup(
-                                modelList = listOf(
-                                    R.drawable.icon_avatar_placeholder_person,
-                                    R.drawable.icon_avatar_placeholder_person,
-                                    R.drawable.icon_avatar_placeholder_person
-                                ),
-                                size = size,
-                                type = type,
-                                isDrawableRes = true
-                            )
+                            DSWantedAvatarGroupPreview(size = size, model = viewState.selectedModel)
                         } else {
                             WantedAvatar(
                                 type = type,
                                 size = size,
+                                model = viewState.selectedModel.toAvatarModel(),
+                                isDrawableRes = viewState.selectedModel == DSWantedAvatarDemoModel.Image,
                                 pushBadge = viewState.pushBadge,
                                 isGroup = viewState.isGroup,
                                 onClick = {
@@ -396,12 +419,14 @@ private fun DSWantedAllAvatar(
 @Composable
 private fun DSWantedAvatarDemoScreenLayout(
     modifier: Modifier,
+    isColoredBackground: Boolean,
     preview: @Composable () -> Unit,
     type: @Composable () -> Unit,
+    model: @Composable () -> Unit,
+    coloredBackground: @Composable () -> Unit,
     size: @Composable () -> Unit,
     pushBadge: @Composable () -> Unit,
     isGroup: @Composable () -> Unit,
-    isIcon: @Composable () -> Unit,
     customOptions: @Composable () -> Unit,
 ) {
     Column(
@@ -411,12 +436,33 @@ private fun DSWantedAvatarDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .then(
+                    // placeholder 의 아이콘 자리가 배경까지 뚫리면 이 색이 비쳐 보인다
+                    if (isColoredBackground) {
+                        Modifier.background(
+                            color = DesignSystemTheme.colors.surfaceBrandPrimary,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                    } else {
+                        Modifier
+                    }
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -434,16 +480,17 @@ private fun DSWantedAvatarDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                    colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
 
             type()
+            model()
+            coloredBackground()
             size()
             pushBadge()
             isGroup()
-            isIcon()
             customOptions()
         }
     }
@@ -459,3 +506,41 @@ private fun DSWantedAvatarDemoScreenPreview() {
         )
     }
 }
+
+// Avatar 데모의 그룹 미리보기.
+// Avatar Group 은 XSmall·Small 2종만 지원하므로, 나머지 사이즈에서는 그룹을 그리지 않고 지원 범위를 문구로 안내한다.
+// modelList 는 null 을 받지 않으므로 None 은 로딩 실패 주소로 채워 컴포넌트 기본 placeholder 를 띄운다.
+// placeholder 모양의 Drawable 을 이미지로 넣으면 아바타의 흰 바탕 위에 그대로 그려져 다크에서도 라이트 색으로 보인다.
+@Composable
+private fun DSWantedAvatarGroupPreview(size: WantedAvatarSize, model: DSWantedAvatarDemoModel) {
+    val groupSize = when (size) {
+        WantedAvatarSize.XSmall -> WantedAvatarGroupSize.XSmall
+        WantedAvatarSize.Small -> WantedAvatarGroupSize.Small
+        else -> null
+    }
+
+    if (groupSize == null) {
+        Text(
+            text = "Avatar Group 은 XSmall · Small 만 지원합니다.",
+            style = DesignSystemTheme.typography.caption1Regular,
+            color = DesignSystemTheme.colors.foregroundNeutralTertiary
+        )
+    } else {
+        WantedAvatarGroup(
+            modelList = List(GROUP_PREVIEW_AVATAR_COUNT) {
+                model.toAvatarModel() ?: LOAD_FAIL_MODEL_URL
+            },
+            size = groupSize,
+            isDrawableRes = model == DSWantedAvatarDemoModel.Image
+        )
+    }
+}
+
+private fun DSWantedAvatarDemoModel.toAvatarModel(): Any? = when (this) {
+    DSWantedAvatarDemoModel.None -> null
+    DSWantedAvatarDemoModel.LoadFail -> LOAD_FAIL_MODEL_URL
+    DSWantedAvatarDemoModel.Image -> R.drawable.icon_wanted
+}
+
+/** 그룹 미리보기에 표시할 아바타 수입니다. */
+private const val GROUP_PREVIEW_AVATAR_COUNT = 3

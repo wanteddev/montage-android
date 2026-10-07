@@ -64,16 +64,16 @@ fun WantedTabRow(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                     height = 1.dp,
                     color = if (disableIndexList.contains(selectedTabIndex)) {
-                        DesignSystemTheme.colors.fillAlternative
+                        DesignSystemTheme.colors.surfaceNeutralTertiary
                     } else {
-                        DesignSystemTheme.colors.labelStrong
+                        DesignSystemTheme.colors.foregroundNeutralStrong
                     }
 
                 )
             }
         },
         divider = {
-            HorizontalDivider(color = DesignSystemTheme.colors.lineNormalAlternative)
+            HorizontalDivider(color = DesignSystemTheme.colors.lineNeutralTertiary)
         },
         tabs = {
             for (index in 0 until itemSize) {

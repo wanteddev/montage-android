@@ -172,9 +172,9 @@ private fun WantedRangeSlider(
                     text = header,
                     style = DesignSystemTheme.typography.headline2Bold,
                     color = if (enabled) {
-                        DesignSystemTheme.colors.labelNormal
+                        DesignSystemTheme.colors.foregroundNeutralPrimary
                     } else {
-                        DesignSystemTheme.colors.labelDisable
+                        DesignSystemTheme.colors.foregroundDisablePrimary
                     },
                 )
             }
@@ -188,12 +188,12 @@ private fun WantedRangeSlider(
                 valueRange = valueRange,
                 enabled = enabled,
                 colors = SliderDefaults.colors(
-                    thumbColor = DesignSystemTheme.colors.primaryNormal,
-                    disabledThumbColor = DesignSystemTheme.colors.interactionDisable,
-                    activeTrackColor = DesignSystemTheme.colors.primaryNormal,
-                    disabledActiveTrackColor = DesignSystemTheme.colors.interactionDisable,
-                    activeTickColor = DesignSystemTheme.colors.fillStrong,
-                    disabledActiveTickColor = DesignSystemTheme.colors.interactionDisable
+                    thumbColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+                    disabledThumbColor = DesignSystemTheme.colors.surfaceDisablePrimary,
+                    activeTrackColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+                    disabledActiveTrackColor = DesignSystemTheme.colors.surfaceDisablePrimary,
+                    activeTickColor = DesignSystemTheme.colors.surfaceNeutralStrong,
+                    disabledActiveTickColor = DesignSystemTheme.colors.surfaceDisablePrimary
                 ),
                 thumbSize = ThumbRadius * 2,
                 isRange = isRange,
@@ -289,9 +289,9 @@ private fun SliderLayout(
             ProvideTextStyle(
                 value = DesignSystemTheme.typography.headline2Bold.copy(
                     color = if (isEnable) {
-                        DesignSystemTheme.colors.labelNormal
+                        DesignSystemTheme.colors.foregroundNeutralPrimary
                     } else {
-                        DesignSystemTheme.colors.labelDisable
+                        DesignSystemTheme.colors.foregroundDisablePrimary
                     }
                 )
             ) {
@@ -312,9 +312,9 @@ private fun SliderLayout(
                 ProvideTextStyle(
                     value = DesignSystemTheme.typography.label1Medium.copy(
                         color = if (isEnable) {
-                            DesignSystemTheme.colors.labelNormal
+                            DesignSystemTheme.colors.foregroundNeutralPrimary
                         } else {
-                            DesignSystemTheme.colors.labelDisable
+                            DesignSystemTheme.colors.foregroundDisablePrimary
                         }
                     )
                 ) {

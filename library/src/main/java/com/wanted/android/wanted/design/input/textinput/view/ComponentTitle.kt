@@ -27,7 +27,7 @@ internal fun ComponentTitle(
             modifier = Modifier.weight(1f, fill = false),
             text = title,
             style = DesignSystemTheme.typography.label1Bold,
-            color = DesignSystemTheme.colors.labelNeutral,
+            color = DesignSystemTheme.colors.foregroundNeutralSecondary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -37,7 +37,7 @@ internal fun ComponentTitle(
                 modifier = Modifier.wrapContentSize(),
                 text = "*",
                 style = DesignSystemTheme.typography.label1Medium,
-                color = DesignSystemTheme.colors.statusNegative,
+                color = DesignSystemTheme.colors.foregroundNegativePrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

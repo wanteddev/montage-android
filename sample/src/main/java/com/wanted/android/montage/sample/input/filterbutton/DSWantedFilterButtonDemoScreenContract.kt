@@ -15,7 +15,7 @@ object DSWantedFilterButtonDemoScreenContract {
 		data class SetSize(val size: FilterButtonSize) : DSWantedFilterButtonDemoEvent
 		data class SetActive(val isActive: Boolean) : DSWantedFilterButtonDemoEvent
 		data class SetEnable(val isEnable: Boolean) : DSWantedFilterButtonDemoEvent
-		data class SetExpend(val isExpend: Boolean) : DSWantedFilterButtonDemoEvent
+		data class SetExpanded(val isExpanded: Boolean) : DSWantedFilterButtonDemoEvent
 	}
 
 	data class DSWantedFilterButtonDemoViewState(
@@ -30,7 +30,7 @@ object DSWantedFilterButtonDemoScreenContract {
 
 		val isActive: Boolean = false,
 		val isEnable: Boolean = true,
-		val isExpend: Boolean = false,
+		val isExpanded: Boolean = false,
 	) : BaseViewState
 
 	sealed interface DSWantedFilterButtonDemoSideEffect : BaseSideEffect {
@@ -45,6 +45,6 @@ object DSWantedFilterButtonDemoScreenContract {
 		data class OnSelectSize(val size: FilterButtonSize) : DSWantedFilterButtonDemoViewEvent
 		data class OnChangeActive(val isActive: Boolean) : DSWantedFilterButtonDemoViewEvent
 		data class OnChangeEnable(val isEnable: Boolean) : DSWantedFilterButtonDemoViewEvent
-		data class OnChangeExpend(val isExpend: Boolean) : DSWantedFilterButtonDemoViewEvent
+		data class OnChangeExpanded(val isExpanded: Boolean) : DSWantedFilterButtonDemoViewEvent
 	}
 }

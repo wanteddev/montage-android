@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -39,13 +38,12 @@ import com.wanted.android.montage.sample.actions.actionarea.DSWantedActionAreaDe
 import com.wanted.android.montage.sample.actions.actionarea.DSWantedActionAreaDemoScreenContract.DSWantedActionAreaDemoViewState
 import com.wanted.android.wanted.design.actions.actionarea.ActionAreaType
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
+import com.wanted.android.wanted.design.actions.actionarea.WantedActionAreaDefaults
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -87,68 +85,16 @@ fun DSWantedActionAreaDemoScreen(
                 )
             }
 
-            is DSWantedActionAreaDemoViewEvent.OnSelectType -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetType(viewEvent.type)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeSafeArea -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetSafeArea(viewEvent.safeArea)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeCaption -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetCaption(viewEvent.caption)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeDivider -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetDivider(viewEvent.divider)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeNegative -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetNegative(viewEvent.negative)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeNeutral -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetNeutral(viewEvent.neutral)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeExtra -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetExtra(viewEvent.extra)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeBackground -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetBackground(viewEvent.background)
-                )
-            }
-
-            is DSWantedActionAreaDemoViewEvent.OnChangeGradationColor -> {
-                viewModel.setEvent(
-                    DSWantedActionAreaDemoEvent.SetGradationColor(viewEvent.colorIndex)
-                )
-            }
-
             is DSWantedActionAreaDemoViewEvent.OnClickCopyCode -> {
                 viewModel.setEvent(DSWantedActionAreaDemoEvent.CopyCode)
             }
+
+            else -> handleOptionViewEvent(viewEvent, viewModel)
         }
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedActionAreaDemoEvent.CopyCode)
@@ -171,7 +117,7 @@ fun DSWantedActionAreaDemoScreen(
     }
 
     if (viewState.isShowSample) {
-        WantedModal(
+        WantedPopup(
             positive = "확인",
             onClickPositive = {
                 viewModel.setEvent(DSWantedActionAreaDemoEvent.Sample(false))
@@ -183,6 +129,75 @@ fun DSWantedActionAreaDemoScreen(
                 ActionSample()
             }
         )
+    }
+}
+
+private fun handleOptionViewEvent(
+    viewEvent: DSWantedActionAreaDemoViewEvent,
+    viewModel: DSWantedActionAreaDemoViewModel
+) {
+    when (viewEvent) {
+        is DSWantedActionAreaDemoViewEvent.OnSelectType -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetType(viewEvent.type)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeSafeArea -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetSafeArea(viewEvent.safeArea)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeCaption -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetCaption(viewEvent.caption)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeCaptionIcon -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetCaptionIcon(viewEvent.captionIcon)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeDivider -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetDivider(viewEvent.divider)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeAlternative -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetAlternative(viewEvent.alternative)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeSub -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetSub(viewEvent.sub)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeExtra -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetExtra(viewEvent.extra)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeBackground -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetBackground(viewEvent.background)
+            )
+        }
+
+        is DSWantedActionAreaDemoViewEvent.OnChangeBackgroundColor -> {
+            viewModel.setEvent(
+                DSWantedActionAreaDemoEvent.SetBackgroundColor(viewEvent.colorIndex)
+            )
+        }
+
+        else -> Unit
     }
 }
 
@@ -206,7 +221,7 @@ private fun DSWantedActionAreaDemoScreenContent(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
                 type = viewState.type,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -215,11 +230,12 @@ private fun DSWantedActionAreaDemoScreenContent(
                         }
                     )
                 },
-                negative = {
+                alternative = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "Sample 보기",
                         variant = ButtonVariant.OUTLINED,
+                        type = ButtonType.ASSISTIVE,
                         onClick = {
                             onViewEvent(DSWantedActionAreaDemoViewEvent.OnClickSample)
                         }
@@ -258,60 +274,39 @@ private fun DSWantedActionAreaDemoScreenContent(
                         type = viewState.type,
                         safeArea = viewState.safeArea,
                         caption = if (viewState.caption) "캡션 입니다." else null,
+                        captionIcon = if (viewState.captionIcon) {
+                            WantedActionAreaDefaults.CAPTION_ICON
+                        } else {
+                            null
+                        },
                         scrollableState = scrollState,
                         divider = viewState.divider,
                         background = viewState.background,
-                        gradationColor = Color(viewState.gradationColorList[viewState.gradationColorIndex].color),
-                        positive = {
-                            WantedButton(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = "positive",
-                                onClick = {
-                                    onViewEvent(DSWantedActionAreaDemoViewEvent.OnClickCopyCode)
-                                }
-                            )
+                        backgroundColor = Color(
+                            viewState.backgroundColorList[viewState.backgroundColorIndex].color
+                        ),
+                        main = "main",
+                        onClickMain = {
+                            onViewEvent(DSWantedActionAreaDemoViewEvent.OnClickCopyCode)
                         },
-                        negative = if (viewState.negative) {
-                            {
-                                WantedButton(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    variant = ButtonVariant.OUTLINED,
-                                    type = ButtonType.PRIMARY,
-                                    text = "negative",
-                                    onClick = {
-                                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnClickCopyCode)
-                                    }
-                                )
-                            }
-                        } else null,
-                        neutral = if (viewState.neutral) {
-                            {
-                                WantedButton(
-                                    modifier = Modifier.wrapContentSize(),
-                                    variant = if (viewState.type == ActionAreaType.Strong) {
-                                        ButtonVariant.TEXT
-                                    } else {
-                                        ButtonVariant.OUTLINED
-                                    },
-                                    size = if (viewState.type == ActionAreaType.Strong) {
-                                        ButtonSize.SMALL
-                                    } else {
-                                        ButtonSize.LARGE
-                                    },
-                                    type = ButtonType.ASSISTIVE,
-                                    text = "neutral",
-                                    onClick = {
-                                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnClickCopyCode)
-                                    }
-                                )
-                            }
-                        } else null,
+                        alternative = if (viewState.alternative) "alternative" else null,
+                        onClickAlternative = if (viewState.alternative) {
+                            { onViewEvent(DSWantedActionAreaDemoViewEvent.OnClickCopyCode) }
+                        } else {
+                            null
+                        },
+                        sub = if (viewState.sub) "sub" else null,
+                        onClickSub = if (viewState.sub) {
+                            { onViewEvent(DSWantedActionAreaDemoViewEvent.OnClickCopyCode) }
+                        } else {
+                            null
+                        },
                         extra = if (viewState.extra) {
                             {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .background(colorResource(R.color.accent_background_purple)),
+                                        .background(colorResource(R.color.surface_accent_purple_opaque)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(text = "extra 영역 입니다.")
@@ -351,14 +346,14 @@ private fun DSWantedActionAreaDemoScreenContent(
                     }
                 )
             },
-            gradationColor = {
+            backgroundColor = {
                 WantedSelect(
-                    value = "Gradation Color : ${viewState.gradationColorList[viewState.gradationColorIndex].name}",
-                    selectedValue = viewState.gradationColorList[viewState.gradationColorIndex].name,
-                    selectValueList = viewState.gradationColorList.map { it.name },
+                    value = "Background Color : ${viewState.backgroundColorList[viewState.backgroundColorIndex].name}",
+                    selectedValue = viewState.backgroundColorList[viewState.backgroundColorIndex].name,
+                    selectValueList = viewState.backgroundColorList.map { it.name },
                     onSelect = { name ->
-                        val index = viewState.gradationColorList.indexOfFirst { it.name == name }
-                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnChangeGradationColor(index))
+                        val index = viewState.backgroundColorList.indexOfFirst { it.name == name }
+                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnChangeBackgroundColor(index))
                     },
                 )
             },
@@ -371,6 +366,15 @@ private fun DSWantedActionAreaDemoScreenContent(
                     }
                 )
             },
+            captionIcon = {
+                DSWantedOptionSwitchCell(
+                    text = "captionIcon : ${viewState.captionIcon}",
+                    checkState = viewState.captionIcon,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnChangeCaptionIcon(it))
+                    }
+                )
+            },
             divider = {
                 DSWantedOptionSwitchCell(
                     text = "divider : ${viewState.divider}",
@@ -380,21 +384,21 @@ private fun DSWantedActionAreaDemoScreenContent(
                     }
                 )
             },
-            negative = {
+            alternative = {
                 DSWantedOptionSwitchCell(
-                    text = "negative : ${viewState.negative}",
-                    checkState = viewState.negative,
+                    text = "alternative : ${viewState.alternative}",
+                    checkState = viewState.alternative,
                     onCheckChanged = {
-                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnChangeNegative(it))
+                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnChangeAlternative(it))
                     }
                 )
             },
-            neutral = {
+            sub = {
                 DSWantedOptionSwitchCell(
-                    text = "neutral : ${viewState.neutral}",
-                    checkState = viewState.neutral,
+                    text = "sub : ${viewState.sub}",
+                    checkState = viewState.sub,
                     onCheckChanged = {
-                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnChangeNeutral(it))
+                        onViewEvent(DSWantedActionAreaDemoViewEvent.OnChangeSub(it))
                     }
                 )
             },
@@ -418,11 +422,12 @@ private fun DSWantedActionAreaDemoScreenLayout(
     type: @Composable () -> Unit,
     safeArea: @Composable () -> Unit,
     background: @Composable () -> Unit,
-    gradationColor: @Composable () -> Unit,
+    backgroundColor: @Composable () -> Unit,
     divider: @Composable () -> Unit,
     caption: @Composable () -> Unit,
-    negative: @Composable () -> Unit,
-    neutral: @Composable () -> Unit,
+    captionIcon: @Composable () -> Unit,
+    alternative: @Composable () -> Unit,
+    sub: @Composable () -> Unit,
     extra: @Composable () -> Unit,
 ) {
     Column(
@@ -432,12 +437,22 @@ private fun DSWantedActionAreaDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -455,7 +470,7 @@ private fun DSWantedActionAreaDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = com.wanted.android.designsystem.R.color.label_strong,
+                    colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
@@ -463,11 +478,12 @@ private fun DSWantedActionAreaDemoScreenLayout(
             type()
             safeArea()
             background()
-            gradationColor()
+            backgroundColor()
             caption()
+            captionIcon()
             divider()
-            negative()
-            neutral()
+            alternative()
+            sub()
             extra()
         }
     }
@@ -492,17 +508,17 @@ private fun ActionSample(
             type = ActionAreaType.Neutral,
             background = true,
             safeArea = false, // dialog 에서는 false, 일반 screen  에서는 true
-            negative = {
+            alternative = {
                 WantedButton(
                     modifier = Modifier
                         .wrapContentHeight()
                         .fillMaxWidth(),
                     text = "취소",
                     variant = ButtonVariant.OUTLINED,
-                    type = ButtonType.PRIMARY
+                    type = ButtonType.ASSISTIVE
                 )
             },
-            positive = {
+            main = {
                 WantedButton(
                     modifier = Modifier
                         .wrapContentHeight()
@@ -516,13 +532,13 @@ private fun ActionSample(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         WantedActionArea(
             modifier = Modifier.fillMaxWidth(),
             type = ActionAreaType.Strong,
-            negative = {
+            alternative = {
                 WantedButton(
                     modifier = Modifier
                         .wrapContentHeight()
@@ -532,7 +548,7 @@ private fun ActionSample(
                     type = ButtonType.ASSISTIVE,
                 )
             },
-            positive = {
+            main = {
                 WantedButton(
                     modifier = Modifier
                         .wrapContentHeight()
@@ -546,97 +562,114 @@ private fun ActionSample(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         WantedActionArea(
             type = ActionAreaType.Strong,
             caption = "캡션",
-            positive = "메인 액션",
-            negative = "대체 액션",
-            neutral = "보조 액션",
-            onClickPositive = {},
-            onClickNegative = {},
-            onClickNeutral = {}
+            main = "메인 액션",
+            alternative = "대체 액션",
+            sub = "보조 액션",
+            onClickMain = {},
+            onClickAlternative = {},
+            onClickSub = {}
         )
 
         Box(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         WantedActionArea(
             type = ActionAreaType.Neutral,
             caption = "캡션",
-            positive = "메인 액션",
-            negative = "대체 액션",
-            neutral = "보조 액션",
-            onClickPositive = {},
-            onClickNegative = {},
-            onClickNeutral = {}
+            main = "메인 액션",
+            alternative = "대체 액션",
+            sub = "보조 액션",
+            onClickMain = {},
+            onClickAlternative = {},
+            onClickSub = {}
         )
 
         Box(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
+        )
+
+        WantedActionArea(
+            type = ActionAreaType.Strong,
+            caption = "캡션 아이콘",
+            captionIcon = WantedActionAreaDefaults.CAPTION_ICON,
+            main = "메인 액션",
+            alternative = "대체 액션",
+            onClickMain = {},
+            onClickAlternative = {}
+        )
+
+        Box(
+            modifier = Modifier
+                .height(10.dp)
+                .fillMaxWidth()
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         WantedActionArea(
             type = ActionAreaType.Neutral,
             caption = "캡션",
-            positive = "메인 액션",
-            negative = "대체 액션",
-            neutral = "보조 액션",
-            onClickPositive = {},
-            onClickNegative = {},
-//                onClickNeutral = {}
+            main = "메인 액션",
+            alternative = "대체 액션",
+            sub = "보조 액션",
+            onClickMain = {},
+            onClickAlternative = {},
+//                onClickSub = {}
         )
 
         Box(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         WantedActionArea(
             type = ActionAreaType.Neutral,
             caption = "캡션",
-            positive = "메인 액션",
-            negative = "대체 액션",
-            neutral = "보조 액션",
-            onClickPositive = {},
-//                onClickNegative = {},
-            onClickNeutral = {}
+            main = "메인 액션",
+            alternative = "대체 액션",
+            sub = "보조 액션",
+            onClickMain = {},
+//                onClickAlternative = {},
+            onClickSub = {}
         )
 
         Box(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         WantedActionArea(
             type = ActionAreaType.Cancel,
             caption = "캡션",
-            positive = "메인 액션",
-            negative = "대체 액션",
-            neutral = "보조 액션",
-            onClickPositive = {},
-            onClickNegative = {},
-            onClickNeutral = {}
+            main = "메인 액션",
+            alternative = "대체 액션",
+            sub = "보조 액션",
+            onClickMain = {},
+            onClickAlternative = {},
+            onClickSub = {}
         )
 
         Box(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         Column(modifier = Modifier) {
@@ -645,12 +678,12 @@ private fun ActionSample(
             WantedActionArea(
                 type = ActionAreaType.Cancel,
                 background = true,
-                positive = "메인 액션",
-                negative = "대체 액션",
-                neutral = "보조 액션",
-                onClickPositive = {},
-                onClickNegative = {},
-                onClickNeutral = {}
+                main = "메인 액션",
+                alternative = "대체 액션",
+                sub = "보조 액션",
+                onClickMain = {},
+                onClickAlternative = {},
+                onClickSub = {}
             )
         }
 
@@ -658,7 +691,7 @@ private fun ActionSample(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         Column(modifier = Modifier) {
@@ -668,12 +701,12 @@ private fun ActionSample(
                 type = ActionAreaType.Cancel,
                 background = true,
                 safeArea = false,
-                positive = "메인 액션",
-                negative = "대체 액션",
-                neutral = "보조 액션",
-                onClickPositive = {},
-                onClickNegative = {},
-                onClickNeutral = {}
+                main = "메인 액션",
+                alternative = "대체 액션",
+                sub = "보조 액션",
+                onClickMain = {},
+                onClickAlternative = {},
+                onClickSub = {}
             )
         }
 
@@ -681,18 +714,18 @@ private fun ActionSample(
             modifier = Modifier
                 .height(10.dp)
                 .fillMaxWidth()
-                .background(colorResource(R.color.material_dimmer))
+                .background(colorResource(R.color.effect_dimmer_primary))
         )
 
         WantedActionArea(
             type = ActionAreaType.Cancel,
             caption = "캡션",
-            positive = "메인 액션",
-            negative = "대체 액션",
-            neutral = "보조 액션",
-            onClickPositive = {},
-            onClickNegative = {},
-            onClickNeutral = {},
+            main = "메인 액션",
+            alternative = "대체 액션",
+            sub = "보조 액션",
+            onClickMain = {},
+            onClickAlternative = {},
+            onClickSub = {},
             extra = {
                 Box(
                     modifier = Modifier

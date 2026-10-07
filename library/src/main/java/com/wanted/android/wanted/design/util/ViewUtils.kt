@@ -69,6 +69,7 @@ const val OPACITY_5 = 0.05f
 const val OPACITY_8 = 0.08f
 const val OPACITY_12 = 0.12f
 const val OPACITY_16 = 0.16f
+const val OPACITY_20 = 0.20f
 const val OPACITY_22 = 0.22f
 const val OPACITY_28 = 0.28f
 const val OPACITY_35 = 0.35f

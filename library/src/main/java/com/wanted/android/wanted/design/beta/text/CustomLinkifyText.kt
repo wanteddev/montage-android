@@ -23,7 +23,7 @@ fun CustomLinkifyText(
     text: String,
     style: TextStyle = LocalTextStyle.current,
     linkStyle: SpanStyle = SpanStyle(
-        color = DesignSystemTheme.colors.primaryNormal,
+        color = DesignSystemTheme.colors.foregroundBrandPrimary,
         textDecoration = TextDecoration.Underline
     ),
     onClickLink: ((url: String) -> Unit)? = null

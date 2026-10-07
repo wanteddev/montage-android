@@ -47,7 +47,7 @@ fun LogoLoading(
                     text = it,
                     modifier = Modifier,
                     style = FontFixTextStyle(
-                        color = DesignSystemTheme.colors.labelNormal,
+                        color = DesignSystemTheme.colors.foregroundNeutralPrimary,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center

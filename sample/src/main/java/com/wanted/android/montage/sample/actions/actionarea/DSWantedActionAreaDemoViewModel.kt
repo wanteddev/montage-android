@@ -29,15 +29,23 @@ class DSWantedActionAreaDemoViewModel @Inject constructor(
                 setEffect { DSWantedActionAreaDemoSideEffect.CopyCode(viewState.value.code) }
             }
 
+            else -> handleOptionEvents(event)
+        }
+    }
+
+    private fun handleOptionEvents(event: DSWantedActionAreaDemoEvent) {
+        when (event) {
             is DSWantedActionAreaDemoEvent.SetType -> setState { copy(type = event.type) }
             is DSWantedActionAreaDemoEvent.SetSafeArea -> setState { copy(safeArea = event.safeArea) }
             is DSWantedActionAreaDemoEvent.SetCaption -> setState { copy(caption = event.caption) }
+            is DSWantedActionAreaDemoEvent.SetCaptionIcon -> setState { copy(captionIcon = event.captionIcon) }
             is DSWantedActionAreaDemoEvent.SetDivider -> setState { copy(divider = event.divider) }
-            is DSWantedActionAreaDemoEvent.SetNegative -> setState { copy(negative = event.negative) }
-            is DSWantedActionAreaDemoEvent.SetNeutral -> setState { copy(neutral = event.neutral) }
+            is DSWantedActionAreaDemoEvent.SetAlternative -> setState { copy(alternative = event.alternative) }
+            is DSWantedActionAreaDemoEvent.SetSub -> setState { copy(sub = event.sub) }
             is DSWantedActionAreaDemoEvent.SetExtra -> setState { copy(extra = event.extra) }
             is DSWantedActionAreaDemoEvent.SetBackground -> setState { copy(background = event.background) }
-            is DSWantedActionAreaDemoEvent.SetGradationColor -> setState { copy(gradationColorIndex = event.colorIndex) }
+            is DSWantedActionAreaDemoEvent.SetBackgroundColor -> setState { copy(backgroundColorIndex = event.colorIndex) }
+            else -> Unit
         }
     }
 
@@ -45,28 +53,36 @@ class DSWantedActionAreaDemoViewModel @Inject constructor(
         fun boolStr(b: Boolean) = b.toString()
         val type = state.type.name
         val captionLine = if (state.caption) "\n    caption = \"캡션 입니다.\"," else ""
-        val negativeSlot =
-            if (state.negative) ",\n    negative = { /* WantedButton(...) */ }" else ""
-        val neutralSlot = if (state.neutral) ",\n    neutral = { /* WantedButton(...) */ }" else ""
+        val captionIconLine = if (state.caption && state.captionIcon) {
+            "\n    captionIcon = WantedActionAreaDefaults.CAPTION_ICON,"
+        } else {
+            ""
+        }
+        val alternativeSlot = if (state.alternative) {
+            ",\n    alternative = \"alternative\",\n    onClickAlternative = { /* 처리 */ }"
+        } else {
+            ""
+        }
+        val subSlot = if (state.sub) {
+            ",\n    sub = \"sub\",\n    onClickSub = { /* 처리 */ }"
+        } else {
+            ""
+        }
         val extraSlot = if (state.extra) ",\n    extra = { /* Your extra composable */ }" else ""
         val colorHex = "0x${
-            state.gradationColorList[state.gradationColorIndex].color.toString(16).uppercase()
+            state.backgroundColorList[state.backgroundColorIndex].color.toString(16).uppercase()
                 .padStart(8, '0')
         }"
-        val gradationColorLine =
-            if (state.background) "\n    gradationColor = Color($colorHex)," else ""
+        val backgroundColorLine =
+            if (state.background) "\n    backgroundColor = Color($colorHex)," else ""
         return """
             WantedActionArea(
                 type = ActionAreaType.$type,
                 safeArea = ${boolStr(state.safeArea)},
                 background = ${boolStr(state.background)},
-                divider = ${boolStr(state.divider)},$gradationColorLine$captionLine
-                positive = {
-                    WantedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = \"positive\"
-                    )
-                }$negativeSlot$neutralSlot$extraSlot
+                divider = ${boolStr(state.divider)},$backgroundColorLine$captionLine$captionIconLine
+                main = \"main\",
+                onClickMain = { /* 처리 */ }$alternativeSlot$subSlot$extraSlot
             )
         """.trimMargin()
     }

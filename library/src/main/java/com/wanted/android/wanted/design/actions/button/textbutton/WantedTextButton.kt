@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,21 +27,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
-import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
-import com.wanted.android.wanted.design.actions.button.config.buttonDrawableSize
-import com.wanted.android.wanted.design.actions.button.config.buttonHeight
-import com.wanted.android.wanted.design.actions.button.config.buttonHorizontalPadding
-import com.wanted.android.wanted.design.actions.button.config.buttonVerticalPadding
-import com.wanted.android.wanted.design.actions.button.config.buttonWidth
 import com.wanted.android.wanted.design.actions.button.view.WantedButtonSideIcon
 import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.loading.loading.WantedCircularProgressIndicator
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonType
-import com.wanted.android.wanted.design.util.ButtonVariant
-import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.clickOnce
 import com.wanted.android.wanted.design.util.getTextButtonSize
 
@@ -104,8 +94,8 @@ class WantedTextButton @JvmOverloads constructor(
                 buttonWidth = buttonWidth,
                 buttonHeight = buttonHeight
             ),
-            color = buttonType,
-            size = size,
+            color = buttonType.toWantedTextButtonColor(),
+            size = size.toWantedTextButtonSize(),
             enabled = buttonStatus,
             leadingDrawable = if (leftDrawable != 0) leftDrawable else null,
             trailingDrawable = if (rightDrawable != 0) rightDrawable else null,
@@ -116,65 +106,59 @@ class WantedTextButton @JvmOverloads constructor(
 
 
 /**
+ * WantedTextButton
+ *
  * Text 형태의 버튼을 생성하는 Compose 함수입니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedTextButton(
  *     text = "확인",
- *     type = ButtonType.PRIMARY,
- *     size = ButtonSize.LARGE,
+ *     color = WantedTextButtonColor.PRIMARY,
+ *     size = WantedTextButtonSize.MEDIUM,
  *     onClick = { /* 클릭 이벤트 처리 */ }
  * )
  * ```
  *
  * @param text String: 버튼에 표시할 텍스트입니다.
  * @param modifier Modifier: 버튼 외형을 조정하는 Modifier입니다.
- * @param color ButtonType: 버튼의 타입(PRIMARY, ASSISTIVE)을 지정합니다.
- * @param size ButtonSize: 버튼의 크기(LARGE, MEDIUM, SMALL)를 지정합니다.
+ * @param color WantedTextButtonColor: 버튼의 색(PRIMARY, ASSISTIVE)을 지정합니다.
+ * @param size WantedTextButtonSize: 버튼의 크기(SMALL, MEDIUM)를 지정합니다. LARGE/XSMALL은 공식 미지원(레거시)입니다.
  * @param enabled Boolean: 버튼의 활성화 여부를 지정합니다.
  * @param isLoading Boolean: 로딩 상태를 표시할지 여부입니다.
  * @param leadingDrawable Int?: 버튼 왼쪽에 표시할 Drawable 리소스 ID입니다.
  * @param trailingDrawable Int?: 버튼 오른쪽에 표시할 Drawable 리소스 ID입니다.
  * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
- * @param buttonDefault: WantedButtonDefault 버튼의 기본 스타일 설정입니다.
+ * @param buttonDefault WantedTextButtonDefault: 버튼의 기본 스타일 설정입니다. color/size 축으로 표현되지 않는 색·타이포가 필요할 때만 contentColor/textStyle을 덮어 전달합니다.
  */
 @Composable
 fun WantedTextButton(
     text: String,
     modifier: Modifier = Modifier,
-    color: ButtonType = ButtonType.PRIMARY,
-    size: ButtonSize = ButtonSize.MEDIUM,
+    color: WantedTextButtonColor = WantedTextButtonColor.PRIMARY,
+    size: WantedTextButtonSize = WantedTextButtonSize.MEDIUM,
     enabled: Boolean = true,
     isLoading: Boolean = false,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
     onClick: () -> Unit = {},
-    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-        variant = ButtonVariant.TEXT,
-        type = color,
+    buttonDefault: WantedTextButtonDefault = WantedTextButtonDefaults.getDefault(
+        color = color,
         size = size,
         enabled = enabled
     )
 ) {
     WantedTouchArea(
         modifier = modifier,
-        verticalPadding = 4.dp,
-        horizontalPadding = if (size == ButtonSize.SMALL) 6.dp else 7.dp,
-        shape = RoundedCornerShape(6.dp),
+        verticalPadding = 0.dp,
+        horizontalPadding = getTextButtonTouchAreaHorizontalPadding(buttonDefault.size),
+        shape = getTextButtonTouchAreaShape(buttonDefault.size),
         enabled = enabled,
-        rippleColor = if (color == ButtonType.PRIMARY) {
-            buttonDefault.contentColor.copy(alpha = OPACITY_12)
-        } else {
-            DesignSystemTheme.colorsOpacity.labelNormalOpacity12
-        },
+        rippleColor = buttonDefault.rippleColor,
         content = {
             WantedTextContent(
                 text = text,
                 modifier = Modifier,
-                type = color,
-                size = size,
-                enabled = enabled,
                 isLoading = isLoading,
                 leadingDrawable = leadingDrawable,
                 trailingDrawable = trailingDrawable,
@@ -193,59 +177,40 @@ fun WantedTextButton(
 private fun WantedTextContent(
     text: String,
     modifier: Modifier = Modifier,
-    type: ButtonType = ButtonType.PRIMARY,
-    size: ButtonSize = ButtonSize.MEDIUM,
-    enabled: Boolean = true,
     isLoading: Boolean = false,
     leadingDrawable: Int? = null,
     trailingDrawable: Int? = null,
-    buttonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-        variant = ButtonVariant.TEXT,
-        type = type,
-        size = size,
-        enabled = enabled
-    )
+    buttonDefault: WantedTextButtonDefault = WantedTextButtonDefaults.getDefault()
 ) {
     val textColor = remember(buttonDefault.enabled, buttonDefault.contentColor) {
         mutableStateOf(buttonDefault.contentColor)
     }
 
-    val rightIconTintColor = remember(buttonDefault.enabled, buttonDefault.rightIconTintColor) {
-        mutableStateOf(buttonDefault.rightIconTintColor)
+    val trailingIconTintColor = remember(buttonDefault.enabled, buttonDefault.trailingIconTintColor) {
+        mutableStateOf(buttonDefault.trailingIconTintColor)
     }
 
-    val leftIconTintColor = remember(buttonDefault.enabled, buttonDefault.leftIconTintColor) {
-        mutableStateOf(buttonDefault.leftIconTintColor)
+    val leadingIconTintColor = remember(buttonDefault.enabled, buttonDefault.leadingIconTintColor) {
+        mutableStateOf(buttonDefault.leadingIconTintColor)
     }
 
     WantedTextButtonLayout(
         modifier = modifier
-            .buttonHeight(ButtonVariant.TEXT, buttonDefault.size)
-            .buttonWidth(buttonDefault.size, text.isEmpty())
-            .buttonVerticalPadding(text.isNotEmpty())
-            .buttonHorizontalPadding(
-                ButtonVariant.TEXT,
-                buttonDefault.size,
-                text.isEmpty()
-            ),
+            .textButtonHeight(buttonDefault.size)
+            .textButtonWidth(buttonDefault.size, text.isEmpty())
+            .textButtonVerticalPadding(buttonDefault.size),
         horizontalArrangement = Arrangement.spacedBy(
-            space = when (size) {
-                ButtonSize.SMALL -> 4.dp
-                else -> 5.dp
-            },
+            space = getTextButtonContentSpacing(buttonDefault.size),
             alignment = Alignment.CenterHorizontally
         ),
         leftDrawable = leadingDrawable?.let {
             {
                 WantedButtonSideIcon(
                     modifier = Modifier
-                        .buttonDrawableSize(
-                            variant = ButtonVariant.TEXT,
-                            size = buttonDefault.size
-                        )
+                        .textButtonDrawableSize(buttonDefault.size)
                         .alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
-                    tint = leftIconTintColor.value
+                    tint = leadingIconTintColor.value
                 )
             }
         },
@@ -267,13 +232,10 @@ private fun WantedTextContent(
             {
                 WantedButtonSideIcon(
                     modifier = Modifier
-                        .buttonDrawableSize(
-                            variant = ButtonVariant.TEXT,
-                            size = buttonDefault.size
-                        )
+                        .textButtonDrawableSize(buttonDefault.size)
                         .alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
-                    tint = rightIconTintColor.value
+                    tint = trailingIconTintColor.value
                 )
             }
         },
@@ -288,6 +250,7 @@ private fun WantedTextContent(
     )
 }
 
+
 @Preview
 @Composable
 private fun PreviewTextButtons() {
@@ -295,7 +258,7 @@ private fun PreviewTextButtons() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .background(DesignSystemTheme.colors.backgroundNormalNormal),
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -348,7 +311,7 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnableNoBackground() {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             modifier = Modifier
                 .padding(top = 20.dp)
                 .wrapContentSize()
@@ -357,8 +320,8 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnableNoBackground() {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
-            color = ButtonType.ASSISTIVE,
+            size = WantedTextButtonSize.SMALL,
+            color = WantedTextButtonColor.ASSISTIVE,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -369,37 +332,37 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnableNoBackground() {
 private fun PreviewWantedTextButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             modifier = Modifier.wrapContentSize()
         )
 
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
-            color = ButtonType.ASSISTIVE,
-            modifier = Modifier.wrapContentSize()
-        )
-
-        WantedTextButton(
-            text = "Button",
-            isLoading = true,
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
+            color = WantedTextButtonColor.ASSISTIVE,
             modifier = Modifier.wrapContentSize()
         )
 
         WantedTextButton(
             text = "Button",
             isLoading = true,
-            size = ButtonSize.SMALL,
-            color = ButtonType.ASSISTIVE,
+            size = WantedTextButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedTextButton(
+            text = "Button",
+            isLoading = true,
+            size = WantedTextButtonSize.SMALL,
+            color = WantedTextButtonColor.ASSISTIVE,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -410,21 +373,21 @@ private fun PreviewWantedTextButtonSmallNoDrawableEnable() {
 private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark
         )
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark
@@ -437,21 +400,21 @@ private fun PreviewWantedTextButtonSmallLeftDrawableEnable() {
 private fun PreviewWantedTextButtonSmallRightDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             trailingDrawable = R.drawable.icon_normal_heart
         )
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
             trailingDrawable = R.drawable.icon_normal_heart
@@ -464,14 +427,14 @@ private fun PreviewWantedTextButtonSmallRightDrawableEnable() {
 private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
             trailingDrawable = R.drawable.icon_normal_heart
@@ -479,7 +442,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
@@ -493,21 +456,21 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesEnable() {
 private fun PreviewWantedTextButtonMediumEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.MEDIUM,
+            size = WantedTextButtonSize.MEDIUM,
             modifier = Modifier.wrapContentSize()
         )
 
         WantedTextButton(
             text = "Button",
             isLoading = true,
-            size = ButtonSize.MEDIUM,
+            size = WantedTextButtonSize.MEDIUM,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -518,21 +481,21 @@ private fun PreviewWantedTextButtonMediumEnable() {
 private fun PreviewWantedTextButtonLargeEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             modifier = Modifier.wrapContentSize()
         )
 
         WantedTextButton(
             text = "Button",
             isLoading = true,
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             modifier = Modifier.wrapContentSize()
         )
     }
@@ -543,21 +506,21 @@ private fun PreviewWantedTextButtonLargeEnable() {
 private fun PreviewWantedTextButtonLargeMaxWidthEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             modifier = Modifier.fillMaxWidth()
         )
 
         WantedTextButton(
             text = "Button",
             isLoading = true,
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -568,21 +531,21 @@ private fun PreviewWantedTextButtonLargeMaxWidthEnable() {
 private fun PreviewWantedTextButtonSmallNoDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize()
         )
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize()
@@ -595,14 +558,14 @@ private fun PreviewWantedTextButtonSmallNoDrawableDisable() {
 private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark
@@ -610,7 +573,7 @@ private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
@@ -624,14 +587,14 @@ private fun PreviewWantedTextButtonSmallLeftDrawableDisable() {
 private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
             trailingDrawable = R.drawable.icon_normal_heart
@@ -639,7 +602,7 @@ private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
@@ -653,14 +616,14 @@ private fun PreviewWantedTextButtonSmallRightDrawableDisable() {
 private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             modifier = Modifier.wrapContentSize(),
             leadingDrawable = R.drawable.icon_normal_bookmark,
@@ -669,7 +632,7 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.SMALL,
+            size = WantedTextButtonSize.SMALL,
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize(),
@@ -684,21 +647,21 @@ private fun PreviewWantedTextButtonSmallTwoDrawablesDisable() {
 private fun PreviewWantedTextButtonMediumDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.MEDIUM,
+            size = WantedTextButtonSize.MEDIUM,
             enabled = false,
             modifier = Modifier.wrapContentSize()
         )
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.MEDIUM,
+            size = WantedTextButtonSize.MEDIUM,
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize()
@@ -711,21 +674,21 @@ private fun PreviewWantedTextButtonMediumDisable() {
 private fun PreviewWantedTextButtonLargeDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             enabled = false,
             modifier = Modifier.wrapContentSize()
         )
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             enabled = false,
             isLoading = true,
             modifier = Modifier.wrapContentSize()
@@ -738,21 +701,21 @@ private fun PreviewWantedTextButtonLargeDisable() {
 private fun PreviewWantedTextButtonLargeMaxWidthDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             enabled = false,
             modifier = Modifier.fillMaxWidth()
         )
 
         WantedTextButton(
             text = "Button",
-            size = ButtonSize.LARGE,
+            size = WantedTextButtonSize.LARGE,
             enabled = false,
             isLoading = true,
             modifier = Modifier.fillMaxWidth()

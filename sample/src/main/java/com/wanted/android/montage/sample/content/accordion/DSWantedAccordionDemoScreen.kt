@@ -37,10 +37,10 @@ import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordion
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
+import com.wanted.android.wanted.design.contents.listcell.WantedListCellDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -83,8 +83,8 @@ fun DSWantedAccordionDemoScreen(
 			is DSWantedAccordionDemoViewEvent.OnClickDescription -> {
 				viewModel.setEvent(DSWantedAccordionDemoEvent.SetDescription(viewEvent.isChecked))
 			}
-			is DSWantedAccordionDemoViewEvent.OnClickFillWidth -> {
-				viewModel.setEvent(DSWantedAccordionDemoEvent.SetFillWidth(viewEvent.isChecked))
+			is DSWantedAccordionDemoViewEvent.OnSelectVariant -> {
+				viewModel.setEvent(DSWantedAccordionDemoEvent.SetVariant(viewEvent.variant))
 			}
 			is DSWantedAccordionDemoViewEvent.OnClickDivider -> {
 				viewModel.setEvent(DSWantedAccordionDemoEvent.SetDivider(viewEvent.isChecked))
@@ -102,7 +102,7 @@ fun DSWantedAccordionDemoScreen(
 	}
 
 	if (viewState.isShowCode) {
-		WantedModal(
+		WantedPopup(
 			positive = "코드 복사",
 			onClickPositive = {
 				viewModel.setEvent(DSWantedAccordionDemoEvent.CopyCode)
@@ -123,7 +123,7 @@ fun DSWantedAccordionDemoScreen(
 	}
 
 	if (viewState.isShowAll) {
-		WantedModal(
+		WantedPopup(
 			positive = "확인",
 			onClickPositive = {
 				viewModel.setEvent(DSWantedAccordionDemoEvent.ShowAll(false))
@@ -155,7 +155,7 @@ private fun DSWantedAccordionDemoScreenContent(
 			WantedActionArea(
 				modifier = Modifier.navigationBarsPadding(),
 				background = true,
-				positive = {
+				main = {
 					WantedButton(
 						modifier = Modifier.fillMaxWidth(),
 						text = "코드 보기",
@@ -164,7 +164,7 @@ private fun DSWantedAccordionDemoScreenContent(
 						}
 					)
 				},
-				neutral = {
+				sub = {
 					WantedButton(
 						modifier = Modifier.fillMaxWidth(),
 						text = "모든 옵션 보기",
@@ -184,7 +184,7 @@ private fun DSWantedAccordionDemoScreenContent(
 					title = "제목",
 					isExpanded = viewState.isExpanded,
 					description = if (viewState.description) "제목에 대한 상세 내용을 입력해주세요.\n긴 컨텐츠라면 접은 상태를 기본 값으로 사용하세요." else null,
-					fillWidth = viewState.fillWidth,
+					variant = viewState.selectedVariant,
 					divider = viewState.divider,
 					verticalPadding = viewState.verticalPadding,
 					leadingIcon = if (viewState.leadingIcon) {
@@ -193,7 +193,7 @@ private fun DSWantedAccordionDemoScreenContent(
 								modifier = Modifier.size(20.dp),
 								painter = painterResource(R.drawable.icon_normal_arrow_right),
 								contentDescription = "",
-								tint = DesignSystemTheme.colors.labelNormal
+								tint = DesignSystemTheme.colors.foregroundNeutralPrimary
 							)
 						}
 					} else null,
@@ -202,7 +202,7 @@ private fun DSWantedAccordionDemoScreenContent(
 							Text(
 								text = "확장된 콘텐츠 영역입니다.",
 								style = DesignSystemTheme.typography.body2Regular.copy(
-									color = DesignSystemTheme.colors.labelNeutral
+									color = DesignSystemTheme.colors.foregroundNeutralSecondary
 								)
 							)
 						}
@@ -230,12 +230,17 @@ private fun DSWantedAccordionDemoScreenContent(
 					}
 				)
 			},
-			fillWidth = {
-				DSWantedOptionSwitchCell(
-					text = "fillWidth : ${viewState.fillWidth}",
-					checkState = viewState.fillWidth,
-					onCheckChanged = {
-						onViewEvent(DSWantedAccordionDemoViewEvent.OnClickFillWidth(it))
+			variant = {
+				WantedSelect(
+					value = "variant : ${viewState.selectedVariant.name}",
+					selectedValue = viewState.selectedVariant.name,
+					selectValueList = viewState.variantList.map { it.name },
+					onSelect = {
+						onViewEvent(
+							DSWantedAccordionDemoViewEvent.OnSelectVariant(
+								WantedListCellDefaults.Variant.valueOf(it)
+							)
+						)
 					}
 				)
 			},
@@ -286,7 +291,7 @@ private fun DSWantedAccordionDemoScreenLayout(
 	preview: @Composable () -> Unit,
 	isExpanded: @Composable () -> Unit,
 	description: @Composable () -> Unit,
-	fillWidth: @Composable () -> Unit,
+	variant: @Composable () -> Unit,
 	divider: @Composable () -> Unit,
 	leadingIcon: @Composable () -> Unit,
 	content: @Composable () -> Unit,
@@ -299,13 +304,23 @@ private fun DSWantedAccordionDemoScreenLayout(
 		Text(
 			text = "Preview",
 			style = WantedTextStyle(
-				colorRes = com.wanted.android.designsystem.R.color.label_strong,
+				colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
 				style = DesignSystemTheme.typography.heading2Bold
 			)
 		)
 
-		DSWantedPreviewContainer {
-		    preview()
+		Box(
+			modifier = Modifier
+				.fillMaxWidth()
+				.border(
+					width = 1.dp,
+					color = colorResource(R.color.line_neutral_primary),
+					shape = RoundedCornerShape(8.dp)
+				)
+				.padding(20.dp),
+			contentAlignment = Alignment.Center
+		) {
+			preview()
 		}
 
 		Spacer(Modifier.size(10.dp))
@@ -321,14 +336,14 @@ private fun DSWantedAccordionDemoScreenLayout(
 				modifier = Modifier.align(Alignment.Start),
 				text = "Option",
 				style = WantedTextStyle(
-					colorRes = com.wanted.android.designsystem.R.color.label_strong,
+					colorRes = com.wanted.android.montage.sample.R.color.foreground_neutral_strong,
 					style = DesignSystemTheme.typography.heading2Bold
 				)
 			)
 
 			isExpanded()
 			description()
-			fillWidth()
+			variant()
 			divider()
 			leadingIcon()
 			content()
@@ -350,19 +365,19 @@ private fun DSWantedAccordionDemoSampleAll(
 	) {
 		VerticalPadding.entries.forEach { padding ->
 			listOf(true, false).forEach { expanded ->
-				listOf(true, false).forEach { hasFillWidth ->
+				WantedListCellDefaults.Variant.entries.forEach { itemVariant ->
 					WantedAccordion(
 						title = "제목",
 						isExpanded = expanded,
 						description = "설명 텍스트",
-						fillWidth = hasFillWidth,
+						variant = itemVariant,
 						divider = viewState.divider,
 						verticalPadding = padding,
 						content = {
 							Text(
 								text = "확장된 콘텐츠 영역입니다.",
 								style = DesignSystemTheme.typography.body2Regular.copy(
-									color = DesignSystemTheme.colors.labelNeutral
+									color = DesignSystemTheme.colors.foregroundNeutralSecondary
 								)
 							)
 						},

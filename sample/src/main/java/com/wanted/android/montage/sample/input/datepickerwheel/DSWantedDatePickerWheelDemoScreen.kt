@@ -1,5 +1,6 @@
 package com.wanted.android.montage.sample.input.datepickerwheel
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,25 +9,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.input.datepickerwheel.DSWantedDatePickerWheelDemoScreenContract.DSWantedDatePickerWheelDemoEvent
 import com.wanted.android.montage.sample.input.datepickerwheel.DSWantedDatePickerWheelDemoScreenContract.DSWantedDatePickerWheelDemoViewEvent
 import com.wanted.android.montage.sample.input.datepickerwheel.DSWantedDatePickerWheelDemoScreenContract.DSWantedDatePickerWheelDemoViewState
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.picker.datepicker.WantedDatePickerWheel
 import com.wanted.android.wanted.design.input.picker.datepicker.WantedDatePickerWheelDefaults
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -118,12 +120,22 @@ private fun DSWantedDatePickerWheelDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -131,7 +143,7 @@ private fun DSWantedDatePickerWheelDemoScreenLayout(
                 Text(
                     text = "선택된 날짜: ${viewState.selectedYear}년 ${viewState.selectedMonth}월",
                     style = WantedTextStyle(
-                        colorRes = R.color.label_normal,
+                        colorRes = R.color.foreground_neutral_primary,
                         style = DesignSystemTheme.typography.body1Regular
                     )
                 )
@@ -158,7 +170,7 @@ private fun DSWantedDatePickerWheelDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )

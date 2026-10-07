@@ -78,8 +78,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param align WantedPopoverAlign: Popover의 정렬 방식입니다.
  * @param positionTop Boolean: Popover를 위쪽에 표시할지 여부입니다.
  * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
- * @param screenEdgePadding Dp: Popover 가 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며,
- * Popover 가 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
+ * @param screenEdgePadding Dp: Popover 가 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며, Popover 가 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
  * @param body (@Composable () -> Unit): Popover 내부 콘텐츠 슬롯입니다.
  * @param content (@Composable () -> Unit): Popover가 연결될 기준 콘텐츠 슬롯입니다.
  */
@@ -319,10 +318,8 @@ private fun PopoverPopup(
     }
 }
 
-/**
- * Popup 은 content 를 감싼 Box 의 좌상단을 기준(`Alignment.TopStart`)으로 놓이므로, offset 은 content 기준 상대값이다.
- * content 가 부모 안에서 떨어진 거리(`contentPositionY`)를 더하면 그만큼 한 번 더 밀린다.
- */
+// Popup 은 content 를 감싼 Box 의 좌상단을 기준(`Alignment.TopStart`)으로 놓이므로, offset 은 content 기준 상대값이다.
+// content 가 부모 안에서 떨어진 거리(`contentPositionY`)를 더하면 그만큼 한 번 더 밀린다.
 private fun calculatePopupOffset(
     popoverState: WantedPopoverState,
     spacingBetweenPopoverPx: Int
@@ -440,7 +437,6 @@ fun WantedPopover(
     )
 }
 
-// Stateless UI Components
 @Composable
 private fun PopoverHeader(
     modifier: Modifier = Modifier,
@@ -461,7 +457,7 @@ private fun PopoverHeader(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             style = DesignSystemTheme.typography.body2Bold,
-            color = DesignSystemTheme.colors.labelNormal
+            color = DesignSystemTheme.colors.foregroundNeutralPrimary
         )
 
         if (closeButton && onDismiss != null) {
@@ -488,7 +484,7 @@ private fun PopoverBody(
                 .weight(1f),
             text = text,
             style = DesignSystemTheme.typography.label2Medium,
-            color = DesignSystemTheme.colors.labelNeutral,
+            color = DesignSystemTheme.colors.foregroundNeutralSecondary,
             overflow = TextOverflow.Ellipsis
         )
 
@@ -521,7 +517,7 @@ private fun PopoverCloseButton(onDismiss: () -> Unit) {
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_normal_close),
                 contentDescription = null,
-                tint = DesignSystemTheme.colors.labelNormal
+                tint = DesignSystemTheme.colors.foregroundNeutralPrimary
             )
         }
     )
@@ -538,7 +534,7 @@ private fun WantedPopoverLayout(
         modifier = modifier
             .sizeIn(minWidth = 140.dp, maxWidth = 360.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(DesignSystemTheme.colors.backgroundElevatedNormal)
+            .background(DesignSystemTheme.colors.surfaceElevatedPrimary)
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         Column(

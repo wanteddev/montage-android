@@ -1,6 +1,5 @@
 package com.wanted.android.montage.sample.loading.pulltorefresh
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,25 +20,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.loading.pulltorefresh.DSWantedPullToRefreshDemoScreenContract.DSWantedPullToRefreshDemoEvent
 import com.wanted.android.montage.sample.loading.pulltorefresh.DSWantedPullToRefreshDemoScreenContract.DSWantedPullToRefreshDemoSideEffect
 import com.wanted.android.montage.sample.loading.pulltorefresh.DSWantedPullToRefreshDemoScreenContract.DSWantedPullToRefreshDemoViewEvent
 import com.wanted.android.montage.sample.loading.pulltorefresh.DSWantedPullToRefreshDemoScreenContract.DSWantedPullToRefreshDemoViewState
+import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.loading.pulltorefresh.WantedPullToRefreshBox
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 import kotlinx.coroutines.delay
@@ -83,7 +80,7 @@ fun DSWantedPullToRefreshDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedPullToRefreshDemoEvent.CopyCode)
@@ -119,7 +116,7 @@ private fun DSWantedPullToRefreshDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -128,7 +125,7 @@ private fun DSWantedPullToRefreshDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -205,7 +202,7 @@ private fun DSWantedPullToRefreshDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -217,7 +214,7 @@ private fun DSWantedPullToRefreshDemoScreenLayout(
         Text(
             text = "Option",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -228,7 +225,7 @@ private fun DSWantedPullToRefreshDemoScreenLayout(
             modifier = Modifier.fillMaxWidth(),
             text = "리스트를 아래로 당겨 새로고침을 확인하세요.",
             style = WantedTextStyle(
-                colorRes = R.color.label_neutral,
+                colorRes = R.color.foreground_neutral_secondary,
                 style = DesignSystemTheme.typography.body2ReadingRegular
             )
         )

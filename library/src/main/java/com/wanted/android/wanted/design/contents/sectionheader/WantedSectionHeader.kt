@@ -72,9 +72,9 @@ fun WantedSectionHeader(
             Size.XSmall -> DesignSystemTheme.typography.label1Bold
         }.copy(
             color = if (size == Size.XSmall) {
-                DesignSystemTheme.colors.labelAlternative
+                DesignSystemTheme.colors.foregroundNeutralTertiary
             } else {
-                DesignSystemTheme.colors.labelStrong
+                DesignSystemTheme.colors.foregroundNeutralStrong
             }
         )
     }

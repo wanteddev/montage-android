@@ -56,7 +56,7 @@ object WantedContentBadgeDefaults {
      */
     @Composable
     fun getAccentDefault(
-        contentColor: Color = DesignSystemTheme.colors.accentBackgroundCyan,
+        contentColor: Color = DesignSystemTheme.colors.surfaceAccentCyanOpaque,
         backgroundColor: Color = contentColor.copy(OPACITY_8),
         outLineColor: Color = contentColor
     ) = WantedContentBadgeDefault(
@@ -81,15 +81,15 @@ object WantedContentBadgeDefaults {
      * )
      * ```
      *
-     * @param contentColor Color: 콘텐츠 색상입니다. 기본값은 label_alternative 색상입니다.
+     * @param contentColor Color: 콘텐츠 색상입니다. 기본값은 foregroundNeutralTertiary 색상입니다.
      * @return WantedContentBadgeDefault: 중립 배지 구성을 반환합니다.
      */
     @Composable
     fun getNeutralDefault(
-        contentColor: Color = DesignSystemTheme.colors.labelAlternative,
+        contentColor: Color = DesignSystemTheme.colors.foregroundNeutralTertiary,
     ) = WantedContentBadgeDefault(
         contentColor = contentColor,
-        backgroundColor = DesignSystemTheme.colors.fillNormal,
-        outLineColor = DesignSystemTheme.colors.labelAlternative.copy(OPACITY_16)
+        backgroundColor = DesignSystemTheme.colors.surfaceNeutralSecondary,
+        outLineColor = DesignSystemTheme.colors.foregroundNeutralTertiary.copy(OPACITY_16)
     )
 }

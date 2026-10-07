@@ -55,9 +55,9 @@ fun BottomSheetMultiSelectItem(
                 DesignSystemTheme.typography.body1Medium
             },
             color = if (isSelect) {
-                DesignSystemTheme.colors.labelStrong
+                DesignSystemTheme.colors.foregroundNeutralStrong
             } else {
-                DesignSystemTheme.colors.labelNeutral
+                DesignSystemTheme.colors.foregroundNeutralSecondary
             }
         )
 
@@ -68,7 +68,7 @@ fun BottomSheetMultiSelectItem(
                 .clip(CircleShape)
                 .background(
                     color = if (isSelect) {
-                        DesignSystemTheme.colors.primaryNormal
+                        DesignSystemTheme.colors.surfaceBrandPrimary
                     } else {
                         DesignSystemTheme.colors.transparent
                     },
@@ -80,7 +80,7 @@ fun BottomSheetMultiSelectItem(
                     color = if (isSelect) {
                         DesignSystemTheme.colors.transparent
                     } else {
-                        DesignSystemTheme.colors.lineNormalNeutral
+                        DesignSystemTheme.colors.lineNeutralSecondary
                     }
                 ),
             contentAlignment = Alignment.Center

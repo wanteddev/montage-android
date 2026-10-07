@@ -89,7 +89,7 @@ fun WantedScrollableTabRow(
     horizontalPadding: Boolean = false,
     isLeftGradient: Boolean = false,
     isRightGradient: Boolean = false,
-    gradientColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    gradientColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     scrollState: ScrollState = rememberScrollState(),
     onClickItem: (index: Int) -> Unit = {},
     rightIcon: @Composable ((Dp) -> Unit)? = null,
@@ -160,7 +160,7 @@ private fun WantedScrollableFlexTabRow(
                         tabWidth = tabWidths[selectedTabIndex],
                     ),
                     height = 2.dp,
-                    color = DesignSystemTheme.colors.labelStrong
+                    color = DesignSystemTheme.colors.foregroundNeutralStrong
                 )
             }
         },
@@ -201,7 +201,7 @@ private fun WantedTabLayout(
     ) {
         HorizontalDivider(
             modifier = Modifier.align(Alignment.BottomStart),
-            color = DesignSystemTheme.colors.lineNormalAlternative
+            color = DesignSystemTheme.colors.lineNeutralTertiary
         )
 
         Row(

@@ -6,6 +6,8 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.actions.button.textbutton.WantedTextButtonDefaults
+import com.wanted.android.wanted.design.actions.button.textbutton.toWantedTextButtonColor
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -38,7 +40,10 @@ internal class WantedButtonContentLoaderImpl : WantedButtonContentLoader {
     ): Color = when (shape) {
         ButtonVariant.SOLID -> getSolidContentColor(type, enabled)
         ButtonVariant.OUTLINED -> getOutlineContentColor(type, enabled)
-        ButtonVariant.TEXT -> getTextContentColor(type, enabled)
+        ButtonVariant.TEXT -> WantedTextButtonDefaults.getContentColor(
+            color = type.toWantedTextButtonColor(),
+            enabled = enabled
+        )
     }
 
     @Composable
@@ -47,33 +52,23 @@ internal class WantedButtonContentLoaderImpl : WantedButtonContentLoader {
         enabled: Boolean
     ): Color = colorResource(
         id = when {
-            !enabled -> R.color.label_assistive
-            type == ButtonType.ASSISTIVE -> R.color.label_neutral
+            !enabled -> R.color.foreground_disable_primary
+            type == ButtonType.ASSISTIVE -> R.color.foreground_neutral_secondary
+            type == ButtonType.NEGATIVE -> R.color.foreground_negative_strong
             else -> R.color.static_white
         }
     )
 
+    // NEGATIVE는 outlined에서 미지원. WantedOutlinedButton 진입부에서 PRIMARY로 fallback된다.
     @Composable
     fun getOutlineContentColor(
         type: ButtonType,
         enabled: Boolean
     ) = colorResource(
         id = when {
-            !enabled -> R.color.label_disable
-            type == ButtonType.ASSISTIVE -> R.color.label_normal
-            else -> R.color.primary_normal
-        }
-    )
-
-    @Composable
-    fun getTextContentColor(
-        type: ButtonType,
-        enabled: Boolean
-    ) = colorResource(
-        id = when {
-            !enabled -> R.color.label_disable
-            type == ButtonType.ASSISTIVE -> R.color.label_alternative
-            else -> R.color.primary_normal
+            !enabled -> R.color.foreground_disable_primary
+            type == ButtonType.ASSISTIVE -> R.color.foreground_neutral_primary
+            else -> R.color.foreground_brand_primary
         }
     )
 
@@ -94,9 +89,10 @@ internal class WantedButtonContentLoaderImpl : WantedButtonContentLoader {
         enabled: Boolean
     ): Color = colorResource(
         id = when {
-            !enabled -> R.color.interaction_disable
-            type == ButtonType.ASSISTIVE -> R.color.fill_normal
-            else -> R.color.primary_normal
+            !enabled -> R.color.surface_disable_primary
+            type == ButtonType.ASSISTIVE -> R.color.surface_neutral_secondary
+            type == ButtonType.NEGATIVE -> R.color.foreground_negative_primary_opacity12
+            else -> R.color.surface_brand_primary
         }
     )
 }

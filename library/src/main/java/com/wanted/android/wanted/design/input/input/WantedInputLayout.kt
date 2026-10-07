@@ -32,8 +32,17 @@ internal fun WantedInputLayout(
     tight: Boolean,
     textStyle: TextStyle,
     leadingIcon: @Composable (() -> Unit)? = null,
-    label: @Composable () -> Unit
+    label: @Composable (() -> Unit)?
 ) {
+    // 라벨이 없으면 leading 만 영역을 잡는다. 빈 라벨을 배치하면 그 앞 간격(8·10dp)과
+    // 라벨 줄 높이 기준 최소 높이가 남아, ListCell 슬롯 등에 넣었을 때 보이지 않는 여백이 생긴다.
+    if (label == null) {
+        Box(modifier = modifier) {
+            leadingIcon?.invoke()
+        }
+        return
+    }
+
     val density = LocalDensity.current
     val lineHeight = remember(size, textStyle) {
         max(
@@ -89,7 +98,7 @@ private fun WantedInputLayoutPreview() {
                     modifier = Modifier,
                     size = WantedInputSize.Medium,
                     textStyle = DesignSystemTheme.typography.caption1Medium.copy(
-                        DesignSystemTheme.colors.labelAlternative
+                        DesignSystemTheme.colors.foregroundNeutralTertiary
                     ),
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
@@ -104,7 +113,7 @@ private fun WantedInputLayoutPreview() {
                     modifier = Modifier,
                     size = WantedInputSize.Medium,
                     textStyle = DesignSystemTheme.typography.caption1Medium.copy(
-                        DesignSystemTheme.colors.labelAlternative
+                        DesignSystemTheme.colors.foregroundNeutralTertiary
                     ),
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
@@ -119,7 +128,7 @@ private fun WantedInputLayoutPreview() {
                     modifier = Modifier,
                     size = WantedInputSize.Medium,
                     textStyle = DesignSystemTheme.typography.label1Regular.copy(
-                        DesignSystemTheme.colors.labelNormal
+                        DesignSystemTheme.colors.foregroundNeutralPrimary
                     ),
                     leadingIcon = {
                         WantedCheckBox(checked = true, onCheckedChange = {})
@@ -139,7 +148,7 @@ private fun WantedInputLayoutPreview() {
                         WantedCheckBox(checked = true, onCheckedChange = {})
                     },
                     textStyle = DesignSystemTheme.typography.label1Regular.copy(
-                        DesignSystemTheme.colors.labelNormal
+                        DesignSystemTheme.colors.foregroundNeutralPrimary
                     ),
                     tight = false,
                     label = {

@@ -34,7 +34,7 @@ class WantedTextView @JvmOverloads constructor(
                     WantedTextStyle.entries[getInteger(R.styleable.WantedTextView_textStyle, 5)]
                 textColor = getColor(
                     R.styleable.WantedTextView_textColor,
-                    ContextCompat.getColor(context, R.color.label_normal)
+                    ContextCompat.getColor(context, R.color.foreground_neutral_primary)
                 )
 
                 recycle()
@@ -56,7 +56,7 @@ class WantedTextView @JvmOverloads constructor(
 fun TextView(
     text: String = "",
     textStyle: WantedTextStyle = WantedTextStyle.BODY1_REGULAR,
-    textColor: Color = DesignSystemTheme.colors.labelNormal,
+    textColor: Color = DesignSystemTheme.colors.foregroundNeutralPrimary,
     modifier: Modifier = Modifier.wrapContentSize(),
     onClick: (() -> Unit)? = null
 ) {

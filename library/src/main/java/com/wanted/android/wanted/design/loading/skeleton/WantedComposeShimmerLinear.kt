@@ -53,7 +53,7 @@ fun Modifier.shimmerLinear(
 }
 
 fun Modifier.shimmerLinear(
-    colorRes: Int = R.color.fill_alternative,
+    colorRes: Int = R.color.surface_neutral_tertiary,
     alpha: Float = OPACITY_16,
 ): Modifier = composed {
     shimmerLinear(

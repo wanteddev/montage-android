@@ -117,32 +117,28 @@ class OldButton(context: Context, private val attrs: AttributeSet? = null) :
             })
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Background
-    ///////////////////////////////////////////////////////////////////////////
-
     private data class BackgroundColor(
         @ColorRes val normal: Int = android.R.color.transparent,
         @ColorRes val stroke: Int? = null,
         @ColorRes val pressed: Int = android.R.color.transparent,
         @ColorRes val pressedStroke: Int? = null,
-        @ColorRes val disable: Int = R.color.fill_alternative,
-        @ColorRes val disableStroke: Int = R.color.line_normal_alternative,
+        @ColorRes val disable: Int = R.color.surface_neutral_tertiary,
+        @ColorRes val disableStroke: Int = R.color.line_neutral_tertiary,
     )
 
     private fun setBackground() {
         when (type) {
             Type.FILL_BLUE -> BackgroundColor(
-                normal = R.color.primary_normal,
-                pressed = R.color.primary_heavy,
+                normal = R.color.surface_brand_primary,
+                pressed = R.color.surface_brand_heavy,
             )
             Type.LINE_PRIMARY -> BackgroundColor(
-                stroke = R.color.primary_normal,
-                pressedStroke = R.color.primary_heavy,
+                stroke = R.color.surface_brand_primary,
+                pressedStroke = R.color.surface_brand_heavy,
             )
             Type.LINE_BLUE, Type.LINE_BLACK -> BackgroundColor(
-                stroke = R.color.line_normal_normal,
-                pressedStroke = R.color.line_normal_normal,
+                stroke = R.color.line_neutral_primary,
+                pressedStroke = R.color.line_neutral_primary,
             )
         }.run {
             ViewCompat.setBackground(this@OldButton, StateListDrawable().apply {
@@ -159,15 +155,10 @@ class OldButton(context: Context, private val attrs: AttributeSet? = null) :
         }
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Text
-    ///////////////////////////////////////////////////////////////////////////
-
     private data class TextColor(
         @ColorRes val normal: Int,
         @ColorRes val pressed: Int,
-        @ColorRes val disable: Int = R.color.label_assistive
+        @ColorRes val disable: Int = R.color.foreground_neutral_quaternary
     )
 
     private fun getTextColor(): TextColor {
@@ -177,12 +168,12 @@ class OldButton(context: Context, private val attrs: AttributeSet? = null) :
                 pressed = R.color.static_white,
             )
             Type.LINE_PRIMARY, Type.LINE_BLUE -> TextColor(
-                normal = R.color.primary_normal,
-                pressed = R.color.primary_heavy,
+                normal = R.color.foreground_brand_primary,
+                pressed = R.color.surface_brand_heavy,
             )
             Type.LINE_BLACK -> TextColor(
-                normal = R.color.label_normal,
-                pressed = R.color.primary_heavy,
+                normal = R.color.foreground_neutral_primary,
+                pressed = R.color.surface_brand_heavy,
             )
         }
     }

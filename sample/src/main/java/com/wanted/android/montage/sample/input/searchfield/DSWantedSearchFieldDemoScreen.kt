@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.input.searchfield.DSWantedSearchFieldDemoScreenContract.DSWantedSearchFieldDemoSideEffect
 import com.wanted.android.montage.sample.input.searchfield.DSWantedSearchFieldDemoScreenContract.DSWantedSearchFieldDemoViewEvent
@@ -34,10 +34,10 @@ import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.search.WantedSearchField
 import com.wanted.android.wanted.design.input.search.WantedSearchFieldDefaults.Size
+import com.wanted.android.wanted.design.input.search.WantedSearchFieldDefaults.Variant
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -84,6 +84,14 @@ fun DSWantedSearchFieldDemoScreen(
                 )
             }
 
+            is DSWantedSearchFieldDemoViewEvent.OnVariantChanged -> {
+                viewModel.setEvent(
+                    DSWantedSearchFieldDemoScreenContract.DSWantedSearchFieldDemoEvent.SetVariant(
+                        viewEvent.variant
+                    )
+                )
+            }
+
             is DSWantedSearchFieldDemoViewEvent.OnSizeChanged -> {
                 viewModel.setEvent(
                     DSWantedSearchFieldDemoScreenContract.DSWantedSearchFieldDemoEvent.SetSize(
@@ -103,7 +111,7 @@ fun DSWantedSearchFieldDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedSearchFieldDemoScreenContract.DSWantedSearchFieldDemoEvent.CopyCode)
@@ -148,7 +156,7 @@ private fun DSWantedSearchFieldDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -157,7 +165,7 @@ private fun DSWantedSearchFieldDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -178,22 +186,32 @@ private fun DSWantedSearchFieldDemoScreenContent(
                     text = viewState.text,
                     placeholder = "검색어를 입력해주세요",
                     enabled = viewState.enabled,
+                    variant = viewState.variant,
                     size = viewState.size,
                     onValueChange = { onViewEvent(DSWantedSearchFieldDemoViewEvent.OnTextChanged(it)) },
+                )
+            },
+            variant = {
+                WantedSelect(
+                    value = "variant : ${viewState.variant.name}",
+                    selectedValue = viewState.variant.name,
+                    selectValueList = Variant.entries.map { it.name },
+                    onSelect = { typeName ->
+                        onViewEvent(
+                            DSWantedSearchFieldDemoViewEvent.OnVariantChanged(
+                                Variant.valueOf(typeName)
+                            )
+                        )
+                    }
                 )
             },
             size = {
                 WantedSelect(
                     value = "size : ${getSizeName(viewState.size)}",
                     selectedValue = getSizeName(viewState.size),
-                    selectValueList = listOf("Small", "Medium", "Custom"),
-                    onSelect = { typeName ->
-                        val newSize = when (typeName) {
-                            "Small" -> Size.Small()
-                            "Medium" -> Size.Medium()
-                            "Custom" -> Size.Custom()
-                            else -> Size.Medium()
-                        }
+                    selectValueList = SIZE_LIST.map { getSizeName(it) },
+                    onSelect = { sizeName ->
+                        val newSize = SIZE_LIST.first { getSizeName(it) == sizeName }
                         onViewEvent(DSWantedSearchFieldDemoViewEvent.OnSizeChanged(newSize))
                     }
                 )
@@ -218,6 +236,7 @@ private fun DSWantedSearchFieldDemoScreenContent(
 private fun DSWantedSearchFieldDemoScreenLayout(
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
+    variant: @Composable () -> Unit,
     size: @Composable () -> Unit,
     enabled: @Composable () -> Unit,
 ) {
@@ -228,12 +247,22 @@ private fun DSWantedSearchFieldDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -251,10 +280,12 @@ private fun DSWantedSearchFieldDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            variant()
 
             size()
 
@@ -264,12 +295,11 @@ private fun DSWantedSearchFieldDemoScreenLayout(
     }
 }
 
-private fun getSizeName(size: Size): String {
-    return when (size) {
-        is Size.Small -> "Small"
-        is Size.Medium -> "Medium"
-        is Size.Custom -> "Custom"
-    }
+private val SIZE_LIST = listOf(Size.Large, Size.Medium)
+
+private fun getSizeName(size: Size): String = when (size) {
+    Size.Large -> "Large"
+    Size.Medium -> "Medium"
 }
 
 @DevicePreviews

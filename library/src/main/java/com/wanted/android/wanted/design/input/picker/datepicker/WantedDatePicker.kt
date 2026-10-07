@@ -75,7 +75,7 @@ fun WantedDatePicker(
                         modifier = Modifier,
                         text = confirm,
                         style = MaterialTheme.typography.labelLarge,
-                        color = DesignSystemTheme.colors.primaryNormal
+                        color = DesignSystemTheme.colors.foregroundBrandPrimary
                     )
                 },
                 onClick = {
@@ -92,7 +92,7 @@ fun WantedDatePicker(
                         modifier = Modifier,
                         text = cancel,
                         style = MaterialTheme.typography.labelLarge,
-                        color = DesignSystemTheme.colors.primaryNormal
+                        color = DesignSystemTheme.colors.foregroundBrandPrimary
                     )
                 },
                 onClick = {
@@ -112,59 +112,36 @@ fun WantedDatePicker(
 
 @Composable
 private fun getWantedDatePickerDefaults() = DatePickerDefaults.colors(
-    // 날짜 선택기 배경에 사용되는 색상
-    containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
-    // 날짜 선택기 제목에 사용되는 색상 (날짜 선택)
-    titleContentColor = DesignSystemTheme.colors.labelAlternative,
-    // 날짜 선택기 헤드라인에 사용되는 색상 (선택한 날짜)
-    headlineContentColor = DesignSystemTheme.colors.labelNormal,
-    // DateRangePicker에 월이 표시될 때 나타나는 월 및 연도 하위 제목 레이블에 사용되는 색상.
-    subheadContentColor = DesignSystemTheme.colors.labelNormal,
-    // 요일 글자에 사용되는 색상
-    weekdayContentColor = DesignSystemTheme.colors.labelNormal,
-    // DatePicker에 표시될 때 연도 선택 메뉴 버튼과 월 화살표 탐색에 사용되는 콘텐츠 색상.
-    navigationContentColor = DesignSystemTheme.colors.labelNormal,
-    // 연도 항목 텍스트 색상
-    yearContentColor = DesignSystemTheme.colors.labelNormal,
-    // 연도 항목 텍스트 비활성화 색상
-    disabledYearContentColor = DesignSystemTheme.colors.labelDisable,
-    // 연도를 선택할 때 현재 연도 텍스트 색상
-    currentYearContentColor = DesignSystemTheme.colors.labelNormal,
-    // 연도를 선택할 때 선택된 연도 텍스트
+    containerColor = DesignSystemTheme.colors.backgroundNeutralPrimary,
+    titleContentColor = DesignSystemTheme.colors.foregroundNeutralTertiary,
+    headlineContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    subheadContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    weekdayContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    navigationContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    yearContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    disabledYearContentColor = DesignSystemTheme.colors.foregroundDisablePrimary,
+    currentYearContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
     selectedYearContentColor = DesignSystemTheme.colors.staticWhite,
-    // 연도를 선택할 때 선택된 연도 비활성화 텍스트
-    disabledSelectedYearContentColor = DesignSystemTheme.colors.labelDisable,
-    // 선택된 연도 항목 컨테이너에 사용된 색상
-    selectedYearContainerColor = DesignSystemTheme.colors.primaryNormal,
-    // 달력 일 텍스트 색상
-    dayContentColor = DesignSystemTheme.colors.labelNormal,
-    // 달력 일 텍스트 비활성화 색상
-    disabledDayContentColor = DesignSystemTheme.colors.labelDisable,
-    // 달력 일 선택한 텍스트 색상
+    disabledSelectedYearContentColor = DesignSystemTheme.colors.foregroundDisablePrimary,
+    selectedYearContainerColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+    dayContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    disabledDayContentColor = DesignSystemTheme.colors.foregroundDisablePrimary,
     selectedDayContentColor = DesignSystemTheme.colors.staticWhite,
-    // 달력 일 선택한 텍스트 비활성화 색상
     disabledSelectedDayContentColor = DesignSystemTheme.colors.staticWhite,
-    // 달력 일 선택한 배경 색상
-    selectedDayContainerColor = DesignSystemTheme.colors.primaryNormal,
-    // 달력 일 선택한 배경 비활성화 색상
-    disabledSelectedDayContainerColor = DesignSystemTheme.colors.labelDisable,
-    // 현재 날짜를 표시하는 요일 텍스트 색상
-    todayContentColor = DesignSystemTheme.colors.primaryNormal,
-    // 현재 날짜를 표시하는 요일 테두리 색상
-    todayDateBorderColor = DesignSystemTheme.colors.primaryNormal,
-    // 날짜 범위 선택 범위 내에 있는 요일에 사용되는 텍스트 색상
+    selectedDayContainerColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+    disabledSelectedDayContainerColor = DesignSystemTheme.colors.foregroundDisablePrimary,
+    todayContentColor = DesignSystemTheme.colors.foregroundBrandPrimary,
+    todayDateBorderColor = DesignSystemTheme.colors.surfaceBrandPrimary,
     dayInSelectionRangeContentColor = DesignSystemTheme.colors.staticWhite,
-    // 날짜 범위 선택 범위 내에 있는 요일에 사용되는 배경 색상
-    dayInSelectionRangeContainerColor = DesignSystemTheme.colors.primaryNormal,
-    // 날짜 선택기에서 사용되는 구분선에 사용되는 색상
-    dividerColor = DesignSystemTheme.colors.lineNormalNormal,
+    dayInSelectionRangeContainerColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+    dividerColor = DesignSystemTheme.colors.lineNeutralPrimary,
     dateTextFieldColors = TextFieldDefaults.colors(
-        focusedContainerColor = DesignSystemTheme.colors.backgroundNormalNormal,
-        unfocusedContainerColor = DesignSystemTheme.colors.backgroundNormalNormal,
-        errorContainerColor = DesignSystemTheme.colors.interactionDisable,
-        focusedIndicatorColor = DesignSystemTheme.colors.primaryNormal,
-        focusedLabelColor = DesignSystemTheme.colors.labelAlternative,
-        unfocusedLabelColor = DesignSystemTheme.colors.labelAlternative,
+        focusedContainerColor = DesignSystemTheme.colors.backgroundNeutralPrimary,
+        unfocusedContainerColor = DesignSystemTheme.colors.backgroundNeutralPrimary,
+        errorContainerColor = DesignSystemTheme.colors.surfaceDisablePrimary,
+        focusedIndicatorColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+        focusedLabelColor = DesignSystemTheme.colors.foregroundNeutralTertiary,
+        unfocusedLabelColor = DesignSystemTheme.colors.foregroundNeutralTertiary,
     )
 )
 

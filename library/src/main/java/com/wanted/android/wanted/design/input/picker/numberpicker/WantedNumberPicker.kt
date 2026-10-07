@@ -99,7 +99,7 @@ fun WantedNumberPicker(
         initialPageOffsetFraction = 0f
     ) { itemList.size },
     textStyle: TextStyle = DesignSystemTheme.typography.heading1Medium.copy(
-        color = DesignSystemTheme.colors.labelNormal
+        color = DesignSystemTheme.colors.foregroundNeutralPrimary
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
@@ -185,7 +185,7 @@ fun WantedNumberPicker(
         itemList.size
     },
     textStyle: TextStyle = DesignSystemTheme.typography.heading1Medium.copy(
-        color = DesignSystemTheme.colors.labelNormal
+        color = DesignSystemTheme.colors.foregroundNeutralPrimary
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
@@ -218,7 +218,7 @@ fun WantedStringPicker(
         initialPageOffsetFraction = 0f
     ) { itemList.size },
     textStyle: TextStyle = DesignSystemTheme.typography.heading1Medium.copy(
-        color = DesignSystemTheme.colors.labelNormal
+        color = DesignSystemTheme.colors.foregroundNeutralPrimary
     ),
     itemSize: Dp = with(LocalDensity.current) { textStyle.lineHeight.toDp() },
     visibleCount: Int = 5,
@@ -335,9 +335,9 @@ private fun PickerContent(
         textAlign = TextAlign.Center,
         style = DesignSystemTheme.typography.heading1Medium,
         color = when {
-            !enabled -> DesignSystemTheme.colors.labelDisable
-            pagerState.currentPage == page -> DesignSystemTheme.colors.labelNormal
-            else -> DesignSystemTheme.colors.labelAssistive
+            !enabled -> DesignSystemTheme.colors.foregroundDisablePrimary
+            pagerState.currentPage == page -> DesignSystemTheme.colors.foregroundNeutralPrimary
+            else -> DesignSystemTheme.colors.foregroundNeutralQuaternary
         }
     )
 }

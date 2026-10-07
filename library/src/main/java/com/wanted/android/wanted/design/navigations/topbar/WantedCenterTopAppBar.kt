@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +33,7 @@ import com.wanted.android.wanted.design.util.OPACITY_88
 private fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     background: Boolean = true,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
@@ -66,7 +65,7 @@ private fun WantedCenterTopAppBar(
 private fun WantedCenterBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
     background: Boolean = true,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
@@ -92,11 +91,37 @@ private fun WantedCenterBackTopAppBar(
     )
 }
 
+/**
+ * fun WantedCenterTopAppBar(...)
+ *
+ * 타이틀을 가운데 정렬하는 TopAppBar 컴포넌트입니다.
+ *
+ * 다양한 Variant를 지원하며, 스크롤 상태에 따라 배경 표시가 전환됩니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedCenterTopAppBar(
+ *     title = { Text(...) },
+ *     navigationIcon = { Icon(...) },
+ *     actions = { IconButton(...) }
+ * )
+ * ```
+ *
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param backgroundColor Color: 앱바 배경 색상입니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+ * @param variant Variant: 앱바 형태입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+ * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
+ * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+ */
 @Composable
 fun WantedCenterTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     background: Boolean = true,
     variant: Variant = Variant.Normal,
     scrollableState: ScrollableState? = null,
@@ -134,36 +159,35 @@ fun WantedCenterTopAppBar(
             }
         }
     ) {
-        CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
-            when (variant) {
-                Variant.Normal -> {
-                    WantedCenterTopAppBarLayout(
-                        modifier = Modifier.windowInsetsPadding(windowInsets),
-                        navigationIcon = navigationIcon,
-                        title = title,
-                        actions = actions
-                    )
-                }
+        when (variant) {
+            Variant.Normal -> {
+                WantedCenterTopAppBarLayout(
+                    modifier = Modifier.windowInsetsPadding(windowInsets),
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
+            }
 
-                Variant.Display -> {
-                    WantedDisplayTopAppBarLayout(
-                        modifier = Modifier.windowInsetsPadding(windowInsets),
-                        navigationIcon = navigationIcon,
-                        title = title,
-                        actions = actions
-                    )
-                }
+            Variant.Display -> {
+                WantedDisplayTopAppBarLayout(
+                    modifier = Modifier.windowInsetsPadding(windowInsets),
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
+            }
 
-                else -> {
-                    WantedCenterTopAppBarLayout(
-                        modifier = Modifier.windowInsetsPadding(windowInsets),
-                        navigationIcon = navigationIcon,
-                        title = title,
-                        actions = actions
-                    )
-                }
+            else -> {
+                WantedCenterTopAppBarLayout(
+                    modifier = Modifier.windowInsetsPadding(windowInsets),
+                    navigationIcon = navigationIcon,
+                    title = title,
+                    actions = actions
+                )
             }
         }
+    
     }
 }
 
@@ -175,7 +199,7 @@ private fun WantedCenterTopAppBarPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DesignSystemTheme.colors.backgroundNormalNormal),
+                .background(DesignSystemTheme.colors.backgroundNeutralPrimary),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
+import com.wanted.android.wanted.design.contents.listcell.WantedListCellDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.clickOnce
@@ -36,7 +37,7 @@ internal fun WantedAccordionHeader(
     title: String,
     verticalPadding: VerticalPadding,
     style: TextStyle,
-    fillWidth: Boolean,
+    variant: WantedListCellDefaults.Variant,
     maxLine: Int = Int.MAX_VALUE,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailIcon: @Composable () -> Unit,
@@ -48,7 +49,7 @@ internal fun WantedAccordionHeader(
             .clickOnce(onClick = onClick)
             .wrapContentSize()
             .padding(vertical = verticalPadding.value)
-            .padding(horizontal = if (fillWidth) 20.dp else 0.dp),
+            .padding(horizontal = variant.horizontalPadding),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -103,9 +104,9 @@ private fun AccordionHeaderPreview() {
                     verticalPadding = VerticalPadding.Padding12,
                     title = "제목ㅁㄴ ㅏ이ㅓㅗ ㅁ나ㅣㅓㅇ롸ㅣㅁ 너ㅗㅇ 라ㅣ머농 라ㅣㅓㅁ노 ㅇ리ㅏㅓㅗㅁㄴ이ㅏ 러ㅗㅁ나ㅣㅓㅇ 로",
                     style = DesignSystemTheme.typography.body2Bold.copy(
-                        color = DesignSystemTheme.colors.labelNormal
+                        color = DesignSystemTheme.colors.foregroundNeutralPrimary
                     ),
-                    fillWidth = false,
+                    variant = WantedListCellDefaults.Variant.Inset,
                     leadingIcon = {
                         Box(
                             Modifier
@@ -121,7 +122,7 @@ private fun AccordionHeaderPreview() {
                             } else {
                                 painterResource(R.drawable.icon_normal_chevron_down)
                             },
-                            tint = DesignSystemTheme.colors.labelNormal,
+                            tint = DesignSystemTheme.colors.foregroundNeutralPrimary,
                             contentDescription = ""
                         )
                     },

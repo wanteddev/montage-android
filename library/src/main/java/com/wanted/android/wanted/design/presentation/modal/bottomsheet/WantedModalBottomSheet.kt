@@ -1,7 +1,10 @@
 package com.wanted.android.wanted.design.presentation.modal.bottomsheet
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetValue
@@ -14,7 +17,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults.heightModifier
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.draggable.WantedDraggableModalBottomSheet
@@ -55,7 +57,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param background Color: 배경 색상입니다.
  * @param type ModalType: 모달의 형태입니다.
- * @param modalSize ModalSize: 콘텐츠 패딩 등을 조절하는 크기 설정입니다.
+ * @param sheetDefault WantedBottomSheetDefault: Bottom Sheet 의 모양·여백 설정입니다. 기본값은 [type] 에 맞춰 골라집니다 (Full 만 별도 값).
  * @param dismissOnClickOutside Boolean: 외부 클릭 시 닫힘 여부입니다.
  * @param topBar (@Composable () -> Unit)?: 상단 바 슬롯입니다.
  * @param bottomBar (@Composable () -> Unit)?: 하단 바 슬롯입니다.
@@ -66,9 +68,9 @@ fun WantedModalBottomSheet(
     isShow: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    background: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
+    background: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
     type: ModalType = ModalType.Flexible,
-    modalSize: ModalSize = ModalSize.Medium,
+    sheetDefault: WantedBottomSheetDefault = WantedBottomSheetDefaults.forType(type),
     dismissOnClickOutside: Boolean = true,
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: (@Composable () -> Unit)? = null,
@@ -104,14 +106,25 @@ fun WantedModalBottomSheet(
             } else {
                 null
             },
+            shape = sheetDefault.shape,
             content = {
                 WantedDialogLayout(
                     modifier = Modifier
                         .then(heightModifier(type))
                         .fillMaxWidth(),
-                    modalSize = modalSize,
+                    shape = sheetDefault.shape,
+                    topBarPadding = PaddingValues(sheetDefault.navigationPadding),
+                    bottomBarPadding = sheetDefault.actionPadding,
+                    // 높이가 고정인 타입은 Content 가 남은 공간을 채워야 Action Area 가 하단에 붙는다.
+                    contentFillHeight = type.isFixedHeight,
                     topBar = topBar,
-                    content = content,
+                    content = {
+                        SheetContent(
+                            sheetDefault = sheetDefault,
+                            fillHeight = type.isFixedHeight,
+                            content = content
+                        )
+                    },
                     bottomBar = bottomBar
                 )
             },
@@ -127,7 +140,7 @@ fun WantedModalBottomSheet(
             containerColor = background,
             contentColor = background,
             tonalElevation = 0.dp,
-            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            shape = sheetDefault.shape,
             sheetMaxWidth = width,
             sheetState = bottomSheetState,
             dragHandle = if (type.isCloseable) {
@@ -140,9 +153,19 @@ fun WantedModalBottomSheet(
                     modifier = Modifier
                         .then(heightModifier(type))
                         .fillMaxWidth(),
-                    modalSize = modalSize,
+                    shape = sheetDefault.shape,
+                    topBarPadding = PaddingValues(sheetDefault.navigationPadding),
+                    bottomBarPadding = sheetDefault.actionPadding,
+                    // 높이가 고정인 타입은 Content 가 남은 공간을 채워야 Action Area 가 하단에 붙는다.
+                    contentFillHeight = type.isFixedHeight,
                     topBar = topBar,
-                    content = content,
+                    content = {
+                        SheetContent(
+                            sheetDefault = sheetDefault,
+                            fillHeight = type.isFixedHeight,
+                            content = content
+                        )
+                    },
                     bottomBar = bottomBar
                 )
             },
@@ -153,4 +176,30 @@ fun WantedModalBottomSheet(
     }
 }
 
+// Content 여백은 Bottom Sheet 가 소유한다. 여백 없이 쓰려면 sheetDefault 의 content padding 을 0 으로 넘긴다.
+@Composable
+private fun SheetContent(
+    sheetDefault: WantedBottomSheetDefault,
+    fillHeight: Boolean,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .then(if (fillHeight) Modifier.fillMaxSize() else Modifier)
+            .padding(sheetDefault.contentPadding)
+    ) {
+        content()
+    }
+}
 
+// 높이가 고정되는 타입인지 여부다. Flexible·FixedWrapContent 는 콘텐츠 높이를 따라가므로 Content 를 늘리지 않고,
+// 나머지는 높이가 먼저 정해지므로 Content 가 남은 공간을 채워야 Action Area 가 하단에 붙는다.
+private val ModalType.isFixedHeight: Boolean
+    get() = when (this) {
+        is ModalType.Fixed,
+        is ModalType.FixedFullScreen,
+        is ModalType.FixedRatio -> true
+
+        ModalType.Flexible,
+        is ModalType.FixedWrapContent -> false
+    }

@@ -19,11 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
+import com.wanted.android.wanted.design.contents.listcell.WantedListCellDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.OPACITY_8
 
 /**
+ * WantedAccordion
+ *
  * 아코디언 형태로 확장/축소가 가능한 컴포넌트입니다.
  *
  * 사용자는 제목 영역을 클릭하여 추가 설명과 콘텐츠를 확장하거나 축소할 수 있습니다.
@@ -50,7 +53,7 @@ import com.wanted.android.wanted.design.util.OPACITY_8
  * @param titleStyle TextStyle: 제목에 적용할 텍스트 스타일입니다.
  * @param descriptionStyle TextStyle: 설명 텍스트에 적용할 스타일입니다.
  * @param isExpanded Boolean: 현재 아코디언이 확장 상태인지 여부를 나타냅니다.
- * @param fillWidth Boolean: 콘텐츠의 가로 너비를 전체로 채울지 여부입니다.
+ * @param variant WantedListCellDefaults.Variant: List Cell 의 variant 를 상속받아 좌우 패딩을 정합니다. 기본값은 Inset 입니다.
  * @param divider Boolean: 하단 Divider 표시 여부입니다.
  * @param verticalPadding VerticalPadding: 헤더 영역의 수직 패딩 값입니다.
  * @param leadingIcon (@Composable () -> Unit)?: 제목 좌측에 위치할 아이콘입니다. 선택 사항입니다.
@@ -69,13 +72,13 @@ fun WantedAccordion(
     titleMaxLine: Int = Int.MAX_VALUE,
     description: String? = null,
     titleStyle: TextStyle = DesignSystemTheme.typography.body2Bold.copy(
-        color = DesignSystemTheme.colors.labelNormal
+        color = DesignSystemTheme.colors.foregroundNeutralPrimary
     ),
     descriptionStyle: TextStyle = DesignSystemTheme.typography.label1Regular.copy(
-        color = DesignSystemTheme.colors.labelNeutral
+        color = DesignSystemTheme.colors.foregroundNeutralSecondary
     ),
     isExpanded: Boolean = false,
-    fillWidth: Boolean = false,
+    variant: WantedListCellDefaults.Variant = WantedListCellDefaults.Variant.Inset,
     divider: Boolean = true,
     verticalPadding: VerticalPadding = VerticalPadding.Padding12,
     leadingIcon: (@Composable () -> Unit)? = null,
@@ -101,7 +104,7 @@ fun WantedAccordion(
                 title = title,
                 maxLine = titleMaxLine,
                 style = titleStyle,
-                fillWidth = fillWidth,
+                variant = variant,
                 leadingIcon = leadingIcon,
                 trailIcon = trail,
                 onClick = {
@@ -114,7 +117,7 @@ fun WantedAccordion(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = if (fillWidth) 20.dp else 0.dp),
+                        .padding(horizontal = variant.horizontalPadding),
                     text = description,
                     style = descriptionStyle
                 )
@@ -125,7 +128,7 @@ fun WantedAccordion(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = if (fillWidth) 20.dp else 0.dp)
+                        .padding(horizontal = variant.horizontalPadding)
                 ) {
                     content()
                 }
@@ -189,7 +192,7 @@ private fun AccordionLayout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter),
-                color = DesignSystemTheme.colors.lineNormalAlternative
+                color = DesignSystemTheme.colors.lineNeutralTertiary
             )
         }
     }
@@ -217,7 +220,7 @@ private fun WantedAccordionPreview() {
                                 .fillMaxWidth()
                                 .height(100.dp)
                                 .background(
-                                    color = DesignSystemTheme.colors.accentBackgroundViolet
+                                    color = DesignSystemTheme.colors.surfaceAccentVioletOpaque
                                         .copy(OPACITY_8)
                                 )
                         )
@@ -228,7 +231,7 @@ private fun WantedAccordionPreview() {
                 WantedAccordion(
                     modifier = Modifier,
                     isExpanded = true,
-                    fillWidth = true,
+                    variant = WantedListCellDefaults.Variant.Full,
                     title = "제목",
                     description = "제목에 대한 상세 내용을 입력해주세요.\n긴 컨텐츠라면 접은 상태를 기본 값으로 사용하세요.",
                     content = {
@@ -237,7 +240,7 @@ private fun WantedAccordionPreview() {
                                 .fillMaxWidth()
                                 .height(100.dp)
                                 .background(
-                                    color = DesignSystemTheme.colors.accentBackgroundViolet
+                                    color = DesignSystemTheme.colors.surfaceAccentVioletOpaque
                                         .copy(OPACITY_8)
                                 )
                         )
@@ -249,7 +252,7 @@ private fun WantedAccordionPreview() {
                     modifier = Modifier,
                     title = "제목",
                     description = "제목에 대한 상세 내용을 입력해주세요.\n긴 컨텐츠라면 접은 상태를 기본 값으로 사용하세요.",
-                    fillWidth = true,
+                    variant = WantedListCellDefaults.Variant.Full,
                     content = {},
                     onChangeExpanded = {}
                 )

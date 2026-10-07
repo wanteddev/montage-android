@@ -52,20 +52,31 @@ object WantedChipContract {
         size: ChipSize
     ): Modifier = when (size) {
         ChipSize.Large -> {
-            this.then(Modifier.padding(vertical = 9.dp, horizontal = 12.dp))
+            this.then(Modifier.padding(vertical = 10.dp, horizontal = 12.dp))
         }
 
         ChipSize.Medium -> {
-            this.then(Modifier.padding(vertical = 7.dp, horizontal = 11.dp))
+            this.then(Modifier.padding(vertical = 9.dp, horizontal = 10.dp))
         }
 
         ChipSize.Small -> {
-            this.then(Modifier.padding(vertical = 6.dp, horizontal = 8.dp))
+            this.then(Modifier.padding(vertical = 8.dp, horizontal = 8.dp))
         }
 
         ChipSize.XSmall -> {
-            this.then(Modifier.padding(vertical = 4.dp, horizontal = 7.dp))
+            this.then(Modifier.padding(vertical = 5.dp, horizontal = 6.dp))
         }
+    }
+
+    // Size별 Chip 의 기준 높이입니다.
+    //
+    // Figma 는 높이를 고정값으로 정의하므로 이 값을 최소 높이(defaultMinSize)로 사용합니다.
+    // 시스템 폰트 확대 시에는 텍스트가 잘리지 않도록 이 값보다 커질 수 있습니다.
+    internal fun getChipHeight(size: ChipSize) = when (size) {
+        ChipSize.Large -> 40.dp
+        ChipSize.Medium -> 36.dp
+        ChipSize.Small -> 32.dp
+        ChipSize.XSmall -> 24.dp
     }
 
 
@@ -83,34 +94,26 @@ object WantedChipContract {
     }
 
 
-    internal fun Modifier.chipTextPadding(
-        size: ChipSize
-    ): Modifier {
-        val modifier = when (size) {
-            ChipSize.Large -> Modifier.padding(horizontal = 2.dp)
-            ChipSize.Medium -> Modifier.padding(horizontal = 2.dp)
-            ChipSize.Small -> Modifier.padding(horizontal = 2.dp)
-            ChipSize.XSmall -> Modifier.padding(horizontal = 1.dp)
-        }
-
-        return this.then(modifier)
-    }
+    /** 텍스트 좌우 패딩입니다. 전 사이즈 공통 2dp 입니다. */
+    internal fun Modifier.chipTextPadding(): Modifier =
+        this.then(Modifier.padding(horizontal = 2.dp))
 
 
     @Composable
-    internal fun getchipRadius(size: ChipSize) = when (size) {
-        ChipSize.XSmall -> 6.dp
-        ChipSize.Small -> 8.dp
+    internal fun getChipRadius(size: ChipSize) = when (size) {
+        ChipSize.XSmall -> 8.dp
+        ChipSize.Small -> 10.dp
         ChipSize.Medium -> 10.dp
-        ChipSize.Large -> 10.dp
+        ChipSize.Large -> 12.dp
     }
 
+    /** 아이콘 ↔ 텍스트 간격입니다. XSmall 만 0dp 입니다. */
     @Composable
     internal fun getChipHorizontalArrangement(size: ChipSize) = when (size) {
-        ChipSize.XSmall -> 2.dp
+        ChipSize.XSmall -> 0.dp
         ChipSize.Small -> 2.dp
-        ChipSize.Medium -> 3.dp
-        ChipSize.Large -> 3.dp
+        ChipSize.Medium -> 2.dp
+        ChipSize.Large -> 2.dp
     }
 }
 

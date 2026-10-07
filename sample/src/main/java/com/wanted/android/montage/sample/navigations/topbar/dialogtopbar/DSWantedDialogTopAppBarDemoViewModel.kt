@@ -96,14 +96,20 @@ class DSWantedDialogTopAppBarDemoViewModel @Inject constructor(
     }
 
     private fun generateCode(state: DSWantedDialogTopAppBarDemoViewState): String {
+        if (state.variant is Variant.Search) return generateSearchCode(state)
+
         val params = mutableListOf<String>()
 
         if (state.variant != Variant.Normal) {
-            params.add("variant = Variant.${state.variant.name}")
+            val variantExpression = when (val variant = state.variant) {
+                is Variant.Floating -> "Variant.Floating(iconBackground = ${variant.iconBackground})"
+                else -> "Variant.${variant::class.simpleName}"
+            }
+            params.add("variant = $variantExpression")
         }
 
         if (state.backgroundColorEnabled) {
-            params.add("backgroundColor = DesignSystemTheme.colors.backgroundElevatedNormal")
+            params.add("backgroundColor = DesignSystemTheme.colors.surfaceElevatedPrimary")
         } else {
             params.add("backgroundColor = Color.Transparent")
         }
@@ -155,5 +161,42 @@ class DSWantedDialogTopAppBarDemoViewModel @Inject constructor(
         }
 
         return "$componentName$paramString"
+    }
+
+    // Variant.Search 는 제목 대신 검색 필드를 쓰므로 전용 편의 함수 WantedDialogSearchTopAppBar 코드를 만든다.
+    private fun generateSearchCode(state: DSWantedDialogTopAppBarDemoViewState): String {
+        val params = mutableListOf(
+            "text = keyword",
+            if (state.backgroundColorEnabled) {
+                "backgroundColor = DesignSystemTheme.colors.surfaceElevatedPrimary"
+            } else {
+                "backgroundColor = Color.Transparent"
+            },
+            "background = ${state.background}"
+        )
+
+        // 데모는 scrollable 일 때 scrollState 를 넘겨 스크롤 시 배경이 나타난다. 복사한 코드도 같은 동작을 내도록 함께 출력한다.
+        if (state.scrollable) {
+            params.add("scrollableState = rememberScrollState()")
+        }
+
+        params.add("placeholder = \"검색어를 입력해 주세요.\"")
+        params.add("cancelText = \"취소\"")
+
+        if (state.navigationIcon) {
+            params.add(
+                """navigationIcon = {
+                    WantedTopAppBarIconButton(
+                        painter = painterResource(R.drawable.icon_normal_arrow_left),
+                        onClick = { /* Handle back */ }
+                    )
+                }"""
+            )
+        }
+
+        params.add("onClickCancel = { /* Handle cancel */ }")
+        params.add("onValueChange = { keyword = it }")
+
+        return "WantedDialogSearchTopAppBar(\n    ${params.joinToString(",\n    ")}\n)"
     }
 }

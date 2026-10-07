@@ -262,22 +262,22 @@
 
     <style name="WantedAppTheme.RadioButtonStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
         <item name="android:fontFamily">@font/pretendard_bold</item>
-        <item name="android:textColor">@color/label_alternative</item>
+        <item name="android:textColor">@color/foreground_neutral_tertiary</item>
         <item name="android:button">@drawable/selector_radio_button</item>
     </style>
 
     <style name="WantedTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="android:fontFamily">@font/pretendard_bold</item>
-        <item name="android:textColor">@color/label_alternative</item>
+        <item name="android:textColor">@color/foreground_neutral_tertiary</item>
     </style>
 
     <style name="WantedButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
         <item name="android:fontFamily">@font/pretendard_bold</item>
-        <item name="android:textColor">@color/label_alternative</item>
+        <item name="android:textColor">@color/foreground_neutral_tertiary</item>
     </style>
 
     <style name="WantedEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
         <item name="android:fontFamily">@font/pretendard_bold</item>
-        <item name="android:textColor">@color/label_alternative</item>
+        <item name="android:textColor">@color/foreground_neutral_tertiary</item>
     </style>
 </resources>

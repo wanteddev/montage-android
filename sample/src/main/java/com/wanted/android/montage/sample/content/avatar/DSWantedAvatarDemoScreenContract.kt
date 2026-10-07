@@ -18,8 +18,9 @@ object DSWantedAvatarDemoScreenContract {
         data class SetSize(val size: WantedAvatarSize) : DSWantedAvatarDemoEvent
         data class SetPushBadge(val pushBadge: Boolean) : DSWantedAvatarDemoEvent
         data class SetIsGroup(val isGroup: Boolean) : DSWantedAvatarDemoEvent
-        data class SetIsIcon(val isIcon: Boolean) : DSWantedAvatarDemoEvent
         data class ShowAll(val isShowAll: Boolean) : DSWantedAvatarDemoEvent
+        data class SetModel(val model: DSWantedAvatarDemoModel) : DSWantedAvatarDemoEvent
+        data class SetColoredBackground(val isColoredBackground: Boolean) : DSWantedAvatarDemoEvent
 
         data class SetCustomSize(val size: Dp) : DSWantedAvatarDemoEvent
         data class SetCustomCornerRadius(val cornerRadius: Dp) : DSWantedAvatarDemoEvent
@@ -49,8 +50,24 @@ object DSWantedAvatarDemoScreenContract {
 
         val pushBadge: Boolean = false,
         val isGroup: Boolean = false,
-        val isIcon: Boolean = false,
+
+        val modelList: List<DSWantedAvatarDemoModel> = DSWantedAvatarDemoModel.entries.toList(),
+        val selectedModel: DSWantedAvatarDemoModel = DSWantedAvatarDemoModel.None,
+        val isColoredBackground: Boolean = false,
     ) : BaseViewState
+
+    // 미리보기 아바타에 넘길 이미지 모델 종류.
+    // 기본 placeholder 는 model 이 없을 때와 이미지 로딩에 실패했을 때 두 경로로 그려지므로 둘 다 확인할 수 있게 둔다.
+    enum class DSWantedAvatarDemoModel {
+        /** model = null — placeholder 를 바로 그린다. */
+        None,
+
+        /** 존재하지 않는 주소 — Glide 로딩 중·실패 placeholder 를 그린다. */
+        LoadFail,
+
+        /** Drawable 리소스 — 실제 이미지를 그린다. */
+        Image
+    }
 
     sealed interface DSWantedAvatarDemoSideEffect : BaseSideEffect {
         data class CopyCode(val code: String) : DSWantedAvatarDemoSideEffect
@@ -66,7 +83,9 @@ object DSWantedAvatarDemoScreenContract {
         data class OnSelectSize(val size: WantedAvatarSize) : DSWantedAvatarDemoViewEvent
         data class OnChangePushBadge(val pushBadge: Boolean) : DSWantedAvatarDemoViewEvent
         data class OnChangeIsGroup(val isGroup: Boolean) : DSWantedAvatarDemoViewEvent
-        data class OnChangeIsIcon(val isIcon: Boolean) : DSWantedAvatarDemoViewEvent
+        data class OnSelectModel(val model: DSWantedAvatarDemoModel) : DSWantedAvatarDemoViewEvent
+        data class OnChangeColoredBackground(val isColoredBackground: Boolean) :
+            DSWantedAvatarDemoViewEvent
 
         data class OnChangeCustomSize(val size: Dp) : DSWantedAvatarDemoViewEvent
         data class OnChangeCustomCornerRadius(val cornerRadius: Dp) : DSWantedAvatarDemoViewEvent

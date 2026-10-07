@@ -5,88 +5,88 @@
     <color name="static_white">@color/common_100</color>
     <color name="static_black">@color/common_0</color>
 
-    <!-- Primary -->
-    <color name="primary_normal">@color/blue_50</color>
-    <color name="primary_normal_temp">#0066FF</color>
-    <color name="primary_strong">@color/blue_45</color>
-    <color name="primary_heavy">@color/blue_40</color>
-
-    <!-- Label -->
-    <color name="label_normal">@color/cool_neutral_10</color>
-    <color name="label_strong">@color/common_0</color>
-    <color name="label_neutral">@color/cool_neutral_22_opacity88</color>
-    <color name="label_alternative">@color/cool_neutral_25_opacity61</color>
-    <color name="label_assistive">@color/cool_neutral_25_opacity28</color>
-    <color name="label_disable">@color/cool_neutral_25_opacity16</color>
+    <!-- Foreground -->
+    <color name="foreground_neutral_primary">@color/cool_neutral_10</color>
+    <color name="foreground_neutral_strong">@color/common_0</color>
+    <color name="foreground_neutral_secondary">@color/cool_neutral_22_opacity88</color>
+    <color name="foreground_neutral_tertiary">@color/cool_neutral_25_opacity61</color>
+    <color name="foreground_neutral_quaternary">@color/cool_neutral_25_opacity28</color>
+    <color name="foreground_neutral_inverse">@color/cool_neutral_99</color>
+    <color name="foreground_disable_primary">@color/cool_neutral_25_opacity16</color>
+    <color name="foreground_inactive_primary">@color/cool_neutral_70</color>
+    <color name="foreground_brand_primary">@color/blue_50</color>
+    <color name="foreground_brand_inverse">@color/blue_60</color>
+    <color name="foreground_positive_primary">@color/green_50</color>
+    <color name="foreground_cautionary_primary">@color/orange_50</color>
+    <color name="foreground_negative_primary">@color/red_50</color>
+    <color name="foreground_negative_strong">@color/red_40</color>
+    <color name="foreground_accent_lime">@color/lime_37</color>
+    <color name="foreground_accent_cyan">@color/cyan_40</color>
+    <color name="foreground_accent_lightblue">@color/lightblue_40</color>
+    <color name="foreground_accent_violet">@color/violet_45</color>
+    <color name="foreground_accent_purple">@color/purple_40</color>
+    <color name="foreground_accent_pink">@color/pink_46</color>
 
     <!-- Background -->
-    <color name="background_normal_normal">@color/common_100</color>
-    <color name="background_normal_alternative">@color/cool_neutral_99</color>
-    <color name="background_elevated_normal">@color/common_100</color>
-    <color name="background_elevated_alternative">@color/cool_neutral_99</color>
-    <color name="background_transparent_normal">@color/common_100_opacity_8</color>
-    <color name="background_transparent_alternative">@color/common_100_opacity_28</color>
+    <color name="background_neutral_primary">@color/common_100</color>
+    <color name="background_neutral_secondary">@color/cool_neutral_99</color>
 
-    <!-- Background Status -->
-    <color name="background_status_negative">@color/red_50_opacity8</color>
-    <color name="background_status_cautionary">@color/orange_50_opacity8</color>
-    <color name="background_status_positive">@color/green_50_opacity8</color>
-
-    <!-- Interaction -->
-    <color name="interaction_inactive">@color/cool_neutral_70</color>
-    <color name="interaction_disable">@color/cool_neutral_98</color>
+    <!-- Surface -->
+    <color name="surface_neutral_primary">@color/common_100</color>
+    <color name="surface_neutral_secondary">@color/cool_neutral_50_opacity8</color>
+    <color name="surface_neutral_tertiary">@color/cool_neutral_50_opacity5</color>
+    <color name="surface_neutral_strong">@color/cool_neutral_50_opacity16</color>
+    <color name="surface_neutral_inverse">@color/cool_neutral_15</color>
+    <color name="surface_elevated_primary">@color/common_100</color>
+    <color name="surface_elevated_secondary">@color/cool_neutral_99</color>
+    <color name="surface_brand_primary">@color/blue_50</color>
+    <color name="surface_brand_strong">@color/blue_45</color>
+    <color name="surface_brand_heavy">@color/blue_40</color>
+    <color name="surface_brand_subtle">@color/blue_50_opacity5</color>
+    <color name="surface_positive_primary">@color/green_50_opacity8</color>
+    <color name="surface_cautionary_primary">@color/orange_50_opacity8</color>
+    <color name="surface_negative_primary">@color/red_50_opacity8</color>
+    <color name="surface_negative_strong">@color/red_50_opacity12</color>
+    <color name="surface_disable_primary">@color/cool_neutral_98</color>
+    <color name="surface_accent_lime">@color/lime_50_opacity8</color>
+    <color name="surface_accent_cyan">@color/cyan_50_opacity8</color>
+    <color name="surface_accent_lightblue">@color/lightblue_50_opacity8</color>
+    <color name="surface_accent_violet">@color/violet_50_opacity8</color>
+    <color name="surface_accent_purple">@color/purple_50_opacity8</color>
+    <color name="surface_accent_pink">@color/pink_50_opacity8</color>
+    <color name="surface_accent_lime_opaque">@color/lime_50</color>
+    <color name="surface_accent_cyan_opaque">@color/cyan_50</color>
+    <color name="surface_accent_lightblue_opaque">@color/lightblue_50</color>
+    <color name="surface_accent_violet_opaque">@color/violet_50</color>
+    <color name="surface_accent_purple_opaque">@color/purple_50</color>
+    <color name="surface_accent_pink_opaque">@color/pink_50</color>
 
     <!-- Line -->
-    <color name="line_normal_normal">@color/cool_neutral_50_opacity22</color>
-    <color name="line_normal_neutral">@color/cool_neutral_50_opacity16</color>
-    <color name="line_normal_alternative">@color/cool_neutral_50_opacity8</color>
-    <color name="line_solid_normal">@color/cool_neutral_96</color>
-    <color name="line_solid_neutral">@color/cool_neutral_97</color>
-    <color name="line_solid_alternative">@color/cool_neutral_98</color>
+    <color name="line_neutral_primary">@color/cool_neutral_50_opacity22</color>
+    <color name="line_neutral_secondary">@color/cool_neutral_50_opacity16</color>
+    <color name="line_neutral_tertiary">@color/cool_neutral_50_opacity8</color>
+    <color name="line_neutral_primary_opaque">@color/cool_neutral_96</color>
+    <color name="line_neutral_secondary_opaque">@color/cool_neutral_97</color>
+    <color name="line_neutral_tertiary_opaque">@color/cool_neutral_98</color>
+    <color name="line_brand_primary">@color/blue_50_opacity28</color>
+    <color name="line_brand_strong">@color/blue_50_opacity43</color>
+    <color name="line_brand_focus">@color/blue_50_opacity12</color>
+    <color name="line_positive_primary">@color/green_50_opacity43</color>
+    <color name="line_cautionary_primary">@color/orange_50_opacity43</color>
+    <color name="line_negative_primary">@color/red_50_opacity43</color>
+    <color name="line_negative_strong">@color/red_50_opacity52</color>
+    <color name="line_negative_focus">@color/red_50_opacity12</color>
+    <color name="line_accent_lime">@color/lime_37_opacity43</color>
+    <color name="line_accent_cyan">@color/cyan_40_opacity43</color>
+    <color name="line_accent_lightblue">@color/lightblue_40_opacity43</color>
+    <color name="line_accent_violet">@color/violet_45_opacity43</color>
+    <color name="line_accent_purple">@color/purple_40_opacity43</color>
+    <color name="line_accent_pink">@color/pink_46_opacity43</color>
 
-    <!-- Line Status -->
-    <color name="line_status_cautionary_normal">@color/orange_50_opacity43</color>
-    <color name="line_status_positive_normal">@color/green_50_opacity43</color>
-
-    <!-- Status -->
-    <color name="status_positive">@color/green_50</color>
-    <color name="status_positive_temp">#00BF40</color>
-    <color name="status_cautionary">@color/orange_50</color>
-    <color name="status_negative">@color/red_50</color>
-
-    <!-- Accent Background -->
-    <color name="accent_background_lime">@color/lime_50</color>
-    <color name="accent_background_cyan">@color/cyan_50</color>
-    <color name="accent_background_lightblue">@color/lightblue_50</color>
-    <color name="accent_background_violet">@color/violet_50</color>
-    <color name="accent_background_purple">@color/purple_50</color>
-    <color name="accent_background_pink">@color/pink_50</color>
-    <color name="accent_background_redorange">@color/redorange_50</color>
-
-    <!-- Accent Foreground -->
-    <color name="accent_foreground_red">@color/red_40</color>
-    <color name="accent_foreground_redorange">@color/redorange_48</color>
-    <color name="accent_foreground_orange">@color/orange_39</color>
-    <color name="accent_foreground_lime">@color/lime_37</color>
-    <color name="accent_foreground_green">@color/green_40</color>
-    <color name="accent_foreground_cyan">@color/cyan_40</color>
-    <color name="accent_foreground_lightblue">@color/lightblue_40</color>
-    <color name="accent_foreground_blue">@color/blue_45</color>
-    <color name="accent_foreground_violet">@color/violet_45</color>
-    <color name="accent_foreground_purple">@color/purple_40</color>
-    <color name="accent_foreground_pink">@color/pink_46</color>
-
-
-    <!-- Inverse -->
-    <color name="inverse_primary">@color/blue_60</color>
-    <color name="inverse_background">@color/cool_neutral_15</color>
-    <color name="inverse_label">@color/cool_neutral_99</color>
-
-    <!-- Fill -->
-    <color name="fill_normal">#1470737C</color> <!-- Opacity 8% -->
-    <color name="fill_strong">#2970737C</color> <!-- Opacity 16% -->
-    <color name="fill_alternative">#0D70737C</color> <!-- Opacity 5% -->
-    <color name="material_dimmer">#85171719</color> <!-- Opacity 52% -->
+    <!-- Effect -->
+    <color name="effect_transparent_primary">@color/common_100_opacity_8</color>
+    <color name="effect_transparent_secondary">@color/common_100_opacity_28</color>
+    <color name="effect_dimmer_primary">@color/cool_neutral_10_opacity52</color>
 
     <!-- Opacity Colors -->
     <color name="static_white_opacity5">#0DFFFFFF</color> <!-- Opacity 5% -->
@@ -111,69 +111,70 @@
     <color name="static_black_opacity74">#BD000000</color> <!-- Opacity 74% -->
     <color name="static_black_opacity88">#E0000000</color> <!-- Opacity 88% -->
 
-    <color name="primary_normal_opacity5">#0D3366FF</color> <!-- Opacity 5% -->
-    <color name="primary_normal_opacity8">#143366FF</color> <!-- Opacity 8% -->
-    <color name="primary_normal_opacity12">#1F3366FF</color> <!-- Opacity 12% -->
-    <color name="primary_normal_opacity22">#383366FF</color> <!-- Opacity 22% -->
-    <color name="primary_normal_opacity28">#473366FF</color> <!-- Opacity 28% -->
-    <color name="primary_normal_opacity35">#593366FF</color> <!-- Opacity 35% -->
-    <color name="primary_normal_opacity52">#853366FF</color> <!-- Opacity 52% -->
-    <color name="primary_normal_opacity61">#9C3366FF</color> <!-- Opacity 61% -->
-    <color name="primary_normal_opacity74">#BD3366FF</color> <!-- Opacity 74% -->
-    <color name="primary_normal_opacity88">#E03366FF</color> <!-- Opacity 88% -->
+    <color name="surface_brand_primary_opacity5">#0D0066FF</color> <!-- Opacity 5% -->
+    <color name="surface_brand_primary_opacity8">#140066FF</color> <!-- Opacity 8% -->
+    <color name="surface_brand_primary_opacity12">#1F0066FF</color> <!-- Opacity 12% -->
+    <color name="surface_brand_primary_opacity22">#380066FF</color> <!-- Opacity 22% -->
+    <color name="surface_brand_primary_opacity28">#470066FF</color> <!-- Opacity 28% -->
+    <color name="surface_brand_primary_opacity35">#590066FF</color> <!-- Opacity 35% -->
+    <color name="surface_brand_primary_opacity52">#850066FF</color> <!-- Opacity 52% -->
+    <color name="surface_brand_primary_opacity61">#9C0066FF</color> <!-- Opacity 61% -->
+    <color name="surface_brand_primary_opacity74">#BD0066FF</color> <!-- Opacity 74% -->
+    <color name="surface_brand_primary_opacity88">#E00066FF</color> <!-- Opacity 88% -->
 
-    <color name="label_normal_opacity5">#0D171717</color> <!-- Opacity 5% -->
-    <color name="label_normal_opacity8">#14171717</color> <!-- Opacity 8% -->
-    <color name="label_normal_opacity12">#1F171717</color> <!-- Opacity 12% -->
+    <color name="foreground_neutral_primary_opacity5">#0D171719</color> <!-- Opacity 5% -->
+    <color name="foreground_neutral_primary_opacity8">#14171719</color> <!-- Opacity 8% -->
+    <color name="foreground_neutral_primary_opacity12">#1F171719</color> <!-- Opacity 12% -->
 
-    <color name="label_strong_opacity5">#0D000000</color> <!-- Opacity 5% -->
-    <color name="label_strong_opacity8">#14000000</color> <!-- Opacity 8% -->
-    <color name="label_strong_opacity12">#1F000000</color> <!-- Opacity 12% -->
-    <color name="label_strong_opacity35">#59000000</color> <!-- Opacity 35% -->
-    <color name="label_strong_opacity52">#85000000</color> <!-- Opacity 52% -->
-    <color name="label_strong_opacity74">#BD000000</color> <!-- Opacity 74% -->
-    <color name="label_strong_opacity88">#E0000000</color> <!-- Opacity 88% -->
+    <color name="foreground_neutral_strong_opacity5">#0D000000</color> <!-- Opacity 5% -->
+    <color name="foreground_neutral_strong_opacity8">#14000000</color> <!-- Opacity 8% -->
+    <color name="foreground_neutral_strong_opacity12">#1F000000</color> <!-- Opacity 12% -->
+    <color name="foreground_neutral_strong_opacity35">#59000000</color> <!-- Opacity 35% -->
+    <color name="foreground_neutral_strong_opacity52">#85000000</color> <!-- Opacity 52% -->
+    <color name="foreground_neutral_strong_opacity74">#BD000000</color> <!-- Opacity 74% -->
+    <color name="foreground_neutral_strong_opacity88">#E0000000</color> <!-- Opacity 88% -->
 
-    <color name="label_alternative_opacity5">#0D8A8A8A</color> <!-- Opacity 5% -->
-    <color name="label_alternative_opacity8">#148A8A8A</color> <!-- Opacity 8% -->
-    <color name="label_alternative_opacity12">#1F8A8A8A</color> <!-- Opacity 12% -->
-    <color name="label_alternative_opacity35">#598A8A8A</color> <!-- Opacity 35% -->
-    <color name="label_alternative_opacity52">#858A8A8A</color> <!-- Opacity 52% -->
-    <color name="label_alternative_opacity74">#BD8A8A8A</color> <!-- Opacity 74% -->
-    <color name="label_alternative_opacity88">#E08A8A8A</color> <!-- Opacity 88% -->
+    <color name="foreground_neutral_tertiary_opacity5">#0D37383C</color> <!-- Opacity 5% -->
+    <color name="foreground_neutral_tertiary_opacity8">#1437383C</color> <!-- Opacity 8% -->
+    <color name="foreground_neutral_tertiary_opacity12">#1F37383C</color> <!-- Opacity 12% -->
+    <color name="foreground_neutral_tertiary_opacity35">#5937383C</color> <!-- Opacity 35% -->
+    <color name="foreground_neutral_tertiary_opacity52">#8537383C</color> <!-- Opacity 52% -->
+    <color name="foreground_neutral_tertiary_opacity74">#BD37383C</color> <!-- Opacity 74% -->
+    <color name="foreground_neutral_tertiary_opacity88">#E037383C</color> <!-- Opacity 88% -->
 
-    <color name="background_normal_normal_opacity0">#00FFFFFF</color> <!-- Opacity 0% -->
-    <color name="background_normal_normal_opacity61">#9CFFFFFF</color> <!-- Opacity 61% -->
+    <color name="background_neutral_primary_opacity0">#00FFFFFF</color> <!-- Opacity 0% -->
+    <color name="background_neutral_primary_opacity61">#9CFFFFFF</color> <!-- Opacity 61% -->
 
-    <color name="background_elevated_normal_opacity0">#00FFFFFF</color> <!-- Opacity 0% -->
-    <color name="background_elevated_normal_opacity12">#1FFFFFFF</color> <!-- Opacity 12% -->
-    <color name="background_elevated_normal_opacity88">#E0FFFFFF</color> <!-- Opacity 88% -->
-    <color name="background_elevated_normal_opacity97">#F7FFFFFF</color> <!-- Opacity 97% -->
+    <color name="surface_elevated_primary_opacity0">#00FFFFFF</color> <!-- Opacity 0% -->
+    <color name="surface_elevated_primary_opacity12">#1FFFFFFF</color> <!-- Opacity 12% -->
+    <color name="surface_elevated_primary_opacity88">#E0FFFFFF</color> <!-- Opacity 88% -->
+    <color name="surface_elevated_primary_opacity97">#F7FFFFFF</color> <!-- Opacity 97% -->
 
-    <color name="line_normal_opacity28">#47E1E2E4</color> <!-- Opacity 28% -->
-    <color name="line_normal_opacity61">#9CE1E2E4</color> <!-- Opacity 61% -->
+    <color name="line_neutral_primary_opaque_opacity28">#47E1E2E4</color> <!-- Opacity 28% -->
+    <color name="line_neutral_primary_opaque_opacity61">#9CE1E2E4</color> <!-- Opacity 61% -->
 
-    <color name="line_alternative_opacity52">#85F4F4F5</color> <!-- Opacity 52% -->
+    <color name="line_neutral_tertiary_opaque_opacity52">#85F4F4F5</color> <!-- Opacity 52% -->
 
-    <color name="status_positive_opacity5">#0D07BA9C</color> <!-- Opacity 5% -->
-    <color name="status_positive_opacity8">#1407BA9C</color> <!-- Opacity 8% -->
-    <color name="status_positive_opacity12">#1F07BA9C</color> <!-- Opacity 12% -->
-    <color name="status_positive_opacity16">#2907BA9C</color> <!-- Opacity 16% -->
-    <color name="status_positive_opacity43">#6E07BA9C</color> <!-- Opacity 43% -->
+    <color name="foreground_positive_primary_opacity5">#0D00BF40</color> <!-- Opacity 5% -->
+    <color name="foreground_positive_primary_opacity8">#1400BF40</color> <!-- Opacity 8% -->
+    <color name="foreground_positive_primary_opacity12">#1F00BF40</color> <!-- Opacity 12% -->
+    <color name="foreground_positive_primary_opacity16">#2900BF40</color> <!-- Opacity 16% -->
+    <color name="foreground_positive_primary_opacity43">#6E00BF40</color> <!-- Opacity 43% -->
 
-    <color name="status_negative_opacity8">#14FF425F</color> <!-- Opacity 8% -->
+    <color name="foreground_negative_primary_opacity8">#14FF4242</color> <!-- Opacity 8% -->
+    <color name="foreground_negative_primary_opacity12">#1FFF4242</color> <!-- Opacity 12% -->
 
-    <color name="accent_cyan_opacity8">#1400BDDE</color> <!-- Opacity 8% -->
-    <color name="accent_cyan_opacity35">#5900BDDE</color> <!-- Opacity 35% -->
+    <color name="surface_accent_cyan_opaque_opacity8">#1400BDDE</color> <!-- Opacity 8% -->
+    <color name="surface_accent_cyan_opaque_opacity35">#5900BDDE</color> <!-- Opacity 35% -->
 
-    <color name="accent_lightblue_opacity5">#0D0095FF</color> <!-- Opacity 5% -->
-    <color name="accent_lightblue_opacity8">#140095FF</color> <!-- Opacity 8% -->
-    <color name="accent_lightblue_opacity12">#1F0095FF</color> <!-- Opacity 12% -->
+    <color name="surface_accent_lightblue_opaque_opacity5">#0D00AEFF</color> <!-- Opacity 5% -->
+    <color name="surface_accent_lightblue_opaque_opacity8">#1400AEFF</color> <!-- Opacity 8% -->
+    <color name="surface_accent_lightblue_opaque_opacity12">#1F00AEFF</color> <!-- Opacity 12% -->
 
-    <color name="accent_violet_opacity5">#0D7A45E5</color> <!-- Opacity 5% -->
-    <color name="accent_violet_opacity8">#147A45E5</color> <!-- Opacity 8% -->
-    <color name="accent_violet_opacity12">#1F7A45E5</color> <!-- Opacity 12% -->
+    <color name="surface_accent_violet_opaque_opacity5">#0D6541F2</color> <!-- Opacity 5% -->
+    <color name="surface_accent_violet_opaque_opacity8">#146541F2</color> <!-- Opacity 8% -->
+    <color name="surface_accent_violet_opaque_opacity12">#1F6541F2</color> <!-- Opacity 12% -->
 
-    <color name="accent_pink_opacity8">#14F342A0</color> <!-- Opacity 8% -->
-    <color name="accent_lime_opacity8">#1493C400</color> <!-- Opacity 8% -->
+    <color name="surface_accent_pink_opaque_opacity8">#14F553DA</color> <!-- Opacity 8% -->
+    <color name="surface_accent_lime_opaque_opacity8">#1458CF04</color> <!-- Opacity 8% -->
 </resources>

@@ -83,7 +83,7 @@ fun WantedProgressTrackerVertical(
                     VerticalDivider()
 
                     if (index < (currentStep - 1)) {
-                        VerticalDivider(color = DesignSystemTheme.colors.primaryNormal)
+                        VerticalDivider(color = DesignSystemTheme.colors.surfaceBrandPrimary)
                     }
                 }
             }
@@ -129,9 +129,9 @@ private fun WantedProgressTrackerLabel(
                     text = labelText,
                     style = DesignSystemTheme.typography.label2Bold.copy(
                         if (enabled || completed) {
-                            DesignSystemTheme.colors.labelAlternative
+                            DesignSystemTheme.colors.foregroundNeutralTertiary
                         } else {
-                            DesignSystemTheme.colors.labelNormal
+                            DesignSystemTheme.colors.foregroundNeutralPrimary
                         }
                     )
                 )
@@ -200,12 +200,6 @@ private fun WantedProgressTrackerVerticalPreview() {
                     },
                     currentStep = 2,
                     content = {
-//                        Box(
-//                            modifier = Modifier
-//                                .background(Color.DarkGray)
-//                                .fillMaxWidth()
-//                                .height(30.dp)
-//                        ) { }
                     }
                 )
             }

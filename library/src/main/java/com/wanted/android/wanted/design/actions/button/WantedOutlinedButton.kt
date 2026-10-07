@@ -2,6 +2,7 @@ package com.wanted.android.wanted.design.actions.button
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -133,13 +135,33 @@ internal fun WantedOutlinedButton(
         enabled = enabled
     )
 ) {
+    if (buttonDefault.type == ButtonType.NEGATIVE) {
+        LaunchedEffect(buttonDefault.type) {
+            Log.e(
+                "WantedOutlinedButton",
+                "Outlined + Negative is not a valid combination. Falling back to Outlined + Primary."
+            )
+        }
+        WantedOutlinedButton(
+            modifier = modifier,
+            text = text,
+            type = ButtonType.PRIMARY,
+            size = buttonDefault.size,
+            enabled = buttonDefault.enabled,
+            isLoading = isLoading,
+            leadingDrawable = leadingDrawable,
+            trailingDrawable = trailingDrawable,
+            onClick = onClick,
+        )
+        return
+    }
     WantedButtonLayout(
         modifier = modifier
             .clip(buttonDefault.borderShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = wantedRippleEffect(
-                    DesignSystemTheme.colorsOpacity.labelNormalOpacity12
+                    DesignSystemTheme.colorsOpacity.foregroundNeutralPrimaryOpacity12
                 ),
                 enabled = enabled,
                 onClick = {
@@ -149,19 +171,18 @@ internal fun WantedOutlinedButton(
                 }
             )
             .border(
-                BorderStroke(1.dp, buttonDefault.borderColor),
+                BorderStroke(DesignSystemTheme.primitive.primitive1, buttonDefault.borderColor),
                 buttonDefault.borderShape
             )
             .background(buttonDefault.backgroundColor)
-            .buttonHeight(ButtonVariant.OUTLINED, buttonDefault.size)
+            .buttonHeight(buttonDefault.size)
             .buttonWidth(buttonDefault.size, text.isEmpty())
-            .buttonVerticalPadding(text.isNotEmpty())
-            .buttonHorizontalPadding(ButtonVariant.OUTLINED, buttonDefault.size, text.isEmpty()),
+            .buttonVerticalPadding(buttonDefault.size, text.isNotEmpty())
+            .buttonHorizontalPadding(buttonDefault.size, text.isEmpty()),
         horizontalArrangement = Arrangement.spacedBy(
             space = when (size) {
-                ButtonSize.LARGE -> 6.dp
-                ButtonSize.MEDIUM -> 5.dp
-                else -> 4.dp
+                ButtonSize.LARGE -> DesignSystemTheme.spacing.spacing6
+                else -> DesignSystemTheme.spacing.spacing4
             },
             alignment = Alignment.CenterHorizontally
         ),
@@ -169,10 +190,7 @@ internal fun WantedOutlinedButton(
             {
                 WantedButtonSideIcon(
                     modifier = Modifier
-                        .buttonDrawableSize(
-                            variant = ButtonVariant.OUTLINED,
-                            size = buttonDefault.size
-                        )
+                        .buttonDrawableSize(size = buttonDefault.size)
                         .alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
                     tint = buttonDefault.leftIconTintColor
@@ -202,10 +220,7 @@ internal fun WantedOutlinedButton(
             {
                 WantedButtonSideIcon(
                     modifier = Modifier
-                        .buttonDrawableSize(
-                            variant = ButtonVariant.OUTLINED,
-                            size = buttonDefault.size
-                        )
+                        .buttonDrawableSize(size = buttonDefault.size)
                         .alpha(if (isLoading) 0f else 1f),
                     drawableRes = it,
                     tint = buttonDefault.rightIconTintColor
@@ -230,7 +245,7 @@ private fun PreviewOutlinedButtons() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .background(DesignSystemTheme.colors.backgroundNormalNormal),
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -268,10 +283,77 @@ private fun PreviewOutlinedButtons() {
 
 @Preview
 @Composable
+private fun PreviewWantedOutlinedButtonNegativeFallback() {
+    Column(
+        modifier = Modifier
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedOutlinedButton(
+            text = "Fallback",
+            type = ButtonType.NEGATIVE,
+            size = ButtonSize.LARGE,
+            modifier = Modifier.wrapContentSize()
+        )
+        WantedOutlinedButton(
+            text = "Fallback",
+            type = ButtonType.NEGATIVE,
+            size = ButtonSize.MEDIUM,
+            modifier = Modifier.wrapContentSize()
+        )
+        WantedOutlinedButton(
+            text = "Fallback",
+            type = ButtonType.NEGATIVE,
+            size = ButtonSize.SMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+        WantedOutlinedButton(
+            text = "Fallback",
+            type = ButtonType.NEGATIVE,
+            size = ButtonSize.XSMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewWantedOutlinedButtonXsmall() {
+    Column(
+        modifier = Modifier
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        WantedOutlinedButton(
+            text = "Xsmall",
+            size = ButtonSize.XSMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "Xsmall",
+            type = ButtonType.ASSISTIVE,
+            size = ButtonSize.XSMALL,
+            modifier = Modifier.wrapContentSize()
+        )
+
+        WantedOutlinedButton(
+            text = "",
+            size = ButtonSize.XSMALL,
+            modifier = Modifier.wrapContentSize(),
+            leadingDrawable = R.drawable.icon_normal_bookmark
+        )
+    }
+}
+
+@Preview
+@Composable
 fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -303,7 +385,7 @@ fun PreviewWantedOutlinedButtonIconOnlySmallNoDrawableEnable() {
 private fun PreviewWantedOutlinedButtonLoading() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -341,7 +423,7 @@ private fun PreviewWantedOutlinedButtonLoading() {
 private fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -384,7 +466,7 @@ private fun PreviewWantedOutlinedButtonSmallNoDrawableEnable() {
 private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -427,7 +509,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableEnable() {
 private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -470,7 +552,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableEnable() {
 private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -517,7 +599,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesEnable() {
 private fun PreviewWantedOutlinedButtonMediumEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -556,7 +638,7 @@ private fun PreviewWantedOutlinedButtonMediumEnable() {
 private fun PreviewWantedOutlinedButtonLargeEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -595,7 +677,7 @@ private fun PreviewWantedOutlinedButtonLargeEnable() {
 private fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -634,7 +716,7 @@ private fun PreviewWantedOutlinedButtonLargeMaxWidthEnable() {
 private fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -677,7 +759,7 @@ private fun PreviewWantedOutlinedButtonSmallNoDrawableDisable() {
 private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -724,7 +806,7 @@ private fun PreviewWantedOutlinedButtonSmallLeftDrawableDisable() {
 private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -771,7 +853,7 @@ private fun PreviewWantedOutlinedButtonSmallRightDrawableDisable() {
 private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -822,7 +904,7 @@ private fun PreviewWantedOutlinedButtonSmallTwoDrawablesDisable() {
 private fun PreviewWantedOutlinedButtonMediumDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -865,7 +947,7 @@ private fun PreviewWantedOutlinedButtonMediumDisable() {
 private fun PreviewWantedOutlinedButtonLargeDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -908,7 +990,7 @@ private fun PreviewWantedOutlinedButtonLargeDisable() {
 private fun PreviewWantedOutlinedButtonLargeMaxWidthDisable() {
     Column(
         modifier = Modifier
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

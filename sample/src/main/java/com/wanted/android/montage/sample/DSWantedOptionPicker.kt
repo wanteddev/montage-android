@@ -17,7 +17,7 @@ import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedNumberPicker
 import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogTopAppBar
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 
 
 @Composable
@@ -32,7 +32,7 @@ fun DSWantedOptionPicker(
 ) {
     val selected = remember(selectedValue) { mutableIntStateOf(selectedValue) }
 
-    WantedModal(
+    WantedPopup(
         modifier = modifier.padding(horizontal = 20.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
         topBar = {
@@ -42,7 +42,7 @@ fun DSWantedOptionPicker(
             WantedActionArea(
                 modifier = Modifier.wrapContentHeight(),
                 safeArea = false,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.action_select_complete),

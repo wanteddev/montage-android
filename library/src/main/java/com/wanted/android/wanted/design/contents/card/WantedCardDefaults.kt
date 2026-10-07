@@ -81,7 +81,7 @@ object WantedCardDefaults {
         backgroundColor: Color = Color.Transparent,
         shape: Shape = RectangleShape,
         border: BorderStroke? = null,
-        interactionShape: Shape = RoundedCornerShape(topStart = 20.dp, topEnd = 12.dp, bottomStart = 20.dp, bottomEnd = 12.dp),
+        interactionShape: Shape = RoundedCornerShape(12.dp),
         contentPadding: PaddingValues = PaddingValues(0.dp)
     ) = WantedCardDefault(
         topContentSkeleton = topContentSkeleton,

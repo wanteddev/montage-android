@@ -5,6 +5,7 @@ import com.wanted.android.montage.sample.navigations.category.DSWantedCategoryDe
 import com.wanted.android.montage.sample.navigations.category.DSWantedCategoryDemoScreenContract.DSWantedCategoryDemoSideEffect
 import com.wanted.android.montage.sample.navigations.category.DSWantedCategoryDemoScreenContract.DSWantedCategoryDemoViewState
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Size
+import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Variant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -24,8 +25,10 @@ class DSWantedCategoryDemoViewModel @Inject constructor(
 
             DSWantedCategoryDemoEvent.CopyCode -> copyCode()
             is DSWantedCategoryDemoEvent.SetSize -> setState { copy(size = event.size) }
-            is DSWantedCategoryDemoEvent.SetAlternative -> {
-                setState { copy(isAlternative = event.isAlternative) }
+            is DSWantedCategoryDemoEvent.SetVariant -> setState { copy(variant = event.variant) }
+
+            is DSWantedCategoryDemoEvent.SetCustomColors -> {
+                setState { copy(customColors = event.enabled) }
             }
 
             is DSWantedCategoryDemoEvent.SetHorizontalPadding -> {
@@ -62,15 +65,26 @@ class DSWantedCategoryDemoViewModel @Inject constructor(
             Size.Large -> "Size.Large"
             Size.XLarge -> "Size.XLarge"
         }
+        val variantCode = when {
+            state.variant is Variant.Alternative -> "Variant.Alternative"
+            state.customColors -> "Variant.Normal(\n" +
+                "        activeBackgroundColor = DesignSystemTheme.colors.surfaceBrandPrimary,\n" +
+                "        activeContentColor = DesignSystemTheme.colors.staticWhite\n" +
+                "    )"
+            else -> "Variant.Normal()"
+        }
+        val selectedListCode = state.selectedItems.joinToString(", ", "listOf(", ")") {
+            "\"${it.replace("\\", "\\\\").replace("\"", "\\\"")}\""
+        }
 
         return """
             WantedCategory(
                 itemList = listOf("개발", "디자인", "기획", "마케팅", "영업"),
-                selectedList = ${state.selectedItems},
+                selectedList = $selectedListCode,
                 size = $sizeString,
                 horizontalPadding = ${state.horizontalPadding},
                 isVerticalPadding = ${state.verticalPadding},
-                isAlternative = ${state.isAlternative},
+                variant = $variantCode,
                 onClick = { item, isSelected -> /* handle */ }
             )
         """.trimIndent()

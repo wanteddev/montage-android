@@ -34,10 +34,9 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 fun WantedCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = DesignSystemTheme.colors.lineSolidNormal,
+    color: Color = DesignSystemTheme.colors.lineNeutralPrimaryOpaque,
 ) {
 
-    // 기본 size 28  custom 가능/ 선 굵기 퍼센트로
     BoxWithConstraints(modifier = modifier.defaultMinSize(24.dp)) {
         CircularProgressIndicator(
             modifier = Modifier.size(minWidth),

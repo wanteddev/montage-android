@@ -71,7 +71,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param sectionItem (@Composable (Int, Int) -> Unit): 섹션별 아이템 컴포넌트입니다. 첫 번째 파라미터는 섹션 인덱스, 두 번째는 아이템 인덱스입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param containerColor Color: 드롭다운 배경 색상입니다.
- * @param sectionTitleHorizontalPadding Dp: 섹션 타이틀의 좌우 패딩입니다.
+ * @param sectionTitleHorizontalPadding Dp: 섹션 타이틀과 항목의 좌우 패딩입니다. 항목(sectionItem)과 직접입력 슬롯의 좌우 여백은 리스트가 주므로, 안에 놓는 ListCell 은 variant = Inset(기본값)으로 둡니다.
  * @param sectionTitle ((Int) -> String)?: 섹션별 타이틀 텍스트를 반환하는 함수입니다.
  * @param topDirectInput (@Composable () -> Unit)?: 드롭다운 상단 고정 영역 콘텐츠입니다.
  * @param bottomDirectInput (@Composable () -> Unit)?: 드롭다운 하단 영역 콘텐츠입니다.
@@ -84,7 +84,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
     sectionItemCount: (section: Int) -> Int,
     sectionItem: @Composable (section: Int, index: Int) -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
+    containerColor: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionTitle: ((section: Int) -> String)? = null,
     anchorPadding: Dp = 0.dp,
@@ -139,7 +139,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                     backgroundColor = containerColor
                 )
             )
-            .border(1.dp, DesignSystemTheme.colors.lineSolidNormal, dropdownShape)
+            .border(1.dp, DesignSystemTheme.colors.lineNeutralPrimaryOpaque, dropdownShape)
             .clip(dropdownShape),
         scrollState = scrollState,
         containerColor = Color.Transparent,
@@ -162,7 +162,10 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                     .background(containerColor)
 
             ) {
-                it()
+                // 배경은 폭을 채우고 콘텐츠만 항목과 같은 좌우 여백을 갖는다.
+                Box(modifier = Modifier.padding(horizontal = sectionTitleHorizontalPadding)) {
+                    it()
+                }
                 Spacer(modifier = Modifier.size(4.dp))
             }
         }
@@ -181,7 +184,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                     .padding(vertical = 4.dp),
                 text = title.value,
                 style = DesignSystemTheme.typography.caption1Bold,
-                color = DesignSystemTheme.colors.labelAlternative
+                color = DesignSystemTheme.colors.foregroundNeutralTertiary
             )
 
             Spacer(modifier = Modifier.size(4.dp))
@@ -208,7 +211,7 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
                             .padding(vertical = 4.dp),
                         text = sectionTitle(section),
                         style = DesignSystemTheme.typography.caption1Bold,
-                        color = DesignSystemTheme.colors.labelAlternative
+                        color = DesignSystemTheme.colors.foregroundNeutralTertiary
                     )
                 }
 
@@ -217,7 +220,15 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
 
             val itemCount = sectionItemCount(section)
             repeat(itemCount) { index ->
-                sectionItem(section, index)
+                // 항목의 좌우 여백은 리스트(드롭다운)가 준다. 안에 놓이는 ListCell 은 variant = Inset 고정이며,
+                // 인터랙션이 셀보다 좌우 12 넓어져 드롭다운 가장자리에서 8 물러난 형태가 된다.
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = sectionTitleHorizontalPadding)
+                ) {
+                    sectionItem(section, index)
+                }
 
                 if (index != itemCount - 1) {
                     Spacer(modifier = Modifier.size(4.dp))
@@ -226,7 +237,9 @@ fun ExposedDropdownMenuBoxScope.WantedAutoComplete(
         }
 
         bottomDirectInput?.let {
-            it()
+            Box(modifier = Modifier.padding(horizontal = sectionTitleHorizontalPadding)) {
+                it()
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import com.wanted.android.montage.sample.base.BaseSideEffect
 import com.wanted.android.montage.sample.base.BaseViewState
 import com.wanted.android.montage.sample.base.ViewEvent
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Size
+import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Variant
 
 object DSWantedCategoryDemoScreenContract {
     sealed interface DSWantedCategoryDemoEvent : BaseEvent {
@@ -14,18 +15,20 @@ object DSWantedCategoryDemoScreenContract {
         data class ShowCode(val isShowCode: Boolean) : DSWantedCategoryDemoEvent
         data object CopyCode : DSWantedCategoryDemoEvent
         data class SetSize(val size: Size) : DSWantedCategoryDemoEvent
-        data class SetAlternative(val isAlternative: Boolean) : DSWantedCategoryDemoEvent
+        data class SetVariant(val variant: Variant) : DSWantedCategoryDemoEvent
+        data class SetCustomColors(val enabled: Boolean) : DSWantedCategoryDemoEvent
         data class SetHorizontalPadding(val enabled: Boolean) : DSWantedCategoryDemoEvent
         data class SetVerticalPadding(val enabled: Boolean) : DSWantedCategoryDemoEvent
         data class ToggleItem(val item: String) : DSWantedCategoryDemoEvent
     }
 
     data class DSWantedCategoryDemoViewState(
-        val isLoading: Boolean = true,
+        val isLoading: Boolean = false,
         val isShowCode: Boolean = false,
         val code: String = "",
         val size: Size = Size.Medium,
-        val isAlternative: Boolean = false,
+        val variant: Variant = Variant.Normal(),
+        val customColors: Boolean = false,
         val horizontalPadding: Boolean = false,
         val verticalPadding: Boolean = false,
         val selectedItems: List<String> = listOf("디자인"),
@@ -41,7 +44,8 @@ object DSWantedCategoryDemoScreenContract {
         data object OnClickShowCode : DSWantedCategoryDemoViewEvent
         data object OnClickCopyCode : DSWantedCategoryDemoViewEvent
         data class OnSizeChanged(val size: Size) : DSWantedCategoryDemoViewEvent
-        data class OnAlternativeChanged(val isAlternative: Boolean) : DSWantedCategoryDemoViewEvent
+        data class OnVariantChanged(val variant: Variant) : DSWantedCategoryDemoViewEvent
+        data class OnCustomColorsChanged(val enabled: Boolean) : DSWantedCategoryDemoViewEvent
         data class OnHorizontalPaddingChanged(val enabled: Boolean) : DSWantedCategoryDemoViewEvent
         data class OnVerticalPaddingChanged(val enabled: Boolean) : DSWantedCategoryDemoViewEvent
         data class OnItemClicked(val item: String) : DSWantedCategoryDemoViewEvent

@@ -1,6 +1,8 @@
 package com.wanted.android.wanted.design.actions.actionarea
 
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
+import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefault
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.util.ButtonSize
@@ -33,18 +35,18 @@ enum class ActionAreaType {
  * 각 버튼의 WantedButtonDefault를 개별적으로 설정할 수 있습니다.
  *
  * @property type ActionAreaType: 액션 영역 타입입니다.
- * @property positiveButtonDefault WantedButtonDefault: 메인 액션 버튼 스타일을 설정합니다.
- * @property negativeButtonDefault WantedButtonDefault: 서브 액션 버튼 스타일을 설정합니다.
- * @property neutralButtonDefault WantedButtonDefault: 추가 액션 버튼 스타일을 설정합니다.
+ * @property mainButtonDefault WantedButtonDefault: 메인 액션 버튼 스타일을 설정합니다.
+ * @property alternativeButtonDefault WantedButtonDefault: 대체 액션 버튼 스타일을 설정합니다.
+ * @property subButtonDefault WantedButtonDefault: 보조 액션 버튼 스타일을 설정합니다.
  *
  * @see ActionAreaType
  * @see WantedButtonDefault
  */
 data class WantedActionAreaDefault(
     val type: ActionAreaType = ActionAreaType.Strong,
-    val positiveButtonDefault: WantedButtonDefault,
-    val negativeButtonDefault: WantedButtonDefault,
-    val neutralButtonDefault: WantedButtonDefault
+    val mainButtonDefault: WantedButtonDefault,
+    val alternativeButtonDefault: WantedButtonDefault,
+    val subButtonDefault: WantedButtonDefault
 )
 
 /**
@@ -56,14 +58,31 @@ data class WantedActionAreaDefault(
  *
  * @see WantedActionAreaDefault
  * @see ActionAreaType
+ *
+ * @property CAPTION_ICON Int: 캡션 아이콘을 사용할 때 권장되는 기본 아이콘(`@DrawableRes`)입니다. 캡션 아이콘은 기본적으로 표시되지 않으며, 아이콘이 필요할 때 `WantedActionArea` 의 `captionIcon` 에 이 값을 전달합니다.
  */
 object WantedActionAreaDefaults {
+    // 캡션 아이콘을 사용할 때 권장되는 기본 아이콘입니다.
+    //
+    // 캡션 아이콘은 기본적으로 표시되지 않으며, 아이콘이 필요할 때 이 값을 전달합니다.
+    //
+    // 사용 예시:
+    // ```kotlin
+    // WantedActionArea(
+    //     caption = "캡션",
+    //     captionIcon = WantedActionAreaDefaults.CAPTION_ICON,
+    //     ...
+    // )
+    // ```
+    @DrawableRes
+    val CAPTION_ICON: Int = R.drawable.icon_normal_circle_info
+
     /**
      * fun getDefault(...)
      *
      * WantedActionAreaDefault의 기본 설정을 생성합니다.
      *
-     * 액션 영역 타입에 따라 positive, negative, neutral 버튼의 기본 스타일을 자동으로 설정합니다.
+     * 액션 영역 타입에 따라 main, alternative, sub 버튼의 기본 스타일을 자동으로 설정합니다.
      * 각 버튼의 스타일을 개별적으로 커스터마이징할 수도 있습니다.
      *
      * 사용 예시:
@@ -74,9 +93,9 @@ object WantedActionAreaDefaults {
      * ```
      *
      * @param type ActionAreaType: 액션 영역의 타입입니다. 기본값은 ActionAreaType.Strong입니다.
-     * @param positiveButtonDefault WantedButtonDefault: 메인 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
-     * @param negativeButtonDefault WantedButtonDefault: 서브 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
-     * @param neutralButtonDefault WantedButtonDefault: 추가 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
+     * @param mainButtonDefault WantedButtonDefault: 메인 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
+     * @param alternativeButtonDefault WantedButtonDefault: 대체 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
+     * @param subButtonDefault WantedButtonDefault: 보조 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
      * @return WantedActionAreaDefault: 설정된 WantedActionAreaDefault 인스턴스를 반환합니다.
      *
      * @see WantedActionAreaDefault
@@ -85,73 +104,70 @@ object WantedActionAreaDefaults {
     @Composable
     fun getDefault(
         type: ActionAreaType = ActionAreaType.Strong,
-        positiveButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            variant = getPositiveButtonVariant(type),
-            type = getPositiveButtonType(type),
-            size = getPositiveButtonSize(type)
+        mainButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
+            variant = getMainButtonVariant(),
+            type = getMainButtonType(type),
+            size = getMainButtonSize()
         ),
-        negativeButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            variant = getNegativeButtonVariant(type),
-            type = getNegativeButtonType(type),
-            size = getNegativeButtonSize(type)
+        alternativeButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
+            variant = getAlternativeButtonVariant(),
+            type = getAlternativeButtonType(),
+            size = getAlternativeButtonSize()
         ),
-        neutralButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
-            variant = getNeutralButtonVariant(type),
-            type = getNeutralButtonType(type),
-            size = getNeutralButtonSize(type)
+        subButtonDefault: WantedButtonDefault = WantedButtonDefaults.getDefault(
+            variant = getSubButtonVariant(type),
+            type = getSubButtonType(type),
+            size = getSubButtonSize(type)
         )
     ) = WantedActionAreaDefault(
         type = type,
-        positiveButtonDefault = positiveButtonDefault,
-        negativeButtonDefault = negativeButtonDefault,
-        neutralButtonDefault = neutralButtonDefault,
+        mainButtonDefault = mainButtonDefault,
+        alternativeButtonDefault = alternativeButtonDefault,
+        subButtonDefault = subButtonDefault,
     )
 
-    private fun getPositiveButtonVariant(type: ActionAreaType): ButtonVariant {
-        return when (type) {
-            ActionAreaType.Cancel -> ButtonVariant.OUTLINED
-            else -> ButtonVariant.SOLID
-        }
+    internal fun getMainButtonVariant(): ButtonVariant {
+        return ButtonVariant.SOLID
     }
 
-    private fun getPositiveButtonType(type: ActionAreaType): ButtonType {
+    internal fun getMainButtonType(type: ActionAreaType): ButtonType {
         return when (type) {
             ActionAreaType.Cancel -> ButtonType.ASSISTIVE
             else -> ButtonType.PRIMARY
         }
     }
 
-    private fun getPositiveButtonSize(type: ActionAreaType): ButtonSize {
+    internal fun getMainButtonSize(): ButtonSize {
         return ButtonSize.LARGE
     }
 
-    private fun getNegativeButtonVariant(type: ActionAreaType): ButtonVariant {
+    internal fun getAlternativeButtonVariant(): ButtonVariant {
         return ButtonVariant.OUTLINED
     }
 
-    private fun getNegativeButtonType(type: ActionAreaType): ButtonType {
-        return ButtonType.PRIMARY
+    internal fun getAlternativeButtonType(): ButtonType {
+        return ButtonType.ASSISTIVE
     }
 
-    private fun getNegativeButtonSize(type: ActionAreaType): ButtonSize {
+    internal fun getAlternativeButtonSize(): ButtonSize {
         return ButtonSize.LARGE
     }
 
-    private fun getNeutralButtonVariant(type: ActionAreaType): ButtonVariant {
+    internal fun getSubButtonVariant(type: ActionAreaType): ButtonVariant {
         return when (type) {
             ActionAreaType.Strong -> ButtonVariant.TEXT
             else -> ButtonVariant.OUTLINED
         }
     }
 
-    private fun getNeutralButtonType(type: ActionAreaType): ButtonType {
+    internal fun getSubButtonType(type: ActionAreaType): ButtonType {
         return when (type) {
             ActionAreaType.Strong -> ButtonType.ASSISTIVE
             else -> ButtonType.ASSISTIVE
         }
     }
 
-    private fun getNeutralButtonSize(type: ActionAreaType): ButtonSize {
+    internal fun getSubButtonSize(type: ActionAreaType): ButtonSize {
         return when (type) {
             ActionAreaType.Strong -> ButtonSize.SMALL
             else -> ButtonSize.LARGE

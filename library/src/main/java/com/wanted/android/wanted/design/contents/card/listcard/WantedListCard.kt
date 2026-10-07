@@ -115,7 +115,7 @@ fun WantedListCard(
                                 .height(64.dp)
                                 .aspectRatio(cardDefault.ratio)
                                 .background(
-                                    color = DesignSystemTheme.colors.fillNormal
+                                    color = DesignSystemTheme.colors.surfaceNeutralSecondary
                                         .copy(OPACITY_8)
                                 ),
                         )
@@ -209,10 +209,10 @@ private fun WantedCardHorizontalLayout(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = DesignSystemTheme.colors.fillAlternative)
+                .background(color = DesignSystemTheme.colors.surfaceNeutralTertiary)
                 .border(
                     width = 1.dp,
-                    color = DesignSystemTheme.colors.lineSolidAlternative,
+                    color = DesignSystemTheme.colors.lineNeutralTertiaryOpaque,
                     shape = RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.TopStart

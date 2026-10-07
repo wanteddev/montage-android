@@ -97,7 +97,7 @@ private fun TopBarTitle(
     ) {
         ProvideTextStyle(
             value = DesignSystemTheme.typography.title3Bold.copy(
-                color = DesignSystemTheme.colors.labelStrong
+                color = DesignSystemTheme.colors.foregroundNeutralStrong
             )
         ) {
             title()
@@ -113,7 +113,7 @@ private fun WantedDisplayTopAppBarLayoutPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DesignSystemTheme.colors.backgroundNormalNormal),
+                .background(DesignSystemTheme.colors.backgroundNeutralPrimary),
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 

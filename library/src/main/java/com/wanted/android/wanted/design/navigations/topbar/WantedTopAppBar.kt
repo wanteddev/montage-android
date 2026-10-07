@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,16 +15,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -74,7 +70,7 @@ fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     background: Boolean = true,
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
@@ -125,46 +121,45 @@ fun WantedTopAppBar(
                 }
             }
         ) {
-            CompositionLocalProvider(LocalWantedTopBarIconVariant.provides(variant)) {
-                when (variant) {
-                    Variant.Normal -> {
-                        WantedTopAppBarLayout(
-                            modifier = Modifier
-                                .windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
+            when (variant) {
+                Variant.Normal -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier
+                            .windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
-                    Variant.Display -> {
-                        WantedDisplayTopAppBarLayout(
-                            modifier = Modifier.windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
+                Variant.Display -> {
+                    WantedDisplayTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
-                    Variant.Floating -> {
-                        WantedTopAppBarLayout(
-                            modifier = Modifier.windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
+                Variant.Floating -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
 
-                    Variant.Search -> {
-                        WantedTopAppBarLayout(
-                            modifier = Modifier.windowInsetsPadding(windowInsets),
-                            navigationIcon = navigationIcon,
-                            title = title,
-                            actions = actions
-                        )
-                    }
+                Variant.Search -> {
+                    WantedTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
                 }
             }
+        
         }
     }
 }
@@ -202,7 +197,7 @@ fun WantedTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     background: Boolean = true,
     titleAlignCenter: Boolean = false,
     scrollableState: ScrollableState? = null,
@@ -279,7 +274,7 @@ fun WantedBackTopAppBar(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
     variant: Variant = Variant.Normal,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     background: Boolean = true,
     scrollableState: ScrollableState? = null,
     titleAlignCenter: Boolean = false,
@@ -297,7 +292,6 @@ fun WantedBackTopAppBar(
         titleAlignCenter = titleAlignCenter,
         navigationIcon = {
             WantedTopAppBarIconButton(
-                variant = variant,
                 painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                 onClick = { onClickBack() }
             )
@@ -312,26 +306,19 @@ fun WantedSearchTopAppBar(
     value: TextFieldValue,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     background: Boolean = true,
     scrollableState: ScrollableState? = null,
     placeholder: String = "",
     enabled: Boolean = true,
-    size: Size = Size.Medium(),
+    size: Size = Size.Large,
     maxWordCount: Int = Int.MAX_VALUE,
     enabledOverflowText: Boolean = false,
     interactionSource: MutableInteractionSource? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    focused: State<Boolean>? = null,
-    textStyle: TextStyle = DesignSystemTheme.typography.body1Regular.copy(
-        color = if (enabled) {
-            DesignSystemTheme.colors.labelNormal
-        } else {
-            DesignSystemTheme.colors.labelAlternative
-        }
-    ),
-    cursorBrush: Brush = SolidColor(textStyle.color),
+    textStyle: TextStyle? = null,
+    cursorBrush: Brush? = null,
     focusRequester: FocusRequester? = null,
     actions: @Composable (RowScope.() -> Unit)? = null,
     onClickBack: () -> Unit = {},
@@ -339,7 +326,6 @@ fun WantedSearchTopAppBar(
 ) {
 
     val localInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
-    val localFocused = focused ?: localInteractionSource.collectIsFocusedAsState()
     val localFocusRequester = focusRequester ?: remember { FocusRequester() }
 
     WantedTopAppBar(
@@ -351,7 +337,6 @@ fun WantedSearchTopAppBar(
         scrollableState = scrollableState,
         navigationIcon = {
             WantedTopAppBarIconButton(
-                variant = Variant.Search,
                 painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                 onClick = { onClickBack() }
             )
@@ -367,7 +352,6 @@ fun WantedSearchTopAppBar(
                 interactionSource = localInteractionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
-                focused = localFocused,
                 cursorBrush = cursorBrush,
                 textStyle = textStyle,
                 focusRequester = localFocusRequester,
@@ -414,9 +398,8 @@ fun WantedSearchTopAppBar(
  * @param interactionSource MutableInteractionSource?: 사용자 인터랙션 상태를 추적하는 객체입니다.
  * @param keyboardOptions KeyboardOptions: 키보드 옵션입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 핸들러입니다.
- * @param focused State<Boolean>?: 검색 필드의 포커스 상태입니다.
- * @param textStyle TextStyle: 검색 텍스트의 스타일입니다.
- * @param cursorBrush Brush: 커서의 브러시(색상)입니다.
+ * @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
+ * @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 primary 색상을 사용합니다.
  * @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
  * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
  * @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.
@@ -427,33 +410,25 @@ fun WantedSearchTopAppBar(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     background: Boolean = true,
     scrollableState: ScrollableState? = null,
     placeholder: String = "",
     enabled: Boolean = true,
-    size: Size = Size.Small(),
+    size: Size = Size.Medium,
     maxWordCount: Int = Int.MAX_VALUE,
     enabledOverflowText: Boolean = false,
     interactionSource: MutableInteractionSource? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    focused: State<Boolean>? = null,
-    textStyle: TextStyle = DesignSystemTheme.typography.body1Regular.copy(
-        color = if (enabled) {
-            DesignSystemTheme.colors.labelNormal
-        } else {
-            DesignSystemTheme.colors.labelAlternative
-        }
-    ),
-    cursorBrush: Brush = SolidColor(textStyle.color),
+    textStyle: TextStyle? = null,
+    cursorBrush: Brush? = null,
     focusRequester: FocusRequester? = null,
     actions: @Composable (RowScope.() -> Unit)? = null,
     onClickBack: () -> Unit = {},
     onValueChange: (String) -> Unit = {}
 ) {
     val localInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
-    val localFocused = focused ?: localInteractionSource.collectIsFocusedAsState()
     val localFocusRequester = focusRequester ?: remember { FocusRequester() }
 
     WantedTopAppBar(
@@ -465,7 +440,6 @@ fun WantedSearchTopAppBar(
         scrollableState = scrollableState,
         navigationIcon = {
             WantedTopAppBarIconButton(
-                variant = Variant.Search,
                 painter = painterResource(id = R.drawable.icon_normal_arrow_left),
                 onClick = { onClickBack() }
             )
@@ -481,7 +455,6 @@ fun WantedSearchTopAppBar(
                 interactionSource = localInteractionSource,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
-                focused = localFocused,
                 cursorBrush = cursorBrush,
                 textStyle = textStyle,
                 focusRequester = localFocusRequester,

@@ -1,6 +1,8 @@
 package com.wanted.android.montage.sample.graph
 
 import androidx.annotation.Keep
+import com.wanted.android.wanted.design.feedback.fallback.WantedFallbackButtonVariant
+import com.wanted.android.wanted.design.feedback.fallback.WantedFallbackPadding
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,6 +15,10 @@ sealed interface MontageDesignDemoNavContract {
     @Keep
     @Serializable
     data object ButtonDemo : MontageDesignDemoNavContract
+
+    @Keep
+    @Serializable
+    data object TextButtonDemo : MontageDesignDemoNavContract
 
     @Keep
     @Serializable
@@ -29,6 +35,22 @@ sealed interface MontageDesignDemoNavContract {
     @Keep
     @Serializable
     data object FallbackViewDemo : MontageDesignDemoNavContract
+
+    /**
+     * [FallbackViewDemo] 의 행동 버튼으로만 진입하는 전체 화면 미리보기 경로입니다.
+     *
+     * data class 라 [getAllDataObjects] 의 목록에는 노출되지 않습니다.
+     */
+    @Keep
+    @Serializable
+    data class FallbackViewPreviewDemo(
+        val heading: Boolean,
+        val description: Boolean,
+        val buttonVariant: WantedFallbackButtonVariant,
+        val padding: WantedFallbackPadding,
+        val main: Boolean,
+        val alternative: Boolean
+    ) : MontageDesignDemoNavContract
 
     @Keep
     @Serializable
@@ -80,6 +102,10 @@ sealed interface MontageDesignDemoNavContract {
 
     @Keep
     @Serializable
+    data object SegmentedControlDemo : MontageDesignDemoNavContract
+
+    @Keep
+    @Serializable
     data object FramedStyleDemo : MontageDesignDemoNavContract
 
     @Keep
@@ -93,6 +119,14 @@ sealed interface MontageDesignDemoNavContract {
     @Keep
     @Serializable
     data object TextAreaDemo : MontageDesignDemoNavContract
+
+    @Keep
+    @Serializable
+    data object FormControlDemo : MontageDesignDemoNavContract
+
+    @Keep
+    @Serializable
+    data object SelectDemo : MontageDesignDemoNavContract
 
     @Keep
     @Serializable
@@ -190,6 +224,18 @@ sealed interface MontageDesignDemoNavContract {
     @Serializable
     data object DatePickerWheelDemo : MontageDesignDemoNavContract
 
+    @Keep
+    @Serializable
+    data object IconDemo : MontageDesignDemoNavContract
+
+    @Keep
+    @Serializable
+    data object TypographyDemo : MontageDesignDemoNavContract
+
+    @Keep
+    @Serializable
+    data object ColorTokenDemo : MontageDesignDemoNavContract
+
     companion object {
         fun fromClassName(className: String): MontageDesignDemoNavContract? {
             return MontageDesignDemoNavContract::class.sealedSubclasses
@@ -201,6 +247,7 @@ sealed interface MontageDesignDemoNavContract {
             val order = listOf(
                 "DemoList",
                 "ButtonDemo",
+                "TextButtonDemo",
                 "ActionAreaDemo",
                 "ChipDemo",
                 "IconButtonDemo",
@@ -224,8 +271,11 @@ sealed interface MontageDesignDemoNavContract {
                 "TextFieldDemo",
                 "AutoCompleteTextFieldDemo",
                 "TextAreaDemo",
+                "FormControlDemo",
+                "SelectDemo",
                 "SearchFieldDemo",
                 "FilterButtonDemo",
+                "SegmentedControlDemo",
                 "NumberPickerDemo",
                 "DatePickerDemo",
                 "DatePickerWheelDemo",
@@ -239,6 +289,9 @@ sealed interface MontageDesignDemoNavContract {
                 "PaginationDotsDemo",
                 "ProgressIndicatorDemo",
                 "ProgressTrackerDemo",
+                "IconDemo",
+                "TypographyDemo",
+                "ColorTokenDemo",
                 "TooltipDemo",
                 "PopoverDemo",
                 "PopupDemo",

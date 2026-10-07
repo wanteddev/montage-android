@@ -18,7 +18,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.navigations.category.DSWantedCategoryDemoScreenContract.DSWantedCategoryDemoEvent
 import com.wanted.android.montage.sample.navigations.category.DSWantedCategoryDemoScreenContract.DSWantedCategoryDemoSideEffect
@@ -33,7 +33,8 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.navigations.category.WantedCategory
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Size
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Variant
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -72,8 +73,12 @@ fun DSWantedCategoryDemoScreen(
                 viewModel.setEvent(DSWantedCategoryDemoEvent.SetSize(viewEvent.size))
             }
 
-            is DSWantedCategoryDemoViewEvent.OnAlternativeChanged -> {
-                viewModel.setEvent(DSWantedCategoryDemoEvent.SetAlternative(viewEvent.isAlternative))
+            is DSWantedCategoryDemoViewEvent.OnVariantChanged -> {
+                viewModel.setEvent(DSWantedCategoryDemoEvent.SetVariant(viewEvent.variant))
+            }
+
+            is DSWantedCategoryDemoViewEvent.OnCustomColorsChanged -> {
+                viewModel.setEvent(DSWantedCategoryDemoEvent.SetCustomColors(viewEvent.enabled))
             }
 
             is DSWantedCategoryDemoViewEvent.OnHorizontalPaddingChanged -> {
@@ -91,7 +96,7 @@ fun DSWantedCategoryDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedCategoryDemoEvent.CopyCode)
@@ -127,7 +132,7 @@ private fun DSWantedCategoryDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -136,7 +141,7 @@ private fun DSWantedCategoryDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -157,7 +162,7 @@ private fun DSWantedCategoryDemoScreenContent(
                     size = viewState.size,
                     horizontalPadding = viewState.horizontalPadding,
                     isVerticalPadding = viewState.verticalPadding,
-                    isAlternative = viewState.isAlternative,
+                    variant = demoVariant(viewState),
                     onClick = { item, _ ->
                         onViewEvent(DSWantedCategoryDemoViewEvent.OnItemClicked(item))
                     }
@@ -175,12 +180,25 @@ private fun DSWantedCategoryDemoScreenContent(
                     }
                 )
             },
-            alternative = {
+            variant = {
+                WantedSelect(
+                    value = "variant : ${variantName(viewState.variant)}",
+                    selectedValue = variantName(viewState.variant),
+                    selectValueList = Variant.presets.map { variantName(it) },
+                    onSelect = { selected ->
+                        val variant = Variant.presets
+                            .firstOrNull { variantName(it) == selected }
+                            ?: Variant.Normal()
+                        onViewEvent(DSWantedCategoryDemoViewEvent.OnVariantChanged(variant))
+                    }
+                )
+            },
+            customColors = {
                 DSWantedOptionSwitchCell(
-                    text = "alternative : ${viewState.isAlternative}",
-                    checkState = viewState.isAlternative,
+                    text = "Normal 색상 커스텀 (Normal 전용) : ${viewState.customColors}",
+                    checkState = viewState.customColors,
                     onCheckChanged = { checked ->
-                        onViewEvent(DSWantedCategoryDemoViewEvent.OnAlternativeChanged(checked))
+                        onViewEvent(DSWantedCategoryDemoViewEvent.OnCustomColorsChanged(checked))
                     }
                 )
             },
@@ -215,7 +233,8 @@ private fun DSWantedCategoryDemoScreenLayout(
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
     size: @Composable () -> Unit,
-    alternative: @Composable () -> Unit,
+    variant: @Composable () -> Unit,
+    customColors: @Composable () -> Unit,
     horizontalPadding: @Composable () -> Unit,
     verticalPadding: @Composable () -> Unit,
 ) {
@@ -228,7 +247,7 @@ private fun DSWantedCategoryDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -241,17 +260,31 @@ private fun DSWantedCategoryDemoScreenLayout(
         Text(
             text = "Option",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
         size()
-        alternative()
+        variant()
+        customColors()
         horizontalPadding()
         verticalPadding()
         Spacer(modifier = Modifier.height(20.dp))
     }
 }
+
+private fun variantName(variant: Variant): String = variant::class.simpleName.orEmpty()
+
+@Composable
+private fun demoVariant(viewState: DSWantedCategoryDemoViewState): Variant =
+    if (viewState.customColors && viewState.variant is Variant.Normal) {
+        Variant.Normal(
+            activeBackgroundColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+            activeContentColor = DesignSystemTheme.colors.staticWhite
+        )
+    } else {
+        viewState.variant
+    }
 
 private fun getSizeFromName(name: String): Size {
     return when (name) {

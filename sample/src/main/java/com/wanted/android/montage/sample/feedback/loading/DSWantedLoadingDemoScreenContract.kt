@@ -21,7 +21,7 @@ object DSWantedLoadingDemoScreenContract {
         val code: String = "",
         val loadingType: LoadingType = LoadingType.Circular,
         val useDim: Boolean = true,
-        val showLoading: Boolean = true,
+        val showLoading: Boolean = true
     ) : BaseViewState
 
     sealed interface DSWantedLoadingDemoSideEffect : BaseSideEffect {

@@ -12,7 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 enum class ButtonVariant {
-    SOLID, OUTLINED, TEXT
+    SOLID,
+    OUTLINED,
+
+    @Deprecated("ButtonVariant.TEXT은 더 이상 사용하지 않습니다. WantedTextButton을 사용해주세요. (5.0에서 제거 예정)")
+    TEXT,
 }
 
 enum class ButtonStatus {
@@ -20,11 +24,11 @@ enum class ButtonStatus {
 }
 
 enum class ButtonType {
-    PRIMARY, ASSISTIVE
+    PRIMARY, ASSISTIVE, NEGATIVE
 }
 
 enum class ButtonSize {
-    LARGE, MEDIUM, SMALL
+    LARGE, MEDIUM, SMALL, XSMALL
 }
 
 @Composable

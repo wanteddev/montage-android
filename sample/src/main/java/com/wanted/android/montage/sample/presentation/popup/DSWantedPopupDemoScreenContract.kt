@@ -4,7 +4,8 @@ import com.wanted.android.montage.sample.base.BaseEvent
 import com.wanted.android.montage.sample.base.BaseSideEffect
 import com.wanted.android.montage.sample.base.BaseViewState
 import com.wanted.android.montage.sample.base.ViewEvent
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
+import com.wanted.android.wanted.design.actions.actionarea.ActionAreaType
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopupContract.Resize
 
 object DSWantedPopupDemoScreenContract {
     sealed interface DSWantedPopupDemoEvent : BaseEvent {
@@ -12,8 +13,10 @@ object DSWantedPopupDemoScreenContract {
         data class ShowCode(val isShowCode: Boolean) : DSWantedPopupDemoEvent
         data object CopyCode : DSWantedPopupDemoEvent
         data class SetShowPopup(val show: Boolean) : DSWantedPopupDemoEvent
-        data class SetModalType(val type: ModalType) : DSWantedPopupDemoEvent
+        data class SetResize(val resize: Resize) : DSWantedPopupDemoEvent
         data class SetUseTopBar(val use: Boolean) : DSWantedPopupDemoEvent
+        data class SetUseActionArea(val use: Boolean) : DSWantedPopupDemoEvent
+        data class SetActionAreaType(val actionAreaType: ActionAreaType) : DSWantedPopupDemoEvent
     }
 
     data class DSWantedPopupDemoViewState(
@@ -21,8 +24,10 @@ object DSWantedPopupDemoScreenContract {
         val isShowCode: Boolean = false,
         val code: String = "",
         val showPopup: Boolean = false,
-        val modalType: ModalType = ModalType.Flexible,
+        val resize: Resize = Resize.Hug,
         val useTopBar: Boolean = true,
+        val useActionArea: Boolean = true,
+        val actionAreaType: ActionAreaType = ActionAreaType.Strong,
     ) : BaseViewState
 
     sealed interface DSWantedPopupDemoSideEffect : BaseSideEffect {
@@ -34,7 +39,11 @@ object DSWantedPopupDemoScreenContract {
         data object OnClickShowCode : DSWantedPopupDemoViewEvent
         data object OnClickCopyCode : DSWantedPopupDemoViewEvent
         data class OnShowPopupChanged(val show: Boolean) : DSWantedPopupDemoViewEvent
-        data class OnModalTypeChanged(val type: ModalType) : DSWantedPopupDemoViewEvent
+        data class OnResizeChanged(val resize: Resize) : DSWantedPopupDemoViewEvent
         data class OnUseTopBarChanged(val use: Boolean) : DSWantedPopupDemoViewEvent
+        data class OnUseActionAreaChanged(val use: Boolean) : DSWantedPopupDemoViewEvent
+        data class OnActionAreaTypeChanged(
+            val actionAreaType: ActionAreaType
+        ) : DSWantedPopupDemoViewEvent
     }
 }

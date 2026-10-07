@@ -8,7 +8,7 @@ import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.FilterButtonSize
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.FilterButtonVariant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.OPACITY_43
+import com.wanted.android.wanted.design.util.OPACITY_28
 import com.wanted.android.wanted.design.util.OPACITY_5
 
 /**
@@ -131,17 +131,17 @@ object WantedFilterButtonDefaults {
         return when (variant) {
             FilterButtonVariant.Solid -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.inverse_label
-                    else -> R.color.label_normal
+                    !isEnable -> R.color.foreground_disable_primary
+                    isActive -> R.color.foreground_brand_primary
+                    else -> R.color.foreground_neutral_primary
                 }
             }
 
             FilterButtonVariant.Outlined -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.primary_normal
-                    else -> R.color.label_normal
+                    !isEnable -> R.color.foreground_disable_primary
+                    isActive -> R.color.foreground_brand_primary
+                    else -> R.color.foreground_neutral_primary
                 }
             }
         }
@@ -175,17 +175,17 @@ object WantedFilterButtonDefaults {
         return when (variant) {
             FilterButtonVariant.Solid -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.inverse_label
-                    else -> R.color.label_normal
+                    !isEnable -> R.color.foreground_disable_primary
+                    isActive -> R.color.foreground_brand_primary
+                    else -> R.color.foreground_neutral_primary
                 }
             }
 
             FilterButtonVariant.Outlined -> {
                 when {
-                    !isEnable -> R.color.label_disable
-                    isActive -> R.color.label_normal
-                    else -> R.color.label_normal
+                    !isEnable -> R.color.foreground_disable_primary
+                    isActive -> R.color.foreground_brand_primary
+                    else -> R.color.foreground_neutral_primary
                 }
             }
         }
@@ -199,16 +199,16 @@ object WantedFilterButtonDefaults {
     ): Color = when (variant) {
         FilterButtonVariant.Solid -> {
             when {
-                !isEnable -> DesignSystemTheme.colors.interactionDisable
-                isActive -> DesignSystemTheme.colors.inverseBackground
-                else -> DesignSystemTheme.colors.fillAlternative
+                !isEnable -> DesignSystemTheme.colors.surfaceDisablePrimary
+                isActive -> DesignSystemTheme.colors.surfaceBrandPrimary.copy(alpha = OPACITY_5)
+                else -> DesignSystemTheme.colors.surfaceNeutralTertiary
             }
         }
 
         FilterButtonVariant.Outlined -> {
             when {
                 !isEnable -> DesignSystemTheme.colors.transparent
-                isActive -> DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_5)
+                isActive -> DesignSystemTheme.colors.surfaceBrandPrimary.copy(alpha = OPACITY_5)
                 else -> DesignSystemTheme.colors.transparent
             }
         }
@@ -230,9 +230,9 @@ object WantedFilterButtonDefaults {
 
         FilterButtonVariant.Outlined -> {
             when {
-                !isEnable -> DesignSystemTheme.colors.lineNormalNeutral
-                isActive -> DesignSystemTheme.colors.primaryNormal.copy(alpha = OPACITY_43)
-                else -> DesignSystemTheme.colors.lineNormalNeutral
+                !isEnable -> DesignSystemTheme.colors.lineNeutralSecondary
+                isActive -> DesignSystemTheme.colors.surfaceBrandPrimary.copy(alpha = OPACITY_28)
+                else -> DesignSystemTheme.colors.lineNeutralSecondary
             }
         }
     }
@@ -256,17 +256,17 @@ object WantedFilterButtonDefaults {
         return when (variant) {
             FilterButtonVariant.Solid -> {
                 when {
-                    !isEnable -> DesignSystemTheme.colors.labelDisable
-                    isActive -> DesignSystemTheme.colors.inverseLabel
-                    else -> DesignSystemTheme.colors.labelNormal
+                    !isEnable -> DesignSystemTheme.colors.foregroundDisablePrimary
+                    isActive -> DesignSystemTheme.colors.foregroundBrandPrimary
+                    else -> DesignSystemTheme.colors.foregroundNeutralPrimary
                 }
             }
 
             FilterButtonVariant.Outlined -> {
                 when {
-                    !isEnable -> DesignSystemTheme.colors.labelDisable
-                    isActive -> DesignSystemTheme.colors.primaryNormal
-                    else -> DesignSystemTheme.colors.labelNormal
+                    !isEnable -> DesignSystemTheme.colors.foregroundDisablePrimary
+                    isActive -> DesignSystemTheme.colors.foregroundBrandPrimary
+                    else -> DesignSystemTheme.colors.foregroundNeutralPrimary
                 }
             }
         }
@@ -276,9 +276,9 @@ object WantedFilterButtonDefaults {
     private fun getChipFilterTextStyle(
         size: FilterButtonSize = LocalWantedFilterButtonSize.current
     ): TextStyle = when (size) {
-        FilterButtonSize.XSmall -> DesignSystemTheme.typography.caption1Medium
-        FilterButtonSize.Small -> DesignSystemTheme.typography.label1Medium
-        FilterButtonSize.Medium -> DesignSystemTheme.typography.body2Medium
-        FilterButtonSize.Large -> DesignSystemTheme.typography.body2Medium
+        FilterButtonSize.XSmall -> DesignSystemTheme.typography.caption2Medium
+        FilterButtonSize.Small -> DesignSystemTheme.typography.caption1Medium
+        FilterButtonSize.Medium -> DesignSystemTheme.typography.label2Medium
+        FilterButtonSize.Large -> DesignSystemTheme.typography.label1Medium
     }
 }

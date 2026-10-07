@@ -86,7 +86,7 @@ fun WantedTimePicker(
         WantedTimePickerContent(
             modifier = Modifier
                 .clip(RoundedCornerShape(28.dp))
-                .background(DesignSystemTheme.colors.backgroundElevatedNormal),
+                .background(DesignSystemTheme.colors.surfaceElevatedPrimary),
             isEnableClock = isEnableClock,
             title = title,
             confirm = confirm,
@@ -124,7 +124,7 @@ private fun WantedTimePickerContent(
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelMedium,
-                color = DesignSystemTheme.colors.labelAlternative
+                color = DesignSystemTheme.colors.foregroundNeutralTertiary
             )
         },
         content = {
@@ -138,7 +138,7 @@ private fun WantedTimePickerContent(
                     state = timePickerState,
                     colors = getWantedTimePickerDefaults(
                         timeSelectorSelectedContainerColor = DesignSystemTheme.colors.transparent,
-                        timeSelectorSelectedContentColor = DesignSystemTheme.colors.labelNormal
+                        timeSelectorSelectedContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary
                     )
                 )
             }
@@ -182,7 +182,7 @@ private fun TimepickerButton(
                 modifier = Modifier,
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
-                color = DesignSystemTheme.colors.primaryNormal
+                color = DesignSystemTheme.colors.foregroundBrandPrimary
             )
         },
         onClick = {
@@ -209,7 +209,7 @@ private fun TimepickerModeChangeButton(
                         .size(40.dp)
                         .padding(8.dp),
                     imageVector = Icons.Outlined.Keyboard,
-                    tint = DesignSystemTheme.colors.labelAlternative,
+                    tint = DesignSystemTheme.colors.foregroundNeutralTertiary,
                     contentDescription = ""
                 )
             } else {
@@ -218,7 +218,7 @@ private fun TimepickerModeChangeButton(
                         .size(40.dp)
                         .padding(8.dp),
                     imageVector = Icons.Outlined.AccessTime,
-                    tint = DesignSystemTheme.colors.labelAlternative,
+                    tint = DesignSystemTheme.colors.foregroundNeutralTertiary,
                     contentDescription = ""
                 )
             }
@@ -269,37 +269,23 @@ private fun TimePickerLayout(
 
 @Composable
 private fun getWantedTimePickerDefaults(
-    timeSelectorSelectedContainerColor: Color = DesignSystemTheme.colors.primaryNormal,
+    timeSelectorSelectedContainerColor: Color = DesignSystemTheme.colors.surfaceBrandPrimary,
     timeSelectorSelectedContentColor: Color = DesignSystemTheme.colors.staticWhite,
 ) = TimePickerDefaults.colors(
-    // 시계 동그란 배경
-    clockDialColor = DesignSystemTheme.colors.fillAlternative,
-    // 시계 선택된 숫자 색상
+    clockDialColor = DesignSystemTheme.colors.surfaceNeutralTertiary,
     clockDialSelectedContentColor = DesignSystemTheme.colors.staticWhite,
-    // 시계 선택 되지 않은 숫자 색상
-    clockDialUnselectedContentColor = DesignSystemTheme.colors.labelNormal,
-    // 시계 초침
-    selectorColor = DesignSystemTheme.colors.primaryNormal,
-    // 시간 선택기의 배경 색상.
-    containerColor = DesignSystemTheme.colors.backgroundElevatedNormal,
-    // 오전 / 오후 barder 색상
-    periodSelectorBorderColor = DesignSystemTheme.colors.lineNormalNormal,
-    // 오전 / 오후 select 배경
-    periodSelectorSelectedContainerColor = DesignSystemTheme.colors.fillNormal,
-    //오전 / 오후 unSelect 배경
-    periodSelectorUnselectedContainerColor = DesignSystemTheme.colors.backgroundElevatedNormal,
-    // 오전 / 오후 select text
-    periodSelectorSelectedContentColor = DesignSystemTheme.colors.labelNormal,
-    // 오전 / 오후 unselect text
-    periodSelectorUnselectedContentColor = DesignSystemTheme.colors.labelAlternative,
-    // 시간 선택기의 select 배경
+    clockDialUnselectedContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    selectorColor = DesignSystemTheme.colors.surfaceBrandPrimary,
+    containerColor = DesignSystemTheme.colors.surfaceElevatedPrimary,
+    periodSelectorBorderColor = DesignSystemTheme.colors.lineNeutralPrimary,
+    periodSelectorSelectedContainerColor = DesignSystemTheme.colors.surfaceNeutralSecondary,
+    periodSelectorUnselectedContainerColor = DesignSystemTheme.colors.surfaceElevatedPrimary,
+    periodSelectorSelectedContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary,
+    periodSelectorUnselectedContentColor = DesignSystemTheme.colors.foregroundNeutralTertiary,
     timeSelectorSelectedContainerColor = timeSelectorSelectedContainerColor,
-    // 시간 선택기의 unSelect 배경
-    timeSelectorUnselectedContainerColor = DesignSystemTheme.colors.fillNormal,
-    // 시간 선택기의 select text
+    timeSelectorUnselectedContainerColor = DesignSystemTheme.colors.surfaceNeutralSecondary,
     timeSelectorSelectedContentColor = timeSelectorSelectedContentColor,
-    // 시간 선택기의 select text
-    timeSelectorUnselectedContentColor = DesignSystemTheme.colors.labelNormal
+    timeSelectorUnselectedContentColor = DesignSystemTheme.colors.foregroundNeutralPrimary
 )
 
 @DevicePreviews
@@ -311,7 +297,7 @@ private fun WantedTimePickerPreview() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp)
-                    .background(DesignSystemTheme.colors.backgroundElevatedNormal),
+                    .background(DesignSystemTheme.colors.surfaceElevatedPrimary),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
 

@@ -48,6 +48,7 @@ class DSWantedAutoCompleteTextFieldDemoViewModel @Inject constructor(
 
     private fun getCode(): String {
         val state = viewState.value
+        val escapedText = state.text.replace("\\", "\\\\").replace("\"", "\\\"")
         val sectionTitleLine = if (state.showSectionTitle) {
             "sectionTitle = { section -> \"Section ${'$'}section\" },"
         } else {
@@ -66,7 +67,7 @@ class DSWantedAutoCompleteTextFieldDemoViewModel @Inject constructor(
 
         return """
             WantedAutoCompleteTextField(
-                text = "${state.text}",
+                text = "$escapedText",
                 placeholder = "검색어를 입력해주세요",
                 enabled = ${state.enabled},
                 expanded = ${state.expanded},

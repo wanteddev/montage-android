@@ -16,7 +16,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 @Composable
 internal fun WantedOverLayoutGradient(
     modifier: Modifier = Modifier,
-    color: Color = DesignSystemTheme.colors.lineNormalNeutral
+    color: Color = DesignSystemTheme.colors.lineNeutralSecondary
 ) {
     Layout(
         modifier = modifier,
@@ -38,7 +38,6 @@ internal fun WantedOverLayoutGradient(
     ) { measurables, constraints ->
         val placeable = measurables[0].measure(constraints)
 
-        // Calculate the expanded dimensions
         val expandedHeight = placeable.height
 
         layout(placeable.width, expandedHeight) {

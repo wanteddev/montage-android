@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -20,8 +21,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
-import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.navigations.paginationdots.DSWantedPaginationDotsDemoScreenContract.DSWantedPaginationDotsDemoEvent
 import com.wanted.android.montage.sample.navigations.paginationdots.DSWantedPaginationDotsDemoScreenContract.DSWantedPaginationDotsDemoSideEffect
 import com.wanted.android.montage.sample.navigations.paginationdots.DSWantedPaginationDotsDemoScreenContract.DSWantedPaginationDotsDemoViewEvent
@@ -33,12 +33,17 @@ import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
+import com.wanted.android.wanted.design.input.slider.WantedSlider
 import com.wanted.android.wanted.design.navigations.pagination.paginationdots.WantedDotIndicator
 import com.wanted.android.wanted.design.navigations.pagination.paginationdots.WantedPaginationDotDefaults.WantedDotIndicatorSize
 import com.wanted.android.wanted.design.navigations.pagination.paginationdots.WantedPaginationDotDefaults.WantedDotIndicatorType
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
+import kotlin.math.roundToInt
+
+// 데모에서 totalCount 슬라이더가 조절할 수 있는 최대 페이지 수
+private const val MAX_TOTAL_COUNT = 30
 
 @Composable
 fun DSWantedPaginationDotsDemoScreen(
@@ -94,7 +99,7 @@ fun DSWantedPaginationDotsDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedPaginationDotsDemoEvent.CopyCode)
@@ -130,7 +135,7 @@ private fun DSWantedPaginationDotsDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -139,7 +144,7 @@ private fun DSWantedPaginationDotsDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -223,39 +228,36 @@ private fun DSWantedPaginationDotsDemoScreenContent(
                 }
             },
             totalControl = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    WantedButton(
-                        modifier = Modifier.weight(1f),
-                        text = "Total -",
-                        onClick = {
-                            val next = (viewState.totalCount - 1).coerceAtLeast(1)
-                            onViewEvent(DSWantedPaginationDotsDemoViewEvent.OnTotalCountChanged(next))
-                        }
-                    )
-                    WantedButton(
-                        modifier = Modifier.weight(1f),
-                        text = "Total +",
-                        onClick = {
+                WantedSlider(
+                    value = viewState.totalCount.toFloat(),
+                    valueRange = 1f..MAX_TOTAL_COUNT.toFloat(),
+                    header = "totalCount : ${viewState.totalCount}",
+                    onValueChange = { value ->
+                        onViewEvent(
+                            DSWantedPaginationDotsDemoViewEvent.OnTotalCountChanged(value.roundToInt())
+                        )
+                    }
+                )
+            },
+            visibleControl = {
+                // totalCount(=visibleCount의 max)가 바뀌면 슬라이더의 thumb 위치 기준이 달라지므로
+                // key로 재생성하여 현재 visibleCount를 새 범위에 맞게 다시 반영한다.
+                key(viewState.totalCount) {
+                    WantedSlider(
+                        value = viewState.visibleCount.toFloat(),
+                        valueRange = 1f..viewState.totalCount.toFloat().coerceAtLeast(2f),
+                        header = "visibleCount : ${viewState.visibleCount}",
+                        onValueChange = { value ->
+                            // 슬라이더 범위는 thumb 표시를 위해 최소 2까지 열려 있으나(coerceAtLeast(2f)),
+                            // visibleCount는 totalCount를 넘을 수 없으므로 이벤트 값을 totalCount로 clamp한다.
                             onViewEvent(
-                                DSWantedPaginationDotsDemoViewEvent.OnTotalCountChanged(viewState.totalCount + 1)
+                                DSWantedPaginationDotsDemoViewEvent.OnVisibleCountChanged(
+                                    value.roundToInt().coerceAtMost(viewState.totalCount)
+                                )
                             )
                         }
                     )
                 }
-            },
-            visibleControl = {
-                DSWantedOptionSwitchCell(
-                    text = "visibleCount : ${viewState.visibleCount}",
-                    checkState = viewState.visibleCount > 3,
-                    onCheckChanged = { checked ->
-                        val count = if (checked) 7 else 3
-                        onViewEvent(DSWantedPaginationDotsDemoViewEvent.OnVisibleCountChanged(count))
-                    }
-                )
             }
         )
     }
@@ -280,7 +282,7 @@ private fun DSWantedPaginationDotsDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -293,7 +295,7 @@ private fun DSWantedPaginationDotsDemoScreenLayout(
         Text(
             text = "Option",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )

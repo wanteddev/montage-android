@@ -58,7 +58,7 @@ fun MontageDesignDemoListScreen(
                     .padding(horizontal = 20.dp, vertical = 12.dp),
                 text = query,
                 placeholder = "검색어를 입력해주세요",
-                size = WantedSearchFieldDefaults.Size.Medium(),
+                size = WantedSearchFieldDefaults.Size.Large,
                 onValueChange = { query = it }
             )
             LazyColumn(
@@ -66,13 +66,13 @@ fun MontageDesignDemoListScreen(
             ) {
                 items(
                     items = filteredItems,
-                    key = { item -> item::class.simpleName ?: item.hashCode() }
+                    key = { item -> item::class.simpleName ?: item.hashCode().toString() }
                 ) { item ->
                     WantedListCell(
                         modifier = Modifier.fillMaxWidth(),
                         text = item::class.simpleName.orEmpty(),
                         verticalPadding = WantedListCellDefaults.VerticalPadding.Large,
-                        fillWidth = true,
+                        variant = WantedListCellDefaults.Variant.Full,
                         divider = true,
                         ellipsis = true,
                         chevrons = true,

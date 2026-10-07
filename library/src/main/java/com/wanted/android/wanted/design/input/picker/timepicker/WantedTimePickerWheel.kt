@@ -32,7 +32,7 @@ import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaul
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedNumberPicker
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedStringPicker
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -112,10 +112,9 @@ fun WantedTimePickerWheel(
         )
     }
 
-    WantedModal(
+    WantedPopup(
         modifier = modifier.padding(horizontal = 20.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
-        shape = RoundedCornerShape(28.dp),
         topBar = {
             Text(
                 modifier = Modifier
@@ -125,7 +124,7 @@ fun WantedTimePickerWheel(
                 text = title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = DesignSystemTheme.colors.labelAlternative
+                color = DesignSystemTheme.colors.foregroundNeutralTertiary
             )
         },
         bottomBar = {
@@ -240,7 +239,7 @@ private fun TimePickerLayout(
         Box(
             Modifier
                 .background(
-                    color = DesignSystemTheme.colors.fillNormal,
+                    color = DesignSystemTheme.colors.surfaceNeutralSecondary,
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(vertical = 4.dp)

@@ -4,14 +4,33 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * enum class WantedIconButtonSize
+ * sealed class WantedIconButtonSize
  *
- * 아이콘 버튼의 크기 및 내부 패딩을 정의하는 enum 클래스입니다.
+ * `WantedIconButtonOutlined` / `WantedIconButtonSolid` 의 박스(컨테이너) 크기입니다.
+ * (Confluence IconButton 스펙 §3·§4)
  *
- * - Medium: 표준 사이즈 (40dp)로, 대부분의 UI에 적합합니다.
- * - Small: 소형 사이즈 (32dp)로, 공간이 제한된 영역에 적합합니다.
+ * `size` 는 박스 크기를 뜻하며, 아이콘은 `box × 0.47` → dimension 토큰 스냅(동률 → 작은 값)으로 자동 산출됩니다.
+ * radius 는 full(CircleShape), 박스는 `clamp(24dp, N, 64dp)` 범위로 클램프됩니다.
+ *
+ * - [Medium] : box 40dp (기본값) → icon 18dp
+ * - [Small]  : box 32dp → icon 16dp
+ * - [Custom] : 임의 박스 크기. `copy` 로 커스텀할 수 있습니다.
  */
-enum class WantedIconButtonSize(val size: Dp, val padding: Dp) {
-    Medium(40.dp, 10.dp),
-    Small(32.dp, 7.dp)
+sealed class WantedIconButtonSize {
+    abstract val boxSize: Dp
+
+    data object Medium : WantedIconButtonSize() {
+        override val boxSize = 40.dp
+    }
+
+    data object Small : WantedIconButtonSize() {
+        override val boxSize = 32.dp
+    }
+
+    data class Custom(override val boxSize: Dp) : WantedIconButtonSize()
+
+    companion object {
+        /** preset(데이터 오브젝트) 목록 — 큰 → 작은 순. */
+        val presets: List<WantedIconButtonSize> = listOf(Medium, Small)
+    }
 }

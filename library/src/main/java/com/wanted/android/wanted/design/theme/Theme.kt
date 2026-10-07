@@ -21,6 +21,10 @@ fun DesignSystemTheme(
         LocalWantedTypography.provides(WantedTypography()),
         LocalWantedColorScheme provides appTheme,
         LocalWantedColorOpacityScheme provides AppWantedColorOpacityScheme,
+        LocalWantedPrimitive provides WantedPrimitive(),
+        LocalWantedSpacing provides WantedSpacing(),
+        LocalWantedRadius provides WantedRadius(),
+        LocalWantedDimension provides WantedDimension(),
         LocalOverscrollConfiguration provides null
     ) {
         MaterialTheme(
@@ -49,4 +53,24 @@ object DesignSystemTheme {
     val colorsOpacity: WantedColorOpacityScheme
         @Composable
         get() = LocalWantedColorOpacityScheme.current
+
+    val primitive: WantedPrimitive
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalWantedPrimitive.current
+
+    val spacing: WantedSpacing
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalWantedSpacing.current
+
+    val radius: WantedRadius
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalWantedRadius.current
+
+    val dimension: WantedDimension
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalWantedDimension.current
 }

@@ -114,9 +114,9 @@ internal fun WantedSwitch(
             .clip(RoundedCornerShape(32.dp))
             .background(
                 if (isChecked) {
-                    DesignSystemTheme.colors.primaryNormal
+                    DesignSystemTheme.colors.surfaceBrandPrimary
                 } else {
-                    DesignSystemTheme.colors.fillStrong
+                    DesignSystemTheme.colors.surfaceNeutralStrong
                 }
             )
             .width(width)
@@ -151,7 +151,7 @@ private fun WantedSwitchPreview() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(DesignSystemTheme.colors.backgroundNormalNormal)
+                    .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
@@ -254,7 +254,6 @@ private fun CheckBox(
 
         }
 
-        // ------- enable
         Row(
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {

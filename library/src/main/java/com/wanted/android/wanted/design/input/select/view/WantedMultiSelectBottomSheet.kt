@@ -21,10 +21,11 @@ import com.wanted.android.wanted.design.input.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.input.control.WantedCheckMark
 import com.wanted.android.wanted.design.input.input.control.WantedRadioButton
-import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelectData
-import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedModalBottomSheet
+import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
+import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults
+import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedModalBottomSheet
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
 
@@ -45,6 +46,7 @@ internal fun WantedMultiSelectBottomSheet(
     WantedModalBottomSheet(
         modifier = modifier,
         type = dialogType,
+        sheetDefault = WantedBottomSheetDefaults.getWithoutContentPadding(),
         isShow = isShow,
         content = {
             LazyColumn(
@@ -55,6 +57,8 @@ internal fun WantedMultiSelectBottomSheet(
                 itemsIndexed(items) { index, item ->
                     WantedListCell(
                         modifier = Modifier,
+                        // Select 내부 셀은 variant = Inset 고정이며 밖으로 노출하지 않는다(Figma 4.0.0 사용처 정책).
+                        variant = WantedListCellDefaults.Variant.Inset,
                         verticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
                         text = item.text,
                         trailingContent = when {
@@ -111,7 +115,14 @@ internal fun WantedMultiSelectBottomSheet(
                                 list.add(item)
                             }
 
-                            selectItemList.value = list.toSet().toList()
+                            val selectedList = list.toSet().toList()
+                            selectItemList.value = selectedList
+
+                            // confirmText 가 비어 있으면 확인 버튼이 없으므로 토글 즉시 반영한다.
+                            // 순서는 원본 items 기준을 유지한다.
+                            if (confirmText.isEmpty()) {
+                                onSelect(items.filter { selectedList.contains(it) })
+                            }
                         }
                     )
                 }
