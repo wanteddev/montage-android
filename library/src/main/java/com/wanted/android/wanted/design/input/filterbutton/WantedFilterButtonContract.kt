@@ -53,7 +53,7 @@ object WantedFilterButtonContract {
         FilterButtonSize.Large -> {
             this.then(
                 Modifier
-                    .padding(vertical = 9.dp)
+                    .padding(vertical = 10.dp)
                     .padding(start = 12.dp, end = 10.dp)
             )
         }
@@ -61,15 +61,15 @@ object WantedFilterButtonContract {
         FilterButtonSize.Medium -> {
             this.then(
                 Modifier
-                    .padding(vertical = 7.dp)
-                    .padding(start = 11.dp, end = 9.dp)
+                    .padding(vertical = 9.dp)
+                    .padding(start = 10.dp, end = 8.dp)
             )
         }
 
         FilterButtonSize.Small -> {
             this.then(
                 Modifier
-                    .padding(vertical = 6.dp)
+                    .padding(vertical = 8.dp)
                     .padding(start = 8.dp, end = 6.dp)
             )
         }
@@ -77,8 +77,8 @@ object WantedFilterButtonContract {
         FilterButtonSize.XSmall -> {
             this.then(
                 Modifier
-                    .padding(vertical = 4.dp)
-                    .padding(start = 7.dp, end = 5.dp)
+                    .padding(vertical = 5.dp)
+                    .padding(start = 6.dp, end = 4.dp)
             )
         }
     }
@@ -97,33 +97,32 @@ object WantedFilterButtonContract {
         return this.then(modifier)
     }
 
-    internal fun Modifier.filterButtonTextPadding(
-        size: FilterButtonSize
-    ): Modifier {
-        val modifier = when (size) {
-            FilterButtonSize.Large -> Modifier.padding(horizontal = 2.dp)
-            FilterButtonSize.Medium -> Modifier.padding(horizontal = 2.dp)
-            FilterButtonSize.Small -> Modifier.padding(horizontal = 2.dp)
-            FilterButtonSize.XSmall -> Modifier.padding(horizontal = 1.dp)
-        }
-
-        return this.then(modifier)
-    }
+    /** 텍스트 좌우 패딩입니다. 전 사이즈 공통 2dp 입니다. */
+    internal fun Modifier.filterButtonTextPadding(): Modifier =
+        this.then(Modifier.padding(horizontal = 2.dp))
 
 
     @Composable
     internal fun getFilterButtonRadius(size: FilterButtonSize) = when (size) {
-        FilterButtonSize.XSmall -> 6.dp
-        FilterButtonSize.Small -> 8.dp
+        FilterButtonSize.XSmall -> 8.dp
+        FilterButtonSize.Small -> 10.dp
         FilterButtonSize.Medium -> 10.dp
-        FilterButtonSize.Large -> 10.dp
+        FilterButtonSize.Large -> 12.dp
+    }
+
+    /** 라벨 ↔ activeLabel 사이 간격입니다. Small·XSmall 만 2dp 입니다. */
+    internal fun getFilterButtonActiveLabelSpacing(size: FilterButtonSize) = when (size) {
+        FilterButtonSize.XSmall -> 2.dp
+        FilterButtonSize.Small -> 2.dp
+        FilterButtonSize.Medium -> 4.dp
+        FilterButtonSize.Large -> 4.dp
     }
 
     @Composable
     internal fun getFilterButtonHorizontalArrangement(size: FilterButtonSize) = when (size) {
-        FilterButtonSize.XSmall -> 1.dp
-        FilterButtonSize.Small -> 1.dp
-        FilterButtonSize.Medium -> 2.dp
+        FilterButtonSize.XSmall -> 0.dp
+        FilterButtonSize.Small -> 0.dp
+        FilterButtonSize.Medium -> 0.dp
         FilterButtonSize.Large -> 2.dp
     }
 

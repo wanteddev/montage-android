@@ -24,11 +24,12 @@ class DSWantedProgressTrackerDemoViewModel @Inject constructor(
 
             DSWantedProgressTrackerDemoEvent.CopyCode -> copyCode()
             is DSWantedProgressTrackerDemoEvent.SetStepCount -> {
-                setState { copy(stepCount = event.count.coerceAtLeast(1)) }
+                val newCount = event.count.coerceAtLeast(1)
+                setState { copy(stepCount = newCount, currentStep = currentStep.coerceAtMost(newCount)) }
             }
 
             is DSWantedProgressTrackerDemoEvent.SetCurrentStep -> {
-                setState { copy(currentStep = event.step.coerceAtLeast(1)) }
+                setState { copy(currentStep = event.step.coerceIn(1, stepCount)) }
             }
 
             is DSWantedProgressTrackerDemoEvent.SetOrientation -> {
@@ -52,7 +53,7 @@ class DSWantedProgressTrackerDemoViewModel @Inject constructor(
             $content(
                 stepCount = ${state.stepCount},
                 currentStep = ${state.currentStep},
-                label = { index -> \"${'$'}{index + 1}단계\" }
+                label = { index -> "${'$'}{index + 1}단계" }
             )
         """.trimIndent()
     }

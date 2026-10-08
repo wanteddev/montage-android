@@ -63,7 +63,7 @@ internal fun WantedDialogCenterTopAppBarLayout(
                 title?.let {
                     ProvideTextStyle(
                         value = DesignSystemTheme.typography.headline2Bold.copy(
-                            color = DesignSystemTheme.colors.labelStrong
+                            color = DesignSystemTheme.colors.foregroundNeutralStrong
                         )
                     ) {
                         title()
@@ -109,7 +109,6 @@ internal fun WantedDialogCenterTopAppBarLayout(
         val layoutHeight = height.floatValue.roundToInt()
 
         layout(constraints.maxWidth, layoutHeight) {
-            // Navigation icon
             navigationIconPlaceable.placeRelative(
                 x = 0,
                 y = (layoutHeight - navigationIconPlaceable.height) / 2
@@ -130,13 +129,11 @@ internal fun WantedDialogCenterTopAppBarLayout(
                         (baseX + titlePlaceable.width))
             }
 
-            // Title
             titlePlaceable.placeRelative(
                 x = baseX,
                 y = (layoutHeight - titlePlaceable.height) / 2
             )
 
-            // Action icons
             actionIconsPlaceable.placeRelative(
                 x = constraints.maxWidth - actionIconsPlaceable.width,
                 y = (layoutHeight - actionIconsPlaceable.height) / 2

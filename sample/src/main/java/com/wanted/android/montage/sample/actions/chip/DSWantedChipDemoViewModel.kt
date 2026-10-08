@@ -1,6 +1,7 @@
 package com.wanted.android.montage.sample.actions.chip
 
 import com.wanted.android.montage.sample.base.WantedStateViewModel
+import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.ChipCustomColor
 import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.DSWantedChipDemoEvent
 import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.DSWantedChipDemoSideEffect
 import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.DSWantedChipDemoViewState
@@ -25,8 +26,9 @@ class DSWantedChipDemoViewModel @Inject constructor(
 			is DSWantedChipDemoEvent.SetSize -> setSize(event.size)
 			is DSWantedChipDemoEvent.SetActive -> setActive(event.isActive)
 			is DSWantedChipDemoEvent.SetEnable -> setEnable(event.isEnable)
-			is DSWantedChipDemoEvent.SetLeftIcon -> setLeftIcon(event.hasLeftIcon)
-			is DSWantedChipDemoEvent.SetRightIcon -> setRightIcon(event.hasRightIcon)
+			is DSWantedChipDemoEvent.SetLeadingContent -> setLeadingContent(event.hasLeadingContent)
+			is DSWantedChipDemoEvent.SetTrailingContent -> setTrailingContent(event.hasTrailingContent)
+			is DSWantedChipDemoEvent.SetCustomColor -> setCustomColor(event.customColor)
 		}
 	}
 
@@ -44,27 +46,66 @@ class DSWantedChipDemoViewModel @Inject constructor(
 	}
 
 	private fun getCode(): String {
-		val leftIconCode = if (viewState.value.hasLeftIcon) {
+		val state = viewState.value
+		val leadingContentCode = if (state.hasLeadingContent) {
 			"R.drawable.icon_normal_bookmark"
 		} else {
 			"null"
 		}
 
-		val rightIconCode = if (viewState.value.hasRightIcon) {
+		val trailingContentCode = if (state.hasTrailingContent) {
 			"R.drawable.icon_normal_bookmark"
 		} else {
 			"null"
+		}
+
+		if (state.selectedCustomColor != ChipCustomColor.None) {
+			return getCustomColorCode(state, leadingContentCode, trailingContentCode)
 		}
 
 		return """
 WantedChip(
 	text = "텍스트",
-	variant = ChipVariant.${viewState.value.selectedVariant.name}, ${getDefaultString(viewState.value.selectedVariant == ChipVariant.Solid)}
-	size = ChipSize.${viewState.value.selectedSize.name}, ${getDefaultString(viewState.value.selectedSize == ChipSize.Medium)}
-	isActive = ${viewState.value.isActive}, ${getDefaultString(!viewState.value.isActive)}
-	isEnable = ${viewState.value.isEnable}, ${getDefaultString(viewState.value.isEnable)}
-	leftIcon = $leftIconCode, ${getDefaultString(!viewState.value.hasLeftIcon)}
-	rightIcon = $rightIconCode, ${getDefaultString(!viewState.value.hasRightIcon)}
+	variant = ChipVariant.${state.selectedVariant.name}, ${getDefaultString(state.selectedVariant == ChipVariant.Solid)}
+	size = ChipSize.${state.selectedSize.name}, ${getDefaultString(state.selectedSize == ChipSize.Medium)}
+	isActive = ${state.isActive}, ${getDefaultString(!state.isActive)}
+	isEnable = ${state.isEnable}, ${getDefaultString(state.isEnable)}
+	leadingContent = $leadingContentCode, ${getDefaultString(!state.hasLeadingContent)}
+	trailingContent = $trailingContentCode, ${getDefaultString(!state.hasTrailingContent)}
+	onClick = { /* 클릭 처리 */ }
+)
+		""".trimIndent()
+	}
+
+	private fun getCustomColorCode(
+		state: DSWantedChipDemoViewState,
+		leadingContentCode: String,
+		trailingContentCode: String
+	): String {
+		val colorToken = when (state.selectedCustomColor) {
+			ChipCustomColor.Primary -> "DesignSystemTheme.colors.surfaceBrandPrimary"
+			ChipCustomColor.Negative -> "DesignSystemTheme.colors.foregroundNegativePrimary"
+			ChipCustomColor.Positive -> "DesignSystemTheme.colors.foregroundPositivePrimary"
+			ChipCustomColor.None -> "DesignSystemTheme.colors.surfaceBrandPrimary"
+		}
+		val borderLine = if (state.selectedVariant == ChipVariant.Outlined) {
+			"\n\t\tborderColor = $colorToken.copy(alpha = OPACITY_28),"
+		} else {
+			""
+		}
+
+		return """
+WantedChip(
+	text = "텍스트",
+	leadingContent = $leadingContentCode,
+	trailingContent = $trailingContentCode,
+	chipDefault = WantedChipDefaults.getDefault(
+		variant = ChipVariant.${state.selectedVariant.name},
+		size = ChipSize.${state.selectedSize.name},
+		isActive = ${state.isActive},
+		isEnable = ${state.isEnable},
+		backgroundColor = $colorToken.copy(alpha = OPACITY_5),$borderLine
+	),
 	onClick = { /* 클릭 처리 */ }
 )
 		""".trimIndent()
@@ -94,11 +135,15 @@ WantedChip(
 		setState { copy(isEnable = isEnable) }
 	}
 
-	private fun setLeftIcon(hasLeftIcon: Boolean) {
-		setState { copy(hasLeftIcon = hasLeftIcon) }
+	private fun setLeadingContent(hasLeadingContent: Boolean) {
+		setState { copy(hasLeadingContent = hasLeadingContent) }
 	}
 
-	private fun setRightIcon(hasRightIcon: Boolean) {
-		setState { copy(hasRightIcon = hasRightIcon) }
+	private fun setTrailingContent(hasTrailingContent: Boolean) {
+		setState { copy(hasTrailingContent = hasTrailingContent) }
+	}
+
+	private fun setCustomColor(customColor: ChipCustomColor) {
+		setState { copy(selectedCustomColor = customColor) }
 	}
 }

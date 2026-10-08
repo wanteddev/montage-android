@@ -11,19 +11,24 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DSWantedPushBadgeDemoViewModel @Inject constructor(
-
-) : WantedStateViewModel<DSWantedPushBadgeDemoEvent, DSWantedPushBadgeDemoViewState, DSWantedPushBadgeDemoSideEffect>() {
+class DSWantedPushBadgeDemoViewModel @Inject constructor() :
+	WantedStateViewModel<
+		DSWantedPushBadgeDemoEvent,
+		DSWantedPushBadgeDemoViewState,
+		DSWantedPushBadgeDemoSideEffect,
+		>() {
 	override fun setInitialState() = DSWantedPushBadgeDemoViewState()
 
 	override fun handleEvents(event: DSWantedPushBadgeDemoEvent) {
 		when (event) {
 			is DSWantedPushBadgeDemoEvent.ShowCode -> showCode(event.isShowCode)
 			is DSWantedPushBadgeDemoEvent.CopyCode -> copyCode()
-			is DSWantedPushBadgeDemoEvent.SetVariant -> setVariant(event.variant)
-			is DSWantedPushBadgeDemoEvent.SetSize -> setSize(event.size)
-			is DSWantedPushBadgeDemoEvent.SetPosition -> setPosition(event.position)
-			is DSWantedPushBadgeDemoEvent.SetBordered -> setBordered(event.bordered)
+			is DSWantedPushBadgeDemoEvent.SetVariant -> setState { copy(selectedVariant = event.variant) }
+			is DSWantedPushBadgeDemoEvent.SetSize -> setState { copy(selectedSize = event.size) }
+			is DSWantedPushBadgeDemoEvent.SetPosition -> setState { copy(selectedPosition = event.position) }
+			is DSWantedPushBadgeDemoEvent.SetOutlineBorder -> setState { copy(outlineBorder = event.outlineBorder) }
+			is DSWantedPushBadgeDemoEvent.SetOutlineBorderColor -> setState { copy(selectedOutlineBorderColor = event.outlineBorderColor) }
+			is DSWantedPushBadgeDemoEvent.SetInset -> setState { copy(insetEnabled = event.insetEnabled) }
 		}
 	}
 
@@ -42,44 +47,35 @@ class DSWantedPushBadgeDemoViewModel @Inject constructor(
 
 	private fun getCode(): String {
 		val state = viewState.value
-		val componentName = if (state.bordered) "WantedPushBadgeBorder" else "WantedPushBadge"
-		val countLine = if (state.selectedVariant == PushBadgeVariant.Number) {
-			"\n\tcount = \"1\","
+
+		val contentLine = when (state.selectedVariant) {
+			PushBadgeVariant.Dot -> ""
+			PushBadgeVariant.Text -> "\n\ttext = \"${state.sampleText}\","
+			PushBadgeVariant.MaxCount ->
+				"\n\ttext = \"${state.sampleCount}\",\n\tmaxCount = ${state.sampleMaxCount},"
+		}
+		val outlineBorderLine = if (state.outlineBorder) "\n\toutlineBorder = true," else ""
+		val outlineBorderColorLine = if (state.outlineBorder && state.selectedOutlineBorderColor != OutlineBorderColorOption.Default) {
+			"\n\toutlineBorderColor = ${state.selectedOutlineBorderColor.codeExpression},"
 		} else {
 			""
 		}
-		val borderedLine = if (state.bordered) {
-			"\n\tbordered = true,"
+		val insetLine = if (state.insetEnabled) {
+			"\n\tinset = DpOffset(${state.sampleInset}.dp, ${state.sampleInset}.dp),"
 		} else {
 			""
 		}
 
 		return """
-$componentName(
-	variant = PushBadgeVariant.${state.selectedVariant.name}, ${getDefaultString(state.selectedVariant == PushBadgeVariant.Dot)}
-	size = PushBadgeSize.${state.selectedSize.name}, ${getDefaultString(state.selectedSize == PushBadgeSize.XSmall)}
-	position = PushBadgePosition.${state.selectedPosition.name}, ${getDefaultString(state.selectedPosition == PushBadgePosition.TopEnd)}$countLine$borderedLine
+WantedPushBadge(
+	variant = PushBadgeVariant.${state.selectedVariant.name}, ${defaultString(state.selectedVariant == PushBadgeVariant.Dot)}
+	size = PushBadgeSize.${state.selectedSize.name}, ${defaultString(state.selectedSize == PushBadgeSize.XSmall)}
+	position = PushBadgePosition.${state.selectedPosition.name}, ${defaultString(state.selectedPosition == PushBadgePosition.TopEnd)}$contentLine$outlineBorderLine$outlineBorderColorLine$insetLine
 )
 		""".trimIndent()
 	}
 
-	private fun getDefaultString(isDefault: Boolean): String {
+	private fun defaultString(isDefault: Boolean): String {
 		return if (isDefault) "// (default)" else ""
-	}
-
-	private fun setVariant(variant: PushBadgeVariant) {
-		setState { copy(selectedVariant = variant) }
-	}
-
-	private fun setSize(size: PushBadgeSize) {
-		setState { copy(selectedSize = size) }
-	}
-
-	private fun setPosition(position: PushBadgePosition) {
-		setState { copy(selectedPosition = position) }
-	}
-
-	private fun setBordered(bordered: Boolean) {
-		setState { copy(bordered = bordered) }
 	}
 }

@@ -24,6 +24,8 @@ import com.wanted.android.wanted.design.presentation.modal.view.WantedAlertDialo
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 /**
+ * WantedAlert
+ *
  * 확인 및 취소 버튼이 있는 기본 알림 dialog입니다.
  *
  * 제목, 메시지, 확인/취소 텍스트 및 클릭 이벤트를 전달하여 간단한 사용자 확인 dialog를 구성할 수 있습니다.
@@ -117,7 +119,7 @@ private fun WantedAlertDialogLayout(
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(DesignSystemTheme.colors.backgroundElevatedNormal)
+            .background(DesignSystemTheme.colors.surfaceElevatedPrimary)
     ) {
         Column(
             modifier = Modifier.padding(28.dp),
@@ -125,14 +127,14 @@ private fun WantedAlertDialogLayout(
         ) {
             ProvideTextStyle(
                 value = DesignSystemTheme.typography.heading2Bold.copy(
-                    color = DesignSystemTheme.colors.labelNormal
+                    color = DesignSystemTheme.colors.foregroundNeutralPrimary
                 )
             ) {
                 title?.invoke()
             }
 
             val messageStyle = DesignSystemTheme.typography.body2Regular.copy(
-                color = DesignSystemTheme.colors.labelAlternative
+                color = DesignSystemTheme.colors.foregroundNeutralTertiary
             ).let { base ->
                 if (applyPhraseLineBreak) {
                     base.copy(

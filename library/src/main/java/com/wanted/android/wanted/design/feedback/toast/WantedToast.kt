@@ -88,11 +88,12 @@ internal fun WantedToastImpl(
     text: String,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets(0),
-    variant: WantedToastVariant = WantedToastVariant.Message,
+    variant: WantedToastVariant = WantedToastVariant.Normal,
     icon: @Composable (() -> Unit)? = null
 ) {
     val iconSlot: @Composable (() -> Unit)? = when (variant) {
-        WantedToastVariant.Message -> {
+        WantedToastVariant.Message,
+        WantedToastVariant.Normal -> {
             icon?.let {
                 {
                     icon()
@@ -141,9 +142,9 @@ private fun WantedToastLayout(
             .wrapContentHeight()
             .widthIn(max = 420.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
-            .background(DesignSystemTheme.colors.inverseBackground.copy(0.52f))
-            .background(DesignSystemTheme.colors.primaryNormal.copy(0.05f))
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
+            .background(DesignSystemTheme.colors.surfaceNeutralInverse.copy(0.52f))
+            .background(DesignSystemTheme.colors.surfaceBrandPrimary.copy(0.05f))
             .padding(horizontal = 16.dp, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -196,12 +197,12 @@ private fun WantedToastLayout(
  *
  * @param scope CoroutineScope: 코루틴을 실행할 스코프입니다.
  * @param message String: 토스트에 표시할 메시지입니다.
- * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+ * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Normal입니다.
  */
 fun SnackbarHostState.showToast(
     scope: CoroutineScope,
     message: String,
-    variant: WantedToastVariant = WantedToastVariant.Message,
+    variant: WantedToastVariant = WantedToastVariant.Normal,
 ) {
     scope.launch {
         currentSnackbarData?.dismiss()
@@ -251,7 +252,7 @@ private fun ToastNormalPreview() {
                 }
 
                 WantedToastImpl(
-                    variant = WantedToastVariant.Message,
+                    variant = WantedToastVariant.Normal,
                     text = "메시지에 마침표를 찍어요."
                 )
 
@@ -277,7 +278,7 @@ private fun ToastNormalPreview() {
                             contentDescription = "icon",
                             painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier.size(22.dp),
-                            tint = DesignSystemTheme.colors.statusNegative
+                            tint = DesignSystemTheme.colors.foregroundNegativePrimary
                         )
                     },
                     text = "메시지에 마침표를 찍어요."

@@ -48,8 +48,8 @@ import kotlinx.coroutines.launch
  * WantedSnackBar(snackbarHostState = snackbarHostState)
  * ```
  *
- * @param snackbarHostState SnackbarHostState 스낵바 표시 상태를 제어합니다.
- * @param modifier Modifier 스낵바 전체 레이아웃 조정 Modifier입니다.
+ * @param snackbarHostState SnackbarHostState: 스낵바 표시 상태를 제어합니다.
+ * @param modifier Modifier: 스낵바 전체 레이아웃 조정 Modifier입니다.
  */
 @Composable
 fun WantedSnackBar(
@@ -148,9 +148,9 @@ private fun WantedSnackBarLayout(
             .wrapContentHeight()
             .widthIn(max = 420.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
-            .background(DesignSystemTheme.colors.inverseBackground.copy(0.52f))
-            .background(DesignSystemTheme.colors.primaryNormal.copy(0.05f))
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
+            .background(DesignSystemTheme.colors.surfaceNeutralInverse.copy(0.52f))
+            .background(DesignSystemTheme.colors.surfaceBrandPrimary.copy(0.05f))
             .padding(start = 16.dp, end = 11.dp)
             .padding(vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -218,8 +218,8 @@ private fun WantedSnackBarLayout(
  * )
  * ```
  *
- * @param scope CoroutineScope 코루틴을 실행할 스코프입니다.
- * @param message String 스낵바에 표시할 메시지입니다.
+ * @param scope CoroutineScope: 코루틴을 실행할 스코프입니다.
+ * @param message String: 스낵바에 표시할 메시지입니다.
  */
 fun SnackbarHostState.showSnackbar(
     scope: CoroutineScope,
@@ -254,7 +254,7 @@ private fun WantedSnackBarDescriptionExtraContentPreview() {
                             painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier
                                 .size(32.dp),
-                            tint = DesignSystemTheme.colors.statusNegative
+                            tint = DesignSystemTheme.colors.foregroundNegativePrimary
                         )
                     },
                     onClick = {}
@@ -269,7 +269,7 @@ private fun WantedSnackBarDescriptionExtraContentPreview() {
                             contentDescription = "icon",
                             painter = painterResource(id = R.drawable.icon_normal_eye_fill),
                             modifier = Modifier.fillMaxSize(),
-                            tint = DesignSystemTheme.colors.statusNegative
+                            tint = DesignSystemTheme.colors.foregroundNegativePrimary
                         )
                     },
                     onClick = {}

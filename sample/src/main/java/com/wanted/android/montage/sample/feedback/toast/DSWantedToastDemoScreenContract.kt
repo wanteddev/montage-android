@@ -18,7 +18,7 @@ object DSWantedToastDemoScreenContract {
         val isLoading: Boolean = false,
         val isShowCode: Boolean = false,
         val code: String = "",
-        val toastVariant: WantedToastVariant = WantedToastVariant.Message
+        val toastVariant: WantedToastVariant = WantedToastVariant.Normal
 
     ) : BaseViewState
 
@@ -30,6 +30,7 @@ object DSWantedToastDemoScreenContract {
     sealed interface DSWantedToastDemoViewEvent : ViewEvent {
         data object OnClickBack : DSWantedToastDemoViewEvent
         data object OnClickShowToast: DSWantedToastDemoViewEvent
+        data object OnClickNormal : DSWantedToastDemoViewEvent
         data object OnClickMessage : DSWantedToastDemoViewEvent
         data object OnClickPositive : DSWantedToastDemoViewEvent
         data object OnClickNegative : DSWantedToastDemoViewEvent

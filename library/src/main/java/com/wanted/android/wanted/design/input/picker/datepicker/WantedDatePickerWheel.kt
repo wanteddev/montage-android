@@ -31,7 +31,7 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
 import com.wanted.android.wanted.design.input.picker.numberpicker.WantedNumberPicker
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.ButtonVariant
@@ -98,10 +98,9 @@ fun WantedDatePickerWheel(
         )
     }
 
-    WantedModal(
+    WantedPopup(
         modifier = modifier.padding(horizontal = 20.dp),
         properties = DialogProperties(usePlatformDefaultWidth = false),
-        shape = RoundedCornerShape(28.dp),
         topBar = {
             Text(
                 modifier = Modifier
@@ -111,7 +110,7 @@ fun WantedDatePickerWheel(
                 text = title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = DesignSystemTheme.colors.labelAlternative
+                color = DesignSystemTheme.colors.foregroundNeutralTertiary
             )
         },
         bottomBar = {
@@ -189,7 +188,7 @@ fun WantedDatePickerWheel(
                 Box(
                     Modifier
                         .background(
-                            color = DesignSystemTheme.colors.fillNormal,
+                            color = DesignSystemTheme.colors.surfaceNeutralSecondary,
                             shape = RoundedCornerShape(8.dp)
                         )
                         .padding(vertical = 4.dp)

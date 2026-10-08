@@ -27,14 +27,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.bumptech.glide.integration.compose.GlideImage
-import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.input.select.LocalWantedSelectBackground
 import com.wanted.android.wanted.design.input.select.WantedSelectData
 import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
+import com.wanted.android.wanted.design.input.select.chipSpacing
+import com.wanted.android.wanted.design.input.select.inputTextStyle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
@@ -46,6 +48,7 @@ internal fun WantedMultiSelectContents(
     overflow: Boolean,
     onDelete: (WantedSelectData) -> Unit,
     modifier: Modifier = Modifier,
+    size: WantedSelectDefaults.Size = WantedSelectDefaults.Size.Large,
     placeHolder: String = ""
 ) {
     when {
@@ -54,6 +57,7 @@ internal fun WantedMultiSelectContents(
                 modifier = modifier,
                 placeHolder = placeHolder,
                 enabled = enabled,
+                size = size
             )
         }
 
@@ -64,6 +68,7 @@ internal fun WantedMultiSelectContents(
                 overflow = overflow,
                 errorList = errorList,
                 enabled = enabled,
+                size = size,
                 onDelete = onDelete
             )
         }
@@ -73,7 +78,8 @@ internal fun WantedMultiSelectContents(
                 modifier = modifier,
                 valueList = valueList,
                 overflow = overflow,
-                enabled = enabled
+                enabled = enabled,
+                size = size
             )
         }
     }
@@ -83,12 +89,13 @@ internal fun WantedMultiSelectContents(
 fun WantedMultiSelectChipListOverflow(
     modifier: Modifier = Modifier,
     itemCount: Int,
+    spacing: Dp = 4.dp,
     onItemIndex: @Composable (index: Int) -> Unit,
 ) {
     FlowRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(spacing),
+        verticalArrangement = Arrangement.spacedBy(spacing)
     ) {
         for (index in 0..<itemCount) {
             onItemIndex(index)
@@ -101,6 +108,7 @@ fun WantedMultiSelectChipListOverflow(
 private fun WantedMultiSelectChipList(
     modifier: Modifier = Modifier,
     itemCount: Int,
+    spacing: Dp = 4.dp,
     onItemIndex: @Composable (index: Int) -> Unit,
 ) {
 
@@ -130,7 +138,7 @@ private fun WantedMultiSelectChipList(
                 .fillMaxWidth(),
             state = lazyListState,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = 4.dp)
+            horizontalArrangement = Arrangement.spacedBy(space = spacing)
         ) {
             items(itemCount) { index ->
                 onItemIndex(index)
@@ -194,6 +202,7 @@ private fun WantedMultiSelectChipList(
     errorList: List<WantedSelectData>,
     overflow: Boolean,
     enabled: Boolean,
+    size: WantedSelectDefaults.Size,
     onDelete: (WantedSelectData) -> Unit,
 ) {
     val content: @Composable (index: Int) -> Unit = { index ->
@@ -202,7 +211,7 @@ private fun WantedMultiSelectChipList(
             onClick = { onDelete(valueList[index]) },
             enable = enabled,
             error = errorList.contains(valueList[index]),
-            leadingIcon = if (valueList[index].iconUrl.isNotEmpty()) {
+            leadingContent = if (valueList[index].iconUrl.isNotEmpty()) {
                 {
                     GlideImage(
                         modifier = Modifier.size(11.dp),
@@ -216,7 +225,7 @@ private fun WantedMultiSelectChipList(
                 {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(id = R.drawable.icon_normal_close),
+                        painter = painterResource(id = valueList[index].iconRes),
                         tint = if (valueList[index].tint != 0) {
                             colorResource(id = valueList[index].tint)
                         } else {
@@ -235,12 +244,14 @@ private fun WantedMultiSelectChipList(
         WantedMultiSelectChipListOverflow(
             modifier = modifier,
             itemCount = valueList.size,
+            spacing = size.chipSpacing,
             onItemIndex = content
         )
     } else {
         WantedMultiSelectChipList(
             modifier = modifier,
             itemCount = valueList.size,
+            spacing = size.chipSpacing,
             onItemIndex = content
         )
     }
@@ -251,18 +262,19 @@ private fun WantedMultiSelectText(
     modifier: Modifier = Modifier,
     valueList: List<WantedSelectData>,
     overflow: Boolean,
-    enabled: Boolean
+    enabled: Boolean,
+    size: WantedSelectDefaults.Size
 ) {
     Text(
         modifier = modifier.padding(horizontal = 4.dp),
         text = valueList.joinToString(separator = ", ") { value -> value.text },
         maxLines = if (overflow) Int.MAX_VALUE else 1,
         overflow = TextOverflow.Ellipsis,
-        style = DesignSystemTheme.typography.body1Regular,
+        style = size.inputTextStyle,
         color = if (enabled) {
-            DesignSystemTheme.colors.labelNormal
+            DesignSystemTheme.colors.foregroundNeutralPrimary
         } else {
-            DesignSystemTheme.colors.labelAlternative
+            DesignSystemTheme.colors.foregroundNeutralTertiary
         }
     )
 }

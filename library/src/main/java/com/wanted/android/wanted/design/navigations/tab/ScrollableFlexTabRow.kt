@@ -113,9 +113,7 @@ fun ScrollableFlexTabRow(
                 false -> max(size.width, tabTotalWidth)
             }
 
-            // Position the children.
             layout(layoutWidth, layoutHeight) {
-                // Place the tabs
                 val tabPositions = mutableListOf<TabPosition>()
                 var left = padding
                 tabPlaceables.forEachIndexed { index, placeable ->

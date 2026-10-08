@@ -28,7 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.presentation.tooltip.DSWantedTooltipDemoScreenContract.DSWantedTooltipDemoEvent.*
 import com.wanted.android.montage.sample.presentation.tooltip.DSWantedTooltipDemoScreenContract.DSWantedTooltipDemoViewEvent
@@ -36,10 +36,9 @@ import com.wanted.android.montage.sample.presentation.tooltip.DSWantedTooltipDem
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.presentation.tooltip.WantedTooltip
 import com.wanted.android.wanted.design.presentation.tooltip.WantedTooltipAlign
 import com.wanted.android.wanted.design.presentation.tooltip.WantedTooltipSize
@@ -119,7 +118,7 @@ fun DSWantedTooltipDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(CopyCode)
@@ -174,7 +173,7 @@ private fun DSWantedTooltipDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -184,7 +183,7 @@ private fun DSWantedTooltipDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedTooltip(
                         modifier = Modifier.wrapContentSize(),
                         tooltipState = tooltipState,
@@ -207,7 +206,7 @@ private fun DSWantedTooltipDemoScreenContent(
 
 
                 },
-                negative = {
+                alternative = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -430,12 +429,23 @@ private fun DSWantedTooltipDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -452,7 +462,7 @@ private fun DSWantedTooltipDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )

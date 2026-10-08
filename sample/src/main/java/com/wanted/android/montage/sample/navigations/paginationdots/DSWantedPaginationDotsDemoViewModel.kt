@@ -27,15 +27,22 @@ class DSWantedPaginationDotsDemoViewModel @Inject constructor(
             is DSWantedPaginationDotsDemoEvent.SetSize -> setState { copy(size = event.size) }
             is DSWantedPaginationDotsDemoEvent.SetType -> setState { copy(type = event.type) }
             is DSWantedPaginationDotsDemoEvent.SetTotalCount -> {
-                setState { copy(totalCount = event.count.coerceAtLeast(1)) }
+                val newTotal = event.count.coerceAtLeast(1)
+                setState {
+                    copy(
+                        totalCount = newTotal,
+                        visibleCount = visibleCount.coerceAtMost(newTotal),
+                        currentIndex = currentIndex.coerceAtMost(newTotal - 1)
+                    )
+                }
             }
 
             is DSWantedPaginationDotsDemoEvent.SetVisibleCount -> {
-                setState { copy(visibleCount = event.count.coerceAtLeast(1)) }
+                setState { copy(visibleCount = event.count.coerceIn(1, totalCount)) }
             }
 
             is DSWantedPaginationDotsDemoEvent.SetCurrentIndex -> {
-                setState { copy(currentIndex = event.index.coerceAtLeast(0)) }
+                setState { copy(currentIndex = event.index.coerceIn(0, (totalCount - 1).coerceAtLeast(0))) }
             }
         }
     }

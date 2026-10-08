@@ -17,7 +17,7 @@ import androidx.annotation.DrawableRes
  *     text = "디자인",
  *     iconUrl = "https://icon.url",
  *     iconRes = R.drawable.ic_design,
- *     tint = R.color.primary_normal,
+ *     tint = R.color.foreground_brand_primary,
  *     any = DesignCategory.UI
  * )
  * ```

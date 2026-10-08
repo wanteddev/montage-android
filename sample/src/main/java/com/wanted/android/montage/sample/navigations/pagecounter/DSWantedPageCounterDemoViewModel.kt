@@ -29,11 +29,12 @@ class DSWantedPageCounterDemoViewModel @Inject constructor(
             }
 
             is DSWantedPageCounterDemoEvent.SetCurrentIndex -> {
-                setState { copy(currentIndex = event.index.coerceAtLeast(1)) }
+                setState { copy(currentIndex = event.index.coerceIn(1, totalCount.coerceAtLeast(1))) }
             }
 
             is DSWantedPageCounterDemoEvent.SetTotalCount -> {
-                setState { copy(totalCount = event.count.coerceAtLeast(1)) }
+                val newTotal = event.count.coerceAtLeast(1)
+                setState { copy(totalCount = newTotal, currentIndex = currentIndex.coerceAtMost(newTotal)) }
             }
         }
     }

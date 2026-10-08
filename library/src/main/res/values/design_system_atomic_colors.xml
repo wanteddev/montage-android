@@ -226,4 +226,53 @@
 
     <color name="common_100_opacity_8">#14FFFFFF</color>
     <color name="common_100_opacity_28">#47FFFFFF</color>
+
+    <color name="blue_50_opacity5">#0D0066FF</color>
+    <color name="blue_50_opacity12">#1F0066FF</color>
+    <color name="blue_50_opacity28">#470066FF</color>
+    <color name="blue_50_opacity43">#6E0066FF</color>
+    <color name="blue_60_opacity5">#0D3385FF</color>
+    <color name="blue_60_opacity12">#1F3385FF</color>
+    <color name="blue_60_opacity28">#473385FF</color>
+    <color name="blue_60_opacity43">#6E3385FF</color>
+
+    <color name="red_50_opacity12">#1FFF4242</color>
+    <color name="red_50_opacity43">#6EFF4242</color>
+    <color name="red_50_opacity52">#85FF4242</color>
+    <color name="red_60_opacity12">#1FFF6363</color>
+    <color name="red_60_opacity20">#33FF6363</color>
+    <color name="red_60_opacity43">#6EFF6363</color>
+    <color name="red_60_opacity52">#85FF6363</color>
+
+    <!-- Semantic Token 마이그레이션 보강 opacity -->
+    <color name="cool_neutral_50_opacity5">#0D70737C</color>
+    <color name="cool_neutral_50_opacity12">#1F70737C</color>
+    <color name="red_60_opacity22">#38FF6363</color>
+    <color name="lime_50_opacity8">#1458CF04</color>
+    <color name="lime_60_opacity8">#146BE016</color>
+    <color name="cyan_50_opacity8">#1400BDDE</color>
+    <color name="cyan_60_opacity8">#1428D0ED</color>
+    <color name="lightblue_50_opacity8">#1400AEFF</color>
+    <color name="lightblue_60_opacity8">#143DC2FF</color>
+    <color name="violet_50_opacity8">#146541F2</color>
+    <color name="violet_60_opacity8">#147D5EF7</color>
+    <color name="purple_50_opacity8">#14CB59FF</color>
+    <color name="purple_60_opacity8">#14D478FF</color>
+    <color name="pink_50_opacity8">#14F553DA</color>
+    <color name="pink_60_opacity8">#14FA73E3</color>
+    <color name="cool_neutral_50_opacity35">#5970737C</color>
+    <color name="lime_37_opacity43">#6E429E00</color>
+    <color name="lime_50_opacity43">#6E58CF04</color>
+    <color name="cyan_40_opacity43">#6E0098B2</color>
+    <color name="cyan_50_opacity43">#6E00BDDE</color>
+    <color name="lightblue_40_opacity43">#6E008DCF</color>
+    <color name="lightblue_50_opacity43">#6E00AEFF</color>
+    <color name="violet_45_opacity43">#6E5B37ED</color>
+    <color name="violet_70_opacity43">#6E9E86FC</color>
+    <color name="purple_40_opacity43">#6EAD36E3</color>
+    <color name="purple_60_opacity43">#6ED478FF</color>
+    <color name="pink_46_opacity43">#6EE846CD</color>
+    <color name="pink_60_opacity43">#6EFA73E3</color>
+    <color name="cool_neutral_10_opacity52">#85171719</color>
+    <color name="cool_neutral_10_opacity74">#BD171719</color>
 </resources>

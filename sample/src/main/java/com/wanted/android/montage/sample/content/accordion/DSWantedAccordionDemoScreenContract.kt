@@ -5,6 +5,7 @@ import com.wanted.android.montage.sample.base.BaseSideEffect
 import com.wanted.android.montage.sample.base.BaseViewState
 import com.wanted.android.montage.sample.base.ViewEvent
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordionDefaults.VerticalPadding
+import com.wanted.android.wanted.design.contents.listcell.WantedListCellDefaults
 
 object DSWantedAccordionDemoScreenContract {
 	sealed interface DSWantedAccordionDemoEvent : BaseEvent {
@@ -14,7 +15,7 @@ object DSWantedAccordionDemoScreenContract {
 		data class ShowAll(val isShowAll: Boolean) : DSWantedAccordionDemoEvent
 		data class ToggleExpanded(val isExpanded: Boolean) : DSWantedAccordionDemoEvent
 		data class SetDescription(val isChecked: Boolean) : DSWantedAccordionDemoEvent
-		data class SetFillWidth(val isChecked: Boolean) : DSWantedAccordionDemoEvent
+		data class SetVariant(val variant: WantedListCellDefaults.Variant) : DSWantedAccordionDemoEvent
 		data class SetDivider(val isChecked: Boolean) : DSWantedAccordionDemoEvent
 		data class SetLeadingIcon(val isChecked: Boolean) : DSWantedAccordionDemoEvent
 		data class SetContent(val isChecked: Boolean) : DSWantedAccordionDemoEvent
@@ -28,7 +29,8 @@ object DSWantedAccordionDemoScreenContract {
 
 		val isExpanded: Boolean = true,
 		val description: Boolean = true,
-		val fillWidth: Boolean = false,
+		val variantList: List<WantedListCellDefaults.Variant> = WantedListCellDefaults.Variant.entries.toList(),
+		val selectedVariant: WantedListCellDefaults.Variant = WantedListCellDefaults.Variant.Inset,
 		val divider: Boolean = true,
 		val leadingIcon: Boolean = false,
 		val content: Boolean = true,
@@ -46,7 +48,7 @@ object DSWantedAccordionDemoScreenContract {
 		data object OnClickShowAll : DSWantedAccordionDemoViewEvent
 		data class OnClickExpanded(val isExpanded: Boolean) : DSWantedAccordionDemoViewEvent
 		data class OnClickDescription(val isChecked: Boolean) : DSWantedAccordionDemoViewEvent
-		data class OnClickFillWidth(val isChecked: Boolean) : DSWantedAccordionDemoViewEvent
+		data class OnSelectVariant(val variant: WantedListCellDefaults.Variant) : DSWantedAccordionDemoViewEvent
 		data class OnClickDivider(val isChecked: Boolean) : DSWantedAccordionDemoViewEvent
 		data class OnClickLeadingIcon(val isChecked: Boolean) : DSWantedAccordionDemoViewEvent
 		data class OnClickContent(val isChecked: Boolean) : DSWantedAccordionDemoViewEvent

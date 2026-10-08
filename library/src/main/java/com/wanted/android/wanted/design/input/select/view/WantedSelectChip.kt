@@ -1,31 +1,31 @@
 package com.wanted.android.wanted.design.input.select.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
+import com.wanted.android.wanted.design.actions.chip.WantedChip
+import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
+import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
+import com.wanted.android.wanted.design.actions.chip.WantedChipDefault
+import com.wanted.android.wanted.design.actions.chip.WantedChipDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
+import com.wanted.android.wanted.design.util.OPACITY_22
 import com.wanted.android.wanted.design.util.OPACITY_5
-import com.wanted.android.wanted.design.util.clickOnce
 
+// Select 내부에서 사용하는 선택 항목 Chip 입니다.
+//
+// #4 4.0.0 Chip(XSmall / Outlined) UI를 사용하며, negative 상태와 disable 상태를 별도로 관리합니다.
 @Composable
 internal fun WantedSelectChip(
     text: String,
@@ -33,83 +33,69 @@ internal fun WantedSelectChip(
     modifier: Modifier = Modifier,
     enable: Boolean = true,
     error: Boolean = false,
-    leadingIcon: @Composable (() -> Unit)? = null
+    leadingContent: @Composable (() -> Unit)? = null
 ) {
-    WantedSelectChipLayout(
-        modifier = modifier
-            .background(
-                colorResource(
-                    id = when {
-                        !enable -> R.color.fill_alternative
-                        error -> R.color.status_negative
-                        else -> R.color.fill_alternative
-                    }
-                ).copy(alpha = OPACITY_5)
-            )
-            .clickOnce { onClick() },
-        leadingIcon = leadingIcon,
-        text = {
+    val chipDefault = selectChipDefault(enable = enable, error = error)
+
+    WantedChip(
+        modifier = modifier,
+        chipDefault = chipDefault,
+        leadingContent = leadingContent,
+        content = {
             Text(
                 text = text,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = DesignSystemTheme.typography.caption1Medium,
-                color =  when {
-                    !enable -> DesignSystemTheme.colors.labelDisable
-                    error -> DesignSystemTheme.colors.statusNegative
-                    else -> DesignSystemTheme.colors.labelAlternative
-                }
+                maxLines = 1
             )
         },
-        trailingIcon = {
+        trailingContent = {
             Icon(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.icon_normal_close_thick),
-                tint = colorResource(
-                    id = when {
-                        !enable -> R.color.label_disable
-                        error -> R.color.status_negative
-                        else -> R.color.label_alternative
-                    }
-                ),
+                painter = painterResource(id = R.drawable.icon_normal_close),
+                tint = chipDefault.iconColor,
                 contentDescription = ""
             )
-        }
+        },
+        onClick = onClick
     )
 }
 
+// #4 enable / error 조합에 따른 Select Chip 스타일입니다.
+//
+// disable이 negative보다 우선합니다.
 @Composable
-private fun WantedSelectChipLayout(
-    modifier: Modifier,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    text: @Composable () -> Unit,
-    trailingIcon: @Composable () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(6.dp))
-            .then(modifier)
-            .padding(vertical = 4.dp, horizontal = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        leadingIcon?.let {
-            Box(
-                modifier = Modifier.size(12.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                leadingIcon()
-            }
-        }
+private fun selectChipDefault(
+    enable: Boolean,
+    error: Boolean
+): WantedChipDefault = when {
+    !enable -> {
+        WantedChipDefaults.getDefault(
+            size = ChipSize.XSmall,
+            variant = ChipVariant.Outlined,
+            isEnable = false
+        )
+    }
 
-        text()
+    error -> {
+        WantedChipDefaults.getDefault(
+            size = ChipSize.XSmall,
+            variant = ChipVariant.Outlined,
+            isEnable = true,
+            iconColor = DesignSystemTheme.colors.foregroundNegativePrimary,
+            backgroundColor = DesignSystemTheme.colors.foregroundNegativePrimary.copy(alpha = OPACITY_5),
+            borderColor = DesignSystemTheme.colors.foregroundNegativePrimary.copy(alpha = OPACITY_22),
+            textStyle = DesignSystemTheme.typography.caption1Medium.copy(
+                color = DesignSystemTheme.colors.foregroundNegativePrimary
+            )
+        )
+    }
 
-        Box(
-            modifier = Modifier.size(12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            trailingIcon()
-        }
+    else -> {
+        WantedChipDefaults.getDefault(
+            size = ChipSize.XSmall,
+            variant = ChipVariant.Outlined,
+            isEnable = true
+        )
     }
 }
 
@@ -146,11 +132,11 @@ private fun WantedSelectChipPreview() {
 
                 WantedSelectChip(
                     text = "선택1",
-                    leadingIcon = {
+                    leadingContent = {
                         Icon(
                             modifier = Modifier.fillMaxSize(),
                             painter = painterResource(id = R.drawable.icon_normal_circle_exclamation_fill),
-                            tint = DesignSystemTheme.colors.statusCautionary,
+                            tint = DesignSystemTheme.colors.foregroundCautionaryPrimary,
                             contentDescription = ""
                         )
                     },

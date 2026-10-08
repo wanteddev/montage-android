@@ -37,7 +37,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 @Composable
 fun WantedCircularLoading(
     modifier: Modifier = Modifier,
-    circleColor: Color = DesignSystemTheme.colors.lineSolidNormal,
+    circleColor: Color = DesignSystemTheme.colors.lineNeutralPrimaryOpaque,
     dimColor: Color = Color.Transparent,
     size: Dp = 24.dp
 ) {

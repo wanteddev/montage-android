@@ -12,7 +12,10 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -92,7 +95,7 @@ fun Modifier.getBorderModifier(
     cornerRadius: Dp = 0.dp,
     borderWidth: Dp = 1.dp,
     borderColor: Color = DesignSystemTheme.colors.staticWhite,
-    innerBorderColor: Color = DesignSystemTheme.colors.lineNormalAlternative,
+    innerBorderColor: Color = DesignSystemTheme.colors.lineNeutralTertiary,
     backgroundColor: Color = DesignSystemTheme.colors.staticWhite,
 ) = this.then(
     when (borderType) {
@@ -143,10 +146,12 @@ fun Modifier.getBorderModifier(
                 )
         }
 
+        // clip 을 그리기 명령마다 안티앨리어싱으로 걸면 가장자리 픽셀에서 아래 backgroundColor(흰색)가 위 콘텐츠 사이로 새어
+        // 다크 테마에서 밝은 점이 끊긴 테두리처럼 보인다. Offscreen 으로 합친 뒤 한 번만 잘라 새지 않게 한다.
         BorderType.InnerLine -> {
             if (isCircleShape) {
                 Modifier
-                    .clip(CircleShape)
+                    .clipOffscreen(CircleShape)
                     .background(color = backgroundColor)
                     .border(
                         width = borderWidth,
@@ -155,7 +160,7 @@ fun Modifier.getBorderModifier(
                     )
             } else {
                 Modifier
-                    .clip(RoundedCornerShape(cornerRadius))
+                    .clipOffscreen(RoundedCornerShape(cornerRadius))
                     .background(color = backgroundColor)
                     .border(
                         width = borderWidth,
@@ -166,6 +171,12 @@ fun Modifier.getBorderModifier(
         }
     }
 )
+
+private fun Modifier.clipOffscreen(shape: Shape): Modifier = graphicsLayer {
+    this.shape = shape
+    clip = true
+    compositingStrategy = CompositingStrategy.Offscreen
+}
 
 enum class BorderType {
     None,

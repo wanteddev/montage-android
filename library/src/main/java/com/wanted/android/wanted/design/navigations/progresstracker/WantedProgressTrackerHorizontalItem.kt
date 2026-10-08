@@ -50,9 +50,9 @@ internal fun WantedProgressTrackerHorizontalItem(
                 text = label,
                 style = DesignSystemTheme.typography.label2Bold,
                 color = if (!enabled || completed) {
-                    DesignSystemTheme.colors.labelAlternative
+                    DesignSystemTheme.colors.foregroundNeutralTertiary
                 } else {
-                    DesignSystemTheme.colors.labelNormal
+                    DesignSystemTheme.colors.foregroundNeutralPrimary
                 },
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -77,9 +77,9 @@ internal fun WantedProgressTrackerStep(
             .background(DesignSystemTheme.colors.staticWhite)
             .background(
                 when {
-                    completed -> DesignSystemTheme.colors.primaryNormal
-                    enabled -> DesignSystemTheme.colors.primaryNormal
-                    else -> DesignSystemTheme.colors.labelAssistive
+                    completed -> DesignSystemTheme.colors.surfaceBrandPrimary
+                    enabled -> DesignSystemTheme.colors.surfaceBrandPrimary
+                    else -> DesignSystemTheme.colors.foregroundNeutralQuaternary
                 }
             ),
         contentAlignment = Alignment.Center
@@ -114,7 +114,6 @@ private fun WantedProgressTrackerItemPreview() {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                // Horizontal Item
                 WantedProgressTrackerHorizontalItem(
                     modifier = Modifier,
                     step = "1",

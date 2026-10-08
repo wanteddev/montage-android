@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -77,6 +78,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param align WantedPopoverAlign: Popover의 정렬 방식입니다.
  * @param positionTop Boolean: Popover를 위쪽에 표시할지 여부입니다.
  * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
+ * @param screenEdgePadding Dp: Popover 가 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며, Popover 가 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
  * @param body (@Composable () -> Unit): Popover 내부 콘텐츠 슬롯입니다.
  * @param content (@Composable () -> Unit): Popover가 연결될 기준 콘텐츠 슬롯입니다.
  */
@@ -88,6 +90,7 @@ fun WantedPopover(
     align: WantedPopoverAlign = WantedPopoverAlign.Left,
     positionTop: Boolean = false,
     always: Boolean = false,
+    screenEdgePadding: Dp = 8.dp,
     body: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
@@ -109,8 +112,8 @@ fun WantedPopover(
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
 
-    // align, positionTop 변경 시 위치 재계산 강제 실행
-    LaunchedEffect(align, positionTop) {
+    // align, positionTop, screenEdgePadding 변경 시 위치 재계산 강제 실행
+    LaunchedEffect(align, positionTop, screenEdgePadding) {
         if (stateHolder.state.contentHeight > 0 && stateHolder.state.contentWidth > 0) {
             val windowInsetsBottomPx =
                 with(density) { windowInsets.getBottom(density).toDp().toPx() }
@@ -120,7 +123,7 @@ fun WantedPopover(
             val screenHeightPx = with(density) { screenHeight.dp.toPx() }
             val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
             val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }.toInt()
-            val paddingPx = with(density) { 8.dp.toPx().toInt() }
+            val paddingPx = with(density) { screenEdgePadding.toPx().toInt() }
 
             stateHolder.calculatePopoverPosition(
                 windowInsetsBottomPx = windowInsetsBottomPx,
@@ -144,6 +147,7 @@ fun WantedPopover(
         always = always,
         align = align,
         positionTop = positionTop,
+        screenEdgePadding = screenEdgePadding,
         body = body,
         content = content,
         onContentPositioned = { coordinates ->
@@ -187,6 +191,7 @@ private fun PopoverContainer(
     always: Boolean,
     align: WantedPopoverAlign,
     positionTop: Boolean,
+    screenEdgePadding: Dp,
     body: @Composable () -> Unit,
     content: @Composable () -> Unit,
     onContentPositioned: (androidx.compose.ui.layout.LayoutCoordinates) -> Unit,
@@ -219,6 +224,7 @@ private fun PopoverContainer(
                 align = align,
                 positionTop = positionTop,
                 always = always,
+                screenEdgePadding = screenEdgePadding,
                 body = body,
                 onCalculatePosition = onCalculatePosition,
                 onTooltipSizeChanged = onTooltipSizeChanged,
@@ -239,13 +245,14 @@ private fun PopoverPopup(
     align: WantedPopoverAlign,
     positionTop: Boolean,
     always: Boolean,
+    screenEdgePadding: Dp,
     body: @Composable () -> Unit,
     onCalculatePosition: (Float, Float, Float, Float, Int, Int) -> Unit,
     onTooltipSizeChanged: (Int, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     val estimatedTooltipHeight = with(density) { 80.dp.toPx() }
-    val paddingPx = with(density) { 8.dp.toPx().toInt() }
+    val paddingPx = with(density) { screenEdgePadding.toPx().toInt() }
 
     LaunchedEffect(
         popoverState.contentPositionY,
@@ -259,7 +266,8 @@ private fun PopoverPopup(
         screenHeightPx,
         screenWidthPx,
         align,
-        positionTop
+        positionTop,
+        screenEdgePadding
     ) {
         if (popoverState.contentHeight > 0 && popoverState.contentWidth > 0) {
             onCalculatePosition(
@@ -275,7 +283,10 @@ private fun PopoverPopup(
 
     val popoverSpacingPx = with(density) { 8.dp.toPx().toInt() }
 
-    val popupOffset = calculatePopupOffset(popoverState, windowInsetsBottomPx, popoverSpacingPx)
+    val popupOffset = calculatePopupOffset(
+        popoverState = popoverState,
+        spacingBetweenPopoverPx = popoverSpacingPx
+    )
 
     val popupProperties = createPopupProperties(always)
 
@@ -307,27 +318,20 @@ private fun PopoverPopup(
     }
 }
 
+// Popup 은 content 를 감싼 Box 의 좌상단을 기준(`Alignment.TopStart`)으로 놓이므로, offset 은 content 기준 상대값이다.
+// content 가 부모 안에서 떨어진 거리(`contentPositionY`)를 더하면 그만큼 한 번 더 밀린다.
 private fun calculatePopupOffset(
     popoverState: WantedPopoverState,
-    windowInsetsBottomPx: Float,
     spacingBetweenPopoverPx: Int
 ): IntOffset {
     return IntOffset(
         x = popoverState.offsetX,
         y = if (popoverState.isPopupAbove) {
-            // 위쪽에 표시할 때: content 위치에서 툴팁 높이와 간격
-            var positionY =
-                popoverState.contentPositionY.toInt() - popoverState.tooltipHeight - spacingBetweenPopoverPx
-
-            // overlapBottom 조건일 때 추가 보정
-            if (popoverState.overlapBottom) {
-                positionY = positionY - windowInsetsBottomPx.toInt() - popoverState.contentHeight
-            }
-
-            positionY
+            // 위쪽에 표시할 때: content 위로 툴팁 높이와 간격만큼
+            -popoverState.tooltipHeight - spacingBetweenPopoverPx
         } else {
             // 아래쪽에 표시할 때: content 아래 + 간격
-            popoverState.contentPositionY.toInt() + popoverState.contentHeight + spacingBetweenPopoverPx
+            popoverState.contentHeight + spacingBetweenPopoverPx
         }
     )
 }
@@ -433,7 +437,6 @@ fun WantedPopover(
     )
 }
 
-// Stateless UI Components
 @Composable
 private fun PopoverHeader(
     modifier: Modifier = Modifier,
@@ -454,7 +457,7 @@ private fun PopoverHeader(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             style = DesignSystemTheme.typography.body2Bold,
-            color = DesignSystemTheme.colors.labelNormal
+            color = DesignSystemTheme.colors.foregroundNeutralPrimary
         )
 
         if (closeButton && onDismiss != null) {
@@ -481,7 +484,7 @@ private fun PopoverBody(
                 .weight(1f),
             text = text,
             style = DesignSystemTheme.typography.label2Medium,
-            color = DesignSystemTheme.colors.labelNeutral,
+            color = DesignSystemTheme.colors.foregroundNeutralSecondary,
             overflow = TextOverflow.Ellipsis
         )
 
@@ -514,7 +517,7 @@ private fun PopoverCloseButton(onDismiss: () -> Unit) {
                     .size(16.dp),
                 painter = painterResource(id = R.drawable.icon_normal_close),
                 contentDescription = null,
-                tint = DesignSystemTheme.colors.labelNormal
+                tint = DesignSystemTheme.colors.foregroundNeutralPrimary
             )
         }
     )
@@ -531,7 +534,7 @@ private fun WantedPopoverLayout(
         modifier = modifier
             .sizeIn(minWidth = 140.dp, maxWidth = 360.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(DesignSystemTheme.colors.backgroundElevatedNormal)
+            .background(DesignSystemTheme.colors.surfaceElevatedPrimary)
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         Column(

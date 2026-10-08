@@ -48,12 +48,12 @@ class DSWantedListCardDemoViewModel @Inject constructor(
     private fun getCode(): String {
         val state = viewState.value
         val topContentLine = if (state.topContentEnabled) {
-            "topContent = { WantedContentBadge(text = \\\"상단\\\") },"
+            "topContent = { WantedContentBadge(text = \"상단\") },"
         } else {
             "topContent = null,"
         }
         val bottomContentLine = if (state.bottomContentEnabled) {
-            "bottomContent = { WantedContentBadge(text = \\\"하단\\\") },"
+            "bottomContent = { WantedContentBadge(text = \"하단\") },"
         } else {
             "bottomContent = null,"
         }
@@ -71,9 +71,9 @@ class DSWantedListCardDemoViewModel @Inject constructor(
         return """
             WantedListCard(
                 modifier = Modifier.fillMaxWidth(),
-                title = \"ListCard Title\",
-                caption = \"Caption\",
-                extraCaption = \"Extra Caption\",
+                title = "ListCard Title",
+                caption = "Caption",
+                extraCaption = "Extra Caption",
                 isLoading = ${state.isLoading},
                 $topContentLine
                 $bottomContentLine

@@ -25,7 +25,7 @@ class TextButton(context: Context, attrs: AttributeSet? = null) :
         }
 
     private fun getTypeColor() = ContextCompat.getColor(
-        context, if (type == Type.PRIMARY) R.color.primary_normal else R.color.label_alternative
+        context, if (type == Type.PRIMARY) R.color.foreground_brand_primary else R.color.foreground_neutral_tertiary
     )
 
     init {

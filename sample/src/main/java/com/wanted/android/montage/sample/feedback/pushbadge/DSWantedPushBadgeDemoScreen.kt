@@ -18,15 +18,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.feedback.pushbadge.DSWantedPushBadgeDemoScreenContract.DSWantedPushBadgeDemoEvent
 import com.wanted.android.montage.sample.feedback.pushbadge.DSWantedPushBadgeDemoScreenContract.DSWantedPushBadgeDemoSideEffect
@@ -38,11 +40,9 @@ import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBa
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeSize
 import com.wanted.android.wanted.design.feedback.pushbadge.PushBadgeTypes.PushBadgeVariant
 import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadge
-import com.wanted.android.wanted.design.feedback.pushbadge.WantedPushBadgeBorder
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -85,8 +85,16 @@ fun DSWantedPushBadgeDemoScreen(
                 viewModel.setEvent(DSWantedPushBadgeDemoEvent.SetPosition(viewEvent.position))
             }
 
-            is DSWantedPushBadgeDemoViewEvent.OnChangeBordered -> {
-                viewModel.setEvent(DSWantedPushBadgeDemoEvent.SetBordered(viewEvent.bordered))
+            is DSWantedPushBadgeDemoViewEvent.OnChangeOutlineBorder -> {
+                viewModel.setEvent(DSWantedPushBadgeDemoEvent.SetOutlineBorder(viewEvent.outlineBorder))
+            }
+
+            is DSWantedPushBadgeDemoViewEvent.OnSelectOutlineBorderColor -> {
+                viewModel.setEvent(DSWantedPushBadgeDemoEvent.SetOutlineBorderColor(viewEvent.outlineBorderColor))
+            }
+
+            is DSWantedPushBadgeDemoViewEvent.OnChangeInset -> {
+                viewModel.setEvent(DSWantedPushBadgeDemoEvent.SetInset(viewEvent.insetEnabled))
             }
 
             is DSWantedPushBadgeDemoViewEvent.OnClickCopyCode -> {
@@ -96,7 +104,7 @@ fun DSWantedPushBadgeDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedPushBadgeDemoEvent.CopyCode)
@@ -129,7 +137,7 @@ private fun DSWantedPushBadgeDemoScreenImpl(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -148,26 +156,31 @@ private fun DSWantedPushBadgeDemoScreenImpl(
                     modifier = Modifier
                         .size(48.dp)
                         .background(
-                            color = DesignSystemTheme.colors.fillNormal,
+                            color = DesignSystemTheme.colors.surfaceNeutralSecondary,
                             shape = RoundedCornerShape(8.dp)
                         )
                 ) {
-                    if (viewState.bordered) {
-                        WantedPushBadgeBorder(
-                            variant = viewState.selectedVariant,
-                            size = viewState.selectedSize,
-                            position = viewState.selectedPosition,
-                            count = "1",
-                            bordered = true,
-                        )
-                    } else {
-                        WantedPushBadge(
-                            variant = viewState.selectedVariant,
-                            size = viewState.selectedSize,
-                            position = viewState.selectedPosition,
-                            count = "1",
-                        )
-                    }
+                    // 실제 사용처(WantedAvatar/IconButton)처럼 선택한 position 모서리에 배지를 정렬한 뒤,
+                    // 배지의 position + offset 이 바깥으로 걸치도록 한다.
+                    WantedPushBadge(
+                        modifier = Modifier.align(viewState.selectedPosition.toAlignment()),
+                        variant = viewState.selectedVariant,
+                        size = viewState.selectedSize,
+                        position = viewState.selectedPosition,
+                        text = if (viewState.selectedVariant == PushBadgeVariant.MaxCount) {
+                            viewState.sampleCount.toString()
+                        } else {
+                            viewState.sampleText
+                        },
+                        maxCount = viewState.sampleMaxCount,
+                        outlineBorder = viewState.outlineBorder,
+                        outlineBorderColor = viewState.selectedOutlineBorderColor.toColor(),
+                        inset = if (viewState.insetEnabled) {
+                            DpOffset(viewState.sampleInset.dp, viewState.sampleInset.dp)
+                        } else {
+                            DpOffset(0.dp, 0.dp)
+                        }
+                    )
                 }
             },
             variant = {
@@ -177,11 +190,7 @@ private fun DSWantedPushBadgeDemoScreenImpl(
                     selectValueList = viewState.variantList.map { it.name },
                     onSelect = {
                         onViewEvent(
-                            DSWantedPushBadgeDemoViewEvent.OnSelectVariant(
-                                PushBadgeVariant.valueOf(
-                                    it
-                                )
-                            )
+                            DSWantedPushBadgeDemoViewEvent.OnSelectVariant(PushBadgeVariant.valueOf(it))
                         )
                     },
                 )
@@ -205,21 +214,41 @@ private fun DSWantedPushBadgeDemoScreenImpl(
                     selectValueList = viewState.positionList.map { it.name },
                     onSelect = {
                         onViewEvent(
-                            DSWantedPushBadgeDemoViewEvent.OnSelectPosition(
-                                PushBadgePosition.valueOf(
-                                    it
-                                )
-                            )
+                            DSWantedPushBadgeDemoViewEvent.OnSelectPosition(PushBadgePosition.valueOf(it))
                         )
                     },
                 )
             },
-            bordered = {
+            outlineBorder = {
                 DSWantedOptionSwitchCell(
-                    text = "bordered : ${viewState.bordered}",
-                    checkState = viewState.bordered,
+                    text = "outlineBorder : ${viewState.outlineBorder}",
+                    checkState = viewState.outlineBorder,
                     onCheckChanged = {
-                        onViewEvent(DSWantedPushBadgeDemoViewEvent.OnChangeBordered(it))
+                        onViewEvent(DSWantedPushBadgeDemoViewEvent.OnChangeOutlineBorder(it))
+                    }
+                )
+            },
+            outlineBorderColor = {
+                // outlineBorder 가 켜진 경우에만 외곽 보더 색상 선택 메뉴를 노출한다.
+                if (viewState.outlineBorder) {
+                    WantedSelect(
+                        value = "outlineBorderColor : ${viewState.selectedOutlineBorderColor.label}",
+                        selectedValue = viewState.selectedOutlineBorderColor.name,
+                        selectValueList = viewState.outlineBorderColorList.map { it.name },
+                        onSelect = {
+                            onViewEvent(
+                                DSWantedPushBadgeDemoViewEvent.OnSelectOutlineBorderColor(OutlineBorderColorOption.valueOf(it))
+                            )
+                        },
+                    )
+                }
+            },
+            inset = {
+                DSWantedOptionSwitchCell(
+                    text = "inset : ${if (viewState.insetEnabled) "(${viewState.sampleInset}, ${viewState.sampleInset})" else "(0, 0)"}",
+                    checkState = viewState.insetEnabled,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedPushBadgeDemoViewEvent.OnChangeInset(it))
                     }
                 )
             }
@@ -234,7 +263,9 @@ private fun DSWantedPushBadgeDemoScreenLayout(
     variant: @Composable () -> Unit,
     size: @Composable () -> Unit,
     position: @Composable () -> Unit,
-    bordered: @Composable () -> Unit,
+    outlineBorder: @Composable () -> Unit,
+    outlineBorderColor: @Composable () -> Unit,
+    inset: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier.padding(horizontal = 20.dp),
@@ -243,12 +274,22 @@ private fun DSWantedPushBadgeDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -265,7 +306,7 @@ private fun DSWantedPushBadgeDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
@@ -276,18 +317,41 @@ private fun DSWantedPushBadgeDemoScreenLayout(
 
             position()
 
-            bordered()
+            outlineBorder()
+
+            outlineBorderColor()
+
+            inset()
         }
     }
+}
+
+@Composable
+private fun OutlineBorderColorOption.toColor(): Color = when (this) {
+    OutlineBorderColorOption.Default -> DesignSystemTheme.colors.backgroundNeutralPrimary
+    OutlineBorderColorOption.White -> DesignSystemTheme.colors.staticWhite
+    OutlineBorderColorOption.Black -> DesignSystemTheme.colors.staticBlack
+    OutlineBorderColorOption.Primary -> DesignSystemTheme.colors.surfaceBrandPrimary
+}
+
+private fun PushBadgePosition.toAlignment(): Alignment = when (this) {
+    PushBadgePosition.TopStart -> Alignment.TopStart
+    PushBadgePosition.TopCenter -> Alignment.TopCenter
+    PushBadgePosition.TopEnd -> Alignment.TopEnd
+    PushBadgePosition.MiddleStart -> Alignment.CenterStart
+    PushBadgePosition.MiddleCenter -> Alignment.Center
+    PushBadgePosition.MiddleEnd -> Alignment.CenterEnd
+    PushBadgePosition.BottomStart -> Alignment.BottomStart
+    PushBadgePosition.BottomCenter -> Alignment.BottomCenter
+    PushBadgePosition.BottomEnd -> Alignment.BottomEnd
 }
 
 @DevicePreviews
 @Composable
 private fun DSWantedPushBadgeDemoScreenPreview() {
     DesignSystemTheme {
-        val viewState = DSWantedPushBadgeDemoViewState()
         DSWantedPushBadgeDemoScreenImpl(
-            viewState = viewState,
+            viewState = DSWantedPushBadgeDemoViewState(),
             onViewEvent = { }
         )
     }

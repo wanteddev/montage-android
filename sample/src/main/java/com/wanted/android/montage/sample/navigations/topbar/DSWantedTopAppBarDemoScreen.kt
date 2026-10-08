@@ -29,9 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoEvent
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoSideEffect
@@ -43,7 +42,7 @@ import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -107,7 +106,7 @@ fun DSWantedTopAppBarDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedTopAppBarDemoEvent.CopyCode)
@@ -147,7 +146,6 @@ private fun DSWantedTopAppBarDemoScreenContent(
                 navigationIcon = if (viewState.navigationIcon) {
                     {
                         WantedTopAppBarIconButton(
-                            variant = viewState.variant,
                             painter = painterResource(R.drawable.icon_normal_arrow_left),
                             onClick = { }
                         )
@@ -156,13 +154,11 @@ private fun DSWantedTopAppBarDemoScreenContent(
                 actions = if (viewState.actions) {
                     {
                         WantedTopAppBarIconButton(
-                            variant = viewState.variant,
                             painter = painterResource(R.drawable.icon_normal_share),
                             onClick = { }
                         )
 
                         WantedTopAppBarIconButton(
-                            variant = viewState.variant,
                             painter = painterResource(R.drawable.icon_normal_share),
                             onClick = { }
                         )
@@ -174,7 +170,7 @@ private fun DSWantedTopAppBarDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -184,7 +180,7 @@ private fun DSWantedTopAppBarDemoScreenContent(
                         }
                     )
                 },
-                negative = {
+                alternative = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -332,13 +328,11 @@ private fun DSWantedTooltipDemoScreenLayout(
                 modifier = Modifier.padding(bottom = 16.dp),
                 text = "Preview",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
-            DSWantedPreviewContainer {
-                preview()
-            }
+            preview()
         }
 
         Column(
@@ -353,7 +347,7 @@ private fun DSWantedTooltipDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
@@ -380,13 +374,13 @@ private fun DSWantedTopAppBarPreview(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DesignSystemTheme.colors.backgroundNormalAlternative)
+            .background(DesignSystemTheme.colors.backgroundNeutralSecondary)
             .padding(20.dp)
     ) {
         WantedTopAppBar(
             variant = viewState.variant,
             backgroundColor = if (viewState.background) {
-                colorResource(R.color.background_normal_normal)
+                colorResource(R.color.background_neutral_primary)
             } else {
                 colorResource(R.color.transparent)
             },
@@ -395,7 +389,6 @@ private fun DSWantedTopAppBarPreview(
             navigationIcon = if (viewState.navigationIcon) {
                 {
                     WantedTopAppBarIconButton(
-                        variant = viewState.variant,
                         painter = painterResource(R.drawable.icon_normal_arrow_left),
                         onClick = { }
                     )
@@ -404,13 +397,11 @@ private fun DSWantedTopAppBarPreview(
             actions = if (viewState.actions) {
                 {
                     WantedTopAppBarIconButton(
-                        variant = viewState.variant,
                         painter = painterResource(R.drawable.icon_normal_share),
                         onClick = { }
                     )
 
                     WantedTopAppBarIconButton(
-                        variant = viewState.variant,
                         painter = painterResource(R.drawable.icon_normal_share),
                         onClick = { }
                     )

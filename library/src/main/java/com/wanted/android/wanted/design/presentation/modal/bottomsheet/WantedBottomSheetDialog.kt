@@ -122,7 +122,7 @@ fun WantedBottomSheetDialog(
 fun WantedBottomSheetLayout(
     modalSize: ModalSize,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = DesignSystemTheme.colors.backgroundElevatedNormal,
+    backgroundColor: Color = DesignSystemTheme.colors.surfaceElevatedPrimary,
     shadowElevation: Dp = 4.dp,
     topBar: @Composable (() -> Unit)?,
     bottomBar: @Composable (() -> Unit)?,
@@ -133,7 +133,7 @@ fun WantedBottomSheetLayout(
         modifier = modifier,
         shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
         shadowElevation = shadowElevation,
-        color = DesignSystemTheme.colors.backgroundNormalNormal
+        color = DesignSystemTheme.colors.backgroundNeutralPrimary
     ) {
         Column(Modifier.fillMaxWidth()) {
             WantedDialogLayout(

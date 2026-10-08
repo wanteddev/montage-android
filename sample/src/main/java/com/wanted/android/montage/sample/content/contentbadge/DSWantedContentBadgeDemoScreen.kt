@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.content.contentbadge.DSWantedContentBadgeDemoScreenContract.DSWantedContentBadgeDemoEvent
 import com.wanted.android.montage.sample.content.contentbadge.DSWantedContentBadgeDemoScreenContract.DSWantedContentBadgeDemoSideEffect
@@ -38,9 +38,8 @@ import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeSize
 import com.wanted.android.wanted.design.contents.contentbadge.ContentBadgeType
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -98,7 +97,7 @@ fun DSWantedContentBadgeDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedContentBadgeDemoEvent.CopyCode)
@@ -131,7 +130,7 @@ private fun DSWantedContentBadgeDemoScreenImpl(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -180,17 +179,12 @@ private fun DSWantedContentBadgeDemoScreenImpl(
             },
             size = {
                 WantedSelect(
-                    value = "Size : ${viewState.selectedSize.name}",
-                    selectedValue = viewState.selectedSize.name,
-                    selectValueList = viewState.sizeList.map { it.name },
-                    onSelect = {
-                        onViewEvent(
-                            DSWantedContentBadgeDemoViewEvent.OnSelectSize(
-                                ContentBadgeSize.valueOf(
-                                    it
-                                )
-                            )
-                        )
+                    value = "Size : ${viewState.selectedSize.toDisplayLabel()}",
+                    selectedValue = viewState.selectedSize.toDisplayLabel(),
+                    selectValueList = viewState.sizeList.map { it.toDisplayLabel() },
+                    onSelect = { selected ->
+                        val size = viewState.sizeList.first { it.toDisplayLabel() == selected }
+                        onViewEvent(DSWantedContentBadgeDemoViewEvent.OnSelectSize(size))
                     },
                 )
             },
@@ -249,12 +243,22 @@ private fun DSWantedContentBadgeDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(com.wanted.android.montage.sample.R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -272,7 +276,7 @@ private fun DSWantedContentBadgeDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
@@ -288,6 +292,12 @@ private fun DSWantedContentBadgeDemoScreenLayout(
             trailingIcon()
         }
     }
+}
+
+@Suppress("DEPRECATION")
+private fun ContentBadgeSize.toDisplayLabel(): String = when (this) {
+    ContentBadgeSize.Large -> "$name (Deprecated)"
+    else -> name
 }
 
 @DevicePreviews

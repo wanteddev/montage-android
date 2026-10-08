@@ -87,7 +87,7 @@ fun WantedTextStyle(colorRes: Int, style: TextStyle, alpha: Float? = null) = sty
 
 @Composable
 fun wantedRippleEffect(
-    color: Color = DesignSystemTheme.colorsOpacity.labelNormalOpacity12,
+    color: Color = DesignSystemTheme.colorsOpacity.foregroundNeutralPrimaryOpacity12,
 ) = ripple(
     color = color,
 )

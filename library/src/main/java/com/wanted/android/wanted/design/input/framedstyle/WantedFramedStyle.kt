@@ -13,6 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShadowStyle
 import com.wanted.android.wanted.design.base.wantedDropShadow
@@ -43,6 +50,7 @@ import com.wanted.android.wanted.design.util.OPACITY_43
  * @param status WantedFramedStyleStatus: 프레임 상태입니다. Normal, Negative, Selected 중 하나를 선택합니다.
  * @param shape RoundedCornerShape: 모서리 둥글기 형태입니다. 기본값은 12dp입니다.
  * @param enabled Boolean: 활성화 여부입니다. false일 경우 불투명도가 낮아집니다.
+ * @param focused Boolean: 포커스 여부입니다. true일 경우 컴포넌트 외곽에 4dp Focus Ring을 그립니다.
  * @param shadow WantedShadowStyle: 적용할 섀도우 스타일입니다. 기본값은 XSmall입니다.
  * @return Modifier: 스타일이 적용된 Modifier를 반환합니다.
  */
@@ -50,9 +58,11 @@ fun Modifier.framedStyle(
     status: WantedFramedStyleStatus = WantedFramedStyleStatus.Normal,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     enabled: Boolean = true,
+    focused: Boolean = false,
     shadow: WantedShadowStyle =  WantedShadowStyle.XSmall(),
 ) = composed {
     this
+        .focusRing(visible = focused, shape = shape)
         .wantedDropShadow(shadow)
         .border(
             shape = shape,
@@ -60,10 +70,10 @@ fun Modifier.framedStyle(
                 status == WantedFramedStyleStatus.Negative
                         || status == WantedFramedStyleStatus.Selected -> {
                     if (enabled) {
-                        DesignSystemTheme.colors.backgroundNormalNormal
+                        DesignSystemTheme.colors.backgroundNeutralPrimary
                             .copy(alpha = OPACITY_43)
                     } else {
-                        DesignSystemTheme.colors.backgroundNormalNormal
+                        DesignSystemTheme.colors.backgroundNeutralPrimary
                             .copy(alpha = 0.185f)
                     }
                 }
@@ -77,25 +87,75 @@ fun Modifier.framedStyle(
             color = when (status) {
                 WantedFramedStyleStatus.Negative -> {
                     if (enabled) {
-                        DesignSystemTheme.colors.statusNegative.copy(OPACITY_43)
+                        DesignSystemTheme.colors.foregroundNegativePrimary.copy(OPACITY_43)
                     } else {
-                        DesignSystemTheme.colors.statusNegative.copy(0.185f)
+                        DesignSystemTheme.colors.foregroundNegativePrimary.copy(0.185f)
                     }
                 }
 
                 WantedFramedStyleStatus.Selected -> {
                     if (enabled) {
-                        DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
+                        DesignSystemTheme.colors.lineBrandStrong.copy(OPACITY_43)
                     } else {
-                        DesignSystemTheme.colors.primaryNormal.copy(0.185f)
+                        DesignSystemTheme.colors.lineBrandStrong.copy(0.185f)
                     }
                 }
 
-                else -> DesignSystemTheme.colors.lineNormalNeutral
+                else -> DesignSystemTheme.colors.lineNeutralSecondary
             },
             width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
         )
         .clip(shape)
+}
+
+/**
+ * fun Modifier.focusRing(...)
+ *
+ * 컴포넌트 외곽에 Focus Ring(외부 강조 테두리)을 그리는 Modifier 확장 함수입니다.
+ *
+ * `framedStyle`의 inset border와 관심사를 분리하여, 포커스 시 컴포넌트 경계 바깥쪽에
+ * stroke를 그립니다. `drawBehind`로 outset 영역에 그리므로 레이아웃에 영향을 주지 않고
+ * (focus 토글 시 layout shift 없음), 이후 `.clip()`에 의해 잘리지 않습니다.
+ *
+ * stroke는 외곽 경계를 기준으로 두께의 절반만큼 바깥으로 밀어 `[edge, edge + width]` 구간에
+ * 위치합니다. (CSS `box-shadow: 0 0 0 width` 와 동일) corner radius는 동심을 유지하기 위해
+ * 컴포넌트 radius + 두께 절반으로 계산합니다.
+ *
+ * @param visible Boolean: ring 노출 여부입니다. false일 경우 아무것도 그리지 않습니다.
+ * @param shape RoundedCornerShape: 컴포넌트의 모서리 형태입니다. ring radius 계산에 사용됩니다.
+ * @param color Color: ring 색상입니다. 기본값은 lineBrandFocus 토큰입니다.
+ * @param width Dp: ring 두께입니다. 기본값은 4dp입니다.
+ * @return Modifier: Focus Ring이 적용된 Modifier를 반환합니다.
+ */
+fun Modifier.focusRing(
+    visible: Boolean,
+    shape: RoundedCornerShape,
+    color: Color = Color.Unspecified,
+    width: Dp = 4.dp,
+): Modifier = composed {
+    val ringColor = if (color == Color.Unspecified) {
+        DesignSystemTheme.colors.lineBrandFocus
+    } else {
+        color
+    }
+
+    if (!visible) {
+        this
+    } else {
+        this.drawBehind {
+            val strokeWidth = width.toPx()
+            val halfStroke = strokeWidth / 2f
+            val cornerRadius = shape.topStart.toPx(size, this) + halfStroke
+
+            drawRoundRect(
+                color = ringColor,
+                topLeft = Offset(-halfStroke, -halfStroke),
+                size = Size(size.width + strokeWidth, size.height + strokeWidth),
+                cornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                style = Stroke(width = strokeWidth)
+            )
+        }
+    }
 }
 
 /**

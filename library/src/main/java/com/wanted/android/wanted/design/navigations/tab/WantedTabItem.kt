@@ -55,9 +55,9 @@ fun WantedTabItem(
                     else -> DesignSystemTheme.typography.body2Bold
                 },
                 color = when {
-                    !enable -> DesignSystemTheme.colors.labelDisable
-                    active -> DesignSystemTheme.colors.labelStrong
-                    else -> DesignSystemTheme.colors.labelAssistive
+                    !enable -> DesignSystemTheme.colors.foregroundDisablePrimary
+                    active -> DesignSystemTheme.colors.foregroundNeutralStrong
+                    else -> DesignSystemTheme.colors.foregroundNeutralQuaternary
                 },
                 textAlign = TextAlign.Center,
                 maxLines = 1,

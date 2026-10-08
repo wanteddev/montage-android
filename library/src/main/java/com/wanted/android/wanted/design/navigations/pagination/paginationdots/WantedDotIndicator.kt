@@ -40,6 +40,9 @@ import com.wanted.android.wanted.design.util.OPACITY_8
 import kotlin.math.abs
 import kotlin.math.floor
 
+// 전체 페이지 수가 이 값 이하이면 windowing 없이 모든 dot을 풀사이즈로 표시한다.
+private const val FULL_SIZE_PAGE_THRESHOLD = 5
+
 /**
  * WantedDotIndicator
  *
@@ -75,10 +78,16 @@ fun WantedDotIndicator(
     size: WantedPaginationDotDefaults.WantedDotIndicatorSize = WantedPaginationDotDefaults.WantedDotIndicatorSize.Medium,
     type: WantedPaginationDotDefaults.WantedDotIndicatorType = WantedPaginationDotDefaults.WantedDotIndicatorType.Normal
 ) {
-    val visibleArea by remember(visibleDotCount, totalPageCount, currentIndex) {
+    val effectiveVisibleDotCount = if (totalPageCount <= FULL_SIZE_PAGE_THRESHOLD) {
+        maxOf(visibleDotCount, totalPageCount)
+    } else {
+        visibleDotCount
+    }
+
+    val visibleArea by remember(effectiveVisibleDotCount, totalPageCount, currentIndex) {
         mutableStateOf(
             getPaginationDotVisibleArea(
-                maxDotCount = visibleDotCount,
+                maxDotCount = effectiveVisibleDotCount,
                 totalPageCount = totalPageCount,
                 currentIndex = currentIndex
             )
@@ -90,14 +99,12 @@ fun WantedDotIndicator(
         WantedPaginationDotDefaults.WantedDotIndicatorSize.Medium -> 10.dp
         WantedPaginationDotDefaults.WantedDotIndicatorSize.Small -> 6.dp
     }
-    // 점들 사이의 간격
     val spaceDp =
         if (type == WantedPaginationDotDefaults.WantedDotIndicatorType.Normal) 10.dp else 6.dp
 
-    // visibleDotCount개의 점과 그 사이의 간격을 포함하는 전체 너비 계산
     val calculatedWidth: Dp
-    if (visibleDotCount > 0) {
-        val countOfDotsValue: Int = visibleDotCount
+    if (effectiveVisibleDotCount > 0) {
+        val countOfDotsValue: Int = effectiveVisibleDotCount
         val dotSizeValue: Dp = maxDotSizeDp
         val spaceSizeValue: Dp = spaceDp
 
@@ -112,13 +119,12 @@ fun WantedDotIndicator(
 
     Row(
         modifier = modifier
-            .heightIn(min = maxDotSizeDp) // 높이는 가장 큰 점
-            .width(calculatedWidth) // 계산된 고정 너비 적용
-        // .background(Color.Yellow.copy(alpha = 0.3f)) // 디버깅용: Row의 실제 영역 확인 시 사용
+            .heightIn(min = maxDotSizeDp)
+            .width(calculatedWidth)
         ,
         horizontalArrangement = Arrangement.spacedBy(
             space = spaceDp,
-            alignment = Alignment.CenterHorizontally // 고정된 너비 내에서 점들을 중앙에 배치
+            alignment = Alignment.CenterHorizontally
         ),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -128,7 +134,7 @@ fun WantedDotIndicator(
                     indicatorSize = size,
                     index = index,
                     visibleArea = visibleArea,
-                    visibleDotCount = visibleDotCount,
+                    visibleDotCount = effectiveVisibleDotCount,
                     totalPageCount = totalPageCount,
                     currentIndex = currentIndex
                 )
@@ -137,7 +143,7 @@ fun WantedDotIndicator(
                     indicatorSize = size,
                     index = index,
                     visibleArea = visibleArea,
-                    visibleDotCount = visibleDotCount,
+                    visibleDotCount = effectiveVisibleDotCount,
                     totalPageCount = totalPageCount,
                     currentIndex = currentIndex
                 )
@@ -163,7 +169,7 @@ private fun IndicatorDot(
         visibleDotCount,
         totalPageCount,
         currentIndex,
-        indicatorSize // indicatorSize도 remember 키에 포함
+        indicatorSize
     ) {
         mutableStateOf(
             getDotSize(
@@ -184,9 +190,9 @@ private fun IndicatorDot(
 
     val backgroundColor by animateColorAsState(
         targetValue = if (currentIndex == index) {
-            DesignSystemTheme.colors.labelNormal
+            DesignSystemTheme.colors.foregroundNeutralPrimary
         } else {
-            DesignSystemTheme.colors.labelNormal.copy(OPACITY_16)
+            DesignSystemTheme.colors.foregroundNeutralPrimary.copy(OPACITY_16)
         },
         animationSpec = tween(
             durationMillis = 200,
@@ -198,7 +204,7 @@ private fun IndicatorDot(
     AnimatedVisibility(
         modifier = modifier,
         visible = isVisible,
-        enter = if (visibleArea.first == index && visibleDotCount > 1 && index != visibleArea.second) { // 첫번째 점 + 여러개 + 마지막 점 아님
+        enter = if (visibleArea.first == index && visibleDotCount > 1 && index != visibleArea.second) {
             expandHorizontally(
                 animationSpec = tween(
                     durationMillis = 200,
@@ -215,7 +221,7 @@ private fun IndicatorDot(
                 expandFrom = Alignment.Start
             )
         },
-        exit = if (visibleArea.first == index && visibleDotCount > 1 && index != visibleArea.second) { // 첫번째 점 + 여러개 + 마지막 점 아님
+        exit = if (visibleArea.first == index && visibleDotCount > 1 && index != visibleArea.second) {
             shrinkHorizontally(
                 animationSpec = tween(
                     durationMillis = 200,
@@ -269,7 +275,7 @@ private fun IndicatorBorder(
         visibleDotCount,
         totalPageCount,
         currentIndex,
-        indicatorSize // indicatorSize도 remember 키에 포함
+        indicatorSize
     ) {
         mutableStateOf(
             getDotSize(
@@ -302,9 +308,9 @@ private fun IndicatorBorder(
 
     val borderColor by animateColorAsState(
         targetValue = if (currentIndex == index) {
-            DesignSystemTheme.colors.lineNormalNeutral
+            DesignSystemTheme.colors.lineNeutralSecondary
         } else {
-            DesignSystemTheme.colors.lineNormalNeutral.copy(OPACITY_8)
+            DesignSystemTheme.colors.lineNeutralSecondary.copy(OPACITY_8)
         },
         animationSpec = tween(
             durationMillis = 200,
@@ -386,7 +392,7 @@ private fun getPaginationDotVisibleArea(
     if (totalPageCount <= 0 || maxDotCount <= 0) return Pair(-1, -1)
     val actualMaxDotCount = maxDotCount.coerceAtMost(totalPageCount)
 
-    if (totalPageCount <= actualMaxDotCount) { // 모든 점이 항상 보이는 경우
+    if (totalPageCount <= actualMaxDotCount) {
         return Pair(0, totalPageCount - 1)
     }
 
@@ -420,7 +426,7 @@ private fun getDotSize(
             IndicatorDotSize.Zero -> 0.dp
         }
 
-    } else { // Small
+    } else {
         when (dotSize) {
             IndicatorDotSize.Max -> 6.dp
             IndicatorDotSize.Mid -> 4.dp

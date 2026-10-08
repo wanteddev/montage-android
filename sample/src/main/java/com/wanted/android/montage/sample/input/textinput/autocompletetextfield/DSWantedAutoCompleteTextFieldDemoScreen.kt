@@ -18,7 +18,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.input.textinput.autocompletetextfield.DSWantedAutoCompleteTextFieldDemoScreenContract.DSWantedAutoCompleteTextFieldDemoEvent
 import com.wanted.android.montage.sample.input.textinput.autocompletetextfield.DSWantedAutoCompleteTextFieldDemoScreenContract.DSWantedAutoCompleteTextFieldDemoSideEffect
@@ -32,7 +32,7 @@ import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.contents.listcell.WantedListCell
 import com.wanted.android.wanted.design.input.textinput.autocompletetextfield.WantedAutoCompleteTextField
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -100,7 +100,7 @@ fun DSWantedAutoCompleteTextFieldDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedAutoCompleteTextFieldDemoEvent.CopyCode)
@@ -136,7 +136,7 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -145,7 +145,7 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -177,7 +177,6 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenContent(
                     sectionItem = { section, index ->
                         WantedListCell(
                             modifier = Modifier.fillMaxWidth(),
-                            fillWidth = true,
                             text = "Section ${section + 1} / Item ${index + 1}"
                         ) {
                             onViewEvent(
@@ -189,7 +188,6 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenContent(
                         {
                             WantedListCell(
                                 modifier = Modifier.fillMaxWidth(),
-                                fillWidth = true,
                                 text = "직접 입력"
                             ) {
                                 onViewEvent(
@@ -204,7 +202,6 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenContent(
                         {
                             WantedListCell(
                                 modifier = Modifier.fillMaxWidth(),
-                                fillWidth = true,
                                 text = "하단 직접 입력"
                             ) {
                                 onViewEvent(
@@ -290,7 +287,7 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -303,7 +300,7 @@ private fun DSWantedAutoCompleteTextFieldDemoScreenLayout(
         Text(
             text = "Option",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )

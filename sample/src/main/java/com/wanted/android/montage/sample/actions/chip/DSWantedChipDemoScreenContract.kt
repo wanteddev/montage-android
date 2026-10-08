@@ -8,6 +8,15 @@ import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
 
 object DSWantedChipDemoScreenContract {
+
+	/**
+	 * 데모에서 backgroundColor / borderColor 커스텀을 시연하기 위한 색상 선택지입니다.
+	 * None이면 기본 스타일을 사용하고, 그 외에는 해당 색상으로 배경(및 Outlined의 테두리)을 커스텀합니다.
+	 */
+	enum class ChipCustomColor {
+		None, Primary, Negative, Positive
+	}
+
 	sealed interface DSWantedChipDemoEvent : BaseEvent {
 		data class InitState(val viewState: DSWantedChipDemoViewState) : DSWantedChipDemoEvent
 		data class ShowCode(val isShowCode: Boolean) : DSWantedChipDemoEvent
@@ -16,8 +25,9 @@ object DSWantedChipDemoScreenContract {
 		data class SetSize(val size: ChipSize) : DSWantedChipDemoEvent
 		data class SetActive(val isActive: Boolean) : DSWantedChipDemoEvent
 		data class SetEnable(val isEnable: Boolean) : DSWantedChipDemoEvent
-		data class SetLeftIcon(val hasLeftIcon: Boolean) : DSWantedChipDemoEvent
-		data class SetRightIcon(val hasRightIcon: Boolean) : DSWantedChipDemoEvent
+		data class SetLeadingContent(val hasLeadingContent: Boolean) : DSWantedChipDemoEvent
+		data class SetTrailingContent(val hasTrailingContent: Boolean) : DSWantedChipDemoEvent
+		data class SetCustomColor(val customColor: ChipCustomColor) : DSWantedChipDemoEvent
 	}
 
 	data class DSWantedChipDemoViewState(
@@ -32,8 +42,11 @@ object DSWantedChipDemoScreenContract {
 
 		val isActive: Boolean = false,
 		val isEnable: Boolean = true,
-		val hasLeftIcon: Boolean = false,
-		val hasRightIcon: Boolean = false,
+		val hasLeadingContent: Boolean = false,
+		val hasTrailingContent: Boolean = false,
+
+		val customColorList: List<ChipCustomColor> = ChipCustomColor.entries.toList(),
+		val selectedCustomColor: ChipCustomColor = ChipCustomColor.None,
 	) : BaseViewState
 
 	sealed interface DSWantedChipDemoSideEffect : BaseSideEffect {
@@ -48,7 +61,8 @@ object DSWantedChipDemoScreenContract {
 		data class OnSelectSize(val size: ChipSize) : DSWantedChipDemoViewEvent
 		data class OnChangeActive(val isActive: Boolean) : DSWantedChipDemoViewEvent
 		data class OnChangeEnable(val isEnable: Boolean) : DSWantedChipDemoViewEvent
-		data class OnChangeLeftIcon(val hasLeftIcon: Boolean) : DSWantedChipDemoViewEvent
-		data class OnChangeRightIcon(val hasRightIcon: Boolean) : DSWantedChipDemoViewEvent
+		data class OnChangeLeadingContent(val hasLeadingContent: Boolean) : DSWantedChipDemoViewEvent
+		data class OnChangeTrailingContent(val hasTrailingContent: Boolean) : DSWantedChipDemoViewEvent
+		data class OnSelectCustomColor(val customColor: ChipCustomColor) : DSWantedChipDemoViewEvent
 	}
 }

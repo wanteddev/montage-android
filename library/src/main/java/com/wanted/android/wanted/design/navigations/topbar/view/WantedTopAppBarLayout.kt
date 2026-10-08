@@ -56,7 +56,7 @@ internal fun WantedTopAppBarLayout(
             title?.let {
                 ProvideTextStyle(
                     value = DesignSystemTheme.typography.headline2Bold.copy(
-                        color = DesignSystemTheme.colors.labelStrong
+                        color = DesignSystemTheme.colors.foregroundNeutralStrong
                     )
                 ) {
                     title()
@@ -83,7 +83,7 @@ private fun WantedTopAppBarLayoutPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DesignSystemTheme.colors.backgroundNormalNormal),
+                .background(DesignSystemTheme.colors.backgroundNeutralPrimary),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 

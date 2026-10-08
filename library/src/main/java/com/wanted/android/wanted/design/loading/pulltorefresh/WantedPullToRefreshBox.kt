@@ -86,7 +86,6 @@ fun WantedPullToRefreshBox(
     var isPullEnd by remember { mutableStateOf(true) }
     val density = LocalDensity.current
 
-    // Alpha 애니메이션
     val alpha by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = 1f,
         targetValue = if (isPullEnd) 0.61f else 1f,
@@ -100,7 +99,6 @@ fun WantedPullToRefreshBox(
         label = ""
     )
 
-    // Refresh 상태 관리
     LaunchedEffect(state.distanceFraction, state.isAnimating) {
         if (state.distanceFraction <= 0f) {
             isPullEnd = false
@@ -124,7 +122,6 @@ fun WantedPullToRefreshBox(
         }
     }
 
-    // PullToRefreshBox 구현
     PullToRefreshBox(
         modifier = modifier,
         isRefreshing = isRefresh,
@@ -226,10 +223,8 @@ private fun ProgressIndicator(
     )
 }
 
-// Constants
 private val SIZE_WIDTH = 50.dp
 private val SIZE_HEIGHT = 40.dp
 private val INDICATOR_PADDING = 5.dp
 
-// Common easing curve
 private val easingCurve = CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f)

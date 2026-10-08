@@ -124,7 +124,6 @@ private class WantedPopoverStateHolderImpl(
         val spaceBelow = effectiveBottomY - (_state.contentPositionYInWindow + _state.contentHeight)
         val spaceAbove = _state.contentPositionYInWindow - effectiveTopY
 
-        // 실제 툴팁 높이가 있으면 사용, 없으면 예상 높이 사용
         val tooltipHeightToCheck = if (_state.tooltipHeight > 0) _state.tooltipHeight else estimatedTooltipHeight.toInt()
         val requiredSpace = tooltipHeightToCheck + SPACING_BETWEEN_POPOVER
 
@@ -133,13 +132,9 @@ private class WantedPopoverStateHolderImpl(
         val newOverlapTop = spaceAbove < requiredSpace && spaceBelow > requiredSpace
 
         val newIsPopupAbove = when {
-            // 1. overlapBottom이 true인 경우: 강제로 위쪽에 배치
             newOverlapBottom -> true
-            // 2. newOverlapTop이 true인 경우: 강제로 아래쪽에 배치
             newOverlapTop -> false
-            // 3. positionTop이 true인 경우: 위쪽 공간이 충분하면 위쪽에 배치
             positionTop -> spaceAbove >= requiredSpace
-            // 4. 기본값: 아래쪽에 배치
             else -> false
         }
 
@@ -152,7 +147,6 @@ private class WantedPopoverStateHolderImpl(
             paddingPx = paddingPx
         )
 
-        // 값이 변경되었을 때만 상태 업데이트
         if (_state.overlapBottom != newOverlapBottom ||
             _state.isPopupAbove != newIsPopupAbove ||
             _state.offsetX != baseOffsetX
@@ -204,7 +198,6 @@ private class WantedPopoverStateHolderImpl(
     }
 }
 
-// 내부용 StateHolder 생성 함수 (internal)
 @Composable
 internal fun rememberWantedPopoverStateHolder(
     initialVisible: Boolean = false

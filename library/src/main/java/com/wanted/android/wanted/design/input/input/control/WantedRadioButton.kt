@@ -58,9 +58,9 @@ internal fun WantedRadioButton(
         else -> 1.5.dp
     }
     val borderColor = if (checked) {
-        DesignSystemTheme.colors.primaryNormal
+        DesignSystemTheme.colors.surfaceBrandPrimary
     } else {
-        DesignSystemTheme.colors.lineNormalNormal
+        DesignSystemTheme.colors.lineNeutralPrimary
     }
     val componentAlpha = when {
         enabled -> OPACITY_100

@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.input.filterbutton.DSWantedFilterButtonDemoScreenContract.DSWantedFilterButtonDemoEvent
 import com.wanted.android.montage.sample.input.filterbutton.DSWantedFilterButtonDemoScreenContract.DSWantedFilterButtonDemoSideEffect
@@ -37,9 +37,8 @@ import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButton
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.FilterButtonSize
 import com.wanted.android.wanted.design.input.filterbutton.WantedFilterButtonContract.FilterButtonVariant
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -86,8 +85,8 @@ fun DSWantedFilterButtonDemoScreen(
                 viewModel.setEvent(DSWantedFilterButtonDemoEvent.SetEnable(viewEvent.isEnable))
             }
 
-            is DSWantedFilterButtonDemoViewEvent.OnChangeExpend -> {
-                viewModel.setEvent(DSWantedFilterButtonDemoEvent.SetExpend(viewEvent.isExpend))
+            is DSWantedFilterButtonDemoViewEvent.OnChangeExpanded -> {
+                viewModel.setEvent(DSWantedFilterButtonDemoEvent.SetExpanded(viewEvent.isExpanded))
             }
 
             is DSWantedFilterButtonDemoViewEvent.OnClickCopyCode -> {
@@ -97,7 +96,7 @@ fun DSWantedFilterButtonDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedFilterButtonDemoEvent.CopyCode)
@@ -130,7 +129,7 @@ private fun DSWantedFilterButtonDemoScreenImpl(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -152,7 +151,7 @@ private fun DSWantedFilterButtonDemoScreenImpl(
                     size = viewState.selectedSize,
                     isActive = viewState.isActive,
                     isEnable = viewState.isEnable,
-                    isExpend = viewState.isExpend,
+                    isExpanded = viewState.isExpanded,
                 )
             },
             variant = {
@@ -199,12 +198,12 @@ private fun DSWantedFilterButtonDemoScreenImpl(
                     }
                 )
             },
-            expend = {
+            expanded = {
                 DSWantedOptionSwitchCell(
-                    text = "isExpend : ${viewState.isExpend}",
-                    checkState = viewState.isExpend,
+                    text = "isExpanded : ${viewState.isExpanded}",
+                    checkState = viewState.isExpanded,
                     onCheckChanged = {
-                        onViewEvent(DSWantedFilterButtonDemoViewEvent.OnChangeExpend(it))
+                        onViewEvent(DSWantedFilterButtonDemoViewEvent.OnChangeExpanded(it))
                     }
                 )
             }
@@ -220,7 +219,7 @@ private fun DSWantedFilterButtonDemoScreenLayout(
     size: @Composable () -> Unit,
     active: @Composable () -> Unit,
     enable: @Composable () -> Unit,
-    expend: @Composable () -> Unit,
+    expanded: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier.padding(horizontal = 20.dp),
@@ -229,12 +228,22 @@ private fun DSWantedFilterButtonDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(com.wanted.android.montage.sample.R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -251,7 +260,7 @@ private fun DSWantedFilterButtonDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
@@ -264,7 +273,7 @@ private fun DSWantedFilterButtonDemoScreenLayout(
 
             enable()
 
-            expend()
+            expanded()
         }
     }
 }

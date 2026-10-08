@@ -79,13 +79,13 @@ private fun WantedCommonIconPreview() {
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_exclamation_fill,
-                    tint = DesignSystemTheme.colors.statusNegative
+                    tint = DesignSystemTheme.colors.foregroundNegativePrimary
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_check_fill,
-                    tint = DesignSystemTheme.colors.primaryNormal
+                    tint = DesignSystemTheme.colors.foregroundBrandPrimary
                 )
 
                 WantedToastIcon(
@@ -94,19 +94,19 @@ private fun WantedCommonIconPreview() {
                         .clip(CircleShape)
                         .clickOnce { },
                     resourceId = R.drawable.icon_normal_circle_close_fill,
-                    tint = DesignSystemTheme.colors.labelAlternative
+                    tint = DesignSystemTheme.colors.foregroundNeutralTertiary
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_exclamation_fill,
-                    tint = DesignSystemTheme.colors.statusCautionary
+                    tint = DesignSystemTheme.colors.foregroundCautionaryPrimary
                 )
 
                 WantedToastIcon(
                     modifier = Modifier.size(22.dp),
                     resourceId = R.drawable.icon_normal_circle_check_fill,
-                    tint = DesignSystemTheme.colors.statusPositive
+                    tint = DesignSystemTheme.colors.foregroundPositivePrimary
                 )
             }
         }

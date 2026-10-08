@@ -63,15 +63,15 @@ internal fun WantedCheckMark(
                 colorFilter = ColorFilter.tint(
                     color = if (checked) {
                         if (enabled) {
-                            DesignSystemTheme.colors.primaryNormal
+                            DesignSystemTheme.colors.foregroundBrandPrimary
                         } else {
-                            DesignSystemTheme.colors.primaryNormal.copy(OPACITY_43)
+                            DesignSystemTheme.colors.foregroundBrandPrimary.copy(OPACITY_43)
                         }
                     } else {
                         if (enabled) {
-                            DesignSystemTheme.colors.labelAssistive
+                            DesignSystemTheme.colors.foregroundNeutralQuaternary
                         } else {
-                            DesignSystemTheme.colors.labelAssistive.copy(0.13f)
+                            DesignSystemTheme.colors.foregroundNeutralQuaternary.copy(0.13f)
                         }
                     }
                 )

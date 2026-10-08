@@ -66,12 +66,12 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import com.wanted.android.designsystem.R
-import com.wanted.android.wanted.design.actions.button.WantedButton
-import com.wanted.android.wanted.design.actions.button.config.WantedButtonDefaults
+import com.wanted.android.wanted.design.actions.button.textbutton.WantedTextButton
+import com.wanted.android.wanted.design.actions.button.textbutton.WantedTextButtonColor
+import com.wanted.android.wanted.design.actions.button.textbutton.WantedTextButtonDefaults
+import com.wanted.android.wanted.design.actions.button.textbutton.WantedTextButtonSize
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonSize
-import com.wanted.android.wanted.design.util.ButtonType
-import com.wanted.android.wanted.design.util.ButtonVariant
+import com.wanted.android.wanted.design.util.OPACITY_12
 import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.OPACITY_61
 import com.wanted.android.wanted.design.util.OPACITY_88
@@ -112,6 +112,7 @@ import kotlinx.coroutines.launch
  * @param align WantedTooltipAlign: 앵커 요소에 대한 Tooltip 의 정렬 방식입니다.
  * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
  * @param positionTop Boolean: Tooltip 을 위쪽에 표시할지 여부입니다.
+ * @param screenEdgePadding Dp: Tooltip 이 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며, 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
  * @param content (@Composable () -> Unit): Tooltip 을 트리거하는 앵커 콘텐츠 슬롯입니다.
  */
 @Composable
@@ -123,6 +124,7 @@ fun WantedTooltip(
     align: WantedTooltipAlign = WantedTooltipAlign.Left,
     always: Boolean = false,
     positionTop: Boolean = false,
+    screenEdgePadding: Dp = 2.dp,
     content: @Composable () -> Unit
 ) {
     val isVisible by tooltipState.visibleState
@@ -138,9 +140,9 @@ fun WantedTooltip(
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
 
-    val backgroundColor = DesignSystemTheme.colors.backgroundNormalNormal
-    val color = DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88)
-    val color1 = DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5)
+    val backgroundColor = DesignSystemTheme.colors.backgroundNeutralPrimary
+    val color = DesignSystemTheme.colors.surfaceNeutralInverse.copy(OPACITY_88)
+    val color1 = DesignSystemTheme.colors.surfaceBrandPrimary.copy(OPACITY_5)
 
     var contentPositionY by remember { mutableFloatStateOf(0f) }
     var contentPositionX by remember { mutableFloatStateOf(0f) }
@@ -195,7 +197,7 @@ fun WantedTooltip(
                 contentWidth = contentWidth,
                 tooltipWidth = tooltipWidth,
                 screenWidthPx = with(density) { screenWidth.dp.toPx() }.toInt(),
-                paddingPx = with(density) { 2.dp.toPx() }.toInt()
+                paddingPx = with(density) { screenEdgePadding.toPx() }.toInt()
             )
 
             Popup(
@@ -225,6 +227,7 @@ fun WantedTooltip(
                             tooltipWidth = coordinates.size.width
                             tooltipHeight = coordinates.size.height
 
+                            val halfCaretWidthPx = density.halfCaretWidthPx(size = size)
                             caretPositionX = calculateCaretPositionX(
                                 align = align,
                                 contentWidth = contentWidth,
@@ -233,6 +236,9 @@ fun WantedTooltip(
                                     if (size == WantedTooltipSize.Small) 1.dp.toPx() else 6.dp.toPx()
                                 },
                                 caretWidthPx = with(density) { 12.dp.toPx() }
+                            ).coerceIn(
+                                minimumValue = halfCaretWidthPx,
+                                maximumValue = tooltipWidth - halfCaretWidthPx
                             )
                         }
                         .drawWithCache {
@@ -321,7 +327,6 @@ private fun CacheDrawScope.drawCaret(
 
         // 화살표 모양으로 마스킹
         if (isPopupAbove) {
-            // isPopupAbove가 true일 때 180도 회전
             val center = drawOffset + Offset(rectSize.width / 2, rectSize.height / 2)
             withTransform({
                 rotate(180f, center)
@@ -354,6 +359,14 @@ private fun calculateTooltipOffsetX(
 ): Int {
     if (tooltipWidth == 0) return 0
 
+    // 좌·우 여백을 모두 주면 툴팁이 화면을 벗어나는 좁은 화면에서는 남는 공간만큼만 여백을 준다.
+    // 여백을 그대로 고집하면 툴팁이 화면 밖으로 밀려 잘린다.
+    // 음수 여백은 경계 판정을 반대로 뒤집어 툴팁을 화면 밖으로 내보내므로 0 아래로 내려가지 않게 한다.
+    val edgePaddingPx = paddingPx.coerceIn(
+        minimumValue = 0,
+        maximumValue = ((screenWidthPx - tooltipWidth) / 2).coerceAtLeast(0)
+    )
+
     val idealOffsetX = when (align) {
         WantedTooltipAlign.Left -> {
             0
@@ -372,12 +385,12 @@ private fun calculateTooltipOffsetX(
     val tooltipAbsoluteRight = tooltipAbsoluteLeft + tooltipWidth
 
     val adjustedOffsetX = when {
-        tooltipAbsoluteLeft < paddingPx -> {
-            (paddingPx - contentPositionX).toInt()
+        tooltipAbsoluteLeft < edgePaddingPx -> {
+            (edgePaddingPx - contentPositionX).toInt()
         }
 
-        tooltipAbsoluteRight > screenWidthPx - paddingPx -> {
-            (screenWidthPx - paddingPx - tooltipWidth - contentPositionX).toInt()
+        tooltipAbsoluteRight > screenWidthPx - edgePaddingPx -> {
+            (screenWidthPx - edgePaddingPx - tooltipWidth - contentPositionX).toInt()
         }
 
         else -> {
@@ -405,7 +418,6 @@ private fun calculateCaretPositionX(
         }
 
         WantedTooltipAlign.Center -> {
-            // 중앙 정렬: content의 정중앙
             center
         }
 
@@ -433,9 +445,9 @@ private fun WantedTooltipLayout(
             )
             .padding(vertical = spacingBetweenTooltipAndAnchor)
             .clip(RoundedCornerShape(if (size == WantedTooltipSize.Small) 6.dp else 8.dp))
-            .background(DesignSystemTheme.colors.backgroundNormalNormal)
-            .background(DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88))
-            .background(DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5))
+            .background(DesignSystemTheme.colors.backgroundNeutralPrimary)
+            .background(DesignSystemTheme.colors.surfaceNeutralInverse.copy(OPACITY_88))
+            .background(DesignSystemTheme.colors.surfaceBrandPrimary.copy(OPACITY_5))
             .padding(
                 horizontal = if (size == WantedTooltipSize.Small) 8.dp else 10.dp,
                 vertical = if (size == WantedTooltipSize.Small) 5.dp else 10.dp
@@ -448,7 +460,7 @@ private fun WantedTooltipLayout(
             } else {
                 DesignSystemTheme.typography.label1Medium
             }.copy(
-                DesignSystemTheme.colors.inverseLabel
+                DesignSystemTheme.colors.foregroundNeutralInverse
             )
         ) {
             text()
@@ -493,9 +505,9 @@ fun WantedTooltip(
     val scope = rememberCoroutineScope()
     var anchorLayoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
-    val backgroundColor = DesignSystemTheme.colors.backgroundNormalNormal
-    val color = DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88)
-    val color1 = DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5)
+    val backgroundColor = DesignSystemTheme.colors.backgroundNeutralPrimary
+    val color = DesignSystemTheme.colors.surfaceNeutralInverse.copy(OPACITY_88)
+    val color1 = DesignSystemTheme.colors.surfaceBrandPrimary.copy(OPACITY_5)
 
     TooltipBox(
         modifier = modifier,
@@ -540,7 +552,7 @@ fun WantedTooltip(
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
                         style = DesignSystemTheme.typography.label1Medium,
-                        color = DesignSystemTheme.colors.inverseLabel
+                        color = DesignSystemTheme.colors.foregroundNeutralInverse
                     )
 
                 },
@@ -557,22 +569,24 @@ fun WantedTooltip(
                                 }
                                 .padding(2.dp),
                             painter = painterResource(id = R.drawable.icon_normal_close),
-                            tint = DesignSystemTheme.colors.inverseLabel.copy(alpha = OPACITY_61),
+                            tint = DesignSystemTheme.colors.foregroundNeutralInverse.copy(alpha = OPACITY_61),
                             contentDescription = ""
                         )
                     }
                 } else null,
                 action = action?.let {
                     {
-                        WantedButton(
+                        val actionContentColor =
+                            DesignSystemTheme.colors.foregroundNeutralInverse.copy(alpha = OPACITY_61)
+                        WantedTextButton(
                             modifier = Modifier,
                             text = it,
-                            buttonDefault = WantedButtonDefaults.getDefault(
-                                variant = ButtonVariant.TEXT,
-                                type = ButtonType.ASSISTIVE,
-                                size = ButtonSize.SMALL,
-                            ).copy(
-                                contentColor = DesignSystemTheme.colors.inverseLabel.copy(alpha = OPACITY_61)
+                            buttonDefault = WantedTextButtonDefaults.getDefault(
+                                color = WantedTextButtonColor.ASSISTIVE,
+                                size = WantedTextButtonSize.SMALL,
+                                contentColor = actionContentColor,
+                                // 리플은 색 축이 아니라 덮어쓴 contentColor를 따른다.
+                                rippleColor = actionContentColor.copy(alpha = OPACITY_12)
                             ),
                             onClick = {
                                 onClickAction?.invoke()
@@ -610,9 +624,9 @@ private fun WantedTooltipContentsLayout(
     onClose: @Composable (() -> Unit)?,
     action: @Composable (() -> Unit)?
 ) {
-    val backgroundColor = DesignSystemTheme.colors.backgroundNormalNormal
-    val color = DesignSystemTheme.colors.inverseBackground.copy(OPACITY_88)
-    val color1 = DesignSystemTheme.colors.primaryNormal.copy(OPACITY_5)
+    val backgroundColor = DesignSystemTheme.colors.backgroundNeutralPrimary
+    val color = DesignSystemTheme.colors.surfaceNeutralInverse.copy(OPACITY_88)
+    val color1 = DesignSystemTheme.colors.surfaceBrandPrimary.copy(OPACITY_5)
 
     Column(
         modifier = modifier
@@ -837,6 +851,13 @@ fun rememberTooltipState(initialVisible: Boolean = false): WantedTooltipState =
     remember { WantedTooltipStateImpl(initialVisible) }
 
 
+// 화살표를 툴팁 본체 안에 가둘 때 쓰는 여유값. [drawCaret] 이 실제로 그리는 화살표 폭의 절반이다.
+//
+// 화면 경계 보정으로 툴팁이 앵커에서 멀리 밀리면 화살표가 가리켜야 할 지점이 본체 밖(음수)까지
+// 내려가, 화살표만 본체와 끊겨 보인다. 앵커가 화면 가장자리에서 여백보다 안쪽에 있을 때 발생한다.
+private fun Density.halfCaretWidthPx(size: WantedTooltipSize): Float =
+    if (size == WantedTooltipSize.Small) 7.dp.toPx() else 10.dp.toPx()
+
 private const val SpacingBetweenTooltipAndAnchor = 8
 private const val SpacingBetweenTooltipAndAnchorNotArrow = 2
 
@@ -866,9 +887,7 @@ enum class WantedTooltipAlign {
     Right
 }
 
-/**
- * Modifier extension for drawing caret (arrow) on tooltip
- */
+// Modifier extension for drawing caret (arrow) on tooltip
 private fun Modifier.drawCaret(
     anchorLayoutCoordinates: LayoutCoordinates?,
     onDraw: CacheDrawScope.() -> DrawResult

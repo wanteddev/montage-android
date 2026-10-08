@@ -20,7 +20,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.navigations.progresstracker.DSWantedProgressTrackerDemoScreenContract.DSWantedProgressTrackerDemoEvent
 import com.wanted.android.montage.sample.navigations.progresstracker.DSWantedProgressTrackerDemoScreenContract.DSWantedProgressTrackerDemoSideEffect
 import com.wanted.android.montage.sample.navigations.progresstracker.DSWantedProgressTrackerDemoScreenContract.DSWantedProgressTrackerDemoViewEvent
@@ -35,7 +35,7 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.navigations.progresstracker.WantedProgressTrackerHorizontal
 import com.wanted.android.wanted.design.navigations.progresstracker.WantedProgressTrackerVertical
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -85,7 +85,7 @@ fun DSWantedProgressTrackerDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedProgressTrackerDemoEvent.CopyCode)
@@ -121,7 +121,7 @@ private fun DSWantedProgressTrackerDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -130,7 +130,7 @@ private fun DSWantedProgressTrackerDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -260,7 +260,7 @@ private fun DSWantedProgressTrackerDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -273,7 +273,7 @@ private fun DSWantedProgressTrackerDemoScreenLayout(
         Text(
             text = "Option",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )

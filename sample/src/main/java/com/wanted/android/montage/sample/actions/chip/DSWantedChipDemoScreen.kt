@@ -25,8 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
+import com.wanted.android.montage.sample.R
+import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.ChipCustomColor
 import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.DSWantedChipDemoEvent
 import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.DSWantedChipDemoSideEffect
 import com.wanted.android.montage.sample.actions.chip.DSWantedChipDemoScreenContract.DSWantedChipDemoViewEvent
@@ -36,11 +37,13 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedChip
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
+import com.wanted.android.wanted.design.actions.chip.WantedChipDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
+import com.wanted.android.wanted.design.util.OPACITY_28
+import com.wanted.android.wanted.design.util.OPACITY_5
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 @Composable
@@ -81,11 +84,14 @@ fun DSWantedChipDemoScreen(
 			is DSWantedChipDemoViewEvent.OnChangeEnable -> {
 				viewModel.setEvent(DSWantedChipDemoEvent.SetEnable(viewEvent.isEnable))
 			}
-			is DSWantedChipDemoViewEvent.OnChangeLeftIcon -> {
-				viewModel.setEvent(DSWantedChipDemoEvent.SetLeftIcon(viewEvent.hasLeftIcon))
+			is DSWantedChipDemoViewEvent.OnChangeLeadingContent -> {
+				viewModel.setEvent(DSWantedChipDemoEvent.SetLeadingContent(viewEvent.hasLeadingContent))
 			}
-			is DSWantedChipDemoViewEvent.OnChangeRightIcon -> {
-				viewModel.setEvent(DSWantedChipDemoEvent.SetRightIcon(viewEvent.hasRightIcon))
+			is DSWantedChipDemoViewEvent.OnChangeTrailingContent -> {
+				viewModel.setEvent(DSWantedChipDemoEvent.SetTrailingContent(viewEvent.hasTrailingContent))
+			}
+			is DSWantedChipDemoViewEvent.OnSelectCustomColor -> {
+				viewModel.setEvent(DSWantedChipDemoEvent.SetCustomColor(viewEvent.customColor))
 			}
 			is DSWantedChipDemoViewEvent.OnClickCopyCode -> {
 				viewModel.setEvent(DSWantedChipDemoEvent.CopyCode)
@@ -94,7 +100,7 @@ fun DSWantedChipDemoScreen(
 	}
 
 	if (viewState.isShowCode) {
-		WantedModal(
+		WantedPopup(
 			positive = "코드 복사",
 			onClickPositive = {
 				viewModel.setEvent(DSWantedChipDemoEvent.CopyCode)
@@ -127,7 +133,7 @@ private fun DSWantedChipDemoScreenImpl(
 			WantedActionArea(
 				modifier = Modifier.navigationBarsPadding(),
 				background = true,
-				positive = {
+				main = {
 					WantedButton(
 						modifier = Modifier.fillMaxWidth(),
 						text = "코드 보기",
@@ -142,22 +148,50 @@ private fun DSWantedChipDemoScreenImpl(
 		DSWantedChipDemoScreenLayout(
 			modifier = Modifier.padding(innerPadding),
 			preview = {
-				WantedChip(
-					text = "텍스트",
-					variant = viewState.selectedVariant,
-					size = viewState.selectedSize,
-					isActive = viewState.isActive,
-					isEnable = viewState.isEnable,
-					leftIcon = if (viewState.hasLeftIcon) {
-						R.drawable.icon_normal_bookmark
-					} else null,
-					rightIcon = if (viewState.hasRightIcon) {
-						R.drawable.icon_normal_bookmark
-					} else null,
-					onClick = {
-						onViewEvent(DSWantedChipDemoViewEvent.OnClickCopyCode)
-					}
-				)
+				val leadingContent = if (viewState.hasLeadingContent) R.drawable.icon_normal_bookmark else null
+				val trailingContent = if (viewState.hasTrailingContent) R.drawable.icon_normal_bookmark else null
+				val customColor = when (viewState.selectedCustomColor) {
+					ChipCustomColor.None -> null
+					ChipCustomColor.Primary -> DesignSystemTheme.colors.surfaceBrandPrimary
+					ChipCustomColor.Negative -> DesignSystemTheme.colors.foregroundNegativePrimary
+					ChipCustomColor.Positive -> DesignSystemTheme.colors.foregroundPositivePrimary
+				}
+
+				if (customColor == null) {
+					WantedChip(
+						text = "텍스트",
+						variant = viewState.selectedVariant,
+						size = viewState.selectedSize,
+						isActive = viewState.isActive,
+						isEnable = viewState.isEnable,
+						leadingContent = leadingContent,
+						trailingContent = trailingContent,
+						onClick = {
+							onViewEvent(DSWantedChipDemoViewEvent.OnClickCopyCode)
+						}
+					)
+				} else {
+					WantedChip(
+						text = "텍스트",
+						leadingContent = leadingContent,
+						trailingContent = trailingContent,
+						chipDefault = WantedChipDefaults.getDefault(
+							variant = viewState.selectedVariant,
+							size = viewState.selectedSize,
+							isActive = viewState.isActive,
+							isEnable = viewState.isEnable,
+							backgroundColor = customColor.copy(alpha = OPACITY_5),
+							borderColor = if (viewState.selectedVariant == ChipVariant.Outlined) {
+								customColor.copy(alpha = OPACITY_28)
+							} else {
+								DesignSystemTheme.colors.transparent
+							}
+						),
+						onClick = {
+							onViewEvent(DSWantedChipDemoViewEvent.OnClickCopyCode)
+						}
+					)
+				}
 			},
 			variant = {
 				WantedSelect(
@@ -201,22 +235,34 @@ private fun DSWantedChipDemoScreenImpl(
 					}
 				)
 			},
-			leftIcon = {
+			leadingContent = {
 				DSWantedOptionSwitchCell(
-					text = "leftIcon : ${if (viewState.hasLeftIcon) "icon" else null}",
-					checkState = viewState.hasLeftIcon,
+					text = "leadingContent : ${if (viewState.hasLeadingContent) "icon" else null}",
+					checkState = viewState.hasLeadingContent,
 					onCheckChanged = {
-						onViewEvent(DSWantedChipDemoViewEvent.OnChangeLeftIcon(it))
+						onViewEvent(DSWantedChipDemoViewEvent.OnChangeLeadingContent(it))
 					}
 				)
 			},
-			rightIcon = {
+			trailingContent = {
 				DSWantedOptionSwitchCell(
-					text = "rightIcon : ${if (viewState.hasRightIcon) "icon" else null}",
-					checkState = viewState.hasRightIcon,
+					text = "trailingContent : ${if (viewState.hasTrailingContent) "icon" else null}",
+					checkState = viewState.hasTrailingContent,
 					onCheckChanged = {
-						onViewEvent(DSWantedChipDemoViewEvent.OnChangeRightIcon(it))
+						onViewEvent(DSWantedChipDemoViewEvent.OnChangeTrailingContent(it))
 					}
+				)
+			},
+			customColor = {
+				WantedSelect(
+					value = "CustomColor : ${viewState.selectedCustomColor.name}",
+					selectedValue = viewState.selectedCustomColor.name,
+					selectValueList = viewState.customColorList.map { it.name },
+					onSelect = {
+						onViewEvent(
+							DSWantedChipDemoViewEvent.OnSelectCustomColor(ChipCustomColor.valueOf(it))
+						)
+					},
 				)
 			}
 		)
@@ -231,8 +277,9 @@ private fun DSWantedChipDemoScreenLayout(
 	size: @Composable () -> Unit,
 	isActive: @Composable () -> Unit,
 	isEnable: @Composable () -> Unit,
-	leftIcon: @Composable () -> Unit,
-	rightIcon: @Composable () -> Unit
+	leadingContent: @Composable () -> Unit,
+	trailingContent: @Composable () -> Unit,
+	customColor: @Composable () -> Unit
 ) {
 	Column(
 		modifier = modifier.padding(horizontal = 20.dp),
@@ -241,13 +288,23 @@ private fun DSWantedChipDemoScreenLayout(
 		Text(
 			text = "Preview",
 			style = WantedTextStyle(
-				colorRes = R.color.label_strong,
+				colorRes = R.color.foreground_neutral_strong,
 				style = DesignSystemTheme.typography.heading2Bold
 			)
 		)
 
-		DSWantedPreviewContainer {
-		    preview()
+		Box(
+			modifier = Modifier
+				.fillMaxWidth()
+				.border(
+					width = 1.dp,
+					color = colorResource(com.wanted.android.montage.sample.R.color.line_neutral_primary),
+					shape = RoundedCornerShape(8.dp)
+				)
+				.padding(20.dp),
+			contentAlignment = Alignment.Center
+		) {
+			preview()
 		}
 
 		Spacer(Modifier.size(10.dp))
@@ -264,7 +321,7 @@ private fun DSWantedChipDemoScreenLayout(
 				modifier = Modifier.align(Alignment.Start),
 				text = "Option",
 				style = WantedTextStyle(
-					colorRes = R.color.label_strong,
+					colorRes = R.color.foreground_neutral_strong,
 					style = DesignSystemTheme.typography.heading2Bold
 				)
 			)
@@ -277,9 +334,11 @@ private fun DSWantedChipDemoScreenLayout(
 
 			isEnable()
 
-			leftIcon()
+			leadingContent()
 
-			rightIcon()
+			trailingContent()
+
+			customColor()
 		}
 	}
 }

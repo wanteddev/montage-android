@@ -1,16 +1,17 @@
 package com.wanted.android.montage.sample.feedback.fallback
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,24 +25,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
-import com.wanted.android.montage.sample.util.isNullOrBlock
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoEvent
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoSideEffect
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoViewEvent
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoViewState
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.fallback.WantedFallbackButtonVariant
+import com.wanted.android.wanted.design.feedback.fallback.WantedFallbackPadding
 import com.wanted.android.wanted.design.feedback.fallback.WantedFallbackView
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
-import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
 
@@ -49,7 +48,8 @@ import com.wanted.android.wanted.design.util.WantedTextStyle
 fun DSWantedFallbackViewDemoScreen(
     modifier: Modifier = Modifier,
     viewModel: DSWantedFallbackViewDemoViewModel = hiltViewModel(),
-    onClickBack: () -> Unit
+    onClickBack: () -> Unit,
+    onClickFallbackMain: (DSWantedFallbackViewDemoViewState) -> Unit
 ) {
     val clipboardManager = LocalClipboardManager.current
     val viewState = viewModel.viewState.collectAsStateWithLifecycle().value
@@ -68,9 +68,19 @@ fun DSWantedFallbackViewDemoScreen(
     ) { viewEvent ->
         when (viewEvent) {
             DSWantedFallbackViewDemoViewEvent.OnClickBack -> onClickBack()
+            DSWantedFallbackViewDemoViewEvent.OnClickFallbackMain -> {
+                onClickFallbackMain(viewState)
+            }
+
             is DSWantedFallbackViewDemoViewEvent.OnChangeButtonVariant -> {
                 viewModel.setEvent(
                     DSWantedFallbackViewDemoEvent.OnChangeButtonVariant(viewEvent.buttonVariant)
+                )
+            }
+
+            is DSWantedFallbackViewDemoViewEvent.OnChangePadding -> {
+                viewModel.setEvent(
+                    DSWantedFallbackViewDemoEvent.OnChangePadding(viewEvent.padding)
                 )
             }
 
@@ -86,33 +96,15 @@ fun DSWantedFallbackViewDemoScreen(
                 )
             }
 
-            is DSWantedFallbackViewDemoViewEvent.OnChangeImage -> {
+            is DSWantedFallbackViewDemoViewEvent.OnChangeAlternative -> {
                 viewModel.setEvent(
-                    DSWantedFallbackViewDemoEvent.OnChangeImage(viewEvent.image)
+                    DSWantedFallbackViewDemoEvent.OnChangeAlternative(viewEvent.alternative)
                 )
             }
 
-            is DSWantedFallbackViewDemoViewEvent.OnChangeNegative -> {
+            is DSWantedFallbackViewDemoViewEvent.OnChangeMain -> {
                 viewModel.setEvent(
-                    DSWantedFallbackViewDemoEvent.OnChangeNegative(viewEvent.negative)
-                )
-            }
-
-            is DSWantedFallbackViewDemoViewEvent.OnChangeNegativeColor -> {
-                viewModel.setEvent(
-                    DSWantedFallbackViewDemoEvent.OnChangeNegativeColor(viewEvent.negativeColor)
-                )
-            }
-
-            is DSWantedFallbackViewDemoViewEvent.OnChangePositive -> {
-                viewModel.setEvent(
-                    DSWantedFallbackViewDemoEvent.OnChangePositive(viewEvent.positive)
-                )
-            }
-
-            is DSWantedFallbackViewDemoViewEvent.OnChangePositiveColor -> {
-                viewModel.setEvent(
-                    DSWantedFallbackViewDemoEvent.OnChangePositiveColor(viewEvent.positiveColor)
+                    DSWantedFallbackViewDemoEvent.OnChangeMain(viewEvent.main)
                 )
             }
 
@@ -127,7 +119,7 @@ fun DSWantedFallbackViewDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedFallbackViewDemoEvent.CopyCode)
@@ -164,7 +156,7 @@ private fun DSWantedFallbackViewDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -180,49 +172,43 @@ private fun DSWantedFallbackViewDemoScreenContent(
         DSWantedFallbackViewDemoScreenLayout(
             modifier = Modifier.padding(innerPadding),
             preview = {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    WantedFallbackView(
-                        heading = if (viewState.heading) {
-                            "헤더입니다."
-                        } else {
-                            null
-                        },
-                        description = if (viewState.description) {
-                            "마침표를 찍어주세요."
-                        } else {
-                            null
-                        },
-                        image = viewState.image.isNullOrBlock {
-                            Box(modifier = Modifier
-                                .fillMaxSize()
-                                .background(colorResource(R.color.label_disable)))
-                        },
-                        buttonVariant = viewState.buttonVariant,
-                        positive = if (viewState.positive) {
-                            "행동"
-                        } else {
-                            null
-                        },
-                        positiveColor = viewState.positiveColor,
-                        negative = if (viewState.negative) {
-                            "보조행동"
-                        } else {
-                            null
-                        },
-                        negativeColor = viewState.negativeColor
-                    )
-
-                    WantedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "코드 복사",
-                        onClick = {
-                            onViewEvent(DSWantedFallbackViewDemoViewEvent.OnClickCopyCode)
-                        }
-                    )
-                }
+                WantedFallbackView(
+                    padding = viewState.padding,
+                    heading = if (viewState.heading) {
+                        "헤더입니다."
+                    } else {
+                        null
+                    },
+                    description = if (viewState.description) {
+                        "마침표를 찍어주세요."
+                    } else {
+                        null
+                    },
+                    buttonVariant = viewState.buttonVariant,
+                    // 데모에서는 이 버튼이 전체 화면 미리보기로 이동하므로 동작에 맞춰 문구를 바꾼다.
+                    main = if (viewState.main) {
+                        "미리보기"
+                    } else {
+                        null
+                    },
+                    alternative = if (viewState.alternative) {
+                        "보조행동"
+                    } else {
+                        null
+                    },
+                    onClickMain = {
+                        onViewEvent(DSWantedFallbackViewDemoViewEvent.OnClickFallbackMain)
+                    }
+                )
+            },
+            copyCode = {
+                WantedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "코드 복사",
+                    onClick = {
+                        onViewEvent(DSWantedFallbackViewDemoViewEvent.OnClickCopyCode)
+                    }
+                )
             },
             heading = {
                 DSWantedOptionSwitchCell(
@@ -230,15 +216,6 @@ private fun DSWantedFallbackViewDemoScreenContent(
                     checkState = viewState.heading,
                     onCheckChanged = {
                         onViewEvent(DSWantedFallbackViewDemoViewEvent.OnChangeHeading(it))
-                    }
-                )
-            },
-            image = {
-                DSWantedOptionSwitchCell(
-                    text = "image : ${viewState.image}",
-                    checkState = viewState.image,
-                    onCheckChanged = {
-                        onViewEvent(DSWantedFallbackViewDemoViewEvent.OnChangeImage(it))
                     }
                 )
             },
@@ -265,52 +242,38 @@ private fun DSWantedFallbackViewDemoScreenContent(
                     }
                 )
             },
-            positive = {
-                DSWantedOptionSwitchCell(
-                    text = "positive : ${viewState.positive}",
-                    checkState = viewState.positive,
-                    onCheckChanged = {
-                        onViewEvent(DSWantedFallbackViewDemoViewEvent.OnChangePositive(it))
-                    }
-                )
-            },
-            positiveColor = {
+            padding = {
                 WantedSelect(
-                    value = "positiveColor : ${viewState.positiveColor.name}",
-                    selectedValue = viewState.positiveColor.name,
-                    selectValueList = ButtonType.entries.map { it.name },
-                    onSelect = { color ->
+                    value = "padding : ${viewState.padding.name}",
+                    selectedValue = viewState.padding.name,
+                    selectValueList = WantedFallbackPadding.entries.map { it.name },
+                    onSelect = {
                         onViewEvent(
-                            DSWantedFallbackViewDemoViewEvent.OnChangePositiveColor(
-                                ButtonType.entries.find { it.name == color } ?: ButtonType.ASSISTIVE
+                            DSWantedFallbackViewDemoViewEvent.OnChangePadding(
+                                WantedFallbackPadding.valueOf(it)
                             )
                         )
                     }
                 )
             },
-            negative = {
+            main = {
                 DSWantedOptionSwitchCell(
-                    text = "negative : ${viewState.negative}",
-                    checkState = viewState.negative,
+                    text = "main : ${viewState.main}",
+                    checkState = viewState.main,
                     onCheckChanged = {
-                        onViewEvent(DSWantedFallbackViewDemoViewEvent.OnChangeNegative(it))
+                        onViewEvent(DSWantedFallbackViewDemoViewEvent.OnChangeMain(it))
+                    }
+                )
+            },
+            alternative = {
+                DSWantedOptionSwitchCell(
+                    text = "alternative : ${viewState.alternative}",
+                    checkState = viewState.alternative,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedFallbackViewDemoViewEvent.OnChangeAlternative(it))
                     }
                 )
 
-            },
-            negativeColor = {
-                WantedSelect(
-                    value = "negativeColor : ${viewState.negativeColor.name}",
-                    selectedValue = viewState.negativeColor.name,
-                    selectValueList = ButtonType.entries.map { it.name },
-                    onSelect = { color ->
-                        onViewEvent(
-                            DSWantedFallbackViewDemoViewEvent.OnChangeNegativeColor(
-                                ButtonType.entries.find { it.name == color } ?: ButtonType.ASSISTIVE
-                            )
-                        )
-                    }
-                )
             }
         )
     }
@@ -321,14 +284,13 @@ private fun DSWantedFallbackViewDemoScreenContent(
 private fun DSWantedFallbackViewDemoScreenLayout(
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
+    copyCode: @Composable () -> Unit,
     heading: @Composable () -> Unit,
-    image: @Composable () -> Unit,
     description: @Composable () -> Unit,
     buttonVariant: @Composable () -> Unit,
-    positive: @Composable () -> Unit,
-    positiveColor: @Composable () -> Unit,
-    negative: @Composable () -> Unit,
-    negativeColor: @Composable () -> Unit
+    padding: @Composable () -> Unit,
+    main: @Composable () -> Unit,
+    alternative: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier.padding(horizontal = 20.dp),
@@ -337,14 +299,30 @@ private fun DSWantedFallbackViewDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        // padding 옵션(Normal 160dp)까지 그대로 그리면 화면 대부분을 차지해 옵션이 가려진다.
+        // 박스 높이를 제한하고 안에서 스크롤해 확인한다 — 실제 여백 비율은 전체 화면 미리보기에서 본다.
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = PREVIEW_MAX_HEIGHT)
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .verticalScroll(rememberScrollState())
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
+
+        copyCode()
 
         Spacer(Modifier.size(10.dp))
 
@@ -360,23 +338,23 @@ private fun DSWantedFallbackViewDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
 
             heading()
             description()
-            image()
             buttonVariant()
-            positive()
-            positiveColor()
-            negative()
-            negativeColor()
+            padding()
+            main()
+            alternative()
         }
     }
 }
 
+
+private val PREVIEW_MAX_HEIGHT = 320.dp
 
 @DevicePreviews
 @Composable

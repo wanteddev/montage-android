@@ -22,7 +22,7 @@ internal fun DSWantedOptionSwitchCell(
         modifier = modifier.fillMaxWidth(),
         text = text,
         verticalPadding = WantedListCellDefaults.VerticalPadding.Small,
-        fillWidth = true,
+        variant = WantedListCellDefaults.Variant.Full,
         ellipsis = true,
         trailingContent = {
             WantedInput(

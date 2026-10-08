@@ -44,8 +44,8 @@ fun WantedLinearProgressIndicator(
         modifier = modifier
             .fillMaxWidth()
             .height(2.dp),
-        color = DesignSystemTheme.colors.primaryNormal,
-        trackColor = DesignSystemTheme.colors.fillNormal,
+        color = DesignSystemTheme.colors.foregroundBrandPrimary,
+        trackColor = DesignSystemTheme.colors.surfaceNeutralSecondary,
         progress = { currentProgress }
     )
 }

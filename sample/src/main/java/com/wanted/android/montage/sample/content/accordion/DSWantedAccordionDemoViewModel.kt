@@ -25,8 +25,8 @@ class DSWantedAccordionDemoViewModel @Inject constructor(
 			is DSWantedAccordionDemoEvent.SetDescription -> {
 				setState { copy(description = event.isChecked) }
 			}
-			is DSWantedAccordionDemoEvent.SetFillWidth -> {
-				setState { copy(fillWidth = event.isChecked) }
+			is DSWantedAccordionDemoEvent.SetVariant -> {
+				setState { copy(selectedVariant = event.variant) }
 			}
 			is DSWantedAccordionDemoEvent.SetDivider -> {
 				setState { copy(divider = event.isChecked) }
@@ -62,7 +62,7 @@ class DSWantedAccordionDemoViewModel @Inject constructor(
 			WantedAccordion(
 				title = "제목",
 				isExpanded = ${state.isExpanded},
-				fillWidth = ${state.fillWidth},
+				variant = WantedListCellDefaults.Variant.${state.selectedVariant.name},
 				divider = ${state.divider},
 				verticalPadding = VerticalPadding.${state.verticalPadding.name},${if (state.description) """
 				description = "제목에 대한 상세 내용을 입력해주세요.",""" else ""}${if (state.leadingIcon) """

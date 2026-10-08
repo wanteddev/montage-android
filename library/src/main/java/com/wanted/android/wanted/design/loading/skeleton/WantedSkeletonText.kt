@@ -78,7 +78,7 @@ fun WantedSkeletonText(
     modifier: Modifier = Modifier,
     align: WantedSkeAlign = WantedSkeAlign.Left,
     shape: RoundedCornerShape = RoundedCornerShape(3.dp),
-    color: Color = DesignSystemTheme.colors.fillNormal
+    color: Color = DesignSystemTheme.colors.surfaceNeutralSecondary
 ) {
     ConstraintLayout(
         modifier = modifier

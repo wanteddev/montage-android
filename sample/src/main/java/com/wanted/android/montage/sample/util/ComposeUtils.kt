@@ -3,6 +3,7 @@ package com.wanted.android.montage.sample.util
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -14,15 +15,15 @@ fun Modifier.clickOnce(
     enabled: Boolean = true,
     onClick: () -> Unit
 ): Modifier = composed {
-    var lastClickTime = remember { System.currentTimeMillis() }
+    val lastClickTime = remember { mutableLongStateOf(0L) }
     this.clickable(
         enabled = enabled,
         interactionSource = remember { MutableInteractionSource() },
         indication = null,
         onClick = {
             val now = System.currentTimeMillis()
-            if (now - lastClickTime >= 200L) {
-                lastClickTime = now
+            if (now - lastClickTime.longValue >= 200L) {
+                lastClickTime.longValue = now
                 onClick()
             }
         }

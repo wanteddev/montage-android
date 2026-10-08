@@ -26,21 +26,21 @@ fun WantedTextAreaCharacterCount(
         Text(
             modifier = Modifier.alpha(OPACITY_74),
             text = "$current",
-            style = DesignSystemTheme.typography.label2Medium,
+            style = DesignSystemTheme.typography.caption1Bold,
             color = when {
-                !enable -> DesignSystemTheme.colors.labelDisable
-                error -> DesignSystemTheme.colors.statusNegative
-                else -> DesignSystemTheme.colors.labelAlternative
+                !enable -> DesignSystemTheme.colors.foregroundDisablePrimary
+                error -> DesignSystemTheme.colors.foregroundNegativePrimary
+                else -> DesignSystemTheme.colors.foregroundNeutralTertiary
             }
         )
 
         Text(
             modifier = Modifier.alpha(OPACITY_74),
             text = "/$maxWordCount",
-            style = DesignSystemTheme.typography.label2Medium,
+            style = DesignSystemTheme.typography.caption1Bold,
             color = when {
-                !enable -> DesignSystemTheme.colors.labelDisable
-                else -> DesignSystemTheme.colors.labelAlternative
+                !enable -> DesignSystemTheme.colors.foregroundDisablePrimary
+                else -> DesignSystemTheme.colors.foregroundNeutralTertiary
             }
         )
     }

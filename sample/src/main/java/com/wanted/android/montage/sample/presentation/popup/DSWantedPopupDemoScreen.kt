@@ -18,7 +18,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.presentation.popup.DSWantedPopupDemoScreenContract.DSWantedPopupDemoEvent
 import com.wanted.android.montage.sample.presentation.popup.DSWantedPopupDemoScreenContract.DSWantedPopupDemoSideEffect
@@ -28,12 +28,13 @@ import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
 import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.wanted.design.actions.actionarea.ActionAreaType
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogTopAppBar
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopupContract.Resize
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopupDefaults
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -72,18 +73,28 @@ fun DSWantedPopupDemoScreen(
                 viewModel.setEvent(DSWantedPopupDemoEvent.SetShowPopup(viewEvent.show))
             }
 
-            is DSWantedPopupDemoViewEvent.OnModalTypeChanged -> {
-                viewModel.setEvent(DSWantedPopupDemoEvent.SetModalType(viewEvent.type))
+            is DSWantedPopupDemoViewEvent.OnResizeChanged -> {
+                viewModel.setEvent(DSWantedPopupDemoEvent.SetResize(viewEvent.resize))
             }
 
             is DSWantedPopupDemoViewEvent.OnUseTopBarChanged -> {
                 viewModel.setEvent(DSWantedPopupDemoEvent.SetUseTopBar(viewEvent.use))
             }
+
+            is DSWantedPopupDemoViewEvent.OnUseActionAreaChanged -> {
+                viewModel.setEvent(DSWantedPopupDemoEvent.SetUseActionArea(viewEvent.use))
+            }
+
+            is DSWantedPopupDemoViewEvent.OnActionAreaTypeChanged -> {
+                viewModel.setEvent(
+                    DSWantedPopupDemoEvent.SetActionAreaType(viewEvent.actionAreaType)
+                )
+            }
         }
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedPopupDemoEvent.CopyCode)
@@ -111,7 +122,7 @@ private fun DSWantedPopupDemoScreenContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            WantedBackTopAppBar(title = "WantedModal") {
+            WantedBackTopAppBar(title = "WantedPopup") {
                 onViewEvent(DSWantedPopupDemoViewEvent.OnClickBack)
             }
         },
@@ -119,7 +130,7 @@ private fun DSWantedPopupDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -128,7 +139,7 @@ private fun DSWantedPopupDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -151,29 +162,50 @@ private fun DSWantedPopupDemoScreenContent(
                     }
                 )
             },
-            type = {
+            resize = {
                 WantedSelect(
-                    value = "type : ${viewState.modalType::class.simpleName}",
-                    selectedValue = viewState.modalType::class.simpleName ?: "Flexible",
-                    selectValueList = listOf("Flexible", "FixedWrapContent", "Fixed", "FixedFullScreen", "FixedRatio"),
-                    onSelect = { typeName ->
-                        val type = when (typeName) {
-                            "FixedWrapContent" -> ModalType.FixedWrapContent()
-                            "Fixed" -> ModalType.Fixed(height = 400.dp)
-                            "FixedFullScreen" -> ModalType.FixedFullScreen()
-                            "FixedRatio" -> ModalType.FixedRatio(ratio = 0.6f)
-                            else -> ModalType.Flexible
+                    value = "resize : ${viewState.resize::class.simpleName}",
+                    selectedValue = viewState.resize::class.simpleName ?: "Hug",
+                    selectValueList = listOf("Hug", "Fixed"),
+                    onSelect = { resizeName ->
+                        val resize = when (resizeName) {
+                            "Fixed" -> Resize.Fixed(height = 400.dp)
+                            else -> Resize.Hug
                         }
-                        onViewEvent(DSWantedPopupDemoViewEvent.OnModalTypeChanged(type))
+                        onViewEvent(DSWantedPopupDemoViewEvent.OnResizeChanged(resize))
                     }
                 )
             },
-            topBar = {
+            title = {
                 DSWantedOptionSwitchCell(
-                    text = "topBar : ${viewState.useTopBar}",
+                    text = "title : ${viewState.useTopBar}",
                     checkState = viewState.useTopBar,
                     onCheckChanged = { checked ->
                         onViewEvent(DSWantedPopupDemoViewEvent.OnUseTopBarChanged(checked))
+                    }
+                )
+            },
+            actionArea = {
+                DSWantedOptionSwitchCell(
+                    text = "actionArea : ${viewState.useActionArea}",
+                    checkState = viewState.useActionArea,
+                    onCheckChanged = { checked ->
+                        onViewEvent(DSWantedPopupDemoViewEvent.OnUseActionAreaChanged(checked))
+                    }
+                )
+            },
+            actionAreaType = {
+                WantedSelect(
+                    value = "actionAreaType : ${viewState.actionAreaType.name}",
+                    selectedValue = viewState.actionAreaType.name,
+                    selectValueList = ActionAreaType.entries.map { it.name },
+                    onSelect = { typeName ->
+                        val actionAreaType = ActionAreaType.entries
+                            .firstOrNull { it.name == typeName }
+                            ?: ActionAreaType.Strong
+                        onViewEvent(
+                            DSWantedPopupDemoViewEvent.OnActionAreaTypeChanged(actionAreaType)
+                        )
                     }
                 )
             }
@@ -181,19 +213,21 @@ private fun DSWantedPopupDemoScreenContent(
     }
 
     if (viewState.showPopup) {
-        WantedModal(
+        WantedPopup(
             onDismissRequest = {
                 onViewEvent(DSWantedPopupDemoViewEvent.OnShowPopupChanged(false))
             },
-            type = viewState.modalType,
-            topBar = if (viewState.useTopBar) {
-                { WantedDialogTopAppBar(title = "제목") }
+            resize = viewState.resize,
+            popupDefault = WantedPopupDefaults.getDefault(
+                actionAreaType = viewState.actionAreaType
+            ),
+            title = "제목".takeIf { viewState.useTopBar },
+            positive = "확인",
+            // onClickPositive 가 null 이면 Popup 이 Action Area 를 그리지 않는다.
+            onClickPositive = if (viewState.useActionArea) {
+                { onViewEvent(DSWantedPopupDemoViewEvent.OnShowPopupChanged(false)) }
             } else {
                 null
-            },
-            positive = "확인",
-            onClickPositive = {
-                onViewEvent(DSWantedPopupDemoViewEvent.OnShowPopupChanged(false))
             },
             content = {
                 Text(text = "Popup Content")
@@ -206,8 +240,10 @@ private fun DSWantedPopupDemoScreenContent(
 private fun DSWantedPopupDemoScreenLayout(
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
-    type: @Composable () -> Unit,
-    topBar: @Composable () -> Unit,
+    resize: @Composable () -> Unit,
+    title: @Composable () -> Unit,
+    actionArea: @Composable () -> Unit,
+    actionAreaType: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -218,7 +254,7 @@ private fun DSWantedPopupDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -231,12 +267,14 @@ private fun DSWantedPopupDemoScreenLayout(
         Text(
             text = "Option",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
-        type()
-        topBar()
+        resize()
+        title()
+        actionArea()
+        actionAreaType()
         Spacer(modifier = Modifier.height(20.dp))
     }
 }

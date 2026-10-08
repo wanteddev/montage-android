@@ -22,10 +22,11 @@ import com.wanted.android.wanted.design.input.input.control.CheckBoxState
 import com.wanted.android.wanted.design.input.input.control.WantedCheckBox
 import com.wanted.android.wanted.design.input.input.control.WantedCheckMark
 import com.wanted.android.wanted.design.input.input.control.WantedRadioButton
-import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
 import com.wanted.android.wanted.design.input.select.WantedSelectData
-import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedModalBottomSheet
+import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
+import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults
+import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedModalBottomSheet
 import com.wanted.android.wanted.design.util.ButtonType
 import com.wanted.android.wanted.design.util.ButtonVariant
 
@@ -47,6 +48,7 @@ internal fun WantedSelectBottomSheet(
         modifier = modifier,
         isShow = isShow,
         type = bottomSheetType,
+        sheetDefault = WantedBottomSheetDefaults.getWithoutContentPadding(),
         content = {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -54,8 +56,18 @@ internal fun WantedSelectBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(items) { item ->
+                    // 행 어디를 눌러도(라디오 아이콘 포함) 같은 선택 동작이 되도록 로직을 공유한다
+                    val handleSelect = {
+                        if (confirmText.isEmpty()) {
+                            onSelect(item)
+                        } else {
+                            selectItem.value = item
+                        }
+                    }
                     WantedListCell(
                         modifier = Modifier,
+                        // Select 내부 셀은 variant = Inset 고정이며 밖으로 노출하지 않는다(Figma 4.0.0 사용처 정책).
+                        variant = WantedListCellDefaults.Variant.Inset,
                         verticalPadding = WantedListCellDefaults.VerticalPadding.Medium,
                         text = item.text,
                         selected = selectItem.value == item,
@@ -88,27 +100,21 @@ internal fun WantedSelectBottomSheet(
                                 }
                             }
 
-                            selectItem.value == item
-                                    && selectType == WantedSelectDefaults.SelectType.Radio -> {
+                            // Radio 는 선택 여부와 무관하게 항시 노출한다 (미선택 항목은 빈 라디오) — 타 플랫폼과 동일
+                            selectType == WantedSelectDefaults.SelectType.Radio -> {
                                 {
                                     WantedRadioButton(
                                         modifier = Modifier,
                                         size = CheckBoxSize.Normal,
-                                        checked = true,
-                                        onCheckedChange = { }
+                                        checked = selectItem.value == item,
+                                        onCheckedChange = { handleSelect() }
                                     )
                                 }
                             }
 
                             else -> null
                         },
-                        onClick = {
-                            if (confirmText.isEmpty()) {
-                                onSelect(item)
-                            } else {
-                                selectItem.value = item
-                            }
-                        }
+                        onClick = handleSelect
                     )
                 }
             }

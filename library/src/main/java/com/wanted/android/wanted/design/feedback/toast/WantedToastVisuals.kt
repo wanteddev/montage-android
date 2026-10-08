@@ -26,6 +26,6 @@ class WantedToastVisuals(
     override val actionLabel: String = "",
     override val duration: SnackbarDuration = SnackbarDuration.Short,
     override val withDismissAction: Boolean = false,
-    val variant: WantedToastVariant = WantedToastVariant.Message,
+    val variant: WantedToastVariant = WantedToastVariant.Normal,
     val icon: @Composable (() -> Unit)? = null
 ) : SnackbarVisuals

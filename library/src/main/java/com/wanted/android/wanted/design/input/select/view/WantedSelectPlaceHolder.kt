@@ -6,12 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
+import com.wanted.android.wanted.design.input.select.inputTextStyle
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 
 @Composable
 internal fun WantedSelectPlaceHolder(
     enabled: Boolean,
     modifier: Modifier = Modifier,
+    size: WantedSelectDefaults.Size = WantedSelectDefaults.Size.Large,
     placeHolder: String = ""
 ) {
     Text(
@@ -19,11 +22,11 @@ internal fun WantedSelectPlaceHolder(
         text = placeHolder,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        style = DesignSystemTheme.typography.body1Regular,
+        style = size.inputTextStyle,
         color = if (enabled) {
-            DesignSystemTheme.colors.labelAssistive
+            DesignSystemTheme.colors.foregroundNeutralTertiary
         } else {
-            DesignSystemTheme.colors.labelDisable
+            DesignSystemTheme.colors.foregroundDisablePrimary
         }
     )
 }

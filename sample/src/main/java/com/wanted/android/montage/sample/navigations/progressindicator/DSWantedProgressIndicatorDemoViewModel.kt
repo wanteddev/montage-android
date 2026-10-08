@@ -5,6 +5,7 @@ import com.wanted.android.montage.sample.navigations.progressindicator.DSWantedP
 import com.wanted.android.montage.sample.navigations.progressindicator.DSWantedProgressIndicatorDemoScreenContract.DSWantedProgressIndicatorDemoSideEffect
 import com.wanted.android.montage.sample.navigations.progressindicator.DSWantedProgressIndicatorDemoScreenContract.DSWantedProgressIndicatorDemoViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -36,7 +37,7 @@ class DSWantedProgressIndicatorDemoViewModel @Inject constructor(
         val state = viewState.value
         return """
             WantedLinearProgressIndicator(
-                currentProgress = ${"%.2f".format(state.progress)}f
+                currentProgress = ${String.format(Locale.US, "%.2f", state.progress)}f
             )
         """.trimIndent()
     }

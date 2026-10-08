@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.presentation.popover.DSWantedPopoverDemoScreenContract.DSWantedPopoverDemoEvent
 import com.wanted.android.montage.sample.presentation.popover.DSWantedPopoverDemoScreenContract.DSWantedPopoverDemoSideEffect
@@ -40,9 +40,8 @@ import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextField
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.presentation.popover.WantedPopover
 import com.wanted.android.wanted.design.presentation.popover.WantedPopoverAlign
 import com.wanted.android.wanted.design.presentation.popover.WantedSimplePopoverState
@@ -125,7 +124,7 @@ fun DSWantedPopoverDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedPopoverDemoEvent.CopyCode)
@@ -163,7 +162,7 @@ private fun DSWantedPopoverDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -173,7 +172,7 @@ private fun DSWantedPopoverDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedPopover(
                         modifier = Modifier.wrapContentSize(),
                         state = popoverState,
@@ -214,7 +213,7 @@ private fun DSWantedPopoverDemoScreenContent(
                         }
                     )
                 },
-                negative = {
+                alternative = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         size = ButtonSize.SMALL,
@@ -346,12 +345,23 @@ private fun DSWantedPopoverDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -370,7 +380,7 @@ private fun DSWantedPopoverDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )

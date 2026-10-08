@@ -1,15 +1,17 @@
 package com.wanted.android.montage.sample.feedback.loading
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,27 +20,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.ui.DevicePreviews
+import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.DSWantedLoadingDemoEvent
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.DSWantedLoadingDemoSideEffect
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.DSWantedLoadingDemoViewEvent
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.DSWantedLoadingDemoViewState
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.LoadingType
-import com.wanted.android.montage.sample.ui.DevicePreviews
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
-import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.loading.loading.WantedCircularLoading
 import com.wanted.android.wanted.design.loading.loading.WantedLogoLoading
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -88,7 +90,7 @@ fun DSWantedLoadingDemoScreen(
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedLoadingDemoEvent.CopyCode)
@@ -116,138 +118,124 @@ private fun DSWantedLoadingDemoScreenContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            WantedBackTopAppBar(title = "WantedLoading") {
-                onViewEvent(DSWantedLoadingDemoViewEvent.OnClickBack)
-            }
+            WantedBackTopAppBar(
+                title = "WantedLoading",
+                onClickBack = { onViewEvent(DSWantedLoadingDemoViewEvent.OnClickBack) }
+            )
         },
         bottomBar = {
             WantedActionArea(
-                modifier = Modifier.navigationBarsPadding(),
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
-                        onClick = {
-                            onViewEvent(DSWantedLoadingDemoViewEvent.OnClickShowCode)
-                        }
+                        onClick = { onViewEvent(DSWantedLoadingDemoViewEvent.OnClickShowCode) }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
-                        onClick = {
-                            onViewEvent(DSWantedLoadingDemoViewEvent.OnClickCopyCode)
-                        }
+                        onClick = { onViewEvent(DSWantedLoadingDemoViewEvent.OnClickCopyCode) }
                     )
-                },
-            )
-        }
-    ) { innerPadding ->
-        DSWantedLoadingDemoScreenLayout(
-            modifier = Modifier.padding(innerPadding),
-            preview = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (viewState.showLoading) {
-                        when (viewState.loadingType) {
-                            LoadingType.Circular -> {
-                                WantedCircularLoading(
-                                    size = 32.dp,
-                                    circleColor = DesignSystemTheme.colors.lineSolidNormal,
-                                    dimColor = if (viewState.useDim) {
-                                        DesignSystemTheme.colors.staticBlack.copy(alpha = 0.3f)
-                                    } else {
-                                        Color.Transparent
-                                    }
-                                )
-                            }
-
-                            LoadingType.Logo -> {
-                                WantedLogoLoading(isUseDim = viewState.useDim)
-                            }
-                        }
-                    } else {
-                        Text(text = "Loading Hidden")
-                    }
                 }
-            },
-            type = {
-                WantedSelect(
-                    value = "type : ${viewState.loadingType.name}",
-                    selectedValue = viewState.loadingType.name,
-                    selectValueList = listOf("Circular", "Logo"),
-                    onSelect = { typeName ->
-                        val type = if (typeName == "Logo") LoadingType.Logo else LoadingType.Circular
-                        onViewEvent(DSWantedLoadingDemoViewEvent.OnLoadingTypeChanged(type))
-                    }
-                )
-            },
-            useDim = {
-                DSWantedOptionSwitchCell(
-                    text = "useDim : ${viewState.useDim}",
-                    checkState = viewState.useDim,
-                    onCheckChanged = { checked ->
-                        onViewEvent(DSWantedLoadingDemoViewEvent.OnUseDimChanged(checked))
-                    }
-                )
-            },
-            showLoading = {
-                DSWantedOptionSwitchCell(
-                    text = "showLoading : ${viewState.showLoading}",
-                    checkState = viewState.showLoading,
-                    onCheckChanged = { checked ->
-                        onViewEvent(DSWantedLoadingDemoViewEvent.OnShowLoadingChanged(checked))
-                    }
-                )
-            }
-        )
-    }
-}
-
-@Composable
-private fun DSWantedLoadingDemoScreenLayout(
-    modifier: Modifier = Modifier,
-    preview: @Composable () -> Unit,
-    type: @Composable () -> Unit,
-    useDim: @Composable () -> Unit,
-    showLoading: @Composable () -> Unit,
-) {
-    Column(
-        modifier = modifier
-            .padding(horizontal = 20.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Text(
-            text = "Preview",
-            style = WantedTextStyle(
-                colorRes = R.color.label_strong,
-                style = DesignSystemTheme.typography.heading2Bold
             )
-        )
-        DSWantedPreviewContainer {
-            preview()
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(
-            text = "Option",
-            style = WantedTextStyle(
-                colorRes = R.color.label_strong,
-                style = DesignSystemTheme.typography.heading2Bold
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(horizontal = 20.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "Preview",
+                style = WantedTextStyle(
+                    colorRes = R.color.foreground_neutral_strong,
+                    style = DesignSystemTheme.typography.heading2Bold
+                )
             )
-        )
-        type()
-        useDim()
-        showLoading()
-        Spacer(modifier = Modifier.height(20.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .border(
+                        width = 1.dp,
+                        color = colorResource(R.color.line_neutral_primary),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (viewState.showLoading) {
+                    when (viewState.loadingType) {
+                        LoadingType.Circular -> {
+                            WantedCircularLoading(
+                                size = 32.dp,
+                                circleColor = DesignSystemTheme.colors.lineNeutralPrimaryOpaque,
+                                dimColor = if (viewState.useDim) {
+                                    DesignSystemTheme.colors.staticBlack.copy(alpha = 0.3f)
+                                } else {
+                                    Color.Transparent
+                                }
+                            )
+                        }
+
+                        LoadingType.Logo -> {
+                            WantedLogoLoading(isUseDim = viewState.useDim)
+                        }
+                    }
+                } else {
+                    Text(text = "Loading Hidden")
+                }
+            }
+
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Text(
+                text = "Option",
+                style = WantedTextStyle(
+                    colorRes = R.color.foreground_neutral_strong,
+                    style = DesignSystemTheme.typography.heading2Bold
+                )
+            )
+
+            WantedSelect(
+                value = "type : ${viewState.loadingType.name}",
+                selectedValue = viewState.loadingType.name,
+                selectValueList = LoadingType.entries.map { it.name },
+                onSelect = { typeName ->
+                    val type = if (typeName == LoadingType.Logo.name) {
+                        LoadingType.Logo
+                    } else {
+                        LoadingType.Circular
+                    }
+                    onViewEvent(DSWantedLoadingDemoViewEvent.OnLoadingTypeChanged(type))
+                }
+            )
+
+            DSWantedOptionSwitchCell(
+                text = "useDim : ${viewState.useDim}",
+                checkState = viewState.useDim,
+                onCheckChanged = { checked ->
+                    onViewEvent(DSWantedLoadingDemoViewEvent.OnUseDimChanged(checked))
+                }
+            )
+
+            DSWantedOptionSwitchCell(
+                text = "showLoading : ${viewState.showLoading}",
+                checkState = viewState.showLoading,
+                onCheckChanged = { checked ->
+                    onViewEvent(DSWantedLoadingDemoViewEvent.OnShowLoadingChanged(checked))
+                }
+            )
+        }
     }
 }
 
@@ -255,8 +243,9 @@ private fun DSWantedLoadingDemoScreenLayout(
 @Composable
 private fun DSWantedLoadingDemoScreenPreview() {
     DesignSystemTheme {
-        DSWantedLoadingDemoScreen(
-            onClickBack = {}
+        DSWantedLoadingDemoScreenContent(
+            viewState = DSWantedLoadingDemoViewState(),
+            onViewEvent = { }
         )
     }
 }

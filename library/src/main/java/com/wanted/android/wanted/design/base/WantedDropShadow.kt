@@ -113,7 +113,6 @@ fun WantedDropShadow(
  */
 @Composable
 fun Modifier.wantedDropShadow(style: WantedShadowStyle): Modifier {
-    // shadow 리스트를 remember로 캐싱하여 재계산 방지
     val cachedShadows = remember(style) { style.getShadow() }
 
     return this
@@ -150,7 +149,6 @@ fun Modifier.wantedDropShadow(style: WantedShadowStyle): Modifier {
  */
 @Composable
 fun Modifier.wantedDropShadowSpread(style: WantedShadowSpreadStyle): Modifier {
-    // shadow 리스트를 remember로 캐싱하여 재계산 방지
     val cachedShadows = remember(style) { style.getShadow() }
 
     return this
@@ -171,17 +169,14 @@ private fun Modifier.dropShadow(
     isBackgroundTransparent: Boolean = false
 ) = this.then(
     Modifier.drawBehind {
-        // Early return으로 불필요한 연산 방지
         if (shadows.isEmpty()) return@drawBehind
 
-        // BlurMaskFilter 캐시 - dropShadow 함수 내부에서만 사용
         val blurMaskFilterCache = mutableMapOf<Float, BlurMaskFilter>()
 
         this.drawIntoCanvas { canvas ->
             val paint = Paint()
             val frameworkPaint = paint.asFrameworkPaint()
 
-            // transparent 배경인 경우를 위한 Path - 재사용 가능하도록 미리 생성
             var clipPath: Path? = null
             val borderRadiusPx = borderRadius.toPx()
 
@@ -204,10 +199,8 @@ private fun Modifier.dropShadow(
             for (i in shadows.size - 1 downTo 0) {
                 val shadow = shadows[i]
 
-                // 색상 설정
                 frameworkPaint.color = shadow.color.toArgb()
 
-                // BlurMaskFilter 캐싱 및 재사용 - 같은 drawBehind 호출 내에서만 캐싱
                 val blurRadiusPx = shadow.blurRadius.toPx()
                 if (blurRadiusPx > 0f) {
                     frameworkPaint.maskFilter = blurMaskFilterCache.getOrPut(blurRadiusPx) {
@@ -217,7 +210,6 @@ private fun Modifier.dropShadow(
                     frameworkPaint.maskFilter = null
                 }
 
-                // 그리기 영역 계산 - 변수 재사용으로 메모리 할당 최소화
                 val spreadPixel = shadow.spreadRadius.toPx()
                 val offsetXPx = shadow.offsetX.toPx()
                 val offsetYPx = shadow.offsetY.toPx()
@@ -227,19 +219,16 @@ private fun Modifier.dropShadow(
                 val right = size.width + spreadPixel + offsetXPx
                 val bottom = size.height + spreadPixel + offsetYPx
 
-                // Clipping 처리 최적화
                 var needsRestore = false
                 if (isBackgroundTransparent) {
                     canvas.save()
                     needsRestore = true
 
-                    // 미리 생성된 clipPath 재사용
                     clipPath?.let { path ->
                         canvas.clipPath(path, ClipOp.Difference)
                     }
                 }
 
-                // 그리기 - 조건부 radius 최적화
                 if (borderRadiusPx > 0f) {
                     canvas.drawRoundRect(
                         left = left,
@@ -314,7 +303,6 @@ object WantedDropShadowDefaults {
             override val borderRadius: Dp = 12.dp,
             override val backgroundColor: Color = Color.Transparent
         ) : WantedShadowStyle(borderRadius, backgroundColor) {
-            // 성능을 위해 lazy로 shadow 리스트 생성
             private val shadowList by lazy {
                 listOf(
                     WantedShadowToken(
@@ -577,14 +565,13 @@ private fun WantedDropShadowPreview() {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
-                    .background(DesignSystemTheme.colors.backgroundNormalAlternative)
+                    .background(DesignSystemTheme.colors.backgroundNeutralSecondary)
                     .fillMaxSize()
                     .padding(20.dp)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
 
-                // backgroud color가 transparent 일때
                 Box(
                     Modifier
                         .size(100.dp)
@@ -595,35 +582,30 @@ private fun WantedDropShadowPreview() {
                         )
                 )
 
-                // XSMALL Shadow
                 Box(
                     Modifier
                         .size(100.dp)
                         .wantedDropShadow(WantedShadowStyle.XSmall())
                 )
 
-                // SMALL Shadow
                 Box(
                     Modifier
                         .size(100.dp)
                         .wantedDropShadow(WantedShadowStyle.Small())
                 )
 
-                // MEDIUM Shadow
                 Box(
                     Modifier
                         .size(100.dp)
                         .wantedDropShadow(WantedShadowStyle.Medium())
                 )
 
-                // LARGE Shadow
                 Box(
                     Modifier
                         .size(100.dp)
                         .wantedDropShadow(WantedShadowStyle.Large())
                 )
 
-                // XLARGE Shadow
                 Box(
                     Modifier
                         .size(100.dp)

@@ -6,13 +6,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,30 +25,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarDefaults
-import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogTopAppBar
+import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogCloseTopAppBar
+import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogTopAppBarContract.Variant
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
-import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults.heightModifier
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopupContract.Resize
 import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogLayout
-import com.wanted.android.wanted.design.presentation.modal.view.WantedDialogTwoButtonImpl
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 import com.wanted.android.wanted.design.util.pxToDp
 
 /**
- * WantedModal
+ * WantedPopup
  *
- * 상단 앱바와 확인/취소 버튼을 포함한 기본 모달 컴포넌트입니다.
+ * 상단 앱바와 Main Action 버튼을 포함한 기본 Popup 컴포넌트입니다.
  *
  * 사용 예시:
  * ```kotlin
  * var showModal by remember { mutableStateOf(true) }
  *
  * if (showModal) {
- *     WantedModal(
- *         topBar = { WantedDialogTopAppBar(title = "제목") },
+ *     WantedPopup(
+ *         title = "제목",
  *         positive = "확인",
  *         onClickPositive = { showModal = false },
  *         onDismissRequest = { showModal = false },
@@ -58,60 +58,69 @@ import com.wanted.android.wanted.design.util.pxToDp
  *
  * @param onDismissRequest () -> Unit: 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param type ModalType: 모달의 형태입니다.
+ * @param resize Resize: Popup 의 높이 결정 방식입니다. 기본값은 Hug 입니다.
  * @param properties DialogProperties: Dialog 속성입니다.
- * @param shape RoundedCornerShape: 모달의 모서리 둥글기입니다.
- * @param topBar (@Composable () -> Unit)?: 상단 앱바 슬롯입니다.
- * @param positive String?: 확인 버튼 텍스트입니다.
- * @param negative String?: 취소 버튼 텍스트입니다.
- * @param onClickPositive (() -> Unit)?: 확인 버튼 클릭 시 호출되는 콜백입니다.
- * @param onClickNegative (() -> Unit)?: 취소 버튼 클릭 시 호출되는 콜백입니다.
+ * @param popupDefault WantedPopupDefault: Popup 의 모양·여백 설정입니다.
+ * @param title String?: Navigation 의 제목입니다. null 이면 제목 없이 Close Button 만 노출합니다. Close Button 은 [onDismissRequest] 로 Popup 을 닫습니다.
+ * @param positive String?: Main Action 의 텍스트입니다.
+ * @param onClickPositive (() -> Unit)?: Main Action 클릭 시 호출되는 콜백입니다.
  * @param content (@Composable BoxScope.() -> Unit): 본문 콘텐츠 슬롯입니다.
  */
 @Composable
-fun WantedModal(
+fun WantedPopup(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    type: ModalType = ModalType.Flexible,
+    resize: Resize = Resize.Hug,
     properties: DialogProperties = DialogProperties(),
-    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
-    topBar: @Composable (() -> Unit)? = null,
+    popupDefault: WantedPopupDefault = WantedPopupDefaults.getDefault(),
+    title: String? = null,
     positive: String? = null,
-    negative: String? = null,
     onClickPositive: (() -> Unit)? = null,
-    onClickNegative: (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
-    Dialog(
-        onDismissRequest = { onDismissRequest() },
-        properties = properties
-    ) {
-        WantedDialogTwoButtonImpl(
-            modifier = modifier.then(heightModifier(type, WantedModalContract.MAX_MODAL_SIZE.dp)),
-            shape = shape,
-            topBar = topBar,
-            positive = positive,
-            negative = negative,
-            onClickPositive = onClickPositive,
-            onClickNegative = onClickNegative,
-            content = content
-        )
-    }
+    WantedPopup(
+        onDismissRequest = onDismissRequest,
+        modifier = modifier,
+        resize = resize,
+        properties = properties,
+        popupDefault = popupDefault,
+        topBar = {
+            // 제목이 없어도 Close Button 은 항상 노출한다. 제목은 4.0.0 기준 좌측 정렬(Emphasized) 고정이다.
+            WantedDialogCloseTopAppBar(
+                variant = Variant.Emphasized,
+                title = title.orEmpty(),
+                onClickClose = onDismissRequest
+            )
+        },
+        bottomBar = onClickPositive?.let {
+            {
+                // 여백은 Popup 이 actionPadding 으로 넣으므로 Action Area 의 safeArea 여백은 끈다.
+                WantedActionArea(
+                    type = popupDefault.actionAreaType,
+                    main = positive.orEmpty(),
+                    onClickMain = onClickPositive,
+                    safeArea = false,
+                    divider = false
+                )
+            }
+        },
+        content = content
+    )
 }
 
 /**
- * WantedModal
+ * WantedPopup
  *
  * 커스텀 하단 바를 포함한 모달 컴포넌트입니다.
  *
- * 확인/취소 버튼 대신 커스텀 bottomBar를 사용할 수 있습니다.
+ * Main Action 버튼 대신 커스텀 bottomBar를 사용할 수 있습니다.
  *
  * 사용 예시:
  * ```kotlin
  * var showModal by remember { mutableStateOf(true) }
  *
  * if (showModal) {
- *     WantedModal(
+ *     WantedPopup(
  *         topBar = { WantedDialogTopAppBar(title = "제목") },
  *         bottomBar = {
  *             Button(onClick = { showModal = false }) {
@@ -126,22 +135,20 @@ fun WantedModal(
  *
  * @param onDismissRequest () -> Unit: 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param size ModalSize: 모달의 크기입니다.
- * @param type ModalType: 모달의 형태입니다.
+ * @param resize Resize: Popup 의 높이 결정 방식입니다. 기본값은 Hug 입니다.
  * @param properties DialogProperties: Dialog 속성입니다.
- * @param shape RoundedCornerShape: 모달의 모서리 둥글기입니다.
+ * @param popupDefault WantedPopupDefault: Popup 의 모양·여백 설정입니다.
  * @param topBar (@Composable () -> Unit)?: 상단 앱바 슬롯입니다.
  * @param bottomBar (@Composable () -> Unit)?: 하단 바 슬롯입니다.
  * @param content (@Composable BoxScope.() -> Unit): 본문 콘텐츠 슬롯입니다.
  */
 @Composable
-fun WantedModal(
+fun WantedPopup(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    size: ModalSize = ModalSize.Medium,
-    type: ModalType = ModalType.Flexible,
+    resize: Resize = Resize.Hug,
     properties: DialogProperties = DialogProperties(),
-    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
+    popupDefault: WantedPopupDefault = WantedPopupDefaults.getDefault(),
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: (@Composable () -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit
@@ -151,12 +158,24 @@ fun WantedModal(
         properties = properties
     ) {
         WantedDialogLayout(
-            modifier = modifier.then(heightModifier(type, WantedModalContract.MAX_MODAL_SIZE.dp)),
-            modalSize = size,
-            shape = shape,
+            modifier = modifier
+                .widthIn(max = popupDefault.width)
+                .then(heightModifier(resize, WantedModalContract.MAX_MODAL_SIZE.dp)),
+            shape = popupDefault.shape,
+            topBarPadding = PaddingValues(popupDefault.navigationPadding),
+            bottomBarPadding = popupDefault.actionPadding,
+            // Fixed 는 높이가 고정이므로 Content 가 남은 공간을 채워야 Action Area 가 하단에 붙는다.
+            contentFillHeight = resize is Resize.Fixed,
             topBar = topBar,
             content = {
-                Box(modifier = Modifier.padding(horizontal = size.contentPadding)) {
+                Box(
+                    modifier = Modifier
+                        .then(if (resize is Resize.Fixed) Modifier.fillMaxSize() else Modifier)
+                        .padding(
+                            horizontal = popupDefault.contentHorizontalPadding,
+                            vertical = popupDefault.contentVerticalPadding
+                        )
+                ) {
                     content()
                 }
             },
@@ -166,7 +185,7 @@ fun WantedModal(
 }
 
 /**
- * WantedModal
+ * WantedPopup
  *
  * LazyColumn 기반의 스크롤 가능한 모달 컴포넌트입니다.
  *
@@ -177,7 +196,7 @@ fun WantedModal(
  * var showModal by remember { mutableStateOf(true) }
  *
  * if (showModal) {
- *     WantedModal(
+ *     WantedPopup(
  *         topBar = { WantedDialogTopAppBar(title = "제목") },
  *         onDismissRequest = { showModal = false },
  *         lazyContent = {
@@ -191,22 +210,20 @@ fun WantedModal(
  *
  * @param onDismissRequest () -> Unit: 모달 외부 클릭 등으로 닫힐 때 호출되는 콜백입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param size ModalSize: 모달의 크기입니다.
- * @param type ModalType: 모달의 형태입니다.
+ * @param resize Resize: Popup 의 높이 결정 방식입니다. 기본값은 Hug 입니다.
  * @param properties DialogProperties: Dialog 속성입니다.
- * @param shape RoundedCornerShape: 모달의 모서리 둥글기입니다.
+ * @param popupDefault WantedPopupDefault: Popup 의 모양·여백 설정입니다.
  * @param topBar (@Composable () -> Unit)?: 상단 앱바 슬롯입니다.
  * @param bottomBar (@Composable () -> Unit)?: 하단 바 슬롯입니다.
  * @param lazyContent (LazyListScope.() -> Unit): LazyColumn 콘텐츠 슬롯입니다.
  */
 @Composable
-fun WantedModal(
+fun WantedPopup(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    size: ModalSize = ModalSize.Medium,
-    type: ModalType = ModalType.Flexible,
+    resize: Resize = Resize.Hug,
     properties: DialogProperties = DialogProperties(),
-    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
+    popupDefault: WantedPopupDefault = WantedPopupDefaults.getDefault(),
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: (@Composable () -> Unit)? = null,
     lazyContent: LazyListScope.() -> Unit
@@ -216,14 +233,26 @@ fun WantedModal(
         properties = properties
     ) {
         WantedDialogLayout(
-            modifier = modifier.then(heightModifier(type, WantedModalContract.MAX_MODAL_SIZE.dp)),
-            modalSize = size,
-            shape = shape,
+            modifier = modifier
+                .widthIn(max = popupDefault.width)
+                .then(heightModifier(resize, WantedModalContract.MAX_MODAL_SIZE.dp)),
+            shape = popupDefault.shape,
+            topBarPadding = PaddingValues(popupDefault.navigationPadding),
+            bottomBarPadding = popupDefault.actionPadding,
+            // Fixed 는 높이가 고정이므로 Content 가 남은 공간을 채워야 Action Area 가 하단에 붙는다.
+            contentFillHeight = resize is Resize.Fixed,
             topBar = topBar,
             content = {
                 LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(size.contentPadding)
+                    modifier = if (resize is Resize.Fixed) {
+                        Modifier.fillMaxSize()
+                    } else {
+                        Modifier.fillMaxWidth()
+                    },
+                    contentPadding = PaddingValues(
+                        horizontal = popupDefault.contentHorizontalPadding,
+                        vertical = popupDefault.contentVerticalPadding
+                    )
                 ) {
                     lazyContent()
                 }
@@ -236,8 +265,8 @@ fun WantedModal(
 @SuppressLint("ModifierFactoryExtensionFunction")
 @Composable
 private fun heightModifier(
-    type: ModalType,
-    maxHeight: Dp? = null,
+    resize: Resize,
+    maxHeight: Dp,
     configuration: Configuration = LocalConfiguration.current,
     windowInsets: WindowInsets = WantedTopAppBarDefaults.windowInsets
 ): Modifier {
@@ -245,46 +274,27 @@ private fun heightModifier(
     val windowInset = windowInsets.getTop(LocalDensity.current).pxToDp()
     val screenHeight = configuration.screenHeightDp.dp
 
-    return when (type) {
-        is ModalType.Fixed -> {
-            Modifier.Companion.height(min(type.height, maxHeight ?: type.height))
-        }
+    return when (resize) {
+        is Resize.Fixed -> Modifier.height(min(resize.height, maxHeight))
 
-        is ModalType.FixedFullScreen -> {
-            val height = screenHeight - windowInset
-            Modifier.Companion.height(min(height, maxHeight ?: height))
-        }
-
-        is ModalType.FixedRatio -> {
-            val height =
-                screenHeight - windowInset - 10.dp
-            val ratioHeight = screenHeight * type.ratio
-            val result = min(ratioHeight, height)
-
-            Modifier.Companion.height(min(result, maxHeight ?: result))
-        }
-
-        else -> {
-            val result =
-                screenHeight - windowInset - 10.dp
-            Modifier.Companion.heightIn(max = min(result, maxHeight ?: result))
+        Resize.Hug -> {
+            val available = screenHeight - windowInset - SCREEN_BOTTOM_MARGIN
+            Modifier.heightIn(max = min(available, maxHeight))
         }
     }
 }
 
+private val SCREEN_BOTTOM_MARGIN = 10.dp
+
 
 @DevicePreviews
 @Composable
-private fun WantedDialogPreview() {
+private fun WantedPopupPreview() {
     DesignSystemTheme {
         Scaffold {
-            WantedModal(
+            WantedPopup(
                 modifier = Modifier.padding(it),
-                topBar = {
-                    WantedDialogTopAppBar(
-                        title = "다이얼로그 타이틀",
-                    )
-                },
+                title = "다이얼로그 타이틀",
                 positive = "확인",
                 onClickPositive = {},
                 onDismissRequest = {},

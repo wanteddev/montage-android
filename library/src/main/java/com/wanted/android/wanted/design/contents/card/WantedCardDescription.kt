@@ -146,7 +146,7 @@ internal fun WantedCardDescriptionLayout(
             title?.let {
                 ProvideTextStyle(
                     value = DesignSystemTheme.typography.body2Bold.copy(
-                        color = DesignSystemTheme.colors.labelNormal
+                        color = DesignSystemTheme.colors.foregroundNeutralPrimary
                     )
                 ) {
                     title()
@@ -158,7 +158,7 @@ internal fun WantedCardDescriptionLayout(
             ) {
                 ProvideTextStyle(
                     value = DesignSystemTheme.typography.label2Medium.copy(
-                        color = DesignSystemTheme.colors.labelAlternative
+                        color = DesignSystemTheme.colors.foregroundNeutralTertiary
                     )
                 ) {
                     caption?.invoke()

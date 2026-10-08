@@ -13,13 +13,13 @@ object PushBadgeTypes {
      * Push 배지의 표시 유형을 정의합니다.
      *
      * - Dot: 작은 점 형태의 배지를 표시합니다.
-     * - Number: 숫자 형태로 개수를 표시합니다.
-     * - New: "N" 텍스트를 통해 새로운 항목을 표시합니다.
+     * - Text: 임의의 문자열(숫자·"N" 등)을 그대로 표시합니다.
+     * - MaxCount: 개수를 표시하되 maxCount 초과 시 "maxCount+"(예: 99+)로 표기합니다.
      */
     enum class PushBadgeVariant {
         Dot,
-        Number,
-        New
+        Text,
+        MaxCount
     }
 
     /**

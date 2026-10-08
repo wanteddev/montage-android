@@ -24,13 +24,13 @@ fun WantedPersonAvatar(
     modifier: Modifier = Modifier,
     profileImageUrl: String?,
     size: Dp,
-    borderColor: Color = DesignSystemTheme.colors.labelNormal.copy(alpha = OPACITY_5),
+    borderColor: Color = DesignSystemTheme.colors.foregroundNeutralPrimary.copy(alpha = OPACITY_5),
     alpha: Float = 1f,
 ) {
     val baseModifier = Modifier
         .size(size)
         .clip(CircleShape)
-        .background(color = DesignSystemTheme.colors.backgroundNormalNormal)
+        .background(color = DesignSystemTheme.colors.backgroundNeutralPrimary)
         .border(
             width = 1.dp,
             color = borderColor,

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.presentation.bottomsheet.DSWantedBottomSheetDemoScreenContract.DSWantedBottomSheetDemoEvent
 import com.wanted.android.montage.sample.presentation.bottomsheet.DSWantedBottomSheetDemoScreenContract.DSWantedBottomSheetDemoSideEffect
@@ -31,10 +31,12 @@ import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalSize
+import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogCloseTopAppBar
+import com.wanted.android.wanted.design.navigations.topbar.dialogtopbar.WantedDialogTopAppBarContract.Variant
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
+import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedModalBottomSheet
-import com.wanted.android.wanted.design.presentation.modal.popup.WantedModal
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.WantedTextStyle
 
@@ -73,10 +75,6 @@ fun DSWantedBottomSheetDemoScreen(
                 viewModel.setEvent(DSWantedBottomSheetDemoEvent.SetModalType(viewEvent.type))
             }
 
-            is DSWantedBottomSheetDemoViewEvent.OnModalSizeChanged -> {
-                viewModel.setEvent(DSWantedBottomSheetDemoEvent.SetModalSize(viewEvent.size))
-            }
-
             is DSWantedBottomSheetDemoViewEvent.OnDismissOnClickOutsideChanged -> {
                 viewModel.setEvent(
                     DSWantedBottomSheetDemoEvent.SetDismissOnClickOutside(viewEvent.dismiss)
@@ -86,11 +84,13 @@ fun DSWantedBottomSheetDemoScreen(
             is DSWantedBottomSheetDemoViewEvent.OnShowSheetChanged -> {
                 viewModel.setEvent(DSWantedBottomSheetDemoEvent.SetShowSheet(viewEvent.show))
             }
+
+            else -> handleOptionViewEvent(viewEvent = viewEvent, viewModel = viewModel)
         }
     }
 
     if (viewState.isShowCode) {
-        WantedModal(
+        WantedPopup(
             positive = "코드 복사",
             onClickPositive = {
                 viewModel.setEvent(DSWantedBottomSheetDemoEvent.CopyCode)
@@ -126,7 +126,7 @@ private fun DSWantedBottomSheetDemoScreenContent(
             WantedActionArea(
                 modifier = Modifier.navigationBarsPadding(),
                 background = true,
-                positive = {
+                main = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 보기",
@@ -135,7 +135,7 @@ private fun DSWantedBottomSheetDemoScreenContent(
                         }
                     )
                 },
-                neutral = {
+                sub = {
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "코드 복사",
@@ -178,20 +178,6 @@ private fun DSWantedBottomSheetDemoScreenContent(
                     }
                 )
             },
-            size = {
-                WantedSelect(
-                    value = "size : ${viewState.modalSize.name}",
-                    selectedValue = viewState.modalSize.name,
-                    selectValueList = listOf("Medium", "Large", "XLarge", "Custom"),
-                    onSelect = { sizeName ->
-                        onViewEvent(
-                            DSWantedBottomSheetDemoViewEvent.OnModalSizeChanged(
-                                getSizeFromName(sizeName)
-                            )
-                        )
-                    }
-                )
-            },
             dismissOnClickOutside = {
                 DSWantedOptionSwitchCell(
                     text = "dismissOnClickOutside : ${viewState.dismissOnClickOutside}",
@@ -199,6 +185,55 @@ private fun DSWantedBottomSheetDemoScreenContent(
                     onCheckChanged = { checked ->
                         onViewEvent(
                             DSWantedBottomSheetDemoViewEvent.OnDismissOnClickOutsideChanged(checked)
+                        )
+                    }
+                )
+            },
+            navigationVariant = {
+                // Bottom Sheet 는 Emphasized(기본) 와 Floating 만 허용한다. Normal(중앙)은 Full 전용이다.
+                WantedSelect(
+                    value = "navigation variant : ${variantName(viewState.navigationVariant)}",
+                    selectedValue = variantName(viewState.navigationVariant),
+                    selectValueList = NAVIGATION_VARIANTS.map { variantName(it) },
+                    onSelect = { selected ->
+                        val variant = NAVIGATION_VARIANTS
+                            .firstOrNull { variantName(it) == selected }
+                            ?: Variant.Emphasized
+                        onViewEvent(
+                            DSWantedBottomSheetDemoViewEvent.OnNavigationVariantChanged(variant)
+                        )
+                    }
+                )
+            },
+            closeButtonBackground = {
+                DSWantedOptionSwitchCell(
+                    text = "closeButtonBackground : ${viewState.closeButtonBackground}",
+                    checkState = viewState.closeButtonBackground,
+                    onCheckChanged = { checked ->
+                        onViewEvent(
+                            DSWantedBottomSheetDemoViewEvent.OnCloseButtonBackgroundChanged(checked)
+                        )
+                    }
+                )
+            },
+            contentPadding = {
+                DSWantedOptionSwitchCell(
+                    text = "content padding : ${viewState.useContentPadding}",
+                    checkState = viewState.useContentPadding,
+                    onCheckChanged = { checked ->
+                        onViewEvent(
+                            DSWantedBottomSheetDemoViewEvent.OnContentPaddingChanged(checked)
+                        )
+                    }
+                )
+            },
+            actionArea = {
+                DSWantedOptionSwitchCell(
+                    text = "actionArea : ${viewState.useActionArea}",
+                    checkState = viewState.useActionArea,
+                    onCheckChanged = { checked ->
+                        onViewEvent(
+                            DSWantedBottomSheetDemoViewEvent.OnUseActionAreaChanged(checked)
                         )
                     }
                 )
@@ -212,13 +247,44 @@ private fun DSWantedBottomSheetDemoScreenContent(
             onViewEvent(DSWantedBottomSheetDemoViewEvent.OnShowSheetChanged(false))
         },
         type = viewState.modalType,
-        modalSize = viewState.modalSize,
+        sheetDefault = sheetDefault(
+            type = viewState.modalType,
+            useContentPadding = viewState.useContentPadding
+        ),
         dismissOnClickOutside = viewState.dismissOnClickOutside,
         topBar = {
-            Text(
-                text = "Bottom Sheet",
-                style = DesignSystemTheme.typography.title2Bold
+            WantedDialogCloseTopAppBar(
+                variant = navigationVariant(
+                    variant = viewState.navigationVariant,
+                    iconBackground = viewState.closeButtonBackground
+                ),
+                title = "Bottom Sheet",
+                onClickClose = {
+                    onViewEvent(DSWantedBottomSheetDemoViewEvent.OnShowSheetChanged(false))
+                }
             )
+        },
+        bottomBar = if (viewState.useActionArea) {
+            {
+                // 여백은 Bottom Sheet 가 actionPadding 으로 넣으므로 Action Area 의 safeArea 여백은 끈다.
+                WantedActionArea(
+                    safeArea = false,
+                    divider = false,
+                    main = {
+                        WantedButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "확인",
+                            onClick = {
+                                onViewEvent(
+                                    DSWantedBottomSheetDemoViewEvent.OnShowSheetChanged(false)
+                                )
+                            }
+                        )
+                    }
+                )
+            }
+        } else {
+            null
         },
         content = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -235,13 +301,63 @@ private fun DSWantedBottomSheetDemoScreenContent(
     )
 }
 
+private fun handleOptionViewEvent(
+    viewEvent: DSWantedBottomSheetDemoViewEvent,
+    viewModel: DSWantedBottomSheetDemoViewModel
+) {
+    when (viewEvent) {
+        is DSWantedBottomSheetDemoViewEvent.OnNavigationVariantChanged -> {
+            viewModel.setEvent(
+                DSWantedBottomSheetDemoEvent.SetNavigationVariant(viewEvent.variant)
+            )
+        }
+
+        is DSWantedBottomSheetDemoViewEvent.OnCloseButtonBackgroundChanged -> {
+            viewModel.setEvent(
+                DSWantedBottomSheetDemoEvent.SetCloseButtonBackground(viewEvent.use)
+            )
+        }
+
+        is DSWantedBottomSheetDemoViewEvent.OnContentPaddingChanged -> {
+            viewModel.setEvent(DSWantedBottomSheetDemoEvent.SetContentPadding(viewEvent.use))
+        }
+
+        is DSWantedBottomSheetDemoViewEvent.OnUseActionAreaChanged -> {
+            viewModel.setEvent(DSWantedBottomSheetDemoEvent.SetUseActionArea(viewEvent.use))
+        }
+
+        else -> Unit
+    }
+}
+
+// Content 여백은 컴포넌트 기본값(스펙)이 켜져 있다. 끄면 호출부가 직접 여백을 주는 기존 화면 형태가 된다.
+private fun sheetDefault(type: ModalType, useContentPadding: Boolean) =
+    when {
+        !useContentPadding -> WantedBottomSheetDefaults.getWithoutContentPadding(type)
+        type is ModalType.FixedFullScreen -> WantedBottomSheetDefaults.getFullDefault()
+        else -> WantedBottomSheetDefaults.getDefault()
+    }
+
+// 아이콘 배경은 Floating 만 갖는 속성이라 Floating 일 때만 값을 싣는다.
+private fun navigationVariant(variant: Variant, iconBackground: Boolean): Variant =
+    if (variant is Variant.Floating) Variant.Floating(iconBackground) else variant
+
+// sealed class 라 enum 의 name 이 없다. 선택 UI 표기는 클래스 이름으로 맞춘다.
+private fun variantName(variant: Variant): String = variant::class.simpleName.orEmpty()
+
+// Bottom Sheet 가 허용하는 Navigation variant. Normal(중앙 정렬)은 Full 전용이라 제외한다.
+private val NAVIGATION_VARIANTS = listOf(Variant.Emphasized, Variant.Floating())
+
 @Composable
 private fun DSWantedBottomSheetDemoScreenLayout(
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
     type: @Composable () -> Unit,
-    size: @Composable () -> Unit,
     dismissOnClickOutside: @Composable () -> Unit,
+    navigationVariant: @Composable () -> Unit,
+    closeButtonBackground: @Composable () -> Unit,
+    contentPadding: @Composable () -> Unit,
+    actionArea: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -252,7 +368,7 @@ private fun DSWantedBottomSheetDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
@@ -265,13 +381,16 @@ private fun DSWantedBottomSheetDemoScreenLayout(
         Text(
             text = "Option",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
         type()
-        size()
         dismissOnClickOutside()
+        navigationVariant()
+        closeButtonBackground()
+        contentPadding()
+        actionArea()
         Spacer(modifier = Modifier.height(20.dp))
     }
 }
@@ -294,16 +413,6 @@ private fun getTypeFromName(name: String): ModalType {
         "FixedFullScreen" -> ModalType.FixedFullScreen()
         "FixedRatio" -> ModalType.FixedRatio(ratio = 0.6f)
         else -> ModalType.Flexible
-    }
-}
-
-private fun getSizeFromName(name: String): ModalSize {
-    return when (name) {
-        "Medium" -> ModalSize.Medium
-        "Large" -> ModalSize.Large
-        "XLarge" -> ModalSize.XLarge
-        "Custom" -> ModalSize.Custom
-        else -> ModalSize.Medium
     }
 }
 

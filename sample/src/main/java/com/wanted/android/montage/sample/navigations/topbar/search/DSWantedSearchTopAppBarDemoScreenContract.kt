@@ -25,7 +25,7 @@ object DSWantedSearchTopAppBarDemoScreenContract {
         val isLoading: Boolean = false,
         val searchText: String = "",
         val placeholder: String = "검색어를 입력하세요",
-        val size: Size = Size.Small(),
+        val size: Size = Size.Medium,
         val background: Boolean = true,
         val enabled: Boolean = true,
         val actions: Boolean = false,

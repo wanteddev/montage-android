@@ -58,11 +58,10 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param placeholder String: 플레이스홀더 텍스트입니다.
  * @param title String: 상단 제목입니다.
  * @param description String?: 하단 설명 또는 상태 메시지입니다.
- * @param rightButton String?: 우측 버튼 텍스트입니다.
- * @param rightButtonVariant RightVariant: 우측 버튼 스타일입니다.
+ * @param trailingButton String?: 우측 버튼 텍스트입니다.
  * @param status Status: 입력 상태입니다.
  * @param enabled Boolean: 입력 가능 여부입니다.
- * @param rightButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
+ * @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
  * @param maxLines Int: 최대 줄 수입니다.
  * @param minLines Int: 최소 줄 수입니다.
  * @param maxWordCount Int: 입력 가능한 최대 글자 수입니다.
@@ -78,7 +77,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
  * @param sectionTitle ((Int) -> String)?: 섹션 제목 반환 함수입니다.
- * @param onClickRightButton () -> Unit: 우측 버튼 클릭 시 호출됩니다.
+ * @param onClickTrailingButton () -> Unit: 우측 버튼 클릭 시 호출됩니다.
  * @param onValueChange (String) -> Unit: 값 변경 시 호출됩니다.
  * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
@@ -98,11 +97,10 @@ fun WantedAutoCompleteTextField(
     placeholder: String = "",
     title: String = "",
     description: String? = null,
-    rightButton: String? = null,
-    rightButtonVariant: WantedTextFieldDefaults.RightVariant = WantedTextFieldDefaults.RightVariant.Normal,
+    trailingButton: String? = null,
     status: WantedTextFieldDefaults.Status = WantedTextFieldDefaults.Status.Normal,
     enabled: Boolean = true,
-    rightButtonEnabled: Boolean = true,
+    trailingButtonEnabled: Boolean = true,
     maxLines: Int = 1,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -112,14 +110,14 @@ fun WantedAutoCompleteTextField(
     dropDownMaxHeight: Dp = 200.dp,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionCount: Int = 1,
-    background: Color = colorResource(id = R.color.background_transparent_alternative),
+    background: Color = colorResource(id = R.color.effect_transparent_secondary),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focusRequester: FocusRequester = remember { FocusRequester() },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     sectionTitle: ((section: Int) -> String)? = null,
-    onClickRightButton: () -> Unit = {},
+    onClickTrailingButton: () -> Unit = {},
     onValueChange: (String) -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -145,7 +143,7 @@ fun WantedAutoCompleteTextField(
             requiredBadge = requiredBadge,
             status = status,
             enabled = enabled,
-            rightButtonEnabled = rightButtonEnabled,
+            trailingButtonEnabled = trailingButtonEnabled,
             maxLines = maxLines,
             minLines = minLines,
             maxWordCount = maxWordCount,
@@ -155,13 +153,12 @@ fun WantedAutoCompleteTextField(
             keyboardActions = keyboardActions,
             background = background,
             visualTransformation = visualTransformation,
-            rightButton = rightButton,
-            rightButtonVariant = rightButtonVariant,
+            trailingButton = trailingButton,
             placeholder = placeholder,
             leadingIcon = leadingIcon,
             trailingIcon = trailingIcon,
             trailingContent = trailingContent,
-            onClickRightButton = onClickRightButton,
+            onClickTrailingButton = onClickTrailingButton,
             onValueChange = { text ->
                 onExpandedChange(text.isNotEmpty())
                 onValueChange(text)
@@ -173,7 +170,7 @@ fun WantedAutoCompleteTextField(
                 .exposedDropdownSize(matchAnchorWidth = true)
                 .heightIn(max = dropDownMaxHeight),
             anchorPadding = anchorPadding,
-            containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
+            containerColor = DesignSystemTheme.colors.backgroundNeutralPrimary,
             expanded = expanded,
             onDismissRequest = {
                 onExpandedChange(false)
@@ -216,11 +213,10 @@ fun WantedAutoCompleteTextField(
  * @param placeholder String: 플레이스홀더입니다.
  * @param title String: 상단 제목입니다.
  * @param description String?: 하단 설명입니다.
- * @param rightButton String?: 우측 버튼 텍스트입니다.
- * @param rightButtonVariant RightVariant: 우측 버튼 스타일입니다.
+ * @param trailingButton String?: 우측 버튼 텍스트입니다.
  * @param status Status: 입력 상태입니다.
  * @param enabled Boolean: 활성화 여부입니다.
- * @param rightButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
+ * @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
  * @param maxLines Int: 최대 줄 수입니다.
  * @param minLines Int: 최소 줄 수입니다.
  * @param maxWordCount Int: 최대 입력 글자 수입니다.
@@ -236,7 +232,7 @@ fun WantedAutoCompleteTextField(
  * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
  * @param sectionTitle ((Int) -> String)?: 섹션 제목 제공 함수입니다.
- * @param onClickRightButton () -> Unit: 우측 버튼 클릭 콜백입니다.
+ * @param onClickTrailingButton () -> Unit: 우측 버튼 클릭 콜백입니다.
  * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
  * @param trailingContent ((Dp) -> Unit)?: 우측 콘텐츠입니다.
@@ -255,11 +251,10 @@ fun WantedAutoCompleteTextField(
     placeholder: String = "",
     title: String = "",
     description: String? = null,
-    rightButton: String? = null,
-    rightButtonVariant: WantedTextFieldDefaults.RightVariant = WantedTextFieldDefaults.RightVariant.Normal,
+    trailingButton: String? = null,
     status: WantedTextFieldDefaults.Status = WantedTextFieldDefaults.Status.Normal,
     enabled: Boolean = true,
-    rightButtonEnabled: Boolean = true,
+    trailingButtonEnabled: Boolean = true,
     maxLines: Int = 1,
     minLines: Int = 1,
     maxWordCount: Int = 2000,
@@ -269,7 +264,7 @@ fun WantedAutoCompleteTextField(
     dropDownMaxHeight: Dp = 200.dp,
     sectionTitleHorizontalPadding: Dp = 20.dp,
     sectionCount: Int = 1,
-    background: Color = colorResource(id = R.color.background_transparent_alternative),
+    background: Color = colorResource(id = R.color.effect_transparent_secondary),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     focusRequester: FocusRequester = remember { FocusRequester() },
@@ -279,7 +274,7 @@ fun WantedAutoCompleteTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
     sectionTitle: ((section: Int) -> String)? = null,
-    onClickRightButton: () -> Unit = {},
+    onClickTrailingButton: () -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit = {},
     topDirectInput: @Composable (() -> Unit)? = null,
     bottomDirectInput: @Composable (() -> Unit)? = null
@@ -301,7 +296,7 @@ fun WantedAutoCompleteTextField(
             requiredBadge = requiredBadge,
             status = status,
             enabled = enabled,
-            rightButtonEnabled = rightButtonEnabled,
+            trailingButtonEnabled = trailingButtonEnabled,
             maxLines = maxLines,
             minLines = minLines,
             maxWordCount = maxWordCount,
@@ -311,13 +306,12 @@ fun WantedAutoCompleteTextField(
             keyboardActions = keyboardActions,
             background = background,
             visualTransformation = visualTransformation,
-            rightButton = rightButton,
-            rightButtonVariant = rightButtonVariant,
+            trailingButton = trailingButton,
             placeholder = placeholder,
             leadingIcon = leadingIcon,
             trailingIcon = trailingIcon,
             trailingContent = trailingContent,
-            onClickRightButton = onClickRightButton,
+            onClickTrailingButton = onClickTrailingButton,
             onValueChange = { text ->
                 onExpandedChange(text.text.isNotEmpty())
                 onValueChange(text)
@@ -329,7 +323,7 @@ fun WantedAutoCompleteTextField(
                 .exposedDropdownSize(matchAnchorWidth = true)
                 .heightIn(max = dropDownMaxHeight),
             anchorPadding = anchorPadding,
-            containerColor = DesignSystemTheme.colors.backgroundNormalNormal,
+            containerColor = DesignSystemTheme.colors.backgroundNeutralPrimary,
             expanded = expanded,
             onDismissRequest = {
                 onExpandedChange(false)
@@ -360,11 +354,11 @@ private fun WantedAutoCompleteTextInputPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     text = "ㅁㄴㅇ",
                     placeholder = "텍스트를 입력해 주세요.",
-                    rightButton = "텍스트",
+                    trailingButton = "텍스트",
                     expanded = false,
                     onValueChange = {
                     },
-                    onClickRightButton = {
+                    onClickTrailingButton = {
                     },
                     onExpandedChange = {
 

@@ -20,10 +20,6 @@ class DSWantedFallbackViewDemoViewModel @Inject constructor(
                 setState { copy(heading = event.heading) }
             }
 
-            is DSWantedFallbackViewDemoEvent.OnChangeImage -> {
-                setState { copy(image = event.image) }
-            }
-
             is DSWantedFallbackViewDemoEvent.OnChangeDescription -> {
                 setState { copy(description = event.description) }
             }
@@ -32,20 +28,16 @@ class DSWantedFallbackViewDemoViewModel @Inject constructor(
                 setState { copy(buttonVariant = event.buttonVariant) }
             }
 
-            is DSWantedFallbackViewDemoEvent.OnChangePositive -> {
-                setState { copy(positive = event.positive) }
+            is DSWantedFallbackViewDemoEvent.OnChangePadding -> {
+                setState { copy(padding = event.padding) }
             }
 
-            is DSWantedFallbackViewDemoEvent.OnChangeNegative -> {
-                setState { copy(negative = event.negative) }
+            is DSWantedFallbackViewDemoEvent.OnChangeMain -> {
+                setState { copy(main = event.main) }
             }
 
-            is DSWantedFallbackViewDemoEvent.OnChangePositiveColor -> {
-                setState { copy(positiveColor = event.positiveColor) }
-            }
-
-            is DSWantedFallbackViewDemoEvent.OnChangeNegativeColor -> {
-                setState { copy(negativeColor = event.negativeColor) }
+            is DSWantedFallbackViewDemoEvent.OnChangeAlternative -> {
+                setState { copy(alternative = event.alternative) }
             }
 
             is DSWantedFallbackViewDemoEvent.CopyCode -> {
@@ -73,12 +65,10 @@ class DSWantedFallbackViewDemoViewModel @Inject constructor(
 WantedFallbackView(
     heading = ${if (state.heading) "\"헤더입니다.\"" else "null"},
     description = ${if (state.description) "\"마침표를 찍어주세요.\"" else "null"},
-    image = ${if (state.image) "{ Image(modifier = Modifier.fillMaxSize(), ... ) }" else "null"},
+    padding = WantedFallbackPadding.${state.padding},
     buttonVariant = WantedFallbackButtonVariant.${state.buttonVariant},
-    positive = ${if (state.positive) "\"행동\"" else "null"},
-    positiveColor = ButtonType.${state.positiveColor},
-    negative = ${if (state.negative) "\"보조행동\"" else "null"},
-    negativeColor = ButtonType.${state.negativeColor}
+    main = ${if (state.main) "\"행동\"" else "null"},
+    alternative = ${if (state.alternative) "\"보조행동\"" else "null"}
 )
         """.trimIndent()
     }

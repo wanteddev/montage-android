@@ -13,7 +13,8 @@ import com.wanted.android.designsystem.R
  * 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
  *
  * 제공되는 Toast 스타일은 다음과 같습니다:
- * - Message: 일반 메시지 (아이콘 없음)입니다.
+ * - Normal: 일반 메시지 (아이콘 없음)입니다.
+ * - Message: 일반 메시지 (아이콘 없음)입니다. (deprecated, Normal 을 사용하세요)
  * - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
  * - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
  * - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
@@ -30,10 +31,22 @@ sealed class WantedToastVariant(
     @ColorRes val backgroundTintColor: Int = R.color.static_white
 ) {
     /**
+     * data object Normal
+     *
+     * 일반 텍스트 메시지를 표시하는 스타일입니다. 아이콘은 표시되지 않습니다.
+     */
+    data object Normal : WantedToastVariant(-1, -1)
+
+    /**
      * data object Message
      *
      * 일반 텍스트 메시지를 표시하는 스타일입니다. 아이콘은 표시되지 않습니다.
      */
+    @Deprecated(
+        message = "Message 는 Normal 로 대체되었습니다. Normal 을 사용하세요.",
+        replaceWith = ReplaceWith("WantedToastVariant.Normal"),
+        level = DeprecationLevel.WARNING,
+    )
     data object Message : WantedToastVariant(-1, -1)
 
     /**

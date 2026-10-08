@@ -4,7 +4,8 @@ import com.wanted.android.montage.sample.base.WantedStateViewModel
 import com.wanted.android.montage.sample.presentation.popup.DSWantedPopupDemoScreenContract.DSWantedPopupDemoEvent
 import com.wanted.android.montage.sample.presentation.popup.DSWantedPopupDemoScreenContract.DSWantedPopupDemoSideEffect
 import com.wanted.android.montage.sample.presentation.popup.DSWantedPopupDemoScreenContract.DSWantedPopupDemoViewState
-import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
+import com.wanted.android.wanted.design.actions.actionarea.ActionAreaType
+import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopupContract.Resize
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -24,8 +25,14 @@ class DSWantedPopupDemoViewModel @Inject constructor(
 
             DSWantedPopupDemoEvent.CopyCode -> copyCode()
             is DSWantedPopupDemoEvent.SetShowPopup -> setState { copy(showPopup = event.show) }
-            is DSWantedPopupDemoEvent.SetModalType -> setState { copy(modalType = event.type) }
+            is DSWantedPopupDemoEvent.SetResize -> setState { copy(resize = event.resize) }
             is DSWantedPopupDemoEvent.SetUseTopBar -> setState { copy(useTopBar = event.use) }
+            is DSWantedPopupDemoEvent.SetUseActionArea -> {
+                setState { copy(useActionArea = event.use) }
+            }
+            is DSWantedPopupDemoEvent.SetActionAreaType -> {
+                setState { copy(actionAreaType = event.actionAreaType) }
+            }
         }
     }
 
@@ -35,39 +42,38 @@ class DSWantedPopupDemoViewModel @Inject constructor(
 
     private fun getCode(): String {
         val state = viewState.value
-        val typeString = when (val type = state.modalType) {
-            ModalType.Flexible -> "ModalType.Flexible"
-            is ModalType.FixedWrapContent -> {
-                "ModalType.FixedWrapContent(isCloseable = ${type.isCloseable}, isSystemBottomSheet = ${type.isSystemBottomSheet})"
-            }
-
-            is ModalType.Fixed -> {
-                "ModalType.Fixed(height = ${type.height.value}.dp, isCloseable = ${type.isCloseable}, isSystemBottomSheet = ${type.isSystemBottomSheet})"
-            }
-
-            is ModalType.FixedFullScreen -> {
-                "ModalType.FixedFullScreen(isCloseable = ${type.isCloseable}, isSystemBottomSheet = ${type.isSystemBottomSheet})"
-            }
-
-            is ModalType.FixedRatio -> {
-                "ModalType.FixedRatio(ratio = ${type.ratio}f, isCloseable = ${type.isCloseable}, isSystemBottomSheet = ${type.isSystemBottomSheet})"
-            }
+        val resizeString = when (val resize = state.resize) {
+            Resize.Hug -> "Resize.Hug"
+            is Resize.Fixed -> "Resize.Fixed(height = ${resize.height.value}.dp)"
         }
-        val topBarLine = if (state.useTopBar) {
-            "topBar = { WantedDialogTopAppBar(title = \"제목\") },"
+        val titleLine = if (state.useTopBar) {
+            "title = \"제목\","
         } else {
-            "topBar = null,"
+            "title = null,"
+        }
+        // 기본값(Strong)이거나 Action Area 를 쓰지 않을 때는 popupDefault 를 넘길 필요가 없다.
+        val popupDefaultLine =
+            if (!state.useActionArea || state.actionAreaType == ActionAreaType.Strong) {
+                ""
+            } else {
+                "\n                    popupDefault = WantedPopupDefaults.getDefault(" +
+                    "actionAreaType = ActionAreaType.${state.actionAreaType.name}),"
+            }
+        // onClickPositive 가 null 이면 Popup 은 Action Area 를 그리지 않는다.
+        val actionLines = if (state.useActionArea) {
+            "\n                    positive = \"확인\"," +
+                "\n                    onClickPositive = { showPopup = false },"
+        } else {
+            ""
         }
 
         return """
             if (showPopup) {
-                WantedModal(
+                WantedPopup(
                     onDismissRequest = { showPopup = false },
-                    type = $typeString,
-                    $topBarLine
-                    positive = \"확인\",
-                    onClickPositive = { showPopup = false },
-                    content = { Text(\"Popup Content\") }
+                    resize = $resizeString,$popupDefaultLine
+                    $titleLine$actionLines
+                    content = { Text("Popup Content") }
                 )
             }
         """.trimIndent()

@@ -81,13 +81,9 @@ class DSWantedSearchTopAppBarDemoViewModel @Inject constructor(
             params.add("placeholder = \"${state.placeholder}\"")
         }
 
-        val sizeString = when (state.size) {
-            is Size.Small -> "Size.Small()"
-            is Size.Medium -> "Size.Medium()"
-            is Size.Custom -> "Size.Custom()"
-        }
-        if (state.size !is Size.Medium) {
-            params.add("size = $sizeString")
+        // WantedSearchTopAppBar(text = ...) 오버로드의 size 기본값이 Medium 이므로 그 외에만 표기합니다.
+        if (state.size != Size.Medium) {
+            params.add("size = Size.Large")
         }
 
         if (!state.background) {
@@ -102,7 +98,6 @@ class DSWantedSearchTopAppBarDemoViewModel @Inject constructor(
             params.add(
                 """actions = {
                     WantedTopAppBarIconButton(
-                        variant = Variant.Search,
                         painter = painterResource(R.drawable.ic_normal_share_svg),
                         onClick = { /* Handle action */ }
                     )

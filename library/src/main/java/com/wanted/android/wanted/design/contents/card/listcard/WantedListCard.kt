@@ -59,12 +59,12 @@ import com.wanted.android.wanted.design.util.OPACITY_8
  * )
  * ```
  *
- * @param modifier Modifier: 컴포넌트의 레이아웃과 스타일을 조정합니다.
+ * @param modifier Modifier: 카드 최외곽 노드에 적용됩니다. 배경·테두리·클릭 영역이 모두 이 노드 기준입니다.
  * @param title String: 카드의 주요 제목입니다.
  * @param caption String: 제목 아래에 표시될 보조 설명입니다.
  * @param extraCaption String: 추가적인 설명 텍스트입니다.
  * @param isLoading Boolean: true일 경우 스켈레톤 UI로 렌더링됩니다.
- * @param cardDefault WantedCardDefault: 스켈레톤 모드 시 항목별 표시 여부를 지정하는 설정 객체입니다.
+ * @param cardDefault WantedCardDefault: 스켈레톤 표시 여부와 카드 표면(배경색·모양·테두리·안쪽 여백) 설정을 담는 객체입니다.
  * @param thumbnail (@Composable () -> Unit)?: 썸네일 이미지 영역입니다. null이면 기본 배경으로 표시됩니다.
  * @param topContent (@Composable () -> Unit)?: 설명 위에 표시될 추가 콘텐츠입니다.
  * @param bottomContent (@Composable () -> Unit)?: 설명 아래에 표시될 추가 콘텐츠입니다.
@@ -89,7 +89,10 @@ fun WantedListCard(
 ) {
     if (isLoading) {
         WantedCardHorizontalSkeleton(
-            modifier = modifier,
+            modifier = modifier
+                .background(color = cardDefault.backgroundColor, shape = cardDefault.shape)
+                .cardBorder(cardDefault)
+                .padding(cardDefault.contentPadding),
             thumbnail = thumbnail,
             topContent = cardDefault.topContentSkeleton,
             caption = cardDefault.captionSkeleton,
@@ -100,16 +103,19 @@ fun WantedListCard(
         )
     } else {
         WantedTouchArea(
+            modifier = modifier
+                .background(color = cardDefault.backgroundColor, shape = cardDefault.shape)
+                .cardBorder(cardDefault),
             content = {
                 WantedCardHorizontalLayout(
-                    modifier = modifier,
+                    modifier = Modifier.padding(cardDefault.contentPadding),
                     thumbnail = thumbnail ?: {
                         Box(
                             modifier = Modifier
                                 .height(64.dp)
                                 .aspectRatio(cardDefault.ratio)
                                 .background(
-                                    color = DesignSystemTheme.colors.fillNormal
+                                    color = DesignSystemTheme.colors.surfaceNeutralSecondary
                                         .copy(OPACITY_8)
                                 ),
                         )
@@ -132,12 +138,7 @@ fun WantedListCard(
             verticalPadding = 8.dp,
             horizontalPadding = 8.dp,
             enabledInnerTouch = true,
-            shape = RoundedCornerShape(
-                topStart = 20.dp,
-                topEnd = 12.dp,
-                bottomStart = 20.dp,
-                bottomEnd = 12.dp
-            ),
+            shape = cardDefault.interactionShape,
             onClick = onClick
         )
     }
@@ -208,10 +209,10 @@ private fun WantedCardHorizontalLayout(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = DesignSystemTheme.colors.fillAlternative)
+                .background(color = DesignSystemTheme.colors.surfaceNeutralTertiary)
                 .border(
                     width = 1.dp,
-                    color = DesignSystemTheme.colors.lineSolidAlternative,
+                    color = DesignSystemTheme.colors.lineNeutralTertiaryOpaque,
                     shape = RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.TopStart
@@ -445,3 +446,15 @@ private fun WantedCardSkeletonPreview() {
     }
 }
 
+/**
+ * Modifier.cardBorder
+ *
+ * 카드 표면 테두리를 배경 위에 그립니다. cardDefault.border 가 null 이면 아무것도 적용하지 않습니다.
+ *
+ * background 다음에 호출해야 테두리가 배경에 가려지지 않습니다.
+ *
+ * @param cardDefault WantedCardDefault: 테두리와 모양 정보를 담은 설정 객체입니다.
+ * @return Modifier: 테두리가 적용된 Modifier 입니다.
+ */
+private fun Modifier.cardBorder(cardDefault: WantedCardDefault): Modifier =
+    cardDefault.border?.let { border(border = it, shape = cardDefault.shape) } ?: this

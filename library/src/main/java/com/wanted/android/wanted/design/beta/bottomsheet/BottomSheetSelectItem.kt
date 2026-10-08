@@ -48,7 +48,7 @@ fun BottomSheetSelectItem(
             } else {
                 DesignSystemTheme.typography.body1Medium
             },
-            color = DesignSystemTheme.colors.labelNormal
+            color = DesignSystemTheme.colors.foregroundNeutralPrimary
         )
 
         WantedInput(

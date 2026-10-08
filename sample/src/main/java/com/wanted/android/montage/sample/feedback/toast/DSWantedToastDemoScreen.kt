@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
-import com.wanted.android.designsystem.R
+import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.feedback.toast.DSWantedToastDemoScreenContract.DSWantedToastDemoEvent
 import com.wanted.android.montage.sample.feedback.toast.DSWantedToastDemoScreenContract.DSWantedToastDemoSideEffect
 import com.wanted.android.montage.sample.feedback.toast.DSWantedToastDemoScreenContract.DSWantedToastDemoViewEvent
@@ -34,8 +34,7 @@ import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.toast.showToast
 import com.wanted.android.wanted.design.feedback.toast.WantedToast
 import com.wanted.android.wanted.design.feedback.toast.WantedToastVariant
-import com.wanted.android.montage.sample.ui.WantedBackTopAppBar
-import com.wanted.android.montage.sample.ui.DSWantedPreviewContainer
+import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonVariant
 import com.wanted.android.wanted.design.util.WantedTextStyle
@@ -76,7 +75,14 @@ fun DSWantedToastDemoScreen(
                 }
 
 
+                DSWantedToastDemoViewEvent.OnClickNormal -> {
+                    viewModel.setEvent(
+                        DSWantedToastDemoEvent.SetVariant(WantedToastVariant.Normal)
+                    )
+                }
+
                 DSWantedToastDemoViewEvent.OnClickMessage -> {
+                    @Suppress("DEPRECATION")
                     viewModel.setEvent(
                         DSWantedToastDemoEvent.SetVariant(WantedToastVariant.Message)
                     )
@@ -102,6 +108,7 @@ fun DSWantedToastDemoScreen(
     )
 }
 
+@Suppress("DEPRECATION")
 @Composable
 private fun DSWantedToastDemoScreenContent(
     modifier: Modifier = Modifier,
@@ -131,10 +138,24 @@ private fun DSWantedToastDemoScreenContent(
                     }
                 )
             },
+            normal = {
+                WantedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Normal",
+                    variant = if (viewState.toastVariant == WantedToastVariant.Normal) {
+                        ButtonVariant.SOLID
+                    } else {
+                        ButtonVariant.OUTLINED
+                    },
+                    onClick = {
+                        onViewEvent(DSWantedToastDemoViewEvent.OnClickNormal)
+                    }
+                )
+            },
             message = {
                 WantedButton(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "메시지",
+                    text = "메시지 (Deprecated)",
                     variant = if (viewState.toastVariant == WantedToastVariant.Message) {
                         ButtonVariant.SOLID
                     } else {
@@ -196,6 +217,7 @@ private fun DSWantedToastDemoScreenContent(
 private fun DSWantedTextAreaDemoScreenLayout(
     modifier: Modifier = Modifier,
     preview: @Composable () -> Unit,
+    normal: @Composable () -> Unit,
     message: @Composable () -> Unit,
     positive: @Composable () -> Unit,
     cautionary: @Composable () -> Unit,
@@ -208,12 +230,22 @@ private fun DSWantedTextAreaDemoScreenLayout(
         Text(
             text = "Preview",
             style = WantedTextStyle(
-                colorRes = R.color.label_strong,
+                colorRes = R.color.foreground_neutral_strong,
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
 
-        DSWantedPreviewContainer {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = colorResource(R.color.line_neutral_primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
             preview()
         }
 
@@ -231,11 +263,12 @@ private fun DSWantedTextAreaDemoScreenLayout(
                 modifier = Modifier.align(Alignment.Start),
                 text = "Option",
                 style = WantedTextStyle(
-                    colorRes = R.color.label_strong,
+                    colorRes = R.color.foreground_neutral_strong,
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
 
+            normal()
             message()
             positive()
             cautionary()

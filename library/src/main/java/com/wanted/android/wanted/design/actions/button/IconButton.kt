@@ -49,15 +49,15 @@ class IconButton(context: Context, attrs: AttributeSet? = null) :
     private fun setIconColor() {
         when (type) {
             Type.PRIMARY -> R.color.static_white
-            Type.BLUE -> R.color.primary_normal
-            Type.BLACK -> R.color.label_normal
+            Type.BLUE -> R.color.foreground_brand_primary
+            Type.BLACK -> R.color.foreground_neutral_primary
         }.apply { iconView.tint = ContextCompat.getColor(context, this) }
     }
 
     private fun setBackground() {
         when (type) {
-            Type.PRIMARY -> R.color.primary_normal to null
-            Type.BLUE, Type.BLACK -> R.color.background_normal_normal to R.color.line_normal_normal
+            Type.PRIMARY -> R.color.surface_brand_primary to null
+            Type.BLUE, Type.BLACK -> R.color.background_neutral_primary to R.color.line_neutral_primary
         }.apply {
             val (backgroundColor, strokeColor) = this
             background = context.makeDrawable(backgroundColor, strokeColor, 20f.dp)

@@ -34,6 +34,7 @@ import com.wanted.android.wanted.design.actions.chip.WantedChip
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipSize
 import com.wanted.android.wanted.design.actions.chip.WantedChipContract.ChipVariant
 import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Size
+import com.wanted.android.wanted.design.navigations.category.WantedCategoryDefaults.Variant
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
@@ -69,7 +70,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param size Size: 카테고리 항목의 크기입니다.
  * @param horizontalPadding Boolean: 좌우 여백 적용 여부입니다.
  * @param isVerticalPadding Boolean: 상하 여백 적용 여부입니다.
- * @param isAlternative Boolean: 선택 시 Outlined 스타일 적용 여부입니다.
+ * @param variant Variant: 선택 항목 스타일입니다. Normal 이면 채워진 배경으로, Alternative 면 primary 테두리·옅은 배경으로 표시합니다. 선택 항목 색상은 Normal 에서만 지정할 수 있습니다.
  * @param gradientColor Color: 좌우 그라디언트 배경 색상입니다.
  * @param rightIcon (@Composable (Dp) -> Unit)?: 우측에 표시할 아이콘 슬롯입니다.
  * @param onClick (String, Boolean) -> Unit: 항목 클릭 시 호출되는 콜백입니다. 선택된 항목과 선택 여부를 전달합니다.
@@ -84,8 +85,8 @@ fun WantedCategory(
     size: Size = Size.Medium,
     horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
-    isAlternative: Boolean = false,
-    gradientColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    variant: Variant = Variant.Normal(),
+    gradientColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     rightIcon: @Composable ((Dp) -> Unit)? = null,
     onClick: (item: String, isSelected: Boolean) -> Unit
 ) {
@@ -101,23 +102,12 @@ fun WantedCategory(
             itemsIndexed(itemList) { index, item ->
                 WantedChip(
                     text = item,
-                    variant = if (selectedList.contains(item)) {
-                        if (isAlternative) {
-                            ChipVariant.Outlined
-                        } else {
-                            ChipVariant.Solid
-                        }
-                    } else {
-                        ChipVariant.Outlined
-                    },
-                    size = when (size) {
-                        Size.Small -> ChipSize.XSmall
-                        Size.Medium -> ChipSize.Small
-                        Size.Large -> ChipSize.Medium
-                        Size.XLarge -> ChipSize.Large
-                    },
-                    isActive = selectedList.contains(item),
-                    isEnable = !disableItemList.contains(item),
+                    chipDefault = WantedCategoryDefaults.getChipDefault(
+                        size = size,
+                        variant = variant,
+                        isActive = selectedList.contains(item),
+                        isEnable = !disableItemList.contains(item)
+                    ),
                     onClick = {
                         onClick(item, !selectedList.contains(item))
                     }
@@ -162,30 +152,94 @@ fun WantedCategory(
     size: Size = Size.Medium,
     horizontalPadding: Boolean = false,
     isVerticalPadding: Boolean = false,
-    gradientColor: Color = DesignSystemTheme.colors.backgroundNormalNormal,
+    gradientColor: Color = DesignSystemTheme.colors.backgroundNeutralPrimary,
     rightIcon: @Composable ((Dp) -> Unit)? = null,
     content: LazyListScope.() -> Unit
 ) {
-    CompositionLocalProvider(LocalCategoryGradationColor provides gradientColor) {
+    WantedCategory(
+        modifier = modifier,
+        state = state,
+        categoryDefault = WantedCategoryDefaults.getDefault(
+            size = size,
+            horizontalPadding = horizontalPadding,
+            isVerticalPadding = isVerticalPadding,
+            gradientColor = gradientColor
+        ),
+        rightIcon = rightIcon,
+        content = content
+    )
+}
+
+/**
+ * WantedCategory
+ *
+ * [WantedCategoryDefault] 로 표시 스펙(크기·여백·그라디언트 색상)을 지정하는 Category 컴포넌트입니다.
+ *
+ * LazyListScope를 통해 항목을 직접 구성할 수 있으며, 그라디언트 효과와 우측 아이콘을 지원합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * WantedCategory(
+ *     categoryDefault = WantedCategoryDefaults.getDefault(
+ *         size = WantedCategoryDefaults.Size.Large,
+ *         gradientColor = DesignSystemTheme.colors.surfaceElevatedPrimary
+ *     )
+ * ) {
+ *     items(tagList) { tag ->
+ *         WantedChip(
+ *             text = tag,
+ *             onClick = { /* 처리 */ }
+ *         )
+ *     }
+ * }
+ * ```
+ *
+ * @param categoryDefault WantedCategoryDefault: 크기·여백·그라디언트 색상을 담는 표시 스펙입니다. [WantedCategoryDefaults.getDefault] 로 생성합니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param state LazyListState: LazyRow의 스크롤 상태를 관리하는 객체입니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다.
+ * @param content LazyListScope.() -> Unit: 내부 아이템을 구성하는 블록입니다.
+ */
+@Composable
+fun WantedCategory(
+    categoryDefault: WantedCategoryDefault,
+    modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
+    rightIcon: @Composable ((Dp) -> Unit)? = null,
+    content: LazyListScope.() -> Unit
+) {
+    CompositionLocalProvider(LocalCategoryGradationColor provides categoryDefault.gradientColor) {
         WantedCategoryLayout(
             modifier = modifier
                 .fillMaxWidth(),
-            size = size,
-            isLeftGradient = if (horizontalPadding) false else state.canScrollBackward,
+            size = categoryDefault.size,
+            isLeftGradient = if (categoryDefault.horizontalPadding) false else state.canScrollBackward,
             isRightGradient = when {
-                horizontalPadding && rightIcon != null -> state.canScrollForward
-                horizontalPadding -> false
+                categoryDefault.horizontalPadding && rightIcon != null -> state.canScrollForward
+                categoryDefault.horizontalPadding -> false
                 else -> state.canScrollForward
             },
             content = {
                 LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = if (isVerticalPadding) size.verticalPadding else 0.dp),
+                        .padding(
+                            vertical = if (categoryDefault.isVerticalPadding) {
+                                categoryDefault.size.verticalPadding
+                            } else {
+                                0.dp
+                            }
+                        ),
                     state = state,
-                    contentPadding = PaddingValues(horizontal = if (horizontalPadding) 20.dp else 0.dp),
+                    contentPadding = PaddingValues(
+                        horizontal = if (categoryDefault.horizontalPadding) {
+                            WantedCategoryDefaults.contentHorizontalPadding
+                        } else {
+                            0.dp
+                        }
+                    ),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(size.horizontalSpacing)
+                    horizontalArrangement = Arrangement.spacedBy(categoryDefault.size.horizontalSpacing)
                 ) {
                     content()
                 }
@@ -235,14 +289,14 @@ private fun WantedCategoryLayout(
                 if (isLeftGradient) {
                     Box(
                         modifier = Modifier
-                            .padding(bottom = 1.dp)
+                            .padding(bottom = WantedCategoryDefaults.gradientBottomPadding)
                             .constrainAs(leftGradientRef) {
                                 top.linkTo(tabRef.top)
                                 bottom.linkTo(tabRef.bottom)
                                 start.linkTo(tabRef.start)
                                 height = Dimension.fillToConstraints
                             }
-                            .width(48.dp)
+                            .width(WantedCategoryDefaults.gradientWidth)
                             .background(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
@@ -257,14 +311,14 @@ private fun WantedCategoryLayout(
                 if (isRightGradient) {
                     Box(
                         modifier = Modifier
-                            .padding(bottom = 1.dp)
+                            .padding(bottom = WantedCategoryDefaults.gradientBottomPadding)
                             .constrainAs(rightGradientRef) {
                                 top.linkTo(tabRef.top)
                                 bottom.linkTo(tabRef.bottom)
                                 end.linkTo(tabRef.end)
                                 height = Dimension.fillToConstraints
                             }
-                            .width(48.dp)
+                            .width(WantedCategoryDefaults.gradientWidth)
                             .background(
                                 brush = Brush.horizontalGradient(
                                     colors = listOf(
@@ -280,14 +334,11 @@ private fun WantedCategoryLayout(
             rightIcon?.let {
                 BoxWithConstraints(
                     modifier = Modifier
-                        .padding(start = 12.dp, end = 8.dp)
-                        .size(
-                            when (size) {
-                                Size.Small -> 20.dp
-                                Size.Medium -> 22.dp
-                                else -> 24.dp
-                            }
+                        .padding(
+                            start = WantedCategoryDefaults.rightIconStartPadding,
+                            end = WantedCategoryDefaults.rightIconEndPadding
                         )
+                        .size(size.rightIconSize)
                 ) {
                     rightIcon(maxHeight)
                 }
@@ -345,7 +396,7 @@ private fun WantedCategoryPreview() {
                     modifier = Modifier,
                     size = Size.Medium,
                     itemList = itemList,
-                    isAlternative = true,
+                    variant = Variant.Alternative,
                     selectedList = listOf(itemList.first()),
                     disableItemList = listOf(itemList.first()),
                     onClick = { _, _ -> }
