@@ -21,7 +21,7 @@
 * @param text String: 배지에 표시할 텍스트입니다.
 * @param modifier Modifier: 배지 외형과 배치를 설정합니다.
 * @param type ContentBadgeType: Solid 또는 Outlined 형식의 배지 스타일입니다.
-* @param size ContentBadgeSize: 배지 크기를 지정합니다 (XSmall, Small, Large).
+* @param size ContentBadgeSize: 배지 크기를 지정합니다 (XSmall, Small, Medium).
 * @param color ContentBadgeColor: 컬러 테마를 지정합니다 (Neutral, Accent).
 * @param accentDefault WantedContentBadgeDefault: Accent 또는 Neutral 컬러 설정의 기본값을 지정합니다.
 * @param leadingDrawable Int?: 텍스트 왼쪽에 표시할 아이콘 리소스 ID입니다.
@@ -84,6 +84,6 @@
 * )
 * ```
 *
-* @param contentColor Color: 콘텐츠 색상입니다. 기본값은 label_alternative 색상입니다.
+* @param contentColor Color: 콘텐츠 색상입니다. 기본값은 foregroundNeutralTertiary 색상입니다.
 * @return WantedContentBadgeDefault: 중립 배지 구성을 반환합니다.
 */

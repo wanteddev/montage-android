@@ -1,4 +1,6 @@
 /**
+* WantedInput
+*
 * Checkbox, Radio, Checkmark 스타일을 포함하는 커스텀 입력 행 컴포넌트입니다.
 *
 * label, size, variant, checkBoxState 등을 조합하여 텍스트 라벨과 Checkbox를 포함한 입력 항목을 구성합니다.
@@ -16,7 +18,7 @@
 * ```
 *
 * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
-* @param label String: 항목에 표시될 텍스트입니다.
+* @param label String: 항목에 표시될 텍스트입니다. 비어 있으면 Checkbox 영역만 차지합니다(라벨 앞 간격 없음).
 * @param variant WantedInputVariant: CheckBox, Radio, CheckMark, Switch 중 하나의 타입을 지정합니다.
 * @param size WantedInputSize: Medium 또는 Small 사이즈를 지정합니다.
 * @param checkBoxState CheckBoxState: 체크 상태 (Unchecked, Checked, Indeterminate)를 지정합니다.

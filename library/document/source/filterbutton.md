@@ -21,7 +21,7 @@
 * @param variant FilterButtonVariant: FilterButton의 스타일입니다 (기본값: Solid).
 * @param isActive Boolean: FilterButton의 활성화 상태입니다.
 * @param isEnable Boolean: FilterButton의 사용 가능 상태입니다.
-* @param isExpend Boolean: 확장 가능 상태입니다 (아이콘 변경 목적).
+* @param isExpanded Boolean: 확장 가능 상태입니다 (아이콘 변경 목적).
 * @param interactionSource MutableInteractionSource: 사용자 인터랙션 처리를 위한 객체입니다.
 * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
 */
@@ -86,6 +86,10 @@
 *
 * @see WantedFilterButton
 */
+
+/** 텍스트 좌우 패딩입니다. 전 사이즈 공통 2dp 입니다. */
+
+/** 라벨 ↔ activeLabel 사이 간격입니다. Small·XSmall 만 2dp 입니다. */
 
 /**
 * data class WantedFilterButtonDefault

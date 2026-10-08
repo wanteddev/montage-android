@@ -24,11 +24,10 @@
 * @param placeholder String: 플레이스홀더 텍스트입니다.
 * @param title String: 상단 제목입니다.
 * @param description String?: 하단 설명 또는 상태 메시지입니다.
-* @param rightButton String?: 우측 버튼 텍스트입니다.
-* @param rightButtonVariant RightVariant: 우측 버튼 스타일입니다.
+* @param trailingButton String?: 우측 버튼 텍스트입니다.
 * @param status Status: 입력 상태입니다.
 * @param enabled Boolean: 입력 가능 여부입니다.
-* @param rightButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
+* @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
 * @param maxLines Int: 최대 줄 수입니다.
 * @param minLines Int: 최소 줄 수입니다.
 * @param maxWordCount Int: 입력 가능한 최대 글자 수입니다.
@@ -44,7 +43,7 @@
 * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
 * @param sectionTitle ((Int) -> String)?: 섹션 제목 반환 함수입니다.
-* @param onClickRightButton () -> Unit: 우측 버튼 클릭 시 호출됩니다.
+* @param onClickTrailingButton () -> Unit: 우측 버튼 클릭 시 호출됩니다.
 * @param onValueChange (String) -> Unit: 값 변경 시 호출됩니다.
 * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
 * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
@@ -81,11 +80,10 @@
 * @param placeholder String: 플레이스홀더입니다.
 * @param title String: 상단 제목입니다.
 * @param description String?: 하단 설명입니다.
-* @param rightButton String?: 우측 버튼 텍스트입니다.
-* @param rightButtonVariant RightVariant: 우측 버튼 스타일입니다.
+* @param trailingButton String?: 우측 버튼 텍스트입니다.
 * @param status Status: 입력 상태입니다.
 * @param enabled Boolean: 활성화 여부입니다.
-* @param rightButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
+* @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
 * @param maxLines Int: 최대 줄 수입니다.
 * @param minLines Int: 최소 줄 수입니다.
 * @param maxWordCount Int: 최대 입력 글자 수입니다.
@@ -101,7 +99,7 @@
 * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
 * @param sectionTitle ((Int) -> String)?: 섹션 제목 제공 함수입니다.
-* @param onClickRightButton () -> Unit: 우측 버튼 클릭 콜백입니다.
+* @param onClickTrailingButton () -> Unit: 우측 버튼 클릭 콜백입니다.
 * @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
 * @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
 * @param trailingContent ((Dp) -> Unit)?: 우측 콘텐츠입니다.

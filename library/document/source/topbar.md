@@ -1,4 +1,31 @@
 /**
+* fun WantedCenterTopAppBar(...)
+*
+* 타이틀을 가운데 정렬하는 TopAppBar 컴포넌트입니다.
+*
+* 다양한 Variant를 지원하며, 스크롤 상태에 따라 배경 표시가 전환됩니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedCenterTopAppBar(
+*     title = { Text(...) },
+*     navigationIcon = { Icon(...) },
+*     actions = { IconButton(...) }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param backgroundColor Color: 앱바 배경 색상입니다.
+* @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+* @param variant Variant: 앱바 형태입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
+* @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+*/
+
+/**
 * WantedTopAppBar
 *
 * 기본 TopAppBar 컴포넌트입니다.
@@ -117,9 +144,8 @@
 * @param interactionSource MutableInteractionSource?: 사용자 인터랙션 상태를 추적하는 객체입니다.
 * @param keyboardOptions KeyboardOptions: 키보드 옵션입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 핸들러입니다.
-* @param focused State<Boolean>?: 검색 필드의 포커스 상태입니다.
-* @param textStyle TextStyle: 검색 텍스트의 스타일입니다.
-* @param cursorBrush Brush: 커서의 브러시(색상)입니다.
+* @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
+* @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 primary 색상을 사용합니다.
 * @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 * @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.
@@ -147,7 +173,7 @@
 *
 * TopAppBar에 사용되는 아이콘 버튼 컴포넌트입니다.
 *
-* Variant에 따라 다양한 스타일이 적용됩니다.
+* 아이콘 24dp · 터치 영역 40dp 원형 규격이며, 인터랙션 피드백은 [interactionEffect] 로 지정합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -159,11 +185,11 @@
 *
 * @param painter Painter: 아이콘으로 표시할 이미지입니다.
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
-* @param variant Variant: 앱바 형태입니다.
 * @param enabled Boolean: 버튼 활성화 여부입니다.
 * @param interactionSource MutableInteractionSource: 사용자 인터랙션을 처리하는 객체입니다.
 * @param tint Color: 아이콘 색상입니다.
 * @param badgeAlignment Alignment: 배지 정렬 위치입니다.
 * @param badge (@Composable () -> Unit)?: 배지 콘텐츠입니다.
+* @param interactionEffect IconButtonInteractionEffect: 인터랙션 피드백 방식입니다. 기본값 [IconButtonInteractionEffect.Dim]
 * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
 */
