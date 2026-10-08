@@ -27,7 +27,14 @@
 * Application 생명주기에 콜백을 등록하여 Activity 상태를 추적합니다.
 * 반드시 Application 클래스에서 한 번만 호출해야 합니다.
 *
-* @param application Application Application 인스턴스입니다.
+* @param application Application: Application 인스턴스입니다.
+*/
+
+/**
+* PlayCoreDialogWrapperActivity(인앱리뷰) 등 라이브러리가 매니페스트에 머지해 넣는
+* 플레인 [Activity]는 DecorView에 ViewTreeLifecycleOwner가 설정되지 않아
+* ComposeView를 붙이는 순간 IllegalStateException으로 앱이 종료된다.
+* ComposeView 부착의 실제 전제조건인 view tree의 LifecycleOwner 존재 여부를 직접 검사한다.
 */
 
 /**
@@ -51,7 +58,7 @@
 * @param text String: 토스트에 표시할 메시지입니다.
 * @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
 * @param padding PaddingValues: 토스트에 적용할 패딩입니다. 기본값은 하단 20dp입니다.
-* @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+* @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Normal입니다.
 * @param icon (@Composable () -> Unit)?: 사용자 정의 아이콘입니다.
 */
 
@@ -106,7 +113,7 @@
 *
 * @param scope CoroutineScope: 코루틴을 실행할 스코프입니다.
 * @param message String: 토스트에 표시할 메시지입니다.
-* @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Message입니다.
+* @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Normal입니다.
 */
 
 /**
@@ -118,7 +125,8 @@
 * 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
 *
 * 제공되는 Toast 스타일은 다음과 같습니다:
-* - Message: 일반 메시지 (아이콘 없음)입니다.
+* - Normal: 일반 메시지 (아이콘 없음)입니다.
+* - Message: 일반 메시지 (아이콘 없음)입니다. (deprecated, Normal 을 사용하세요)
 * - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
 * - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
 * - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
@@ -127,6 +135,12 @@
 * @property tinColor Int: 아이콘에 적용될 색상 리소스의 ID입니다.
 * @property backgroundResourceId Int?: 배경 이미지 리소스의 ID입니다.
 * @property backgroundTintColor Int: 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
+*/
+
+/**
+* data object Normal
+*
+* 일반 텍스트 메시지를 표시하는 스타일입니다. 아이콘은 표시되지 않습니다.
 */
 
 /**

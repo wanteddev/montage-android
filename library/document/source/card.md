@@ -17,7 +17,7 @@
 * )
 * ```
 *
-* @param modifier Modifier: 레이아웃 및 스타일을 지정하는 Modifier입니다.
+* @param modifier Modifier: 카드 최외곽 노드에 적용됩니다. 배경·테두리·클릭 영역이 모두 이 노드 기준입니다.
 * @param thumbnail (@Composable () -> Unit): 썸네일 이미지 영역입니다.
 * @param overlayCaption String: 썸네일 위에 오버레이로 표시할 텍스트입니다.
 * @param title String: 카드 타이틀 텍스트입니다.
@@ -25,7 +25,7 @@
 * @param subCaption String: 추가 보조 캡션 텍스트입니다.
 * @param extraCaption String: 하단 추가 설명 텍스트입니다.
 * @param isLoading Boolean: 로딩 상태 여부입니다. true이면 skeleton UI가 렌더링됩니다.
-* @param cardDefault WantedCardDefault: skeleton 모드에서 사용할 설정값입니다.
+* @param cardDefault WantedCardDefault: 스켈레톤 표시 여부와 카드 표면(배경색·모양·테두리·안쪽 여백) 설정을 담는 객체입니다.
 * @param overlayToggleIcon (@Composable () -> Unit)?: 썸네일 오버레이에 포함될 토글 아이콘입니다.
 * @param topContent (@Composable () -> Unit)?: 카드 상단 타이틀 위에 추가 표시할 컴포넌트입니다.
 * @param bottomContent (@Composable () -> Unit)?: 카드 하단에 추가 표시할 컴포넌트입니다.
@@ -33,17 +33,33 @@
 */
 
 /**
+* Modifier.cardBorder
+*
+* 카드 표면 테두리를 배경 위에 그립니다. cardDefault.border 가 null 이면 아무것도 적용하지 않습니다.
+*
+* background 다음에 호출해야 테두리가 배경에 가려지지 않습니다.
+*
+* @param cardDefault WantedCardDefault: 테두리와 모양 정보를 담은 설정 객체입니다.
+* @return Modifier: 테두리가 적용된 Modifier 입니다.
+*/
+
+/**
 * data class WantedCardDefault
 *
-* 스켈레톤 표시 여부를 지정하는 데이터 클래스입니다.
+* 카드의 표시 스펙을 지정하는 데이터 클래스입니다.
 *
-* 각 항목별로 스켈레톤 표시 여부를 설정합니다.
+* 스켈레톤 표시 여부와 카드 표면(배경·모양·여백) 설정을 함께 담습니다.
 *
 * @param topContentSkeleton Boolean: 상단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
 * @param captionSkeleton Boolean: 메인 캡션에 스켈레톤을 표시할지 여부입니다.
 * @param extraCaptionSkeleton Boolean: 추가 캡션에 스켈레톤을 표시할지 여부입니다.
 * @param bottomContentSkeleton Boolean: 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
 * @param ratio Float: 썸네일 스켈레톤의 비율입니다.
+* @param backgroundColor Color: 카드 표면 배경색입니다. 기본값 Transparent 는 배경을 그리지 않는 것과 같습니다.
+* @param shape Shape: 배경 모양입니다.
+* @param border BorderStroke?: 카드 표면 테두리입니다. null 이면 테두리를 그리지 않습니다. 배경 위에 그려지므로 modifier 에 직접 border 를 주면 배경에 가려집니다.
+* @param interactionShape Shape: 클릭·리플 모양입니다.
+* @param contentPadding PaddingValues: 카드 표면 안쪽 여백입니다. modifier 의 padding 은 클릭 영역 바깥 마진이 되므로 안쪽 여백은 이 값으로 줍니다.
 */
 
 /**
@@ -70,5 +86,10 @@
 * @param captionSkeleton Boolean: 메인 캡션에 스켈레톤을 표시할지 여부입니다. 기본값은 true입니다.
 * @param extraCaptionSkeleton Boolean: 추가 캡션에 스켈레톤을 표시할지 여부입니다. 기본값은 true입니다.
 * @param bottomContentSkeleton Boolean: 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다. 기본값은 false입니다.
+* @param backgroundColor Color: 카드 표면 배경색입니다. 기본값 Transparent 는 배경을 그리지 않는 것과 같습니다.
+* @param shape Shape: 배경 모양입니다.
+* @param border BorderStroke?: 카드 표면 테두리입니다. null 이면 테두리를 그리지 않습니다. 배경 위에 그려지므로 modifier 에 직접 border 를 주면 배경에 가려집니다.
+* @param interactionShape Shape: 클릭·리플 모양입니다.
+* @param contentPadding PaddingValues: 카드 표면 안쪽 여백입니다. modifier 의 padding 은 클릭 영역 바깥 마진이 되므로 안쪽 여백은 이 값으로 줍니다.
 * @return WantedCardDefault: 스켈레톤 설정 정보가 담긴 데이터 클래스입니다.
 */

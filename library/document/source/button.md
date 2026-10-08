@@ -1,4 +1,6 @@
 /**
+* WantedButton
+*
 * 다양한 스타일의 버튼을 생성하는 공통 Compose 함수입니다.
 * ButtonVariant에 따라 Solid, Outlined, Text 버튼을 선택하여 렌더링합니다.
 *
@@ -26,6 +28,8 @@
 */
 
 /**
+* WantedButton
+*
 * WantedButton을 더 세밀하게 제어하기 위한 Compose 함수입니다.
 * WantedButtonDefault를 직접 주입하여 스타일과 상태를 설정할 수 있습니다.
 *

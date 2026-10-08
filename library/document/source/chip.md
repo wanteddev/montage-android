@@ -8,8 +8,8 @@
 * ```kotlin
 * WantedChip(
 *     text = "텍스트",
-*     leftIcon = R.drawable.ic_sample_icon,
-*     rightIcon = R.drawable.ic_sample_icon,
+*     leadingContent = R.drawable.ic_sample_icon,
+*     trailingContent = R.drawable.ic_sample_icon,
 *     onClick = { /* 클릭 처리 */ }
 * )
 * ```
@@ -20,8 +20,8 @@
 * @param variant ChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
 * @param isActive Boolean: 선택 여부 상태입니다.
 * @param isEnable Boolean: 사용 가능 여부입니다.
-* @param leftIcon Int?: 왼쪽에 표시할 아이콘 리소스 ID입니다.
-* @param rightIcon Int?: 오른쪽에 표시할 아이콘 리소스 ID입니다.
+* @param leadingContent Int?: 왼쪽에 표시할 아이콘 리소스 ID입니다.
+* @param trailingContent Int?: 오른쪽에 표시할 아이콘 리소스 ID입니다.
 * @param interactionSource MutableInteractionSource: 클릭 시의 상호작용 상태입니다.
 * @param onClick (() -> Unit)?: 클릭 시 실행되는 콜백입니다.
 */
@@ -43,8 +43,8 @@
 *
 * @param text String: 표시할 텍스트입니다.
 * @param modifier Modifier: Modifier를 통한 스타��� 지정입니다.
-* @param leftIcon Int?: 왼쪽 아이콘 리소스 ID입니다.
-* @param rightIcon Int?: 오른쪽 아이콘 리소스 ID입니다.
+* @param leadingContent Int?: 왼쪽 아이콘 리소스 ID입니다.
+* @param trailingContent Int?: 오른쪽 아이콘 리소스 ID입니다.
 * @param chipDefault WantedChipDefault: 직접 지정한 Chip 스타일입니다.
 * @param interactionSource MutableInteractionSource: 클릭 상호작용을 위한 상태 객체입니다.
 * @param onClick (() -> Unit)?: 클릭 시 실행될 콜백입니다.
@@ -61,8 +61,8 @@
 * ```kotlin
 * WantedChip(
 *     content = { Text("Content") },
-*     leftIcon = { Icon(...) },
-*     rightIcon = { Icon(...) }
+*     leadingContent = { Icon(...) },
+*     trailingContent = { Icon(...) }
 * )
 * ```
 *
@@ -74,8 +74,8 @@
 * @param chipDefault WantedChipDefault: Chip 스타일 객체입니다.
 * @param interactionSource MutableInteractionSource: 터치 인터랙션 제어용 객체입니다.
 * @param content (@Composable () -> Unit): 텍스트 또는 기타 Composable 콘텐츠입니다.
-* @param leftIcon (@Composable (() -> Unit)?): 좌측 아이콘 Composable입니다.
-* @param rightIcon (@Composable (() -> Unit)?): 우측 아이콘 Composable입니다.
+* @param leadingContent (@Composable (() -> Unit)?): 좌측 아이콘 Composable입니다.
+* @param trailingContent (@Composable (() -> Unit)?): 우측 아이콘 Composable입니다.
 * @param onClick (() -> Unit)?: 클릭 이벤트 콜백입니다.
 */
 
@@ -113,6 +113,10 @@
 *
 * @see WantedChip
 */
+
+/** 텍스트 좌우 패딩입니다. 전 사이즈 공통 2dp 입니다. */
+
+/** 아이콘 ↔ 텍스트 간격입니다. XSmall 만 0dp 입니다. */
 
 /**
 * data class WantedChipDefault

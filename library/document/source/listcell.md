@@ -1,35 +1,38 @@
 /**
 * WantedListCell
 *
-* 텍스트와 캡션, 아이콘 등의 요소를 조합하여 하나의 Cell 형태로 표현하는 컴포넌트입니다.
+* 텍스트와 설명, 아이콘 등의 요소를 조합하여 하나의 Cell 형태로 표현하는 컴포넌트입니다.
 *
 * String 기반 텍스트 입력을 받아 내부적으로 AnnotatedString 변환 후 처리합니다.
-* 아이콘, 캡션, 클릭 이벤트, 구분선 등 다양한 UI 옵션을 제공합니다.
+* 아이콘, 설명, 클릭 이벤트, 구분선 등 다양한 UI 옵션을 제공합니다.
 *
 * 사용 예시 :
 * ```kotlin
 * WantedListCell(
 *     text = "텍스트",
-*     caption = "캡션",
-*     fillWidth = true,
+*     description = "설명",
+*     variant = WantedListCellDefaults.Variant.Full,
 *     onClick = { /* 클릭 처리 */ }
 * )
 * ```
 * @param text String: 셀에 표시할 메인 텍스트입니다.
-* @param modifier Modifier: 셀 외형, 배치, 패딩 등을 조정합니다.
-* @param textMaxLine Int: 텍스트 최대 줄 수를 지정합니다. 기본값은 1입니다.
-* @param caption String: 서브 텍스트(캡션)로 보조 정보를 제공합니다.
-* @param fillWidth Boolean: true일 경우 셀이 부모 너비를 가득 채웁니다.
-* @param verticalPadding WantedListCellDefaults.VerticalPadding: 셀 상하 패딩 크기를 조정합니다.
-* @param interactionPadding WantedListCellDefaults.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
+* @param modifier Modifier: 셀 최외곽 노드에 적용됩니다. 클릭 영역이 이 노드 기준이며, padding 은 클릭 영역 바깥 마진이 됩니다.
+* @param textMaxLine Int: ellipsis가 true일 때 적용할 텍스트 최대 줄 수입니다. 기본값은 1입니다.
+* @param description String: 서브 텍스트(설명)로 보조 정보를 제공합니다.
+* @param variant WantedListCellDefaults.Variant: 좌우 패딩·인터랙션 영역·radius를 묶어 지정합니다. 기본값은 Inset입니다.
+* @param verticalPadding WantedListCellDefaults.VerticalPadding: 셀 상하 패딩 크기를 조정합니다. None 은 인터랙션(outset·radius·ripple)을 사용하지 않습니다.
+* @param cellDefault WantedListCellDefault: 셀 표면(배경색·모양·테두리·안쪽 여백) 설정을 담는 객체입니다.
 * @param divider Boolean: true일 경우 셀 하단에 구분선을 표시합니다.
-* @param isEnable Boolean: 셀의 활성화 여부를 설정합니다. 비활성화 시 알파값이 줄어듭니다.
-* @param selected Boolean: true일 경우 메인 텍스트 색상을 primary로 강조 표시합니다.
-* @param ellipsis Boolean: true일 경우 텍스트가 넘칠 시 생략 부호(...)로 표시됩니다.
-* @param verticalAlignCenter Boolean: true일 경우 텍스트를 수직 중앙 정렬합니다.
-* @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다.
-* @param leadingContent (@Composable () -> Unit)? : 좌측에 추가적인 컴포넌트 콘텐츠를 배치할 수 있습니다.
-* @param trailingContent (@Composable () -> Unit)? : 우측에 추가적인 컴포넌트 콘텐츠를 배치할 수 있습니다.
+* @param isEnable Boolean: 셀의 활성화 여부를 설정합니다. 비활성화 시 클릭이 차단되고(onClick 미호출), 타이틀·설명·Check·chevron에 disable 색상을 적용합니다. 슬롯 콘텐츠는 자동으로 비활성 표현되지 않습니다. 아바타·썸네일처럼 색으로 표현할 수 없는 이미지 계열은 호출부에서 Opacity/43(OPACITY_43)을 적용합니다.
+* @param selected Boolean: true일 경우 메인 텍스트를 primary 색상과 Body 2 Bold로 강조 표시하고, trailingContent 가 비어 있으면 우측에 Check 아이콘을 표시합니다. chevrons 와 함께 쓰지 않습니다(함께 켜면 chevron 이 우선).
+* @param ellipsis Boolean: true일 경우 textMaxLine 줄로 제한하고 넘칠 시 생략 부호(...)를 표시합니다. false일 경우 줄 수를 제한하지 않습니다. 기본값은 false입니다.
+* @param verticalAlignCenter Boolean: leading·trailing(chevron 포함) 슬롯을 타이틀 첫 줄에 맞추는 기준입니다. 슬롯의 최소 높이는 타이틀 첫 줄 높이이고 슬롯 안 콘텐츠는 수직 중앙 정렬됩니다. false(기본값)면 슬롯 top 을 첫 줄 top 에, true 면 슬롯 center 를 첫 줄 center 에 맞춥니다. 설명·extraContent 가 있거나 타이틀이 여러 줄이어도 기준은 텍스트 영역 전체가 아니라 첫 줄입니다.
+* @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다. selected 와 함께 켜면 Check 대신 chevron 이 표시됩니다.
+* @param labelTrailingContent (@Composable RowScope.() -> Unit)? : 타이틀 옆 배지 슬롯입니다. 다중 배치(간격 4dp), 높이 22dp 고정이며 폭은 이 슬롯이 우선입니다.
+* @param extraContent (@Composable () -> Unit)? : 설명 아래에 배치하는 자유 슬롯입니다. 폭은 부모를 채우며, 내부 구성과 타이포·색상은 사용처가 정합니다(가로 배치 시 권장 간격 6dp).
+* @param leadingContent (@Composable RowScope.() -> Unit)? : 좌측 슬롯입니다. 여러 개를 넣을 수 있고 항목 간 간격은 8dp입니다.
+* @param trailingContent (@Composable RowScope.() -> Unit)? : 우측 슬롯입니다. 여러 개를 넣을 수 있고 항목 간 간격은 8dp입니다. selected 일 때 이 슬롯을 채우면 Check 아이콘 대신 넣은 것이 보입니다.
+* @param enabledInnerTouch Boolean: true일 경우 슬롯에 넣은 컨트롤(체크박스·스위치·버튼 등)이 자기 터치를 먼저 받습니다. 기본값 false 에서는 셀 클릭 영역이 콘텐츠 위를 덮어, 슬롯 안 어디를 눌러도 [onClick] 만 호출됩니다. true 로 두면 컨트롤 영역의 터치는 컨트롤이 처리하고 [onClick] 은 호출되지 않으므로, 컨트롤 콜백에서 상태를 갱신해야 합니다.
 * @param onClick (() -> Unit)? : 셀 클릭 시 호출되는 콜백 함수입니다.
 */
 
@@ -44,34 +47,83 @@
 * ```kotlin
 * WantedListCell(
 *     annotatedString = AnnotatedString("텍스트"),
-*     annotatedCaption = AnnotatedString("캡션"),
+*     annotatedDescription = AnnotatedString("설명"),
 *     onClick = { /* 클릭 처리 */ }
 * )
 * ```
 * @param annotatedString AnnotatedString: 표시할 메인 텍스트입니다.
-* @param modifier Modifier: 셀 외형, 배치, 패딩 등을 조정합니다.
-* @param annotatedCaption AnnotatedString: 서브 텍스트(캡션)입니다.
-* @param fillWidth Boolean: true일 경우 셀이 부모 너비를 가득 채웁니다.
-* @param verticalPadding WantedListCellDefaults.VerticalPadding: 셀 상하 패딩 크기를 조정합니다.
-* @param interactionPadding WantedListCellDefaults.InteractionPadding: 터치 영역의 좌우 여백을 지정합니다.
+* @param modifier Modifier: 셀 최외곽 노드에 적용됩니다. 클릭 영역이 이 노드 기준이며, padding 은 클릭 영역 바깥 마진이 됩니다.
+* @param annotatedDescription AnnotatedString: 서브 텍스트(설명)입니다.
+* @param variant WantedListCellDefaults.Variant: 좌우 패딩·인터랙션 영역·radius를 묶어 지정합니다. 기본값은 Inset입니다.
+* @param verticalPadding WantedListCellDefaults.VerticalPadding: 셀 상하 패딩 크기를 조정합니다. None 은 인터랙션(outset·radius·ripple)을 사용하지 않습니다.
+* @param cellDefault WantedListCellDefault: 셀 표면(배경색·모양·테두리·안쪽 여백) 설정을 담는 객체입니다.
 * @param divider Boolean: true일 경우 셀 하단에 구분선을 표시합니다.
-* @param isEnable Boolean: 셀의 활성화 여부를 설정합니다.
-* @param selected Boolean: true일 경우 텍스트 색상을 primary로 강조합니다.
-* @param ellipsis Boolean: true일 경우 텍스트가 넘칠 시 생략 부호(...)로 표시됩니다.
-* @param verticalAlignCenter Boolean: true일 경우 텍스트를 수직 중앙 정렬합니다.
-* @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다.
-* @param textMaxLine Int: 텍스트 최대 줄 수를 지정합니다. 기본값은 1입니다.
+* @param isEnable Boolean: 셀의 활성화 여부를 설정합니다. 비활성화 시 클릭이 차단되고(onClick 미호출), 타이틀·설명·Check·chevron에 disable 색상을 적용합니다. 슬롯 콘텐츠는 자동으로 비활성 표현되지 않습니다. 아바타·썸네일처럼 색으로 표현할 수 없는 이미지 계열은 호출부에서 Opacity/43(OPACITY_43)을 적용합니다.
+* @param selected Boolean: true일 경우 텍스트를 primary 색상과 Body 2 Bold로 강조하고, trailingContent 가 비어 있으면 우측에 Check 아이콘을 표시합니다. chevrons 와 함께 쓰지 않습니다(함께 켜면 chevron 이 우선).
+* @param ellipsis Boolean: true일 경우 textMaxLine 줄로 제한하고 넘칠 시 생략 부호(...)를 표시합니다. false일 경우 줄 수를 제한하지 않습니다. 기본값은 false입니다.
+* @param verticalAlignCenter Boolean: leading·trailing(chevron 포함) 슬롯을 타이틀 첫 줄에 맞추는 기준입니다. 슬롯의 최소 높이는 타이틀 첫 줄 높이이고 슬롯 안 콘텐츠는 수직 중앙 정렬됩니다. false(기본값)면 슬롯 top 을 첫 줄 top 에, true 면 슬롯 center 를 첫 줄 center 에 맞춥니다. 설명·extraContent 가 있거나 타이틀이 여러 줄이어도 기준은 텍스트 영역 전체가 아니라 첫 줄입니다.
+* @param chevrons Boolean: true일 경우 우측에 chevron 아이콘을 표시합니다. selected 와 함께 켜면 Check 대신 chevron 이 표시됩니다.
+* @param textMaxLine Int: ellipsis가 true일 때 적용할 텍스트 최대 줄 수입니다. 기본값은 1입니다.
 * @param titleStyle TextStyle? : 메인 텍스트의 커스텀 스타일을 설정할 수 있습니다.
-* @param captionStyle TextStyle? : 캡션 텍스트의 커스텀 스타일을 설정할 수 있습니다.
-* @param leadingContent (@Composable () -> Unit)? : 좌측에 추가적인 컴포넌트 콘텐츠를 배치할 수 있습니다.
-* @param trailingContent (@Composable () -> Unit)? : 우측에 추가적인 컴포넌트 콘텐츠를 배치할 수 있습니다.
+* @param descriptionStyle TextStyle? : 설명 텍스트의 커스텀 스타일을 설정할 수 있습니다.
+* @param labelTrailingContent (@Composable RowScope.() -> Unit)? : 타이틀 옆 배지 슬롯입니다. 다중 배치(간격 4dp), 높이 22dp 고정이며 폭은 이 슬롯이 우선입니다.
+* @param extraContent (@Composable () -> Unit)? : 설명 아래에 배치하는 자유 슬롯입니다. 폭은 부모를 채우며, 내부 구성과 타이포·색상은 사용처가 정합니다(가로 배치 시 권장 간격 6dp).
+* @param leadingContent (@Composable RowScope.() -> Unit)? : 좌측 슬롯입니다. 여러 개를 넣을 수 있고 항목 간 간격은 8dp입니다.
+* @param trailingContent (@Composable RowScope.() -> Unit)? : 우측 슬롯입니다. 여러 개를 넣을 수 있고 항목 간 간격은 8dp입니다. selected 일 때 이 슬롯을 채우면 Check 아이콘 대신 넣은 것이 보입니다.
+* @param enabledInnerTouch Boolean: true일 경우 슬롯에 넣은 컨트롤(체크박스·스위치·버튼 등)이 자기 터치를 먼저 받습니다. 기본값 false 에서는 셀 클릭 영역이 콘텐츠 위를 덮어, 슬롯 안 어디를 눌러도 [onClick] 만 호출됩니다. true 로 두면 컨트롤 영역의 터치는 컨트롤이 처리하고 [onClick] 은 호출되지 않으므로, 컨트롤 콜백에서 상태를 갱신해야 합니다.
 * @param onClick (() -> Unit)? : 셀 클릭 시 호출되는 콜백 함수입니다.
+*/
+
+/**
+* Modifier.cellBorder
+*
+* 셀 표면 테두리를 배경 위에 그립니다. cellDefault.border 가 null 이면 아무것도 적용하지 않습니다.
+*
+* background 다음에 호출해야 테두리가 배경에 가려지지 않습니다.
+*
+* @param cellDefault WantedListCellDefault: 테두리와 모양 정보를 담은 설정 객체입니다.
+* @return Modifier: 테두리가 적용된 Modifier 입니다.
+*/
+
+/**
+* data class WantedListCellDefault
+*
+* 셀 표면(배경색·모양·테두리·안쪽 여백) 스펙을 한 덩어리로 묶어 전달하는 데이터 클래스입니다.
+*
+* `modifier` 는 셀 최외곽(클릭·리플 영역 바깥) 노드에 적용되므로, `modifier` 에 배경·테두리·안쪽 여백을 주면
+* 인터랙션 영역과 어긋납니다. 표면 표현은 모두 이 객체로 지정합니다.
+*
+* 좌우 패딩·인터랙션 영역·radius 는 표면이 아니라 [WantedListCellDefaults.Variant] 가 정합니다.
+*
+* @param backgroundColor Color: 셀 표면 배경색입니다. 기본값 Transparent 는 배경을 그리지 않는 것과 같습니다.
+* @param shape Shape: 배경 모양입니다.
+* @param border BorderStroke?: 셀 표면 테두리입니다. null 이면 테두리를 그리지 않습니다. 배경 위에 그려지므로 modifier 에 직접 border 를 주면 배경에 가려집니다.
+* @param contentPadding PaddingValues: 셀 콘텐츠 안쪽 여백입니다. modifier 의 padding 은 클릭 영역 바깥 마진이 되므로 안쪽 여백은 이 값으로 줍니다.
 */
 
 /**
 * object WantedListCellDefaults
 *
-* WantedListCell 컴포넌트에 사용되는 수직 패딩 및 인터랙션 패딩 관련 설정을 정의하는 객체입니다.
+* WantedListCell 컴포넌트에 사용되는 variant·수직 패딩·표면 스펙 설정을 정의하는 객체입니다.
+*/
+
+/**
+* enum class Variant
+*
+* WantedListCell 의 좌우 패딩·인터랙션 영역·radius 를 하나로 묶어 정의하는 enum 클래스입니다.
+*
+* 기준은 셀이 아니라 셀을 담는 **리스트(컨테이너)의 가장자리**입니다.
+* 두 variant 모두 콘텐츠가 놓이는 위치는 같고, 셀이 폭을 어디까지 차지하는지와
+* 인터랙션 영역이 어디까지 번지는지만 다릅니다.
+*
+* - [Inset]: 셀이 콘텐츠 폭을 갖고 **리스트가 좌우 여백을 준다.** 인터랙션은 셀보다 좌우로 12dp 넓고 radius 16dp 입니다.
+* - [Full]: 셀이 **리스트 폭을 채우고** 내부 좌우 패딩 20dp 를 갖는다. 인터랙션은 셀과 동일하며 radius 0dp 입니다.
+*
+* 커스텀 값은 제공하지 않습니다. 다른 수치가 필요하면 이 enum 에 variant 를 추가합니다.
+*
+* @property horizontalPadding Dp: 셀 내부 좌우 패딩입니다. divider 좌우 여백에도 같은 값을 적용합니다.
+* @property interactionOutset Dp: 인터랙션 영역이 셀보다 좌우로 넓어지는 값입니다.
+* @property interactionRadius Dp: 인터랙션 영역의 corner radius 입니다.
 */
 
 /**
@@ -90,28 +142,22 @@
 */
 
 /**
-* sealed class InteractionPadding
+* fun getDefault(...)
 *
-* Cell 내부의 상호작용 요소(e.g. 클릭 영역)에 적용되는 패딩 값을 정의합는 sealed 클래스입니다.
+* 셀 표면 스펙 설정값을 반환하는 Compose 함수입니다.
 *
-* - Default: fillWidth 옵션에 따라 12dp 또는 20dp를 적용합니다.
-* - Custom: 개발자가 직접 패딩 값을 지정할 수 있습니다.
+* 사용 예시:
+* ```kotlin
+* val surface = WantedListCellDefaults.getDefault(
+*     backgroundColor = DesignSystemTheme.colors.backgroundNeutralSecondary,
+*     shape = RoundedCornerShape(20.dp),
+*     contentPadding = PaddingValues(horizontal = 20.dp)
+* )
+* ```
 *
-* @property padding Dp: 상호작용 영역에 적용되는 패딩 값입니다.
-*/
-
-/**
-* data class Default
-*
-* fillWidth 값에 따라 기본 패딩을 지정합니다.
-*
-* @param fillWidth Boolean: true일 경우 20dp, false일 경우 12dp 패딩이 적용됩니다.
-*/
-
-/**
-* data class Custom
-*
-* 개발자가 원하는 패딩 값을 직접 설정할 수 있습니다.
-*
-* @param padding Dp: 사용자 지정 패딩 값입니다. 기본값은 0dp입니다.
+* @param backgroundColor Color: 셀 표면 배경색입니다. 기본값 Transparent 는 배경을 그리지 않는 것과 같습니다.
+* @param shape Shape: 배경 모양입니다.
+* @param border BorderStroke?: 셀 표면 테두리입니다. null 이면 테두리를 그리지 않습니다.
+* @param contentPadding PaddingValues: 셀 콘텐츠 안쪽 여백입니다.
+* @return WantedListCellDefault: 셀 표면 스펙이 담긴 데이터 클래스입니다.
 */

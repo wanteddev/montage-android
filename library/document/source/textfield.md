@@ -1,85 +1,169 @@
 /**
 * WantedTextField
 *
-* 텍스트 입력을 위한 커스텀 Text field 컴포넌트입니다.
+* 입력 필드 본체만 렌더링하는 Text field 컴포넌트입니다.
 *
-* TextFieldValue가 아닌 문자열 기반으로 값을 주고받는 방식입니다.
-* 에러, 완료 상태, 우측 버튼, 아이콘, 설명, 포커스 등을 커스터마이징할 수 있습니다.
-*
+* 라벨·필수 표시(*)·하단 메시지는 포함하지 않습니다. 해당 요소가 필요하면
+* WantedFormControl 의 input 슬롯에 조합해서 사용합니다.
+* 커서 위치와 선택 영역을 다루기 위해 TextFieldValue 로 값을 주고받습니다.
 *
 * 사용 예시:
 * ```kotlin
-* WantedTextField(
-*     text = "입력값",
-*     placeholder = "텍스트를 입력하세요",
-*     onValueChange = { newValue -> ... }
-* )
+* val state = remember { mutableStateOf(TextFieldValue("")) }
+*
+* WantedFormControl(
+*     label = "이메일",
+*     required = true,
+*     description = "올바른 이메일 형식을 입력해 주세요."
+* ) {
+*     WantedTextField(
+*         value = state.value,
+*         placeholder = "이메일을 입력해 주세요.",
+*         error = false,
+*         enabled = true,
+*         trailingButtonEnabled = true,
+*         complete = false,
+*         maxLines = 1,
+*         minLines = 1,
+*         maxWordCount = 2000,
+*         enabledOverflowText = false,
+*         interactionSource = remember { MutableInteractionSource() },
+*         keyboardOptions = KeyboardOptions.Default,
+*         keyboardActions = KeyboardActions.Default,
+*         onValueChange = { state.value = it }
+*     )
+* }
+* ```
+*
+* @param value TextFieldValue: 입력된 텍스트와 커서·선택 영역 상태를 포함한 값입니다. single line 이고 포커스가 없으면 넘치는 값은 말줄임(…) 처리됩니다.
+* @param placeholder String: 값이 비어 있을 때 힌트로 표시될 문자열입니다.
+* @param error Boolean: 에러(Negative) 상태 여부입니다. true 면 red ring 과 border 를 표시합니다.
+* @param enabled Boolean: 입력 가능 여부입니다.
+* @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
+* @param complete Boolean: 완료(Positive) 상태 여부입니다. 포커스가 없을 때 우측에 체크 아이콘을 표시합니다.
+* @param maxLines Int: 텍스트 필드의 최대 줄 수입니다. minLines 와 함께 1 이면 single line 으로 동작합니다. (1 이상, minLines 이상)
+* @param minLines Int: 텍스트 필드의 최소 줄 수입니다. (1 이상, maxLines 이하)
+* @param maxWordCount Int: 허용되는 최대 글자 수입니다.
+* @param enabledOverflowText Boolean: 최대 글자 수 초과 입력 허용 여부입니다.
+* @param interactionSource MutableInteractionSource: 포커스 및 인터랙션 상태를 추적합니다.
+* @param keyboardOptions KeyboardOptions: 키보드 동작 옵션입니다.
+* @param keyboardActions KeyboardActions: 키보드 액션에 대한 핸들링입니다.
+* @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
+* @param size Size: 텍스트 필드의 크기입니다. (Large, Medium)
+* @param focused State<Boolean>: 포커스 상태입니다. 기본값은 interactionSource 에서 수집합니다.
+* @param cursorBrush Brush: 커서를 그릴 Brush 입니다.
+* @param background Color: 텍스트 필드 배경 색상입니다.
+* @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
+* @param trailingButton String?: 우측 버튼에 표시될 텍스트입니다. null 또는 빈 문자열이면 버튼을 표시하지 않습니다.
+* @param trailingContent (@Composable () -> Unit)?: 우측 아이콘과 버튼 사이에 들어갈 커스텀 콘텐츠 슬롯입니다.
+* @param leadingIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param trailingIcon (@Composable () -> Unit)?: 우측 아이콘 슬롯입니다. 지정하지 않으면 포커스 상태에서 전체 삭제 아이콘이 표시됩니다.
+* @param onClickTrailingButton () -> Unit: 우측 버튼 클릭 시 콜백입니다.
+* @param onValueChange (TextFieldValue) -> Unit: 값 변경 시 콜백입니다.
+* @param focusRequester FocusRequester: 포커스 요청에 사용하는 FocusRequester 입니다.
+*/
+
+/** #4 Container 바깥쪽 1px border(underlay) 색상입니다. line border 아래에 깔려 색을 깎지 않습니다. */
+
+/** #4 Container border 색상입니다. Negative + Focused 는 opacity 를 52% 로 올려 강조합니다. */
+
+/** 값이 비어 있을 때만 placeholder 슬롯을 반환합니다. */
+
+/**
+* WantedTextField
+*
+* (Deprecated) 라벨·메시지 레이아웃을 함께 렌더링하는 문자열 기반 Text field 컴포넌트입니다.
+*
+* title·requiredBadge·description 은 WantedFormControl 의 label·required·description 으로
+* 대체되었습니다. 입력 필드 본체만 담당하는 WantedTextField(value = ...) 를
+* WantedFormControl 의 input 슬롯에 조합해서 사용합니다.
+*
+* 사용 예시:
+* ```kotlin
+* // 대체 방식
+* WantedFormControl(
+*     label = "주제",
+*     required = true,
+*     description = "메시지에 마침표를 찍어요.",
+*     status = WantedFormControlDefaults.Status.Negative
+* ) {
+*     WantedTextField(value = state.value, ..., onValueChange = { state.value = it })
+* }
 * ```
 *
 * @param text String: 현재 입력된 텍스트입니다.
 * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
 * @param placeholder String: 텍스트 필드에 힌트로 표시될 문자열입니다.
-* @param title String: 상단 제목 텍스트입니다.
+* @param title String: 상단 제목 텍스트입니다. 빈 문자열이면 제목을 렌더링하지 않습니다.
 * @param description String?: 하단에 표시할 설명 또는 상태 메시지입니다.
-* @param rightButton String?: 우측 버튼에 표시될 텍스트입니다.
-* @param rightButtonVariant RightVariant: 우측 버튼 스타일을 지정합니다.
-* @param status Status: 텍스트 필드의 상태 (Normal, Positive, Negative)입니다.
+* @param trailingButton String?: 우측 버튼에 표시될 텍스트입니다.
+* @param size WantedTextFieldDefaults.Size: 텍스트 필드의 크기입니다. (Large, Medium)
+* @param status WantedTextFieldDefaults.Status: 텍스트 필드의 상태입니다. (Normal, Positive, Negative)
 * @param enabled Boolean: 입력 가능 여부입니다.
-* @param rightButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
+* @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
 * @param maxLines Int: 텍스트 필드의 최대 줄 수입니다.
 * @param minLines Int: 텍스트 필드의 최소 줄 수입니다.
 * @param maxWordCount Int: 허용되는 최대 글자 수입니다.
-* @param enabledOverflowText Boolean: 글자 수 초과 허용 여부입니다.
+* @param enabledOverflowText Boolean: 최대 글자 수 초과 입력 허용 여부입니다.
 * @param requiredBadge Boolean: 제목 옆에 필수 뱃지 표시 여부입니다.
 * @param interactionSource MutableInteractionSource: 포커스 및 인터랙션 상태를 추적합니다.
+* @param focusRequester FocusRequester: 포커스 요청에 사용하는 FocusRequester 입니다.
 * @param keyboardOptions KeyboardOptions: 키보드 동작 옵션입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션에 대한 핸들링입니다.
 * @param background Color: 텍스트 필드 배경 색상입니다.
 * @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
-* @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
-* @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
-* @param trailingContent ((Dp) -> Unit)?: 우측 버튼 외 영역에 들어갈 커스텀 콘텐츠입니다.
-* @param onClickRightButton () -> Unit: 우측 버튼 클릭 시 콜백입니다.
+* @param leadingIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param trailingIcon (@Composable () -> Unit)?: 우측 아이콘 슬롯입니다.
+* @param trailingContent (@Composable () -> Unit)?: 우측 아이콘과 버튼 사이에 들어갈 커스텀 콘텐츠 슬롯입니다.
+* @param onClickTrailingButton () -> Unit: 우측 버튼 클릭 시 콜백입니다.
 * @param onValueChange (String) -> Unit: 텍스트 변경 시 콜백입니다.
 */
 
 /**
 * WantedTextField
 *
-* Text field 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
+* (Deprecated) 라벨·메시지 레이아웃을 함께 렌더링하는 TextFieldValue 기반 Text field 컴포넌트입니다.
 *
-* 커서 위치 및 선택 영역 처리를 위해 TextFieldValue 객체를 사용합니다.
+* 커서 위치 및 선택 영역 처리를 위해 TextFieldValue 를 사용합니다.
+* title·requiredBadge·description 은 WantedFormControl 의 label·required·description 으로
+* 대체되었습니다. 입력 필드 본체만 담당하는 WantedTextField(value = ...) 를
+* WantedFormControl 의 input 슬롯에 조합해서 사용합니다.
 *
 * 사용 예시:
 * ```kotlin
+* // 대체 방식
 * val state = remember { mutableStateOf(TextFieldValue("")) }
-* WantedTextField(value = state.value, onValueChange = { state.value = it })
+*
+* WantedFormControl(label = "주제", required = true) {
+*     WantedTextField(value = state.value, ..., onValueChange = { state.value = it })
+* }
 * ```
 *
-* @param value TextFieldValue: 입력된 텍스트 및 커서 상태를 포함한 값입니다.
+* @param value TextFieldValue: 입력된 텍스트 및 커서·선택 영역 상태를 포함한 값입니다.
 * @param onValueChange (TextFieldValue) -> Unit: 값 변경 시 호출되는 콜백입니다.
 * @param modifier Modifier: 외형 및 레이아웃 설정입니다.
 * @param enabled Boolean: 입력 가능 여부입니다.
-* @param title String: 상단 제목 텍스트입니다.
-* @param requiredBadge Boolean: 필수 뱃지 표시 여부입니다.
-* @param placeholder String: 플레이스홀더 문자열입니다.
-* @param description String?: 하단 상태 또는 설명 메시지입니다.
-* @param leadingIcon (() -> Unit)?: 좌측 아이콘 슬롯입니다.
-* @param trailingIcon (() -> Unit)?: 우측 아이콘 슬롯입니다.
-* @param trailingContent ((Dp) -> Unit)?: 우측 영역 콘텐츠 슬롯입니다.
-* @param rightButton String?: 우측 버튼 텍스트입니다.
-* @param onClickRightButton () -> Unit: 우측 버튼 클릭 콜백입니다.
-* @param rightButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
-* @param rightButtonVariant RightVariant: 우측 버튼 스타일입니다.
-* @param status Status: 입력 상태입니다.
-* @param maxWordCount Int: 최대 글자 수입니다.
-* @param enabledOverflowText Boolean: 글자 수 초과 허용 여부입니다.
-* @param minLines Int: 최소 줄 수입니다.
-* @param maxLines Int: 최대 줄 수입니다.
-* @param interactionSource MutableInteractionSource: 포커스 추적용입니다.
-* @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
-* @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
-* @param background Color: 배경 색상입니다.
+* @param title String: 상단 제목 텍스트입니다. 빈 문자열이면 제목을 렌더링하지 않습니다.
+* @param requiredBadge Boolean: 제목 옆에 필수 뱃지 표시 여부입니다.
+* @param placeholder String: 값이 비어 있을 때 힌트로 표시될 문자열입니다.
+* @param description String?: 하단에 표시할 설명 또는 상태 메시지입니다.
+* @param leadingIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param trailingIcon (@Composable () -> Unit)?: 우측 아이콘 슬롯입니다.
+* @param trailingContent (@Composable () -> Unit)?: 우측 아이콘과 버튼 사이에 들어갈 커스텀 콘텐츠 슬롯입니다.
+* @param trailingButton String?: 우측 버튼에 표시될 텍스트입니다.
+* @param onClickTrailingButton () -> Unit: 우측 버튼 클릭 시 콜백입니다.
+* @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
+* @param size WantedTextFieldDefaults.Size: 텍스트 필드의 크기입니다. (Large, Medium)
+* @param status WantedTextFieldDefaults.Status: 텍스트 필드의 상태입니다. (Normal, Positive, Negative)
+* @param maxWordCount Int: 허용되는 최대 글자 수입니다.
+* @param enabledOverflowText Boolean: 최대 글자 수 초과 입력 허용 여부입니다.
+* @param minLines Int: 텍스트 필드의 최소 줄 수입니다.
+* @param maxLines Int: 텍스트 필드의 최대 줄 수입니다.
+* @param interactionSource MutableInteractionSource: 포커스 및 인터랙션 상태를 추적합니다.
+* @param focusRequester FocusRequester: 포커스 요청에 사용하는 FocusRequester 입니다.
+* @param keyboardOptions KeyboardOptions: 키보드 동작 옵션입니다.
+* @param keyboardActions KeyboardActions: 키보드 액션에 대한 핸들링입니다.
+* @param background Color: 텍스트 필드 배경 색상입니다.
 * @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
 */
 
@@ -101,9 +185,10 @@
 */
 
 /**
-* enum class RightVariant
+* enum class Size
 *
-* TextField 우측 버튼의 스타일을 정의하는 enum 클래스입니다.
-* - Normal: 일반 스타일입니다.
-* - Assistive: 보조 스타일입니다.
+* TextField의 크기를 정의하는 enum 클래스입니다.
+* 각 크기에 따라 padding, radius, 최소 높이, 입력 typography, 아이콘 크기가 달라집니다.
+* - Large: 큰 크기입니다. (최소 높이 48dp)
+* - Medium: 중간 크기입니다. (최소 높이 40dp)
 */
