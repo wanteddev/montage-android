@@ -30,7 +30,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param enable Boolean: 활성화 여부입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param onTextLayout ((TextLayoutResult) -> Unit)?: 텍스트 레이아웃 결과를 전달하는 콜백입니다.
- * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
+ * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedTabItem(

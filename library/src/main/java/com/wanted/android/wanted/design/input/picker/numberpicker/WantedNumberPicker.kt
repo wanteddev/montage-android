@@ -69,16 +69,16 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param end Int: 종료 숫자입니다
  * @param step Int: 숫자 간격입니다
  * @param modifier Modifier: 외형을 설정하는 Modifier입니다
- * @param itemList List<Int>: 내부에서 자동 생성된 숫자 리스트입니다
+ * @param itemList List<Int>: 표시할 숫자 리스트입니다. 기본값은 start 부터 end 까지 step 간격으로 만든 리스트이며, 직접 지정하면 start/end/step 으로 만든 목록을 대체합니다(start 는 selectedValue 기본값으로만 쓰입니다)
  * @param selectedValue Int: 기본 선택값입니다
  * @param enableMinValue Int: 선택 가능 최소값입니다
- * @param enableMaxValue Int: 선택 가능 최대값입니다
+ * @param enableMaxValue Int: 선택 가능 최대값입니다. itemList 의 최댓값보다 크게 주면 첫 항목만 선택할 수 있게 되므로 itemList 범위 안에서 지정합니다.
  * @param pagerState PagerState: 스크롤 상태를 관리하는 Pager 상태입니다
- * @param textStyle TextStyle: 숫자 텍스트의 스타일입니다
+ * @param textStyle TextStyle: 항목 높이(itemSize) 기본값을 계산할 때만 쓰입니다. 글자 스타일은 이 값과 무관하게 heading1Medium 으로 고정됩니다
  * @param itemSize Dp: 각 항목의 높이입니다
  * @param visibleCount Int: 화면에 표시될 항목 수입니다
- * @param userScrollEnabled Boolean: 사용자의 스크롤 가능 여부입니다
- * @param onSelect (Int, Int, Boolean) -> Unit: 선택 이벤트 콜백입니다
+ * @param userScrollEnabled Boolean: 사용자의 스크롤 가능 여부입니다. false 이면 스크롤이 막히고 모든 항목이 비활성 색으로 표시됩니다
+ * @param onSelect (Int, Int, Boolean) -> Unit: 스크롤이 멈출 때(최초 표시 시점 포함) 호출되며 인자는 (선택된 항목의 인덱스, 그 항목의 숫자 값, 선택 가능 범위 안인지 여부) 입니다
  */
 @Composable
 fun WantedNumberPicker(
@@ -166,10 +166,10 @@ fun WantedNumberPicker(
  * @param enableStartIndex Int: 선택 가능한 시작 인덱스입니다
  * @param enableEndIndex Int: 선택 가능한 종료 인덱스입니다
  * @param pagerState PagerState: 스크롤 상태를 관리하는 Pager 상태입니다
- * @param textStyle TextStyle: 숫자 텍스트 스타일입니다
+ * @param textStyle TextStyle: 항목 높이(itemSize) 기본값을 계산할 때만 쓰입니다. 글자 스타일은 이 값과 무관하게 heading1Medium 으로 고정됩니다
  * @param itemSize Dp: 각 항목의 높이입니다
  * @param visibleCount Int: 화면에 표시할 항목 개수입니다
- * @param onSelect (Int, Boolean) -> Unit: 선택 이벤트 콜백입니다
+ * @param onSelect (Int, Boolean) -> Unit: 스크롤이 멈출 때(최초 표시 시점 포함) 호출되며 인자는 (선택된 항목의 인덱스, enableStartIndex..enableEndIndex 범위 안인지 여부) 입니다. 숫자 값은 전달되지 않습니다
  */
 @Composable
 fun WantedNumberPicker(
@@ -205,6 +205,25 @@ fun WantedNumberPicker(
     )
 }
 
+/**
+ * fun WantedStringPicker(...)
+ *
+ * 문자열 목록을 세로 휠로 보여 주고 가운데 항목을 선택하는 피커입니다. WantedNumberPicker 가 내부적으로 이 컴포넌트를 씁니다.
+ *
+ * enableStartIndex..enableEndIndex 밖의 항목도 휠에는 표시되지만 비활성 색(foregroundDisablePrimary)으로 그려지며, 그 위치에서 멈추면 onSelect 의 enabled 가 false 로 전달됩니다.
+ *
+ * @param itemList List<String>: 휠에 표시할 문자열 목록입니다.
+ * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
+ * @param selectedIndex Int: 처음 선택할 항목의 인덱스입니다. 값이 바뀌면 그 위치로 스크롤합니다.
+ * @param enableStartIndex Int: 선택 가능한 첫 인덱스입니다. 기본값은 0입니다.
+ * @param enableEndIndex Int: 선택 가능한 마지막 인덱스입니다. 기본값은 itemList 의 마지막 인덱스입니다.
+ * @param pagerState PagerState: 스크롤 상태를 관리하는 Pager 상태입니다.
+ * @param textStyle TextStyle: 항목 높이(itemSize) 기본값을 계산할 때만 쓰입니다. 글자 스타일은 이 값과 무관하게 heading1Medium 으로 고정됩니다.
+ * @param itemSize Dp: 각 항목의 높이입니다. 기본값은 textStyle 의 줄 높이입니다.
+ * @param visibleCount Int: 한 번에 보이는 항목 수입니다. 기본값은 5입니다.
+ * @param userScrollEnabled Boolean: 사용자의 스크롤 가능 여부입니다. false 이면 스크롤이 막히고 모든 항목이 비활성 색으로 표시됩니다.
+ * @param onSelect (Int, Boolean) -> Unit: 스크롤이 멈출 때(최초 표시 시점 포함) (선택된 인덱스, 선택 가능 범위 안인지 여부) 로 호출됩니다.
+ */
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun WantedStringPicker(

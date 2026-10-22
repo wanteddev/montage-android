@@ -68,12 +68,12 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param disableItemList List<String>: 비활성화할 항목 리스트입니다.
  * @param state LazyListState: LazyRow의 스크롤 상태를 관리하는 객체입니다.
  * @param size Size: 카테고리 항목의 크기입니다.
- * @param horizontalPadding Boolean: 좌우 여백 적용 여부입니다.
+ * @param horizontalPadding Boolean: 좌우 여백(20dp) 적용 여부입니다. 좌우 그라디언트는 더 스크롤할 수 있는 방향에만 표시되며, true 이면 왼쪽 그라디언트는 표시하지 않고 오른쪽은 rightIcon 이 있을 때만 표시합니다.
  * @param isVerticalPadding Boolean: 상하 여백 적용 여부입니다.
  * @param variant Variant: 선택 항목 스타일입니다. Normal 이면 채워진 배경으로, Alternative 면 primary 테두리·옅은 배경으로 표시합니다. 선택 항목 색상은 Normal 에서만 지정할 수 있습니다.
  * @param gradientColor Color: 좌우 그라디언트 배경 색상입니다.
- * @param rightIcon (@Composable (Dp) -> Unit)?: 우측에 표시할 아이콘 슬롯입니다.
- * @param onClick (String, Boolean) -> Unit: 항목 클릭 시 호출되는 콜백입니다. 선택된 항목과 선택 여부를 전달합니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 우측에 표시할 아이콘 슬롯입니다. 인자는 size 에 맞춘 아이콘 슬롯 크기(WantedCategoryDefaults.Size 의 rightIconSize)이며, 아이콘 크기로 그대로 쓰면 됩니다.
+ * @param onClick (String, Boolean) -> Unit: 항목 클릭 시 호출되는 콜백입니다. 클릭된 항목과, 클릭 후 바뀌어야 할 선택 상태(true 면 선택됨)를 전달합니다. 선택 목록은 호출부가 이 값으로 갱신합니다.
  */
 @Composable
 fun WantedCategory(
@@ -128,7 +128,7 @@ fun WantedCategory(
  * ```kotlin
  * WantedCategory {
  *     items(tagList) { tag ->
- *         WantedActionChip(
+ *         WantedChip(
  *             text = tag,
  *             onClick = { /* 처리 */ }
  *         )
@@ -139,10 +139,10 @@ fun WantedCategory(
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param state LazyListState: LazyRow의 스크롤 상태를 관리하는 객체입니다.
  * @param size Size: 액션칩의 크기 및 여백 설정입니다.
- * @param horizontalPadding Boolean: 좌우 패딩 적용 여부입니다.
+ * @param horizontalPadding Boolean: 좌우 여백(20dp) 적용 여부입니다. 좌우 그라디언트는 더 스크롤할 수 있는 방향에만 표시되며, true 이면 왼쪽 그라디언트는 표시하지 않고 오른쪽은 rightIcon 이 있을 때만 표시합니다.
  * @param isVerticalPadding Boolean: 상하 패딩 적용 여부입니다.
  * @param gradientColor Color: 좌우 그라디언트 색상입니다.
- * @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다. 인자는 size 에 맞춘 아이콘 슬롯 크기(WantedCategoryDefaults.Size 의 rightIconSize)이며, 아이콘 크기로 그대로 쓰면 됩니다.
  * @param content LazyListScope.() -> Unit: 내부 아이템을 구성하는 블록입니다.
  */
 @Composable
@@ -197,7 +197,7 @@ fun WantedCategory(
  * @param categoryDefault WantedCategoryDefault: 크기·여백·그라디언트 색상을 담는 표시 스펙입니다. [WantedCategoryDefaults.getDefault] 로 생성합니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param state LazyListState: LazyRow의 스크롤 상태를 관리하는 객체입니다.
- * @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다. 인자는 size 에 맞춘 아이콘 슬롯 크기(WantedCategoryDefaults.Size 의 rightIconSize)이며, 아이콘 크기로 그대로 쓰면 됩니다.
  * @param content LazyListScope.() -> Unit: 내부 아이템을 구성하는 블록입니다.
  */
 @Composable

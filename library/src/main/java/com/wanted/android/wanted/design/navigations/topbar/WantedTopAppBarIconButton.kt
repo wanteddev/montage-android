@@ -44,7 +44,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  * @param badgeAlignment Alignment: 배지 정렬 위치입니다.
  * @param badge (@Composable () -> Unit)?: 배지 콘텐츠입니다.
  * @param interactionEffect IconButtonInteractionEffect: 인터랙션 피드백 방식입니다. 기본값 [IconButtonInteractionEffect.Dim]
- * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
+ * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedTopAppBarIconButton(

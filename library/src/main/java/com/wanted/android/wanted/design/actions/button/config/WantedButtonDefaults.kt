@@ -15,7 +15,7 @@ import com.wanted.android.wanted.design.util.ButtonVariant
  * 버튼의 스타일 및 속성을 정의한 데이터 클래스입니다.
  * 각 버튼의 모든 시각적 속성과 상태를 개별적으로 설정할 수 있습니다.
  *
- * @param variant ButtonVariant: 버튼의 변형 타입입니다 (SOLID, OUTLINED, TEXT 등).
+ * @param variant ButtonVariant: 버튼의 변형 타입입니다 (SOLID, OUTLINED). TEXT 는 deprecated 이므로 텍스트 버튼은 WantedTextButton 을 사용합니다.
  * @param type ButtonType: 버튼의 종류입니다 (PRIMARY, ASSISTIVE 등).
  * @param enabled Boolean: 버튼의 활성화 여부입니다.
  * @param size ButtonSize: 버튼의 크기입니다 (LARGE, MEDIUM, SMALL 등).

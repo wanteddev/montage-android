@@ -55,7 +55,7 @@ private const val DEPRECATED_DISABLE_INTERACTION_REPLACEMENT =
  * 사용 예시 :
  * ```kotlin
  * WantedIconButtonNormal(
- *     icon = R.drawable.ic_icon,
+ *     icon = R.drawable.icon_normal_bookmark,
  *     size = WantedIconButtonNormalSize.Xlarge,
  *     onClick = { /* 클릭 처리 */ }
  * )
@@ -69,9 +69,9 @@ private const val DEPRECATED_DISABLE_INTERACTION_REPLACEMENT =
  * @param pushBadge @Composable (() -> Unit)?: 지정 위치에 표시할 PushBadge 등 컴포넌트
  * @param badgePosition IconButtonBadgePosition: pushBadge 정렬 기준점. 기본값 TopRight, 아이콘 모서리 기준으로 inset 보정 적용
  * @param interactionEffect IconButtonInteractionEffect: 인터랙션 피드백 방식. 기본값 [IconButtonInteractionEffect.Highlight]
- * @param interactionColor Color: 인터랙션 피드백 색상. 미지정 시 ripple 은 `foregroundNeutralPrimary`, Dim 은 [tint] 를 기준으로 함
+ * @param interactionColor Color: 인터랙션 피드백 색상. 미지정 시 ripple 은 [foregroundNeutralPrimary], Dim 은 [tint] 를 기준으로 함
  * @param interactionOverflow Boolean: true 이면 레이아웃 크기가 아이콘 크기가 되고, 인터랙션 영역 `max(24, ceil(아이콘 × 1.5 ÷ 4) × 4)` 이 상하좌우로 `(영역 - 아이콘) / 2` 만큼 넘칩니다. 기본값 false
- * @param onClick () -> Unit: 클릭 콜백
+ * @param onClick () -> Unit: 클릭 콜백. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedIconButtonNormal(
@@ -163,22 +163,20 @@ fun WantedIconButtonNormal(
     }
 }
 
-/**
- * IconButtonNormalContent
- *
- * 아이콘과 PushBadge 를 그립니다. 배지는 [badgePosition] 기준으로 정렬한 뒤 [badgeInset] 만큼 안쪽으로 당깁니다.
- *
- * 컨테이너 크기는 [modifier] 로 **항상 명시**합니다. 크기를 주지 않으면 wrapContent 가 되어
- * 아이콘보다 큰 [pushBadge] 가 컨테이너를 키웁니다.
- *
- * @param icon Int: 아이콘 drawable 리소스 ID
- * @param iconSize Dp: 아이콘 크기
- * @param iconColor Color: 아이콘 색상 (enabled·인터랙션 상태가 반영된 최종 색)
- * @param pushBadge @Composable (() -> Unit)?: 표시할 PushBadge 등 컴포넌트
- * @param badgePosition IconButtonBadgePosition: 배지 정렬 기준점
- * @param badgeInset Dp: 배지 inset 보정값. 컨테이너가 아이콘 크기와 같으면 0
- * @param modifier Modifier: 컨테이너 크기·클립·클릭을 지정하는 Modifier
- */
+// IconButtonNormalContent
+//
+// 아이콘과 PushBadge 를 그립니다. 배지는 [badgePosition] 기준으로 정렬한 뒤 [badgeInset] 만큼 안쪽으로 당깁니다.
+//
+// 컨테이너 크기는 [modifier] 로 **항상 명시**합니다. 크기를 주지 않으면 wrapContent 가 되어
+// 아이콘보다 큰 [pushBadge] 가 컨테이너를 키웁니다.
+//
+// icon(Int): 아이콘 drawable 리소스 ID
+// iconSize(Dp): 아이콘 크기
+// iconColor(Color): 아이콘 색상 (enabled·인터랙션 상태가 반영된 최종 색)
+// pushBadge(@Composable (() -> Unit)?): 표시할 PushBadge 등 컴포넌트
+// badgePosition(IconButtonBadgePosition): 배지 정렬 기준점
+// badgeInset(Dp): 배지 inset 보정값. 컨테이너가 아이콘 크기와 같으면 0
+// modifier(Modifier): 컨테이너 크기·클립·클릭을 지정하는 Modifier
 @Composable
 private fun IconButtonNormalContent(
     @DrawableRes icon: Int,
@@ -227,7 +225,7 @@ private fun IconButtonNormalContent(
  * @param pushBadge @Composable (() -> Unit)?: 지정 위치에 표시할 PushBadge 등 컴포넌트
  * @param badgePosition IconButtonBadgePosition: pushBadge 정렬 기준점. 기본값 [IconButtonBadgePosition.TopRight]
  * @param interactionColor Color: 인터랙션 피드백 색상. 미지정 시 ripple 은 `foregroundNeutralPrimary`
- * @param onClick () -> Unit: 클릭 콜백
+ * @param onClick () -> Unit: 클릭 콜백. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Deprecated(
     message = DEPRECATED_DISABLE_INTERACTION_MESSAGE,

@@ -47,13 +47,13 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * WantedSegmentedControlItem(
  *     title = "알림",
  *     isSelected = true,
- *     icon = { Icon(modifier = Modifier.fillMaxSize(), ...) }
+ *     icon = { Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(R.drawable.icon_normal_bookmark), contentDescription = null) }
  * )
  *
  * // icon only — 컨트롤에서 iconOnly = true 를 지정하면 title 없이 아이콘만 렌더링됩니다.
  * WantedSegmentedControlItem(
  *     isSelected = true,
- *     icon = { Icon(modifier = Modifier.fillMaxSize(), ...) }
+ *     icon = { Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(R.drawable.icon_normal_bookmark), contentDescription = null) }
  * )
  * ```
  *

@@ -42,9 +42,9 @@ import com.wanted.android.wanted.design.util.OPACITY_61
  * )
  * ```
  *
- * @param size Size: 배지의 크기 옵션입니다. Small, Medium, Large 세 가지 크기를 제공합니다.
+ * @param size WantedPlayBadgeDefaults.Size: 배지의 크기 옵션입니다. Small, Medium, Large 세 가지 크기를 제공합니다.
  * @param isAlternative Boolean: true일 경우 대체 색상(더 어두운 회색 계열 배경)을 사용합니다.
- * @param modifier Modifier: 배지의 외형, 정렬, 패딩 등을 제어하는 Modifier입니다.
+ * @param modifier Modifier: 배지의 외형, 정렬, 패딩 등을 제어하는 Modifier입니다. 기본값이 없어 반드시 전달해야 합니다.
  */
 @Composable
 fun WantedPlayBadge(

@@ -32,9 +32,9 @@ object WantedSelectDefaults {
      * Select Dialog 에서 항목을 선택할 때 사용할 UI 타입을 정의하는 enum 클래스입니다.
      *
      * 사용 가능한 UI 타입은 다음과 같습니다:
-     * - CheckMark: 단일 선택 시 체크마크 방식
-     * - CheckBox: 멀티 선택 시 체크박스 방식
-     * - Radio: 단일 선택 시 라디오 버튼 방식
+     * - CheckMark: 선택된 항목 오른쪽에 체크 마크를 표시합니다. 단일·다중 선택 모두 같습니다.
+     * - CheckBox: 다중 선택에서는 모든 항목 왼쪽에 체크박스를 표시합니다. 단일 선택에서는 선택된 항목에만 체크된 체크박스를 표시합니다.
+     * - Radio: 단일 선택에서는 모든 항목 왼쪽에 라디오를 표시합니다(미선택은 빈 라디오). 다중 선택에서는 선택된 항목에만 라디오를 표시합니다.
      */
     enum class SelectType {
         CheckMark,

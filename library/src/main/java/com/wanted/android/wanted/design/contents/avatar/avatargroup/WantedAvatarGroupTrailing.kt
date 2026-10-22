@@ -18,7 +18,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 /**
  * WantedAvatarGroupTrailingText
  *
- * [WantedAvatarGroup]의 trailingContent 슬롯에 사용하는 텍스트 프리셋입니다.
+ * WantedAvatarGroup의 trailingContent 슬롯에 사용하는 텍스트 프리셋입니다.
  *
  * 색상 Foreground/Neutral/Secondary, 타이포 Label 1/Normal - Medium 토큰이 고정 적용되며,
  * 표시 상한(5명)을 초과한 인원을 안내하는 용도로 주로 사용합니다.
@@ -73,8 +73,8 @@ fun WantedAvatarGroupTrailingText(
  *
  * @param text String: 표시할 문구입니다.
  * @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
- * @param enabled Boolean: 클릭 가능 여부입니다.
- * @param onClick (() -> Unit): 클릭 시 호출될 콜백 함수입니다.
+ * @param enabled Boolean: 클릭 가능 여부입니다. false 이면 글자가 비활성 색(foregroundDisablePrimary)으로 바뀝니다.
+ * @param onClick (() -> Unit): 클릭 시 호출될 콜백 함수입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  *
  * @see WantedAvatarGroup
  * @see WantedAvatarGroupTrailingText

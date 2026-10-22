@@ -39,8 +39,10 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * 블러 효과를 사용한 Drop shadow를 생성하는 컴포넌트입니다.
  *
- * 간단한 블러 효과로 그림자를 구현하며, 커스텀 형태를 지원합니다.
+ * shape 모양의 1dp 테두리를 dropShadowColor 로 그려 blur 만큼 번지게 하는 방식으로 그림자를 구현하며, 커스텀 형태를 지원합니다. 그 위에 background 를 shape 로 채웁니다.
  * 배경색, 그림자 색상, 블러 정도를 개별적으로 설정할 수 있습니다.
+ *
+ * blur 는 Android 12(API 31) 이상에서만 적용됩니다. 그 미만 기기에서는 번짐 없이 1dp 테두리로만 보입니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -56,7 +58,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param background Color: 배경 색상입니다.
  * @param dropShadowColor Color: 드롭 Shadow의 색상입니다.
- * @param blur Dp: 블러의 정도입니다.
+ * @param blur Dp: 블러의 정도입니다. Android 12(API 31) 미만에서는 무시됩니다.
  * @param shape Shape: 컴포넌트의 형태입니다.
  */
 @Composable
@@ -130,7 +132,7 @@ fun Modifier.wantedDropShadow(style: WantedShadowStyle): Modifier {
 /**
  * fun Modifier.wantedDropShadowSpread(...)
  *
- * 컴포넌트에 확산형 Drop shadw 효과를 적용하는 Modifier 확장 함수입니다.
+ * 컴포넌트에 확산형 Drop shadow 효과를 적용하는 Modifier 확장 함수입니다.
  *
  * WantedShadowSpreadStyle을 사용하여 확산형 그림자 스타일을 적용합니다.
  * 일반 그림자보다 더 넓게 퍼지는 효과를 제공합니다.

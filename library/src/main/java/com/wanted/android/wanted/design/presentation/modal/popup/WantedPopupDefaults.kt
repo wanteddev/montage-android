@@ -15,7 +15,6 @@ import com.wanted.android.wanted.design.actions.actionarea.ActionAreaType
  *
  * Popup 의 여백은 디자인 4.0.0 기준으로 ModalSize 와 무관하게 통일되어 있고,
  * 모바일 Popup 은 Medium 한 가지만 사용하므로 [width] 도 하나로 고정입니다.
- * (BottomSheet 는 계속 ModalSize 의 padding 값을 사용하므로 그쪽 값은 건드리지 않습니다.)
  *
  * @property shape RoundedCornerShape: Popup 의 모서리 둥글기입니다.
  * @property width Dp: Popup 의 최대 너비입니다. 실제 너비는 Dialog 창 너비로 한 번 더 제한되므로, 폰에서는 창 너비를 그대로 따르고 큰 화면에서만 이 값으로 잘립니다.

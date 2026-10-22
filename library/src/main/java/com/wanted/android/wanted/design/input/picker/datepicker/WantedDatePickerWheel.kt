@@ -69,8 +69,8 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param selectedMonth Int: 초기 선택된 월입니다.
  * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
  * @param default WantedDatePickerWheelDefault: 날짜 휠 설정을 지정하는 기본값 객체입니다.
- * @param onSelect (Int, Int) -> Unit: 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다.
- * @param onDismissRequest () -> Unit: 다이얼로그가 닫힐 때 호출되는 콜백입니다.
+ * @param onSelect (Int, Int) -> Unit: 날짜 선택 후 확인 버튼을 눌렀을 때 (연, 월) 로 호출되는 콜백입니다. 확인 시 onSelect → onDismissRequest 순으로 호출되며, 선택한 날짜가 선택 가능 범위를 벗어나면 확인 버튼이 비활성화됩니다.
+ * @param onDismissRequest () -> Unit: 확인 버튼을 누른 뒤(onSelect 다음), 취소 버튼을 눌렀을 때, 바깥 탭·뒤로가기로 닫힘이 요청될 때 호출되는 콜백입니다.
  */
 @Composable
 fun WantedDatePickerWheel(

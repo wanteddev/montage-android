@@ -71,12 +71,12 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param disableIndexList List<Int>: 비활성화할 탭 인덱스 리스트입니다.
  * @param tabSize TabSize: 탭 크기 설정입니다.
  * @param horizontalPadding Boolean: 양쪽 여백 적용 여부입니다.
- * @param isLeftGradient Boolean: 왼쪽 gradient 표시 여부입니다.
- * @param isRightGradient Boolean: 오른쪽 gradient 표시 여부입니다.
+ * @param isLeftGradient Boolean: 왼쪽 gradient 표시 여부입니다. true 여도 왼쪽으로 더 스크롤할 수 있을 때만 표시됩니다.
+ * @param isRightGradient Boolean: 오른쪽 gradient 표시 여부입니다. true 여도 오른쪽으로 더 스크롤할 수 있을 때만 표시됩니다.
  * @param gradientColor Color: gradient 색상입니다.
  * @param scrollState ScrollState: 스크롤 상태를 관리하는 객체입니다.
  * @param onClickItem (Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
- * @param rightIcon (@Composable (Dp) -> Unit)?: 탭 우측에 추가할 아이콘 슬롯입니다.
+ * @param rightIcon (@Composable (Dp) -> Unit)?: 탭 우측에 추가할 아이콘 슬롯입니다. 인자는 tabSize 에 맞춘 아이콘 슬롯 크기(Small 20dp, Medium 22dp, Large 24dp)이며, 아이콘 크기로 그대로 쓰면 됩니다.
  * @param content (Int) -> String: 각 탭의 텍스트를 반환하는 함수입니다.
  */
 @Composable

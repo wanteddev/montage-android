@@ -12,15 +12,8 @@ import com.wanted.android.designsystem.R
  * 각 타입은 고유의 아이콘 리소스 및 색상 리소스를 포함하고 있으며,
  * 사용자 피드백의 성격(정보, 긍정, 경고, 부정 등)을 나타냅니다.
  *
- * 제공되는 Toast 스타일은 다음과 같습니다:
- * - Normal: 일반 메시지 (아이콘 없음)입니다.
- * - Message: 일반 메시지 (아이콘 없음)입니다. (deprecated, Normal 을 사용하세요)
- * - Positive: 긍정적인 메시지 (체크 아이콘, 초록색)입니다.
- * - Cautionary: 주의 메시지 (느낌표 아이콘, 주황색)입니다.
- * - Negative: 부정적인 메시지 (X 아이콘, 빨간색)입니다.
- *
- * @property resourceId Int: 표시할 아이콘 리소스의 ID입니다.
- * @property tinColor Int: 아이콘에 적용될 색상 리소스의 ID입니다.
+ * @property resourceId Int: 표시할 아이콘 리소스의 ID입니다. Normal·Message 는 고유 아이콘이 없어 -1 이므로 painterResource 에 바로 넘기지 않습니다.
+ * @property tinColor Int: 아이콘에 적용될 색상 리소스의 ID입니다. Normal·Message 는 -1 입니다.
  * @property backgroundResourceId Int?: 배경 이미지 리소스의 ID입니다.
  * @property backgroundTintColor Int: 배경 이미지 리소스에 적용될 색상 리소스의 ID입니다.
  */
@@ -33,14 +26,14 @@ sealed class WantedToastVariant(
     /**
      * data object Normal
      *
-     * 일반 텍스트 메시지를 표시하는 스타일입니다. 아이콘은 표시되지 않습니다.
+     * 일반 텍스트 메시지를 표시하는 스타일입니다. 고유 아이콘은 없으며, icon 슬롯을 넘기면 그 아이콘이 표시됩니다.
      */
     data object Normal : WantedToastVariant(-1, -1)
 
     /**
      * data object Message
      *
-     * 일반 텍스트 메시지를 표시하는 스타일입니다. 아이콘은 표시되지 않습니다.
+     * 일반 텍스트 메시지를 표시하는 스타일입니다. deprecated 되었으므로 Normal 을 사용하세요.
      */
     @Deprecated(
         message = "Message 는 Normal 로 대체되었습니다. Normal 을 사용하세요.",

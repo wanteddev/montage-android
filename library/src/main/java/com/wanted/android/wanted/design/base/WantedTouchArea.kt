@@ -57,10 +57,11 @@ val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
  *     horizontalPadding = 16.dp,
  *     verticalPadding = 12.dp,
  *     shape = RoundedCornerShape(6.dp),
+ *     content = {
+ *         Icon(painter = painterResource(id = R.drawable.icon_normal_bookmark), contentDescription = null)
+ *     },
  *     onClick = { /* 클릭 이벤트 */ }
- * ) {
- *     Icon(painter = painterResource(id = R.drawable.ic_example), contentDescription = null)
- * }
+ * )
  * ```
  *
  * @param modifier Modifier: 전체 래퍼의 외형 및 배치를 제어합니다.
@@ -68,12 +69,12 @@ val LocalWantedTouchArea = WantedButtonContentCompositionLocal()
  * @param horizontalPadding Dp: 좌우 터치 영역 확장 값입니다.
  * @param shape Shape: 터치 영역의 모양입니다. 기본값은 6dp의 라운드 사각형입니다.
  * @param enabled Boolean: 클릭 가능 여부를 설정합니다.
- * @param enabledInnerTouch Boolean: 내부 콘텐츠 사이즈 계산 여부입니다. 내부 CompositionLocal에서 기본값을 제공합니다.
+ * @param enabledInnerTouch Boolean: true 이면 콘텐츠를 클릭 레이어 안에 그려 콘텐츠 안의 컨트롤(버튼·체크박스 등)이 자기 터치를 먼저 받습니다(이를 위해 콘텐츠 크기를 한 번 따로 측정합니다). false 이면 클릭 레이어가 콘텐츠 위를 덮어 콘텐츠 안을 눌러도 onClick 만 호출됩니다. 기본값은 LocalWantedTouchArea 가 제공합니다.
  * @param rippleColor Color: 리플 효과의 색상입니다. 기본값은 Unspecified입니다.
  * @param isUseRipple Boolean: true일 경우 리플 효과를 사용합니다.
  * @param interactionSource MutableInteractionSource: 상호작용 상태 관리를 위한 InteractionSource입니다.
  * @param content (@Composable BoxScope.() -> Unit): 실제 표시할 콘텐츠입니다.
- * @param onClick (() -> Unit)?: 클릭 이벤트가 발생할 경우 호출되는 콜백입니다. null일 경우 클릭이 비활성화됩니다.
+ * @param onClick (() -> Unit)?: 클릭 이벤트가 발생할 경우 호출되는 콜백입니다. null일 경우 클릭이 비활성화됩니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedTouchArea(

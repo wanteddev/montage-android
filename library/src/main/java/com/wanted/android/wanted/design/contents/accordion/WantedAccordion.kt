@@ -34,12 +34,14 @@ import com.wanted.android.wanted.design.util.OPACITY_8
  *
  * 사용 예시:
  * ```kotlin
+ * var expanded by remember { mutableStateOf(false) }
+ *
  * WantedAccordion(
  *     title = "제목",
  *     modifier = Modifier,
  *     description = "설명",
- *     isExpanded = false,
- *     onChangeExpanded = { expanded -> },
+ *     isExpanded = expanded,
+ *     onChangeExpanded = { expanded = it },
  *     content = {
  *         Text("확장 콘텐츠")
  *     }
@@ -48,18 +50,18 @@ import com.wanted.android.wanted.design.util.OPACITY_8
  *
  * @param title String: 아코디언 헤더에 표시될 제목 텍스트입니다.
  * @param modifier Modifier: 레이아웃 외형 및 동작을 위한 Modifier입니다.
- * @param titleMaxLine Int: 제목 텍스트의 최대 줄 수입니다. 기본값은 Int.MAX_VALUE입니다.
- * @param description String?: 제목 하단에 표시될 부가 설명입니다. 선택 사항입니다.
+ * @param titleMaxLine Int: 제목 텍스트의 최대 줄 수입니다. 넘치면 말줄임(…) 처리됩니다. 기본값은 Int.MAX_VALUE입니다.
+ * @param description String?: 확장 상태일 때 제목 아래에 표시될 부가 설명입니다. 축소 상태에서는 보이지 않습니다. 선택 사항입니다.
  * @param titleStyle TextStyle: 제목에 적용할 텍스트 스타일입니다.
  * @param descriptionStyle TextStyle: 설명 텍스트에 적용할 스타일입니다.
- * @param isExpanded Boolean: 현재 아코디언이 확장 상태인지 여부를 나타냅니다.
+ * @param isExpanded Boolean: 현재 아코디언이 확장 상태인지 여부를 나타냅니다. 컴포넌트가 상태를 보관하지 않으므로 onChangeExpanded 에서 받은 값으로 갱신해야 펼쳐지고 접힙니다.
  * @param variant WantedListCellDefaults.Variant: List Cell 의 variant 를 상속받아 좌우 패딩을 정합니다. 기본값은 Inset 입니다.
  * @param divider Boolean: 하단 Divider 표시 여부입니다.
- * @param verticalPadding VerticalPadding: 헤더 영역의 수직 패딩 값입니다.
+ * @param verticalPadding WantedAccordionDefaults.VerticalPadding: 헤더 영역의 수직 패딩 값입니다. 확장 영역의 상단 간격도 함께 바뀝니다.
  * @param leadingIcon (@Composable () -> Unit)?: 제목 좌측에 위치할 아이콘입니다. 선택 사항입니다.
  * @param trail (@Composable () -> Unit): 제목 우측에 위치할 아이콘입니다. 기본값은 확장/축소 화살표입니다.
  * @param content (@Composable () -> Unit)?: 확장 상태일 때 표시될 추가 콘텐츠입니다. 선택 사항입니다.
- * @param onChangeExpanded (Boolean) -> Unit: 확장 상태 변경 시 호출되는 콜백입니다.
+ * @param onChangeExpanded (Boolean) -> Unit: 헤더를 누르면 바뀌어야 할 확장 상태(!isExpanded)로 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  *
  * @see WantedAccordionHeader
  * @see WantedAccordionDefaults.VerticalPadding

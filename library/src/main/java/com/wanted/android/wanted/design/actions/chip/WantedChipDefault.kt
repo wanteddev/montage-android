@@ -13,7 +13,7 @@ import com.wanted.android.wanted.design.util.OPACITY_5
  * data class WantedChipDefault
  *
  * WantedChip의 기본 스타일을 정의하는 데이터 클래스입니다.
- * 크기, 스타일 변형, 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
+ * 크기, 스타일 변형, 선택 여부(isActive), 사용 가능 여부(isEnable), 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -31,7 +31,7 @@ import com.wanted.android.wanted.design.util.OPACITY_5
  *
  * @param size ChipSize: Chip의 크기를 설정합니다.
  * @param variant ChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
- * @param isActive Boolean: Chip의 활성화 여부입니다.
+ * @param isActive Boolean: 선택 여부 상태입니다. 이 객체를 직접 만들면 색은 iconColor·backgroundColor·borderColor·textStyle 값을 그대로 쓰며, 이 값은 Solid 의 눌림 효과(ripple) 색에만 영향을 줍니다. 상태에 맞는 색이 필요하면 WantedChipDefaults.getDefault 로 만듭니다.
  * @param isEnable Boolean: Chip의 사용 가능 여부입니다.
  * @param iconColor Color: 아이콘의 색상입니다.
  * @param backgroundColor Color: 배경 색상입니다.
@@ -72,7 +72,7 @@ object WantedChipDefaults {
      *
      * @param size ChipSize: Chip의 크기를 설정합니다.
      * @param variant ChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
-     * @param isActive Boolean: 활성화 여부입니다.
+     * @param isActive Boolean: 선택 여부 상태입니다. true 면 브랜드 색으로 표시되며, isEnable 이 false 이면 비활성 색이 우선합니다.
      * @param isEnable Boolean: 사용 가능 여부입니다.
      * @param iconColor Color: 아이콘의 색상입니다.
      * @param backgroundColor Color: 배경 색상입니다.

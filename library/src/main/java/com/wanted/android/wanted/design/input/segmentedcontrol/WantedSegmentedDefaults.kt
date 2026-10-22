@@ -24,17 +24,10 @@ object WantedSegmentedDefaults {
      * enum class SegmentedSize
      *
      * SegmentedControl 의 크기를 정의하는 enum 클래스입니다.
-     * 각 사이즈는 Figma 스펙에 맞춘 고정 높이·라운딩·패딩·아이콘 크기 값을 가집니다.
-     *
-     * @param height 항목의 기준 높이입니다(=트랙 전체 높이 − [ContainerPadding]×2). 항목은 이 값을 최소 높이(defaultMinSize)로 사용하며, 시스템 폰트 확대 시 그 이상으로 늘어납니다.
-     * @param containerRadius 컨트롤(트랙) 모서리 반경입니다.
-     * @param knobRadius 선택 강조 Knob 의 모서리 반경입니다.
-     * @param horizontalPadding text / icon+text 세그먼트의 좌우 여백입니다.
-     * @param verticalPadding text / icon+text 세그먼트의 상하 여백입니다.
-     * @param iconTextGap 아이콘과 텍스트 사이 간격입니다.
-     * @param iconSize icon + text 세그먼트의 아이콘 크기입니다.
-     * @param iconOnlyIconSize Icon Only 세그먼트의 아이콘 크기입니다. icon + text 보다 한 단계 큽니다.
-     * @param iconOnlyWidth Icon Only 세그먼트의 고정 너비입니다. 높이([height])보다 2dp 넓습니다.
+     * 각 사이즈는 Figma 스펙에 맞춘 고정 높이·라운딩·패딩·아이콘 크기 값을 가집니다. 항목 높이는 트랙 전체 높이에서 [ContainerPadding]×2 를 뺀 값이며, 최소 높이(defaultMinSize)로 쓰여 시스템 폰트 확대 시 그 이상으로 늘어납니다.
+     * - Small: 항목 높이 24dp, 트랙 radius 10dp, Knob radius 8dp, 아이콘 14dp(Icon Only 16dp·너비 26dp), caption1Medium 입니다.
+     * - Medium: 항목 높이 32dp, 트랙 radius 12dp, Knob radius 8dp, 아이콘 16dp(Icon Only 18dp·너비 34dp), label1Medium 입니다.
+     * - Large: 항목 높이 40dp, 트랙 radius 14dp, Knob radius 10dp, 아이콘 18dp(Icon Only 20dp·너비 42dp), body2Medium 입니다.
      */
     enum class SegmentedSize(
         val height: Dp,

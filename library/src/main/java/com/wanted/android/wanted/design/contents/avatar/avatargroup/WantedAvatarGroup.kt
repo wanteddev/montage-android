@@ -43,9 +43,9 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * 사용 예시:
  * ```kotlin
  * WantedAvatarGroup(
- *     modelList = listOf(R.drawable.ic_avatar_placeholder_person),
+ *     modelList = listOf(R.drawable.icon_normal_person_fill),
  *     modifier = Modifier,
- *     placeHolder = R.drawable.ic_avatar_placeholder_person,
+ *     placeHolder = R.drawable.icon_normal_person_fill,
  *     size = WantedAvatarGroupSize.XSmall,
  *     isDrawableRes = true,
  *     contentDescription = "프로필 이미지",
@@ -56,8 +56,10 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param modelList List<Any>: 표시할 아바타 모델 리스트입니다 (URL 또는 Drawable ID).
  * @param size WantedAvatarGroupSize: 그룹 크기입니다. XSmall·Small 중 선택합니다.
  * @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
- * @param placeHolder Int?: 이미지 로딩 실패 시 사용할 Drawable 리소스 ID입니다.
+ * @param placeHolder Int?: 이미지가 없을 때와 로딩 중·로딩 실패 시 사용할 Drawable 리소스 ID입니다.
  * @param isDrawableRes Boolean: modelList 항목이 Drawable 리소스인지 여부입니다.
+ * @param alignment Alignment: 각 아바타 이미지의 정렬 방식입니다. URL 등 Glide 로 불러오는 이미지에만 적용되고, Drawable 리소스(isDrawableRes = true)에는 적용되지 않습니다.
+ * @param contentScale ContentScale: 각 아바타 이미지의 크기 조정 방식입니다. URL 등 Glide 로 불러오는 이미지에만 적용되고, Drawable 리소스(isDrawableRes = true)에는 적용되지 않습니다.
  * @param contentDescription String?: 그룹 접근성 라벨의 접두 문구입니다. 지정하면 뒤에 표시 인원 수가 붙어 "프로필 이미지 3" 형태로 낭독되며, null이면 그룹 라벨을 부여하지 않습니다.
  * @param trailingContent (@Composable (Dp) -> Unit)?: 아바타 그룹 오른쪽에 추가적으로 표시할 콘텐츠입니다. 전달되는 Dp는 슬롯 높이(XSmall 24dp / Small 32dp)이며, 슬롯이 이 높이로 고정되므로 더 큰 콘텐츠는 이 높이에 맞춰 압축됩니다. 디자인 토큰이 적용된 [WantedAvatarGroupTrailingText]·[WantedAvatarGroupTrailingTextButton] 사용을 권장합니다.
  *

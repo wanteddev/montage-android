@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
 /**
  * sealed class WantedIconButtonBackgroundSize
  *
- * `WantedIconButtonBackground` 의 박스(컨테이너) 크기입니다. (Confluence IconButton 스펙 §3·§4)
+ * WantedIconButtonBackground 의 박스(컨테이너) 크기입니다. (Confluence IconButton 스펙 §3·§4)
  *
  * background 는 string preset 을 두지 않고 단일 [Default] preset 으로 수렴하며,
  * 박스 커스텀은 [Custom] 으로만 지정합니다. 아이콘은 `box × 2/3` → dimension 토큰 스냅으로 자동 산출되고,

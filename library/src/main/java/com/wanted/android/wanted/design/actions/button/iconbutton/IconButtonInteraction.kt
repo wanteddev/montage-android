@@ -26,7 +26,7 @@ internal fun iconButtonIndication(
     return ripple(bounded = true, color = iconButtonRippleColor(strength, color))
 }
 
-/** IconButton ripple 색을 반환합니다. [strength] 에 해당하는 불투명도를 [color] 에 적용합니다. ripple 을 직접 만들지 않고 색만 넘겨야 하는 경로(`WantedTouchArea` 의 `rippleColor` 등)에서 [iconButtonIndication] 과 같은 값을 쓰기 위한 진입점입니다. */
+/** IconButton ripple 색을 반환합니다. [strength] 에 해당하는 불투명도를 [color] 에 적용합니다. ripple 을 직접 만들지 않고 색만 넘겨야 하는 경로([WantedTouchArea] 의 [rippleColor] 등)에서 [iconButtonIndication] 과 같은 값을 쓰기 위한 진입점입니다. */
 internal fun iconButtonRippleColor(
     strength: IconButtonInteractionStrength,
     color: Color,

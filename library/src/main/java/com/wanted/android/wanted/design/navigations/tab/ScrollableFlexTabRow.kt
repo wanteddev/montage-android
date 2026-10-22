@@ -184,6 +184,13 @@ class TabPosition internal constructor(val left: Dp, val width: Dp) {
     }
 }
 
+/**
+ * fun Modifier.tabIndicatorOffset(...)
+ *
+ * Tab 인디케이터를 선택된 Tab 의 위치·폭에 맞춰 하단에 배치하는 Modifier입니다. 위치와 폭이 바뀌면 250ms 동안 애니메이션으로 이동합니다.
+ *
+ * @param currentTabPosition TabPosition: 선택된 Tab 의 위치(left)와 폭(width)입니다. deprecated 인 ScrollableFlexTabRow 의 indicator 슬롯이 넘겨 주는 값을 그대로 사용합니다. WantedTabRow·WantedScrollableTabRow 에는 인디케이터 슬롯이 없어 이 Modifier 를 쓸 일이 없습니다.
+ */
 fun Modifier.tabIndicatorOffset(
     currentTabPosition: TabPosition
 ): Modifier = composed(

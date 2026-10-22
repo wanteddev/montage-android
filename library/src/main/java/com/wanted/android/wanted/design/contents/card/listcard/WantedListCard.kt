@@ -28,6 +28,7 @@ import com.wanted.android.wanted.design.base.WantedTouchArea
 import com.wanted.android.wanted.design.contents.card.WantedCardDefault
 import com.wanted.android.wanted.design.contents.card.WantedCardDefaults
 import com.wanted.android.wanted.design.contents.card.WantedCardDescription
+import com.wanted.android.wanted.design.contents.card.WantedThumbnailClipShape
 import com.wanted.android.wanted.design.contents.card.WantedCardDescriptionSkeleton
 import com.wanted.android.wanted.design.contents.contentbadge.WantedContentBadge
 import com.wanted.android.wanted.design.input.input.control.CheckBoxSize
@@ -53,24 +54,24 @@ import com.wanted.android.wanted.design.util.OPACITY_8
  *     extraCaption = "추가 설명",
  *     topContent = { WantedContentBadge(text = "상단") },
  *     bottomContent = { WantedContentBadge(text = "하단") },
- *     leadingContent = { WantedCheckBox(...) },
- *     trailingContent = { Icon(...) },
+ *     leadingContent = { WantedCheckBox(checkState = CheckBoxState.Checked, onCheckedChange = { }) },
+ *     trailingContent = { Icon(painter = painterResource(R.drawable.icon_normal_bookmark), contentDescription = null) },
  *     onClick = { /* 클릭 처리 */ }
  * )
  * ```
  *
- * @param modifier Modifier: 카드 최외곽 노드에 적용됩니다. 배경·테두리·클릭 영역이 모두 이 노드 기준입니다.
- * @param title String: 카드의 주요 제목입니다.
- * @param caption String: 제목 아래에 표시될 보조 설명입니다.
- * @param extraCaption String: 추가적인 설명 텍스트입니다.
- * @param isLoading Boolean: true일 경우 스켈레톤 UI로 렌더링됩니다.
+ * @param modifier Modifier: 카드 최외곽 노드에 적용됩니다. 배경·테두리는 이 노드 기준이고, 클릭·리플 영역은 이 노드보다 상하좌우 8dp 넓게 잡히므로 카드 사이 간격이 8dp 보다 좁으면 터치 영역이 겹칩니다.
+ * @param title String: 카드의 주요 제목입니다. 1줄까지 표시하고 넘치면 말줄임(…) 처리됩니다.
+ * @param caption String: 제목 아래에 표시될 보조 설명입니다. 1줄까지 표시하고 넘치면 말줄임(…) 처리됩니다.
+ * @param extraCaption String: 추가적인 설명 텍스트입니다. 1줄까지 표시하고 넘치면 말줄임(…) 처리됩니다.
+ * @param isLoading Boolean: true일 경우 스켈레톤 UI로 렌더링됩니다. thumbnail 을 넘기면 로딩 중에도 그 썸네일이 그대로 표시되고, leading/trailingContent 는 24dp 빈 자리로 바뀝니다.
  * @param cardDefault WantedCardDefault: 스켈레톤 표시 여부와 카드 표면(배경색·모양·테두리·안쪽 여백) 설정을 담는 객체입니다.
  * @param thumbnail (@Composable () -> Unit)?: 썸네일 이미지 영역입니다. null이면 기본 배경으로 표시됩니다.
  * @param topContent (@Composable () -> Unit)?: 설명 위에 표시될 추가 콘텐츠입니다.
  * @param bottomContent (@Composable () -> Unit)?: 설명 아래에 표시될 추가 콘텐츠입니다.
  * @param leadingContent (@Composable () -> Unit)?: 썸네일 왼쪽에 표시될 콘텐츠입니다 (예: 체크박스).
  * @param trailingContent (@Composable () -> Unit)?: 설명 오른쪽에 표시될 콘텐츠입니다 (예: 아이콘 버튼).
- * @param onClick () -> Unit: 카드 클릭 시 호출되는 콜백 함수입니다.
+ * @param onClick () -> Unit: 카드 클릭 시 호출되는 콜백 함수입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedListCard(
@@ -207,14 +208,20 @@ private fun WantedCardHorizontalLayout(
         leadingContent?.invoke()
 
         Box(
+            // 테두리는 clip 밖에서 그리고, 썸네일은 테두리 안쪽 선에 맞춰 자른다.
+            // 썸네일을 테두리와 같은 바깥 선으로 자르면 둥근 모서리 바깥 픽셀에 이미지가 섞여 테두리가 떠 보인다.
+            // 겉모서리는 테두리 바깥 선이라 가이드 12dp 그대로다. (WantedThumbnailClipShape 참고)
             modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-                .background(color = DesignSystemTheme.colors.surfaceNeutralTertiary)
+                .background(
+                    color = DesignSystemTheme.colors.surfaceNeutralTertiary,
+                    shape = RoundedCornerShape(12.dp)
+                )
                 .border(
                     width = 1.dp,
                     color = DesignSystemTheme.colors.lineNeutralTertiaryOpaque,
                     shape = RoundedCornerShape(12.dp)
-                ),
+                )
+                .clip(WantedThumbnailClipShape(cornerRadius = 12.dp, borderWidth = 1.dp)),
             contentAlignment = Alignment.TopStart
         ) {
             thumbnail()
@@ -446,15 +453,7 @@ private fun WantedCardSkeletonPreview() {
     }
 }
 
-/**
- * Modifier.cardBorder
- *
- * 카드 표면 테두리를 배경 위에 그립니다. cardDefault.border 가 null 이면 아무것도 적용하지 않습니다.
- *
- * background 다음에 호출해야 테두리가 배경에 가려지지 않습니다.
- *
- * @param cardDefault WantedCardDefault: 테두리와 모양 정보를 담은 설정 객체입니다.
- * @return Modifier: 테두리가 적용된 Modifier 입니다.
- */
+// 카드 표면 테두리를 배경 위에 그린다. cardDefault.border 가 null 이면 아무것도 적용하지 않는다.
+// background 다음에 호출해야 테두리가 배경에 가려지지 않는다.
 private fun Modifier.cardBorder(cardDefault: WantedCardDefault): Modifier =
     cardDefault.border?.let { border(border = it, shape = cardDefault.shape) } ?: this

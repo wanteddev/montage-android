@@ -42,32 +42,39 @@ import java.util.Calendar
  *
  * 시계 및 입력 형식을 지원하는 시간 선택 Dialog입니다.
  *
- * 사용자는 Wheel, Input, Dial 형식으로 전환하여 사용할 수 있습니다.
- * 선택 후 확인/취소 버튼으로 결과를 확정하거나 Dialog를 닫을 수 있습니다.
- * 내부적으로 TimePicker 또는 TimeInput을 사용하며, 선택 모드 전환 버튼을 제공합니다.
+ * 사용자는 Dial(시계)·Input(키보드 입력) 형식으로 전환할 수 있으며, 전환은 호출측이 onClickChangeMode 에서 isEnableClock 값을 뒤집어야 반영됩니다.
+ *
+ * 확인/취소 버튼을 제공하지만 선택한 시간은 콜백으로 전달되지 않습니다(내부 상태, 초기값은 현재 시각). 선택 값이 필요하면 WantedTimePickerWheel 을 사용합니다.
+ *
+ * 내부적으로 TimePicker 또는 TimeInput을 사용합니다.
  *
  * 사용 예시:
  * ```kotlin
- * WantedTimePicker(
- *     title = "시간 선택",
- *     confirm = "확인",
- *     cancel = "취소",
- *     onClickConfirm = { /* 확인 처리 */ },
- *     onClickCancel = { /* 취소 처리 */ },
- *     onDismissRequest = { /* Dialog 종료 처리 */ },
- *     onClickChangeMode = { /* 입력 형식 전환 처리 */ },
- *     isEnableClock = true
- * )
+ * var showPicker by remember { mutableStateOf(true) }
+ * var isClock by remember { mutableStateOf(true) }
+ *
+ * if (showPicker) {
+ *     WantedTimePicker(
+ *         title = "시간 선택",
+ *         confirm = "확인",
+ *         cancel = "취소",
+ *         onClickConfirm = { showPicker = false },
+ *         onClickCancel = { showPicker = false },
+ *         onDismissRequest = { showPicker = false },
+ *         onClickChangeMode = { isClock = !isClock },
+ *         isEnableClock = isClock
+ *     )
+ * }
  * ```
  *
  * @param title String: Dialog 상단 제목 텍스트입니다
  * @param confirm String: 확인 버튼 텍스트입니다
- * @param onClickConfirm () -> Unit: 확인 버튼 클릭 시 호출되는 콜백입니다
- * @param onClickChangeMode () -> Unit: 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다
+ * @param onClickConfirm () -> Unit: 확인 버튼 클릭 시 호출되는 콜백입니다. 선택한 시간은 전달하지 않으며 Dialog 를 닫지 않습니다.
+ * @param onClickChangeMode () -> Unit: 입력 형식 전환 버튼 클릭 시 호출되는 콜백입니다. 호출측이 isEnableClock 값을 뒤집어야 Dial·Input 전환이 반영됩니다.
  * @param onDismissRequest () -> Unit: Dialog 외부 클릭 또는 닫기 시 호출되는 콜백입니다
  * @param cancel String?: 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다
  * @param isEnableClock Boolean: true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다
- * @param onClickCancel () -> Unit: 취소 버튼 클릭 시 호출되는 콜백입니다. 기본값은 빈 함수입니다
+ * @param onClickCancel () -> Unit: 취소 버튼 클릭 시 호출되는 콜백입니다. Dialog 를 닫지 않으므로 호출부에서 표시 상태를 바꿔야 합니다. 기본값은 빈 함수입니다
  */
 @Composable
 fun WantedTimePicker(

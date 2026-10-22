@@ -22,7 +22,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
 
 /**
- * WantedProgressTracker
+ * WantedProgressTrackerHorizontal
  *
  * 수평형 단계 진행 표시 컴포넌트입니다.
  *
@@ -42,7 +42,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * @param stepCount Int: 전체 단계 수입니다.
  * @param currentStep Int: 현재 선택된 단계입니다. 1부터 시작합니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param label ((Int) -> String)?: 각 단계의 라벨 텍스트를 반환하는 함수입니다.
+ * @param label ((Int) -> String)?: 각 단계의 라벨 텍스트를 반환하는 함수입니다. 인자 index 는 0부터 시작하고, 라벨은 최대 2줄까지 표시되며 넘치면 말줄임(…) 처리됩니다. null 이거나 빈 문자열이면 라벨을 그리지 않습니다.
  */
 @Composable
 fun WantedProgressTrackerHorizontal(

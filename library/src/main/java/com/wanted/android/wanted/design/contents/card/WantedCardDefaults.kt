@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
  * @param captionSkeleton Boolean: 메인 캡션에 스켈레톤을 표시할지 여부입니다.
  * @param extraCaptionSkeleton Boolean: 추가 캡션에 스켈레톤을 표시할지 여부입니다.
  * @param bottomContentSkeleton Boolean: 하단 콘텐츠 영역에 스켈레톤을 표시할지 여부입니다.
- * @param ratio Float: 썸네일 스켈레톤의 비율입니다.
+ * @param ratio Float: 썸네일 자리 비율입니다. WantedCard 는 로딩 스켈레톤 썸네일에, WantedListCard 는 thumbnail 이 null 일 때의 기본 배경 박스(높이 64dp)에 적용합니다. WantedListCard 로딩 스켈레톤은 이 값을 무시하고 4:3 을 씁니다.
  * @param backgroundColor Color: 카드 표면 배경색입니다. 기본값 Transparent 는 배경을 그리지 않는 것과 같습니다.
  * @param shape Shape: 배경 모양입니다.
  * @param border BorderStroke?: 카드 표면 테두리입니다. null 이면 테두리를 그리지 않습니다. 배경 위에 그려지므로 modifier 에 직접 border 를 주면 배경에 가려집니다.
- * @param interactionShape Shape: 클릭·리플 모양입니다.
- * @param contentPadding PaddingValues: 카드 표면 안쪽 여백입니다. modifier 의 padding 은 클릭 영역 바깥 마진이 되므로 안쪽 여백은 이 값으로 줍니다.
+ * @param interactionShape Shape: 클릭·리플 모양입니다. WantedListCard 에만 적용되며, WantedCard 는 고유 모양(상단 20dp·하단 12dp)을 써서 이 값을 무시합니다.
+ * @param contentPadding PaddingValues: 카드 표면 안쪽 여백입니다. modifier 의 padding 은 표면 바깥 여백이 되므로(8dp 보다 좁으면 넘치는 클릭 영역 안에 들어감) 안쪽 여백은 이 값으로 줍니다.
  */
 data class WantedCardDefault(
     val topContentSkeleton: Boolean = false,
@@ -43,6 +43,7 @@ data class WantedCardDefault(
 /**
  * object WantedCardDefaults
  *
+ * WantedCard·WantedListCard 에 넘길 WantedCardDefault 를 만드는 기본값 함수를 제공하는 객체입니다.
  */
 object WantedCardDefaults {
 
@@ -68,8 +69,8 @@ object WantedCardDefaults {
      * @param backgroundColor Color: 카드 표면 배경색입니다. 기본값 Transparent 는 배경을 그리지 않는 것과 같습니다.
      * @param shape Shape: 배경 모양입니다.
      * @param border BorderStroke?: 카드 표면 테두리입니다. null 이면 테두리를 그리지 않습니다. 배경 위에 그려지므로 modifier 에 직접 border 를 주면 배경에 가려집니다.
-     * @param interactionShape Shape: 클릭·리플 모양입니다.
-     * @param contentPadding PaddingValues: 카드 표면 안쪽 여백입니다. modifier 의 padding 은 클릭 영역 바깥 마진이 되므로 안쪽 여백은 이 값으로 줍니다.
+     * @param interactionShape Shape: 클릭·리플 모양입니다. WantedListCard 에만 적용되며, WantedCard 는 고유 모양(상단 20dp·하단 12dp)을 써서 이 값을 무시합니다.
+     * @param contentPadding PaddingValues: 카드 표면 안쪽 여백입니다. modifier 의 padding 은 표면 바깥 여백이 되므로(8dp 보다 좁으면 넘치는 클릭 영역 안에 들어감) 안쪽 여백은 이 값으로 줍니다.
      * @return WantedCardDefault: 스켈레톤 설정 정보가 담긴 데이터 클래스입니다.
      */
     @Composable

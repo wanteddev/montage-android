@@ -21,11 +21,12 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 /**
  * WantedFormControl
  *
- * 입력 컨트롤(TextField, TextArea, Select 등)에 Label·Required·Message·CharacterCount를
- * 붙이고, 라벨/입력/메시지의 배치를 처리하는 슬롯 기반 래퍼 컴포넌트입니다.
+ * 입력 컨트롤(TextField, TextArea, Select 등)에 라벨·필수 표시·메시지·글자수를 붙이는 슬롯 기반 래퍼 컴포넌트입니다.
+ * 라벨/입력/메시지의 배치도 함께 처리합니다.
  *
  * 단독으로 값을 입력받지 않습니다. input 슬롯에 실제 입력 컴포넌트를 조합해서 사용합니다.
  * Web @wanteddev/wds 의 FormControl 과 1:1 대응되는 Android 구현입니다.
+ * status·enabled 는 입력 아래 메시지(description)에만 적용되고 input 슬롯에는 전달되지 않으므로, 입력 컴포넌트의 상태(TextField 는 error, TextArea·Select 는 status)와 enabled 는 따로 넘깁니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -36,22 +37,33 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *     status = WantedFormControlDefaults.Status.Negative,
  * ) {
  *     WantedTextField(
- *         text = email,
+ *         value = email,
+ *         placeholder = "이메일을 입력해 주세요.",
+ *         error = true,
+ *         enabled = true,
+ *         trailingButtonEnabled = true,
+ *         complete = false,
+ *         maxLines = 1,
+ *         minLines = 1,
+ *         maxWordCount = 2000,
+ *         enabledOverflowText = false,
+ *         interactionSource = remember { MutableInteractionSource() },
+ *         keyboardOptions = KeyboardOptions.Default,
+ *         keyboardActions = KeyboardActions.Default,
  *         onValueChange = { email = it },
- *         placeholder = "이메일을 입력해 주세요."
  *     )
  * }
  * ```
  *
  * @param modifier Modifier: Modifier를 설정합니다.
- * @param label String: 라벨 텍스트입니다. 빈 문자열이면 라벨을 렌더링하지 않습니다.
+ * @param label String: 라벨 텍스트입니다. 빈 문자열이면 라벨과 필수 뱃지를 모두 렌더링하지 않습니다. 1줄로 표시되고 넘치면 말줄임(…) 처리되며, Leading 배치에서는 라벨 폭이 전체 폭의 50%로 제한됩니다.
  * @param required Boolean: true이면 라벨 옆에 필수 뱃지(*)를 표시합니다. 뱃지 타이포는 size를 따릅니다.
- * @param description String?: 입력 컨트롤 하단에 표시되는 도움말 또는 에러 메시지입니다.
+ * @param description String?: 입력 컨트롤 하단에 표시되는 도움말 또는 에러 메시지입니다. null이면 표시하지 않으며, 최대 2줄까지 표시되고 넘치면 말줄임(…) 처리됩니다. 색상은 status·enabled를 따릅니다.
  * @param accessory (@Composable () -> Unit)?: 글자수 표시 슬롯입니다. WantedTextAreaCharacterCount를 주입할 수 있습니다.
  * @param size WantedFormControlDefaults.Size: 라벨·필수 뱃지 텍스트 크기를 지정합니다. (Large, Medium)
- * @param status WantedFormControlDefaults.Status: 상태에 따라 description 색상이 변경됩니다. (Normal, Positive, Negative)
+ * @param status WantedFormControlDefaults.Status: description 색상을 정합니다. Negative이면 에러 색, Normal·Positive는 기본 색으로 표시됩니다(Positive 전용 색은 없습니다). enabled가 false이면 status와 무관하게 비활성화 색이 우선합니다. (Normal, Positive, Negative)
  * @param labelPlacement WantedFormControlDefaults.LabelPlacement: 라벨 배치 위치를 지정합니다. (Top, Leading)
- * @param enabled Boolean: false이면 description을 비활성화 색상으로 표시합니다.
+ * @param enabled Boolean: false이면 description을 비활성화 색상으로 표시합니다(status보다 우선). 라벨·accessory·input 슬롯은 바뀌지 않으므로 입력 컴포넌트의 enabled는 따로 넘깁니다.
  * @param input @Composable () -> Unit: 필수 입력 컨트롤 슬롯입니다. (WantedTextField, WantedTextArea, WantedSelect 등)
  */
 @Composable

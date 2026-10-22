@@ -570,13 +570,30 @@ private fun DecorationBox(
  * 사용 예시:
  * ```kotlin
  * // 대체 방식
+ * val state = remember { mutableStateOf(TextFieldValue("")) }
+ *
  * WantedFormControl(
  *     label = "주제",
  *     required = true,
  *     description = "메시지에 마침표를 찍어요.",
  *     status = WantedFormControlDefaults.Status.Negative
  * ) {
- *     WantedTextField(value = state.value, ..., onValueChange = { state.value = it })
+ *     WantedTextField(
+ *         value = state.value,
+ *         placeholder = "주제를 입력해 주세요.",
+ *         error = true,
+ *         enabled = true,
+ *         trailingButtonEnabled = true,
+ *         complete = false,
+ *         maxLines = 1,
+ *         minLines = 1,
+ *         maxWordCount = 2000,
+ *         enabledOverflowText = false,
+ *         interactionSource = remember { MutableInteractionSource() },
+ *         keyboardOptions = KeyboardOptions.Default,
+ *         keyboardActions = KeyboardActions.Default,
+ *         onValueChange = { state.value = it },
+ *     )
  * }
  * ```
  *
@@ -740,7 +757,22 @@ fun WantedTextField(
  * val state = remember { mutableStateOf(TextFieldValue("")) }
  *
  * WantedFormControl(label = "주제", required = true) {
- *     WantedTextField(value = state.value, ..., onValueChange = { state.value = it })
+ *     WantedTextField(
+ *         value = state.value,
+ *         placeholder = "주제를 입력해 주세요.",
+ *         error = true,
+ *         enabled = true,
+ *         trailingButtonEnabled = true,
+ *         complete = false,
+ *         maxLines = 1,
+ *         minLines = 1,
+ *         maxWordCount = 2000,
+ *         enabledOverflowText = false,
+ *         interactionSource = remember { MutableInteractionSource() },
+ *         keyboardOptions = KeyboardOptions.Default,
+ *         keyboardActions = KeyboardActions.Default,
+ *         onValueChange = { state.value = it },
+ *     )
  * }
  * ```
  *

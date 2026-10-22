@@ -119,7 +119,7 @@ fun WantedSegmentedControl(
  *         WantedSegmentedControlItem(
  *             title = "옵션 $index",
  *             isSelected = index == selectedIndex,
- *             icon = { Icon(...) }
+ *             icon = { Icon(painter = painterResource(R.drawable.icon_normal_bookmark), contentDescription = null) }
  *         )
  *     },
  *     onClick = { selectedIndex = it }

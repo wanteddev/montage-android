@@ -45,7 +45,7 @@ import com.wanted.android.wanted.design.util.OPACITY_61
  * ```
  *
  * @param totalPageCount Int: 전체 페이지 수입니다.
- * @param currentIndex Int: 현재 페이지 인덱스입니다.
+ * @param currentIndex Int: 현재 페이지 번호입니다. 값을 그대로 표시하므로 1부터 시작하는 번호를 넘깁니다(0부터 세는 인덱스면 +1).
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param size WantedPageCounterSize: 컴포넌트의 크기입니다.
  * @param isAlternative Boolean: alternative 배경 스타일 적용 여부입니다.

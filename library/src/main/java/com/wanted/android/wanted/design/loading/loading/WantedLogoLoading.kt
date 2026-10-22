@@ -17,15 +17,15 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  *
  * Wanted 심볼 로딩 애니메이션을 표시하는 컴포넌트입니다.
  *
- * isUseDim이 true인 경우 Dialog 기반으로 dim 처리된 로딩 화면이 표시됩니다.
+ * isUseDim이 true인 경우 Dialog 기반으로 dim 처리된 로딩 화면이 표시되며, 이때 modifier 는 적용되지 않습니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedLogoLoading(isUseDim = true)
  * ```
  *
- * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param isUseDim Boolean: dim 배경 사용 여부입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. isUseDim 이 false 일 때만 적용되며, true 이면 무시됩니다. 적용될 때는 바깥 Surface 와 안쪽 Box 에 두 번 적용되므로 padding·background 등은 두 번 반영됩니다.
+ * @param isUseDim Boolean: dim 배경 사용 여부입니다. true 이면 Dialog 로 표시하고, false 이면 부모를 가득 채워 가운데에 표시합니다. 기본값은 false입니다.
  */
 @Composable
 fun WantedLogoLoading(

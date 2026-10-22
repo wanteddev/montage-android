@@ -44,7 +44,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * 하단 액션 버튼 영역을 생성합니다.
  *
  * 버튼은 main, alternative, sub 텍스트로 생성하며, 각 버튼에 클릭 콜백을 전달할 수 있습니다.
- * 또한, Variant 속성을 활용하여 상단 영역에 부가적인 요소를 렌더링할 수 있습니다.
+ * 또한, extra 슬롯으로 버튼 영역 위에 부가적인 요소를 렌더링할 수 있습니다.
  *
  * 사용 예시 :
  * ```kotlin
@@ -59,24 +59,24 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
+ * @param type ActionAreaType: 액션 영역의 타입입니다. Cancel 이면 alternative·sub 가 표시되지 않습니다(값별 배치는 [ActionAreaType] 참고).
  * @param main String: 메인 액션 버튼의 텍스트입니다.
  * @param modifier Modifier: Modifier를 설정합니다.
  * @param isEnableMain Boolean: 메인 액션 버튼의 활성화 여부입니다.
- * @param onClickMain () -> Unit: 메인 액션 버튼 클릭 콜백입니다.
- * @param alternative String?: 대체 액션 버튼의 텍스트입니다.
+ * @param onClickMain () -> Unit: 메인 액션 버튼 클릭 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
+ * @param alternative String?: 대체 액션 버튼의 텍스트입니다. onClickAlternative 가 null 이면 버튼이 표시되지 않습니다.
  * @param isEnableAlternative Boolean: 대체 액션 버튼의 활성화 여부입니다.
- * @param sub String?: 보조 액션 버튼의 텍스트입니다.
+ * @param sub String?: 보조 액션 버튼의 텍스트입니다. onClickSub 가 null 이면 버튼이 표시되지 않습니다.
  * @param isEnableSub Boolean: 보조 액션 버튼의 활성화 여부입니다.
- * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
+ * @param caption String?: 버튼 바로 위(extra 가 있으면 extra 아래)에 표시할 캡션입니다.
  * @param captionIcon Int?: 캡션 텍스트 앞에 표시할 아이콘 리소스입니다. 기본값은 아이콘 없음이며, 권장 아이콘은 [WantedActionAreaDefaults.CAPTION_ICON]입니다.
- * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
- * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
- * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
+ * @param scrollableState ScrollableState?: 위쪽 콘텐츠의 스크롤 상태입니다. 그라데이션은 background 가 true 이고 extra 가 없을 때만 그리며, 그 조건에서 이 값을 전달하면 아래로 더 스크롤할 내용이 있는 동안에만, null 이면 항상 표시합니다.
+ * @param background Boolean: true 이면 버튼 영역에 배경색을 칠하고, extra 가 없을 때 위쪽에 그라데이션을 겹쳐 그립니다(scrollableState 조건 참고). safeArea 도 true 이고 extra 가 없으면 버튼 영역의 상단 여백(20dp)을 없앱니다. extra 가 있으면 그라데이션은 그리지 않습니다.
+ * @param safeArea Boolean: true 이면 버튼 영역에 좌우·하단 20dp 와 상단 20dp(background 가 true 이고 extra 가 없으면 0) 여백을, extra 에 좌우 24dp 여백을 둡니다. false 이면 좌우·하단 여백을 빼고 상단은 extra 가 있을 때만 20dp 를 둡니다(extra 자체의 상단 20dp 는 항상 유지). 시스템 바 inset 은 적용하지 않으므로 호출부에서 처리합니다.
  * @param divider Boolean: 구분선 표시 여부를 지정합니다. extra가 있을 때만 표시됩니다.
- * @param backgroundColor Color: Extra·버튼 영역의 배경색이자 sticky 그라데이션의 색상입니다. 그라데이션이 꺼져 있고 extra 도 없으면 배경을 칠하지 않습니다.
- * @param onClickAlternative (() -> Unit)?: 대체 액션 버튼 클릭 콜백입니다.
- * @param onClickSub (() -> Unit)?: 보조 액션 버튼 클릭 콜백입니다.
+ * @param backgroundColor Color: Extra·버튼 영역의 배경색이자 위쪽 그라데이션의 색상입니다. background 가 false 이고 extra 도 없으면 배경을 칠하지 않습니다.
+ * @param onClickAlternative (() -> Unit)?: 대체 액션 버튼 클릭 콜백입니다. null 이면 해당 버튼을 그리지 않습니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
+ * @param onClickSub (() -> Unit)?: 보조 액션 버튼 클릭 콜백입니다. null 이면 해당 버튼을 그리지 않습니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  * @param extra (@Composable () -> Unit)?: 추가적으로 표시할 컴포넌트입니다.
  */
 @Composable
@@ -168,22 +168,22 @@ fun WantedActionArea(
  * WantedActionArea(
  *     type = ActionAreaType.Strong,
  *     main = {
- *         CustomMainButton(onClick = { ... })
+ *         WantedButton(text = "확인", modifier = Modifier.fillMaxWidth(), onClick = { /* 처리 */ })
  *     },
  *     alternative = {
- *         CustomSecondaryButton(onClick = { ... })
+ *         WantedButton(text = "취소", modifier = Modifier.fillMaxWidth(), variant = ButtonVariant.OUTLINED, onClick = { /* 처리 */ })
  *     }
  * )
  * ```
  *
  * @param modifier Modifier: Modifier를 설정합니다.
- * @param type ActionAreaType: 액션 영역의 타입을 설정합니다.
- * @param safeArea Boolean: SafeArea를 적용할지 여부를 지정합니다.
- * @param background Boolean: 배경 그라데이션 표시 여부를 지정합니다.
- * @param backgroundColor Color: Extra·버튼 영역의 배경색이자 sticky 그라데이션의 색상입니다. 그라데이션이 꺼져 있고 extra 도 없으면 배경을 칠하지 않습니다.
- * @param caption String?: 액션 영역 상단에 표시할 캡션입니다.
+ * @param type ActionAreaType: 액션 영역의 타입입니다. Cancel 이면 alternative·sub 가 표시되지 않습니다(값별 배치는 [ActionAreaType] 참고).
+ * @param safeArea Boolean: true 이면 버튼 영역에 좌우·하단 20dp 와 상단 20dp(background 가 true 이고 extra 가 없으면 0) 여백을, extra 에 좌우 24dp 여백을 둡니다. false 이면 좌우·하단 여백을 빼고 상단은 extra 가 있을 때만 20dp 를 둡니다(extra 자체의 상단 20dp 는 항상 유지). 시스템 바 inset 은 적용하지 않으므로 호출부에서 처리합니다.
+ * @param background Boolean: true 이면 버튼 영역에 배경색을 칠하고, extra 가 없을 때 위쪽에 그라데이션을 겹쳐 그립니다(scrollableState 조건 참고). safeArea 도 true 이고 extra 가 없으면 버튼 영역의 상단 여백(20dp)을 없앱니다. extra 가 있으면 그라데이션은 그리지 않습니다.
+ * @param backgroundColor Color: Extra·버튼 영역의 배경색이자 위쪽 그라데이션의 색상입니다. background 가 false 이고 extra 도 없으면 배경을 칠하지 않습니다.
+ * @param caption String?: 버튼 바로 위(extra 가 있으면 extra 아래)에 표시할 캡션입니다.
  * @param captionIcon Int?: 캡션 텍스트 앞에 표시할 아이콘 리소스입니다. 기본값은 아이콘 없음이며, 권장 아이콘은 [WantedActionAreaDefaults.CAPTION_ICON]입니다.
- * @param scrollableState ScrollableState?: 스크롤이 가능한 경우 상태를 전달합니다.
+ * @param scrollableState ScrollableState?: 위쪽 콘텐츠의 스크롤 상태입니다. 그라데이션은 background 가 true 이고 extra 가 없을 때만 그리며, 그 조건에서 이 값을 전달하면 아래로 더 스크롤할 내용이 있는 동안에만, null 이면 항상 표시합니다.
  * @param divider Boolean: 구분선 표시 여부를 지정합니다. extra가 있을 때만 표시됩니다.
  * @param main (@Composable () -> Unit): 메인 액션 버튼 Slot입니다.
  * @param alternative (@Composable (() -> Unit)?): 대체 액션 버튼 Slot입니다.
@@ -424,20 +424,18 @@ private fun WantedActionAreaLayout(
     }
 }
 
-/**
- * Modifier.actionAreaBackground
- *
- * Extra 영역과 버튼 영역에 배경색을 칠합니다. 그라디언트가 꺼져 있고 Extra 도 없을 때만 배경을 걷어
- * 페이지 배경이 그대로 비치게 둡니다(iOS 와 동일).
- *
- * 배경을 칠하지 않으면 다크모드에서 Extra 영역이 페이지 배경색으로 보이고,
- * sticky 일 때 그라디언트 끝에 경계선이 생깁니다.
- *
- * @param background Boolean: 배경 그라데이션 표시 여부입니다.
- * @param hasExtra Boolean: Extra 슬롯이 있는지 여부입니다.
- * @param backgroundColor Color: 칠할 배경색입니다.
- * @return Modifier: 배경이 적용된 Modifier 입니다.
- */
+// Modifier.actionAreaBackground
+//
+// Extra 영역과 버튼 영역에 배경색을 칠합니다. 그라디언트가 꺼져 있고 Extra 도 없을 때만 배경을 걷어
+// 페이지 배경이 그대로 비치게 둡니다(iOS 와 동일).
+//
+// 배경을 칠하지 않으면 다크모드에서 Extra 영역이 페이지 배경색으로 보이고,
+// sticky 일 때 그라디언트 끝에 경계선이 생깁니다.
+//
+// background(Boolean): 배경 그라데이션 표시 여부입니다.
+// hasExtra(Boolean): Extra 슬롯이 있는지 여부입니다.
+// backgroundColor(Color): 칠할 배경색입니다.
+// 반환(Modifier): 배경이 적용된 Modifier 입니다.
 private fun Modifier.actionAreaBackground(
     background: Boolean,
     hasExtra: Boolean,
@@ -448,6 +446,16 @@ private fun Modifier.actionAreaBackground(
     this
 }
 
+/**
+ * fun WantedActionAreaGradation(...)
+ *
+ * 액션 영역 위쪽에 겹쳐 그리는 세로 그라데이션입니다. 위는 투명, 아래는 color 로 점점 진해집니다.
+ *
+ * 자기 자리보다 콘텐츠 높이만큼 위로 올려 배치하므로, 액션 영역 바로 위의 스크롤 콘텐츠가 자연스럽게 가려집니다. 높이는 modifier 로 지정합니다.
+ *
+ * @param modifier Modifier: 그라데이션 크기(특히 높이)를 지정하는 Modifier입니다.
+ * @param color Color: 그라데이션이 닿는 아래쪽 색입니다. 보통 액션 영역의 배경색을 넘깁니다.
+ */
 @Composable
 fun WantedActionAreaGradation(
     modifier: Modifier = Modifier,

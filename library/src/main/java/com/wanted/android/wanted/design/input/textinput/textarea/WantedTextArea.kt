@@ -59,28 +59,18 @@ import java.text.BreakIterator
 /**
  * WantedTextArea
  *
- * 여러 줄의 텍스트 입력이 필요한 경우 사용하는 입력 컴포넌트입니다.
+ * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * 버튼, 아이콘, 타이틀, 설명 등을 유연하게 조합할 수 있습니다.
- * 내부적으로 TextFieldValue를 상태로 관리하며 onValueChange를 통해 외부에 값을 전달합니다.
- *
- * 사용 예시:
- * ```kotlin
- * WantedTextArea(
- *     text = "내용",
- *     title = "설명",
- *     placeholder = "입력해주세요",
- *     onValueChange = { newText -> ... }
- * )
- * ```
+ * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
  *
  * @param text String: 입력된 텍스트 값입니다.
  * @param modifier Modifier: 외형 및 레이아웃 조정용입니다.
  * @param placeholder String: 힌트로 보여질 텍스트입니다.
  * @param title String: 상단 제목 텍스트입니다.
  * @param description String?: 하단 메시지 또는 설명입니다.
- * @param leadingContent (() -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
- * @param trailingContent (() -> Unit)?: 하단 영역 오른쪽 슬롯 콘텐츠입니다.
+ * @param leadingContent (@Composable () -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
+ * @param trailingContent (@Composable () -> Unit)?: 하단 영역 오른쪽 슬롯 콘텐츠입니다.
  * @param size WantedTextAreaDefaults.Size: TextArea 크기입니다. (Large, Medium)
  * @param resize WantedTextAreaDefaults.Resize: 높이 확장 동작입니다. (Normal, Limit, Fixed)
  * @param enabled Boolean: 입력 활성화 여부입니다.
@@ -92,6 +82,7 @@ import java.text.BreakIterator
  * @param isGraphemeClusterCount Boolean: grapheme cluster 기준으로 글자 수를 셉니다.
  * @param requiredBadge Boolean: 필수 입력 뱃지 표시 여부입니다.
  * @param interactionSource MutableInteractionSource: 포커스 등 인터랙션 추적용입니다.
+ * @param focusRequester FocusRequester: 입력 필드 포커스 요청용입니다.
  * @param keyboardOptions KeyboardOptions: 키보드 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 설정입니다.
  * @param background Color: 배경 색상입니다.
@@ -194,15 +185,10 @@ fun WantedTextArea(
 /**
  * WantedTextArea
  *
- * 텍스트 입력 컴포넌트입니다.
+ * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * 커서, 선택 영역 등 복잡한 상태를 다룰 수 있는 TextFieldValue를 사용합니다.
- *
- * 사용 예시:
- * ```kotlin
- * val state = remember { mutableStateOf(TextFieldValue("입력값")) }
- * WantedTextArea(value = state.value, onValueChange = { state.value = it })
- * ```
+ * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
  *
  * @param value TextFieldValue: 입력 값 및 커서, 선택 정보 등을 포함합니다.
  * @param onValueChange (TextFieldValue) -> Unit: 값 변경 콜백입니다.
@@ -220,9 +206,10 @@ fun WantedTextArea(
  * @param enabledOverflowText Boolean: 글자 수 초과 허용 여부입니다.
  * @param requiredBadge Boolean: 필수 입력 여부입니다.
  * @param isGraphemeClusterCount Boolean: grapheme cluster 기준 글자 수 사용 여부입니다.
- * @param leadingContent (() -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
- * @param trailingContent (() -> Unit)?: 하단 영역 오른쪽 슬롯 콘텐츠입니다.
+ * @param leadingContent (@Composable () -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
+ * @param trailingContent (@Composable () -> Unit)?: 하단 영역 오른쪽 슬롯 콘텐츠입니다.
  * @param interactionSource MutableInteractionSource: 포커스 등 인터랙션 추적용입니다.
+ * @param focusRequester FocusRequester: 입력 필드 포커스 요청용입니다.
  * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
  * @param background Color: 배경 색상입니다.
@@ -303,21 +290,10 @@ fun WantedTextArea(
 /**
  * WantedTextArea
  *
- * 여러 줄의 텍스트 입력이 필요한 경우 사용하는 입력 컴포넌트입니다.
+ * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * 버튼, 아이콘, 타이틀, 설명 등을 유연하게 조합할 수 있습니다.
- * 내부적으로 TextFieldValue를 상태로 관리하며 onValueChange를 통해 외부에 값을 전달합니다.
- *
- * 사용 예시:
- * ```kotlin
- * WantedTextArea(
- *     text = "내용",
- *     title = "설명",
- *     placeholder = "입력해주세요",
- *     button = "완료",
- *     onValueChange = { newText -> ... }
- * )
- * ```
+ * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
  *
  * @param text String: 입력된 텍스트 값입니다.
  * @param modifier Modifier: 외형 및 레이아웃 조정용입니다.
@@ -325,7 +301,7 @@ fun WantedTextArea(
  * @param title String: 상단 제목 텍스트입니다.
  * @param description String?: 하단 메시지 또는 설명입니다.
  * @param button String?: 하단 버튼 텍스트입니다.
- * @param leadingContent (() -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
+ * @param leadingContent (@Composable () -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
  * @param size WantedTextAreaDefaults.Size: TextArea 크기입니다. (Large, Medium)
  * @param resize WantedTextAreaDefaults.Resize: 높이 확장 동작입니다. (Normal, Limit, Fixed)
  * @param enabled Boolean: 입력 활성화 여부입니다.
@@ -337,6 +313,7 @@ fun WantedTextArea(
  * @param isGraphemeClusterCount Boolean: grapheme cluster 기준으로 글자 수를 셉니다.
  * @param requiredBadge Boolean: 필수 입력 뱃지 표시 여부입니다.
  * @param interactionSource MutableInteractionSource: 포커스 등 인터랙션 추적용입니다.
+ * @param focusRequester FocusRequester: 입력 필드 포커스 요청용입니다.
  * @param keyboardOptions KeyboardOptions: 키보드 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 설정입니다.
  * @param background Color: 배경 색상입니다.
@@ -442,15 +419,10 @@ fun WantedTextArea(
 /**
  * WantedTextArea
  *
- * 텍스트 입력 컴포넌트입니다.
+ * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * 커서, 선택 영역 등 복잡한 상태를 다룰 수 있는 TextFieldValue를 사용합니다.
- *
- * 사용 예시:
- * ```kotlin
- * val state = remember { mutableStateOf(TextFieldValue("입력값")) }
- * WantedTextArea(value = state.value, onValueChange = { state.value = it })
- * ```
+ * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
  *
  * @param value TextFieldValue: 입력 값 및 커서, 선택 정보 등을 포함합니다.
  * @param onValueChange (TextFieldValue) -> Unit: 값 변경 콜백입니다.
@@ -469,12 +441,14 @@ fun WantedTextArea(
  * @param enabledOverflowText Boolean: 글자 수 초과 허용 여부입니다.
  * @param requiredBadge Boolean: 필수 입력 여부입니다.
  * @param isGraphemeClusterCount Boolean: grapheme cluster 기준 글자 수 사용 여부입니다.
- * @param leadingContent (() -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
+ * @param leadingContent (@Composable () -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
  * @param interactionSource MutableInteractionSource: 포커스 등 인터랙션 추적용입니다.
+ * @param focusRequester FocusRequester: 입력 필드 포커스 요청용입니다.
  * @param keyboardOptions KeyboardOptions: 키보드 동작 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 처리입니다.
  * @param background Color: 배경 색상입니다.
  * @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
+ * @param onClickButton () -> Unit: 버튼 클릭 콜백입니다.
  */
 @Deprecated(DEPRECATED_FORM_CONTROL_MESSAGE, level = DeprecationLevel.WARNING)
 @Composable
@@ -580,9 +554,9 @@ fun WantedTextArea(
  * @param focusRequester FocusRequester: 입력 필드 포커스 요청용입니다.
  * @param size WantedTextAreaDefaults.Size: TextArea 크기입니다. (Large, Medium)
  * @param resize WantedTextAreaDefaults.Resize: 높이 확장 동작입니다. (Normal, Limit, Fixed)
- * @param maxLines Int: 최대 줄 수입니다. Resize.Limit 일 때 스크롤 기준이 됩니다.
- * @param minLines Int: 최소 줄 수입니다.
- * @param maxWordCount Int: 입력 가능한 최대 글자 수입니다.
+ * @param maxLines Int: 최대 줄 수입니다. Resize.Limit 일 때만 적용되며, Normal 은 제한 없이 늘어나고 Fixed 는 minLines 로 고정됩니다.
+ * @param minLines Int: 최소 줄 수입니다. Resize.Fixed 에서는 이 값이 최대 줄 수도 됩니다.
+ * @param maxWordCount Int: 입력 가능한 최대 글자 수입니다. 이 오버로드는 글자 수를 표시하지 않으므로, 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
  * @param enabledOverflowText Boolean: 글자 수 초과 입력 허용 여부입니다.
  * @param isGraphemeClusterCount Boolean: grapheme cluster 기준으로 글자 수를 셉니다.
  * @param visualTransformation VisualTransformation: 텍스트 표시 방식을 변환합니다 (예: 비밀번호 마스킹).
@@ -590,9 +564,9 @@ fun WantedTextArea(
  * @param keyboardOptions KeyboardOptions: 키보드 설정입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 설정입니다.
  * @param background Color: 배경 색상입니다.
- * @param button String?: 하단 버튼 텍스트입니다. 지정하면 trailingContent 대신 버튼이 노출됩니다.
- * @param leadingContent (() -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
- * @param trailingContent (() -> Unit)?: 하단 영역 오른쪽 슬롯 콘텐츠입니다.
+ * @param button String?: 하단 버튼 텍스트입니다. 지정하면 trailingContent 대신 버튼이 노출되며, enabled=false 이거나 status=Negative 이면 버튼이 비활성화됩니다.
+ * @param leadingContent (@Composable () -> Unit)?: 하단 영역 왼쪽 슬롯 콘텐츠입니다.
+ * @param trailingContent (@Composable () -> Unit)?: 하단 영역 오른쪽 슬롯 콘텐츠입니다. button 이 지정되면 표시되지 않습니다.
  * @param onClickButton () -> Unit: 버튼 클릭 콜백입니다.
  * @param onValueChange (TextFieldValue) -> Unit: 값 변경 콜백입니다.
  */
@@ -868,7 +842,7 @@ private fun TextAreaPlaceholder(
             WantedTextAreaDefaults.Size.Medium -> DesignSystemTheme.typography.label1ReadingRegular
         },
         color = if (enabled) {
-            DesignSystemTheme.colors.foregroundNeutralQuaternary
+            DesignSystemTheme.colors.foregroundNeutralTertiary
         } else {
             DesignSystemTheme.colors.foregroundDisablePrimary
         }

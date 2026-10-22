@@ -7,16 +7,15 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+// 값을 추가·삭제하면 IconButtonGeometry 의 RadiusToken(radius 스냅 후보군)도 함께 바꿔야 한다.
+// 두 목록이 따로 관리돼 한쪽만 고치면 토큰은 생겼는데 스냅 로직이 새 값을 보지 못한다. (WRP-3160)
 /**
  * data class WantedRadius
  *
  * Figma `Radius` 컬렉션을 매핑한 시맨틱 토큰. corner-radius 용도.
  * 각 값은 [WantedPrimitive]를 alias 한다.
  *
- * [radiusFull]은 Figma의 `radius/full(9999px)`에 해당하며 Compose에선 [CircleShape]로 노출한다.
- *
- * 값을 추가·삭제하면 IconButtonGeometry 의 RadiusToken(radius 스냅 후보군)도 함께 바꿔야 한다.
- * 두 목록이 따로 관리돼 한쪽만 고치면 토큰은 생겼는데 스냅 로직이 새 값을 보지 못한다. (WRP-3160)
+ * [radiusFull]은 Figma의 `radius/full(9999px)`에 해당하며 Compose에선 `CircleShape`로 노출한다.
  */
 @Immutable
 data class WantedRadius(

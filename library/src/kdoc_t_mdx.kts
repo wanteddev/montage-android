@@ -14,7 +14,9 @@ data class DocItem(
     val params: List<Param> = emptyList(),
     val enumValues: List<EnumValue> = emptyList(),
     var parent: String? = null,
-    val returnVal: Param? = null
+    val returnVal: Param? = null,
+    // KDoc 시작 줄(`/**`)의 들여쓰기. sealed class 의 하위 선언인지(본문 안에 더 깊이 들여쓰였는지) 판정에 쓴다.
+    val indent: Int = 0
 )
 
 enum class ItemType { COMPONENT, ENUM, OBJECT, DATA_CLASS, SEALED_CLASS, FUNCTION, UNKNOWN }
@@ -61,16 +63,21 @@ class KDocParser {
         }
 
         val defaultComponentName = "Wanted" + file.nameWithoutExtension.capitalize()
-        val docItems = blocks.mapNotNull { parseBlock(it, defaultComponentName) }
+        val docItems = blocks.mapNotNull { block ->
+            parseBlock(block, defaultComponentName)?.copy(indent = block.first().indexOf("/**").coerceAtLeast(0))
+        }
 
-        var lastSealedClass: String? = null
+        // sealed class 보다 깊이 들여쓴 data class·fun 만 그 하위 값으로 붙인다.
+        // 같거나 얕은 들여쓰기(sealed 밖의 object 멤버, 다음 파일의 최상위 선언)를 만나면 연결을 끊는다 —
+        // 헤더 순서만 보면 패키지 병합 시 뒤 파일의 선언이 sealed 값 표로 흡수된다.
+        var lastSealedClass: DocItem? = null
         docItems.forEach { item ->
-            if (item.type == ItemType.SEALED_CLASS) {
-                lastSealedClass = item.name
-            } else if ((item.type == ItemType.DATA_CLASS || item.type == ItemType.FUNCTION) && lastSealedClass != null) {
-                item.parent = lastSealedClass
-            } else if (item.type == ItemType.COMPONENT || item.type == ItemType.ENUM) {
-                lastSealedClass = null
+            val sealed = lastSealedClass
+            when {
+                item.type == ItemType.SEALED_CLASS -> lastSealedClass = item
+                sealed != null && item.indent <= sealed.indent -> lastSealedClass = null
+                sealed != null && (item.type == ItemType.DATA_CLASS || item.type == ItemType.FUNCTION) -> item.parent = sealed.name
+                item.type == ItemType.COMPONENT || item.type == ItemType.ENUM -> lastSealedClass = null
             }
         }
 
@@ -138,8 +145,14 @@ class KDocParser {
         val descriptionStr = cleanedLines.drop(descriptionStartIndex)
             .takeWhile { !it.trim().startsWith("@") && !it.trim().startsWith("```") && !it.trim().startsWith("사용 예시") }
             .filter { if (type == ItemType.ENUM) !it.trim().startsWith("-") else true }
-            .filter { it.isNotBlank() }
-            .joinToString("\n") { it.trimEnd() }
+            // 빈 줄은 문단 구분으로 남긴다(마크다운은 줄바꿈 하나를 같은 문단으로 합친다). 연속 빈 줄은 하나로, 앞뒤 빈 줄은 버린다.
+            .map { it.trimEnd() }
+            .fold(mutableListOf<String>()) { acc, line ->
+                if (line.isNotBlank() || (acc.isNotEmpty() && acc.last().isNotBlank())) acc += line
+                acc
+            }
+            .dropLastWhile { it.isBlank() }
+            .joinToString("\n")
 
         val usageStartIndex = cleanedLines.indexOfFirst { it.trim().startsWith("```") }
         val usageEndIndex = cleanedLines.indexOfLast { it.trim().startsWith("```") }
@@ -219,7 +232,8 @@ class MdxGenerator {
 
         // 1. Main Component (존재할 경우)
         if (mainComponent != null) {
-            if (mainComponent.name.length > 30 || mainComponent.name.contains(" ")) {
+            // 공백이 있으면 심볼이 아닌 문장 헤더다. 이름 길이로는 거르지 않는다(긴 심볼명이 파일명 기반 이름으로 바뀌어 깨졌다).
+            if (mainComponent.name.contains(" ")) {
                 sb.appendLine("## $guessedNameFromFile")
                 if (mainComponent.description.isBlank()) sb.appendLine("${mainComponent.name}\n")
             } else {
@@ -441,7 +455,45 @@ val inputFile = File(args[0]); val outputFile = File(args[1])
 if (!inputFile.exists()) { println("Error: Input file not found: ${inputFile.absolutePath}"); System.exit(1) }
 try {
     val docItems = KDocParser().parse(inputFile)
-    val mdxContent = MdxGenerator().generate(docItems, inputFile.name)
+    val mdxContent = convertKDocLinks(MdxGenerator().generate(docItems, inputFile.name))
     outputFile.writeText(mdxContent, Charset.forName("UTF-8"))
 } catch (e: Exception) { println("Error: ${e.message}"); e.printStackTrace(); System.exit(1) }
 fun String.capitalize(): String = this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+
+/**
+ * KDoc 링크 `[Symbol]` 을 문서 사이트가 렌더링하는 형태로 바꾼다.
+ * 사이트는 `[Symbol]` 을 링크로 바꾸지 않고 `\[Symbol\]` 로 노출하므로, KDoc 원문은 IDE 링크용 `[Symbol]` 을 유지하고 여기서 변환한다.
+ * - 본문: 인라인 코드 `Symbol` 로. 코드펜스 안과 마크다운 링크 `[text](url)` 는 건드리지 않는다.
+ * - frontmatter: YAML 이 백틱·대괄호로 시작하면 파싱이 깨지므로 기호 없이 `Symbol` 로.
+ */
+/**
+ * 인라인 코드 영역(같은 길이의 백틱 구분자로 감싼 `…`·``…``)은 그대로 두고, 그 밖의 텍스트에만 convert 를 적용한다.
+ * 백틱을 한 글자씩 나누면 ``[Symbol]`` 같은 이중 백틱 코드 안의 내용을 코드 밖으로 잘못 읽는다.
+ */
+fun convertOutsideCodeSpans(line: String, convert: (String) -> String): String {
+    val codeSpan = Regex("(`+)(?!`).*?(?<!`)\\1(?!`)")
+    val sb = StringBuilder()
+    var last = 0
+    codeSpan.findAll(line).forEach { m ->
+        sb.append(convert(line.substring(last, m.range.first)))
+        sb.append(m.value)
+        last = m.range.last + 1
+    }
+    sb.append(convert(line.substring(last)))
+    return sb.toString()
+}
+
+fun convertKDocLinks(mdx: String): String {
+    val link = Regex("""\[([A-Za-z_][\w.]*)\](?!\()""")
+    var inFence = false
+    var frontmatterFences = 0
+    return mdx.lines().joinToString("\n") { line ->
+        when {
+            frontmatterFences < 2 && line.trim() == "---" -> { frontmatterFences++; line }
+            frontmatterFences == 1 -> link.replace(line) { it.groupValues[1] }
+            line.trim().startsWith("```") -> { inFence = !inFence; line }
+            inFence -> line
+            else -> convertOutsideCodeSpans(line) { text -> link.replace(text) { "`${it.groupValues[1]}`" } }
+        }
+    }
+}

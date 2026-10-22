@@ -28,9 +28,9 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.pxToDp
 
 /**
- * object WantedModalDefaults
+ * object WantedBottomSheetDefaults
  *
- * Bottom sheet 상단에 표시되는 드래그 핸들 컴포넌트입니다.
+ * Bottom Sheet 의 드래그 핸들과 모양·여백 기본값(getDefault·getFullDefault·getWithoutContentPadding)을 제공하는 객체입니다.
  */
 object WantedBottomSheetDefaults {
     /**
@@ -40,7 +40,7 @@ object WantedBottomSheetDefaults {
      *
      * 사용 예시:
      * ```kotlin
-     * WantedModalDefaults.DragHandle()
+     * WantedBottomSheetDefaults.DragHandle()
      * ```
      *
      * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.

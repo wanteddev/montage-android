@@ -120,16 +120,16 @@ class WantedTextButton @JvmOverloads constructor(
  * )
  * ```
  *
- * @param text String: 버튼에 표시할 텍스트입니다.
+ * @param text String: 버튼에 표시할 텍스트입니다. 한 줄로 표시되며 넘치면 말줄임(…) 처리됩니다.
  * @param modifier Modifier: 버튼 외형을 조정하는 Modifier입니다.
  * @param color WantedTextButtonColor: 버튼의 색(PRIMARY, ASSISTIVE)을 지정합니다.
  * @param size WantedTextButtonSize: 버튼의 크기(SMALL, MEDIUM)를 지정합니다. LARGE/XSMALL은 공식 미지원(레거시)입니다.
  * @param enabled Boolean: 버튼의 활성화 여부를 지정합니다.
- * @param isLoading Boolean: 로딩 상태를 표시할지 여부입니다.
+ * @param isLoading Boolean: true 이면 텍스트·아이콘을 숨기고 로딩 인디케이터를 표시하며, 클릭 콜백을 호출하지 않습니다.
  * @param leadingDrawable Int?: 버튼 왼쪽에 표시할 Drawable 리소스 ID입니다.
  * @param trailingDrawable Int?: 버튼 오른쪽에 표시할 Drawable 리소스 ID입니다.
- * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
- * @param buttonDefault WantedTextButtonDefault: 버튼의 기본 스타일 설정입니다. color/size 축으로 표현되지 않는 색·타이포가 필요할 때만 contentColor/textStyle을 덮어 전달합니다.
+ * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
+ * @param buttonDefault WantedTextButtonDefault: 버튼의 기본 스타일 설정입니다. 넘기면 색·크기·타이포는 이 값만 쓰이고 color·size 인자는 무시되며, enabled 인자는 클릭 가능 여부에만 쓰입니다. 덮어 쓸 때는 WantedTextButtonDefaults.getDefault(color = …, size = …, enabled = …, contentColor = …) 처럼 축 값을 함께 넘깁니다.
  */
 @Composable
 fun WantedTextButton(

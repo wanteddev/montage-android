@@ -10,7 +10,7 @@ import com.wanted.android.wanted.design.util.OPACITY_12
 /**
  * data class WantedTextButtonDefault
  *
- * [WantedTextButton]의 스타일을 정의한 데이터 클래스입니다.
+ * WantedTextButton의 스타일을 정의한 데이터 클래스입니다.
  *
  * SOLID/OUTLINED와 공유하던 `WantedButtonDefault`와 달리 배경·테두리처럼 Text Button에 없는 속성을 갖지 않으며,
  * 폐기된 `ButtonVariant`에도 의존하지 않습니다.
@@ -23,6 +23,7 @@ import com.wanted.android.wanted.design.util.OPACITY_12
  * @param trailingIconTintColor Color: 오른쪽 아이콘의 색상입니다.
  * @param textStyle TextStyle: 텍스트의 타이포그래피입니다.
  * @param rippleColor Color: 터치 영역 리플의 색상입니다.
+ * @param loadingSize Dp: 로딩 인디케이터의 크기입니다.
  * @param loadingColor Color: 로딩 인디케이터의 색상입니다.
  */
 data class WantedTextButtonDefault(
@@ -53,6 +54,9 @@ object WantedTextButtonDefaults {
      *
      * [WantedTextButtonDefault]의 기본 설정을 생성합니다.
      *
+     * `enabled = false`일 때 텍스트·아이콘 색은 Figma 스펙상 고정이므로 호출부가 덮은 색보다 우선합니다.
+     * 덕분에 색을 덮는 호출부가 disabled 분기를 따로 들고 있지 않아도 됩니다.
+     *
      * 사용 예시:
      * ```kotlin
      * val config = WantedTextButtonDefaults.getDefault(
@@ -60,9 +64,6 @@ object WantedTextButtonDefaults {
      *     size = WantedTextButtonSize.SMALL
      * )
      * ```
-     *
-     * `enabled = false`일 때 텍스트·아이콘 색은 Figma 스펙상 고정이므로 호출부가 덮은 색보다 우선합니다.
-     * 덕분에 색을 덮는 호출부가 disabled 분기를 따로 들고 있지 않아도 됩니다.
      *
      * @param color WantedTextButtonColor: 버튼의 색 축입니다. 기본값은 PRIMARY입니다.
      * @param size WantedTextButtonSize: 버튼의 크기 축입니다. 기본값은 MEDIUM입니다.

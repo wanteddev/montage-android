@@ -96,23 +96,25 @@ private fun WantedCenterBackTopAppBar(
  *
  * 타이틀을 가운데 정렬하는 TopAppBar 컴포넌트입니다.
  *
- * 다양한 Variant를 지원하며, 스크롤 상태에 따라 배경 표시가 전환됩니다.
+ * 다양한 Variant를 지원하며, background = false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 배경을 칠합니다. 기본값 background = true 에서는 항상 배경을 칠합니다.
+ *
+ * variant 가 Display 이면 가운데 정렬 없이 Display 레이아웃(왼쪽 정렬)으로 그립니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedCenterTopAppBar(
- *     title = { Text(...) },
- *     navigationIcon = { Icon(...) },
- *     actions = { IconButton(...) }
+ *     title = { Text(text = "제목") },
+ *     navigationIcon = { Icon(painter = painterResource(R.drawable.icon_normal_arrow_left), contentDescription = null) },
+ *     actions = { IconButton(onClick = { /* 알림 */ }) { Icon(painter = painterResource(R.drawable.icon_normal_bell), contentDescription = "알림") } }
  * )
  * ```
  *
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
  * @param backgroundColor Color: 앱바 배경 색상입니다.
- * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다. true(기본값)이면 항상 배경을 칠하고, false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 칠합니다.
  * @param variant Variant: 앱바 형태입니다.
- * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
  * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
  * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.

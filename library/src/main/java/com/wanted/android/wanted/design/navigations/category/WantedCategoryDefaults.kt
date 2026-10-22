@@ -44,10 +44,10 @@ object WantedCategoryDefaults {
      * 카테고리 항목의 크기 및 여백을 정의하는 Enum 클래스입니다.
      *
      * 카테고리 항목의 시각적 크기와 간격을 결정할 때 사용됩니다. UI 요구사항에 따라 다음의 네 가지 옵션을 제공합니다:
-     * - Small: 작은 크기의 카테고리 항목입니다.
-     * - Medium: 중간 크기의 카테고리 항목입니다.
-     * - Large: 큰 크기의 카테고리 항목입니다.
-     * - XLarge: 매우 큰 크기의 카테고리 항목입니다.
+     * - Small: 칩 크기 XSmall, 상하 여백 8dp, 항목 간격 4dp, 우측 아이콘 20dp 입니다.
+     * - Medium: 칩 크기 Small, 상하 여백 8dp, 항목 간격 6dp, 우측 아이콘 22dp 입니다.
+     * - Large: 칩 크기 Medium, 상하 여백 10dp, 항목 간격 8dp, 우측 아이콘 24dp 입니다.
+     * - XLarge: 칩 크기 Large, 상하 여백 10dp, 항목 간격 10dp, 우측 아이콘 24dp 입니다.
      *
      * @property verticalPadding Dp: 상하 여백 적용 시 LazyRow 의 상하 여백입니다.
      * @property horizontalSpacing Dp: 항목 간 가로 간격입니다.
@@ -138,9 +138,7 @@ object WantedCategoryDefaults {
         /**
          * data class Normal
          *
-         * 선택 항목을 채워진 배경으로 표시합니다. 테두리는 없습니다.
-         *
-         * 지정하지 않은 색상(Color.Unspecified)은 기본 토큰으로 표시합니다.
+         * 선택 항목을 채워진 배경으로 표시합니다. 테두리는 없습니다. 선택 색은 activeBackgroundColor(기본 foregroundNeutralStrong)·activeContentColor(기본 foregroundNeutralInverse)로 지정하며, 지정하지 않은 색(Color.Unspecified)은 기본 토큰으로 표시합니다.
          *
          * @param activeBackgroundColor Color: 선택된 항목의 배경 색상입니다. 기본값은 foregroundNeutralStrong 입니다.
          * @param activeContentColor Color: 선택된 항목의 텍스트·아이콘 색상입니다. 기본값은 foregroundNeutralInverse 입니다.

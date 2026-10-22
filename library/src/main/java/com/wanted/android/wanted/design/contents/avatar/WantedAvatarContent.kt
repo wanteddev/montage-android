@@ -49,27 +49,33 @@ internal fun WantedAvatarContent(
                 tint = Color.Unspecified
             )
         } else {
-            GlideImage(
-                modifier = modifier,
-                model = model,
-                contentDescription = contentDescription,
-                alignment = alignment,
-                contentScale = contentScale,
-                // Glide가 placeholder 컴포저블을 `Box(modifier = 여기 넘긴 modifier)` 안에서 그리므로
-                // 아바타 크기·shape clip은 이미 적용돼 있다. 내부는 fillMaxSize로 그 박스를 채운다.
-                loading = placeholder {
-                    WantedAvatarPlaceholder(
-                        placeHolder = placeHolder,
-                        defaultPlaceHolder = defaultPlaceHolder
-                    )
-                },
-                failure = placeholder {
-                    WantedAvatarPlaceholder(
-                        placeHolder = placeHolder,
-                        defaultPlaceHolder = defaultPlaceHolder
-                    )
-                },
-            )
+            // Glide 는 GlideImage 에 넘긴 modifier 를 remember 키로 쓴다. 테두리·clip modifier 는 람다를 담은
+            // 요소(graphicsLayer { } 등)가 섞여 리컴포지션마다 equals 가 달라지므로, 그대로 넘기면 URL 이 같아도
+            // 매번 요청을 처음부터 다시 시작해 placeholder 가 다시 보인다(깜박임). 크기·shape clip·테두리는
+            // 바깥 Box 가 맡고, GlideImage 에는 항상 같은 modifier 만 넘긴다.
+            Box(modifier = modifier) {
+                GlideImage(
+                    modifier = Modifier.fillMaxSize(),
+                    model = model,
+                    contentDescription = contentDescription,
+                    alignment = alignment,
+                    contentScale = contentScale,
+                    // placeholder 도 바깥 Box 안에 그려지므로 아바타 크기·shape clip 은 이미 적용돼 있다.
+                    // 내부는 fillMaxSize 로 그 박스를 채운다.
+                    loading = placeholder {
+                        WantedAvatarPlaceholder(
+                            placeHolder = placeHolder,
+                            defaultPlaceHolder = defaultPlaceHolder
+                        )
+                    },
+                    failure = placeholder {
+                        WantedAvatarPlaceholder(
+                            placeHolder = placeHolder,
+                            defaultPlaceHolder = defaultPlaceHolder
+                        )
+                    },
+                )
+            }
         }
     } ?: run {
         WantedAvatarPlaceholder(

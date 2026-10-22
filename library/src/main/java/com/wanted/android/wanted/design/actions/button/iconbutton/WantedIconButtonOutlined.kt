@@ -32,16 +32,15 @@ import com.wanted.android.wanted.design.util.clickOnce
  * WantedIconButtonOutlined
  *
  * WantedIconButtonSize를 기반으로 하는 Outlined 스타일의 아이콘 버튼입니다.
- * (Confluence IconButton 스펙 §3 — 2026-06-24)
  *
- * 아이콘 크기 산출: `icon = round(box × 0.47)` → dimension 토큰 스냅(동률이면 작은 값).
- * 중앙정렬 inset = `(box - icon) / 2`. padding 방식 제거.
+ * 아이콘 크기 산출: `icon = box × 0.47` 을 반올림하지 않고 가장 가까운 dimension 토큰으로 스냅(동률이면 작은 값).
+ * 아이콘은 박스 가운데에 놓입니다(inset = `(box - icon) / 2`).
  * Radius = `radius.full` (CircleShape). 박스는 `clamp(24dp, N, 64dp)`.
  *
  * 사용 예시:
  * ```kotlin
  * WantedIconButtonOutlined(
- *     icon = R.drawable.ic_icon,
+ *     icon = R.drawable.icon_normal_bookmark,
  *     size = WantedIconButtonSize.Medium,
  *     onClick = { /* 클릭 처리 */ }
  * )
@@ -61,7 +60,7 @@ import com.wanted.android.wanted.design.util.clickOnce
  * @param badgePosition IconButtonBadgePosition: pushBadge 정렬 기준점. 기본값 [IconButtonBadgePosition.TopRight]
  * @param disableInteraction Boolean: true이면 press/hover ripple 효과 없음. 기본값 false
  * @param interactionColor Color: ripple 색상. 기본값 `foregroundNeutralPrimary`
- * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
+ * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedIconButtonOutlined(

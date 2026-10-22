@@ -15,9 +15,9 @@ import com.wanted.android.wanted.design.util.ButtonVariant
  * 액션 영역의 타입을 정의하는 Enum 클래스입니다.
  *
  * 액션 영역의 시각적 스타일과 버튼 구성을 결정할 때 사용됩니다. UI 요구사항에 따라 다음의 세 가지 옵션을 제공합니다:
- * - Strong: 강조된 액션 영역입니다.
- * - Neutral: 중립적인 액션 영역입니다.
- * - Cancel: 취소 중심의 액션 영역입니다.
+ * - Strong: 버튼을 세로로 쌓습니다(main → alternative → sub). 문자열 오버로드에서 sub 는 Text·Small 버튼입니다.
+ * - Neutral: 버튼을 한 줄에 가로로 배치합니다(sub → alternative → main). sub 는 내용 크기만큼, alternative 와 main 은 남은 폭을 똑같이 나눠 가집니다.
+ * - Cancel: main 버튼만 표시합니다. alternative·sub 를 넘겨도 표시되지 않으며, 문자열 오버로드의 main 은 Solid·Assistive 입니다.
  *
  * @see WantedActionAreaDefault
  */
@@ -33,6 +33,9 @@ enum class ActionAreaType {
  * ActionArea에 필요한 버튼 기본 스타일을 정의한 데이터 클래스입니다.
  *
  * 각 버튼의 WantedButtonDefault를 개별적으로 설정할 수 있습니다.
+ *
+ * 이 설정을 받는 WantedActionArea(actionAreaDefault = …) 오버로드는 DeprecationLevel.ERROR 로 막혀 있습니다.
+ * 신규 코드는 WantedActionArea(type = …) 또는 Slot 오버로드를 사용합니다.
  *
  * @property type ActionAreaType: 액션 영역 타입입니다.
  * @property mainButtonDefault WantedButtonDefault: 메인 액션 버튼 스타일을 설정합니다.
@@ -85,6 +88,9 @@ object WantedActionAreaDefaults {
      * 액션 영역 타입에 따라 main, alternative, sub 버튼의 기본 스타일을 자동으로 설정합니다.
      * 각 버튼의 스타일을 개별적으로 커스터마이징할 수도 있습니다.
      *
+     * 이 설정을 받는 WantedActionArea(actionAreaDefault = …) 오버로드는 DeprecationLevel.ERROR 로 막혀 있습니다.
+     * 신규 코드는 WantedActionArea(type = …) 또는 Slot 오버로드를 사용합니다.
+     *
      * 사용 예시:
      * ```kotlin
      * val config = WantedActionAreaDefaults.getDefault(
@@ -94,7 +100,7 @@ object WantedActionAreaDefaults {
      *
      * @param type ActionAreaType: 액션 영역의 타입입니다. 기본값은 ActionAreaType.Strong입니다.
      * @param mainButtonDefault WantedButtonDefault: 메인 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
-     * @param alternativeButtonDefault WantedButtonDefault: 대체 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
+     * @param alternativeButtonDefault WantedButtonDefault: 대체 액션 버튼의 기본 스타일입니다. 타입과 무관하게 Outlined·Assistive·Large 입니다.
      * @param subButtonDefault WantedButtonDefault: 보조 액션 버튼의 기본 스타일입니다. 타입에 따라 자동 설정됩니다.
      * @return WantedActionAreaDefault: 설정된 WantedActionAreaDefault 인스턴스를 반환합니다.
      *
