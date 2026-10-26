@@ -1,4 +1,34 @@
 /**
+* fun Modifier.shimmer(...)
+*
+* 콘텐츠 위에 단색 레이어를 덮고 그 투명도를 1초에 걸쳐 0 → 0.66 으로, 다시 1초에 걸쳐 0 으로 되돌리기를 반복하는 깜빡임 효과를 적용합니다.
+*
+* 원래 콘텐츠를 먼저 그린 뒤 그 위에 사각형을 칠하므로, 모양(둥근 모서리 등)이 필요하면 이 Modifier 앞에 clip 을 적용합니다.
+*
+* @param colorRes Int: 덮을 레이어의 색 리소스 ID(`@ColorRes`)입니다. 기본값은 R.color.background_neutral_primary 입니다.
+*/
+
+/**
+* fun Modifier.shimmerLinear(...)
+*
+* 콘텐츠 위에 color 와 반투명 color 를 잇는 가로 방향 그라데이션을 덮고, 1.5초 주기로 흐르게 하는 shimmer 효과를 적용합니다.
+*
+* 원래 콘텐츠를 먼저 그린 뒤 그 위에 사각형을 칠하므로, 모양(둥근 모서리 등)이 필요하면 이 Modifier 앞에 clip 을 적용합니다. 색을 리소스 ID 로 넘기려면 colorRes 오버로드를 사용합니다.
+*
+* @param color Color: 그라데이션의 기준 색입니다.
+* @param alpha Float: 그라데이션 반대쪽 끝에 쓸 color 의 투명도입니다. 기본값은 OPACITY_16(0.16) 입니다.
+*/
+
+/**
+* fun Modifier.shimmerLinear(...)
+*
+* shimmerLinear 의 색 리소스 오버로드입니다. colorRes 를 색으로 바꿔 color 오버로드와 같은 효과를 적용합니다.
+*
+* @param colorRes Int: 그라데이션 기준 색의 리소스 ID(`@ColorRes`)입니다. 기본값은 R.color.surface_neutral_tertiary 입니다.
+* @param alpha Float: 그라데이션 반대쪽 끝에 쓸 색의 투명도입니다. 기본값은 OPACITY_16(0.16) 입니다.
+*/
+
+/**
 * WantedSkeletonCircle
 *
 * 원형 Skeleton 컴포넌트입니다.

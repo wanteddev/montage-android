@@ -23,8 +23,8 @@
 * @param confirm String: 확인 버튼에 표시할 텍스트입니다.
 * @param cancel String: 취소 버튼에 표시할 텍스트입니다.
 * @param datePickerState DatePickerState: 선택된 날짜 및 UI 상태를 관리하는 상태 객체입니다. 기본값은 `rememberDatePickerState()`입니다.
-* @param dateFormatter DatePickerFormatter :날짜 포맷터로, 선택된 날짜의 포맷을 지정합니다. 기본값은 `DatePickerDefaults.dateFormatter()`입니다.
-* @param onDateSelected (Long?) -> Unit: 날짜 선택 완료 시 호출되는 콜백입니다. 선택된 날짜의 Unix 타임스탬프(Long) 또는 null이 전달됩니다.
+* @param dateFormatter DatePickerFormatter:날짜 포맷터로, 선택된 날짜의 포맷을 지정합니다. 기본값은 `DatePickerDefaults.dateFormatter()`입니다.
+* @param onDateSelected (Long?) -> Unit: 날짜 선택 완료 시 호출되는 콜백입니다. 확인 버튼 클릭 시 선택된 날짜가 epoch 밀리초(UTC 자정 기준, Long) 로 전달되며 선택된 날짜가 없으면 null 입니다. 이어서 onDismiss 도 호출됩니다.
 * @param onDismiss () -> Unit: 다이얼로그가 닫힐 때 호출되는 콜백입니다.
 */
 
@@ -60,8 +60,8 @@
 * @param selectedMonth Int: 초기 선택된 월입니다.
 * @param modifier Modifier: 외형을 설정하는 Modifier입니다.
 * @param default WantedDatePickerWheelDefault: 날짜 휠 설정을 지정하는 기본값 객체입니다.
-* @param onSelect (Int, Int) -> Unit: 날짜 선택 후 확인 버튼을 눌렀을 때 호출되는 콜백입니다.
-* @param onDismissRequest () -> Unit: 다이얼로그가 닫힐 때 호출되는 콜백입니다.
+* @param onSelect (Int, Int) -> Unit: 날짜 선택 후 확인 버튼을 눌렀을 때 (연, 월) 로 호출되는 콜백입니다. 확인 시 onSelect → onDismissRequest 순으로 호출되며, 선택한 날짜가 선택 가능 범위를 벗어나면 확인 버튼이 비활성화됩니다.
+* @param onDismissRequest () -> Unit: 확인 버튼을 누른 뒤(onSelect 다음), 취소 버튼을 눌렀을 때, 바깥 탭·뒤로가기로 닫힘이 요청될 때 호출되는 콜백입니다.
 */
 
 /**
@@ -75,8 +75,8 @@
 * @param endYear Int: 휠에 표시할 종료 연도입니다.
 * @param enableMinYear Int: 선택 가능한 최소 연도입니다.
 * @param enableMaxYear Int: 선택 가능한 최대 연도입니다.
-* @param enableMinMonth Int: 선택 가능한 최소 월입니다.
-* @param enableMaxMonth Int: 선택 가능한 최대 월입니다.
+* @param enableMinMonth Int: 선택 가능한 최소 월입니다. 모든 연도에 공통으로 적용됩니다.
+* @param enableMaxMonth Int: 선택 가능한 최대 월입니다. 모든 연도에 공통으로 적용됩니다.
 * @param isHideDisableDate Boolean: 비활성 날짜를 숨길지 여부입니다.
 */
 
@@ -88,7 +88,7 @@
 * 유효하지 않은 값은 자동으로 보정되며, `WantedDatePickerWheelDefault` 객체를 생성합니다.
 */
 
-/**
+    /**
 * fun getDefault(...)
 *
 * 날짜 선택 휠 기본 설정 값을 반환합니다.
@@ -112,9 +112,9 @@
 * @param startYear Int: 휠 선택기에서 표시할 시작 연도입니다. 기본값은 1900입니다.
 * @param endYear Int: 휠 선택기에서 표시할 종료 연도입니다. 기본값은 2100입니다. `startYear`보다 작으면 자동으로 `startYear`로 보정됩니다.
 * @param enableMinYear Int: 선택 가능한 최소 연도입니다. 기본값은 1900입니다.
-* @param enableMaxYear Int: 선택 가능한 최대 연도입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다.
-* @param enableMinMonth Int: 선택 가능한 최소 월입니다. 기본값은 1월입니다.
-* @param enableMaxMonth Int: 선택 가능한 최대 월입니다. `enableMinMonth`보다 작으면 자동으로 `enableMinMonth`로 보정됩니다.
+* @param enableMaxYear Int: 선택 가능한 최대 연도입니다. 기본값은 2100입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다. isHideDisableDate 가 false 이면 endYear 이하로 지정해야 합니다 — 휠 목록(startYear..endYear)을 넘으면 첫 해만 선택할 수 있게 됩니다(예: endYear 만 2030 으로 줄이고 이 값을 기본값으로 두는 경우).
+* @param enableMinMonth Int: 선택 가능한 최소 월입니다. 연도와 무관하게 모든 연도에 공통으로 적용됩니다. 기본값은 1월입니다.
+* @param enableMaxMonth Int: 선택 가능한 최대 월입니다. 모든 연도에 공통으로 적용됩니다. [enableMinMonth]보다 작으면 자동으로 [enableMinMonth]로 보정됩니다. 1..12 범위로 지정해야 합니다. isHideDisableDate 가 false 이면 12 를 넘길 때 1월만 선택할 수 있게 되고, true 이면 존재하지 않는 13월 이상이 휠에 표시됩니다.
 * @param isHideDisableDate Boolean: 선택 불가능한 날짜를 숨길지 여부를 설정합니다. 기본값은 false입니다.
 * @return WantedDatePickerWheelDefault: 설정된 날짜 선택 휠 기본값 객체입니다.
 */

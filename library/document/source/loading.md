@@ -1,7 +1,7 @@
 /**
 * WantedCircularLoading
 *
-* 화면 중앙에 원형으로 로딩 상태를 안내하는 컴포넌트입니다.
+* 부모 영역을 가득 채우고 그 가운데에 원형 로딩을 표시하는 컴포넌트입니다.
 *
 * dim 배경 포함 여부, 크기, 색상을 설정할 수 있습니다.
 *
@@ -14,7 +14,7 @@
 * )
 * ```
 *
-* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 바깥 Surface 와 안쪽 Box 에 두 번 적용되므로 padding·background 등은 두 번 반영됩니다. 크기·배치 용도로만 씁니다.
 * @param circleColor Color: 로딩 인디케이터 색상입니다.
 * @param dimColor Color: 배경 dim 색상입니다.
 * @param size Dp: 로딩 인디케이터 크기입니다.
@@ -44,15 +44,15 @@
 *
 * Wanted 심볼 로딩 애니메이션을 표시하는 컴포넌트입니다.
 *
-* isUseDim이 true인 경우 Dialog 기반으로 dim 처리된 로딩 화면이 표시됩니다.
+* isUseDim이 true인 경우 Dialog 기반으로 dim 처리된 로딩 화면이 표시되며, 이때 modifier 는 적용되지 않습니다.
 *
 * 사용 예시:
 * ```kotlin
 * WantedLogoLoading(isUseDim = true)
 * ```
 *
-* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
-* @param isUseDim Boolean: dim 배경 사용 여부입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. isUseDim 이 false 일 때만 적용되며, true 이면 무시됩니다. 적용될 때는 바깥 Surface 와 안쪽 Box 에 두 번 적용되므로 padding·background 등은 두 번 반영됩니다.
+* @param isUseDim Boolean: dim 배경 사용 여부입니다. true 이면 Dialog 로 표시하고, false 이면 부모를 가득 채워 가운데에 표시합니다. 기본값은 false입니다.
 */
 
 /**

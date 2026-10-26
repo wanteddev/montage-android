@@ -81,13 +81,30 @@
 * 사용 예시:
 * ```kotlin
 * // 대체 방식
+* val state = remember { mutableStateOf(TextFieldValue("")) }
+*
 * WantedFormControl(
 *     label = "주제",
 *     required = true,
 *     description = "메시지에 마침표를 찍어요.",
 *     status = WantedFormControlDefaults.Status.Negative
 * ) {
-*     WantedTextField(value = state.value, ..., onValueChange = { state.value = it })
+*     WantedTextField(
+*         value = state.value,
+*         placeholder = "주제를 입력해 주세요.",
+*         error = true,
+*         enabled = true,
+*         trailingButtonEnabled = true,
+*         complete = false,
+*         maxLines = 1,
+*         minLines = 1,
+*         maxWordCount = 2000,
+*         enabledOverflowText = false,
+*         interactionSource = remember { MutableInteractionSource() },
+*         keyboardOptions = KeyboardOptions.Default,
+*         keyboardActions = KeyboardActions.Default,
+*         onValueChange = { state.value = it },
+*     )
 * }
 * ```
 *
@@ -135,7 +152,22 @@
 * val state = remember { mutableStateOf(TextFieldValue("")) }
 *
 * WantedFormControl(label = "주제", required = true) {
-*     WantedTextField(value = state.value, ..., onValueChange = { state.value = it })
+*     WantedTextField(
+*         value = state.value,
+*         placeholder = "주제를 입력해 주세요.",
+*         error = true,
+*         enabled = true,
+*         trailingButtonEnabled = true,
+*         complete = false,
+*         maxLines = 1,
+*         minLines = 1,
+*         maxWordCount = 2000,
+*         enabledOverflowText = false,
+*         interactionSource = remember { MutableInteractionSource() },
+*         keyboardOptions = KeyboardOptions.Default,
+*         keyboardActions = KeyboardActions.Default,
+*         onValueChange = { state.value = it },
+*     )
 * }
 * ```
 *
@@ -172,10 +204,12 @@
 *
 * TextField 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
 *
-* 선택 렌더링 방식과 선택 UI 스타일을 제어할 수 있는 enum 클래스를 포함합니다.
+* 상태(Status)와 크기(Size) enum 을 포함합니다.
+*
+* Status 는 deprecated 오버로드·WantedAutoCompleteTextField 에서 사용하며, 본체 WantedTextField 는 error·complete 로 표현합니다.
 */
 
-/**
+    /**
 * enum class Status
 *
 * TextField의 상태를 정의하는 enum 클래스입니다.
@@ -184,7 +218,7 @@
 * - Negative: 부정 상태입니다.
 */
 
-/**
+    /**
 * enum class Size
 *
 * TextField의 크기를 정의하는 enum 클래스입니다.

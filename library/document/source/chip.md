@@ -2,19 +2,19 @@
 * WantedChip
 *
 * 사용자가 선택할 수 있는 Chip 컴포넌트를 생성합니다.
-* 텍스트, 아이콘, 크기, 활성화 여부 등의 다양한 설정을 지원합니다.
+* 텍스트, 아이콘, 크기, 선택 여부(isActive)·사용 가능 여부(isEnable) 등의 다양한 설정을 지원합니다.
 *
 * 사용 예시:
 * ```kotlin
 * WantedChip(
 *     text = "텍스트",
-*     leadingContent = R.drawable.ic_sample_icon,
-*     trailingContent = R.drawable.ic_sample_icon,
+*     leadingContent = R.drawable.icon_normal_bookmark,
+*     trailingContent = R.drawable.icon_normal_bookmark,
 *     onClick = { /* 클릭 처리 */ }
 * )
 * ```
 *
-* @param text String: 표시할 텍스트입니다.
+* @param text String: 표시할 텍스트입니다. 한 줄로 표시되며 넘치면 말줄임(…) 처리됩니다.
 * @param modifier Modifier: Modifier를 통한 외형 스타일 지정입니다.
 * @param size ChipSize: Chip의 크기를 설정합니다.
 * @param variant ChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
@@ -23,7 +23,7 @@
 * @param leadingContent Int?: 왼쪽에 표시할 아이콘 리소스 ID입니다.
 * @param trailingContent Int?: 오른쪽에 표시할 아이콘 리소스 ID입니다.
 * @param interactionSource MutableInteractionSource: 클릭 시의 상호작용 상태입니다.
-* @param onClick (() -> Unit)?: 클릭 시 실행되는 콜백입니다.
+* @param onClick (() -> Unit)?: 클릭 시 실행되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */
 
 /**
@@ -36,18 +36,18 @@
 * ```kotlin
 * WantedChip(
 *     text = "커스텀 텍스트",
-*     chipDefault = customChipDefault,
+*     chipDefault = WantedChipDefaults.getDefault(isActive = true),
 *     onClick = { /* 클릭 처리 */ }
 * )
 * ```
 *
-* @param text String: 표시할 텍스트입니다.
-* @param modifier Modifier: Modifier를 통한 스타��� 지정입니다.
+* @param text String: 표시할 텍스트입니다. 한 줄로 표시되며 넘치면 말줄임(…) 처리됩니다.
+* @param modifier Modifier: Modifier를 통한 스타일 지정입니다.
 * @param leadingContent Int?: 왼쪽 아이콘 리소스 ID입니다.
 * @param trailingContent Int?: 오른쪽 아이콘 리소스 ID입니다.
 * @param chipDefault WantedChipDefault: 직접 지정한 Chip 스타일입니다.
 * @param interactionSource MutableInteractionSource: 클릭 상호작용을 위한 상태 객체입니다.
-* @param onClick (() -> Unit)?: 클릭 시 실행될 콜백입니다.
+* @param onClick (() -> Unit)?: 클릭 시 실행될 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */
 
 /**
@@ -61,22 +61,22 @@
 * ```kotlin
 * WantedChip(
 *     content = { Text("Content") },
-*     leadingContent = { Icon(...) },
-*     trailingContent = { Icon(...) }
+*     leadingContent = { Icon(painter = painterResource(R.drawable.icon_normal_bookmark), contentDescription = null) },
+*     trailingContent = { Icon(painter = painterResource(R.drawable.icon_normal_close), contentDescription = null) }
 * )
 * ```
 *
 * @param modifier Modifier: Modifier를 통한 외형 스타일 지정입니다.
-* @param size ChipSize: Chip 크기 설정입니다.
+* @param size ChipSize: Chip 크기 설정입니다. 기본값은 Small 입니다.
 * @param variant ChipVariant: Chip 스타일 변형입니다.
-* @param isActive Boolean: 활성화 여부입니다.
+* @param isActive Boolean: 선택 여부 상태입니다.
 * @param isEnable Boolean: 사용 가능 여부입니다.
-* @param chipDefault WantedChipDefault: Chip 스타일 객체입니다.
+* @param chipDefault WantedChipDefault: Chip 스타일 객체입니다. 넘기면 size·variant·isActive·isEnable 인자는 무시되고 이 값이 쓰입니다.
 * @param interactionSource MutableInteractionSource: 터치 인터랙션 제어용 객체입니다.
 * @param content (@Composable () -> Unit): 텍스트 또는 기타 Composable 콘텐츠입니다.
 * @param leadingContent (@Composable (() -> Unit)?): 좌측 아이콘 Composable입니다.
 * @param trailingContent (@Composable (() -> Unit)?): 우측 아이콘 Composable입니다.
-* @param onClick (() -> Unit)?: 클릭 이벤트 콜백입니다.
+* @param onClick (() -> Unit)?: 클릭 이벤트 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */
 
 /**
@@ -87,42 +87,42 @@
 * 이 객체는 Chip의 시각적 변형 및 크기에 대한 enum 클래스를 포함합니다.
 */
 
-/**
+    /**
 * enum class ChipVariant
 *
 * WantedChip의 시각적 스타일을 정의하는 enum 클래스입니다.
 *
 * 다음과 같은 두 가지 스타일 옵션을 제공합니다:
 * - Solid: 배경이 채워진 형태입니다.
-* - Outlined: 테두리만 있는 형태입니다.
+* - Outlined: 테두리가 있는 형태입니다. 선택(isActive)되면 브랜드 색 5% 배경이 칠해집니다.
 *
 * @see WantedChip
 */
 
-/**
+    /**
 * enum class ChipSize
 *
 * WantedChip의 크기를 정의하는 enum 클래스입니다.
 *
 * 각 사이즈는 패딩, 아이콘 크기, 텍스트 간격 등에 영향을 미칩니다.
 * 제공되는 크기 옵션은 다음과 같습니다:
-* - Large: 큰 사이즈입니다.
-* - Medium: 중간 사이즈입니다.
-* - Small: 작은 사이즈입니다.
-* - XSmall: 가장 작은 사이즈입니다.
+* - Large: 최소 높이 40dp, label1Medium 타이포입니다.
+* - Medium: 최소 높이 36dp, label2Medium 타이포입니다.
+* - Small: 최소 높이 32dp, caption1Medium 타이포입니다.
+* - XSmall: 최소 높이 24dp, caption2Medium 타이포입니다.
 *
 * @see WantedChip
 */
 
-/** 텍스트 좌우 패딩입니다. 전 사이즈 공통 2dp 입니다. */
+    /** 텍스트 좌우 패딩입니다. 전 사이즈 공통 2dp 입니다. */
 
-/** 아이콘 ↔ 텍스트 간격입니다. XSmall 만 0dp 입니다. */
+    /** 아이콘 ↔ 텍스트 간격입니다. XSmall 만 0dp 입니다. */
 
 /**
 * data class WantedChipDefault
 *
 * WantedChip의 기본 스타일을 정의하는 데이터 클래스입니다.
-* 크기, 스타일 변형, 활성화 여부, 사용 가능 여부, 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
+* 크기, 스타일 변형, 선택 여부(isActive), 사용 가능 여부(isEnable), 아이콘 색상, 배경 색상, 테두리 색상, 텍스트 스타일을 포함합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -140,7 +140,7 @@
 *
 * @param size ChipSize: Chip의 크기를 설정합니다.
 * @param variant ChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
-* @param isActive Boolean: Chip의 활성화 여부입니다.
+* @param isActive Boolean: 선택 여부 상태입니다. 이 객체를 직접 만들면 색은 iconColor·backgroundColor·borderColor·textStyle 값을 그대로 쓰며, 이 값은 Solid 의 눌림 효과(ripple) 색에만 영향을 줍니다. 상태에 맞는 색이 필요하면 WantedChipDefaults.getDefault 로 만듭니다.
 * @param isEnable Boolean: Chip의 사용 가능 여부입니다.
 * @param iconColor Color: 아이콘의 색상입니다.
 * @param backgroundColor Color: 배경 색상입니다.
@@ -154,7 +154,7 @@
 * WantedChip의 기본 스타일을 제공하는 객체입니다.
 */
 
-/**
+    /**
 * fun getDefault(...)
 *
 * 기본 스타일에 맞춰 WantedChipDefault 객체를 생성합니다.
@@ -170,7 +170,7 @@
 *
 * @param size ChipSize: Chip의 크기를 설정합니다.
 * @param variant ChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
-* @param isActive Boolean: 활성화 여부입니다.
+* @param isActive Boolean: 선택 여부 상태입니다. true 면 브랜드 색으로 표시되며, isEnable 이 false 이면 비활성 색이 우선합니다.
 * @param isEnable Boolean: 사용 가능 여부입니다.
 * @param iconColor Color: 아이콘의 색상입니다.
 * @param backgroundColor Color: 배경 색상입니다.

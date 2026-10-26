@@ -44,7 +44,7 @@
 * @param size WantedSelectDefaults.Size: 셀렉트 박스의 크기입니다. (Large, Medium)
 * @param background Color: 셀렉트 박스의 배경 색상입니다. enabled 가 false 면 무시됩니다.
 * @param leadingIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다. Icon / Icon button / custom 을 넣을 수 있습니다.
-* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다.
+* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelectData (WantedSelectData) -> Unit: 항목 선택이 확정됐을 때 호출되는 콜백입니다.
 */
 
@@ -90,14 +90,14 @@
 * @param errorDataList List<WantedSelectData>: 오류로 표시할 항목 리스트입니다. 포함된 Chip 이 negative 스타일로 표시됩니다. 컨테이너 상태는 status 가 결정합니다.
 * @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
 * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목을 토글할 때마다 즉시 반영되고 Bottom sheet 가 열린 상태로 유지됩니다.
-* @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. false 면 가로 스크롤로 표시합니다.
+* @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
 * @param selectType WantedSelectDefaults.SelectType: Bottom sheet 항목의 선택 UI 타입입니다. (CheckMark, CheckBox, Radio)
 * @param render WantedSelectDefaults.MultiSelectRender: 선택 항목 표시 방식입니다. (Chip, Text)
 * @param size WantedSelectDefaults.Size: 셀렉트 박스의 크기입니다. (Large, Medium)
 * @param background Color: 셀렉트 박스의 배경 색상입니다. Chip 가로 스크롤 시 gradient 색상으로도 사용됩니다.
 * @param leadingIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다. Icon / Icon button / custom 을 넣을 수 있습니다.
 * @param onDeleteData (WantedSelectData) -> Unit: Chip 의 삭제 버튼을 눌렀을 때 호출되는 콜백입니다.
-* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다.
+* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelectDataList (List<WantedSelectData>) -> Unit: 항목 선택이 반영됐을 때 호출되는 콜백입니다.
 */
 
@@ -139,7 +139,7 @@
 * @param size WantedSelectDefaults.Size: 셀렉트 박스의 크기입니다. (Large, Medium)
 * @param background Color: 셀렉트 박스의 배경 색상입니다. enabled 가 false 면 무시됩니다.
 * @param leadingIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다. Icon / Icon button / custom 을 넣을 수 있습니다.
-* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다.
+* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelect (String) -> Unit: 항목 선택이 확정됐을 때 호출되는 콜백입니다.
 */
 
@@ -180,14 +180,14 @@
 * @param errorList List<String>: 오류로 표시할 항목 리스트입니다. 포함된 Chip 이 negative 스타일로 표시됩니다. 컨테이너 상태는 status 가 결정합니다.
 * @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
 * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목을 토글할 때마다 즉시 반영되고 Bottom sheet 가 열린 상태로 유지됩니다.
-* @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. false 면 가로 스크롤로 표시합니다.
+* @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
 * @param selectType WantedSelectDefaults.SelectType: Bottom sheet 항목의 선택 UI 타입입니다. (CheckMark, CheckBox, Radio)
 * @param render WantedSelectDefaults.MultiSelectRender: 선택 항목 표시 방식입니다. (Chip, Text)
 * @param size WantedSelectDefaults.Size: 셀렉트 박스의 크기입니다. (Large, Medium)
 * @param background Color: 셀렉트 박스의 배경 색상입니다. Chip 가로 스크롤 시 gradient 색상으로도 사용됩니다.
 * @param leadingIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다. Icon / Icon button / custom 을 넣을 수 있습니다.
 * @param onDelete (String) -> Unit: Chip 의 삭제 버튼을 눌렀을 때 호출되는 콜백입니다.
-* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다.
+* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelectList (List<String>) -> Unit: 항목 선택이 반영됐을 때 호출되는 콜백입니다.
 */
 
@@ -236,7 +236,7 @@
 * @param selectType WantedSelectDefaults.SelectType: 선택 UI 타입입니다.
 * @param size WantedSelectDefaults.Size: 셀렉트 박스의 크기입니다. (Large, Medium)
 * @param background Color: 배경 색상입니다.
-* @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelect (String) -> Unit: 선택 완료 시 호출되는 콜백입니다.
 * @param leadingIcon (@Composable () -> Unit)?: 왼쪽 아이콘 슬롯입니다.
 */
@@ -280,7 +280,7 @@
 * @param selectType WantedSelectDefaults.SelectType: 항목 선택 방식입니다.
 * @param size WantedSelectDefaults.Size: 셀렉트 박스의 크기입니다. (Large, Medium)
 * @param background Color: 셀렉트 박스의 배경 색상입니다.
-* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelectData (WantedSelectData) -> Unit: 항목 선택 완료 후 호출되는 콜백입니다.
 * @param leadingIcon (@Composable () -> Unit)?: 좌측에 표시할 커스텀 아이콘 슬롯입니다.
 */
@@ -320,14 +320,14 @@
 * @param negativeDataList List<WantedSelectData>: 오류 표시를 위한 항목 리스트입니다.
 * @param focused Boolean: 포커스 강조 상태 여부입니다.
 * @param enabled Boolean: 선택 가능 여부입니다.
-* @param overflow Boolean: 선택 항목이 넘칠 경우 줄바꿈 처리할지 여부입니다.
+* @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
 * @param selectDataList List<WantedSelectData>: 선택 가능한 전체 항목 리스트입니다.
 * @param selectType WantedSelectDefaults.SelectType: 선택 UI 타입입니다.
 * @param render WantedSelectDefaults.MultiSelectRender: 선택 항목 표시 방식입니다.
 * @param size WantedSelectDefaults.Size: 셀렉트 박스의 크기입니다. (Large, Medium)
 * @param background Color: 셀렉트 박스의 배경 색상입니다.
 * @param onDeleteData (WantedSelectData) -> Unit: 선택된 항목을 삭제할 때 호출되는 콜백입니다.
-* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelectDataList (List<WantedSelectData>) -> Unit: 항목 선택 완료 후 호출되는 콜백입니다.
 * @param leadingIcon (@Composable () -> Unit)?: 셀렉트 박스 왼쪽에 표시할 커스텀 아이콘 슬롯입니다.
 */
@@ -367,7 +367,7 @@
 * @param negativeList List<String>: 오류로 표시할 항목 리스트입니다.
 * @param focused Boolean: 포커스 상태 여부입니다.
 * @param enabled Boolean: 활성화 여부입니다.
-* @param overflow Boolean: Chip 렌더링 시 줄바꿈 여부입니다.
+* @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
 * @param selectValueList List<String>: 선택 가능한 항목 리스트입니다.
 * @param selectType WantedSelectDefaults.SelectType: 선택 방식입니다.
 * @param render WantedSelectDefaults.MultiSelectRender: 선택 항목 렌더링 형태입니다.
@@ -375,7 +375,7 @@
 * @param background Color: 컴포넌트 배경 색상입니다.
 * @param leadingIcon (@Composable () -> Unit)?: 왼쪽에 표시할 선택적 아이콘 슬롯입니다.
 * @param onDelete (String) -> Unit: 선택된 항목에서 삭제 버튼 클릭 시 호출되는 콜백입니다.
-* @param onClick () -> Unit: 셀렉트 영역 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 셀렉트 영역 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelectList (List<String>) -> Unit: 항목 선택 완료 후 호출되는 콜백입니다.
 */
 
@@ -386,7 +386,7 @@
 /**
 * data class WantedSelectData
 *
-* WantedSelect, WantedMultiSelect에서 사용되는 선택 항목 데이터 모델입니다.
+* WantedSelect(단일·다중 선택)에서 사용되는 선택 항목 데이터 모델입니다.
 *
 * 선택 가능한 항목을 구성할 때 텍스트, 아이콘 리소스, URL, 부가 데이터 등을 함께 담을 수 있습니다.
 *
@@ -396,18 +396,18 @@
 *     id = "01",
 *     text = "디자인",
 *     iconUrl = "https://icon.url",
-*     iconRes = R.drawable.ic_design,
+*     iconRes = R.drawable.icon_normal_bookmark,
 *     tint = R.color.foreground_brand_primary,
-*     any = DesignCategory.UI
+*     any = "ui"
 * )
 * ```
 *
 * @property id String: 항목의 고유 ID입니다.
 * @property text String: 사용자에게 표시할 텍스트입니다.
-* @property iconUrl String: 아이콘 이미지 URL입니다.
+* @property iconUrl String: 아이콘 이미지 URL입니다. 다중 선택의 Chip 렌더에서만 표시되며, iconRes 와 함께 지정하면 iconUrl 이 우선합니다.
 * @property any Any?: 부가 데이터를 담기 위한 확장 필드입니다.
-* @property iconRes Int: Drawable 리소스 ID입니다.
-* @property tint Int: 아이콘에 적용할 색상 리소스 ID입니다.
+* @property iconRes Int: Drawable 리소스 ID입니다. 다중 선택의 Chip 렌더에서만 표시되며 iconUrl 이 비어 있을 때 사용됩니다.
+* @property tint Int: iconRes 아이콘에 적용할 색상 리소스 ID입니다. 0 이면 기본 콘텐츠 색을 쓰며 iconUrl 이미지에는 적용되지 않습니다.
 */
 
 /**
@@ -416,7 +416,7 @@
 * Select 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
 */
 
-/**
+    /**
 * enum class MultiSelectRender
 *
 * Multi Select 에서 선택된 항목을 화면에 표시하는 방식을 정의하는 enum 클래스입니다.
@@ -426,18 +426,18 @@
 * - Text: 선택된 항목을 텍스트 형태로 나열
 */
 
-/**
+    /**
 * enum class SelectType
 *
 * Select Dialog 에서 항목을 선택할 때 사용할 UI 타입을 정의하는 enum 클래스입니다.
 *
 * 사용 가능한 UI 타입은 다음과 같습니다:
-* - CheckMark: 단일 선택 시 체크마크 방식
-* - CheckBox: 멀티 선택 시 체크박스 방식
-* - Radio: 단일 선택 시 라디오 버튼 방식
+* - CheckMark: 선택된 항목 오른쪽에 체크 마크를 표시합니다. 단일·다중 선택 모두 같습니다.
+* - CheckBox: 다중 선택에서는 모든 항목 왼쪽에 체크박스를 표시합니다. 단일 선택에서는 선택된 항목에만 체크된 체크박스를 표시합니다.
+* - Radio: 단일 선택에서는 모든 항목 왼쪽에 라디오를 표시합니다(미선택은 빈 라디오). 다중 선택에서는 선택된 항목에만 라디오를 표시합니다.
 */
 
-/**
+    /**
 * enum class Status
 *
 * Select의 상태를 정의하는 enum 클래스입니다. (WantedTextArea 의 Status 와 동일한 축)
@@ -445,7 +445,7 @@
 * - Negative: 부정(에러) 상태입니다.
 */
 
-/**
+    /**
 * enum class Size
 *
 * Select의 크기를 정의하는 enum 클래스입니다.
@@ -453,4 +453,15 @@
 * Chip 간격이 달라집니다.
 * - Large: 큰 크기입니다. (최소 높이 48dp)
 * - Medium: 중간 크기입니다. (최소 높이 40dp)
+*/
+
+/**
+* fun WantedMultiSelectChipListOverflow(...)
+*
+* 다중 선택 값을 칩으로 나열하고, 한 줄에 다 들어가지 않으면 다음 줄로 넘겨 모두 표시하는 레이아웃입니다.
+*
+* @param modifier Modifier: 레이아웃에 적용할 Modifier입니다.
+* @param itemCount Int: 표시할 항목 수입니다. 0 부터 itemCount - 1 까지 onItemIndex 를 호출합니다.
+* @param spacing Dp: 항목 사이의 가로·세로 간격입니다. 기본값은 4dp 입니다.
+* @param onItemIndex @Composable (Int) -> Unit: index 번째 항목(보통 칩)을 그리는 슬롯입니다.
 */
