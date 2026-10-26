@@ -11,8 +11,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  *
  * WantedSearchField 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
  *
- * 치수·타이포는 WantedTextField 와 동일한 값을 사용하며,
- * Size 별 토큰은 아래 internal 확장 프로퍼티로 분리되어 있습니다.
+ * 치수·타이포는 WantedTextField 와 동일한 값을 사용합니다.
  */
 object WantedSearchFieldDefaults {
     /**

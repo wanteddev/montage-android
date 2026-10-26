@@ -6,8 +6,8 @@ package com.wanted.android.wanted.design.input.input.control
  * 체크박스의 크기를 정의하는 enum 클래스입니다.
  *
  * 컴포넌트의 시각적 일관성을 유지하기 위해 두 가지 사이즈를 제공합니다:
- * - Normal: 일반 사이즈 (24dp)입니다.
- * - Small: 소형 사이즈 (20dp)입니다.
+ * - Normal: 일반 사이즈 (24dp)입니다. Switch 스타일은 폭 52dp 입니다.
+ * - Small: 소형 사이즈 (20dp)입니다. Switch 스타일은 폭 39dp 입니다.
  */
 enum class CheckBoxSize {
     Normal, Small
@@ -41,7 +41,7 @@ enum class CheckBoxStyle {
  * 세 가지 상태를 통해 선택 여부 또는 그룹 선택의 중간 상태를 표현할 수 있습니다:
  * - Unchecked: 선택되지 않았습니다.
  * - Checked: 선택되었습니다.
- * - Indeterminate: 일부만 선택된 상태 등 중간 상태입니다.
+ * - Indeterminate: 일부만 선택된 상태 등 중간 상태입니다. CheckBox·RoundCheckBox 스타일에서만 가로선으로 표시되고, Check·Radio·Switch 에서는 Checked 와 같게 그려집니다. 탭하면 false 가 전달됩니다.
  */
 enum class CheckBoxState {
     Unchecked,

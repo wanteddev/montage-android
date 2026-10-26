@@ -10,8 +10,6 @@ import androidx.compose.ui.unit.dp
  *
  * Figma `Dimension` 컬렉션을 매핑한 시맨틱 토큰. height/width 용도.
  * 각 값은 [WantedPrimitive]를 alias 한다.
- *
- * Layout 시맨틱 토큰(WantedLayout, 추후 추가 예정)을 우선 사용하세요.
  */
 @Immutable
 data class WantedDimension(

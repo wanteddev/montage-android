@@ -48,8 +48,8 @@ private const val FULL_SIZE_PAGE_THRESHOLD = 5
  *
  * 페이지네이션용 Dot Indicator 컴포넌트입니다.
  *
- * 현재 페이지 위치를 중심으로 일정 개수의 Dot을 표시하며,
- * 선택 상태에 따라 크기와 색상이 애니메이션으로 변경됩니다.
+ * 현재 페이지 위치를 중심으로 일정 개수의 Dot을 표시합니다.
+ * dot 크기는 표시 구간 안의 위치로 정해져 가장자리 쪽이 작아지고(전체 5페이지 이하면 모두 같은 크기), 선택된 dot 은 색으로 구분되며 변화는 애니메이션됩니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -63,7 +63,7 @@ private const val FULL_SIZE_PAGE_THRESHOLD = 5
  * ```
  *
  * @param totalPageCount Int: 전체 페이지 수입니다.
- * @param visibleDotCount Int: 화면에 표시할 최대 dot 개수입니다.
+ * @param visibleDotCount Int: 화면에 표시할 최대 dot 개수입니다. 전체 페이지가 5 이하면 이 값과 관계없이 모든 dot 을 표시합니다.
  * @param currentIndex Int: 현재 선택된 페이지 인덱스입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
  * @param size WantedDotIndicatorSize: dot의 크기입니다.

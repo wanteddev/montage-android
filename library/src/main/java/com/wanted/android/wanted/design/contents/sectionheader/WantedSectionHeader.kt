@@ -38,19 +38,19 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *     title = "제목",
  *     size = Size.Medium,
  *     headingContents = {
- *         Icon(painter = painterResource(R.drawable.ic_info), contentDescription = null)
+ *         Icon(painter = painterResource(R.drawable.icon_normal_circle_info), contentDescription = null)
  *     },
  *     trailingContent = {
- *         Icon(painter = painterResource(R.drawable.ic_more), contentDescription = null)
+ *         Icon(painter = painterResource(R.drawable.icon_normal_more_horizontal), contentDescription = null)
  *     },
  *     modifier = Modifier
  * )
  * ```
  *
- * @param title String: 섹션 제목으로 표시되는 텍스트입니다.
- * @param modifier Modifier: 외형, 정렬, 배치를 제어하는 Modifier입니다.
- * @param size Size: 헤더의 텍스트 스타일 크기를 결정합니다 (XSmall, Small, Medium, Large).
- * @param textStyle TextStyle?: 커스텀 텍스트 스타일을 지정할 수 있습니다. 기본값은 크기에 따라 자동 설정됩니다.
+ * @param title String: 섹션 제목으로 표시되는 텍스트입니다. headingContents 를 넣으면 title 은 1줄로 제한되고 넘치면 말줄임(…) 처리됩니다(없으면 줄 수 제한 없음).
+ * @param modifier Modifier: 외형, 정렬, 배치를 제어하는 Modifier입니다. 기본값이 없어 반드시 전달해야 합니다.
+ * @param size WantedSectionHeaderDefaults.Size: 헤더의 텍스트 스타일 크기를 결정합니다 (XSmall, Small, Medium, Large).
+ * @param textStyle TextStyle?: 커스텀 텍스트 스타일입니다. null 이면 size 에 맞는 스타일을 씁니다(색은 XSmall 이 foregroundNeutralTertiary, 그 외 foregroundNeutralStrong). 지정하면 size 는 무시되고 색도 이 스타일의 color 를 쓰므로, 색이 없는 스타일을 넘기면 LocalContentColor 로 그려집니다.
  * @param headingContents (@Composable () -> Unit)?: 제목 오른쪽에 배치될 부가 정보 아이콘 등 컴포넌트 콘텐츠입니다.
  * @param trailingContent (@Composable RowScope.() -> Unit)?: 오른쪽 끝에 배치되는 행동 버튼 또는 아이콘입니다.
  */

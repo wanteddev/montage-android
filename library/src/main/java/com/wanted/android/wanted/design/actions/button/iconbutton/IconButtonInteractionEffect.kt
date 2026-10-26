@@ -29,7 +29,7 @@ enum class IconButtonInteractionEffect {
     internal val dimsIcon: Boolean get() = this == Dim
 
     internal companion object {
-        /** deprecated 된 `disableInteraction` 파라미터를 InteractionEffect 로 변환합니다. */
+        /** deprecated 된 [disableInteraction] 파라미터를 InteractionEffect 로 변환합니다. */
         fun fromDisableInteraction(disableInteraction: Boolean): IconButtonInteractionEffect =
             if (disableInteraction) None else Highlight
     }

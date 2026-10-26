@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
  * SnackbarHost를 기반으로 한 Wanted 커스텀 Toast 컴포넌트입니다.
  *
  * WantedToastVisuals 를 사용하면 Variant와 아이콘이 포함된 Toast로 표시되고
- * 기본 SnackbarVisuals 를 를 사용하면 메시지만 표시됩니다.
+ * 기본 SnackbarVisuals 를 사용하면 같은 Wanted 레이아웃에 메시지만 표시됩니다(actionLabel 등은 표시되지 않습니다).
  *
  * 사용 예시:
  * ```kotlin
@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
  * ```
  *
  * @param snackbarHostState SnackbarHostState: Snackbar 상태를 관리합니다.
- * @param modifier Modifier: 외형을 조정합니다.
+ * @param modifier Modifier: 토스트를 띄우는 호스트(SnackbarHost)에 적용됩니다. 토스트 카드의 모양·배경은 바꿀 수 없으며, 위치·크기 배치에 씁니다. (WantedSnackBar 의 modifier 는 각 카드에 적용되어 동작이 다릅니다.)
  * @param windowInsets WindowInsets: 시스템 인셋 대응을 위한 설정입니다.
  */
 @Composable
@@ -188,15 +188,21 @@ private fun WantedToastLayout(
  * val snackbarHostState = remember { SnackbarHostState() }
  * val scope = rememberCoroutineScope()
  *
- * snackbarHostState.showToast(
- *     scope = scope,
- *     message = "저장되었습니다.",
- *     variant = WantedToastVariant.Positive
+ * // 컴포저블 본문에서 바로 부르면 리컴포지션마다 다시 뜬다. 이벤트 콜백 안에서 호출한다.
+ * WantedButton(
+ *     text = "저장",
+ *     onClick = {
+ *         snackbarHostState.showToast(
+ *             scope = scope,
+ *             message = "저장되었습니다.",
+ *             variant = WantedToastVariant.Positive
+ *         )
+ *     }
  * )
  * ```
  *
  * @param scope CoroutineScope: 코루틴을 실행할 스코프입니다.
- * @param message String: 토스트에 표시할 메시지입니다.
+ * @param message String: 토스트에 표시할 메시지입니다. 최대 두 줄까지 표시되고 넘으면 말줄임(…)됩니다.
  * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Normal입니다.
  */
 fun SnackbarHostState.showToast(

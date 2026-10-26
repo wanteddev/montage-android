@@ -48,10 +48,10 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * ```
  *
  * @param stepCount Int: 전체 단계 수입니다.
- * @param currentStep Int: 현재 진행 중인 단계입니다.
- * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param currentStep Int: 현재 진행 중인 단계입니다. 1부터 시작하며, 이보다 앞선 단계는 완료로 표시됩니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 현재 각 단계 원(20dp)에도 같은 Modifier 가 적용되므로 크기·여백 Modifier 는 바깥 컨테이너에 줍니다.
  * @param label ((Int) -> String)?: 각 단계의 텍스트 라벨을 반환하는 함수입니다.
- * @param labelContent (@Composable (Int) -> Unit)?: 텍스트 라벨 대신 사용할 커스텀 콘텐츠 슬롯입니다.
+ * @param labelContent (@Composable (Int) -> Unit)?: label 텍스트를 대체하지 않고, label 오른쪽에 함께 표시되는 커스텀 콘텐츠 슬롯입니다. label 이 비어 있으면 이 슬롯만 표시됩니다.
  * @param content @Composable (Int) -> Unit: 단계별 본문 콘텐츠입니다.
  */
 @Composable

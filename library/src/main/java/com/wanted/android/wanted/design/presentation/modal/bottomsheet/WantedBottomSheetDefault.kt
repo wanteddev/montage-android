@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.Dp
  *
  * 여백은 디자인 4.0.0 기준으로 ModalSize 와 무관하게 통일되어 있고, Full 만 별도 값을 사용합니다.
  *
- * @property shape RoundedCornerShape: Bottom Sheet 의 모서리 둥글기입니다. Full 은 화면 전체를 덮으므로 0dp 입니다.
+ * @property shape RoundedCornerShape: Bottom Sheet 의 모서리 둥글기입니다. getDefault·getFullDefault 모두 위쪽 두 모서리 32dp 가 기본값입니다.
  * @property navigationPadding Dp: Navigation 영역에 Bottom Sheet 가 추가로 얹는 여백입니다. 여백 자체는 Navigation 컴포넌트가 소유하므로 기본값은 0dp 입니다.
  * @property contentHorizontalPadding Dp: Content 영역의 좌우 여백입니다.
  * @property contentVerticalPadding Dp: Content 영역의 상하 여백입니다.

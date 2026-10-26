@@ -20,14 +20,14 @@ object WantedPopupContract {
         /**
          * data object Hug
          *
-         * 콘텐츠 높이에 맞춰 Popup 높이가 결정됩니다. 기본값입니다.
+         * 콘텐츠 높이에 맞춰 Popup 높이가 결정됩니다. 기본값입니다. 최대 높이는 화면 높이에서 상단 inset 과 하단 여백을 뺀 값이며, 760dp 를 넘지 않습니다.
          */
         data object Hug : Resize()
 
         /**
          * data class Fixed
          *
-         * 지정한 높이로 Popup 높이가 고정됩니다.
+         * height 로 지정한 높이로 Popup 높이가 고정됩니다. 최대 760dp 로 제한됩니다.
          *
          * @property height Dp: Popup 의 높이입니다.
          */

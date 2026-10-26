@@ -32,8 +32,8 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  *
  * 사용 예시:
  * ```
- * // Application 클래스에서 초기화
- * WantedGlobalToastManager.initialize(application)
+ * // Application 클래스(onCreate)에서 초기화
+ * WantedGlobalToastManager.initialize(this)
  *
  * // 토스트 표시
  * WantedGlobalToastManager.showToast(
@@ -103,21 +103,21 @@ object WantedGlobalToastManager {
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
     }
 
-    /**
-     * PlayCoreDialogWrapperActivity(인앱리뷰) 등 라이브러리가 매니페스트에 머지해 넣는
-     * 플레인 [Activity]는 DecorView에 ViewTreeLifecycleOwner가 설정되지 않아
-     * ComposeView를 붙이는 순간 IllegalStateException으로 앱이 종료된다.
-     * ComposeView 부착의 실제 전제조건인 view tree의 LifecycleOwner 존재 여부를 직접 검사한다.
-     */
+    // PlayCoreDialogWrapperActivity(인앱리뷰) 등 라이브러리가 매니페스트에 머지해 넣는
+    // 플레인 Activity는 DecorView에 ViewTreeLifecycleOwner가 설정되지 않아
+    // ComposeView를 붙이는 순간 IllegalStateException으로 앱이 종료된다.
+    // ComposeView 부착의 실제 전제조건인 view tree의 LifecycleOwner 존재 여부를 직접 검사한다.
     private fun Activity.canHostToast(): Boolean =
         findViewById<ViewGroup>(android.R.id.content)?.findViewTreeLifecycleOwner() != null
 
     /**
-     *  fun showToast(...)
+     * fun showToast(...)
      *
      * 커스텀 컴포넌트 콘텐츠로 Toast를 표시합니다.
      *
      * 이전에 표시 중이던 Toast는 자동으로 취소되며, 지정된 시간 후에 자동으로 사라집니다.
+     *
+     * 현재 Activity 에 View 를 붙이므로 메인 스레드에서 호출해야 합니다. initialize 전에 호출하면 아무것도 표시하지 않습니다.
      *
      * @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
      * @param content (@Composable () -> Unit): 표시할 컴포넌트 콘텐츠입니다.
@@ -158,11 +158,13 @@ object WantedGlobalToastManager {
      *
      * Variant를 통해 메시지 타입(긍정, 주의, 부정 등)을 지정할 수 있습니다.
      *
-     * @param text String: 토스트에 표시할 메시지입니다.
+     * 현재 Activity 에 View 를 붙이므로 메인 스레드에서 호출해야 합니다. initialize 전에 호출하면 아무것도 표시하지 않습니다.
+     *
+     * @param text String: 토스트에 표시할 메시지입니다. 최대 두 줄까지 표시되고 넘으면 말줄임(…)됩니다.
      * @param duration ToastDuration: 토스트가 표시될 시간입니다. 기본값은 Short(3초)입니다.
-     * @param padding PaddingValues: 토스트에 적용할 패딩입니다. 기본값은 하단 20dp입니다.
+     * @param padding PaddingValues: 토스트 바깥에 추가로 더하는 여백입니다. 토스트 자체의 20dp 여백과 내비게이션 바·키보드 높이 보정은 이 값과 별도로 항상 적용됩니다. 기본값은 하단 20dp입니다.
      * @param variant WantedToastVariant: 토스트 스타일입니다. 기본값은 Normal입니다.
-     * @param icon (@Composable () -> Unit)?: 사용자 정의 아이콘입니다.
+     * @param icon (@Composable () -> Unit)?: 사용자 정의 아이콘입니다. variant 가 Normal(deprecated Message 포함)일 때만 표시되고, 그 외 variant 는 variant 고유 아이콘이 사용되어 무시됩니다.
      */
     fun showToast(
         text: String,

@@ -16,7 +16,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
 /**
  * WantedCircularLoading
  *
- * 화면 중앙에 원형으로 로딩 상태를 안내하는 컴포넌트입니다.
+ * 부모 영역을 가득 채우고 그 가운데에 원형 로딩을 표시하는 컴포넌트입니다.
  *
  * dim 배경 포함 여부, 크기, 색상을 설정할 수 있습니다.
  *
@@ -29,7 +29,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * )
  * ```
  *
- * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 바깥 Surface 와 안쪽 Box 에 두 번 적용되므로 padding·background 등은 두 번 반영됩니다. 크기·배치 용도로만 씁니다.
  * @param circleColor Color: 로딩 인디케이터 색상입니다.
  * @param dimColor Color: 배경 dim 색상입니다.
  * @param size Dp: 로딩 인디케이터 크기입니다.

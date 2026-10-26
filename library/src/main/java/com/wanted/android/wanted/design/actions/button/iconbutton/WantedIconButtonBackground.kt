@@ -50,7 +50,7 @@ import com.wanted.android.wanted.design.util.clickOnce
  * 사용 예시:
  * ```kotlin
  * WantedIconButtonBackground(
- *     icon = R.drawable.ic_icon,
+ *     icon = R.drawable.icon_normal_bookmark,
  *     // size 미지정 → Default(box 32dp) 기본값
  *     alternative = false,
  *     onClick = { /* 클릭 처리 */ }
@@ -62,13 +62,13 @@ import com.wanted.android.wanted.design.util.clickOnce
  * @param alternative Boolean: true 일 경우 다크 오버레이 위 사용 변형
  * @param enabled Boolean: 활성화 여부
  * @param size WantedIconButtonBackgroundSize: 박스 크기. 기본값 [WantedIconButtonBackgroundSize.Default]
- * @param tint Color: 아이콘 색상 (기본값은 alternative 여부에 따라 자동 결정)
+ * @param tint Color: 아이콘 색상 (기본값은 alternative 여부에 따라 자동 결정). enabled 가 false 이면 이 값과 무관하게 비활성 아이콘 색으로 고정됩니다.
  * @param pushBadge @Composable (() -> Unit)?: 지정 위치에 표시할 PushBadge 등 컴포넌트. 박스 모서리 기준으로 정렬됩니다.
  * @param badgePosition IconButtonBadgePosition: pushBadge 정렬 기준점. 기본값 [IconButtonBadgePosition.TopRight]
  * @param disableInteraction Boolean: true이면 press/hover ripple 효과 없음. 기본값 false
  * @param interactionColor Color: ripple 색상. 기본값 `foregroundNeutralPrimary`
  * @param useNormalInteraction Boolean: true이면 light 대신 normal 강도 ripple 적용. 기본값 false
- * @param onClick () -> Unit: 클릭 콜백
+ * @param onClick () -> Unit: 클릭 콜백. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedIconButtonBackground(

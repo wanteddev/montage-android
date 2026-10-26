@@ -45,7 +45,8 @@ object WantedContentBadgeDefaults {
      * val badgeDefault = WantedContentBadgeDefaults.getAccentDefault()
      * WantedContentBadge(
      *     text = "New",
-     *     badgeDefault = badgeDefault
+     *     color = ContentBadgeColor.Accent,
+     *     accentDefault = badgeDefault
      * )
      * ```
      *
@@ -72,12 +73,14 @@ object WantedContentBadgeDefaults {
      *
      * Neutral 스타일의 기본 Content badge를 반환합니다.
      *
+     * 배경은 surfaceNeutralSecondary, 테두리는 foregroundNeutralTertiary 16% 로 고정되며 contentColor 를 바꿔도 따라 바뀌지 않습니다.
+     *
      * 사용 예시:
      * ```
      * val badgeDefault = WantedContentBadgeDefaults.getNeutralDefault()
      * WantedContentBadge(
      *     text = "Label",
-     *     badgeDefault = badgeDefault
+     *     accentDefault = badgeDefault
      * )
      * ```
      *

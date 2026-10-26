@@ -50,25 +50,28 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * 간단한 설정만으로 기본 스타일의 Filter button을 사용할 수 있으며,
  * 내부적으로 CompositionLocal을 활용하여 관련 상태를 주입합니다.
  *
+ * size·variant·isActive·isEnable 을 하나도 넘기지 않으면 Kotlin 오버로드 규칙상 filterButtonDefault 를 받는 오버로드가 선택되어, 크기·스타일이 CompositionLocal 기본값(Medium·Solid)으로 정해집니다. 이 오버로드의 기본값(Small)을 쓰려면 size 등을 명시합니다.
+ *
  * 사용 예시:
  * ```kotlin
  * WantedFilterButton(
  *     text = "필터",
  *     activeLabel = "3",
+ *     size = FilterButtonSize.Small,
  *     onClick = { /* 클릭 동작 */ }
  * )
  * ```
  *
  * @param text String: FilterButton에 표시될 텍스트입니다.
  * @param modifier Modifier: Modifier를 통해 스타일을 조정할 수 있습니다.
- * @param activeLabel String: FilterButton이 활성화되었을 때 표시할 라벨 텍스트입니다.
+ * @param activeLabel String: 본문 텍스트 뒤에 함께 표시할 라벨(예: 선택 개수)입니다. isActive 와 무관하게 비어 있지 않으면 표시됩니다.
  * @param size FilterButtonSize: FilterButton의 크기를 정의하는 enum 값입니다 (기본값: Small).
  * @param variant FilterButtonVariant: FilterButton의 스타일입니다 (기본값: Solid).
  * @param isActive Boolean: FilterButton의 활성화 상태입니다.
  * @param isEnable Boolean: FilterButton의 사용 가능 상태입니다.
  * @param isExpanded Boolean: 확장 가능 상태입니다 (아이콘 변경 목적).
  * @param interactionSource MutableInteractionSource: 사용자 인터랙션 처리를 위한 객체입니다.
- * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedFilterButton(
@@ -116,18 +119,18 @@ fun WantedFilterButton(
  * WantedFilterButton(
  *     text = "필터",
  *     activeLabel = "3",
- *     filterButtonDefault = customDefault,
+ *     filterButtonDefault = WantedFilterButtonDefaults.getDefault(size = FilterButtonSize.Small, isActive = true),
  *     onClick = { /* 클릭 처리 */ }
  * )
  * ```
  *
  * @param text String: FilterButton에 표시될 텍스트입니다.
  * @param modifier Modifier: Modifier를 통해 스타일을 조정할 수 있습니다.
- * @param activeLabel String: FilterButton이 활성화되었을 때 표시할 라벨 텍스트입니다.
+ * @param activeLabel String: 본문 텍스트 뒤에 함께 표시할 라벨(예: 선택 개수)입니다. isActive 와 무관하게 비어 있지 않으면 표시됩니다.
  * @param isExpanded Boolean: FilterButton이 확장 상태인지 여부입니다 (화살표 아이콘에 반영됨).
  * @param filterButtonDefault WantedFilterButtonDefault: 외부에서 주입하는 FilterButton의 기본 설정값입니다.
  * @param interactionSource MutableInteractionSource: 사용자 인터랙션 처리를 위한 객체입니다.
- * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedFilterButton(

@@ -55,6 +55,35 @@ class WantedCheckBox : MaterialCheckBox {
     )
 }
 
+/**
+ * fun WantedCheckBox(...)
+ *
+ * style 하나로 체크박스·둥근 체크박스·체크 마크·라디오·스위치 다섯 가지 선택 컨트롤을 그리는 컴포넌트입니다.
+ *
+ * 상태를 직접 보관하지 않으므로, onCheckedChange 로 받은 값으로 checkState 를 갱신해야 합니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * var checkState by remember { mutableStateOf(CheckBoxState.Unchecked) }
+ *
+ * WantedCheckBox(
+ *     checkState = checkState,
+ *     style = CheckBoxStyle.CheckBox,
+ *     onCheckedChange = { checked ->
+ *         checkState = if (checked) CheckBoxState.Checked else CheckBoxState.Unchecked
+ *     }
+ * )
+ * ```
+ *
+ * @param onCheckedChange (Boolean) -> Unit: 탭했을 때 바뀌어야 할 선택 여부를 전달합니다. 현재 checkState 가 Unchecked 이면 true, Checked·Indeterminate 이면 false 가 전달됩니다.
+ * @param modifier Modifier: 컨트롤 바깥(터치 영역 포함)에 적용할 Modifier입니다.
+ * @param size CheckBoxSize: 컨트롤 크기입니다. CheckBox·RoundCheckBox·Check·Radio 는 Normal 24dp, Small 20dp 이고, Switch 는 Normal 폭 52dp, Small 폭 39dp 입니다.
+ * @param style CheckBoxStyle: 그릴 컨트롤 종류입니다. (CheckBox, RoundCheckBox, Check, Radio, Switch)
+ * @param checkState CheckBoxState: 선택 상태입니다. Indeterminate 는 CheckBox·RoundCheckBox 에서만 가로선으로 표시되고, Check·Radio·Switch 에서는 Checked 와 같게 그려집니다.
+ * @param tight Boolean: true 이면 보이는 컨트롤 크기는 그대로 두고 주변 여백만 줄여 슬롯 폭을 좁힙니다(Normal 24→20dp, Small 20→16dp). 대신 터치 영역의 좌우 확장은 4dp 에서 6dp 로 넓어집니다. Switch 에는 적용되지 않습니다.
+ * @param enabled Boolean: false 이면 비활성 색으로 표시하고 탭에 반응하지 않습니다.
+ * @param interactionSource MutableInteractionSource: 눌림 상태를 관찰·공유할 때 전달합니다.
+ */
 @Composable
 fun WantedCheckBox(
     onCheckedChange: (Boolean) -> Unit,

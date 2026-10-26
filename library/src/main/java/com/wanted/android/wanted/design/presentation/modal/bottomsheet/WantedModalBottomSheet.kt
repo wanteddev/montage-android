@@ -54,7 +54,7 @@ import com.wanted.android.wanted.design.theme.DesignSystemTheme
  *
  * @param isShow Boolean: 모달 표시 여부입니다.
  * @param onDismissRequest () -> Unit: 모달이 닫힐 때 호출되는 콜백입니다.
- * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 시스템 Bottom Sheet(type.isSystemBottomSheet = true)에만 적용되고, 커스텀 드래그 Bottom Sheet 에는 적용되지 않습니다.
  * @param background Color: 배경 색상입니다.
  * @param type ModalType: 모달의 형태입니다.
  * @param sheetDefault WantedBottomSheetDefault: Bottom Sheet 의 모양·여백 설정입니다. 기본값은 [type] 에 맞춰 골라집니다 (Full 만 별도 값).

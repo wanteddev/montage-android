@@ -23,7 +23,7 @@ import com.wanted.android.wanted.design.util.OPACITY_5
  *     size = FilterButtonSize.Medium,
  *     variant = FilterButtonVariant.Solid,
  *     isActive = true,
- *     isEnable = true,
+ *     isEnabled = true,
  *     iconColor = Color.Black,
  *     backgroundColor = Color.White,
  *     borderColor = Color.Gray,
@@ -31,10 +31,10 @@ import com.wanted.android.wanted.design.util.OPACITY_5
  * )
  * ```
  *
- * @param size FilterButtonSize: Chip의 크기를 설정합니다.
- * @param variant FilterButtonVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
- * @param isActive Boolean: Chip의 활성화 여부입니다.
- * @param isEnabled Boolean: Chip의 사용 가능 여부입니다.
+ * @param size FilterButtonSize: FilterButton의 크기를 설정합니다.
+ * @param variant FilterButtonVariant: FilterButton의 스타일 변형입니다 (Solid, Outlined).
+ * @param isActive Boolean: FilterButton의 활성화 여부입니다.
+ * @param isEnabled Boolean: FilterButton의 사용 가능 여부입니다.
  * @param iconColor Color: 아이콘의 색상입니다.
  * @param backgroundColor Color: 배경 색상입니다.
  * @param borderColor Color: 테두리 색상입니다.
@@ -61,7 +61,7 @@ object WantedFilterButtonDefaults {
     /**
      * fun getDefault(...)
      * 기본 스타일에 맞춰 WantedFilterButtonDefault 객체를 생성합니다.
-     * Compose 환경에 따라 Chip의 스타일을 동적으로 결정합니다.
+     * 인자를 생략하면 CompositionLocal 값(LocalWantedFilterButtonSize 기본 Medium, LocalWantedFilterButtonVariant 기본 Solid, LocalWantedFilterButtonActive 기본 false, LocalWantedFilterButtonEnable 기본 true)을 씁니다.
      *
      * 사용 예시:
      * ```kotlin
@@ -71,8 +71,8 @@ object WantedFilterButtonDefaults {
      * )
      * ```
      *
-     * @param size FilterButtonSize: Chip의 크기를 설정합니다.
-     * @param variant FilterButtonVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
+     * @param size FilterButtonSize: FilterButton의 크기를 설정합니다.
+     * @param variant FilterButtonVariant: FilterButton의 스타일 변형입니다 (Solid, Outlined).
      * @param isActive Boolean: 활성화 여부입니다.
      * @param isEnable Boolean: 사용 가능 여부입니다.
      * @param iconColor Color: 아이콘의 색상입니다.
@@ -161,7 +161,7 @@ object WantedFilterButtonDefaults {
      * )
      * ```
      *
-     * @param variant FilterButtonVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
+     * @param variant FilterButtonVariant: FilterButton의 스타일 변형입니다 (Solid, Outlined).
      * @param isActive Boolean: 활성화 여부입니다.
      * @param isEnable Boolean: 사용 가능 여부입니다.
      * @return Int: 아이콘 색상에 해당하는 리소스 ID를 반환합니다.

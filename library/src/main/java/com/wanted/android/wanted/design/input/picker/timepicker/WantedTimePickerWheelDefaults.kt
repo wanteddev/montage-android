@@ -53,7 +53,7 @@ object WantedTimePickerWheelDefaults {
      *     enableAm = true,
      *     enablePm = true,
      *     enableMinHour = 9,
-     *     enableMaxHour = 18,
+     *     enableMaxHour = 12,
      *     enableMinMinute = 0,
      *     enableMaxMinute = 45,
      *     isHideDisableTime = true
@@ -63,7 +63,7 @@ object WantedTimePickerWheelDefaults {
      * @param enableAm Boolean: 오전(AM) 선택을 허용할지 여부입니다. 기본값은 true입니다
      * @param enablePm Boolean: 오후(PM) 선택을 허용할지 여부입니다. 기본값은 true입니다. 단, AM이 false인 경우 자동으로 true로 설정됩니다
      * @param enableMinHour Int: 선택 가능한 최소 시입니다. 1 이상이어야 하며, 기본값은 1입니다
-     * @param enableMaxHour Int: 선택 가능한 최대 시입니다. 12 이하이어야 하며, `enableMinHour`보다 작으면 자동 보정됩니다. 기본값은 12입니다
+     * @param enableMaxHour Int: 선택 가능한 최대 시입니다. 12 이하로 지정해야 하며(12 초과 값은 보정되지 않습니다), [enableMinHour]보다 작으면 [enableMinHour] 로 보정됩니다. 기본값은 12입니다
      * @param enableMinMinute Int: 선택 가능한 최소 분입니다. 0 이상이어야 하며, 기본값은 0입니다
      * @param enableMaxMinute Int: 선택 가능한 최대 분입니다. 59 이하이며, `enableMinMinute`보다 작으면 자동 보정됩니다. 기본값은 59입니다
      * @param isHideDisableTime Boolean: 비활성 시간대를 숨길지 여부입니다. 기본값은 false입니다

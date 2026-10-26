@@ -21,7 +21,7 @@ object WantedChipContract {
      *
      * 다음과 같은 두 가지 스타일 옵션을 제공합니다:
      * - Solid: 배경이 채워진 형태입니다.
-     * - Outlined: 테두리만 있는 형태입니다.
+     * - Outlined: 테두리가 있는 형태입니다. 선택(isActive)되면 브랜드 색 5% 배경이 칠해집니다.
      *
      * @see WantedChip
      */
@@ -36,10 +36,10 @@ object WantedChipContract {
      *
      * 각 사이즈는 패딩, 아이콘 크기, 텍스트 간격 등에 영향을 미칩니다.
      * 제공되는 크기 옵션은 다음과 같습니다:
-     * - Large: 큰 사이즈입니다.
-     * - Medium: 중간 사이즈입니다.
-     * - Small: 작은 사이즈입니다.
-     * - XSmall: 가장 작은 사이즈입니다.
+     * - Large: 최소 높이 40dp, label1Medium 타이포입니다.
+     * - Medium: 최소 높이 36dp, label2Medium 타이포입니다.
+     * - Small: 최소 높이 32dp, caption1Medium 타이포입니다.
+     * - XSmall: 최소 높이 24dp, caption2Medium 타이포입니다.
      *
      * @see WantedChip
      */

@@ -8,7 +8,9 @@ import androidx.compose.ui.unit.dp
  *
  * TextField 컴포넌트에서 사용되는 설정 값을 정의하는 객체입니다.
  *
- * 선택 렌더링 방식과 선택 UI 스타일을 제어할 수 있는 enum 클래스를 포함합니다.
+ * 상태(Status)와 크기(Size) enum 을 포함합니다.
+ *
+ * Status 는 deprecated 오버로드·WantedAutoCompleteTextField 에서 사용하며, 본체 WantedTextField 는 error·complete 로 표현합니다.
  */
 object WantedTextFieldDefaults {
 

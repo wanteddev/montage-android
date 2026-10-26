@@ -49,11 +49,11 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
  * @param padding WantedFallbackPadding: 콘텐츠 상하 여백을 지정합니다 (Normal, Compact).
- * @param buttonVariant WantedFallbackButtonVariant: 버튼 배치 방식을 지정합니다 (Single, Horizontal, Vertical).
+ * @param buttonVariant WantedFallbackButtonVariant: 버튼 배치 방식입니다. Single 은 main 버튼 하나만 표시하고 alternative 는 무시합니다. Horizontal 은 alternative(왼쪽)·main(오른쪽)을 가로로, Vertical 은 main(위)·alternative(아래)를 세로로 배치합니다. 기본값은 Single입니다.
  * @param heading String?: 상단에 강조 텍스트(제목)를 표시합니다.
  * @param description String?: 제목 아래에 설명 텍스트를 표시합니다. 최대 두 줄까지만 표시됩니다.
  * @param main String?: 메인 액션 버튼에 표시될 텍스트입니다. null일 경우 버튼은 렌더링되지 않습니다.
- * @param alternative String?: 대체 액션 버튼에 표시될 텍스트입니다. null일 경우 버튼은 렌더링되지 않습니다.
+ * @param alternative String?: 대체 액션 버튼 텍스트입니다. buttonVariant 가 Horizontal·Vertical 일 때만 표시되며, null 이면 렌더링되지 않습니다.
  * @param onClickMain () -> Unit: 메인 액션 버튼 클릭 시 호출되는 콜백입니다.
  * @param onClickAlternative () -> Unit: 대체 액션 버튼 클릭 시 호출되는 콜백입니다.
  */
@@ -83,18 +83,20 @@ fun WantedFallbackView(
 }
 
 /**
- * 이미지(일러스트) 슬롯이 포함된 [WantedFallbackView] 입니다.
+ * fun WantedFallbackView(...)
+ *
+ * (Deprecated) 이미지(일러스트) 슬롯이 포함된 WantedFallbackView 입니다. 이미지 없는 오버로드를 사용하세요.
  *
  * 디자인 4.0.0 에서 이미지 슬롯이 제거되어 더 이상 사용하지 않습니다.
  * 기존 화면 호환을 위해서만 유지하며, 이미지 없는 오버로드로 이관합니다.
  *
  * @param image (@Composable () -> Unit): 텍스트 위에 표시될 이미지 컴포넌트입니다.
  * @param modifier Modifier: 외형 및 배치를 조정하는 Modifier입니다.
- * @param buttonVariant WantedFallbackButtonVariant: 버튼 배치 방식을 지정합니다 (Single, Horizontal, Vertical).
+ * @param buttonVariant WantedFallbackButtonVariant: 버튼 배치 방식입니다. Single 은 main 버튼 하나만 표시하고 alternative 는 무시합니다. Horizontal 은 alternative(왼쪽)·main(오른쪽)을 가로로, Vertical 은 main(위)·alternative(아래)를 세로로 배치합니다. 기본값은 Single입니다.
  * @param heading String?: 상단에 강조 텍스트(제목)를 표시합니다.
  * @param description String?: 제목 아래에 설명 텍스트를 표시합니다. 최대 두 줄까지만 표시됩니다.
  * @param main String?: 메인 액션 버튼에 표시될 텍스트입니다. null일 경우 버튼은 렌더링되지 않습니다.
- * @param alternative String?: 대체 액션 버튼에 표시될 텍스트입니다. null일 경우 버튼은 렌더링되지 않습니다.
+ * @param alternative String?: 대체 액션 버튼 텍스트입니다. buttonVariant 가 Horizontal·Vertical 일 때만 표시되며, null 이면 렌더링되지 않습니다.
  * @param onClickMain () -> Unit: 메인 액션 버튼 클릭 시 호출되는 콜백입니다.
  * @param onClickAlternative () -> Unit: 대체 액션 버튼 클릭 시 호출되는 콜백입니다.
  */
@@ -322,6 +324,15 @@ private fun WantedFallbackVerticalButtons(
     }
 }
 
+/**
+ * enum class WantedFallbackButtonVariant
+ *
+ * 버튼 배치 방식 옵션입니다.
+ *
+ * - Single: main 버튼 하나만 표시합니다. alternative 는 무시합니다.
+ * - Horizontal: alternative(왼쪽)·main(오른쪽)을 가로로 같은 너비로 배치합니다.
+ * - Vertical: main(위)·alternative(아래)를 세로로 배치합니다.
+ */
 enum class WantedFallbackButtonVariant {
     Single,
     Horizontal,
@@ -334,7 +345,8 @@ enum class WantedFallbackButtonVariant {
  * 콘텐츠 상하 여백 옵션입니다. Figma `Fallback View` 의 `Padding` 속성과 1:1 대응합니다.
  * 값은 Spacing 토큰(최대 80dp)으로 표현할 수 없어 시안 실측값을 그대로 사용합니다.
  *
- * @property verticalPadding Dp: 콘텐츠 위·아래에 각각 적용되는 여백입니다.
+ * - Normal: 콘텐츠 위·아래에 각각 160dp 여백을 둡니다.
+ * - Compact: 콘텐츠 위·아래에 각각 80dp 여백을 둡니다.
  */
 enum class WantedFallbackPadding(internal val verticalPadding: Dp) {
     Normal(verticalPadding = 160.dp),

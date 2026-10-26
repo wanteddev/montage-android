@@ -62,8 +62,8 @@ import com.wanted.android.wanted.design.util.pxToDp
  * @param properties DialogProperties: Dialog 속성입니다.
  * @param popupDefault WantedPopupDefault: Popup 의 모양·여백 설정입니다.
  * @param title String?: Navigation 의 제목입니다. null 이면 제목 없이 Close Button 만 노출합니다. Close Button 은 [onDismissRequest] 로 Popup 을 닫습니다.
- * @param positive String?: Main Action 의 텍스트입니다.
- * @param onClickPositive (() -> Unit)?: Main Action 클릭 시 호출되는 콜백입니다.
+ * @param positive String?: Main Action 의 텍스트입니다. onClickPositive 를 함께 넘겨야 Main Action 이 표시됩니다.
+ * @param onClickPositive (() -> Unit)?: Main Action 클릭 시 호출되는 콜백입니다. null 이면 Main Action 을 표시하지 않습니다.
  * @param content (@Composable BoxScope.() -> Unit): 본문 콘텐츠 슬롯입니다.
  */
 @Composable
@@ -121,7 +121,7 @@ fun WantedPopup(
  *
  * if (showModal) {
  *     WantedPopup(
- *         topBar = { WantedDialogTopAppBar(title = "제목") },
+ *         topBar = { WantedDialogTopAppBar(title = "제목", variant = WantedDialogTopAppBarContract.Variant.Emphasized) },
  *         bottomBar = {
  *             Button(onClick = { showModal = false }) {
  *                 Text("닫기")
@@ -197,7 +197,7 @@ fun WantedPopup(
  *
  * if (showModal) {
  *     WantedPopup(
- *         topBar = { WantedDialogTopAppBar(title = "제목") },
+ *         topBar = { WantedDialogTopAppBar(title = "제목", variant = WantedDialogTopAppBarContract.Variant.Emphasized) },
  *         onDismissRequest = { showModal = false },
  *         lazyContent = {
  *             items(20) { index ->

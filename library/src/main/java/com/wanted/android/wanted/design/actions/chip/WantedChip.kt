@@ -50,19 +50,19 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * WantedChip
  *
  * 사용자가 선택할 수 있는 Chip 컴포넌트를 생성합니다.
- * 텍스트, 아이콘, 크기, 활성화 여부 등의 다양한 설정을 지원합니다.
+ * 텍스트, 아이콘, 크기, 선택 여부(isActive)·사용 가능 여부(isEnable) 등의 다양한 설정을 지원합니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedChip(
  *     text = "텍스트",
- *     leadingContent = R.drawable.ic_sample_icon,
- *     trailingContent = R.drawable.ic_sample_icon,
+ *     leadingContent = R.drawable.icon_normal_bookmark,
+ *     trailingContent = R.drawable.icon_normal_bookmark,
  *     onClick = { /* 클릭 처리 */ }
  * )
  * ```
  *
- * @param text String: 표시할 텍스트입니다.
+ * @param text String: 표시할 텍스트입니다. 한 줄로 표시되며 넘치면 말줄임(…) 처리됩니다.
  * @param modifier Modifier: Modifier를 통한 외형 스타일 지정입니다.
  * @param size ChipSize: Chip의 크기를 설정합니다.
  * @param variant ChipVariant: Chip의 스타일 변형입니다 (Solid, Outlined).
@@ -71,7 +71,7 @@ import com.wanted.android.wanted.design.util.wantedRippleEffect
  * @param leadingContent Int?: 왼쪽에 표시할 아이콘 리소스 ID입니다.
  * @param trailingContent Int?: 오른쪽에 표시할 아이콘 리소스 ID입니다.
  * @param interactionSource MutableInteractionSource: 클릭 시의 상호작용 상태입니다.
- * @param onClick (() -> Unit)?: 클릭 시 실행되는 콜백입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 실행되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedChip(
@@ -114,18 +114,18 @@ fun WantedChip(
  * ```kotlin
  * WantedChip(
  *     text = "커스텀 텍스트",
- *     chipDefault = customChipDefault,
+ *     chipDefault = WantedChipDefaults.getDefault(isActive = true),
  *     onClick = { /* 클릭 처리 */ }
  * )
  * ```
  *
- * @param text String: 표시할 텍스트입니다.
- * @param modifier Modifier: Modifier를 통한 스타��� 지정입니다.
+ * @param text String: 표시할 텍스트입니다. 한 줄로 표시되며 넘치면 말줄임(…) 처리됩니다.
+ * @param modifier Modifier: Modifier를 통한 스타일 지정입니다.
  * @param leadingContent Int?: 왼쪽 아이콘 리소스 ID입니다.
  * @param trailingContent Int?: 오른쪽 아이콘 리소스 ID입니다.
  * @param chipDefault WantedChipDefault: 직접 지정한 Chip 스타일입니다.
  * @param interactionSource MutableInteractionSource: 클릭 상호작용을 위한 상태 객체입니다.
- * @param onClick (() -> Unit)?: 클릭 시 실행될 콜백입니다.
+ * @param onClick (() -> Unit)?: 클릭 시 실행될 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedChip(
@@ -190,22 +190,22 @@ fun WantedChip(
  * ```kotlin
  * WantedChip(
  *     content = { Text("Content") },
- *     leadingContent = { Icon(...) },
- *     trailingContent = { Icon(...) }
+ *     leadingContent = { Icon(painter = painterResource(R.drawable.icon_normal_bookmark), contentDescription = null) },
+ *     trailingContent = { Icon(painter = painterResource(R.drawable.icon_normal_close), contentDescription = null) }
  * )
  * ```
  *
  * @param modifier Modifier: Modifier를 통한 외형 스타일 지정입니다.
- * @param size ChipSize: Chip 크기 설정입니다.
+ * @param size ChipSize: Chip 크기 설정입니다. 기본값은 Small 입니다.
  * @param variant ChipVariant: Chip 스타일 변형입니다.
- * @param isActive Boolean: 활성화 여부입니다.
+ * @param isActive Boolean: 선택 여부 상태입니다.
  * @param isEnable Boolean: 사용 가능 여부입니다.
- * @param chipDefault WantedChipDefault: Chip 스타일 객체입니다.
+ * @param chipDefault WantedChipDefault: Chip 스타일 객체입니다. 넘기면 size·variant·isActive·isEnable 인자는 무시되고 이 값이 쓰입니다.
  * @param interactionSource MutableInteractionSource: 터치 인터랙션 제어용 객체입니다.
  * @param content (@Composable () -> Unit): 텍스트 또는 기타 Composable 콘텐츠입니다.
  * @param leadingContent (@Composable (() -> Unit)?): 좌측 아이콘 Composable입니다.
  * @param trailingContent (@Composable (() -> Unit)?): 우측 아이콘 Composable입니다.
- * @param onClick (() -> Unit)?: 클릭 이벤트 콜백입니다.
+ * @param onClick (() -> Unit)?: 클릭 이벤트 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedChip(

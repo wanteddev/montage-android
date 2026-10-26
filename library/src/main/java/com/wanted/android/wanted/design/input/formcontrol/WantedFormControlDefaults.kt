@@ -14,7 +14,7 @@ object WantedFormControlDefaults {
      *
      * FormControl의 상태를 정의하는 enum 클래스입니다.
      * - Normal: 일반 상태입니다.
-     * - Positive: 긍정 상태입니다.
+     * - Positive: 긍정 상태입니다. 현재 description 색은 Normal과 같습니다.
      * - Negative: 부정 상태입니다. (에러)
      */
     enum class Status {

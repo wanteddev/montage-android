@@ -43,14 +43,14 @@ import com.wanted.android.wanted.design.util.OPACITY_88
  *
  * 기본 TopAppBar 컴포넌트입니다.
  *
- * 다양한 Variant를 지원하며, 스크롤 상태에 따라 하단 Divider가 표시됩니다.
+ * 다양한 Variant를 지원하며, background = false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 배경을 칠합니다. 하단 Divider 는 표시하지 않습니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedTopAppBar(
- *     title = { Text(...) },
- *     navigationIcon = { Icon(...) },
- *     actions = { IconButton(...) }
+ *     title = { Text(text = "제목") },
+ *     navigationIcon = { Icon(painter = painterResource(R.drawable.icon_normal_arrow_left), contentDescription = null) },
+ *     actions = { IconButton(onClick = { /* 알림 */ }) { Icon(painter = painterResource(R.drawable.icon_normal_bell), contentDescription = "알림") } }
  * )
  * ```
  *
@@ -175,8 +175,8 @@ fun WantedTopAppBar(
  * ```kotlin
  * WantedTopAppBar(
  *     title = "타이틀",
- *     navigationIcon = { Icon(...) },
- *     actions = { IconButton(...) }
+ *     navigationIcon = { Icon(painter = painterResource(R.drawable.icon_normal_arrow_left), contentDescription = null) },
+ *     actions = { IconButton(onClick = { /* 알림 */ }) { Icon(painter = painterResource(R.drawable.icon_normal_bell), contentDescription = "알림") } }
  * )
  * ```
  *
@@ -301,6 +301,46 @@ fun WantedBackTopAppBar(
     )
 }
 
+/**
+ * fun WantedSearchTopAppBar(...)
+ *
+ * TextFieldValue 로 검색어와 커서·선택 상태를 함께 제어하는 검색 TopAppBar 컴포넌트입니다.
+ *
+ * 좌측 뒤로가기 버튼과 검색 입력 필드를 제공하며, String 오버로드와 달리 size 의 기본값이 Large 입니다.
+ *
+ * 사용 예시:
+ * ```kotlin
+ * var value by remember { mutableStateOf(TextFieldValue("")) }
+ *
+ * WantedSearchTopAppBar(
+ *     value = value,
+ *     placeholder = "검색어를 입력하세요",
+ *     onValueChange = { value = it },
+ *     onClickBack = { navController.popBackStack() }
+ * )
+ * ```
+ *
+ * @param value TextFieldValue: 검색 필드에 표시될 텍스트와 선택 상태입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+ * @param backgroundColor Color: 앱바 배경 색상입니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param placeholder String: 검색 필드의 플레이스홀더 텍스트입니다.
+ * @param enabled Boolean: 검색 필드 활성화 여부입니다.
+ * @param size Size: 검색 필드의 크기입니다. 기본값은 Large 입니다.
+ * @param maxWordCount Int: 최대 입력 가능한 글자 수입니다.
+ * @param enabledOverflowText Boolean: 텍스트 오버플로우 허용 여부입니다.
+ * @param interactionSource MutableInteractionSource?: 사용자 인터랙션 상태를 추적하는 객체입니다.
+ * @param keyboardOptions KeyboardOptions: 키보드 옵션입니다.
+ * @param keyboardActions KeyboardActions: 키보드 액션 핸들러입니다.
+ * @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
+ * @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 foregroundBrandPrimary 색상을 사용합니다.
+ * @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
+ * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+ * @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.
+ * @param onValueChange (TextFieldValue) -> Unit: 검색어 변경 시 호출되는 콜백입니다.
+ */
 @Composable
 fun WantedSearchTopAppBar(
     value: TextFieldValue,
@@ -378,7 +418,7 @@ fun WantedSearchTopAppBar(
  *     onClickBack = { navController.popBackStack() },
  *     actions = {
  *         IconButton(onClick = { /* 검색 */ }) {
- *             Icon(...)
+ *             Icon(painter = painterResource(R.drawable.icon_normal_search), contentDescription = "검색")
  *         }
  *     }
  * )
@@ -399,7 +439,7 @@ fun WantedSearchTopAppBar(
  * @param keyboardOptions KeyboardOptions: 키보드 옵션입니다.
  * @param keyboardActions KeyboardActions: 키보드 액션 핸들러입니다.
  * @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
- * @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 primary 색상을 사용합니다.
+ * @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 foregroundBrandPrimary 색상을 사용합니다.
  * @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
  * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
  * @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.

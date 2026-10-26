@@ -31,17 +31,16 @@ import com.wanted.android.wanted.design.util.clickOnce
 /**
  * WantedIconButtonSolid
  *
- * WantedIconButtonSize를 사용하여 간편하게 크기와 패딩을 지정할 수 있는 Solid 스타일 아이콘 버튼입니다.
- * (Confluence IconButton 스펙 §3 — 2026-06-24)
+ * WantedIconButtonSize로 박스 크기를 지정하는 Solid 스타일 아이콘 버튼입니다.
  *
- * 아이콘 크기 산출: `icon = round(box × 0.47)` → dimension 토큰 스냅(동률이면 작은 값).
- * 중앙정렬 inset = `(box - icon) / 2`. padding 방식 제거.
+ * 아이콘 크기 산출: `icon = box × 0.47` 을 반올림하지 않고 가장 가까운 dimension 토큰으로 스냅(동률이면 작은 값).
+ * 아이콘은 박스 가운데에 놓입니다(inset = `(box - icon) / 2`).
  * Radius = `radius.full` (CircleShape). 박스는 `clamp(24dp, N, 64dp)`.
  *
  * 사용 예시:
  * ```kotlin
  * WantedIconButtonSolid(
- *     icon = R.drawable.ic_icon,
+ *     icon = R.drawable.icon_normal_bookmark,
  *     size = WantedIconButtonSize.Medium,
  *     onClick = { /* 클릭 처리 */ }
  * )
@@ -51,13 +50,13 @@ import com.wanted.android.wanted.design.util.clickOnce
  * @param size WantedIconButtonSize: 박스 크기를 정의하는 sealed class입니다. preset(Medium/Small) 외 박스는 [WantedIconButtonSize.Custom] 으로 지정합니다.
  * @param modifier Modifier: 외형 및 배치를 제어하는 Modifier입니다.
  * @param enabled Boolean: 버튼의 활성화 여부입니다.
- * @param tint Color: 아이콘의 색상입니다. 기본값은 흰색입니다.
- * @param background Color: 배경 색상입니다. 기본값은 surfaceBrandPrimary입니다.
+ * @param tint Color: 아이콘의 색상입니다. 기본값은 흰색입니다. enabled 가 false 이면 이 값과 무관하게 비활성 아이콘 색(foregroundDisablePrimary)으로 고정됩니다.
+ * @param background Color: 배경 색상입니다. 기본값은 surfaceBrandPrimary입니다. enabled 가 false 이면 이 값과 무관하게 비활성 배경색(surfaceNeutralSecondary)으로 고정됩니다.
  * @param pushBadge @Composable (() -> Unit)?: 지정 위치에 표시할 PushBadge 등 컴포넌트. 박스 모서리 기준으로 정렬됩니다.
  * @param badgePosition IconButtonBadgePosition: pushBadge 정렬 기준점. 기본값 [IconButtonBadgePosition.TopRight]
  * @param disableInteraction Boolean: true이면 press/hover ripple 효과 없음. 기본값 false
  * @param interactionColor Color: ripple 색상. 기본값 `foregroundNeutralPrimary`
- * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
+ * @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
  */
 @Composable
 fun WantedIconButtonSolid(

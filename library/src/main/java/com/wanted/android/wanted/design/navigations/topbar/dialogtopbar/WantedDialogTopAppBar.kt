@@ -58,18 +58,18 @@ import com.wanted.android.wanted.design.util.OPACITY_88
  * ```kotlin
  * WantedDialogTopAppBar(
  *     title = "다이얼로그 제목",
- *     navigationIcon = { Icon(...) },
- *     actions = { IconButton(...) }
+ *     navigationIcon = { Icon(painter = painterResource(R.drawable.icon_normal_close), contentDescription = null) },
+ *     actions = { IconButton(onClick = { /* 알림 */ }) { Icon(painter = painterResource(R.drawable.icon_normal_bell), contentDescription = "알림") } }
  * )
  * ```
  *
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
- * @param backgroundColor Color: 앱바 배경 색상입니다.
- * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다. 기본값은 WindowInsets(0)(여백 없음)으로, 시트·팝업 안에서 쓰는 것을 전제로 합니다.
+ * @param backgroundColor Color: 앱바 배경 색상입니다. 기본값은 surfaceElevatedPrimary 입니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다. true(기본값)이면 항상 배경을 칠하고, false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 칠합니다.
  * @param variant Variant: 앱바 형태입니다.
- * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다.
- * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다. Emphasized·Search 에만 적용되며 Normal·Floating 은 좌우 16dp 고정입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
  * @param title String: 타이틀 텍스트입니다.
  * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
@@ -123,12 +123,12 @@ fun WantedDialogTopAppBar(
  * ```
  *
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
- * @param backgroundColor Color: 앱바 배경 색상입니다.
- * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다. 기본값은 WindowInsets(0)(여백 없음)으로, 시트·팝업 안에서 쓰는 것을 전제로 합니다.
+ * @param backgroundColor Color: 앱바 배경 색상입니다. 기본값은 surfaceElevatedPrimary 입니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다. true(기본값)이면 항상 배경을 칠하고, false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 칠합니다.
  * @param variant Variant: 앱바 형태입니다.
- * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다.
- * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다. Emphasized·Search 에만 적용되며 Normal·Floating 은 좌우 16dp 고정입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
  * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param title String: 타이틀 텍스트입니다.
  * @param onClickClose () -> Unit: 닫기 버튼 클릭 시 호출되는 콜백입니다.
@@ -211,7 +211,7 @@ private val CLOSE_BUTTON_CONTAINER_SIZE = 36.dp
  * 검색 필드가 포함된 다이얼로그용 TopAppBar 컴포넌트입니다. (Variant.Search)
  *
  * 제목 대신 검색 필드(폭 가변)를 두고, 우측에 취소 텍스트 버튼을 배치합니다.
- * 화면용 WantedSearchTopAppBar 와 같은 WantedSearchField(Medium, 높이 40)를 사용합니다.
+ * 화면용 WantedSearchTopAppBar 의 String 오버로드와 같은 WantedSearchField(Medium, 높이 40)를 사용합니다(TextFieldValue 오버로드의 기본값은 Large).
  *
  * 사용 예시:
  * ```kotlin
@@ -228,11 +228,11 @@ private val CLOSE_BUTTON_CONTAINER_SIZE = 36.dp
  *
  * @param text String: 검색 필드에 입력된 텍스트입니다.
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
- * @param backgroundColor Color: 앱바 배경 색상입니다.
- * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
- * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다.
- * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다. 기본값은 WindowInsets(0)(여백 없음)으로, 시트·팝업 안에서 쓰는 것을 전제로 합니다.
+ * @param backgroundColor Color: 앱바 배경 색상입니다. 기본값은 surfaceElevatedPrimary 입니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다. true(기본값)이면 항상 배경을 칠하고, false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 칠합니다.
+ * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다. Emphasized·Search 에만 적용되며 Normal·Floating 은 좌우 16dp 고정입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
  * @param placeholder String: 검색 필드의 placeholder 입니다.
  * @param enabled Boolean: 검색 필드 입력 가능 여부입니다.
  * @param keyboardOptions KeyboardOptions: 키보드 옵션입니다.
@@ -316,26 +316,26 @@ private fun CancelTextButton(
 /**
  * WantedDialogTopAppBar
  *
- * 닫기 버튼이 포함된 다이얼로그용 TopAppBar 컴포넌트입니다.
+ * 슬롯으로 타이틀·좌우 콘텐츠를 구성하는 다이얼로그용 TopAppBar 컴포넌트입니다.
  *
- * 우측에 닫기 아이콘이 고정으로 배치됩니다.
+ * 닫기 버튼은 포함하지 않으며, 필요하면 WantedDialogCloseTopAppBar 를 사용합니다.
  *
  * 사용 예시:
  * ```kotlin
  * WantedDialogTopAppBar(
- *     title = "제목",
+ *     title = { Text("제목") },
  *     navigationIcon = { },
  *     actions = { }
  * )
  * ```
  *
  * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
- * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
- * @param backgroundColor Color: 앱바 배경 색상입니다.
- * @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+ * @param windowInsets WindowInsets: 적용할 WindowInsets입니다. 이 슬롯 오버로드는 기본값이 WantedTopAppBarDefaults.windowInsets(상단 시스템 바)라 다른 오버로드(WindowInsets(0))와 다릅니다. 시트·팝업 안에서는 WindowInsets(0) 을 넘깁니다.
+ * @param backgroundColor Color: 앱바 배경 색상입니다. 이 슬롯 오버로드는 기본값이 backgroundNeutralPrimary 라 다른 오버로드(surfaceElevatedPrimary)와 다릅니다.
+ * @param background Boolean: 앱바 배경을 표시할지 여부입니다. true(기본값)이면 항상 배경을 칠하고, false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 칠합니다.
  * @param variant Variant: 앱바 형태입니다.
- * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다.
- * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+ * @param navigationPadding Dp: Navigation 의 상하좌우 여백입니다. 기본값은 Popup · Bottom Sheet 값(24)이고 Full 은 [WantedDialogTopAppBarDefaults.FULL_NAVIGATION_PADDING] 을 넘깁니다. Emphasized·Search 에만 적용되며 Normal·Floating 은 좌우 16dp 고정입니다.
+ * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
  * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param title (@Composable () -> Unit)?: 타이틀 텍스트 슬롯입니다.
  * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.

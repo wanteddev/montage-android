@@ -85,6 +85,16 @@ internal fun WantedMultiSelectContents(
     }
 }
 
+/**
+ * fun WantedMultiSelectChipListOverflow(...)
+ *
+ * 다중 선택 값을 칩으로 나열하고, 한 줄에 다 들어가지 않으면 다음 줄로 넘겨 모두 표시하는 레이아웃입니다.
+ *
+ * @param modifier Modifier: 레이아웃에 적용할 Modifier입니다.
+ * @param itemCount Int: 표시할 항목 수입니다. 0 부터 itemCount - 1 까지 onItemIndex 를 호출합니다.
+ * @param spacing Dp: 항목 사이의 가로·세로 간격입니다. 기본값은 4dp 입니다.
+ * @param onItemIndex @Composable (Int) -> Unit: index 번째 항목(보통 칩)을 그리는 슬롯입니다.
+ */
 @Composable
 fun WantedMultiSelectChipListOverflow(
     modifier: Modifier = Modifier,

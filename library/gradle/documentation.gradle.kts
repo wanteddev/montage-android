@@ -74,12 +74,13 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                             if (line.contains("/**") || line.contains("/*")) {
                                 inDocBlock = true
                                 sb.clear()
-                                sb.appendLine(line.trim())
+                                // 시작 줄의 들여쓰기는 남긴다 — 생성기가 sealed class 본문 안의 하위 선언과 그 밖의 선언을 구분하는 근거다.
+                                sb.appendLine(line.trimEnd())
                                 // 펜스 바로 진입 체크
                                 if (line.trim().startsWith("```")) inFence = true
                                 // 같은 라인에 닫힘도 있는지?
                                 if (!inFence && line.contains("*/")) {
-                                    blocks += sb.toString().trim()
+                                    blocks += sb.toString().trimEnd()
                                     inDocBlock = false
                                 }
                             }
@@ -88,7 +89,7 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                             sb.appendLine(line.trim())
                             // 펜스 밖에서만 종료로 인식
                             if (!inFence && line.contains("*/")) {
-                                blocks += sb.toString().trim()
+                                blocks += sb.toString().trimEnd()
                                 inDocBlock = false
                                 inFence = false
                             }
@@ -161,6 +162,12 @@ val mergeDesignSystemJavadocByPackage by tasks.registering {
         // 상위 패키지로 합쳐져야 할 서브 패키지 이름들
         val subPackageNames = setOf("control", "config", "view")
 
+        // 서브 패키지 파일 중 상위 패키지가 아닌 특정 페이지에 실어야 하는 것 (파일명 -> 대상 패키지).
+        // textinput/view 는 상위 페이지(textinput.mdx)가 사이트에 없어, 실제 사용처 페이지로 보낸다.
+        val subPackageFileRedirects = mapOf(
+            "WantedTextAreaCharacterCount" to "textarea"
+        )
+
         // 1단계: config 폴더들을 먼저 수집
         rootPkgDir.walkTopDown()
             .filter { it.isDirectory && it.name == "config" }
@@ -210,8 +217,14 @@ val mergeDesignSystemJavadocByPackage by tasks.registering {
                 if (subPackageNames.contains(pkgName) && segments.size > 1) {
                     val parentPackage = segments[segments.size - 2]
                     // WantedModalContract는 제외하고 추가
-                    val filesToAdd =
+                    val (redirectedFiles, filesToAdd) =
                         allMdFiles.filter { it.nameWithoutExtension != "WantedModalContract" }
+                            .partition { subPackageFileRedirects.containsKey(it.nameWithoutExtension) }
+                    redirectedFiles.forEach { file ->
+                        val target = subPackageFileRedirects.getValue(file.nameWithoutExtension)
+                        subPackageContentMap.getOrPut(target) { mutableListOf() }.add(file)
+                        println("📦 Redirecting '${file.name}' from sub-package '$pkgName' to package '$target'")
+                    }
                     if (filesToAdd.isNotEmpty()) {
                         subPackageContentMap.getOrPut(parentPackage) { mutableListOf() }
                             .addAll(filesToAdd)

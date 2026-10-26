@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
  * 앱 전역에서 사용할 수 있는 커스텀 Snackbar 호스트입니다.
  *
  * WantedSnackbarVisuals 사용 시 아이콘과 설명이 포함된 커스텀 레이아웃으로 표시되며,
- * 기본 SnackbarVisuals를 사용 시 표준 형태로 표시됩니다.
+ * 기본 SnackbarVisuals를 사용하면 같은 Wanted 레이아웃에 메시지와 액션 버튼(actionLabel)만 표시됩니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
  * ```
  *
  * @param snackbarHostState SnackbarHostState: 스낵바 표시 상태를 제어합니다.
- * @param modifier Modifier: 스낵바 전체 레이아웃 조정 Modifier입니다.
+ * @param modifier Modifier: 각 스낵바 항목에 적용되는 Modifier입니다(호스트가 아님). 카드와 그 바깥 고정 20dp 여백을 함께 감싸므로 border·background 등 장식은 카드보다 20dp 큰 영역에 적용됩니다. 호스트 배치는 부모(Scaffold 의 snackbarHost 등)에서 정합니다. (WantedToast 의 modifier 는 호스트에 적용되어 동작이 다릅니다.)
  */
 @Composable
 fun WantedSnackBar(
@@ -212,9 +212,15 @@ private fun WantedSnackBarLayout(
  * val snackbarHostState = remember { SnackbarHostState() }
  * val scope = rememberCoroutineScope()
  *
- * snackbarHostState.showSnackbar(
- *     scope = scope,
- *     message = "저장되었습니다."
+ * // 컴포저블 본문에서 바로 부르면 리컴포지션마다 다시 뜬다. 이벤트 콜백 안에서 호출한다.
+ * WantedButton(
+ *     text = "저장",
+ *     onClick = {
+ *         snackbarHostState.showSnackbar(
+ *             scope = scope,
+ *             message = "저장되었습니다."
+ *         )
+ *     }
  * )
  * ```
  *

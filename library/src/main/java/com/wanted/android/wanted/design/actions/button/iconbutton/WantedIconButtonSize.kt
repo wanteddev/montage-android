@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
 /**
  * sealed class WantedIconButtonSize
  *
- * `WantedIconButtonOutlined` / `WantedIconButtonSolid` 의 박스(컨테이너) 크기입니다.
+ * WantedIconButtonOutlined / WantedIconButtonSolid 의 박스(컨테이너) 크기입니다.
  * (Confluence IconButton 스펙 §3·§4)
  *
  * `size` 는 박스 크기를 뜻하며, 아이콘은 `box × 0.47` → dimension 토큰 스냅(동률 → 작은 값)으로 자동 산출됩니다.

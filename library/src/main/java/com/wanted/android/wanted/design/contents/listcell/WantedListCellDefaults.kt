@@ -14,15 +14,15 @@ import androidx.compose.ui.unit.dp
  *
  * 셀 표면(배경색·모양·테두리·안쪽 여백) 스펙을 한 덩어리로 묶어 전달하는 데이터 클래스입니다.
  *
- * `modifier` 는 셀 최외곽(클릭·리플 영역 바깥) 노드에 적용되므로, `modifier` 에 배경·테두리·안쪽 여백을 주면
- * 인터랙션 영역과 어긋납니다. 표면 표현은 모두 이 객체로 지정합니다.
+ * 표면(배경·테두리)은 `modifier` 와 같은 최외곽 노드에 그려지고, 클릭·리플 영역은 Variant 의 interactionOutset 만큼 그 노드 밖으로 넘칩니다.
+ * `modifier` 에 배경·테두리를 주면 이 객체의 표면 아래·위로 겹쳐 그려지므로, 표면 표현은 모두 이 객체로 지정합니다.
  *
  * 좌우 패딩·인터랙션 영역·radius 는 표면이 아니라 [WantedListCellDefaults.Variant] 가 정합니다.
  *
  * @param backgroundColor Color: 셀 표면 배경색입니다. 기본값 Transparent 는 배경을 그리지 않는 것과 같습니다.
  * @param shape Shape: 배경 모양입니다.
  * @param border BorderStroke?: 셀 표면 테두리입니다. null 이면 테두리를 그리지 않습니다. 배경 위에 그려지므로 modifier 에 직접 border 를 주면 배경에 가려집니다.
- * @param contentPadding PaddingValues: 셀 콘텐츠 안쪽 여백입니다. modifier 의 padding 은 클릭 영역 바깥 마진이 되므로 안쪽 여백은 이 값으로 줍니다.
+ * @param contentPadding PaddingValues: 셀 콘텐츠 안쪽 여백입니다. modifier 의 padding 은 표면 바깥 여백이 되므로(넘치는 클릭 영역보다 좁으면 클릭 영역 안에 들어감) 안쪽 여백은 이 값으로 줍니다.
  */
 data class WantedListCellDefault(
     val backgroundColor: Color = Color.Transparent,
@@ -47,8 +47,8 @@ object WantedListCellDefaults {
      * 두 variant 모두 콘텐츠가 놓이는 위치는 같고, 셀이 폭을 어디까지 차지하는지와
      * 인터랙션 영역이 어디까지 번지는지만 다릅니다.
      *
-     * - [Inset]: 셀이 콘텐츠 폭을 갖고 **리스트가 좌우 여백을 준다.** 인터랙션은 셀보다 좌우로 12dp 넓고 radius 16dp 입니다.
-     * - [Full]: 셀이 **리스트 폭을 채우고** 내부 좌우 패딩 20dp 를 갖는다. 인터랙션은 셀과 동일하며 radius 0dp 입니다.
+     * - Inset: 셀이 콘텐츠 폭을 갖고 **리스트가 좌우 여백을 준다.** 인터랙션은 셀보다 좌우로 12dp 넓고 radius 16dp 입니다.
+     * - Full: 셀이 **리스트 폭을 채우고** 내부 좌우 패딩 20dp 를 갖는다. 인터랙션은 셀과 동일하며 radius 0dp 입니다.
      *
      * 커스텀 값은 제공하지 않습니다. 다른 수치가 필요하면 이 enum 에 variant 를 추가합니다.
      *

@@ -35,8 +35,8 @@ object WantedTextAreaDefaults {
      * enum class Size
      *
      * TextArea의 크기를 정의하는 enum 클래스입니다.
-     * - Large: 큰 크기입니다. (콘텐츠 최소 높이 48dp, body2Regular)
-     * - Medium: 중간 크기입니다. (콘텐츠 최소 높이 44dp, label1Regular)
+     * - Large: 큰 크기입니다. (콘텐츠 최소 높이 48dp, body2ReadingRegular)
+     * - Medium: 중간 크기입니다. (콘텐츠 최소 높이 44dp, label1ReadingRegular)
      */
     enum class Size {
         Large,

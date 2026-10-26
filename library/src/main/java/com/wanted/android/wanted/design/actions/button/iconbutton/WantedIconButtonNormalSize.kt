@@ -7,7 +7,7 @@ import com.wanted.android.wanted.design.actions.button.iconbutton.internal.IconB
 /**
  * sealed class WantedIconButtonNormalSize
  *
- * `WantedIconButtonNormal` 의 박스(컨테이너) 크기입니다. (Confluence IconButton 스펙 §3·§4)
+ * WantedIconButtonNormal 의 박스(컨테이너) 크기입니다. (Confluence IconButton 스펙 §3·§4)
  *
  * `size` 는 박스 크기를 뜻하며, 아이콘·radius 는 박스에서 자동 산출됩니다
  * (`icon = box × 2/3` → dimension 토큰 스냅, `radius = box × 0.3` → radius 토큰 스냅).

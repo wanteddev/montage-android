@@ -30,6 +30,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * WantedTabRow(
  *     itemSize = 3,
+ *     modifier = Modifier.fillMaxWidth(),
  *     selectedTabIndex = selectedIndex,
  *     content = { index -> "탭$index" },
  *     onClickItem = { selectedIndex = it }
@@ -38,7 +39,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * @param itemSize Int: 탭 항목 수입니다.
  * @param selectedTabIndex Int: 현재 선택된 탭 인덱스입니다.
- * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+ * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 기본값이 없어 반드시 전달해야 합니다.
  * @param tabSize TabSize: 탭 텍스트 크기입니다.
  * @param disableIndexList List<Int>: 비활성화할 탭 인덱스 리스트입니다.
  * @param onClickItem (Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.

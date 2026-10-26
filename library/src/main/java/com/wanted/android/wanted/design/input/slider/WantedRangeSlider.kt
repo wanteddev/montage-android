@@ -188,6 +188,8 @@ internal fun WantedRangeSlider(
                         maxSliderWidth = maxWidth.value,
                         thumbSize = thumbSize.value
                     )
+                    // 드래그로 옮긴 위치를 동기화 기준값에도 반영해야, 손잡이가 교차한 뒤 들어오는 value 로 양쪽이 다시 배치된다
+                    rawOffsetLeft.floatValue = leftStep
 
                     isDragging.value = false
                     if (leftStep <= rightStep) {
@@ -234,6 +236,7 @@ internal fun WantedRangeSlider(
                     maxSliderWidth = maxWidth.value,
                     thumbSize = thumbSize.value
                 )
+                rawOffsetRight.floatValue = rightStep
                 isDragging.value = false
                 if (leftStep <= rightStep) {
                     onValueChangeFinished(leftStep..rightStep)

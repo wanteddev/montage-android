@@ -48,7 +48,7 @@ import kotlin.math.min
  * Dot, Text, MaxCount 타입 중 하나를 선택할 수 있으며, 위치·사이즈·색상·타이포그래피를 설정할 수 있습니다.
  * 아바타 등 겹치는 배경에서 배지를 분리하는 outlineBorder(외곽 보더)와, 부착 위치를 미세 조정하는 inset 을 지원합니다.
  *
- * 다이나믹 타입(시스템 폰트 확대)은 핸드오프 기준에 맞춰 fontScale [MAX_FONT_SCALE] 까지만 반영합니다.
+ * 다이나믹 타입(시스템 폰트 확대)은 fontScale 1.3 까지만 반영합니다.
  * 배지 높이는 고정값이 아니라 `라인 높이 + 세로 패딩` 으로 결정되므로 확대 배율에 따라 함께 커집니다.
  *
  * 사용 예시:
@@ -66,15 +66,15 @@ import kotlin.math.min
  * @param modifier Modifier: 배지의 배치·정렬 등에 사용되는 Modifier입니다.
  * @param variant PushBadgeVariant: 표시할 배지 타입입니다. Dot, Text, MaxCount 중 선택합니다.
  * @param size PushBadgeSize: 배지의 크기입니다. XSmall, Small, Medium 중 선택합니다.
- * @param position PushBadgePosition: 배지의 위치입니다. TopEnd 등 9가지 위치를 지원합니다.
- * @param text String: `Text`·`MaxCount` 타입일 때 표시할 문자열입니다. `MaxCount` 는 이 값을 숫자로 해석합니다.
+ * @param position PushBadgePosition: 배지가 놓인 자리에서 자기 크기의 절반만큼 어느 방향으로 걸쳐 나갈지 정합니다(TopEnd 등 9가지). 대상의 해당 모서리로 옮기지는 않으므로, 대상 위 모서리에 붙이려면 modifier 에 같은 방향의 정렬(예: Modifier.align(Alignment.TopEnd))을 함께 지정합니다. 기본값은 TopEnd입니다.
+ * @param text String: Text·MaxCount 타입일 때 표시할 문자열입니다. MaxCount 는 이 값을 정수로 해석하며, 정수가 아니면 0 으로 표시합니다.
  * @param maxCount Int: `MaxCount` 타입의 상한값입니다. `text` 를 숫자로 해석한 값이 이 값을 넘으면 "maxCount+"로 표기합니다. 기본값은 99입니다.
  * @param outlineBorder Boolean: 겹치는 배경에서 배지를 분리하는 외곽 보더 표시 여부입니다. 기본값은 false입니다.
  * @param outlineBorderColor Color: 외곽 보더 색상입니다. 기본값은 backgroundNeutralPrimary입니다.
  * @param background Color: 배지의 배경 색상입니다. 기본값은 surfaceBrandPrimary입니다.
  * @param contentColor Color: 텍스트 색상입니다. 기본값은 static_white입니다.
  * @param textStyle TextStyle?: 텍스트 타이포그래피 오버라이드입니다. null이면 사이즈별 기본값을 사용합니다.
- * @param inset DpOffset: 부착 위치 미세 조정값입니다. 값이 커질수록 대상 안쪽으로 이동하며, 기본값은 (0, 0)입니다.
+ * @param inset DpOffset: 부착 위치 미세 조정값입니다. 값이 커질수록 대상 안쪽으로 이동하며, 기본값은 (0, 0)입니다. position 이 Center·Middle 인 축(예: TopCenter 의 x)에는 적용되지 않습니다.
  */
 @Composable
 fun WantedPushBadge(
@@ -284,17 +284,13 @@ private const val MAX_FONT_SCALE = 1.3f
 /** 1:1 정사각 비율을 강제하는 글자 수입니다. */
 private const val SINGLE_CHARACTER_LENGTH = 1
 
-/**
- * data class PushBadgeMetrics
- *
- * Push badge 의 사이즈별 치수 스펙입니다. (Figma 4.0.0 핸드오프 기준)
- *
- * @property dotSize Dp: Dot 타입의 점 지름입니다.
- * @property dotOutlineBorderSize Dp: Dot 타입에 outlineBorder 적용 시 외곽 보더 지름입니다.
- * @property textPaddingVertical Dp: Text/MaxCount 배지의 상하 여백입니다. 라인 높이와 합쳐 배지 높이를 만듭니다.
- * @property textPaddingHorizontal Dp: Text/MaxCount 배지의 좌우 여백입니다.
- * @property textOutlineBorderGap Dp: Text/MaxCount 배지에 outlineBorder 적용 시 배지와 외곽 보더 사이 간격입니다.
- */
+// Push badge 의 사이즈별 치수 스펙입니다. (Figma 4.0.0 핸드오프 기준)
+//
+// - dotSize: Dot 타입의 점 지름
+// - dotOutlineBorderSize: Dot 타입에 outlineBorder 적용 시 외곽 보더 지름
+// - textPaddingVertical: Text/MaxCount 배지의 상하 여백. 라인 높이와 합쳐 배지 높이를 만든다.
+// - textPaddingHorizontal: Text/MaxCount 배지의 좌우 여백
+// - textOutlineBorderGap: Text/MaxCount 배지에 outlineBorder 적용 시 배지와 외곽 보더 사이 간격
 private data class PushBadgeMetrics(
     val dotSize: Dp,
     val dotOutlineBorderSize: Dp,

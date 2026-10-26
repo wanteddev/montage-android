@@ -45,7 +45,11 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  *
  * 사용자는 오전/오후(AM/PM), 시(hour), 분(minute)을 각각 Wheel을 통해 선택할 수 있습니다.
  * WantedNumberPicker 및 WantedStringPicker를 활용하여 선택 UI를 제공합니다.
- * 선택 완료 후 확인 버튼을 누르면 콜백으로 선택 값이 전달되며, 취소 또는 외부 클릭 시 닫힙니다.
+ *
+ * 확인 버튼을 누르면 onSelected 로 선택 값이 전달된 뒤 onDismissRequest 가 이어서 호출되고, 취소 또는 외부 클릭 시에는 onDismissRequest 만 호출됩니다.
+ * 선택값이 default 의 허용 범위를 벗어나면 확인 버튼이 비활성화됩니다.
+ *
+ * 제약: default.enableAm=false(PM 만 허용)이면 휠에 PM 항목 하나만 노출되는데, 내부가 index==0 을 AM 으로 해석하므로 onSelected 의 isAm 이 true 로 전달됩니다. PM 만 허용할 때는 이 값을 신뢰하지 말고 호출측에서 PM 으로 취급해야 합니다.
  *
  * 사용 예시:
  * ```kotlin
@@ -63,7 +67,7 @@ import com.wanted.android.wanted.design.util.DevicePreviews
  * ```
  *
  * @param isAm Boolean: 초기 오전/오후 여부입니다. true이면 AM, false이면 PM입니다
- * @param hour Int: 초기 선택된 시(hour)입니다
+ * @param hour Int: 초기 선택된 시(hour)입니다. 12시간제 1..12 값이며, 24시간제 값(예: 14)을 넣으면 목록에 없어 목록의 첫 항목(기본 1시, isHideDisableTime 이면 enableMinHour)이 선택됩니다
  * @param minute Int: 초기 선택된 분(minute)입니다
  * @param confirm String: 확인 버튼에 표시할 텍스트입니다
  * @param cancel String: 취소 버튼에 표시할 텍스트입니다

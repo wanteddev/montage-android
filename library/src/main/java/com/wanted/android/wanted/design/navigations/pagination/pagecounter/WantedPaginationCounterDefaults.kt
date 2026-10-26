@@ -13,8 +13,8 @@ object WantedPaginationCounterDefaults {
      * enum class WantedPageCounterSize
      *
      * Page counter 의 크기를 정의하는 enum 클래스입니다.
-     * - Small: 작은 크기의 Page counter 입니다.
-     * - Normal: 일반 크기의 Page counter 입니다.
+     * - Small: label2Bold 타이포, 좌우 10dp·상하 4dp 여백, 숫자 간격 3dp 입니다.
+     * - Normal: body2Bold 타이포, 좌우 12dp·상하 6dp 여백, 숫자 간격 4dp 입니다.
      */
     enum class WantedPageCounterSize(
         val paddingHorizontal: Dp,

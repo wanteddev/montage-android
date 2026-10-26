@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
  * @param endYear Int: 휠에 표시할 종료 연도입니다.
  * @param enableMinYear Int: 선택 가능한 최소 연도입니다.
  * @param enableMaxYear Int: 선택 가능한 최대 연도입니다.
- * @param enableMinMonth Int: 선택 가능한 최소 월입니다.
- * @param enableMaxMonth Int: 선택 가능한 최대 월입니다.
+ * @param enableMinMonth Int: 선택 가능한 최소 월입니다. 모든 연도에 공통으로 적용됩니다.
+ * @param enableMaxMonth Int: 선택 가능한 최대 월입니다. 모든 연도에 공통으로 적용됩니다.
  * @param isHideDisableDate Boolean: 비활성 날짜를 숨길지 여부입니다.
  */
 data class WantedDatePickerWheelDefault(
@@ -60,9 +60,9 @@ object WantedDatePickerWheelDefaults {
      * @param startYear Int: 휠 선택기에서 표시할 시작 연도입니다. 기본값은 1900입니다.
      * @param endYear Int: 휠 선택기에서 표시할 종료 연도입니다. 기본값은 2100입니다. `startYear`보다 작으면 자동으로 `startYear`로 보정됩니다.
      * @param enableMinYear Int: 선택 가능한 최소 연도입니다. 기본값은 1900입니다.
-     * @param enableMaxYear Int: 선택 가능한 최대 연도입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다.
-     * @param enableMinMonth Int: 선택 가능한 최소 월입니다. 기본값은 1월입니다.
-     * @param enableMaxMonth Int: 선택 가능한 최대 월입니다. `enableMinMonth`보다 작으면 자동으로 `enableMinMonth`로 보정됩니다.
+     * @param enableMaxYear Int: 선택 가능한 최대 연도입니다. 기본값은 2100입니다. `enableMinYear`보다 작으면 자동으로 `enableMinYear`로 보정됩니다. isHideDisableDate 가 false 이면 endYear 이하로 지정해야 합니다 — 휠 목록(startYear..endYear)을 넘으면 첫 해만 선택할 수 있게 됩니다(예: endYear 만 2030 으로 줄이고 이 값을 기본값으로 두는 경우).
+     * @param enableMinMonth Int: 선택 가능한 최소 월입니다. 연도와 무관하게 모든 연도에 공통으로 적용됩니다. 기본값은 1월입니다.
+     * @param enableMaxMonth Int: 선택 가능한 최대 월입니다. 모든 연도에 공통으로 적용됩니다. [enableMinMonth]보다 작으면 자동으로 [enableMinMonth]로 보정됩니다. 1..12 범위로 지정해야 합니다. isHideDisableDate 가 false 이면 12 를 넘길 때 1월만 선택할 수 있게 되고, true 이면 존재하지 않는 13월 이상이 휠에 표시됩니다.
      * @param isHideDisableDate Boolean: 선택 불가능한 날짜를 숨길지 여부를 설정합니다. 기본값은 false입니다.
      * @return WantedDatePickerWheelDefault: 설정된 날짜 선택 휠 기본값 객체입니다.
      */

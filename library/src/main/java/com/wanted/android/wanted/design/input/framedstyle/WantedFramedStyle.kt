@@ -49,7 +49,7 @@ import com.wanted.android.wanted.design.util.OPACITY_43
  *
  * @param status WantedFramedStyleStatus: 프레임 상태입니다. Normal, Negative, Selected 중 하나를 선택합니다.
  * @param shape RoundedCornerShape: 모서리 둥글기 형태입니다. 기본값은 12dp입니다.
- * @param enabled Boolean: 활성화 여부입니다. false일 경우 불투명도가 낮아집니다.
+ * @param enabled Boolean: 활성화 여부입니다. false일 경우 Negative·Selected 상태의 테두리 opacity 만 43% 에서 18.5% 로 낮아지며, Normal 상태는 변화가 없습니다.
  * @param focused Boolean: 포커스 여부입니다. true일 경우 컴포넌트 외곽에 4dp Focus Ring을 그립니다.
  * @param shadow WantedShadowStyle: 적용할 섀도우 스타일입니다. 기본값은 XSmall입니다.
  * @return Modifier: 스타일이 적용된 Modifier를 반환합니다.
