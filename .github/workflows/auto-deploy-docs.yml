@@ -1,11 +1,19 @@
 name: Auto Docs Sync/Deploy on Release
 
+# 릴리스 생성 시점에는 문서 재생성 커밋이 아직 main 에 없을 수 있으므로,
+# 문서 워크플로우가 main 에 문서를 push 한 뒤에 montage-web 동기화를 실행합니다.
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: [ "Update Design System Docs on Merge" ]
+    types: [ completed ]
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   sync-and-deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     steps:
       - name: Generate GitHub App Token
