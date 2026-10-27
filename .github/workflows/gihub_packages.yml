@@ -15,6 +15,9 @@ concurrency:
 
 jobs:
   deploy:
+    # 문서 워크플로우가 main 에 push 하는 'docs:' 로 시작하는 커밋으로는 재배포하지 않습니다.
+    # (같은 버전을 다시 올리면 GitHub Packages 가 409 Conflict 로 거부합니다)
+    if: "startsWith(github.event.head_commit.message, 'docs:') == false"
     runs-on: self-hosted
     permissions:
       contents: write

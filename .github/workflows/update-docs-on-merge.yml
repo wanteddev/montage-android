@@ -20,8 +20,9 @@ jobs:
     timeout-minutes: 30
 
     # 중요: 무한 루프 방지
-    # 봇이 커밋한 메시지에 'docs:'가 포함되어 있으면 이 Job을 실행하지 않습니다.
-    if: "contains(github.event.head_commit.message, 'docs:') == false"
+    # 봇이 커밋한 메시지가 'docs:'로 시작하면 이 Job을 실행하지 않습니다.
+    # (contains 는 squash 머지 본문의 'docs:' 커밋까지 걸려 릴리스 문서 생성을 건너뛰므로 startsWith 로 제목만 봅니다)
+    if: "startsWith(github.event.head_commit.message, 'docs:') == false"
 
     steps:
       - name: Checkout code
@@ -87,8 +88,9 @@ jobs:
           git config --local user.email "deploy-bot@github.com"
 
           # 변경된 파일만 스테이징 (존재하는 경우에만)
-          [ -d "library/document/source" ] && git add library/document/source || echo "⚠️ library/document/source not found, skipping"
-          [ -d "library/document/md" ] && git add library/document/md || echo "⚠️ library/document/md not found, skipping"
+          # -f: library/.gitignore 에 /document 가 들어가도 새 컴포넌트 문서(신규 파일)가 빠지지 않게 강제로 추가합니다.
+          [ -d "library/document/source" ] && git add -f library/document/source || echo "⚠️ library/document/source not found, skipping"
+          [ -d "library/document/md" ] && git add -f library/document/md || echo "⚠️ library/document/md not found, skipping"
           [ -f "library/publish.properties" ] && git add library/publish.properties || echo "⚠️ library/publish.properties not found, skipping"
 
           # 변경사항이 있는지 확인
