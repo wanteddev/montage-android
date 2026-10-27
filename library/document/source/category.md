@@ -28,12 +28,12 @@
 * @param disableItemList List<String>: 비활성화할 항목 리스트입니다.
 * @param state LazyListState: LazyRow의 스크롤 상태를 관리하는 객체입니다.
 * @param size Size: 카테고리 항목의 크기입니다.
-* @param horizontalPadding Boolean: 좌우 여백 적용 여부입니다.
+* @param horizontalPadding Boolean: 좌우 여백(20dp) 적용 여부입니다. 좌우 그라디언트는 더 스크롤할 수 있는 방향에만 표시되며, true 이면 왼쪽 그라디언트는 표시하지 않고 오른쪽은 rightIcon 이 있을 때만 표시합니다.
 * @param isVerticalPadding Boolean: 상하 여백 적용 여부입니다.
 * @param variant Variant: 선택 항목 스타일입니다. Normal 이면 채워진 배경으로, Alternative 면 primary 테두리·옅은 배경으로 표시합니다. 선택 항목 색상은 Normal 에서만 지정할 수 있습니다.
 * @param gradientColor Color: 좌우 그라디언트 배경 색상입니다.
-* @param rightIcon (@Composable (Dp) -> Unit)?: 우측에 표시할 아이콘 슬롯입니다.
-* @param onClick (String, Boolean) -> Unit: 항목 클릭 시 호출되는 콜백입니다. 선택된 항목과 선택 여부를 전달합니다.
+* @param rightIcon (@Composable (Dp) -> Unit)?: 우측에 표시할 아이콘 슬롯입니다. 인자는 size 에 맞춘 아이콘 슬롯 크기(WantedCategoryDefaults.Size 의 rightIconSize)이며, 아이콘 크기로 그대로 쓰면 됩니다.
+* @param onClick (String, Boolean) -> Unit: 항목 클릭 시 호출되는 콜백입니다. 클릭된 항목과, 클릭 후 바뀌어야 할 선택 상태(true 면 선택됨)를 전달합니다. 선택 목록은 호출부가 이 값으로 갱신합니다.
 */
 
 /**
@@ -47,7 +47,7 @@
 * ```kotlin
 * WantedCategory {
 *     items(tagList) { tag ->
-*         WantedActionChip(
+*         WantedChip(
 *             text = tag,
 *             onClick = { /* 처리 */ }
 *         )
@@ -58,10 +58,10 @@
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
 * @param state LazyListState: LazyRow의 스크롤 상태를 관리하는 객체입니다.
 * @param size Size: 액션칩의 크기 및 여백 설정입니다.
-* @param horizontalPadding Boolean: 좌우 패딩 적용 여부입니다.
+* @param horizontalPadding Boolean: 좌우 여백(20dp) 적용 여부입니다. 좌우 그라디언트는 더 스크롤할 수 있는 방향에만 표시되며, true 이면 왼쪽 그라디언트는 표시하지 않고 오른쪽은 rightIcon 이 있을 때만 표시합니다.
 * @param isVerticalPadding Boolean: 상하 패딩 적용 여부입니다.
 * @param gradientColor Color: 좌우 그라디언트 색상입니다.
-* @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다.
+* @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다. 인자는 size 에 맞춘 아이콘 슬롯 크기(WantedCategoryDefaults.Size 의 rightIconSize)이며, 아이콘 크기로 그대로 쓰면 됩니다.
 * @param content LazyListScope.() -> Unit: 내부 아이템을 구성하는 블록입니다.
 */
 
@@ -92,7 +92,7 @@
 * @param categoryDefault WantedCategoryDefault: 크기·여백·그라디언트 색상을 담는 표시 스펙입니다. [WantedCategoryDefaults.getDefault] 로 생성합니다.
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
 * @param state LazyListState: LazyRow의 스크롤 상태를 관리하는 객체입니다.
-* @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다.
+* @param rightIcon (@Composable (Dp) -> Unit)?: 우측 아이콘 슬롯입니다. 인자는 size 에 맞춘 아이콘 슬롯 크기(WantedCategoryDefaults.Size 의 rightIconSize)이며, 아이콘 크기로 그대로 쓰면 됩니다.
 * @param content LazyListScope.() -> Unit: 내부 아이템을 구성하는 블록입니다.
 */
 
@@ -115,16 +115,16 @@
 * 카테고리 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
 */
 
-/**
+    /**
 * enum class Size
 *
 * 카테고리 항목의 크기 및 여백을 정의하는 Enum 클래스입니다.
 *
 * 카테고리 항목의 시각적 크기와 간격을 결정할 때 사용됩니다. UI 요구사항에 따라 다음의 네 가지 옵션을 제공합니다:
-* - Small: 작은 크기의 카테고리 항목입니다.
-* - Medium: 중간 크기의 카테고리 항목입니다.
-* - Large: 큰 크기의 카테고리 항목입니다.
-* - XLarge: 매우 큰 크기의 카테고리 항목입니다.
+* - Small: 칩 크기 XSmall, 상하 여백 8dp, 항목 간격 4dp, 우측 아이콘 20dp 입니다.
+* - Medium: 칩 크기 Small, 상하 여백 8dp, 항목 간격 6dp, 우측 아이콘 22dp 입니다.
+* - Large: 칩 크기 Medium, 상하 여백 10dp, 항목 간격 8dp, 우측 아이콘 24dp 입니다.
+* - XLarge: 칩 크기 Large, 상하 여백 10dp, 항목 간격 10dp, 우측 아이콘 24dp 입니다.
 *
 * @property verticalPadding Dp: 상하 여백 적용 시 LazyRow 의 상하 여백입니다.
 * @property horizontalSpacing Dp: 항목 간 가로 간격입니다.
@@ -133,7 +133,7 @@
 * @see WantedCategoryDefault
 */
 
-/**
+    /**
 * fun getDefault(...)
 *
 * WantedCategory 의 기본 표시 스펙을 생성합니다.
@@ -157,7 +157,7 @@
 * @return WantedCategoryDefault: 표시 스펙 객체를 반환합니다.
 */
 
-/**
+    /**
 * sealed class Variant
 *
 * 카테고리에서 선택된 항목의 스타일을 정의하는 sealed 클래스입니다. (Figma Category/Resource/Chip Normal · Alternative)
@@ -179,24 +179,22 @@
 * ```
 */
 
-/**
+        /**
 * data class Normal
 *
-* 선택 항목을 채워진 배경으로 표시합니다. 테두리는 없습니다.
-*
-* 지정하지 않은 색상(Color.Unspecified)은 기본 토큰으로 표시합니다.
+* 선택 항목을 채워진 배경으로 표시합니다. 테두리는 없습니다. 선택 색은 activeBackgroundColor(기본 foregroundNeutralStrong)·activeContentColor(기본 foregroundNeutralInverse)로 지정하며, 지정하지 않은 색(Color.Unspecified)은 기본 토큰으로 표시합니다.
 *
 * @param activeBackgroundColor Color: 선택된 항목의 배경 색상입니다. 기본값은 foregroundNeutralStrong 입니다.
 * @param activeContentColor Color: 선택된 항목의 텍스트·아이콘 색상입니다. 기본값은 foregroundNeutralInverse 입니다.
 */
 
-/**
+        /**
 * data object Alternative
 *
 * 선택 항목을 surfaceBrandPrimary 5% 배경 + surfaceBrandPrimary 43% 테두리로 표시합니다.
 */
 
-/**
+    /**
 * fun getChipDefault(...)
 *
 * Category 항목 Chip 스타일을 생성합니다.

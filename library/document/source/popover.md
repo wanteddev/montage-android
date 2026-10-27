@@ -22,11 +22,11 @@
 * )
 * ```
 *
-* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
-* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
-* @param state WantedSimplePopoverState?: Popover의 표시/숨김 상태를 관리하는 객체입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 기본값이 없어 반드시 전달해야 합니다.
+* @param windowInsets WindowInsets: Popover 를 위·아래 중 어디에 띄울지 판정할 때 화면에서 제외할 영역입니다. 패딩으로 적용되지는 않습니다. 이 오버로드의 기본값은 WindowInsets(0) 입니다.
+* @param state WantedSimplePopoverState?: Popover의 표시/숨김 상태를 관리하는 객체입니다. null 이면 Popover 가 표시되지 않으므로 show() 로 열려면 반드시 넘겨야 합니다.
 * @param align WantedPopoverAlign: Popover의 정렬 방식입니다.
-* @param positionTop Boolean: Popover를 위쪽에 표시할지 여부입니다.
+* @param positionTop Boolean: Popover를 위쪽에 우선 표시할지 여부입니다. 위쪽 공간이 부족하면 아래에 표시하고, false 여도 아래 공간이 부족하고 위쪽 공간이 충분하면 위쪽에 표시합니다.
 * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
 * @param screenEdgePadding Dp: Popover 가 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며, Popover 가 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
 * @param body (@Composable () -> Unit): Popover 내부 콘텐츠 슬롯입니다.
@@ -63,14 +63,14 @@
 * )
 * ```
 *
-* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 기본값이 없어 반드시 전달해야 합니다.
 * @param text String: Popover에 표시할 본문 텍스트입니다.
 * @param heading String: Popover에 표시할 헤딩 텍스트입니다. 빈 문자열인 경우 표시되지 않습니다.
-* @param state WantedSimplePopoverState?: Popover의 표시/숨김 상태를 관리하는 객체입니다.
-* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param state WantedSimplePopoverState?: Popover의 표시/숨김 상태를 관리하는 객체입니다. null 이면 Popover 가 표시되지 않으므로 show() 로 열려면 반드시 넘겨야 합니다.
+* @param windowInsets WindowInsets: Popover 를 위·아래 중 어디에 띄울지 판정할 때 화면에서 제외할 영역입니다. 패딩으로 적용되지는 않습니다. 이 오버로드의 기본값은 WindowInsets.systemBars 입니다.
 * @param align WantedPopoverAlign: Popover의 정렬 방식입니다.
 * @param closeButton Boolean: 닫기 버튼 표시 여부입니다.
-* @param positionTop Boolean: Popover를 위쪽에 표시할지 여부입니다.
+* @param positionTop Boolean: Popover를 위쪽에 우선 표시할지 여부입니다. 위쪽 공간이 부족하면 아래에 표시하고, false 여도 아래 공간이 부족하고 위쪽 공간이 충분하면 위쪽에 표시합니다.
 * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
 * @param action (@Composable RowScope.() -> Unit)?: Popover 하단에 표시할 액션 버튼 슬롯입니다.
 * @param content (@Composable () -> Unit): Popover가 연결될 기준 콘텐츠 슬롯입니다.

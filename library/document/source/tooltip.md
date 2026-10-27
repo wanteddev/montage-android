@@ -18,20 +18,20 @@
 *     align = WantedTooltipAlign.Center
 * ) {
 *     Icon(
-*         painter = painterResource(id = R.drawable.ic_help),
+*         painter = painterResource(id = R.drawable.icon_normal_circle_question),
 *         contentDescription = "도움말",
 *         modifier = Modifier.clickable { tooltipState.show() }
 *     )
 * }
 * ```
 *
-* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 기본값이 없어 반드시 전달해야 합니다.
 * @param tooltipState WantedTooltipState: Tooltip 의 표시/숨김 상태를 관리하는 객체입니다.
 * @param text String: Tooltip 에 표시할 텍스트입니다. 최대 3줄까지 표시되며, 초과 시 말줄임표로 처리됩니다.
 * @param size WantedTooltipSize: Tooltip 의 크기입니다.
 * @param align WantedTooltipAlign: 앵커 요소에 대한 Tooltip 의 정렬 방식입니다.
 * @param always Boolean: 외부 클릭으로 닫히지 않도록 할지 여부입니다.
-* @param positionTop Boolean: Tooltip 을 위쪽에 표시할지 여부입니다.
+* @param positionTop Boolean: true 면 공간과 관계없이 항상 위쪽에 표시합니다. false 면 아래쪽에 표시하되, 아래 공간이 부족하고 위쪽 공간이 충분하면 위쪽에 표시합니다.
 * @param screenEdgePadding Dp: Tooltip 이 화면 경계에서 유지할 최소 여백입니다. 좌·우에 같은 값이 적용되며, 경계를 넘칠 때만 이 값만큼 안쪽으로 밀어 넣습니다.
 * @param content (@Composable () -> Unit): Tooltip 을 트리거하는 앵커 콘텐츠 슬롯입니다.
 */
@@ -68,8 +68,8 @@
 * enum class WantedTooltipSize
 *
 * Tooltip 의 크기를 정의하는 enum 클래스입니다.
-* - Small: 작은 크기의 Tooltip 입니다.
-* - Medium:중간 크기의 Tooltip 입니다.
+* - Small: caption2Medium 타이포, 모서리 6dp, 좌우 8dp·상하 5dp 여백, 최소 폭 36dp 입니다.
+* - Medium: label1Medium 타이포, 모서리 8dp, 좌우 12dp·상하 10dp 여백, 최소 폭 64dp 입니다.
 */
 
 /**

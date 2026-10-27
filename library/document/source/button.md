@@ -2,7 +2,9 @@
 * WantedButton
 *
 * 다양한 스타일의 버튼을 생성하는 공통 Compose 함수입니다.
-* ButtonVariant에 따라 Solid, Outlined, Text 버튼을 선택하여 렌더링합니다.
+* ButtonVariant에 따라 Solid, Outlined 버튼을 렌더링합니다.
+*
+* TEXT 는 deprecated 이므로 텍스트 버튼은 WantedTextButton 을 사용합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -15,16 +17,16 @@
 * )
 * ```
 *
-* @param text String: 버튼에 표시할 텍스트입니다.
+* @param text String: 버튼에 표시할 텍스트입니다. 한 줄로 표시되며 넘치면 말줄임(…) 처리됩니다.
 * @param modifier Modifier: Modifier를 통해 버튼 외형을 조정합니다.
-* @param type ButtonType: 버튼의 타입(PRIMARY, ASSISTIVE)을 지정합니다.
-* @param size ButtonSize: 버튼의 크기(LARGE, MEDIUM, SMALL)를 지정합니다.
-* @param variant ButtonVariant: 버튼의 형태(SOLID, OUTLINED, TEXT)를 지정합니다.
+* @param type ButtonType: 버튼의 타입(PRIMARY, ASSISTIVE, NEGATIVE)을 지정합니다. NEGATIVE 는 SOLID 에만 적용되며 OUTLINED·TEXT 에서는 PRIMARY 로 그려집니다.
+* @param size ButtonSize: 버튼의 크기(LARGE, MEDIUM, SMALL, XSMALL)를 지정합니다.
+* @param variant ButtonVariant: 버튼의 형태(SOLID, OUTLINED)를 지정합니다. TEXT 는 deprecated 입니다(5.0 제거 예정).
 * @param enabled Boolean: 버튼의 활성화 여부를 지정합니다.
-* @param isLoading Boolean: 로딩 상태를 표시할지 여부입니다.
+* @param isLoading Boolean: true 이면 텍스트·아이콘을 숨기고 로딩 인디케이터를 표시하며, 클릭 콜백을 호출하지 않습니다.
 * @param leadingDrawable Int?: 버튼 왼쪽에 표시할 Drawable 리소스 ID입니다.
 * @param trailingDrawable Int?: 버튼 오른쪽에 표시할 Drawable 리소스 ID입니다.
-* @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */
 
 /**
@@ -42,13 +44,13 @@
 * )
 * ```
 *
-* @param text String: 버튼에 표시할 텍스트입니다.
+* @param text String: 버튼에 표시할 텍스트입니다. 한 줄로 표시되며 넘치면 말줄임(…) 처리됩니다.
 * @param modifier Modifier: Modifier를 통해 버튼 외형을 조정합니다.
-* @param isLoading Boolean: 로딩 상태를 표시할지 여부입니다.
+* @param isLoading Boolean: true 이면 텍스트·아이콘을 숨기고 로딩 인디케이터를 표시하며, 클릭 콜백을 호출하지 않습니다.
 * @param leadingDrawable Int?: 버튼 왼쪽에 표시할 Drawable 리소스 ID입니다.
 * @param trailingDrawable Int?: 버튼 오른쪽에 표시할 Drawable 리소스 ID입니다.
 * @param buttonDefault WantedButtonDefault: 버튼 기본 스타일 설정 객체입니다.
-* @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */
 
 /**
@@ -57,7 +59,7 @@
 * 버튼의 스타일 및 속성을 정의한 데이터 클래스입니다.
 * 각 버튼의 모든 시각적 속성과 상태를 개별적으로 설정할 수 있습니다.
 *
-* @param variant ButtonVariant: 버튼의 변형 타입입니다 (SOLID, OUTLINED, TEXT 등).
+* @param variant ButtonVariant: 버튼의 변형 타입입니다 (SOLID, OUTLINED). TEXT 는 deprecated 이므로 텍스트 버튼은 WantedTextButton 을 사용합니다.
 * @param type ButtonType: 버튼의 종류입니다 (PRIMARY, ASSISTIVE 등).
 * @param enabled Boolean: 버튼의 활성화 여부입니다.
 * @param size ButtonSize: 버튼의 크기입니다 (LARGE, MEDIUM, SMALL 등).
@@ -79,7 +81,7 @@
 * Variant, Type, Size에 따라 적절한 스타일을 자동으로 설정합니다.
 */
 
-/**
+    /**
 * fun getDefault(...)
 *
 * WantedButtonDefault의 기본 설정을 생성합니다.
