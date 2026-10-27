@@ -9,19 +9,31 @@
 * 사용 예시:
 * ```kotlin
 * var expanded by remember { mutableStateOf(false) }
+* var query by remember { mutableStateOf("") }
 *
 * ExposedDropdownMenuBox(
 *     expanded = expanded,
 *     onExpandedChange = { expanded = it }
 * ) {
+*     // 드롭다운은 menuAnchor 가 붙은 요소를 기준으로 열린다. 앵커가 없으면 펼칠 수단이 없다.
+*     WantedSearchField(
+*         modifier = Modifier.menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable, enabled = true),
+*         text = query,
+*         placeholder = "검색어를 입력해 주세요",
+*         onValueChange = {
+*             query = it
+*             expanded = it.isNotEmpty()
+*         }
+*     )
+*
 *     WantedAutoComplete(
 *         expanded = expanded,
-*         onExpandedChange = { expanded = it },
+*         onDismissRequest = { expanded = it },
 *         sectionCount = 2,
 *         sectionTitle = { section -> "섹션 $section" },
 *         sectionItemCount = { section -> 3 },
 *         sectionItem = { section, index ->
-*             Text("아이템 $index")
+*             Text("아이템 $section-$index")
 *         }
 *     )
 * }
@@ -29,7 +41,7 @@
 *
 * @receiver ExposedDropdownMenuBoxScope: 드롭다운 메뉴 범위 내에서 호출되어야 합니다.
 * @param expanded Boolean: 드롭다운 확장 여부입니다.
-* @param onDismissRequest (Boolean) -> Unit: 확장 상태가 변경될 때 호출되는 콜백입니다.
+* @param onDismissRequest (Boolean) -> Unit: 메뉴 바깥 터치·뒤로가기 등 닫힘 요청이 있을 때 false 를 인자로 호출되는 콜백입니다. true 로는 호출되지 않으므로 열기는 ExposedDropdownMenuBox 의 onExpandedChange 가 담당합니다.
 * @param sectionCount Int: 표시할 섹션의 총 개수입니다.
 * @param sectionItemCount (Int) -> Int: 각 섹션별 아이템 개수를 반환하는 함수입니다.
 * @param sectionItem (@Composable (Int, Int) -> Unit): 섹션별 아이템 컴포넌트입니다. 첫 번째 파라미터는 섹션 인덱스, 두 번째는 아이템 인덱스입니다.
@@ -37,6 +49,7 @@
 * @param containerColor Color: 드롭다운 배경 색상입니다.
 * @param sectionTitleHorizontalPadding Dp: 섹션 타이틀과 항목의 좌우 패딩입니다. 항목(sectionItem)과 직접입력 슬롯의 좌우 여백은 리스트가 주므로, 안에 놓는 ListCell 은 variant = Inset(기본값)으로 둡니다.
 * @param sectionTitle ((Int) -> String)?: 섹션별 타이틀 텍스트를 반환하는 함수입니다.
+* @param anchorPadding Dp: 드롭다운 메뉴 Modifier 에 위·아래로 적용하는 세로(vertical) 패딩입니다. 기본값은 0dp 입니다.
 * @param topDirectInput (@Composable () -> Unit)?: 드롭다운 상단 고정 영역 콘텐츠입니다.
 * @param bottomDirectInput (@Composable () -> Unit)?: 드롭다운 하단 영역 콘텐츠입니다.
 */

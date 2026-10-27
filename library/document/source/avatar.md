@@ -9,8 +9,8 @@
 * ```kotlin
 * WantedAvatar(
 *     modifier = Modifier,
-*     model = R.drawable.ic_avatar_placeholder_person,
-*     placeHolder = R.drawable.ic_avatar_placeholder_person,
+*     model = R.drawable.icon_normal_person_fill,
+*     placeHolder = R.drawable.icon_normal_person_fill,
 *     size = WantedAvatarSize.Medium,
 *     type = WantedAvatarType.Person,
 *     isDrawableRes = true,
@@ -19,19 +19,19 @@
 * )
 * ```
 *
-* @param type WantedAvatarType: 아바타의 유형(Person, Company, Academy)을 지정합니다.
+* @param type WantedAvatarType: 아바타의 유형(Person, Company, Academy)을 지정합니다. Person 은 원형이고 Company·Academy 는 size 의 코너 반경을 가진 둥근 사각형입니다.
 * @param modifier Modifier: 아바타의 크기, 외형, 배치를 조정하는 Modifier입니다.
-* @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. 기본값은 Small입니다.
+* @param size WantedAvatarSize: 아바타의 크기와 코너 반경을 결정합니다. Person 은 항상 원형이라 코너 반경이 적용되지 않습니다. 기본값은 Small입니다.
 * @param model Any?: 표시할 이미지 모델입니다 (URL 또는 Drawable ID).
-* @param placeHolder Int?: 이미지가 없거나 로딩 실패 시 표시할 이미지 리소스 ID입니다. null이면 type별 기본 placeholder(배경 + 아이콘 실루엣이 뚫린 회색 면 + 축소한 28% 흰 글리프)가 대신 노출됩니다.
+* @param placeHolder Int?: 이미지가 없을 때와 로딩 중·로딩 실패 시 표시할 이미지 리소스 ID입니다. 지정하면 그 리소스를 아바타 전체 크기에 원본 색 그대로 그립니다. null이면 type별 기본 placeholder(backgroundNeutralPrimary 배경 위에 아이콘 실루엣이 뚫린 surfaceNeutralStrong 면, 그 위에 아바타 한 변의 2/3 크기로 줄인 28% 투명도 흰색 글리프)가 대신 노출됩니다. model 이 Drawable 리소스 ID(isDrawableRes = true)이면 placeholder 를 쓰지 않습니다.
 * @param isDrawableRes Boolean: model이 Drawable 리소스 ID일 경우 true로 설정합니다.
 * @param isGroup Boolean: 그룹 아바타 스타일을 적용할지 여부를 설정합니다.
 * @param pushBadge Boolean: 아바타에 푸시 알림 뱃지를 표시할지 여부를 설정합니다.
-* @param borderColor Color: 아바타 외곽선의 색상입니다. 기본값은 배경색입니다.
-* @param alignment Alignment: 이미지의 정렬 방식입니다.
-* @param contentScale ContentScale: 이미지의 크기 조정 방식입니다.
+* @param borderColor Color: 그룹 겹침 분리 테두리(1.5dp) 색상입니다. isGroup = true 일 때만 그려지며, 기본값은 backgroundNeutralPrimary 입니다.
+* @param alignment Alignment: 이미지의 정렬 방식입니다. URL 등 Glide 로 불러오는 이미지에만 적용되고, Drawable 리소스(isDrawableRes = true)에는 적용되지 않습니다.
+* @param contentScale ContentScale: 이미지의 크기 조정 방식입니다. URL 등 Glide 로 불러오는 이미지에만 적용되고, Drawable 리소스(isDrawableRes = true)에는 적용되지 않습니다.
 * @param contentDescription String?: 접근성 콘텐츠 설명입니다. 기본값은 null입니다.
-* @param onClick (() -> Unit)?: 아바타 클릭 시 호출될 콜백 함수입니다.
+* @param onClick (() -> Unit)?: 아바타 클릭 시 호출될 콜백 함수입니다. 넘기면 클릭·리플 영역이 아바타보다 상하좌우 8dp 넓게 잡힙니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 *
 * @see WantedAvatarType
 * @see WantedAvatarSize
@@ -47,7 +47,7 @@
 * @property MAX_GROUP_VISIBLE_COUNT Int: WantedAvatarGroup이 한 번에 표시하는 최대 아바타 수입니다. 초과 인원은 렌더링하지 않으므로 호출부가 `trailingContent`로 처리합니다(예: "외 N명").
 */
 
-/**
+    /**
 * sealed class WantedAvatarSize
 *
 * Avatar의 크기 및 모서리 반경 정보를 포함하는 sealed 클래스입니다.
@@ -57,44 +57,44 @@
 * @see WantedAvatar
 */
 
-/**
+        /**
 * data object XSmall
 *
 * 24dp 크기, 8dp 모서리 반경의 가장 작은 아바타 크기입니다.
 */
 
-/**
+        /**
 * data object Small
 *
 * 32dp 크기, 10dp 모서리 반경의 작은 아바타 크기입니다.
 */
 
-/**
+        /**
 * data object Medium
 *
 * 40dp 크기, 12dp 모서리 반경의 중간 아바타 크기입니다.
 */
 
-/**
+        /**
 * data object Large
 *
 * 48dp 크기, 14dp 모서리 반경의 큰 아바타 크기입니다.
 */
 
-/**
+        /**
 * data object XLarge
 *
 * 56dp 크기, 16dp 모서리 반경의 가장 큰 아바타 크기입니다.
 */
 
-/**
+        /**
 * data class Custom
 *
 * 크기, 모서리 반경, 뱃지 크기를 커스텀 할 수 있는 아바타 크기입니다.
 * cornerRadius를 지정하지 않으면 `ceil((size × 0.25) / 2) × 2 + 2` 공식으로 계산합니다.
 */
 
-/**
+    /**
 * enum class WantedAvatarType
 *
 * 아바타의 유형을 정의하는 enum 클래스입니다.

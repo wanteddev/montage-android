@@ -8,17 +8,12 @@
 *
 * 사용 예시:
 * ```kotlin
-* var isRefreshing by remember { mutableStateOf(false) }
-*
+* // ViewModel 이 새로고침을 시작하면 isRefreshing 을 true 로, 끝나면 false 로 바꾼다.
 * WantedPullToRefreshBox(
-*     isRefreshing = isRefreshing,
-*     onRefresh = {
-*         isRefreshing = true
-*         // 새로고침 처리
-*         isRefreshing = false
-*     }
+*     isRefreshing = uiState.isRefreshing,
+*     onRefresh = { viewModel.refresh() }
 * ) {
-*     LazyColumn {
+*     LazyColumn(modifier = Modifier.fillMaxSize()) {
 *         items(list) { item ->
 *             Text(text = item)
 *         }
@@ -26,9 +21,9 @@
 * }
 * ```
 *
-* @param isRefreshing Boolean: 현재 새로고침 중인지 여부입니다.
-* @param onRefresh () -> Unit: 사용자가 당겨서 새로고침을 요청했을 때 호출되는 콜백입니다.
+* @param isRefreshing Boolean: 새로고침 중인지 여부입니다. 당김이 끝나면 컴포넌트가 내부적으로 새로고침 상태가 되고, 이 값이 바뀔 때만 해제되므로 onRefresh 에서 true 로 올렸다가 작업 완료 후 false 로 내려야 합니다. 같은 프레임에서 true·false 를 연달아 쓰면 인디케이터가 계속 남습니다.
+* @param onRefresh () -> Unit: 당긴 거리가 PullToRefreshState 임계값의 110% 를 넘은 상태에서 손을 떼면 호출되는 콜백입니다. 확대 애니메이션(약 0.5초)이 끝난 뒤에 호출됩니다.
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
 * @param state PullToRefreshState: Pull-to-Refresh 상태를 관리하는 객체입니다.
-* @param content @Composable BoxScope.() -> Unit: 새로고침 박스 내부에 배치할 콘텐츠입니다.
+* @param content @Composable BoxScope.() -> Unit: 새로고침 박스 내부에 배치할 콘텐츠입니다. 상단 가운데(TopCenter)에 놓인 내용 크기의 Box 안에 그려지므로 BoxScope 정렬도 그 Box 기준입니다. 화면을 채우거나 가운데 정렬하려면 콘텐츠에 fillMaxSize 를 줍니다.
 */

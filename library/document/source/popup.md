@@ -24,8 +24,8 @@
 * @param properties DialogProperties: Dialog 속성입니다.
 * @param popupDefault WantedPopupDefault: Popup 의 모양·여백 설정입니다.
 * @param title String?: Navigation 의 제목입니다. null 이면 제목 없이 Close Button 만 노출합니다. Close Button 은 [onDismissRequest] 로 Popup 을 닫습니다.
-* @param positive String?: Main Action 의 텍스트입니다.
-* @param onClickPositive (() -> Unit)?: Main Action 클릭 시 호출되는 콜백입니다.
+* @param positive String?: Main Action 의 텍스트입니다. onClickPositive 를 함께 넘겨야 Main Action 이 표시됩니다.
+* @param onClickPositive (() -> Unit)?: Main Action 클릭 시 호출되는 콜백입니다. null 이면 Main Action 을 표시하지 않습니다.
 * @param content (@Composable BoxScope.() -> Unit): 본문 콘텐츠 슬롯입니다.
 */
 
@@ -42,7 +42,7 @@
 *
 * if (showModal) {
 *     WantedPopup(
-*         topBar = { WantedDialogTopAppBar(title = "제목") },
+*         topBar = { WantedDialogTopAppBar(title = "제목", variant = WantedDialogTopAppBarContract.Variant.Emphasized) },
 *         bottomBar = {
 *             Button(onClick = { showModal = false }) {
 *                 Text("닫기")
@@ -77,7 +77,7 @@
 *
 * if (showModal) {
 *     WantedPopup(
-*         topBar = { WantedDialogTopAppBar(title = "제목") },
+*         topBar = { WantedDialogTopAppBar(title = "제목", variant = WantedDialogTopAppBarContract.Variant.Emphasized) },
 *         onDismissRequest = { showModal = false },
 *         lazyContent = {
 *             items(20) { index ->
@@ -104,23 +104,23 @@
 * Popup 컴포넌트에서 사용하는 설정값을 정의하는 객체입니다.
 */
 
-/**
+    /**
 * sealed class Resize
 *
 * Popup 의 높이 결정 방식을 정의하는 sealed 클래스입니다.
 * Hug, Fixed 두 가지를 제공합니다.
 */
 
-/**
+        /**
 * data object Hug
 *
-* 콘텐츠 높이에 맞춰 Popup 높이가 결정됩니다. 기본값입니다.
+* 콘텐츠 높이에 맞춰 Popup 높이가 결정됩니다. 기본값입니다. 최대 높이는 화면 높이에서 상단 inset 과 하단 여백을 뺀 값이며, 760dp 를 넘지 않습니다.
 */
 
-/**
+        /**
 * data class Fixed
 *
-* 지정한 높이로 Popup 높이가 고정됩니다.
+* height 로 지정한 높이로 Popup 높이가 고정됩니다. 최대 760dp 로 제한됩니다.
 *
 * @property height Dp: Popup 의 높이입니다.
 */
@@ -134,7 +134,6 @@
 *
 * Popup 의 여백은 디자인 4.0.0 기준으로 ModalSize 와 무관하게 통일되어 있고,
 * 모바일 Popup 은 Medium 한 가지만 사용하므로 [width] 도 하나로 고정입니다.
-* (BottomSheet 는 계속 ModalSize 의 padding 값을 사용하므로 그쪽 값은 건드리지 않습니다.)
 *
 * @property shape RoundedCornerShape: Popup 의 모서리 둥글기입니다.
 * @property width Dp: Popup 의 최대 너비입니다. 실제 너비는 Dialog 창 너비로 한 번 더 제한되므로, 폰에서는 창 너비를 그대로 따르고 큰 화면에서만 이 값으로 잘립니다.
@@ -157,7 +156,7 @@
 * @see WantedPopupDefault
 */
 
-/**
+    /**
 * fun getDefault(...)
 *
 * Popup 의 기본 설정을 생성합니다.
@@ -195,65 +194,65 @@
 *
 */
 
-/**
+    /**
 * sealed class ModalType
 *
 * Modal의 형태를 정의하는 sealed 클래스입니다.
 * Flexible, FixedWrapContent, Fixed, FixedFullScreen, FixedRatio 형태를 제공합니다.
 */
 
-/**
+        /**
 * data object Flexible
 *
-* 콘텐츠 크기에 따라 자동으로 조정되는 유동형 Modal 입니다.
+* 콘텐츠 크기에 따라 자동으로 조정되는 유동형 Modal 입니다. 항상 시스템 BottomSheet 로 그려지고 닫을 수 있습니다. 부분 펼침(중간 높이)을 허용하지만, 콘텐츠가 충분히 높을 때만 그 상태가 생기며 짧은 콘텐츠는 바로 펼쳐진(Expanded) 상태로 표시됩니다.
 */
 
-/**
+        /**
 * data class FixedWrapContent
 *
-* 콘텐츠 높이에 맞게 조정되는 고정형 Modal 입니다.
+* 콘텐츠 높이에 맞게 조정되는 고정형 Modal 입니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+        /**
 * data class Fixed
 *
-* 특정 높이를 갖는 고정형 Modal 입니다.
+* height 로 지정한 높이를 갖는 고정형 Modal 입니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
 * @property height Dp: Modal 의 높이입니다.
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+        /**
 * data class FixedFullScreen
 *
-* 화면 전체를 덮는 고정형 Modal 입니다.
+* 화면 전체를 덮는 고정형 Modal 입니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+        /**
 * data class FixedRatio
 *
-* 화면 비율을 기준으로 높이가 설정되는 고정형 Modal입니다.
+* 화면 높이 × ratio(0.0 ~ 1.0)로 높이가 정해지는 고정형 Modal입니다. 다만 화면 높이에서 상단 inset·10dp·드래그 핸들(19dp)을 뺀 값을 넘지 않으므로 ratio 가 1f 여도 화면 전체 높이가 되지 않습니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
 * @property ratio Float: 0.0 ~ 1.0 사이의 높이 비율입니다.
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+    /**
 * enum class ModalSize
 *
 * Modal의 여백 및 패딩을 정의하는 enum 클래스입니다.
 *
-* - Small: 작은 크기의 Modal 입니다.
-* - Medium: 중간 크기의 Modal 입니다.
-* - Large: 큰 크기의 Modal 입니다.
-* - XLarge: 매우 큰 크기의 Modal 입니다.
+* - Small: (Deprecated) 콘텐츠 여백 20dp, 하단 영역 여백 16dp 입니다. Medium 을 사용합니다.
+* - Medium: 콘텐츠 여백 20dp, 하단 영역 여백 20dp, 제목 상하 여백 4dp 입니다.
+* - Large: 콘텐츠 여백 24dp, 하단 영역 여백 24dp, 제목 상하 여백 4dp 입니다.
+* - XLarge: 콘텐츠 여백 32dp, 하단 영역 여백 32dp, 제목 상하 8dp·좌우 4dp 여백입니다.
 * - Custom: 커스텀 크기의 Modal 입니다. 모든 패딩이 0dp로 설정되어 사용자가 직접 정의 할 수 있습니다.
 */

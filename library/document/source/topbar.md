@@ -3,23 +3,25 @@
 *
 * 타이틀을 가운데 정렬하는 TopAppBar 컴포넌트입니다.
 *
-* 다양한 Variant를 지원하며, 스크롤 상태에 따라 배경 표시가 전환됩니다.
+* 다양한 Variant를 지원하며, background = false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 배경을 칠합니다. 기본값 background = true 에서는 항상 배경을 칠합니다.
+*
+* variant 가 Display 이면 가운데 정렬 없이 Display 레이아웃(왼쪽 정렬)으로 그립니다.
 *
 * 사용 예시:
 * ```kotlin
 * WantedCenterTopAppBar(
-*     title = { Text(...) },
-*     navigationIcon = { Icon(...) },
-*     actions = { IconButton(...) }
+*     title = { Text(text = "제목") },
+*     navigationIcon = { Icon(painter = painterResource(R.drawable.icon_normal_arrow_left), contentDescription = null) },
+*     actions = { IconButton(onClick = { /* 알림 */ }) { Icon(painter = painterResource(R.drawable.icon_normal_bell), contentDescription = "알림") } }
 * )
 * ```
 *
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
 * @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
 * @param backgroundColor Color: 앱바 배경 색상입니다.
-* @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+* @param background Boolean: 앱바 배경을 표시할지 여부입니다. true(기본값)이면 항상 배경을 칠하고, false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 칠합니다.
 * @param variant Variant: 앱바 형태입니다.
-* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
 * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
 * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
@@ -30,14 +32,14 @@
 *
 * 기본 TopAppBar 컴포넌트입니다.
 *
-* 다양한 Variant를 지원하며, 스크롤 상태에 따라 하단 Divider가 표시됩니다.
+* 다양한 Variant를 지원하며, background = false 이면 scrollableState 가 처음 위치에서 벗어나 스크롤된 동안(canScrollBackward)에만 배경을 칠합니다. 하단 Divider 는 표시하지 않습니다.
 *
 * 사용 예시:
 * ```kotlin
 * WantedTopAppBar(
-*     title = { Text(...) },
-*     navigationIcon = { Icon(...) },
-*     actions = { IconButton(...) }
+*     title = { Text(text = "제목") },
+*     navigationIcon = { Icon(painter = painterResource(R.drawable.icon_normal_arrow_left), contentDescription = null) },
+*     actions = { IconButton(onClick = { /* 알림 */ }) { Icon(painter = painterResource(R.drawable.icon_normal_bell), contentDescription = "알림") } }
 * )
 * ```
 *
@@ -64,8 +66,8 @@
 * ```kotlin
 * WantedTopAppBar(
 *     title = "타이틀",
-*     navigationIcon = { Icon(...) },
-*     actions = { IconButton(...) }
+*     navigationIcon = { Icon(painter = painterResource(R.drawable.icon_normal_arrow_left), contentDescription = null) },
+*     actions = { IconButton(onClick = { /* 알림 */ }) { Icon(painter = painterResource(R.drawable.icon_normal_bell), contentDescription = "알림") } }
 * )
 * ```
 *
@@ -109,6 +111,47 @@
 */
 
 /**
+* fun WantedSearchTopAppBar(...)
+*
+* TextFieldValue 로 검색어와 커서·선택 상태를 함께 제어하는 검색 TopAppBar 컴포넌트입니다.
+*
+* 좌측 뒤로가기 버튼과 검색 입력 필드를 제공하며, String 오버로드와 달리 size 의 기본값이 Large 입니다.
+*
+* 사용 예시:
+* ```kotlin
+* var value by remember { mutableStateOf(TextFieldValue("")) }
+*
+* WantedSearchTopAppBar(
+*     value = value,
+*     placeholder = "검색어를 입력하세요",
+*     onValueChange = { value = it },
+*     onClickBack = { navController.popBackStack() }
+* )
+* ```
+*
+* @param value TextFieldValue: 검색 필드에 표시될 텍스트와 선택 상태입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param windowInsets WindowInsets: 적용할 WindowInsets입니다.
+* @param backgroundColor Color: 앱바 배경 색상입니다.
+* @param background Boolean: 앱바 배경을 표시할지 여부입니다.
+* @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
+* @param placeholder String: 검색 필드의 플레이스홀더 텍스트입니다.
+* @param enabled Boolean: 검색 필드 활성화 여부입니다.
+* @param size Size: 검색 필드의 크기입니다. 기본값은 Large 입니다.
+* @param maxWordCount Int: 최대 입력 가능한 글자 수입니다.
+* @param enabledOverflowText Boolean: 텍스트 오버플로우 허용 여부입니다.
+* @param interactionSource MutableInteractionSource?: 사용자 인터랙션 상태를 추적하는 객체입니다.
+* @param keyboardOptions KeyboardOptions: 키보드 옵션입니다.
+* @param keyboardActions KeyboardActions: 키보드 액션 핸들러입니다.
+* @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
+* @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 foregroundBrandPrimary 색상을 사용합니다.
+* @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
+* @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
+* @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.
+* @param onValueChange (TextFieldValue) -> Unit: 검색어 변경 시 호출되는 콜백입니다.
+*/
+
+/**
 * WantedSearchTopAppBar
 *
 * 검색 기능을 제공하는 TopAppBar 컴포넌트입니다.
@@ -124,7 +167,7 @@
 *     onClickBack = { navController.popBackStack() },
 *     actions = {
 *         IconButton(onClick = { /* 검색 */ }) {
-*             Icon(...)
+*             Icon(painter = painterResource(R.drawable.icon_normal_search), contentDescription = "검색")
 *         }
 *     }
 * )
@@ -145,7 +188,7 @@
 * @param keyboardOptions KeyboardOptions: 키보드 옵션입니다.
 * @param keyboardActions KeyboardActions: 키보드 액션 핸들러입니다.
 * @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
-* @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 primary 색상을 사용합니다.
+* @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 foregroundBrandPrimary 색상을 사용합니다.
 * @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 * @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.
@@ -158,14 +201,14 @@
 * TopAppBar 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
 */
 
-/**
+    /**
 * enum class Variant
 *
 * TopAppBar의 형태를 정의하는 enum 클래스입니다.
 * - Normal: 일반 형태입니다.
-* - Display: 디스플레이 형태입니다.
-* - Floating: 플로팅 형태입니다.
-* - Search: 검색 형태입니다.
+* - Display: 제목을 title3Bold 로 크게, 왼쪽 정렬로 표시합니다(가운데 정렬 설정·WantedCenterTopAppBar 에서도 왼쪽 정렬). navigationIcon 이 함께 있으면 제목은 아이콘 줄 아래 두 번째 줄에 놓입니다.
+* - Floating: 레이아웃은 Normal 과 같고, background = true 이거나 스크롤된 동안 배경을 backgroundColor 88% → 투명 세로 그라디언트로 칠하고 하단 16dp 여백을 둡니다.
+* - Search: 레이아웃은 Normal 과 같습니다. 검색 필드는 만들지 않으므로 WantedSearchTopAppBar 를 쓰세요.
 */
 
 /**
@@ -191,5 +234,5 @@
 * @param badgeAlignment Alignment: 배지 정렬 위치입니다.
 * @param badge (@Composable () -> Unit)?: 배지 콘텐츠입니다.
 * @param interactionEffect IconButtonInteractionEffect: 인터랙션 피드백 방식입니다. 기본값 [IconButtonInteractionEffect.Dim]
-* @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */

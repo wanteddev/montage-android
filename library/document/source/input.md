@@ -1,10 +1,10 @@
 /**
 * WantedInput
 *
-* Checkbox, Radio, Checkmark 스타일을 포함하는 커스텀 입력 행 컴포넌트입니다.
+* Checkbox, Radio, Checkmark, Switch 스타일을 지원하는 입력 행 컴포넌트입니다.
 *
 * label, size, variant, checkBoxState 등을 조합하여 텍스트 라벨과 Checkbox를 포함한 입력 항목을 구성합니다.
-* 내부적으로 WantedCheckBox 및 WantedInputLayout을 활용하여 입력 항목 UI를 생성합니다.
+* 내부적으로 WantedCheckBox 를 활용하여 입력 항목 UI를 생성합니다.
 *
 * 사용 예시:
 * ```kotlin
@@ -21,7 +21,7 @@
 * @param label String: 항목에 표시될 텍스트입니다. 비어 있으면 Checkbox 영역만 차지합니다(라벨 앞 간격 없음).
 * @param variant WantedInputVariant: CheckBox, Radio, CheckMark, Switch 중 하나의 타입을 지정합니다.
 * @param size WantedInputSize: Medium 또는 Small 사이즈를 지정합니다.
-* @param checkBoxState CheckBoxState: 체크 상태 (Unchecked, Checked, Indeterminate)를 지정합니다.
+* @param checkBoxState CheckBoxState: 체크 상태 (Unchecked, Checked, Indeterminate)를 지정합니다. Indeterminate 는 CheckBox variant 에서만 가로선으로 보이고, 다른 variant 에서는 Checked 와 같게 그려집니다.
 * @param bold Boolean: true일 경우 텍스트를 굵게 표시합니다.
 * @param enabled Boolean: 항목의 활성화 여부를 설정합니다.
 * @param tight Boolean: true일 경우 컴팩트한 스타일로 표시됩니다.
@@ -38,7 +38,7 @@
 * 입력 컴포넌트의 사이즈와 타입을 명확히 지정할 수 있도록 enum 클래스를 포함합니다.
 */
 
-/**
+    /**
 * enum class WantedInputSize
 *
 * 입력 필드의 높이를 정의하는 enum 클래스입니다.
@@ -48,7 +48,7 @@
 * - Small: 좁은 공간에서 사용할 수 있는 컴팩트한 높이의 입력 항목입니다.
 */
 
-/**
+    /**
 * enum class WantedInputVariant
 *
 * 입력 타입을 정의하는 enum 클래스입니다.
@@ -61,13 +61,43 @@
 */
 
 /**
+* fun WantedCheckBox(...)
+*
+* style 하나로 체크박스·둥근 체크박스·체크 마크·라디오·스위치 다섯 가지 선택 컨트롤을 그리는 컴포넌트입니다.
+*
+* 상태를 직접 보관하지 않으므로, onCheckedChange 로 받은 값으로 checkState 를 갱신해야 합니다.
+*
+* 사용 예시:
+* ```kotlin
+* var checkState by remember { mutableStateOf(CheckBoxState.Unchecked) }
+*
+* WantedCheckBox(
+*     checkState = checkState,
+*     style = CheckBoxStyle.CheckBox,
+*     onCheckedChange = { checked ->
+*         checkState = if (checked) CheckBoxState.Checked else CheckBoxState.Unchecked
+*     }
+* )
+* ```
+*
+* @param onCheckedChange (Boolean) -> Unit: 탭했을 때 바뀌어야 할 선택 여부를 전달합니다. 현재 checkState 가 Unchecked 이면 true, Checked·Indeterminate 이면 false 가 전달됩니다.
+* @param modifier Modifier: 컨트롤 바깥(터치 영역 포함)에 적용할 Modifier입니다.
+* @param size CheckBoxSize: 컨트롤 크기입니다. CheckBox·RoundCheckBox·Check·Radio 는 Normal 24dp, Small 20dp 이고, Switch 는 Normal 폭 52dp, Small 폭 39dp 입니다.
+* @param style CheckBoxStyle: 그릴 컨트롤 종류입니다. (CheckBox, RoundCheckBox, Check, Radio, Switch)
+* @param checkState CheckBoxState: 선택 상태입니다. Indeterminate 는 CheckBox·RoundCheckBox 에서만 가로선으로 표시되고, Check·Radio·Switch 에서는 Checked 와 같게 그려집니다.
+* @param tight Boolean: true 이면 보이는 컨트롤 크기는 그대로 두고 주변 여백만 줄여 슬롯 폭을 좁힙니다(Normal 24→20dp, Small 20→16dp). 대신 터치 영역의 좌우 확장은 4dp 에서 6dp 로 넓어집니다. Switch 에는 적용되지 않습니다.
+* @param enabled Boolean: false 이면 비활성 색으로 표시하고 탭에 반응하지 않습니다.
+* @param interactionSource MutableInteractionSource: 눌림 상태를 관찰·공유할 때 전달합니다.
+*/
+
+/**
 * enum class CheckBoxSize
 *
 * 체크박스의 크기를 정의하는 enum 클래스입니다.
 *
 * 컴포넌트의 시각적 일관성을 유지하기 위해 두 가지 사이즈를 제공합니다:
-* - Normal: 일반 사이즈 (24dp)입니다.
-* - Small: 소형 사이즈 (20dp)입니다.
+* - Normal: 일반 사이즈 (24dp)입니다. Switch 스타일은 폭 52dp 입니다.
+* - Small: 소형 사이즈 (20dp)입니다. Switch 스타일은 폭 39dp 입니다.
 */
 
 /**
@@ -91,5 +121,5 @@
 * 세 가지 상태를 통해 선택 여부 또는 그룹 선택의 중간 상태를 표현할 수 있습니다:
 * - Unchecked: 선택되지 않았습니다.
 * - Checked: 선택되었습니다.
-* - Indeterminate: 일부만 선택된 상태 등 중간 상태입니다.
+* - Indeterminate: 일부만 선택된 상태 등 중간 상태입니다. CheckBox·RoundCheckBox 스타일에서만 가로선으로 표시되고, Check·Radio·Switch 에서는 Checked 와 같게 그려집니다. 탭하면 false 가 전달됩니다.
 */

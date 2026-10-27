@@ -1,4 +1,27 @@
 /**
+* fun rememberBottomSheetScrollPolicy(...)
+*
+* Bottom Sheet 안의 LazyColumn 스크롤 잔여값이 시트로 전달되어 튕기는 현상을 막는 NestedScrollConnection 정책을 만듭니다.
+*
+* 내용이 위쪽으로 더 스크롤될 수 없을 때 남는 위 방향(음수) 잔여 스크롤·플링만 소비하고, 아래 방향은 시트로 넘깁니다. 결과의 connection 을 LazyColumn 의 부모에 Modifier.nestedScroll 로 붙입니다.
+*
+* 사용 예시:
+* ```kotlin
+* val listState = rememberLazyListState()
+* val scrollPolicy = rememberBottomSheetScrollPolicy(listState)
+*
+* Column(modifier = Modifier.nestedScroll(scrollPolicy.connection)) {
+*     LazyColumn(state = listState) {
+*         // items(...)
+*     }
+* }
+* ```
+*
+* @param listState LazyListState: 정책을 연결할 LazyColumn 의 상태입니다. 값이 바뀔 때 정책을 새로 만드는 remember 키로만 쓰이며 스크롤 판정에는 사용되지 않습니다.
+* @return BottomSheetScrollPolicy: nestedScroll 에 연결할 connection 을 담은 정책입니다.
+*/
+
+/**
 * data class WantedBottomSheetDefault
 *
 * Bottom Sheet / Full 의 모양과 여백을 정의하는 데이터 클래스입니다.
@@ -7,7 +30,7 @@
 *
 * 여백은 디자인 4.0.0 기준으로 ModalSize 와 무관하게 통일되어 있고, Full 만 별도 값을 사용합니다.
 *
-* @property shape RoundedCornerShape: Bottom Sheet 의 모서리 둥글기입니다. Full 은 화면 전체를 덮으므로 0dp 입니다.
+* @property shape RoundedCornerShape: Bottom Sheet 의 모서리 둥글기입니다. getDefault·getFullDefault 모두 위쪽 두 모서리 32dp 가 기본값입니다.
 * @property navigationPadding Dp: Navigation 영역에 Bottom Sheet 가 추가로 얹는 여백입니다. 여백 자체는 Navigation 컴포넌트가 소유하므로 기본값은 0dp 입니다.
 * @property contentHorizontalPadding Dp: Content 영역의 좌우 여백입니다.
 * @property contentVerticalPadding Dp: Content 영역의 상하 여백입니다.
@@ -18,19 +41,19 @@
 */
 
 /**
-* object WantedModalDefaults
+* object WantedBottomSheetDefaults
 *
-* Bottom sheet 상단에 표시되는 드래그 핸들 컴포넌트입니다.
+* Bottom Sheet 의 드래그 핸들과 모양·여백 기본값(getDefault·getFullDefault·getWithoutContentPadding)을 제공하는 객체입니다.
 */
 
-/**
+    /**
 * fun DragHandle(...)
 *
 * BottomSheet 상단에 표시되는 드래그 핸들 컴포넌트입니다.
 *
 * 사용 예시:
 * ```kotlin
-* WantedModalDefaults.DragHandle()
+* WantedBottomSheetDefaults.DragHandle()
 * ```
 *
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
@@ -38,7 +61,7 @@
 * @param shape Shape: 핸들의 모양입니다.
 */
 
-/**
+    /**
 * fun getDefault(...)
 *
 * Bottom Sheet 의 기본 설정을 생성합니다. (디자인 4.0.0)
@@ -67,7 +90,7 @@
 * @see WantedBottomSheetDefault
 */
 
-/**
+    /**
 * fun getFullDefault(...)
 *
 * Full(전체화면) 의 기본 설정을 생성합니다. 여백은 Bottom Sheet 와 다른 값을 쓰고, 모서리는 Bottom Sheet 와 같은 Sheet Radius(32) 를 씁니다. (디자인 4.0.0)
@@ -94,7 +117,7 @@
 * @see WantedBottomSheetDefault
 */
 
-/**
+    /**
 * fun getWithoutContentPadding()
 *
 * Content 여백만 0 으로 지운 설정을 생성합니다. Navigation · Action Area 여백은 스펙 값을 그대로 씁니다.
@@ -148,7 +171,7 @@
 *
 * @param isShow Boolean: 모달 표시 여부입니다.
 * @param onDismissRequest () -> Unit: 모달이 닫힐 때 호출되는 콜백입니다.
-* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 시스템 Bottom Sheet(type.isSystemBottomSheet = true)에만 적용되고, 커스텀 드래그 Bottom Sheet 에는 적용되지 않습니다.
 * @param background Color: 배경 색상입니다.
 * @param type ModalType: 모달의 형태입니다.
 * @param sheetDefault WantedBottomSheetDefault: Bottom Sheet 의 모양·여백 설정입니다. 기본값은 [type] 에 맞춰 골라집니다 (Full 만 별도 값).
@@ -167,65 +190,65 @@
 *
 */
 
-/**
+    /**
 * sealed class ModalType
 *
 * Modal의 형태를 정의하는 sealed 클래스입니다.
 * Flexible, FixedWrapContent, Fixed, FixedFullScreen, FixedRatio 형태를 제공합니다.
 */
 
-/**
+        /**
 * data object Flexible
 *
-* 콘텐츠 크기에 따라 자동으로 조정되는 유동형 Modal 입니다.
+* 콘텐츠 크기에 따라 자동으로 조정되는 유동형 Modal 입니다. 항상 시스템 BottomSheet 로 그려지고 닫을 수 있습니다. 부분 펼침(중간 높이)을 허용하지만, 콘텐츠가 충분히 높을 때만 그 상태가 생기며 짧은 콘텐츠는 바로 펼쳐진(Expanded) 상태로 표시됩니다.
 */
 
-/**
+        /**
 * data class FixedWrapContent
 *
-* 콘텐츠 높이에 맞게 조정되는 고정형 Modal 입니다.
+* 콘텐츠 높이에 맞게 조정되는 고정형 Modal 입니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+        /**
 * data class Fixed
 *
-* 특정 높이를 갖는 고정형 Modal 입니다.
+* height 로 지정한 높이를 갖는 고정형 Modal 입니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
 * @property height Dp: Modal 의 높이입니다.
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+        /**
 * data class FixedFullScreen
 *
-* 화면 전체를 덮는 고정형 Modal 입니다.
+* 화면 전체를 덮는 고정형 Modal 입니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+        /**
 * data class FixedRatio
 *
-* 화면 비율을 기준으로 높이가 설정되는 고정형 Modal입니다.
+* 화면 높이 × ratio(0.0 ~ 1.0)로 높이가 정해지는 고정형 Modal입니다. 다만 화면 높이에서 상단 inset·10dp·드래그 핸들(19dp)을 뺀 값을 넘지 않으므로 ratio 가 1f 여도 화면 전체 높이가 되지 않습니다. 기본은 커스텀 시트(isSystemBottomSheet = false)입니다. isCloseable(기본 true)이 false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하고(커스텀 시트는 바깥 탭(dismissOnClickOutside)도 호출), 실제로 닫을지는 호출부가 표시 상태로 정합니다.
 *
 * @property ratio Float: 0.0 ~ 1.0 사이의 높이 비율입니다.
-* @property isCloseable Boolean: 닫기 가능 여부입니다.
-* @property isSystemBottomSheet Boolean: 시스템 BottomSheet 사용 여부입니다.
+* @property isCloseable Boolean: false 면 드래그 핸들을 숨기고, 시스템 시트에서는 스와이프·바깥 탭으로 닫히지 않습니다. 뒤로가기는 시스템·커스텀 시트 모두 onDismissRequest 를 호출하므로(커스텀 시트는 바깥 탭도), 닫히지 않게 하려면 호출부가 그 콜백에서 표시 상태를 바꾸지 않습니다.
+* @property isSystemBottomSheet Boolean: true 면 Material ModalBottomSheet, false(기본)면 핸들로만 드래그되는 커스텀 시트로 그립니다.
 */
 
-/**
+    /**
 * enum class ModalSize
 *
 * Modal의 여백 및 패딩을 정의하는 enum 클래스입니다.
 *
-* - Small: 작은 크기의 Modal 입니다.
-* - Medium: 중간 크기의 Modal 입니다.
-* - Large: 큰 크기의 Modal 입니다.
-* - XLarge: 매우 큰 크기의 Modal 입니다.
+* - Small: (Deprecated) 콘텐츠 여백 20dp, 하단 영역 여백 16dp 입니다. Medium 을 사용합니다.
+* - Medium: 콘텐츠 여백 20dp, 하단 영역 여백 20dp, 제목 상하 여백 4dp 입니다.
+* - Large: 콘텐츠 여백 24dp, 하단 영역 여백 24dp, 제목 상하 여백 4dp 입니다.
+* - XLarge: 콘텐츠 여백 32dp, 하단 영역 여백 32dp, 제목 상하 8dp·좌우 4dp 여백입니다.
 * - Custom: 커스텀 크기의 Modal 입니다. 모든 패딩이 0dp로 설정되어 사용자가 직접 정의 할 수 있습니다.
 */

@@ -85,11 +85,10 @@
 *
 * WantedSearchField 컴포넌트에서 사용하는 설정 값을 정의하는 객체입니다.
 *
-* 치수·타이포는 WantedTextField 와 동일한 값을 사용하며,
-* Size 별 토큰은 아래 internal 확장 프로퍼티로 분리되어 있습니다.
+* 치수·타이포는 WantedTextField 와 동일한 값을 사용합니다.
 */
 
-/**
+    /**
 * sealed class Size
 *
 * 검색 입력 필드의 크기를 정의하는 sealed class입니다.
@@ -98,7 +97,7 @@
 * - Medium: 중간 크기입니다. (최소 높이 40dp)
 */
 
-/**
+    /**
 * enum class Variant
 *
 * 검색 입력 필드의 스타일을 정의하는 enum 클래스입니다.

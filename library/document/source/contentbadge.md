@@ -12,21 +12,21 @@
 *     text = "Badge",
 *     size = ContentBadgeSize.Small,
 *     color = ContentBadgeColor.Accent,
-*     leadingDrawable = R.drawable.ic_icon,
-*     trailingDrawable = R.drawable.ic_icon,
+*     leadingDrawable = R.drawable.icon_normal_bookmark,
+*     trailingDrawable = R.drawable.icon_normal_arrow_right,
 *     onClick = { /* 클릭 처리 */ }
 * )
 * ```
 *
-* @param text String: 배지에 표시할 텍스트입니다.
+* @param text String: 배지에 표시할 텍스트입니다. 1줄까지 표시하고 넘치면 말줄임(…) 처리됩니다.
 * @param modifier Modifier: 배지 외형과 배치를 설정합니다.
-* @param type ContentBadgeType: Solid 또는 Outlined 형식의 배지 스타일입니다.
+* @param type ContentBadgeType: 배지 스타일입니다. Solid 는 accentDefault 의 backgroundColor 배경, Outlined 는 투명 배경에 outLineColor 1dp 테두리입니다.
 * @param size ContentBadgeSize: 배지 크기를 지정합니다 (XSmall, Small, Medium).
-* @param color ContentBadgeColor: 컬러 테마를 지정합니다 (Neutral, Accent).
-* @param accentDefault WantedContentBadgeDefault: Accent 또는 Neutral 컬러 설정의 기본값을 지정합니다.
+* @param color ContentBadgeColor: accentDefault 를 지정하지 않을 때의 기본 색 구성과 눌림 효과 색을 정합니다 (Neutral, Accent).
+* @param accentDefault WantedContentBadgeDefault: 배지의 실제 색 구성(글자·배경·테두리)입니다. 지정하면 color 와 무관하게 이 값을 쓰며, 기본값은 color 에 따라 getAccentDefault()/getNeutralDefault() 입니다.
 * @param leadingDrawable Int?: 텍스트 왼쪽에 표시할 아이콘 리소스 ID입니다.
 * @param trailingDrawable Int?: 텍스트 오른쪽에 표시할 아이콘 리소스 ID입니다.
-* @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다.
+* @param onClick (() -> Unit)?: 클릭 시 호출되는 콜백 함수입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */
 
 /**
@@ -49,7 +49,7 @@
 * Accent, Neutral 스타일의 구성을 제공합니다.
 */
 
-/**
+    /**
 * fun getAccentDefault(...)
 *
 * Accent 스타일의 기본 Content badge를 반환합니다.
@@ -59,7 +59,8 @@
 * val badgeDefault = WantedContentBadgeDefaults.getAccentDefault()
 * WantedContentBadge(
 *     text = "New",
-*     badgeDefault = badgeDefault
+*     color = ContentBadgeColor.Accent,
+*     accentDefault = badgeDefault
 * )
 * ```
 *
@@ -69,18 +70,20 @@
 * @return WantedContentBadgeDefault: 강조 배지 구성을 반환합니다.
 */
 
-/**
+    /**
 *
 * fun getNeutralDefault(...)
 *
 * Neutral 스타일의 기본 Content badge를 반환합니다.
+*
+* 배경은 surfaceNeutralSecondary, 테두리는 foregroundNeutralTertiary 16% 로 고정되며 contentColor 를 바꿔도 따라 바뀌지 않습니다.
 *
 * 사용 예시:
 * ```
 * val badgeDefault = WantedContentBadgeDefaults.getNeutralDefault()
 * WantedContentBadge(
 *     text = "Label",
-*     badgeDefault = badgeDefault
+*     accentDefault = badgeDefault
 * )
 * ```
 *

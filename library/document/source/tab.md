@@ -1,4 +1,12 @@
 /**
+* fun Modifier.tabIndicatorOffset(...)
+*
+* Tab 인디케이터를 선택된 Tab 의 위치·폭에 맞춰 하단에 배치하는 Modifier입니다. 위치와 폭이 바뀌면 250ms 동안 애니메이션으로 이동합니다.
+*
+* @param currentTabPosition TabPosition: 선택된 Tab 의 위치(left)와 폭(width)입니다. deprecated 인 ScrollableFlexTabRow 의 indicator 슬롯이 넘겨 주는 값을 그대로 사용합니다. WantedTabRow·WantedScrollableTabRow 에는 인디케이터 슬롯이 없어 이 Modifier 를 쓸 일이 없습니다.
+*/
+
+/**
 * WantedScrollableTabRow
 *
 * 스크롤할 수 있는 Tab 레이아웃 컴포넌트입니다
@@ -23,12 +31,12 @@
 * @param disableIndexList List<Int>: 비활성화할 탭 인덱스 리스트입니다.
 * @param tabSize TabSize: 탭 크기 설정입니다.
 * @param horizontalPadding Boolean: 양쪽 여백 적용 여부입니다.
-* @param isLeftGradient Boolean: 왼쪽 gradient 표시 여부입니다.
-* @param isRightGradient Boolean: 오른쪽 gradient 표시 여부입니다.
+* @param isLeftGradient Boolean: 왼쪽 gradient 표시 여부입니다. true 여도 왼쪽으로 더 스크롤할 수 있을 때만 표시됩니다.
+* @param isRightGradient Boolean: 오른쪽 gradient 표시 여부입니다. true 여도 오른쪽으로 더 스크롤할 수 있을 때만 표시됩니다.
 * @param gradientColor Color: gradient 색상입니다.
 * @param scrollState ScrollState: 스크롤 상태를 관리하는 객체입니다.
 * @param onClickItem (Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
-* @param rightIcon (@Composable (Dp) -> Unit)?: 탭 우측에 추가할 아이콘 슬롯입니다.
+* @param rightIcon (@Composable (Dp) -> Unit)?: 탭 우측에 추가할 아이콘 슬롯입니다. 인자는 tabSize 에 맞춘 아이콘 슬롯 크기(Small 20dp, Medium 22dp, Large 24dp)이며, 아이콘 크기로 그대로 쓰면 됩니다.
 * @param content (Int) -> String: 각 탭의 텍스트를 반환하는 함수입니다.
 */
 
@@ -38,13 +46,13 @@
 * Tab 컴포넌트에서 사용하는 설정값을 정의하는 객체입니다.
 */
 
-/**
+    /**
 * enum class TabSize
 *
 * Tab 텍스트의 크기를 정의하는 enum 클래스입니다.
-* - Small: 작은 크기의 Tab 텍스트입니다.
-* - Medium: 중간 크기의 Tab 텍스트입니다.
-* - Large: 큰 크기의 Tab 텍스트입니다.
+* - Small: body2Bold 타이포를 씁니다. rightIcon 슬롯 크기는 20dp 입니다.
+* - Medium: headline2Bold 타이포를 씁니다. rightIcon 슬롯 크기는 22dp 입니다.
+* - Large: heading2Bold 타이포를 씁니다. rightIcon 슬롯 크기는 24dp 입니다.
 */
 
 /**
@@ -60,7 +68,7 @@
 * @param enable Boolean: 활성화 여부입니다.
 * @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
 * @param onTextLayout ((TextLayoutResult) -> Unit)?: 텍스트 레이아웃 결과를 전달하는 콜백입니다.
-* @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다.
+* @param onClick () -> Unit: 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 */
 
 /**
@@ -76,6 +84,7 @@
 *
 * WantedTabRow(
 *     itemSize = 3,
+*     modifier = Modifier.fillMaxWidth(),
 *     selectedTabIndex = selectedIndex,
 *     content = { index -> "탭$index" },
 *     onClickItem = { selectedIndex = it }
@@ -84,7 +93,7 @@
 *
 * @param itemSize Int: 탭 항목 수입니다.
 * @param selectedTabIndex Int: 현재 선택된 탭 인덱스입니다.
-* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다. 기본값이 없어 반드시 전달해야 합니다.
 * @param tabSize TabSize: 탭 텍스트 크기입니다.
 * @param disableIndexList List<Int>: 비활성화할 탭 인덱스 리스트입니다.
 * @param onClickItem (Int) -> Unit: 탭 클릭 시 호출되는 콜백입니다.
