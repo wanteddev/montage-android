@@ -82,6 +82,14 @@ jobs:
           echo "🔄 변경된 파일이 있습니다. runKdocScriptAll 실행..."
           ./gradlew :library:runKdocScriptAll
 
+      # 문서 사이트(montage-web) 빌드와 같은 방식으로 mdx 를 컴파일해 본다. 실패하면 docs 커밋을 만들지 않고 job 이 실패해
+      # auto-deploy-docs 도 실행되지 않는다. 고칠 곳은 생성물(mdx)이 아니라 원본 KDoc 이다.
+      - name: Validate docs
+        uses: wanteddev/montage-web/.github/actions/validate-docs@main
+        with:
+          files: library/document/md/*.{md,mdx}
+          mobile-source: true
+
       - name: Commit & Push Design System Docs
         run: |
           git config --local user.name "deploy-bot"

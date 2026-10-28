@@ -60,8 +60,18 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                     var inFence = false       // ```kotlin``` 펜스 안인가?
                     val sb = StringBuilder()
                     val blocks = mutableListOf<String>()
+                    // KDoc 이 끝난 줄(end) 뒤의 선언에 @Deprecated 가 붙어 있는가? 빈 줄·다른 애노테이션은 건너뛴다.
+                    // deprecated 선언은 문서에 싣지 않는다 — 생성기는 KDoc 블록만 받으므로 애노테이션은 여기서만 보인다.
+                    val isDeprecatedDeclaration = { end: Int ->
+                        lines.asSequence()
+                            .drop(end + 1)
+                            .map { it.trim() }
+                            .filter { it.isNotEmpty() }
+                            .firstOrNull { !it.startsWith("@") || it.startsWith("@Deprecated") }
+                            ?.startsWith("@Deprecated") == true
+                    }
 
-                    lines.forEach { raw ->
+                    lines.forEachIndexed { index, raw ->
                         val line = raw
 
                         // ``` 로 시작하면 코드 펜스 상태 토글
@@ -80,7 +90,7 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                                 if (line.trim().startsWith("```")) inFence = true
                                 // 같은 라인에 닫힘도 있는지?
                                 if (!inFence && line.contains("*/")) {
-                                    blocks += sb.toString().trimEnd()
+                                    if (!isDeprecatedDeclaration(index)) blocks += sb.toString().trimEnd()
                                     inDocBlock = false
                                 }
                             }
@@ -89,7 +99,7 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                             sb.appendLine(line.trim())
                             // 펜스 밖에서만 종료로 인식
                             if (!inFence && line.contains("*/")) {
-                                blocks += sb.toString().trimEnd()
+                                if (!isDeprecatedDeclaration(index)) blocks += sb.toString().trimEnd()
                                 inDocBlock = false
                                 inFence = false
                             }
