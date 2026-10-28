@@ -16,6 +16,21 @@ jobs:
       (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     steps:
+      # actions/checkout 은 엔터프라이즈 정책으로 막혀 있어 git clone 으로 받는다.
+      # 트리거 커밋(head_sha)이 아니라 main 최신을 받는다 — update-docs 가 그 뒤에 docs: 커밋을 push 하기 때문이다.
+      # 공개 저장소라 토큰 없이 받는다(로컬 act 에서 토큰이 비면 인증 프롬프트로 실패한다).
+      # 작업 폴더가 비어 있지 않은 환경(act 는 로컬 저장소를 복사해 둔다)에서도 돌도록 별도 폴더로 받는다.
+      - name: Checkout code
+        run: |
+          rm -rf montage-main
+          git clone --depth 1 --branch main https://github.com/${{ github.repository }}.git montage-main
+
+      - name: Validate docs
+        uses: wanteddev/montage-web/.github/actions/validate-docs@main
+        with:
+          files: montage-main/library/document/md/*.{md,mdx}
+          mobile-source: true
+
       - name: Generate GitHub App Token
         id: app-token
         env:
@@ -67,5 +82,5 @@ jobs:
           gh workflow run docs-sync.yml \
             --repo wanteddev/montage-web \
             --ref "main" \
-            -f platform=mobile \
+            -f platform=android \
             -f deploy=true
