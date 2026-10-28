@@ -34,6 +34,13 @@ val extractDesignSystemJavadocToMd by tasks.registering {
         // 이전에 생성된 문서 폴더들을 삭제
         val sourceDocDir = file("document/source")
         val mdDocDir = file("document/md")
+        val extractedDocDir = destDirProvider.get().asFile
+
+        // 추출 결과도 비운다 — KDoc 이 전부 deprecated 인 파일은 md 를 다시 쓰지 않으므로, 남은 옛 md 가 병합 단계에 그대로 실린다.
+        if (extractedDocDir.exists()) {
+            extractedDocDir.deleteRecursively()
+            println("🗑️ Deleted: ${extractedDocDir.absolutePath}")
+        }
 
         if (sourceDocDir.exists()) {
             sourceDocDir.deleteRecursively()
@@ -62,13 +69,19 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                     val blocks = mutableListOf<String>()
                     // KDoc 이 끝난 줄(end) 뒤의 선언에 @Deprecated 가 붙어 있는가? 빈 줄·다른 애노테이션은 건너뛴다.
                     // deprecated 선언은 문서에 싣지 않는다 — 생성기는 KDoc 블록만 받으므로 애노테이션은 여기서만 보인다.
+                    // 여러 줄 애노테이션(`@Suppress(` … `)`)은 괄호가 닫힐 때까지 건너뛴다 — 인자 줄에서 멈추면 뒤의 @Deprecated 를 놓친다.
                     val isDeprecatedDeclaration = { end: Int ->
-                        lines.asSequence()
-                            .drop(end + 1)
-                            .map { it.trim() }
-                            .filter { it.isNotEmpty() }
-                            .firstOrNull { !it.startsWith("@") || it.startsWith("@Deprecated") }
-                            ?.startsWith("@Deprecated") == true
+                        var depth = 0
+                        var deprecated = false
+                        for (raw in lines.drop(end + 1)) {
+                            val line = raw.trim()
+                            val inAnnotationArgs = depth > 0
+                            depth += line.count { it == '(' } - line.count { it == ')' }
+                            if (inAnnotationArgs || line.isEmpty()) continue
+                            deprecated = line.startsWith("@Deprecated")
+                            if (deprecated || !line.startsWith("@")) break
+                        }
+                        deprecated
                     }
 
                     lines.forEachIndexed { index, raw ->
