@@ -34,6 +34,15 @@ val extractDesignSystemJavadocToMd by tasks.registering {
         // 이전에 생성된 문서 폴더들을 삭제
         val sourceDocDir = file("document/source")
         val mdDocDir = file("document/md")
+        val extractedDocDir = destDirProvider.get().asFile
+
+        // 추출 결과도 비운다 — KDoc 이 전부 deprecated 인 파일은 md 를 다시 쓰지 않으므로, 남은 옛 md 가 병합 단계에 그대로 실린다.
+        if (extractedDocDir.exists()) {
+            extractedDocDir.deleteRecursively()
+            println("🗑️ Deleted: ${extractedDocDir.absolutePath}")
+        }
+        // 빈 채로라도 다시 만든다 — 추출된 md 가 하나도 없으면 병합 태스크의 inputs.dir 검증이 "디렉터리 없음"으로 실패한다.
+        extractedDocDir.mkdirs()
 
         if (sourceDocDir.exists()) {
             sourceDocDir.deleteRecursively()
@@ -60,8 +69,49 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                     var inFence = false       // ```kotlin``` 펜스 안인가?
                     val sb = StringBuilder()
                     val blocks = mutableListOf<String>()
+                    // KDoc 이 끝난 줄(end) 뒤의 선언에 @Deprecated 가 붙어 있는가? 빈 줄·다른 애노테이션은 건너뛴다.
+                    // deprecated 선언은 문서에 싣지 않는다 — 생성기는 KDoc 블록만 받으므로 애노테이션은 여기서만 보인다.
+                    // 여러 줄 애노테이션(`@Suppress(` … `)`)은 괄호가 닫힐 때까지 건너뛴다 — 인자 줄에서 멈추면 뒤의 @Deprecated 를 놓친다.
+                    // 문자열·주석 안의 괄호는 세지 않는다 — `@Suppress("unused(")` 의 `(` 로 깊이가 남으면 같은 이유로 놓친다.
+                    val parenDelta = { line: String ->
+                        var delta = 0
+                        var inString = false
+                        var i = 0
+                        while (i < line.length) {
+                            val c = line[i]
+                            val next = line.getOrNull(i + 1)
+                            when {
+                                inString && c == '\\' -> i++
+                                c == '"' -> inString = !inString
+                                inString -> Unit
+                                c == '/' && next == '/' -> break
+                                c == '/' && next == '*' -> {
+                                    val close = line.indexOf("*/", i + 2)
+                                    if (close < 0) break
+                                    i = close + 1
+                                }
+                                c == '(' -> delta++
+                                c == ')' -> delta--
+                            }
+                            i++
+                        }
+                        delta
+                    }
+                    val isDeprecatedDeclaration = { end: Int ->
+                        var depth = 0
+                        var deprecated = false
+                        for (raw in lines.drop(end + 1)) {
+                            val line = raw.trim()
+                            val inAnnotationArgs = depth > 0
+                            depth += parenDelta(line)
+                            if (inAnnotationArgs || line.isEmpty()) continue
+                            deprecated = line.startsWith("@Deprecated")
+                            if (deprecated || !line.startsWith("@")) break
+                        }
+                        deprecated
+                    }
 
-                    lines.forEach { raw ->
+                    lines.forEachIndexed { index, raw ->
                         val line = raw
 
                         // ``` 로 시작하면 코드 펜스 상태 토글
@@ -80,7 +130,7 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                                 if (line.trim().startsWith("```")) inFence = true
                                 // 같은 라인에 닫힘도 있는지?
                                 if (!inFence && line.contains("*/")) {
-                                    blocks += sb.toString().trimEnd()
+                                    if (!isDeprecatedDeclaration(index)) blocks += sb.toString().trimEnd()
                                     inDocBlock = false
                                 }
                             }
@@ -89,7 +139,7 @@ val extractDesignSystemJavadocToMd by tasks.registering {
                             sb.appendLine(line.trim())
                             // 펜스 밖에서만 종료로 인식
                             if (!inFence && line.contains("*/")) {
-                                blocks += sb.toString().trimEnd()
+                                if (!isDeprecatedDeclaration(index)) blocks += sb.toString().trimEnd()
                                 inDocBlock = false
                                 inFence = false
                             }
@@ -391,6 +441,8 @@ tasks.register("runKdocScriptAll") {
 
         println("📝 Found ${mdFiles.size} .md files to convert")
 
+        val failures = mutableListOf<String>()
+
         mdFiles.forEach { mdFile: File ->
             val inputPath = mdFile.absolutePath
             val outputFileName = mdFile.nameWithoutExtension + ".mdx"
@@ -401,20 +453,34 @@ tasks.register("runKdocScriptAll") {
             try {
                 val process = ProcessBuilder("kotlin", scriptPath, inputPath, outputPath)
                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
-                    .redirectError(ProcessBuilder.Redirect.PIPE)
+                    // stderr 를 stdout 에 합쳐 파이프 하나만 읽는다.
+                    // 따로 두면 한쪽을 읽는 동안 다른 쪽 버퍼가 차서 프로세스가 멈춘 채 대기할 수 있다.
+                    .redirectErrorStream(true)
                     .start()
 
+                // waitFor 전에 파이프를 비운다 — 출력이 버퍼를 채우면 프로세스가 진행하지 못한다.
+                val output = process.inputStream.bufferedReader().readText()
                 val exitCode = process.waitFor()
 
                 if (exitCode != 0) {
-                    val errorOutput = process.errorStream.bufferedReader().readText()
-                    println("    ❌ Error converting ${mdFile.name}: $errorOutput")
+                    println("    ❌ Error converting ${mdFile.name}: $output")
+                    failures += "${mdFile.name} (exit=$exitCode)"
                 } else {
                     println("    ✅ Success: $outputFileName")
                 }
             } catch (e: Exception) {
                 println("    ❌ Exception converting ${mdFile.name}: ${e.message}")
+                failures += "${mdFile.name} (${e.message})"
             }
+        }
+
+        // 변환에 실패하면 태스크를 실패시킨다.
+        // 추출 단계가 document/md 를 통째로 지우고 시작하므로, 실패한 파일의 mdx 는 아예 없는 상태로 남는다.
+        // 그대로 두면 검증은 살아남은 파일만 보고 통과하고, 커밋 단계가 누락된 문서의 '삭제' 를 커밋한다.
+        if (failures.isNotEmpty()) {
+            throw GradleException(
+                "mdx 변환 실패 ${failures.size}건: ${failures.joinToString(", ")}"
+            )
         }
 
         println("🎉 Conversion complete! Processed ${mdFiles.size} files")
