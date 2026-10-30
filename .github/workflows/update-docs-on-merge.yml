@@ -102,7 +102,10 @@ jobs:
           fi
 
           echo "📝 Committing changes..."
-          git commit -m "docs: update Design System documentation and mdx"
+          # [skip ci]: 이 push 로는 워크플로우 런 자체가 만들어지지 않는다.
+          # 아래 if 조건들(docs: 로 시작하면 job skip)은 런이 생긴 뒤 job 만 건너뛰므로,
+          # 완료 이벤트가 발화해 auto-deploy-docs 가 빈 런으로 한 번 더 돌고 Actions 목록도 지저분해진다.
+          git commit -m "docs: update Design System documentation and mdx [skip ci]"
           
           echo "🚀 Pushing changes..."
           git push
