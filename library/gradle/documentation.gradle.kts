@@ -453,16 +453,17 @@ tasks.register("runKdocScriptAll") {
             try {
                 val process = ProcessBuilder("kotlin", scriptPath, inputPath, outputPath)
                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
-                    .redirectError(ProcessBuilder.Redirect.PIPE)
+                    // stderr 를 stdout 에 합쳐 파이프 하나만 읽는다.
+                    // 따로 두면 한쪽을 읽는 동안 다른 쪽 버퍼가 차서 프로세스가 멈춘 채 대기할 수 있다.
+                    .redirectErrorStream(true)
                     .start()
 
-                // waitFor 전에 파이프를 비운다 — 출력이 버퍼를 채우면 프로세스가 멈춘 채 대기한다.
-                val stdOutput = process.inputStream.bufferedReader().readText()
-                val errorOutput = process.errorStream.bufferedReader().readText()
+                // waitFor 전에 파이프를 비운다 — 출력이 버퍼를 채우면 프로세스가 진행하지 못한다.
+                val output = process.inputStream.bufferedReader().readText()
                 val exitCode = process.waitFor()
 
                 if (exitCode != 0) {
-                    println("    ❌ Error converting ${mdFile.name}: ${errorOutput.ifBlank { stdOutput }}")
+                    println("    ❌ Error converting ${mdFile.name}: $output")
                     failures += "${mdFile.name} (exit=$exitCode)"
                 } else {
                     println("    ✅ Success: $outputFileName")
