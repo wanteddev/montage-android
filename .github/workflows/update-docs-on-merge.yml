@@ -68,18 +68,12 @@ jobs:
             :library:mergeDesignSystemJavadocByPackage
           sleep 1
 
+      # source 변경 여부와 무관하게 항상 mdx 를 다시 만든다.
+      # extractDesignSystemJavadocToMd 가 document/md 를 통째로 지우고 시작하므로,
+      # 여기서 스킵하면 md 가 삭제된 채로 남아 아래 Validate docs 가 대상 파일을 찾지 못하고 실패한다.
       - name: Update DS Document mdx
         run: |
-          echo "📂 변경된 DS 문서 파일을 처리합니다..."
-          # 변경된 source 파일만 추출
-          CHANGED_FILES=$(git status --porcelain | awk '{print $2}' | grep '^library/document/source/' || true)
-          
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "✅ 변경된 문서 없음. 스킵."
-            exit 0
-          fi
-
-          echo "🔄 변경된 파일이 있습니다. runKdocScriptAll 실행..."
+          echo "🔄 DS 문서 mdx 를 재생성합니다 (runKdocScriptAll)..."
           ./gradlew :library:runKdocScriptAll
 
       # 문서 사이트(montage-web) 빌드와 같은 방식으로 mdx 를 컴파일해 본다. 실패하면 docs 커밋을 만들지 않고 job 이 실패해

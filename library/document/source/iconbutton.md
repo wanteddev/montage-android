@@ -136,24 +136,6 @@
 */
 
 /**
-* WantedIconButtonNormal
-*
-* `disableInteraction` 을 사용하는 이전 시그니처입니다.
-* [IconButtonInteractionEffect] 로 대체되었으니 신규 코드에서는 사용하지 않습니다.
-*
-* @param icon Int: 아이콘 drawable 리소스 ID
-* @param disableInteraction Boolean: true이면 press/hover ripple 효과 없음
-* @param modifier Modifier: 외형 및 배치를 제어하는 Modifier
-* @param size WantedIconButtonNormalSize: 박스 크기. 기본값 [WantedIconButtonNormalSize.Xlarge]
-* @param enabled Boolean: 활성화 여부
-* @param tint Color: 활성 시 아이콘 색상. 기본값 `foregroundNeutralPrimary`. 비활성 시 `foregroundDisablePrimary`
-* @param pushBadge @Composable (() -> Unit)?: 지정 위치에 표시할 PushBadge 등 컴포넌트
-* @param badgePosition IconButtonBadgePosition: pushBadge 정렬 기준점. 기본값 [IconButtonBadgePosition.TopRight]
-* @param interactionColor Color: 인터랙션 피드백 색상. 미지정 시 ripple 은 `foregroundNeutralPrimary`
-* @param onClick () -> Unit: 클릭 콜백. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
-*/
-
-/**
 * sealed class WantedIconButtonNormalSize
 *
 * WantedIconButtonNormal 의 박스(컨테이너) 크기입니다. (Confluence IconButton 스펙 §3·§4)
