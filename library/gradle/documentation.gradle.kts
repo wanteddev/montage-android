@@ -441,6 +441,8 @@ tasks.register("runKdocScriptAll") {
 
         println("📝 Found ${mdFiles.size} .md files to convert")
 
+        val failures = mutableListOf<String>()
+
         mdFiles.forEach { mdFile: File ->
             val inputPath = mdFile.absolutePath
             val outputFileName = mdFile.nameWithoutExtension + ".mdx"
@@ -454,17 +456,30 @@ tasks.register("runKdocScriptAll") {
                     .redirectError(ProcessBuilder.Redirect.PIPE)
                     .start()
 
+                // waitFor 전에 파이프를 비운다 — 출력이 버퍼를 채우면 프로세스가 멈춘 채 대기한다.
+                val stdOutput = process.inputStream.bufferedReader().readText()
+                val errorOutput = process.errorStream.bufferedReader().readText()
                 val exitCode = process.waitFor()
 
                 if (exitCode != 0) {
-                    val errorOutput = process.errorStream.bufferedReader().readText()
-                    println("    ❌ Error converting ${mdFile.name}: $errorOutput")
+                    println("    ❌ Error converting ${mdFile.name}: ${errorOutput.ifBlank { stdOutput }}")
+                    failures += "${mdFile.name} (exit=$exitCode)"
                 } else {
                     println("    ✅ Success: $outputFileName")
                 }
             } catch (e: Exception) {
                 println("    ❌ Exception converting ${mdFile.name}: ${e.message}")
+                failures += "${mdFile.name} (${e.message})"
             }
+        }
+
+        // 변환에 실패하면 태스크를 실패시킨다.
+        // 추출 단계가 document/md 를 통째로 지우고 시작하므로, 실패한 파일의 mdx 는 아예 없는 상태로 남는다.
+        // 그대로 두면 검증은 살아남은 파일만 보고 통과하고, 커밋 단계가 누락된 문서의 '삭제' 를 커밋한다.
+        if (failures.isNotEmpty()) {
+            throw GradleException(
+                "mdx 변환 실패 ${failures.size}건: ${failures.joinToString(", ")}"
+            )
         }
 
         println("🎉 Conversion complete! Processed ${mdFiles.size} files")
