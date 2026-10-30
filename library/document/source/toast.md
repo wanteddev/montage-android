@@ -140,12 +140,6 @@
 */
 
     /**
-* data object Message
-*
-* 일반 텍스트 메시지를 표시하는 스타일입니다. deprecated 되었으므로 Normal 을 사용하세요.
-*/
-
-    /**
 * data object Positive
 *
 * 긍정적인 알림을 위한 스타일입니다.

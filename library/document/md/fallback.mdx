@@ -35,31 +35,6 @@ WantedFallbackView(
 | onClickAlternative | () -> Unit | 대체 액션 버튼 클릭 시 호출되는 콜백입니다. |
 
 
-## Advanced
-### WantedFallbackView
-(Deprecated) 이미지(일러스트) 슬롯이 포함된 WantedFallbackView 입니다. 이미지 없는 오버로드를 사용하세요.
-
-디자인 4.0.0 에서 이미지 슬롯이 제거되어 더 이상 사용하지 않습니다.
-기존 화면 호환을 위해서만 유지하며, 이미지 없는 오버로드로 이관합니다.
-
-<details>
-  <summary>Parameters</summary>
-
-  | 이름 | 타입 | 설명 |
-  |:---|:---|:---|
-  | image | (@Composable () -> Unit) | 텍스트 위에 표시될 이미지 컴포넌트입니다. |
-  | modifier | Modifier | 외형 및 배치를 조정하는 Modifier입니다. |
-  | buttonVariant | WantedFallbackButtonVariant | 버튼 배치 방식입니다. Single 은 main 버튼 하나만 표시하고 alternative 는 무시합니다. Horizontal 은 alternative(왼쪽)·main(오른쪽)을 가로로, Vertical 은 main(위)·alternative(아래)를 세로로 배치합니다. 기본값은 Single입니다. |
-  | heading | String? | 상단에 강조 텍스트(제목)를 표시합니다. |
-  | description | String? | 제목 아래에 설명 텍스트를 표시합니다. 최대 두 줄까지만 표시됩니다. |
-  | main | String? | 메인 액션 버튼에 표시될 텍스트입니다. null일 경우 버튼은 렌더링되지 않습니다. |
-  | alternative | String? | 대체 액션 버튼 텍스트입니다. buttonVariant 가 Horizontal·Vertical 일 때만 표시되며, null 이면 렌더링되지 않습니다. |
-  | onClickMain | () -> Unit | 메인 액션 버튼 클릭 시 호출되는 콜백입니다. |
-  | onClickAlternative | () -> Unit | 대체 액션 버튼 클릭 시 호출되는 콜백입니다. |
-
-</details>
-<br />
-
 ## Enum
 ### WantedFallbackButtonVariant
 | 값 | 설명 |
