@@ -61,8 +61,24 @@ import java.text.BreakIterator
  *
  * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 입력 본체만 그리는 WantedTextArea 를 WantedFormControl 의 input 슬롯에 조합해 사용합니다.
  * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * // 대체 방식
+ * val state = remember { mutableStateOf(TextFieldValue("입력값")) }
+ * WantedFormControl(
+ *     label = "설명",
+ *     input = {
+ *         WantedTextArea(
+ *             value = state.value,
+ *             placeholder = "입력해주세요",
+ *             onValueChange = { state.value = it }
+ *         )
+ *     }
+ * )
+ * ```
  *
  * @param text String: 입력된 텍스트 값입니다.
  * @param modifier Modifier: 외형 및 레이아웃 조정용입니다.
@@ -187,8 +203,24 @@ fun WantedTextArea(
  *
  * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 입력 본체만 그리는 WantedTextArea 를 WantedFormControl 의 input 슬롯에 조합해 사용합니다.
  * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * // 대체 방식
+ * val state = remember { mutableStateOf(TextFieldValue("입력값")) }
+ * WantedFormControl(
+ *     label = "설명",
+ *     input = {
+ *         WantedTextArea(
+ *             value = state.value,
+ *             placeholder = "입력해주세요",
+ *             onValueChange = { state.value = it }
+ *         )
+ *     }
+ * )
+ * ```
  *
  * @param value TextFieldValue: 입력 값 및 커서, 선택 정보 등을 포함합니다.
  * @param onValueChange (TextFieldValue) -> Unit: 값 변경 콜백입니다.
@@ -292,8 +324,24 @@ fun WantedTextArea(
  *
  * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 입력 본체만 그리는 WantedTextArea 를 WantedFormControl 의 input 슬롯에 조합해 사용합니다.
  * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * // 대체 방식
+ * val state = remember { mutableStateOf(TextFieldValue("입력값")) }
+ * WantedFormControl(
+ *     label = "설명",
+ *     input = {
+ *         WantedTextArea(
+ *             value = state.value,
+ *             placeholder = "입력해주세요",
+ *             onValueChange = { state.value = it }
+ *         )
+ *     }
+ * )
+ * ```
  *
  * @param text String: 입력된 텍스트 값입니다.
  * @param modifier Modifier: 외형 및 레이아웃 조정용입니다.
@@ -421,8 +469,24 @@ fun WantedTextArea(
  *
  * (Deprecated) 라벨·설명·필수 뱃지를 함께 렌더링하는 WantedTextArea 입니다.
  *
- * WantedFormControl(input = { WantedTextArea(value = ..., onValueChange = ...) }) 형태로 조합해 사용합니다.
+ * 입력 본체만 그리는 WantedTextArea 를 WantedFormControl 의 input 슬롯에 조합해 사용합니다.
  * 본체 WantedTextArea 는 글자 수를 그리지 않으므로, 글자 수 표시가 필요하면 WantedFormControl 의 accessory 에 WantedTextAreaCharacterCount 를 넣습니다.
+ *
+ * 사용 예시 :
+ * ```kotlin
+ * // 대체 방식
+ * val state = remember { mutableStateOf(TextFieldValue("입력값")) }
+ * WantedFormControl(
+ *     label = "설명",
+ *     input = {
+ *         WantedTextArea(
+ *             value = state.value,
+ *             placeholder = "입력해주세요",
+ *             onValueChange = { state.value = it }
+ *         )
+ *     }
+ * )
+ * ```
  *
  * @param value TextFieldValue: 입력 값 및 커서, 선택 정보 등을 포함합니다.
  * @param onValueChange (TextFieldValue) -> Unit: 값 변경 콜백입니다.
