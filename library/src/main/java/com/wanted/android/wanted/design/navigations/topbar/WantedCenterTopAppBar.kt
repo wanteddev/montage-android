@@ -5,6 +5,7 @@ import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -117,6 +118,7 @@ private fun WantedCenterBackTopAppBar(
  * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
  * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
  * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
+ * @param toolbar (@Composable ColumnScope.() -> Unit)?: 내비게이션 바 바로 아래(간격 0)에 가로 전체 폭으로 그리는 toolbar 슬롯입니다. 기본값 null 이면 그리지 않고, Variant.Floating 이면 무시합니다. 배경은 앱바 배경을 함께 씁니다.
  * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
  */
 @Composable
@@ -129,6 +131,7 @@ fun WantedCenterTopAppBar(
     scrollableState: ScrollableState? = null,
     navigationIcon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
+    toolbar: @Composable (ColumnScope.() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     val isScrollBackground = remember { mutableStateOf(false) }
@@ -161,35 +164,40 @@ fun WantedCenterTopAppBar(
             }
         }
     ) {
-        when (variant) {
-            Variant.Normal -> {
-                WantedCenterTopAppBarLayout(
-                    modifier = Modifier.windowInsetsPadding(windowInsets),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
+        Column {
+            when (variant) {
+                Variant.Normal -> {
+                    WantedCenterTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                Variant.Display -> {
+                    WantedDisplayTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
+
+                else -> {
+                    WantedCenterTopAppBarLayout(
+                        modifier = Modifier.windowInsetsPadding(windowInsets),
+                        navigationIcon = navigationIcon,
+                        title = title,
+                        actions = actions
+                    )
+                }
             }
 
-            Variant.Display -> {
-                WantedDisplayTopAppBarLayout(
-                    modifier = Modifier.windowInsetsPadding(windowInsets),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
-            }
-
-            else -> {
-                WantedCenterTopAppBarLayout(
-                    modifier = Modifier.windowInsetsPadding(windowInsets),
-                    navigationIcon = navigationIcon,
-                    title = title,
-                    actions = actions
-                )
+            if (variant.supportsToolbar) {
+                toolbar?.invoke(this)
             }
         }
-    
     }
 }
 

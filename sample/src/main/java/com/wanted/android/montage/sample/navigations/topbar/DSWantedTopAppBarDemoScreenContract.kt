@@ -16,6 +16,7 @@ object DSWantedTopAppBarDemoScreenContract {
         data class SetTitleAlignCenter(val titleAlignCenter: Boolean) : DSWantedTopAppBarDemoEvent
         data class SetNavigationIcon(val navigationIcon: Boolean) : DSWantedTopAppBarDemoEvent
         data class SetActions(val actions: Boolean) : DSWantedTopAppBarDemoEvent
+        data class SetToolbar(val toolbar: Boolean) : DSWantedTopAppBarDemoEvent
         data class SetScrollable(val scrollable: Boolean) : DSWantedTopAppBarDemoEvent
         data class ShowCode(val show: Boolean) : DSWantedTopAppBarDemoEvent
         data object CopyCode : DSWantedTopAppBarDemoEvent
@@ -28,6 +29,7 @@ object DSWantedTopAppBarDemoScreenContract {
         val titleAlignCenter: Boolean = false,
         val navigationIcon: Boolean = true,
         val actions: Boolean = false,
+        val toolbar: Boolean = false,
         val scrollable: Boolean = false,
         val isShowCode: Boolean = false,
         val code: String = ""
@@ -50,6 +52,7 @@ object DSWantedTopAppBarDemoScreenContract {
             DSWantedTopAppBarDemoViewEvent
 
         data class OnChangeActions(val actions: Boolean) : DSWantedTopAppBarDemoViewEvent
+        data class OnChangeToolbar(val toolbar: Boolean) : DSWantedTopAppBarDemoViewEvent
         data class OnChangeScrollable(val scrollable: Boolean) : DSWantedTopAppBarDemoViewEvent
     }
 }

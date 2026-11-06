@@ -38,10 +38,12 @@ import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDem
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoViewState
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
+import com.wanted.android.wanted.design.actions.chip.WantedChip
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
+import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarToolbarSlot
 import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
@@ -99,6 +101,10 @@ fun DSWantedTopAppBarDemoScreen(
                 viewModel.setEvent(DSWantedTopAppBarDemoEvent.SetActions(viewEvent.actions))
             }
 
+            is DSWantedTopAppBarDemoViewEvent.OnChangeToolbar -> {
+                viewModel.setEvent(DSWantedTopAppBarDemoEvent.SetToolbar(viewEvent.toolbar))
+            }
+
             is DSWantedTopAppBarDemoViewEvent.OnChangeScrollable -> {
                 viewModel.setEvent(DSWantedTopAppBarDemoEvent.SetScrollable(viewEvent.scrollable))
             }
@@ -150,6 +156,9 @@ private fun DSWantedTopAppBarDemoScreenContent(
                             onClick = { }
                         )
                     }
+                } else null,
+                toolbar = if (viewState.toolbar) {
+                    { DSWantedTopAppBarToolbarSample() }
                 } else null,
                 actions = if (viewState.actions) {
                     {
@@ -278,6 +287,15 @@ private fun DSWantedTopAppBarDemoScreenContent(
                     }
                 )
             },
+            toolbar = {
+                DSWantedOptionSwitchCell(
+                    text = "toolbar : ${viewState.toolbar}",
+                    checkState = viewState.toolbar,
+                    onCheckChanged = { checked ->
+                        onViewEvent(DSWantedTopAppBarDemoViewEvent.OnChangeToolbar(checked))
+                    }
+                )
+            },
             preview = {
                 DSWantedTopAppBarPreview(viewState = viewState)
             },
@@ -312,6 +330,7 @@ private fun DSWantedTooltipDemoScreenLayout(
     scrollable: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit,
     actions: @Composable () -> Unit,
+    toolbar: @Composable () -> Unit,
     preview: @Composable () -> Unit,
     otherContent: @Composable ColumnScope.() -> Unit
 ) {
@@ -358,6 +377,7 @@ private fun DSWantedTooltipDemoScreenLayout(
             scrollable()
             navigationIcon()
             actions()
+            toolbar()
         }
 
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -394,6 +414,9 @@ private fun DSWantedTopAppBarPreview(
                     )
                 }
             } else null,
+            toolbar = if (viewState.toolbar) {
+                { DSWantedTopAppBarToolbarSample() }
+            } else null,
             actions = if (viewState.actions) {
                 {
                     WantedTopAppBarIconButton(
@@ -410,6 +433,20 @@ private fun DSWantedTopAppBarPreview(
         )
     }
 }
+
+@Composable
+private fun DSWantedTopAppBarToolbarSample() {
+    WantedTopAppBarToolbarSlot {
+        repeat(TOOLBAR_SAMPLE_CHIP_COUNT) { index ->
+            WantedChip(
+                text = "Chip ${index + 1}",
+                onClick = { }
+            )
+        }
+    }
+}
+
+private const val TOOLBAR_SAMPLE_CHIP_COUNT = 8
 
 @DevicePreviews
 @Composable

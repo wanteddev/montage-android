@@ -25,7 +25,7 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
      * 다음 배치 등록 시: 아래 항목들의 `isNew = true` 를 제거해 일반 목록으로 옮기고,
      * 새로 추가되는 항목에 `isNew = true` 를 부여한다.
      */
-    DSWantedIconItem(R.drawable.icon_normal_hash_tag, listOf("해시태그", "태그", "샵"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_video_fill, listOf("비디오", "동영상", "영상", "카메라"), isNew = true),
 
     DSWantedIconItem(R.drawable.icon_normal_blank, listOf("빈", "공백")),
     DSWantedIconItem(R.drawable.icon_normal_align_center, listOf("가운데정렬", "정렬", "중앙")),
@@ -166,6 +166,8 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
     DSWantedIconItem(R.drawable.icon_normal_filter_fill, listOf("필터", "정렬")),
     DSWantedIconItem(R.drawable.icon_normal_fire, listOf("불", "인기", "핫")),
     DSWantedIconItem(R.drawable.icon_normal_fire_fill, listOf("불", "인기", "핫")),
+    DSWantedIconItem(R.drawable.icon_normal_flask, listOf("플라스크", "실험", "비커")),
+    DSWantedIconItem(R.drawable.icon_normal_flask_fill, listOf("플라스크", "실험", "비커")),
     DSWantedIconItem(R.drawable.icon_normal_flip_backword, listOf("되돌리기", "실행취소", "뒤집기")),
     DSWantedIconItem(R.drawable.icon_normal_folder, listOf("폴더", "파일")),
     DSWantedIconItem(R.drawable.icon_normal_folder_fill, listOf("폴더", "파일")),
@@ -177,6 +179,7 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
     DSWantedIconItem(R.drawable.icon_normal_graduation, listOf("졸업", "학사모", "교육")),
     DSWantedIconItem(R.drawable.icon_normal_graduation_fill, listOf("졸업", "학사모", "교육")),
     DSWantedIconItem(R.drawable.icon_normal_handle, listOf("핸들", "이동", "드래그")),
+    DSWantedIconItem(R.drawable.icon_normal_hash_tag, listOf("해시태그", "태그", "샵")),
     DSWantedIconItem(R.drawable.icon_normal_heart, listOf("하트", "좋아요", "찜")),
     DSWantedIconItem(R.drawable.icon_normal_heart_fill, listOf("하트", "좋아요", "찜")),
     DSWantedIconItem(R.drawable.icon_normal_heart_in_heart, listOf("하트", "좋아요")),
