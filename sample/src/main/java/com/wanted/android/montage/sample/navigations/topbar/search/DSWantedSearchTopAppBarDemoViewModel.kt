@@ -55,6 +55,13 @@ class DSWantedSearchTopAppBarDemoViewModel @Inject constructor(
                 }
             }
 
+            is DSWantedSearchTopAppBarDemoEvent.SetToolbar -> {
+                setState {
+                    val newState = copy(toolbar = event.toolbar)
+                    newState.copy(code = generateCode(newState))
+                }
+            }
+
             is DSWantedSearchTopAppBarDemoEvent.SetActions -> {
                 setState {
                     val newState = copy(actions = event.actions)
@@ -92,6 +99,18 @@ class DSWantedSearchTopAppBarDemoViewModel @Inject constructor(
 
         if (!state.enabled) {
             params.add("enabled = false")
+        }
+
+        if (state.toolbar) {
+            params.add(
+                """toolbar = {
+                    WantedTopAppBarToolbarSlot {
+                        repeat($TOOLBAR_SAMPLE_CHIP_COUNT) { index ->
+                            WantedChip(text = "Chip ${'$'}{index + 1}", onClick = { /* Handle chip */ })
+                        }
+                    }
+                }"""
+            )
         }
 
         if (state.actions) {

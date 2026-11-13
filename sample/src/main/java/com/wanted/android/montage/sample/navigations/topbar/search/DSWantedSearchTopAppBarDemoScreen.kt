@@ -29,11 +29,13 @@ import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearc
 import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearchTopAppBarDemoScreenContract.DSWantedSearchTopAppBarDemoViewState
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
+import com.wanted.android.wanted.design.actions.chip.WantedChip
 import com.wanted.android.wanted.design.input.search.WantedSearchFieldDefaults.Size
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextField
 import com.wanted.android.wanted.design.navigations.topbar.WantedSearchTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
+import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarToolbarSlot
 import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
@@ -90,6 +92,10 @@ fun DSWantedSearchTopAppBarDemoScreen(
                 viewModel.setEvent(DSWantedSearchTopAppBarDemoEvent.SetEnabled(viewEvent.enabled))
             }
 
+            is DSWantedSearchTopAppBarDemoViewEvent.OnChangeToolbar -> {
+                viewModel.setEvent(DSWantedSearchTopAppBarDemoEvent.SetToolbar(viewEvent.toolbar))
+            }
+
             is DSWantedSearchTopAppBarDemoViewEvent.OnChangeActions -> {
                 viewModel.setEvent(DSWantedSearchTopAppBarDemoEvent.SetActions(viewEvent.actions))
             }
@@ -136,6 +142,9 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
                 placeholder = viewState.placeholder,
                 size = viewState.size,
                 enabled = viewState.enabled,
+                toolbar = if (viewState.toolbar) {
+                    { DSWantedSearchTopAppBarToolbarSample() }
+                } else null,
                 actions = if (viewState.actions) {
                     {
                         WantedTopAppBarIconButton(
@@ -239,6 +248,15 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
                     }
                 )
             },
+            toolbar = {
+                DSWantedOptionSwitchCell(
+                    text = "toolbar : ${viewState.toolbar}",
+                    checkState = viewState.toolbar,
+                    onCheckChanged = { checked ->
+                        onViewEvent(DSWantedSearchTopAppBarDemoViewEvent.OnChangeToolbar(checked))
+                    }
+                )
+            },
             actions = {
                 DSWantedOptionSwitchCell(
                     text = "actions : ${viewState.actions}",
@@ -259,6 +277,7 @@ private fun DSWantedSearchTopAppBarDemoScreenLayout(
     size: @Composable () -> Unit,
     background: @Composable () -> Unit,
     enabled: @Composable () -> Unit,
+    toolbar: @Composable () -> Unit,
     actions: @Composable () -> Unit
 ) {
     Column(
@@ -286,10 +305,25 @@ private fun DSWantedSearchTopAppBarDemoScreenLayout(
             size()
             background()
             enabled()
+            toolbar()
             actions()
         }
     }
 }
+
+@Composable
+private fun DSWantedSearchTopAppBarToolbarSample() {
+    WantedTopAppBarToolbarSlot {
+        repeat(TOOLBAR_SAMPLE_CHIP_COUNT) { index ->
+            WantedChip(
+                text = "Chip ${index + 1}",
+                onClick = { }
+            )
+        }
+    }
+}
+
+internal const val TOOLBAR_SAMPLE_CHIP_COUNT = 8
 
 private val SIZE_LIST = listOf(Size.Large, Size.Medium)
 

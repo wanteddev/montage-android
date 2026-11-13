@@ -16,6 +16,7 @@ object DSWantedSearchTopAppBarDemoScreenContract {
         data class SetSize(val size: Size) : DSWantedSearchTopAppBarDemoEvent
         data class SetBackground(val background: Boolean) : DSWantedSearchTopAppBarDemoEvent
         data class SetEnabled(val enabled: Boolean) : DSWantedSearchTopAppBarDemoEvent
+        data class SetToolbar(val toolbar: Boolean) : DSWantedSearchTopAppBarDemoEvent
         data class SetActions(val actions: Boolean) : DSWantedSearchTopAppBarDemoEvent
         data class ShowCode(val show: Boolean) : DSWantedSearchTopAppBarDemoEvent
         data object CopyCode : DSWantedSearchTopAppBarDemoEvent
@@ -28,6 +29,7 @@ object DSWantedSearchTopAppBarDemoScreenContract {
         val size: Size = Size.Medium,
         val background: Boolean = true,
         val enabled: Boolean = true,
+        val toolbar: Boolean = false,
         val actions: Boolean = false,
         val isShowCode: Boolean = false,
         val code: String = ""
@@ -50,6 +52,7 @@ object DSWantedSearchTopAppBarDemoScreenContract {
             DSWantedSearchTopAppBarDemoViewEvent
 
         data class OnChangeEnabled(val enabled: Boolean) : DSWantedSearchTopAppBarDemoViewEvent
+        data class OnChangeToolbar(val toolbar: Boolean) : DSWantedSearchTopAppBarDemoViewEvent
         data class OnChangeActions(val actions: Boolean) : DSWantedSearchTopAppBarDemoViewEvent
     }
 }

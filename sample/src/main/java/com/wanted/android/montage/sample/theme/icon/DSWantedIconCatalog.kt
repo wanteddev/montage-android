@@ -25,7 +25,7 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
      * 다음 배치 등록 시: 아래 항목들의 `isNew = true` 를 제거해 일반 목록으로 옮기고,
      * 새로 추가되는 항목에 `isNew = true` 를 부여한다.
      */
-    DSWantedIconItem(R.drawable.icon_normal_video_fill, listOf("비디오", "동영상", "영상", "카메라"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_video, listOf("비디오", "동영상", "영상", "카메라"), isNew = true),
 
     DSWantedIconItem(R.drawable.icon_normal_blank, listOf("빈", "공백")),
     DSWantedIconItem(R.drawable.icon_normal_align_center, listOf("가운데정렬", "정렬", "중앙")),
@@ -54,6 +54,7 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
     DSWantedIconItem(R.drawable.icon_normal_bubble_plus, listOf("말풍선추가", "채팅")),
     DSWantedIconItem(R.drawable.icon_normal_bubble_plus_fill, listOf("말풍선추가", "채팅")),
     DSWantedIconItem(R.drawable.icon_normal_bulb, listOf("전구", "아이디어")),
+    DSWantedIconItem(R.drawable.icon_normal_bulb_fill, listOf("전구", "아이디어")),
     DSWantedIconItem(R.drawable.icon_normal_business_bag, listOf("서류가방", "가방", "비즈니스")),
     DSWantedIconItem(R.drawable.icon_normal_business_bag_fill, listOf("서류가방", "가방", "비즈니스")),
     DSWantedIconItem(R.drawable.icon_normal_calendar, listOf("달력", "캘린더", "일정")),
@@ -118,6 +119,7 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
     DSWantedIconItem(R.drawable.icon_normal_circle_plus_fill, listOf("추가", "더하기", "원")),
     DSWantedIconItem(R.drawable.icon_normal_circle_plus_opaque, listOf("추가", "더하기", "원", "불투명")),
     DSWantedIconItem(R.drawable.icon_normal_circle_point, listOf("점", "포인트", "원")),
+    DSWantedIconItem(R.drawable.icon_normal_circle_point_fill, listOf("점", "포인트", "원")),
     DSWantedIconItem(R.drawable.icon_normal_circle_question, listOf("물음표", "질문", "도움말")),
     DSWantedIconItem(R.drawable.icon_normal_circle_question_fill, listOf("물음표", "질문", "도움말")),
     DSWantedIconItem(R.drawable.icon_normal_circle_question_opaque, listOf("물음표", "질문", "원", "불투명")),
@@ -251,6 +253,8 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
     DSWantedIconItem(R.drawable.icon_normal_position_review, listOf("포지션", "공고", "검토", "리뷰")),
     DSWantedIconItem(R.drawable.icon_normal_plus, listOf("추가", "더하기", "플러스")),
     DSWantedIconItem(R.drawable.icon_normal_plus_thick, listOf("추가", "더하기", "플러스")),
+    DSWantedIconItem(R.drawable.icon_normal_pouch, listOf("주머니", "파우치", "복주머니", "보상")),
+    DSWantedIconItem(R.drawable.icon_normal_pouch_fill, listOf("주머니", "파우치", "복주머니", "보상")),
     DSWantedIconItem(R.drawable.icon_normal_print, listOf("인쇄", "프린트")),
     DSWantedIconItem(R.drawable.icon_normal_question, listOf("물음표", "질문", "도움말")),
     DSWantedIconItem(R.drawable.icon_normal_quote, listOf("인용", "따옴표")),
@@ -302,6 +306,7 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
     DSWantedIconItem(R.drawable.icon_normal_verified_check_fill, listOf("인증", "확인", "체크")),
     DSWantedIconItem(R.drawable.icon_normal_verified_star, listOf("인증", "별")),
     DSWantedIconItem(R.drawable.icon_normal_verified_star_fill, listOf("인증", "별")),
+    DSWantedIconItem(R.drawable.icon_normal_video_fill, listOf("비디오", "동영상", "영상", "카메라")),
     DSWantedIconItem(R.drawable.icon_normal_write, listOf("작성", "쓰기", "글쓰기")),
     DSWantedIconItem(R.drawable.icon_normal_sun, listOf("해", "태양", "라이트모드")),
     DSWantedIconItem(R.drawable.icon_normal_hourglass, listOf("모래시계", "시간", "대기")),
