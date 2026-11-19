@@ -9,6 +9,12 @@ import com.wanted.android.wanted.design.input.formcontrol.WantedFormControlDefau
 object DSWantedFormControlDemoScreenContract {
     const val DEFAULT_LABEL_TEXT = "라벨"
 
+    /** 그룹 예시에서 함께 묶는 두 번째 FormControl 의 라벨입니다. */
+    const val GROUP_SECOND_LABEL_TEXT = "담당자 연락처"
+
+    /** 그룹 예시에서 labelWidth 를 고정할 때 쓰는 폭(dp)입니다. */
+    const val GROUP_FIXED_LABEL_WIDTH_DP = 80
+
     sealed interface DSWantedFormControlDemoEvent : BaseEvent {
         data class InitState(
             val viewState: DSWantedFormControlDemoViewState
@@ -25,6 +31,8 @@ object DSWantedFormControlDemoScreenContract {
         data class SetDescription(val description: Boolean) : DSWantedFormControlDemoEvent
         data class SetAccessory(val accessory: Boolean) : DSWantedFormControlDemoEvent
         data class SetEnabled(val enabled: Boolean) : DSWantedFormControlDemoEvent
+        data class SetGroup(val group: Boolean) : DSWantedFormControlDemoEvent
+        data class SetGroupLabelWidth(val fixed: Boolean) : DSWantedFormControlDemoEvent
 
         data class SetSize(val size: WantedFormControlDefaults.Size) : DSWantedFormControlDemoEvent
         data class SetStatus(val status: WantedFormControlDefaults.Status) : DSWantedFormControlDemoEvent
@@ -47,6 +55,8 @@ object DSWantedFormControlDemoScreenContract {
         val description: Boolean = true,
         val accessory: Boolean = false,
         val enabled: Boolean = true,
+        val group: Boolean = false,
+        val groupLabelWidthFixed: Boolean = false,
 
         val size: WantedFormControlDefaults.Size = WantedFormControlDefaults.Size.Large,
         val status: WantedFormControlDefaults.Status = WantedFormControlDefaults.Status.Normal,
@@ -72,6 +82,8 @@ object DSWantedFormControlDemoScreenContract {
         data class OnChangeDescription(val description: Boolean) : DSWantedFormControlDemoViewEvent
         data class OnChangeAccessory(val accessory: Boolean) : DSWantedFormControlDemoViewEvent
         data class OnChangeEnabled(val enabled: Boolean) : DSWantedFormControlDemoViewEvent
+        data class OnChangeGroup(val group: Boolean) : DSWantedFormControlDemoViewEvent
+        data class OnChangeGroupLabelWidth(val fixed: Boolean) : DSWantedFormControlDemoViewEvent
 
         data class OnChangeSize(
             val size: WantedFormControlDefaults.Size
