@@ -6,14 +6,17 @@ on:
   workflow_run:
     workflows: [ "Update Design System Docs on Merge" ]
     types: [ completed ]
-    branches: [ main ]
+    # 문서 워크플로우가 PR 머지(pull_request_target)로 실행되면 head_branch 가 release/* 라서 branches 필터를 두지 않는다.
+    # main 대상 PR 머지만 문서 워크플로우를 실행하므로 범위는 같다.
+  # 문서 워크플로우를 수동(workflow_dispatch)으로 돌린 경우에는 아래 조건에 걸리지 않아 자동 배포되지 않는다.
+  # 문서 복구 후에는 이 워크플로우도 수동 실행한다.
   workflow_dispatch:
 
 jobs:
   sync-and-deploy:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request_target')
     runs-on: ubuntu-latest
     steps:
       # actions/checkout 은 엔터프라이즈 정책으로 막혀 있어 git clone 으로 받는다.
