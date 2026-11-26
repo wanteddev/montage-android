@@ -25,14 +25,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.input.framedstyle.DSWantedFramedStyleDemoScreenContract.DSWantedFramedStyleDemoEvent
 import com.wanted.android.montage.sample.input.framedstyle.DSWantedFramedStyleDemoScreenContract.DSWantedFramedStyleDemoSideEffect
 import com.wanted.android.montage.sample.input.framedstyle.DSWantedFramedStyleDemoScreenContract.DSWantedFramedStyleDemoViewEvent
 import com.wanted.android.montage.sample.input.framedstyle.DSWantedFramedStyleDemoScreenContract.DSWantedFramedStyleDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
+import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShadowStyle
 import com.wanted.android.wanted.design.input.framedstyle.WantedFramedStyleStatus
 import com.wanted.android.wanted.design.input.framedstyle.framedStyle
 import com.wanted.android.wanted.design.input.select.WantedSelect
@@ -67,6 +70,14 @@ fun DSWantedFramedStyleDemoScreen(
             is DSWantedFramedStyleDemoViewEvent.OnClickBack -> onClickBack()
             is DSWantedFramedStyleDemoViewEvent.OnChangeEnable -> {
                 viewModel.setEvent(DSWantedFramedStyleDemoEvent.SetEnabled(viewEvent.enabled))
+            }
+
+            is DSWantedFramedStyleDemoViewEvent.OnChangeSelected -> {
+                viewModel.setEvent(DSWantedFramedStyleDemoEvent.SetSelected(viewEvent.selected))
+            }
+
+            is DSWantedFramedStyleDemoViewEvent.OnChangeShadow -> {
+                viewModel.setEvent(DSWantedFramedStyleDemoEvent.SetShadow(viewEvent.shadow))
             }
 
             is DSWantedFramedStyleDemoViewEvent.OnClickCopyCode -> {
@@ -110,7 +121,7 @@ private fun DSWantedFramedStyleDemoScreenContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            WantedBackTopAppBar(title = "WantedButton") {
+            WantedBackTopAppBar(title = "WantedFramedStyle") {
                 onViewEvent(DSWantedFramedStyleDemoViewEvent.OnClickBack)
             }
         },
@@ -143,8 +154,10 @@ private fun DSWantedFramedStyleDemoScreenContent(
                         Modifier
                             .size(50.dp)
                             .framedStyle(
+                                selected = viewState.selected,
                                 status = viewState.status,
-                                enabled = viewState.enabled
+                                enabled = viewState.enabled,
+                                shadow = if (viewState.shadow) WantedShadowStyle.XSmall() else null
                             )
                     )
 
@@ -160,7 +173,7 @@ private fun DSWantedFramedStyleDemoScreenContent(
             status = {
                 WantedSelect(
                     value = "status : ${viewState.status.name}",
-                    selectedValue = viewState.selectedStatus.name,
+                    selectedValue = viewState.status.name,
                     selectValueList = WantedFramedStyleStatus.entries.map { it.name },
                     onSelect = {
                         onViewEvent(
@@ -177,7 +190,25 @@ private fun DSWantedFramedStyleDemoScreenContent(
                         onViewEvent(DSWantedFramedStyleDemoViewEvent.OnChangeEnable(it))
                     }
                 )
-            }
+            },
+            selected = {
+                DSWantedOptionSwitchCell(
+                    text = "selected : ${viewState.selected}",
+                    checkState = viewState.selected,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedFramedStyleDemoViewEvent.OnChangeSelected(it))
+                    }
+                )
+            },
+            shadow = {
+                DSWantedOptionSwitchCell(
+                    text = "shadow : ${viewState.shadow}",
+                    checkState = viewState.shadow,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedFramedStyleDemoViewEvent.OnChangeShadow(it))
+                    }
+                )
+            },
         )
     }
 }
@@ -188,7 +219,9 @@ private fun DSWantedFramedStyleDemoScreenLayout(
     modifier: Modifier,
     preview: @Composable () -> Unit,
     status: @Composable () -> Unit,
+    selected: @Composable () -> Unit,
     enabled: @Composable () -> Unit,
+    shadow: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier.padding(horizontal = 20.dp),
@@ -205,6 +238,7 @@ private fun DSWantedFramedStyleDemoScreenLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -235,9 +269,15 @@ private fun DSWantedFramedStyleDemoScreenLayout(
                 )
             )
 
+            DSWantedCheckerBackgroundOptionCell()
+
+            selected()
+
             status()
 
             enabled()
+
+            shadow()
         }
     }
 }

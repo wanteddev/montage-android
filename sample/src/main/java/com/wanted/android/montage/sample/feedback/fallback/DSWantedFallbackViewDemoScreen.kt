@@ -26,12 +26,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoEvent
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoSideEffect
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoViewEvent
 import com.wanted.android.montage.sample.feedback.fallback.DSWantedFallbackViewDemoScreenContract.DSWantedFallbackViewDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.fallback.WantedFallbackButtonVariant
@@ -310,6 +312,7 @@ private fun DSWantedFallbackViewDemoScreenLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = PREVIEW_MAX_HEIGHT)
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -342,6 +345,8 @@ private fun DSWantedFallbackViewDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             heading()
             description()

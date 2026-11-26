@@ -12,6 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import com.wanted.android.designsystem.R
 import com.wanted.android.wanted.design.actions.button.WantedButton
@@ -24,6 +27,7 @@ import com.wanted.android.wanted.design.input.input.control.WantedCheckMark
 import com.wanted.android.wanted.design.input.input.control.WantedRadioButton
 import com.wanted.android.wanted.design.input.select.WantedSelectData
 import com.wanted.android.wanted.design.input.select.WantedSelectDefaults
+import com.wanted.android.wanted.design.input.select.WantedSelectTestTags
 import com.wanted.android.wanted.design.presentation.modal.WantedModalContract.ModalType
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedBottomSheetDefaults
 import com.wanted.android.wanted.design.presentation.modal.bottomsheet.WantedModalBottomSheet
@@ -51,7 +55,11 @@ internal fun WantedSelectBottomSheet(
         sheetDefault = WantedBottomSheetDefaults.getWithoutContentPadding(),
         content = {
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
+                // 바텀시트는 별도 윈도우라 화면 루트 설정이 전파되지 않는다 — 항목 태그(WantedSelectTestTags)를
+                // resource-id 로 노출해 E2E 가 셀을 지목하게 한다(셀 글자는 접근성 트리에 안 나온다).
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { testTagsAsResourceId = true },
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
@@ -65,7 +73,7 @@ internal fun WantedSelectBottomSheet(
                         }
                     }
                     WantedListCell(
-                        modifier = Modifier,
+                        modifier = Modifier.testTag(WantedSelectTestTags.item(item)),
                         // Select 내부 셀은 variant = Inset 고정이며 밖으로 노출하지 않는다(Figma 4.0.0 사용처 정책).
                         variant = WantedListCellDefaults.Variant.Inset,
                         verticalPadding = WantedListCellDefaults.VerticalPadding.Medium,

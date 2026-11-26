@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
 import com.wanted.android.montage.sample.util.clickOnce
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.base.dropshadow.DSWantedDropShadowDemoScreenContract.DSWantedDropShadowDemoEvent.CopyCode
 import com.wanted.android.montage.sample.base.dropshadow.DSWantedDropShadowDemoScreenContract.DSWantedDropShadowDemoEvent.SetContentBackground
@@ -39,6 +40,7 @@ import com.wanted.android.montage.sample.base.dropshadow.DSWantedDropShadowDemoS
 import com.wanted.android.montage.sample.base.dropshadow.DSWantedDropShadowDemoScreenContract.DSWantedDropShadowDemoViewState
 import com.wanted.android.montage.sample.base.dropshadow.DSWantedDropShadowDemoScreenContract.ShadowPreviewBackground
 import com.wanted.android.montage.sample.base.dropshadow.DSWantedDropShadowDemoScreenContract.ShadowSampleContentBackground
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShadowStyle
@@ -245,6 +247,7 @@ private fun DSWantedDropShadowDemoScreenLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -274,6 +277,8 @@ private fun DSWantedDropShadowDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             style()
             background()

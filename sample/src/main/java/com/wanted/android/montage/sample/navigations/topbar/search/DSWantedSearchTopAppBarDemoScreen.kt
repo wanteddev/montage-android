@@ -1,6 +1,7 @@
 package com.wanted.android.montage.sample.navigations.topbar.search
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -12,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -21,12 +23,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearchTopAppBarDemoScreenContract.DSWantedSearchTopAppBarDemoEvent
 import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearchTopAppBarDemoScreenContract.DSWantedSearchTopAppBarDemoSideEffect
 import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearchTopAppBarDemoScreenContract.DSWantedSearchTopAppBarDemoViewEvent
 import com.wanted.android.montage.sample.navigations.topbar.search.DSWantedSearchTopAppBarDemoScreenContract.DSWantedSearchTopAppBarDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedChip
@@ -132,34 +136,36 @@ private fun DSWantedSearchTopAppBarDemoScreenContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            WantedSearchTopAppBar(
-                text = viewState.searchText,
-                backgroundColor = if (viewState.background) {
-                    colorResource(R.color.background_neutral_primary)
-                } else {
-                    colorResource(R.color.transparent)
-                },
-                placeholder = viewState.placeholder,
-                size = viewState.size,
-                enabled = viewState.enabled,
-                toolbar = if (viewState.toolbar) {
-                    { DSWantedSearchTopAppBarToolbarSample() }
-                } else null,
-                actions = if (viewState.actions) {
-                    {
-                        WantedTopAppBarIconButton(
-                            painter = painterResource(R.drawable.icon_normal_share),
-                            onClick = { }
-                        )
+            Box(modifier = Modifier.demoCheckerBackground(shape = RectangleShape)) {
+                WantedSearchTopAppBar(
+                    text = viewState.searchText,
+                    backgroundColor = if (viewState.background) {
+                        colorResource(R.color.background_neutral_primary)
+                    } else {
+                        colorResource(R.color.transparent)
+                    },
+                    placeholder = viewState.placeholder,
+                    size = viewState.size,
+                    enabled = viewState.enabled,
+                    toolbar = if (viewState.toolbar) {
+                        { DSWantedSearchTopAppBarToolbarSample() }
+                    } else null,
+                    actions = if (viewState.actions) {
+                        {
+                            WantedTopAppBarIconButton(
+                                painter = painterResource(R.drawable.icon_normal_share),
+                                onClick = { }
+                            )
+                        }
+                    } else null,
+                    onClickBack = {
+                        onViewEvent(DSWantedSearchTopAppBarDemoViewEvent.OnClickBack)
+                    },
+                    onValueChange = { text ->
+                        onViewEvent(DSWantedSearchTopAppBarDemoViewEvent.OnSearchTextChange(text))
                     }
-                } else null,
-                onClickBack = {
-                    onViewEvent(DSWantedSearchTopAppBarDemoViewEvent.OnClickBack)
-                },
-                onValueChange = { text ->
-                    onViewEvent(DSWantedSearchTopAppBarDemoViewEvent.OnSearchTextChange(text))
-                }
-            )
+                )
+            }
         },
         bottomBar = {
             WantedActionArea(
@@ -300,6 +306,8 @@ private fun DSWantedSearchTopAppBarDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             placeholder()
             size()

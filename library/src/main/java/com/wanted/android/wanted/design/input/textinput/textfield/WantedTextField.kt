@@ -105,7 +105,7 @@ import com.wanted.android.wanted.design.util.clickOnce
  *
  * @param value TextFieldValue: 입력된 텍스트와 커서·선택 영역 상태를 포함한 값입니다. single line 이고 포커스가 없으면 넘치는 값은 말줄임(…) 처리됩니다.
  * @param placeholder String: 값이 비어 있을 때 힌트로 표시될 문자열입니다.
- * @param error Boolean: 에러(Negative) 상태 여부입니다. true 면 red ring 과 border 를 표시합니다.
+ * @param error Boolean: 에러(Negative) 상태 여부입니다. true 면 border 를 red 로 표시하고, 포커스 시 red ring 을 표시합니다.
  * @param enabled Boolean: 입력 가능 여부입니다.
  * @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
  * @param complete Boolean: 완료(Positive) 상태 여부입니다. 포커스가 없을 때 우측에 체크 아이콘을 표시합니다.
@@ -187,21 +187,10 @@ fun WantedTextField(
                 color = if (enabled) background else DesignSystemTheme.colors.surfaceNeutralTertiary,
                 shape = shape
             )
-            // Modifier.border 는 content 를 그린 뒤 자기 stroke 를 덧그리므로 체인에서 먼저 선언한 border 가
-            // 위에 얹힌다. 지정 투명도(43%/52%)를 그대로 보이려면 line border 가 맨 위(= 먼저 선언)여야 하고,
-            // underlay(outer)는 그 아래에 둔다. 순서가 뒤집히면 outer 43% 가 line 색을 57% 로 깎는다.
+            // Figma(Textinput/Resource/Interaction): 상태 색 1px border + 바깥 Ring 만 그리고, 그 아래 흰 border 는 없다.
             .border(
                 shape = shape,
                 color = containerBorderColor(
-                    enabled = enabled,
-                    error = error,
-                    focused = focused.value
-                ),
-                width = borderWidth
-            )
-            .border(
-                shape = shape,
-                color = containerOuterBorderColor(
                     enabled = enabled,
                     error = error,
                     focused = focused.value
@@ -312,18 +301,6 @@ private fun coerceWordCount(
     newValue.text.length <= maxWordCount -> newValue
     newValue.text.length < currentValue.text.length -> newValue
     else -> currentValue
-}
-
-/** #4 Container 바깥쪽 1px border(underlay) 색상입니다. line border 아래에 깔려 색을 깎지 않습니다. */
-@Composable
-private fun containerOuterBorderColor(
-    enabled: Boolean,
-    error: Boolean,
-    focused: Boolean
-): Color = when {
-    !enabled -> DesignSystemTheme.colors.transparent
-    error || focused -> DesignSystemTheme.colors.backgroundNeutralPrimary.copy(alpha = OPACITY_43)
-    else -> DesignSystemTheme.colors.transparent
 }
 
 /** #4 Container border 색상입니다. Negative + Focused 는 opacity 를 52% 로 올려 강조합니다. */

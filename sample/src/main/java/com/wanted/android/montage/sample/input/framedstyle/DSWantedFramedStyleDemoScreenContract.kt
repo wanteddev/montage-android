@@ -11,6 +11,8 @@ object DSWantedFramedStyleDemoScreenContract {
         data class InitState(val viewState: DSWantedFramedStyleDemoViewState) : DSWantedFramedStyleDemoEvent
         data class SetStatus(val status: WantedFramedStyleStatus) : DSWantedFramedStyleDemoEvent
         data class SetEnabled(val enabled: Boolean) : DSWantedFramedStyleDemoEvent
+        data class SetSelected(val selected: Boolean) : DSWantedFramedStyleDemoEvent
+        data class SetShadow(val shadow: Boolean) : DSWantedFramedStyleDemoEvent
         data class ShowCode(val show: Boolean) : DSWantedFramedStyleDemoEvent
         data object CopyCode : DSWantedFramedStyleDemoEvent
     }
@@ -19,7 +21,8 @@ object DSWantedFramedStyleDemoScreenContract {
         val isLoading: Boolean = true,
         val status: WantedFramedStyleStatus = WantedFramedStyleStatus.Normal,
         val enabled: Boolean = true,
-        val selectedStatus: WantedFramedStyleStatus = WantedFramedStyleStatus.Normal,
+        val selected: Boolean = false,
+        val shadow: Boolean = false,
         val isShowCode: Boolean = false,
         val code: String = ""
     ) : BaseViewState
@@ -34,6 +37,8 @@ object DSWantedFramedStyleDemoScreenContract {
         data object OnClickShowCode : DSWantedFramedStyleDemoViewEvent
         data object OnClickCopyCode : DSWantedFramedStyleDemoViewEvent
         data class OnChangeEnable(val enabled: Boolean) : DSWantedFramedStyleDemoViewEvent
+        data class OnChangeSelected(val selected: Boolean) : DSWantedFramedStyleDemoViewEvent
+        data class OnChangeShadow(val shadow: Boolean) : DSWantedFramedStyleDemoViewEvent
         data class OnSelectedStatus(val status: WantedFramedStyleStatus) : DSWantedFramedStyleDemoViewEvent
 
     }

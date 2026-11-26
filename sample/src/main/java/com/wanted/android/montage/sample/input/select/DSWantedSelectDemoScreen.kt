@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.input.select.DSWantedSelectDemoScreenContract.DSWantedSelectDemoEvent
@@ -43,6 +44,7 @@ import com.wanted.android.montage.sample.input.select.DSWantedSelectDemoViewMode
 import com.wanted.android.montage.sample.input.select.DSWantedSelectDemoViewModel.Companion.LABEL
 import com.wanted.android.montage.sample.input.select.DSWantedSelectDemoViewModel.Companion.PLACE_HOLDER
 import com.wanted.android.montage.sample.input.select.DSWantedSelectDemoViewModel.Companion.SELECT_VALUE_LIST
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.formcontrol.WantedFormControl
@@ -524,6 +526,7 @@ private fun DSWantedSelectDemoScreenLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -546,6 +549,8 @@ private fun DSWantedSelectDemoScreenLayout(
         ) {
 
             DSWantedSelectSectionTitle(text = "Option")
+
+            DSWantedCheckerBackgroundOptionCell()
 
             mode()
 

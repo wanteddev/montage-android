@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.actions.iconbutton.DSWantedIconButtonDemoScreenContract.DSWantedIconButtonDemoEvent
@@ -33,6 +34,7 @@ import com.wanted.android.montage.sample.actions.iconbutton.DSWantedIconButtonDe
 import com.wanted.android.montage.sample.actions.iconbutton.DSWantedIconButtonDemoScreenContract.DSWantedIconButtonDemoViewEvent
 import com.wanted.android.montage.sample.actions.iconbutton.DSWantedIconButtonDemoScreenContract.DSWantedIconButtonDemoViewState
 import com.wanted.android.montage.sample.actions.iconbutton.DSWantedIconButtonDemoScreenContract.IconButtonVariant
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.iconbutton.IconButtonBadgePosition
 import com.wanted.android.wanted.design.actions.button.iconbutton.IconButtonInteractionEffect
@@ -190,6 +192,7 @@ private fun DSWantedIconButtonDemoScreenContent(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .demoCheckerBackground()
                     .border(
                         width = 1.dp,
                         color = colorResource(R.color.line_neutral_primary),
@@ -234,6 +237,8 @@ private fun DSWantedIconButtonDemoScreenContent(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             WantedSelect(
                 value = "Variant : ${viewState.variant}",

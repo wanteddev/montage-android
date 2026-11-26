@@ -18,6 +18,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.presentation.bottomsheet.DSWantedBottomSheetDemoScreenContract.DSWantedBottomSheetDemoEvent
@@ -385,6 +386,8 @@ private fun DSWantedBottomSheetDemoScreenLayout(
                 style = DesignSystemTheme.typography.heading2Bold
             )
         )
+
+        DSWantedCheckerBackgroundOptionCell()
         type()
         dismissOnClickOutside()
         navigationVariant()

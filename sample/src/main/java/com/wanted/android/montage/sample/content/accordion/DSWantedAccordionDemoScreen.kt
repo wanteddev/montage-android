@@ -27,12 +27,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.content.accordion.DSWantedAccordionDemoScreenContract.DSWantedAccordionDemoEvent
 import com.wanted.android.montage.sample.content.accordion.DSWantedAccordionDemoScreenContract.DSWantedAccordionDemoSideEffect
 import com.wanted.android.montage.sample.content.accordion.DSWantedAccordionDemoScreenContract.DSWantedAccordionDemoViewEvent
 import com.wanted.android.montage.sample.content.accordion.DSWantedAccordionDemoScreenContract.DSWantedAccordionDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.contents.accordion.WantedAccordion
@@ -312,6 +314,7 @@ private fun DSWantedAccordionDemoScreenLayout(
 		Box(
 			modifier = Modifier
 				.fillMaxWidth()
+				.demoCheckerBackground()
 				.border(
 					width = 1.dp,
 					color = colorResource(R.color.line_neutral_primary),
@@ -340,6 +343,8 @@ private fun DSWantedAccordionDemoScreenLayout(
 					style = DesignSystemTheme.typography.heading2Bold
 				)
 			)
+
+			DSWantedCheckerBackgroundOptionCell()
 
 			isExpanded()
 			description()

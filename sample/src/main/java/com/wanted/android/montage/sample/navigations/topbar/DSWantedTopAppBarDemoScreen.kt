@@ -30,12 +30,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoEvent
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoSideEffect
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoViewEvent
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoViewState
+import com.wanted.android.montage.sample.util.LocalDemoCheckerBackground
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.chip.WantedChip
@@ -351,7 +354,9 @@ private fun DSWantedTooltipDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
-            preview()
+            Box(modifier = Modifier.fillMaxWidth().demoCheckerBackground()) {
+                preview()
+            }
         }
 
         Column(
@@ -370,6 +375,8 @@ private fun DSWantedTooltipDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             type()
             background()
@@ -394,7 +401,14 @@ private fun DSWantedTopAppBarPreview(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DesignSystemTheme.colors.backgroundNeutralSecondary)
+            // 이 배경은 불투명해 격자를 가린다. 격자를 켰을 때만 그리지 않는다.
+            .then(
+                if (LocalDemoCheckerBackground.current.value) {
+                    Modifier
+                } else {
+                    Modifier.background(DesignSystemTheme.colors.backgroundNeutralSecondary)
+                }
+            )
             .padding(20.dp)
     ) {
         WantedTopAppBar(

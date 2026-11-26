@@ -25,7 +25,14 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
      * 다음 배치 등록 시: 아래 항목들의 `isNew = true` 를 제거해 일반 목록으로 옮기고,
      * 새로 추가되는 항목에 `isNew = true` 를 부여한다.
      */
-    DSWantedIconItem(R.drawable.icon_normal_video, listOf("비디오", "동영상", "영상", "카메라"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_arrow_down_thick, listOf("아래화살표", "화살표", "아래", "굵은화살표"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_arrow_left_thick, listOf("왼쪽화살표", "화살표", "왼쪽", "굵은화살표"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_arrow_right_thick, listOf("오른쪽화살표", "화살표", "오른쪽", "굵은화살표"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_arrow_up_thick, listOf("위화살표", "화살표", "위", "굵은화살표"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_diamond, listOf("다이아몬드", "보석", "프리미엄"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_diamond_fill, listOf("다이아몬드", "보석", "프리미엄"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_normal_handle_desktop, listOf("핸들", "이동", "드래그", "데스크톱"), isNew = true),
+    DSWantedIconItem(R.drawable.icon_color_logo_logo_instagram, listOf("인스타그램", "로고"), isNew = true),
 
     DSWantedIconItem(R.drawable.icon_normal_blank, listOf("빈", "공백")),
     DSWantedIconItem(R.drawable.icon_normal_align_center, listOf("가운데정렬", "정렬", "중앙")),
@@ -306,6 +313,7 @@ internal val dsWantedIconCatalog: List<DSWantedIconItem> = listOf(
     DSWantedIconItem(R.drawable.icon_normal_verified_check_fill, listOf("인증", "확인", "체크")),
     DSWantedIconItem(R.drawable.icon_normal_verified_star, listOf("인증", "별")),
     DSWantedIconItem(R.drawable.icon_normal_verified_star_fill, listOf("인증", "별")),
+    DSWantedIconItem(R.drawable.icon_normal_video, listOf("비디오", "동영상", "영상", "카메라")),
     DSWantedIconItem(R.drawable.icon_normal_video_fill, listOf("비디오", "동영상", "영상", "카메라")),
     DSWantedIconItem(R.drawable.icon_normal_write, listOf("작성", "쓰기", "글쓰기")),
     DSWantedIconItem(R.drawable.icon_normal_sun, listOf("해", "태양", "라이트모드")),

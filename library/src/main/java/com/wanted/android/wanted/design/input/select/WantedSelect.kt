@@ -89,7 +89,7 @@ private const val DEPRECATION_MESSAGE =
  * @param selectDataList List<WantedSelectData>: Bottom sheet 에 표시할 선택 가능한 항목 리스트입니다. 비어 있으면 Bottom sheet 를 열지 않습니다.
  * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
  * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
- * @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+ * @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
  * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목 선택 시 즉시 반영됩니다.
  * @param selectedData WantedSelectData?: Bottom sheet 진입 시 체크 표시할 항목입니다.
  * @param bottomSheetType WantedModalContract.ModalType: Bottom sheet 형식입니다. (Flexible, Fixed 등)
@@ -208,7 +208,7 @@ fun WantedSelect(
  * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
  * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
  * @param errorDataList List<WantedSelectData>: 오류로 표시할 항목 리스트입니다. 포함된 Chip 이 negative 스타일로 표시됩니다. 컨테이너 상태는 status 가 결정합니다.
- * @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+ * @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
  * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목을 토글할 때마다 즉시 반영되고 Bottom sheet 가 열린 상태로 유지됩니다.
  * @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
  * @param selectType WantedSelectDefaults.SelectType: Bottom sheet 항목의 선택 UI 타입입니다. (CheckMark, CheckBox, Radio)
@@ -333,7 +333,7 @@ fun WantedSelect(
  * @param selectValueList List<String>: Bottom sheet 에 표시할 선택 가능한 항목 리스트입니다. 비어 있으면 Bottom sheet 를 열지 않습니다.
  * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
  * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
- * @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+ * @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
  * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목 선택 시 즉시 반영됩니다.
  * @param selectedValue String?: Bottom sheet 진입 시 체크 표시할 항목입니다.
  * @param bottomSheetType WantedModalContract.ModalType: Bottom sheet 형식입니다. (Flexible, Fixed 등)
@@ -418,7 +418,7 @@ fun WantedSelect(
  * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
  * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
  * @param errorList List<String>: 오류로 표시할 항목 리스트입니다. 포함된 Chip 이 negative 스타일로 표시됩니다. 컨테이너 상태는 status 가 결정합니다.
- * @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+ * @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
  * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목을 토글할 때마다 즉시 반영되고 Bottom sheet 가 열린 상태로 유지됩니다.
  * @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
  * @param selectType WantedSelectDefaults.SelectType: Bottom sheet 항목의 선택 UI 타입입니다. (CheckMark, CheckBox, Radio)
@@ -987,9 +987,7 @@ private fun WantedSelectContent(
             )
             // 기본 높이를 최소 높이로 두고, 더 큰 텍스트·콘텐츠에서 높이가 확장되도록 합니다.
             .defaultMinSize(minHeight = size.minHeight)
-            // Modifier.border 는 drawContent() 뒤에 자기 stroke 를 그리므로 먼저 선언한 border 가 위에 얹힌다.
-            // 반투명 상태 색 border 를 먼저(위), underlay border 를 나중(아래)에 선언해야
-            // 상태 색 border 가 underlay 에 덮이지 않고 지정 opacity 로 렌더된다.
+            // Figma(Textinput/Resource/Interaction): 상태 색 1px border + 바깥 Ring 만 그리고, 그 아래 흰 border 는 없다.
             .border(
                 shape = shape,
                 color = containerBorderColor(
@@ -997,16 +995,6 @@ private fun WantedSelectContent(
                     negative = negative,
                     focused = focused
                 ),
-                width = 1.dp
-            )
-            .border(
-                shape = shape,
-                color = containerUnderlayBorderColor(
-                    enabled = enabled,
-                    negative = negative,
-                    focused = focused
-                ),
-                // 상태 색 border 와 같은 굵기(1dp)여야 한다. 굵기가 다르면 underlay 가 비쳐 두 겹으로 보인다.
                 width = 1.dp
             )
             .clip(shape)
@@ -1056,18 +1044,6 @@ private fun WantedSelectContent(
             )
         }
     )
-}
-
-/** #3 상태 색 border 뒤에 깔리는 underlay border 색상입니다. */
-@Composable
-private fun containerUnderlayBorderColor(
-    enabled: Boolean,
-    negative: Boolean,
-    focused: Boolean
-): Color = when {
-    !enabled -> DesignSystemTheme.colors.transparent
-    negative || focused -> DesignSystemTheme.colors.backgroundNeutralPrimary.copy(alpha = OPACITY_43)
-    else -> DesignSystemTheme.colors.transparent
 }
 
 /** #3 Container border 색상입니다. Negative + Focused 는 opacity 를 52% 로 올려 강조합니다. */

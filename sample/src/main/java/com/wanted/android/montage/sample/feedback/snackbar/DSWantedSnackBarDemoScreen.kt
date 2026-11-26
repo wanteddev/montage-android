@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -30,12 +31,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.DSWantedSnackBarDemoEvent
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.DSWantedSnackBarDemoSideEffect
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.DSWantedSnackBarDemoViewEvent
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.DSWantedSnackBarDemoViewState
 import com.wanted.android.montage.sample.feedback.snackbar.DSWantedSnackBarDemoScreenContract.SnackBarOption
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.snackbar.WantedSnackBar
@@ -161,7 +164,10 @@ private fun DSWantedSnackBarDemoScreenContent(
             }
         },
         snackbarHost = {
-            WantedSnackBar(snackbarHostState = snackbarHostState)
+            // 실제 스낵바는 Preview 상자가 아니라 이 자리에 뜬다. 격자도 여기에 깔아야 스낵바 배경·테두리가 보인다.
+            Box(modifier = Modifier.demoCheckerBackground(shape = RectangleShape)) {
+                WantedSnackBar(snackbarHostState = snackbarHostState)
+            }
         },
         bottomBar = {
             WantedActionArea(
@@ -285,6 +291,7 @@ private fun DSWantedSnackBarDemoScreenLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -313,6 +320,8 @@ private fun DSWantedSnackBarDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             messageOnly()
             messageWithButton()

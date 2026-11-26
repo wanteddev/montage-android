@@ -110,6 +110,10 @@ sealed interface MontageDesignDemoNavContract {
 
     @Keep
     @Serializable
+    data object FocusRingDemo : MontageDesignDemoNavContract
+
+    @Keep
+    @Serializable
     data object TextFieldDemo : MontageDesignDemoNavContract
 
     @Keep
@@ -281,6 +285,7 @@ sealed interface MontageDesignDemoNavContract {
                 "DatePickerWheelDemo",
                 "TimePickerWheelDemo",
                 "FramedStyleDemo",
+                "FocusRingDemo",
                 "TopAppBarDemo",
                 "DialogTopAppBarDemo",
                 "SearchTopAppBarDemo",

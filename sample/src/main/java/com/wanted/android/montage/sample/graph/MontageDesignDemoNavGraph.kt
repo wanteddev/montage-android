@@ -52,6 +52,7 @@ import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.Fall
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.FilterButtonDemo
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.FormControlDemo
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.SelectDemo
+import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.FocusRingDemo
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.FramedStyleDemo
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.IconButtonDemo
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract.IconDemo
@@ -87,6 +88,7 @@ import com.wanted.android.montage.sample.input.datepickerwheel.DSWantedDatePicke
 import com.wanted.android.montage.sample.input.filterbutton.DSWantedFilterButtonDemoScreen
 import com.wanted.android.montage.sample.input.formcontrol.DSWantedFormControlDemoScreen
 import com.wanted.android.montage.sample.input.select.DSWantedSelectDemoScreen
+import com.wanted.android.montage.sample.input.focusring.DSWantedFocusRingDemoScreen
 import com.wanted.android.montage.sample.input.framedstyle.DSWantedFramedStyleDemoScreen
 import com.wanted.android.montage.sample.input.input.DSWantedInputDemoScreen
 import com.wanted.android.montage.sample.input.numberpicker.DSWantedNumberPickerDemoScreen
@@ -293,6 +295,13 @@ fun NavGraphBuilder.addMontageDesignDemoNavGraph(
 
     composable<FramedStyleDemo> {
         DSWantedFramedStyleDemoScreen(
+            modifier = Modifier,
+            onClickBack = onClickBack
+        )
+    }
+
+    composable<FocusRingDemo> {
+        DSWantedFocusRingDemoScreen(
             modifier = Modifier,
             onClickBack = onClickBack
         )

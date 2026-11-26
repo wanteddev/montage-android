@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.wanted.android.montage.sample.R
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 
 @Composable
 fun DSWantedPreviewContainer(
@@ -22,6 +23,7 @@ fun DSWantedPreviewContainer(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
+            .demoCheckerBackground()
             .border(
                 width = 1.dp,
                 color = colorResource(R.color.line_neutral_primary),

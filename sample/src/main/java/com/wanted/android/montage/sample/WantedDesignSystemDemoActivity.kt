@@ -6,9 +6,13 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.compose.rememberNavController
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavContract
 import com.wanted.android.montage.sample.graph.MontageDesignDemoNavGraph
+import com.wanted.android.montage.sample.util.LocalDemoCheckerBackground
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,11 +29,15 @@ class WantedDesignSystemDemoActivity : AppCompatActivity() {
 
         setContent {
             DesignSystemTheme {
-                MontageDesignDemoNavGraph(
-                    navHostController = rememberNavController(),
-                    startDestination = startDestination,
-                    onClickBack = { finish() }
-                )
+                CompositionLocalProvider(
+                    LocalDemoCheckerBackground provides rememberSaveable { mutableStateOf(false) }
+                ) {
+                    MontageDesignDemoNavGraph(
+                        navHostController = rememberNavController(),
+                        startDestination = startDestination,
+                        onClickBack = { finish() }
+                    )
+                }
             }
         }
     }
