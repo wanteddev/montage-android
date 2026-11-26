@@ -3,7 +3,8 @@ name: Update Design System Docs on Merge
 # 이 워크플로우의 트리거 조건
 on:
   # main push 대신 PR 머지로 실행한다 — squash 본문의 skip ci 문구에 막히지 않게 하기 위함(CD 워크플로우 주석 참고).
-  pull_request:
+  # pull_request_target: fork PR 머지에도 쓰기 권한으로 실행된다. PR 코드는 checkout 하지 않는다(항상 main).
+  pull_request_target:
     types: [ closed ]
     branches:
       - main        # release/v{버전} 브랜치가 main 에 머지될 때 실행
@@ -22,7 +23,7 @@ jobs:
     timeout-minutes: 30
 
     # 머지 없이 닫힌 PR 은 건너뛴다. 봇의 'docs:' 커밋은 main 에 직접 push 되므로 이 워크플로우를 다시 실행하지 않는다(무한 루프 없음).
-    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
+    if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
 
     steps:
       - name: Checkout code

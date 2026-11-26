@@ -8,21 +8,24 @@ on:
   # main push 가 아니라 PR 머지로 실행한다.
   # squash 머지 커밋 본문에 하위 커밋 메시지가 붙는데, 그중 대괄호로 감싼 skip ci 문구(#64 커밋 설명)가 있으면
   # GitHub 이 push 워크플로우 런을 아예 만들지 않는다(v4.0.4·v4.1.0 CD 미실행).
-  # pull_request 이벤트는 PR HEAD 커밋 메시지만 보므로 squash 본문의 영향을 받지 않는다.
-  pull_request:
+  # PR 이벤트는 PR HEAD 커밋 메시지만 보므로 squash 본문의 영향을 받지 않는다.
+  # pull_request_target: fork PR 이 머지돼도 저장소 secret·쓰기 권한으로 실행된다.
+  # PR 코드는 checkout 하지 않고 항상 main 을 받으므로 안전하다.
+  pull_request_target:
     types: [ closed ]
     branches:
       - 'main'
-
-concurrency:
-  group: cd-main
-  cancel-in-progress: false
 
 jobs:
   deploy:
     # 머지 없이 닫힌 PR 은 배포하지 않는다.
     # (문서 봇의 'docs:' 커밋은 main 에 직접 push 되므로 이 워크플로우를 실행하지 않는다)
-    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
+    if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
+    # job 수준에 둬서 머지 없이 닫힌 PR(job skip)이 대기 중인 배포를 밀어내지 않게 한다.
+    # 실행 중·대기 중 배포는 취소하지 않는다.
+    concurrency:
+      group: cd-main
+      cancel-in-progress: false
     runs-on: self-hosted
     permissions:
       contents: write
