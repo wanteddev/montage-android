@@ -6,14 +6,15 @@ on:
   workflow_run:
     workflows: [ "Update Design System Docs on Merge" ]
     types: [ completed ]
-    branches: [ main ]
+    # 문서 워크플로우가 PR 머지(pull_request)로 실행되면 head_branch 가 release/* 라서 branches 필터를 두지 않는다.
+    # main 대상 PR 머지만 문서 워크플로우를 실행하므로 범위는 같다.
   workflow_dispatch:
 
 jobs:
   sync-and-deploy:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request')
     runs-on: ubuntu-latest
     steps:
       # actions/checkout 은 엔터프라이즈 정책으로 막혀 있어 git clone 으로 받는다.

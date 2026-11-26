@@ -2,9 +2,11 @@ name: Update Design System Docs on Merge
 
 # 이 워크플로우의 트리거 조건
 on:
-  push:
+  # main push 대신 PR 머지로 실행한다 — squash 본문의 skip ci 문구에 막히지 않게 하기 위함(CD 워크플로우 주석 참고).
+  pull_request:
+    types: [ closed ]
     branches:
-      - main        # release/v{버전} 브랜치에 push(merge)될 때 실행
+      - main        # release/v{버전} 브랜치가 main 에 머지될 때 실행
   workflow_dispatch:
     inputs:
       branch:
@@ -19,10 +21,8 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 30
 
-    # 중요: 무한 루프 방지
-    # 봇이 커밋한 메시지가 'docs:'로 시작하면 이 Job을 실행하지 않습니다.
-    # (contains 는 squash 머지 본문의 'docs:' 커밋까지 걸려 릴리스 문서 생성을 건너뛰므로 startsWith 로 제목만 봅니다)
-    if: "startsWith(github.event.head_commit.message, 'docs:') == false"
+    # 머지 없이 닫힌 PR 은 건너뛴다. 봇의 'docs:' 커밋은 main 에 직접 push 되므로 이 워크플로우를 다시 실행하지 않는다(무한 루프 없음).
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
 
     steps:
       - name: Checkout code
@@ -102,9 +102,8 @@ jobs:
           fi
 
           echo "📝 Committing changes..."
-          # [skip ci]: 이 push 로는 워크플로우 런 자체가 만들어지지 않는다.
-          # 아래 if 조건들(docs: 로 시작하면 job skip)은 런이 생긴 뒤 job 만 건너뛰므로,
-          # 완료 이벤트가 발화해 auto-deploy-docs 가 빈 런으로 한 번 더 돌고 Actions 목록도 지저분해진다.
+          # 워크플로우들은 PR 머지로만 실행되므로 이 직접 push 로는 런이 생기지 않는다.
+          # 메시지의 skip ci 지시어는 혹시 push 트리거가 다시 생길 때를 대비한 안전장치로 둔다.
           git commit -m "docs: update Design System documentation and mdx [skip ci]"
           
           echo "🚀 Pushing changes..."
