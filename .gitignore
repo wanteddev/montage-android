@@ -22,3 +22,6 @@ captures/
 /private/github.properties
 /private/
 /.kotlin/
+
+# 로컬 전용 Claude 스킬
+.claude/skills/aar-verify/
