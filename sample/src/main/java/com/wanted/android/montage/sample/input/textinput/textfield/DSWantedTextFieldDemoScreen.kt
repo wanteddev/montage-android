@@ -41,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionPicker
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
@@ -50,6 +51,7 @@ import com.wanted.android.montage.sample.input.textinput.textfield.DSWantedTextF
 import com.wanted.android.montage.sample.input.textinput.textfield.DSWantedTextFieldDemoScreenContract.DSWantedTextFieldDemoViewState
 import com.wanted.android.montage.sample.input.textinput.textfield.DSWantedTextFieldDemoScreenContract.TrailingContentType
 import com.wanted.android.montage.sample.input.textinput.textfield.before.DSWantedTextFieldSampleModal
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.actions.button.iconbutton.WantedIconButtonNormal
@@ -665,6 +667,7 @@ private fun DSWantedTextFieldDemoScreenLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -694,6 +697,8 @@ private fun DSWantedTextFieldDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             leadingIcon()
 

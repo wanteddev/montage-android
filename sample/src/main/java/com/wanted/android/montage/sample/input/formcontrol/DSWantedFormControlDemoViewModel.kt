@@ -46,6 +46,10 @@ class DSWantedFormControlDemoViewModel @Inject constructor(
             }
 
             is DSWantedFormControlDemoEvent.SetEnabled -> setState { copy(enabled = event.enabled) }
+            is DSWantedFormControlDemoEvent.SetGroup -> setState { copy(group = event.group) }
+            is DSWantedFormControlDemoEvent.SetGroupLabelWidth -> {
+                setState { copy(groupLabelWidthFixed = event.fixed) }
+            }
 
             is DSWantedFormControlDemoEvent.SetSize -> setState { copy(size = event.size) }
             is DSWantedFormControlDemoEvent.SetStatus -> setState { copy(status = event.status) }
@@ -61,6 +65,38 @@ class DSWantedFormControlDemoViewModel @Inject constructor(
 
     private fun getCode(): String {
         val state = viewState.value
+        return if (state.group) getGroupCode(state) else getFormControlCode(state)
+    }
+
+    private fun getGroupCode(state: DSWantedFormControlDemoViewState): String {
+        val labelWidth = if (state.groupLabelWidthFixed) {
+            "${DSWantedFormControlDemoScreenContract.GROUP_FIXED_LABEL_WIDTH_DP}.dp,"
+        } else {
+            "null, ${getDefaultString(true)}"
+        }
+        return """
+        WantedFormControlGroup(
+            labelWidth = $labelWidth
+        ) {
+            WantedFormControl(
+                label = "${state.labelText}",
+                required = ${state.required},
+                labelPlacement = WantedFormControlDefaults.LabelPlacement.${state.labelPlacement.name},
+            ) {
+                WantedTextField(...)
+            }
+            WantedFormControl(
+                label = "${DSWantedFormControlDemoScreenContract.GROUP_SECOND_LABEL_TEXT}",
+                required = ${state.required},
+                labelPlacement = WantedFormControlDefaults.LabelPlacement.${state.labelPlacement.name},
+            ) {
+                WantedTextField(...)
+            }
+        }
+        """.trimIndent()
+    }
+
+    private fun getFormControlCode(state: DSWantedFormControlDemoViewState): String {
         return """
         WantedFormControl(
             label = "${state.labelText}", ${getDefaultString(state.labelText == DSWantedFormControlDemoScreenContract.DEFAULT_LABEL_TEXT)}

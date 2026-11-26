@@ -30,18 +30,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoEvent
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoSideEffect
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoViewEvent
 import com.wanted.android.montage.sample.navigations.topbar.DSWantedTopAppBarDemoScreenContract.DSWantedTopAppBarDemoViewState
+import com.wanted.android.montage.sample.util.LocalDemoCheckerBackground
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
+import com.wanted.android.wanted.design.actions.chip.WantedChip
 import com.wanted.android.wanted.design.input.select.WantedSelect
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBar
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarContract.Variant
 import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarIconButton
+import com.wanted.android.wanted.design.navigations.topbar.WantedTopAppBarToolbarSlot
 import com.wanted.android.wanted.design.presentation.modal.popup.WantedPopup
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.ButtonSize
@@ -99,6 +104,10 @@ fun DSWantedTopAppBarDemoScreen(
                 viewModel.setEvent(DSWantedTopAppBarDemoEvent.SetActions(viewEvent.actions))
             }
 
+            is DSWantedTopAppBarDemoViewEvent.OnChangeToolbar -> {
+                viewModel.setEvent(DSWantedTopAppBarDemoEvent.SetToolbar(viewEvent.toolbar))
+            }
+
             is DSWantedTopAppBarDemoViewEvent.OnChangeScrollable -> {
                 viewModel.setEvent(DSWantedTopAppBarDemoEvent.SetScrollable(viewEvent.scrollable))
             }
@@ -150,6 +159,9 @@ private fun DSWantedTopAppBarDemoScreenContent(
                             onClick = { }
                         )
                     }
+                } else null,
+                toolbar = if (viewState.toolbar) {
+                    { DSWantedTopAppBarToolbarSample() }
                 } else null,
                 actions = if (viewState.actions) {
                     {
@@ -278,6 +290,15 @@ private fun DSWantedTopAppBarDemoScreenContent(
                     }
                 )
             },
+            toolbar = {
+                DSWantedOptionSwitchCell(
+                    text = "toolbar : ${viewState.toolbar}",
+                    checkState = viewState.toolbar,
+                    onCheckChanged = { checked ->
+                        onViewEvent(DSWantedTopAppBarDemoViewEvent.OnChangeToolbar(checked))
+                    }
+                )
+            },
             preview = {
                 DSWantedTopAppBarPreview(viewState = viewState)
             },
@@ -312,6 +333,7 @@ private fun DSWantedTooltipDemoScreenLayout(
     scrollable: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit,
     actions: @Composable () -> Unit,
+    toolbar: @Composable () -> Unit,
     preview: @Composable () -> Unit,
     otherContent: @Composable ColumnScope.() -> Unit
 ) {
@@ -332,7 +354,9 @@ private fun DSWantedTooltipDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
-            preview()
+            Box(modifier = Modifier.fillMaxWidth().demoCheckerBackground()) {
+                preview()
+            }
         }
 
         Column(
@@ -352,12 +376,15 @@ private fun DSWantedTooltipDemoScreenLayout(
                 )
             )
 
+            DSWantedCheckerBackgroundOptionCell()
+
             type()
             background()
             titleAlignCenter()
             scrollable()
             navigationIcon()
             actions()
+            toolbar()
         }
 
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -374,7 +401,14 @@ private fun DSWantedTopAppBarPreview(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DesignSystemTheme.colors.backgroundNeutralSecondary)
+            // 이 배경은 불투명해 격자를 가린다. 격자를 켰을 때만 그리지 않는다.
+            .then(
+                if (LocalDemoCheckerBackground.current.value) {
+                    Modifier
+                } else {
+                    Modifier.background(DesignSystemTheme.colors.backgroundNeutralSecondary)
+                }
+            )
             .padding(20.dp)
     ) {
         WantedTopAppBar(
@@ -394,6 +428,9 @@ private fun DSWantedTopAppBarPreview(
                     )
                 }
             } else null,
+            toolbar = if (viewState.toolbar) {
+                { DSWantedTopAppBarToolbarSample() }
+            } else null,
             actions = if (viewState.actions) {
                 {
                     WantedTopAppBarIconButton(
@@ -410,6 +447,20 @@ private fun DSWantedTopAppBarPreview(
         )
     }
 }
+
+@Composable
+private fun DSWantedTopAppBarToolbarSample() {
+    WantedTopAppBarToolbarSlot {
+        repeat(TOOLBAR_SAMPLE_CHIP_COUNT) { index ->
+            WantedChip(
+                text = "Chip ${index + 1}",
+                onClick = { }
+            )
+        }
+    }
+}
+
+private const val TOOLBAR_SAMPLE_CHIP_COUNT = 8
 
 @DevicePreviews
 @Composable

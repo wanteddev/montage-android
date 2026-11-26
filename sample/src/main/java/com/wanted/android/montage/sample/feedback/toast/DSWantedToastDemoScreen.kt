@@ -25,11 +25,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.feedback.toast.DSWantedToastDemoScreenContract.DSWantedToastDemoEvent
 import com.wanted.android.montage.sample.feedback.toast.DSWantedToastDemoScreenContract.DSWantedToastDemoSideEffect
 import com.wanted.android.montage.sample.feedback.toast.DSWantedToastDemoScreenContract.DSWantedToastDemoViewEvent
 import com.wanted.android.montage.sample.feedback.toast.DSWantedToastDemoScreenContract.DSWantedToastDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.feedback.toast.showToast
 import com.wanted.android.wanted.design.feedback.toast.WantedToast
@@ -238,6 +240,7 @@ private fun DSWantedTextAreaDemoScreenLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -267,6 +270,8 @@ private fun DSWantedTextAreaDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             normal()
             message()

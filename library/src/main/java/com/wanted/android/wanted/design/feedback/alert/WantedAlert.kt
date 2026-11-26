@@ -2,6 +2,7 @@ package com.wanted.android.wanted.design.feedback.alert
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -91,25 +95,30 @@ fun WantedAlert(
             applyPhraseLineBreak = applyPhraseLineBreak,
             negative = cancel?.let {
                 {
-                    WantedAlertDialogButton(
-                        text = cancel,
-                        type = WantedAlertDialogButtonType.Neutral,
-                        onClick = { onClickCancel?.invoke() }
+                    // 버튼이 modifier 를 받지 않아 크기 그대로 감싸 태그를 단다(레이아웃 불변).
+                    Box(modifier = Modifier.testTag(WantedAlertTestTags.CANCEL)) {
+                        WantedAlertDialogButton(
+                            text = cancel,
+                            type = WantedAlertDialogButtonType.Neutral,
+                            onClick = { onClickCancel?.invoke() }
 
-                    )
+                        )
+                    }
                 }
             },
             positive = {
-                WantedAlertDialogButton(
-                    text = confirm,
-                    type = if (isNegative) {
-                        WantedAlertDialogButtonType.Negative
-                    } else {
-                        WantedAlertDialogButtonType.Positive
-                    },
+                Box(modifier = Modifier.testTag(WantedAlertTestTags.CONFIRM)) {
+                    WantedAlertDialogButton(
+                        text = confirm,
+                        type = if (isNegative) {
+                            WantedAlertDialogButtonType.Negative
+                        } else {
+                            WantedAlertDialogButtonType.Positive
+                        },
 
-                    onClick = { onClickConfirm() }
-                )
+                        onClick = { onClickConfirm() }
+                    )
+                }
             }
         )
     }
@@ -124,7 +133,10 @@ private fun WantedAlertDialogLayout(
     applyPhraseLineBreak: Boolean = false,
 ) {
     Column(
+        // 다이얼로그는 별도 윈도우라 화면 쪽 설정이 전파되지 않는다. 버튼 testTag([WantedAlertTestTags])가
+        // resource-id 로 노출되도록 다이얼로그 안에서 켠다.
         modifier = Modifier
+            .semantics { testTagsAsResourceId = true }
             .clip(RoundedCornerShape(16.dp))
             .background(DesignSystemTheme.colors.surfaceElevatedPrimary)
     ) {

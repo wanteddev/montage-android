@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.DSWantedLoadingDemoEvent
@@ -34,6 +35,7 @@ import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScr
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.DSWantedLoadingDemoViewEvent
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.DSWantedLoadingDemoViewState
 import com.wanted.android.montage.sample.feedback.loading.DSWantedLoadingDemoScreenContract.LoadingType
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
@@ -165,6 +167,7 @@ private fun DSWantedLoadingDemoScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
+                    .demoCheckerBackground()
                     .border(
                         width = 1.dp,
                         color = colorResource(R.color.line_neutral_primary),
@@ -205,6 +208,8 @@ private fun DSWantedLoadingDemoScreenContent(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             WantedSelect(
                 value = "type : ${viewState.loadingType.name}",

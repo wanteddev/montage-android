@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.getStateList
@@ -50,10 +51,12 @@ import com.wanted.android.montage.sample.input.formcontrol.DSWantedFormControlDe
 import com.wanted.android.montage.sample.input.formcontrol.DSWantedFormControlDemoScreenContract.DSWantedFormControlDemoViewEvent
 import com.wanted.android.montage.sample.input.formcontrol.DSWantedFormControlDemoScreenContract.DSWantedFormControlDemoViewState
 import com.wanted.android.montage.sample.toMap
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.formcontrol.WantedFormControl
 import com.wanted.android.wanted.design.input.formcontrol.WantedFormControlDefaults
+import com.wanted.android.wanted.design.input.formcontrol.WantedFormControlGroup
 import com.wanted.android.wanted.design.input.textinput.textarea.WantedTextArea
 import com.wanted.android.wanted.design.input.textinput.textfield.WantedTextField
 import com.wanted.android.wanted.design.input.textinput.view.WantedTextAreaCharacterCount
@@ -127,6 +130,14 @@ fun DSWantedFormControlDemoScreen(
 
             is DSWantedFormControlDemoViewEvent.OnChangeEnabled -> {
                 viewModel.setEvent(SetEnabled(viewEvent.enabled))
+            }
+
+            is DSWantedFormControlDemoViewEvent.OnChangeGroup -> {
+                viewModel.setEvent(DSWantedFormControlDemoEvent.SetGroup(viewEvent.group))
+            }
+
+            is DSWantedFormControlDemoViewEvent.OnChangeGroupLabelWidth -> {
+                viewModel.setEvent(DSWantedFormControlDemoEvent.SetGroupLabelWidth(viewEvent.fixed))
             }
 
             is DSWantedFormControlDemoViewEvent.OnChangeSize -> {
@@ -223,15 +234,24 @@ private fun DSWantedFormControlDemoScreenImpl(
             modifier = Modifier.padding(innerPadding),
             preview = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    DSWantedFormControlSample(
-                        viewState = viewState,
-                        onValueChange = { value ->
-                            onViewEvent(DSWantedFormControlDemoViewEvent.OnTextFieldValueChanged(value))
-                        }
-                    )
+                    if (viewState.group) {
+                        DSWantedFormControlGroupSample(
+                            viewState = viewState,
+                            onValueChange = { value ->
+                                onViewEvent(DSWantedFormControlDemoViewEvent.OnTextFieldValueChanged(value))
+                            }
+                        )
+                    } else {
+                        DSWantedFormControlSample(
+                            viewState = viewState,
+                            onValueChange = { value ->
+                                onViewEvent(DSWantedFormControlDemoViewEvent.OnTextFieldValueChanged(value))
+                            }
+                        )
 
-                    // input 높이가 커질 때(TextArea) 라벨 정렬을 함께 확인할 수 있도록 나란히 노출한다.
-                    DSWantedFormControlTextAreaSample(viewState = viewState)
+                        // input 높이가 커질 때(TextArea) 라벨 정렬을 함께 확인할 수 있도록 나란히 노출한다.
+                        DSWantedFormControlTextAreaSample(viewState = viewState)
+                    }
 
                     WantedButton(
                         modifier = Modifier.fillMaxWidth(),
@@ -340,6 +360,31 @@ private fun DSWantedFormControlDemoScreenImpl(
                         onViewEvent(DSWantedFormControlDemoViewEvent.OnChangeEnabled(it))
                     }
                 )
+            },
+            group = {
+                DSWantedOptionSwitchCell(
+                    text = "WantedFormControlGroup : ${viewState.group}",
+                    checkState = viewState.group,
+                    onCheckChanged = {
+                        onViewEvent(DSWantedFormControlDemoViewEvent.OnChangeGroup(it))
+                    }
+                )
+
+                if (viewState.group) {
+                    DSWantedOptionSwitchCell(
+                        text = "group labelWidth : ${
+                            if (viewState.groupLabelWidthFixed) {
+                                "${DSWantedFormControlDemoScreenContract.GROUP_FIXED_LABEL_WIDTH_DP}.dp"
+                            } else {
+                                null
+                            }
+                        }",
+                        checkState = viewState.groupLabelWidthFixed,
+                        onCheckChanged = {
+                            onViewEvent(DSWantedFormControlDemoViewEvent.OnChangeGroupLabelWidth(it))
+                        }
+                    )
+                }
             }
         )
     }
@@ -375,6 +420,50 @@ private fun DSWantedFormControlSample(
             enabled = viewState.enabled,
             onValueChange = onValueChange
         )
+    }
+}
+
+/**
+ * Leading 배치 FormControl 두 개를 WantedFormControlGroup 으로 묶은 예시입니다.
+ *
+ * 라벨 길이가 다른 두 FormControl 의 입력 시작 위치가 맞춰지는지, labelWidth 를 고정하면
+ * 긴 라벨이 말줄임되고 * 가 텍스트 바로 뒤에 붙는지 확인할 수 있다.
+ */
+@Composable
+private fun DSWantedFormControlGroupSample(
+    viewState: DSWantedFormControlDemoViewState,
+    onValueChange: (String) -> Unit
+) {
+    var secondValue by remember { mutableStateOf("") }
+
+    WantedFormControlGroup(
+        labelWidth = if (viewState.groupLabelWidthFixed) {
+            DSWantedFormControlDemoScreenContract.GROUP_FIXED_LABEL_WIDTH_DP.dp
+        } else {
+            null
+        }
+    ) {
+        DSWantedFormControlSample(
+            viewState = viewState,
+            onValueChange = onValueChange
+        )
+
+        WantedFormControl(
+            label = DSWantedFormControlDemoScreenContract.GROUP_SECOND_LABEL_TEXT,
+            required = viewState.required,
+            description = if (viewState.description) "도움말 메시지입니다." else null,
+            size = viewState.size,
+            status = viewState.status,
+            labelPlacement = viewState.labelPlacement,
+            enabled = viewState.enabled,
+        ) {
+            WantedTextField(
+                text = secondValue,
+                placeholder = "텍스트를 입력해 주세요.",
+                enabled = viewState.enabled,
+                onValueChange = { secondValue = it }
+            )
+        }
     }
 }
 
@@ -430,7 +519,8 @@ private fun DSWantedFormControlDemoScreenLayout(
     required: @Composable () -> Unit,
     description: @Composable () -> Unit,
     accessory: @Composable () -> Unit,
-    enabled: @Composable () -> Unit
+    enabled: @Composable () -> Unit,
+    group: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier.padding(horizontal = 20.dp),
@@ -447,6 +537,7 @@ private fun DSWantedFormControlDemoScreenLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -476,6 +567,8 @@ private fun DSWantedFormControlDemoScreenLayout(
                 )
             )
 
+            DSWantedCheckerBackgroundOptionCell()
+
             size()
 
             status()
@@ -491,6 +584,8 @@ private fun DSWantedFormControlDemoScreenLayout(
             accessory()
 
             enabled()
+
+            group()
         }
     }
 }

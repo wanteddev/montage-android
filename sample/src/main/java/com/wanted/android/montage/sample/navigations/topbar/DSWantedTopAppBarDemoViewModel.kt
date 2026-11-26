@@ -54,6 +54,13 @@ class DSWantedTopAppBarDemoViewModel @Inject constructor(
                 }
             }
 
+            is DSWantedTopAppBarDemoEvent.SetToolbar -> {
+                setState {
+                    val newState = copy(toolbar = event.toolbar)
+                    newState.copy(code = generateCode(newState))
+                }
+            }
+
             is DSWantedTopAppBarDemoEvent.SetScrollable -> {
                 setState {
                     val newState = copy(scrollable = event.scrollable)
@@ -97,6 +104,16 @@ class DSWantedTopAppBarDemoViewModel @Inject constructor(
                         painter = painterResource(R.drawable.icon_normal_arrow_left),
                         onClick = { /* Handle back */ }
                     )
+                }"""
+            )
+        }
+
+        if (state.toolbar && state.variant != Variant.Floating) {
+            params.add(
+                """toolbar = {
+                    WantedTopAppBarToolbarSlot {
+                        WantedChip(text = "Chip", onClick = { /* Handle chip */ })
+                    }
                 }"""
             )
         }

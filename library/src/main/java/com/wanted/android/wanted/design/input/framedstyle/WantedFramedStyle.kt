@@ -1,5 +1,6 @@
 package com.wanted.android.wanted.design.input.framedstyle
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,15 +26,23 @@ import com.wanted.android.wanted.design.base.WantedDropShadowDefaults.WantedShad
 import com.wanted.android.wanted.design.base.wantedDropShadow
 import com.wanted.android.wanted.design.theme.DesignSystemTheme
 import com.wanted.android.wanted.design.util.DevicePreviews
-import com.wanted.android.wanted.design.util.OPACITY_43
 
 /**
  * fun Modifier.framedStyle(...)
  *
  * 프레임 스타일을 적용하는 Modifier 확장 함수입니다.
  *
- * 테두리, 그림자, 모서리 둥글기 등을 적용하여 카드나 입력 필드 등에 프레임 스타일을 부여합니다.
- * 상태(Normal, Negative, Selected)에 따라 다른 색상과 테두리 굵기가 적용됩니다.
+ * 여러 요소를 프레임으로 감싸 그룹화하고, 그룹 단위의 선택 상태를 강조할 때 사용합니다.
+ * 상태에 맞는 1dp 테두리를 그리고, 선택 상태는 1dp 상태 색 border 아래에 1dp surface/neutral/primary Base border 를 깔고
+ * 컴포넌트 바깥 4dp Ring 으로 강조합니다. 선택(selected)과 상태(status)는 서로 독립된 축입니다.
+ * 배경은 그리지 않고, shadow 를 지정했을 때만 background/neutral/primary 를 깝니다.
+ *
+ * 상태별 외형:
+ * - Normal: 테두리 line/neutral/secondary
+ * - Normal + selected: 테두리 line/brand/strong + Base surface/neutral/primary + 바깥 Ring line/brand/focus
+ * - Negative: 테두리 line/negative/primary
+ * - Negative + selected: 테두리 line/negative/strong + Base surface/neutral/primary + 바깥 Ring line/negative/focus
+ * - disabled: 상태와 관계없이 테두리·Base·Ring 의 컬러 토큰은 그대로 두고 현재 알파값에 43% 를 곱합니다(예: line/brand/strong 43% → 약 18.5%)
  *
  * 사용 예시:
  * ```
@@ -41,72 +50,107 @@ import com.wanted.android.wanted.design.util.OPACITY_43
  *     modifier = Modifier
  *         .size(100.dp)
  *         .framedStyle(
- *             status = WantedFramedStyleStatus.Selected,
+ *             selected = true,
+ *             status = WantedFramedStyleStatus.Normal,
  *             enabled = true
  *         )
  * )
  * ```
  *
- * @param status WantedFramedStyleStatus: 프레임 상태입니다. Normal, Negative, Selected 중 하나를 선택합니다.
- * @param shape RoundedCornerShape: 모서리 둥글기 형태입니다. 기본값은 12dp입니다.
- * @param enabled Boolean: 활성화 여부입니다. false일 경우 Negative·Selected 상태의 테두리 opacity 만 43% 에서 18.5% 로 낮아지며, Normal 상태는 변화가 없습니다.
- * @param focused Boolean: 포커스 여부입니다. true일 경우 컴포넌트 외곽에 4dp Focus Ring을 그립니다.
- * @param shadow WantedShadowStyle: 적용할 섀도우 스타일입니다. 기본값은 XSmall입니다.
+ * @param selected Boolean: 선택 여부입니다. true일 경우 상태 색 테두리 아래 Base 를 깔고 바깥 4dp Ring 을 그립니다.
+ * @param status WantedFramedStyleStatus: 프레임 상태입니다. Normal, Negative 중 하나를 선택합니다.
+ * @param shape RoundedCornerShape: 모서리 둥글기 형태입니다. 기본값은 14dp입니다.
+ * @param enabled Boolean: 활성화 여부입니다. false일 경우 상태와 관계없이 테두리·Base·Ring 의 컬러 토큰은 그대로 두고 현재 알파값에 43% 를 곱합니다.
+ * @param shadow WantedShadowStyle?: 적용할 섀도우 스타일입니다. 기본값은 null 로 그림자와 배경을 그리지 않습니다. 지정하면 배경 background/neutral/primary 를 함께 깝니다.
  * @return Modifier: 스타일이 적용된 Modifier를 반환합니다.
  */
 fun Modifier.framedStyle(
+    selected: Boolean = false,
     status: WantedFramedStyleStatus = WantedFramedStyleStatus.Normal,
-    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
+    shape: RoundedCornerShape = RoundedCornerShape(14.dp),
     enabled: Boolean = true,
-    focused: Boolean = false,
-    shadow: WantedShadowStyle =  WantedShadowStyle.XSmall(),
+    shadow: WantedShadowStyle? = null,
 ) = composed {
+    val negative = status == WantedFramedStyleStatus.Negative
+
     this
-        .focusRing(visible = focused, shape = shape)
-        .wantedDropShadow(shadow)
+        // 선택 상태는 disabled 에서도 Ring 을 그리고, Ring 색의 현재 opacity 에 43% 를 곱해 낮춘다.
+        .focusRing(
+            visible = selected,
+            shape = shape,
+            color = disabledAlpha(
+                color = if (negative) {
+                    DesignSystemTheme.colors.lineNegativeFocus
+                } else {
+                    DesignSystemTheme.colors.lineBrandFocus
+                },
+                enabled = enabled
+            )
+        )
+        .then(
+            if (shadow != null) {
+                // 그림자는 배경이 있어야 보이므로 shadow 를 켰을 때만 배경을 깐다.
+                // 배경은 border 보다 먼저 그린다. 나중에 그리면 배경이 border 위를 덮어 border 색이 지정 opacity 로 보이지 않는다.
+                Modifier
+                    .wantedDropShadow(shadow)
+                    .background(color = DesignSystemTheme.colors.backgroundNeutralPrimary, shape = shape)
+            } else {
+                Modifier
+            }
+        )
+        // Modifier.border 는 content 를 그린 뒤 자기 stroke 를 덧그리므로 먼저 선언한 border 가 위에 얹힌다.
+        // 상태 색 border 를 먼저(위), underlay 를 나중(아래)에 선언해야 상태 색이 지정 opacity 그대로 보인다.
         .border(
             shape = shape,
-            color = when {
-                status == WantedFramedStyleStatus.Negative
-                        || status == WantedFramedStyleStatus.Selected -> {
-                    if (enabled) {
-                        DesignSystemTheme.colors.backgroundNeutralPrimary
-                            .copy(alpha = OPACITY_43)
-                    } else {
-                        DesignSystemTheme.colors.backgroundNeutralPrimary
-                            .copy(alpha = 0.185f)
-                    }
-                }
-
-                else -> DesignSystemTheme.colors.transparent
-            },
-            width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
+            color = disabledAlpha(
+                color = framedBorderColor(selected = selected, status = status),
+                enabled = enabled
+            ),
+            width = 1.dp
         )
         .border(
             shape = shape,
-            color = when (status) {
-                WantedFramedStyleStatus.Negative -> {
-                    if (enabled) {
-                        DesignSystemTheme.colors.foregroundNegativePrimary.copy(OPACITY_43)
-                    } else {
-                        DesignSystemTheme.colors.foregroundNegativePrimary.copy(0.185f)
-                    }
-                }
-
-                WantedFramedStyleStatus.Selected -> {
-                    if (enabled) {
-                        DesignSystemTheme.colors.lineBrandStrong.copy(OPACITY_43)
-                    } else {
-                        DesignSystemTheme.colors.lineBrandStrong.copy(0.185f)
-                    }
-                }
-
-                else -> DesignSystemTheme.colors.lineNeutralSecondary
+            color = if (selected) {
+                disabledAlpha(color = DesignSystemTheme.colors.surfaceNeutralPrimary, enabled = enabled)
+            } else {
+                DesignSystemTheme.colors.transparent
             },
-            width = if (status == WantedFramedStyleStatus.Selected) 2.dp else 1.dp
+            // 상태 색 border 와 같은 굵기(1dp)여야 한다. 굵기가 다르면 underlay 가 비쳐 두 겹으로 보인다.
+            width = 1.dp
         )
         .clip(shape)
 }
+
+// 상태 색 border 색상입니다. line 토큰에 opacity 가 포함돼 있어 토큰을 그대로 씁니다.
+@Composable
+private fun framedBorderColor(
+    selected: Boolean,
+    status: WantedFramedStyleStatus
+): Color = when (status) {
+    WantedFramedStyleStatus.Negative -> if (selected) {
+        DesignSystemTheme.colors.lineNegativeStrong
+    } else {
+        DesignSystemTheme.colors.lineNegativePrimary
+    }
+
+    WantedFramedStyleStatus.Normal -> if (selected) {
+        DesignSystemTheme.colors.lineBrandStrong
+    } else {
+        DesignSystemTheme.colors.lineNeutralSecondary
+    }
+}
+
+// disabled 는 상태와 관계없이 테두리·Base·Ring 색의 현재 opacity 에 43% 를 곱합니다(디자인 확인).
+// 컬러 토큰 값(RGB)은 그대로 두고 알파값만 곱합니다. 43% 로 고정하는 것이 아니라 추가로 곱하는 값입니다.
+// line 토큰은 opacity 를 이미 갖고 있어
+// 예를 들어 line/brand/strong(43%) 은 disabled 에서 약 18.5%(0.43 × 0.43)가 됩니다. Figma 레이어 opacity 와 같은 결과입니다.
+private fun disabledAlpha(color: Color, enabled: Boolean): Color =
+    if (enabled) color else color.copy(alpha = color.alpha * DISABLED_OPACITY)
+
+// 이전에는 disabled 알파를 0.185f 로 고정했습니다(copy(alpha = 0.185f)). 알파가 없는 원색 토큰을 쓰던 시절
+// "토큰 43% × disabled 43%" 를 미리 계산해 둔 값입니다. 지금 line 토큰은 토큰마다 알파가 달라(43%·52% 등)
+// 고정값으로 덮어쓰면 토큰 알파가 무시되고 모두 18.5% 가 됩니다. 그래서 고정값 대신 현재 알파에 곱합니다.
+private const val DISABLED_OPACITY = 0.43f
 
 /**
  * fun Modifier.focusRing(...)
@@ -161,17 +205,15 @@ fun Modifier.focusRing(
 /**
  * enum class WantedFramedStyleStatus
  *
- * 프레임 스타일의 상태를 정의하는 enum 클래스입니다.
+ * 프레임 스타일의 상태를 정의하는 enum 클래스입니다. 선택 여부는 `framedStyle` 의 `selected` 로 따로 지정합니다.
  *
- * 각 상태에 따라 테두리 색상과 두께가 달라집니다:
+ * 각 상태에 따라 테두리 색상이 달라집니다(테두리 굵기는 모두 1dp):
  * - Normal: 일반 상태입니다. 기본 테두리 색상이 적용됩니다.
  * - Negative: 오류 또는 부정적인 상태입니다. 빨간색 계열 테두리가 적용됩니다.
- * - Selected: 선택된 상태입니다. 파란색 계열의 2dp 테두리가 적용됩니다.
  */
 enum class WantedFramedStyleStatus {
     Normal,
-    Negative,
-    Selected
+    Negative
 }
 
 @DevicePreviews
@@ -188,47 +230,25 @@ private fun WantedFramedStylePreview() {
                 Box(
                     modifier = Modifier
                         .size(50.dp)
-                        .framedStyle(
-                            status = WantedFramedStyleStatus.Negative,
-                            enabled = true
-                        )
+                        .framedStyle(status = WantedFramedStyleStatus.Normal)
                 )
 
                 Box(
                     modifier = Modifier
                         .size(50.dp)
-                        .framedStyle(
-                            status = WantedFramedStyleStatus.Selected,
-                            enabled = true
-                        )
+                        .framedStyle(selected = true, status = WantedFramedStyleStatus.Normal)
                 )
 
                 Box(
                     modifier = Modifier
                         .size(50.dp)
-                        .framedStyle(
-                            status = WantedFramedStyleStatus.Normal,
-                            enabled = true
-                        )
-                )
-
-
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .framedStyle(
-                            status = WantedFramedStyleStatus.Negative,
-                            enabled = false
-                        )
+                        .framedStyle(status = WantedFramedStyleStatus.Negative)
                 )
 
                 Box(
                     modifier = Modifier
                         .size(50.dp)
-                        .framedStyle(
-                            status = WantedFramedStyleStatus.Selected,
-                            enabled = false
-                        )
+                        .framedStyle(selected = true, status = WantedFramedStyleStatus.Negative)
                 )
 
                 Box(
@@ -236,8 +256,33 @@ private fun WantedFramedStylePreview() {
                         .size(50.dp)
                         .framedStyle(
                             status = WantedFramedStyleStatus.Normal,
-                            enabled = false
+                            shadow = WantedShadowStyle.XSmall()
                         )
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .framedStyle(status = WantedFramedStyleStatus.Normal, enabled = false)
+                )
+
+                // disabled: 테두리·Base·Ring 색의 현재 opacity 에 43% 를 곱해 그린다.
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .framedStyle(selected = true, status = WantedFramedStyleStatus.Normal, enabled = false)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .framedStyle(status = WantedFramedStyleStatus.Negative, enabled = false)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .framedStyle(selected = true, status = WantedFramedStyleStatus.Negative, enabled = false)
                 )
             }
         }

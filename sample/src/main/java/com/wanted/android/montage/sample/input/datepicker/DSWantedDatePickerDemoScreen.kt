@@ -19,10 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.input.datepicker.DSWantedDatePickerDemoScreenContract.DSWantedDatePickerDemoEvent
 import com.wanted.android.montage.sample.input.datepicker.DSWantedDatePickerDemoScreenContract.DSWantedDatePickerDemoViewEvent
 import com.wanted.android.montage.sample.input.datepicker.DSWantedDatePickerDemoScreenContract.DSWantedDatePickerDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.picker.datepicker.WantedDatePicker
 import com.wanted.android.wanted.design.navigations.topbar.WantedBackTopAppBar
@@ -115,6 +117,7 @@ private fun DSWantedDatePickerDemoScreenLayout(
 		Box(
 			modifier = Modifier
 				.fillMaxWidth()
+				.demoCheckerBackground()
 				.border(
 					width = 1.dp,
 					color = colorResource(R.color.line_neutral_primary),
@@ -146,6 +149,8 @@ private fun DSWantedDatePickerDemoScreenLayout(
 				}
 			}
 		}
+
+		DSWantedCheckerBackgroundOptionCell()
 	}
 }
 

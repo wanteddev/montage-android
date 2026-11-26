@@ -812,10 +812,9 @@ private fun WantedTextAreaContent(
 
 // TextArea 컨테이너의 포커스 링·테두리·배경을 구성한다.
 //
-// border 는 WantedTextField 와 동일하게 [상태 색 border] 와 [그 아래 깔리는 underlay] 를 같은 굵기로 겹쳐 그린다.
-// Modifier.border 는 content 를 그린 뒤 자기 stroke 를 덧그리므로 체인에서 먼저 선언한 border 가 위에 얹힌다.
-// 상태 색 border 를 먼저 선언해야 지정 opacity(43%/52%)가 그대로 보이고, 순서가 뒤집히면 underlay 43% 가
-// 상태 색을 57% 로 깎는다. 포커스 시 바깥 4dp 링은 [focusRing] 이 컴포넌트 경계 바깥에만 그린다.
+// border 는 WantedTextField 와 동일하게 상태 색 1dp border 하나만 그린다.
+// (Figma Textinput/Resource/Interaction: 그 아래 흰 border 는 없다.)
+// 포커스 시 바깥 4dp 링은 [focusRing] 이 컴포넌트 경계 바깥에만 그린다.
 @Composable
 private fun Modifier.textAreaContainer(
     shape: RoundedCornerShape,
@@ -834,8 +833,7 @@ private fun Modifier.textAreaContainer(
             DesignSystemTheme.colors.lineBrandFocus
         }
     )
-    // 배경은 border 보다 먼저 그린다. 나중에 그리면 반투명 배경(white 28%)이 border 위에 덮여
-    // border 색의 opacity 가 스펙대로 보이지 않는다.
+    // Modifier.border 는 content(배경 포함)를 그린 뒤 stroke 를 덧그리므로, 선언 순서와 관계없이 border 가 배경 위에 보인다.
     .background(
         color = if (enabled) background else DesignSystemTheme.colors.surfaceNeutralTertiary,
         shape = shape
@@ -845,24 +843,7 @@ private fun Modifier.textAreaContainer(
         color = containerBorderColor(enabled = enabled, negative = negative, focused = focused),
         width = 1.dp
     )
-    .border(
-        shape = shape,
-        color = containerUnderlayBorderColor(enabled = enabled, negative = negative, focused = focused),
-        width = 1.dp
-    )
     .clip(shape)
-
-/** 상태 색 border 아래에 깔리는 underlay border 색상입니다. 상태 색 위를 덮지 않습니다. */
-@Composable
-private fun containerUnderlayBorderColor(
-    enabled: Boolean,
-    negative: Boolean,
-    focused: Boolean
-): Color = when {
-    !enabled -> DesignSystemTheme.colors.transparent
-    negative || focused -> DesignSystemTheme.colors.backgroundNeutralPrimary.copy(alpha = OPACITY_43)
-    else -> DesignSystemTheme.colors.transparent
-}
 
 /** Container border 색상입니다. Negative + Focused 는 opacity 를 52% 로 올려 강조합니다. */
 @Composable

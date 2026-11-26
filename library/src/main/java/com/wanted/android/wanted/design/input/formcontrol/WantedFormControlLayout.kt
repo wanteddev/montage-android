@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,7 @@ private const val LEADING_LABEL_MAX_WIDTH_RATIO = 0.5f
 // @param label (@Composable () -> Unit)?: 라벨 슬롯입니다. null이면 렌더링하지 않습니다.
 // @param footer (@Composable () -> Unit)?: 메시지/글자수 슬롯입니다. null이면 렌더링하지 않습니다.
 // @param labelPlacement WantedFormControlDefaults.LabelPlacement: 라벨 배치 방향을 지정합니다. (Top 또는 Leading)
+// @param leadingLabelWidth Density.() -> LeadingLabelWidth: Leading 배치에서 라벨 열 폭 규칙을 돌려줍니다. 측정 단계에서 호출되므로 그룹 공유 폭이 바뀌면 재측정만 일어납니다. Top 배치에서는 쓰지 않습니다.
 @Composable
 internal fun WantedFormControlLayout(
     input: @Composable () -> Unit,
@@ -47,6 +49,7 @@ internal fun WantedFormControlLayout(
     label: @Composable (() -> Unit)? = null,
     footer: @Composable (() -> Unit)? = null,
     labelPlacement: WantedFormControlDefaults.LabelPlacement = WantedFormControlDefaults.LabelPlacement.Top,
+    leadingLabelWidth: Density.() -> LeadingLabelWidth = { LeadingLabelWidth.Standalone },
 ) {
     when (labelPlacement) {
         WantedFormControlDefaults.LabelPlacement.Top -> {
@@ -66,6 +69,7 @@ internal fun WantedFormControlLayout(
                 label = label,
                 input = input,
                 footer = footer,
+                leadingLabelWidth = leadingLabelWidth,
             )
         }
     }
@@ -82,6 +86,7 @@ private fun LeadingPlacementLayout(
     modifier: Modifier = Modifier,
     label: @Composable (() -> Unit)? = null,
     footer: @Composable (() -> Unit)? = null,
+    leadingLabelWidth: Density.() -> LeadingLabelWidth = { LeadingLabelWidth.Standalone },
 ) {
     Layout(
         modifier = modifier,
@@ -95,17 +100,19 @@ private fun LeadingPlacementLayout(
         val verticalGapPx = ContentVerticalGap.roundToPx()
         val labelBandMaxPx = LabelMaxHeight.roundToPx()
 
-        // 긴 라벨이 입력 영역을 잠식하지 않도록 라벨 최대 폭을 제한한다. (초과 시 라벨은 ellipsis 처리)
-        val labelMaxWidth = if (constraints.maxWidth == Constraints.Infinity) {
-            Constraints.Infinity
-        } else {
-            (constraints.maxWidth * LEADING_LABEL_MAX_WIDTH_RATIO).roundToInt()
-        }
-
         var measurableIndex = 0
         val labelPlaceable = if (label != null) {
+            // 라벨 열 폭 규칙(단독 50% 상한 / 고정 / 그룹 공유)에 따라 폭 범위를 정한다. (넘치면 ellipsis 처리)
+            val labelWidthBounds = leadingLabelWidthBounds(
+                labelWidth = leadingLabelWidth(),
+                parentMaxWidth = constraints.maxWidth,
+            )
             measurables[measurableIndex++].measure(
-                constraints.copy(minWidth = 0, maxWidth = labelMaxWidth, minHeight = 0)
+                constraints.copy(
+                    minWidth = labelWidthBounds.minWidth,
+                    maxWidth = labelWidthBounds.maxWidth,
+                    minHeight = 0,
+                )
             )
         } else {
             null
@@ -153,5 +160,56 @@ private fun LeadingPlacementLayout(
             inputPlaceable.place(x = inputX, y = 0)
             footerPlaceable?.place(x = inputX, y = footerY)
         }
+    }
+}
+
+// LabelPlacement.Leading 의 라벨 열 폭 규칙입니다.
+internal sealed interface LeadingLabelWidth {
+    // 단독 사용: 라벨 자연 폭을 쓰되 부모 폭의 [LEADING_LABEL_MAX_WIDTH_RATIO] 를 넘지 않습니다.
+    data object Standalone : LeadingLabelWidth
+
+    // 고정 폭(개별 labelWidth 또는 그룹 labelWidth): 짧은 라벨은 이 폭을 채우고, 긴 라벨은 말줄임합니다.
+    data class Fixed(val widthPx: Int) : LeadingLabelWidth
+
+    // 그룹 공유 폭(그룹 안 가장 긴 라벨 폭): 짧은 라벨은 이 폭을 채웁니다.
+    //
+    // 공유 폭은 composition 단계 텍스트 측정값이라 실제 라벨 측정과 1px 어긋날 가능성에 대비해,
+    // 상한을 공유 폭으로 묶지 않고 부모 폭으로 둡니다. 어긋나도 가장 긴 라벨이 말줄임되지 않습니다.
+    data class Shared(val widthPx: Int) : LeadingLabelWidth
+}
+
+// 라벨 측정에 쓸 가로 폭 범위입니다.
+internal data class LeadingLabelWidthBounds(
+    val minWidth: Int,
+    val maxWidth: Int,
+)
+
+// 라벨 열 폭 규칙과 부모 가로 폭으로 라벨 측정 폭 범위를 계산합니다.
+//
+// 고정·공유 폭은 부모 폭을 넘지 않도록 줄입니다. 부모 폭이 unbounded(Constraints.Infinity)면 그대로 씁니다.
+internal fun leadingLabelWidthBounds(
+    labelWidth: LeadingLabelWidth,
+    parentMaxWidth: Int,
+): LeadingLabelWidthBounds {
+    val isUnbounded = parentMaxWidth == Constraints.Infinity
+    return when (labelWidth) {
+        LeadingLabelWidth.Standalone -> LeadingLabelWidthBounds(
+            minWidth = 0,
+            maxWidth = if (isUnbounded) {
+                Constraints.Infinity
+            } else {
+                (parentMaxWidth * LEADING_LABEL_MAX_WIDTH_RATIO).roundToInt()
+            },
+        )
+
+        is LeadingLabelWidth.Fixed -> {
+            val width = labelWidth.widthPx.coerceIn(0, parentMaxWidth)
+            LeadingLabelWidthBounds(minWidth = width, maxWidth = width)
+        }
+
+        is LeadingLabelWidth.Shared -> LeadingLabelWidthBounds(
+            minWidth = labelWidth.widthPx.coerceIn(0, parentMaxWidth),
+            maxWidth = parentMaxWidth,
+        )
     }
 }

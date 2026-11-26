@@ -30,12 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.presentation.popover.DSWantedPopoverDemoScreenContract.DSWantedPopoverDemoEvent
 import com.wanted.android.montage.sample.presentation.popover.DSWantedPopoverDemoScreenContract.DSWantedPopoverDemoSideEffect
 import com.wanted.android.montage.sample.presentation.popover.DSWantedPopoverDemoScreenContract.DSWantedPopoverDemoViewEvent
 import com.wanted.android.montage.sample.presentation.popover.DSWantedPopoverDemoScreenContract.DSWantedPopoverDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
@@ -354,6 +356,7 @@ private fun DSWantedPopoverDemoScreenLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -384,6 +387,8 @@ private fun DSWantedPopoverDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             always()
             align()

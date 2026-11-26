@@ -24,6 +24,14 @@ class DSWantedFramedStyleDemoViewModel @Inject constructor(
                 setState { copy(enabled = event.enabled) }
             }
 
+            is DSWantedFramedStyleDemoEvent.SetSelected -> {
+                setState { copy(selected = event.selected) }
+            }
+
+            is DSWantedFramedStyleDemoEvent.SetShadow -> {
+                setState { copy(shadow = event.shadow) }
+            }
+
             is DSWantedFramedStyleDemoEvent.SetStatus -> {
                 setState { copy(status = event.status) }
             }
@@ -44,13 +52,16 @@ class DSWantedFramedStyleDemoViewModel @Inject constructor(
     }
 
     private fun getCode(): String {
+        val state = viewState.value
+        val shadow = if (state.shadow) "\n                    shadow = WantedShadowStyle.XSmall()," else ""
         return """
             Box(
                 Modifier
                 .size(50.dp)
                 .framedStyle(
-                    status = WantedFramedStyleStatus.${viewState.value.status},
-                    enabled = ${viewState.value.enabled}
+                    selected = ${state.selected},
+                    status = WantedFramedStyleStatus.${state.status},
+                    enabled = ${state.enabled},$shadow
                 )
             )
             """

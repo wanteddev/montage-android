@@ -26,6 +26,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,7 +45,7 @@ import java.util.Calendar
  *
  * 사용자는 Dial(시계)·Input(키보드 입력) 형식으로 전환할 수 있으며, 전환은 호출측이 onClickChangeMode 에서 isEnableClock 값을 뒤집어야 반영됩니다.
  *
- * 확인/취소 버튼을 제공하지만 선택한 시간은 콜백으로 전달되지 않습니다(내부 상태, 초기값은 현재 시각). 선택 값이 필요하면 WantedTimePickerWheel 을 사용합니다.
+ * 확인/취소 버튼을 제공하지만 선택한 시간은 콜백으로 전달되지 않습니다(내부 상태, 초기값은 initialHour·initialMinute, 기본값은 현재 시각). 선택 값이 필요하면 WantedTimePickerWheel 을 사용합니다.
  *
  * 내부적으로 TimePicker 또는 TimeInput을 사용합니다.
  *
@@ -74,6 +75,8 @@ import java.util.Calendar
  * @param onDismissRequest () -> Unit: Dialog 외부 클릭 또는 닫기 시 호출되는 콜백입니다
  * @param cancel String?: 취소 버튼에 표시할 텍스트입니다. null일 경우 버튼이 표시되지 않습니다
  * @param isEnableClock Boolean: true이면 시계 기반 TimePicker를 사용하고, false이면 TimeInput을 사용합니다
+ * @param initialHour Int?: 처음 선택돼 있는 시(0~23, 24시간제)입니다. null이면 현재 시각의 시입니다. 처음 표시할 때만 적용되며, 표시 중에 바꿔도 반영되지 않습니다
+ * @param initialMinute Int?: 처음 선택돼 있는 분(0~59)입니다. null이면 현재 시각의 분입니다. 처음 표시할 때만 적용되며, 표시 중에 바꿔도 반영되지 않습니다
  * @param onClickCancel () -> Unit: 취소 버튼 클릭 시 호출되는 콜백입니다. Dialog 를 닫지 않으므로 호출부에서 표시 상태를 바꿔야 합니다. 기본값은 빈 함수입니다
  */
 @Composable
@@ -85,6 +88,8 @@ fun WantedTimePicker(
     onDismissRequest: () -> Unit,
     cancel: String? = null,
     isEnableClock: Boolean = true,
+    initialHour: Int? = null,
+    initialMinute: Int? = null,
     onClickCancel: () -> Unit = {},
 ) {
     Dialog(
@@ -100,7 +105,9 @@ fun WantedTimePicker(
             cancel = cancel,
             onClickConfirm = onClickConfirm,
             onClickCancel = onClickCancel,
-            onClickChangeMode = onClickChangeMode
+            onClickChangeMode = onClickChangeMode,
+            initialHour = initialHour,
+            initialMinute = initialMinute
         )
     }
 }
@@ -115,13 +122,15 @@ private fun WantedTimePickerContent(
     modifier: Modifier = Modifier,
     isEnableClock: Boolean = true,
     cancel: String? = null,
+    initialHour: Int? = null,
+    initialMinute: Int? = null,
     onClickCancel: () -> Unit = {},
 ) {
-    val currentTime = Calendar.getInstance()
-
+    // 시·분을 같은 순간에서 읽도록 현재 시각은 한 번만 읽는다. 따로 읽으면 정각 직전(10:59:59.999)에 10:00 이 될 수 있다.
+    val now = remember { Calendar.getInstance() }
     val timePickerState = rememberTimePickerState(
-        initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
-        initialMinute = currentTime.get(Calendar.MINUTE),
+        initialHour = initialHour ?: now.get(Calendar.HOUR_OF_DAY),
+        initialMinute = initialMinute ?: now.get(Calendar.MINUTE),
         is24Hour = false,
     )
 
@@ -318,7 +327,9 @@ private fun WantedTimePickerPreview() {
                     onClickCancel = {
                     },
                     onClickChangeMode = {
-                    }
+                    },
+                    initialHour = 10,
+                    initialMinute = 30
                 )
 
                 WantedTimePickerContent(
@@ -331,7 +342,9 @@ private fun WantedTimePickerPreview() {
                     onClickCancel = {
                     },
                     onClickChangeMode = {
-                    }
+                    },
+                    initialHour = 10,
+                    initialMinute = 30
                 )
             }
         }

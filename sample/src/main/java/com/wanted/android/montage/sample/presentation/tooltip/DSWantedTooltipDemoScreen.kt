@@ -28,11 +28,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.presentation.tooltip.DSWantedTooltipDemoScreenContract.DSWantedTooltipDemoEvent.*
 import com.wanted.android.montage.sample.presentation.tooltip.DSWantedTooltipDemoScreenContract.DSWantedTooltipDemoViewEvent
 import com.wanted.android.montage.sample.presentation.tooltip.DSWantedTooltipDemoScreenContract.DSWantedTooltipDemoViewState
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
@@ -438,6 +440,7 @@ private fun DSWantedTooltipDemoScreenLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .demoCheckerBackground()
                 .border(
                     width = 1.dp,
                     color = colorResource(R.color.line_neutral_primary),
@@ -466,6 +469,8 @@ private fun DSWantedTooltipDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             size()
             always()

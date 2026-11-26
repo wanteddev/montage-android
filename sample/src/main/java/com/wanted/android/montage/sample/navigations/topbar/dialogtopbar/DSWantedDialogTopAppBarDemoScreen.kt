@@ -33,12 +33,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wanted.android.montage.sample.ui.DevicePreviews
 import com.wanted.android.montage.sample.util.ObserveAsEvent
+import com.wanted.android.montage.sample.DSWantedCheckerBackgroundOptionCell
 import com.wanted.android.montage.sample.DSWantedOptionSwitchCell
 import com.wanted.android.montage.sample.R
 import com.wanted.android.montage.sample.navigations.topbar.dialogtopbar.DSWantedDialogTopAppBarDemoScreenContract.DSWantedDialogTopAppBarDemoEvent
 import com.wanted.android.montage.sample.navigations.topbar.dialogtopbar.DSWantedDialogTopAppBarDemoScreenContract.DSWantedDialogTopAppBarDemoSideEffect
 import com.wanted.android.montage.sample.navigations.topbar.dialogtopbar.DSWantedDialogTopAppBarDemoScreenContract.DSWantedDialogTopAppBarDemoViewEvent
 import com.wanted.android.montage.sample.navigations.topbar.dialogtopbar.DSWantedDialogTopAppBarDemoScreenContract.DSWantedDialogTopAppBarDemoViewState
+import com.wanted.android.montage.sample.util.LocalDemoCheckerBackground
+import com.wanted.android.montage.sample.util.demoCheckerBackground
 import com.wanted.android.wanted.design.actions.actionarea.WantedActionArea
 import com.wanted.android.wanted.design.actions.button.WantedButton
 import com.wanted.android.wanted.design.input.select.WantedSelect
@@ -409,7 +412,9 @@ private fun DSWantedDialogTopAppBarDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
-            preview()
+            Box(modifier = Modifier.fillMaxWidth().demoCheckerBackground()) {
+                preview()
+            }
         }
 
         Column(
@@ -428,6 +433,8 @@ private fun DSWantedDialogTopAppBarDemoScreenLayout(
                     style = DesignSystemTheme.typography.heading2Bold
                 )
             )
+
+            DSWantedCheckerBackgroundOptionCell()
 
             variant()
             background()
@@ -452,7 +459,14 @@ private fun DSWantedDialogTopAppBarPreview(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DesignSystemTheme.colors.backgroundNeutralSecondary)
+            // 이 배경은 불투명해 격자를 가린다. 격자를 켰을 때만 그리지 않는다.
+            .then(
+                if (LocalDemoCheckerBackground.current.value) {
+                    Modifier
+                } else {
+                    Modifier.background(DesignSystemTheme.colors.backgroundNeutralSecondary)
+                }
+            )
             .padding(20.dp)
     ) {
         if (viewState.variant is Variant.Search) {
