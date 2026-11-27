@@ -54,6 +54,27 @@ jobs:
         run: |
           echo ${{env.VERSION_CODE}}
 
+      # 버전을 올리지 않은 PR(ci·문서·figma/ sync 등)도 main 에 머지되면 이 워크플로가 돈다.
+      # 이미 GitHub Packages 에 있는 버전을 다시 올리면 409 Conflict 로 실패하므로, 있으면 build·publish 를 건너뛰고
+      # 태그·Release 단계는 그대로 돌린다(둘 다 이미 있으면 건너뛰므로 멱등하다 — 앞선 런이 publish 뒤에 실패했어도 재실행으로 복구된다).
+      # 조회가 실패하면 건너뛰지 않는다(예전처럼 publish 를 시도하고, 이미 있으면 409 로 실패해 드러난다).
+      - name: Check published version
+        id: published
+        env:
+          GH_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+        run: |
+          GROUP=$(grep '^groupId=' library/publish.properties | cut -d '=' -f2 | tr -d ' ')
+          ARTIFACT=$(grep '^artifactId=' library/publish.properties | cut -d '=' -f2 | tr -d ' ')
+          if ! VERSIONS=$(gh api --paginate "orgs/wanteddev/packages/maven/${GROUP}.${ARTIFACT}/versions" -q '.[].name'); then
+            echo "::warning::GitHub Packages 버전 조회에 실패해 publish 를 그대로 시도합니다."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          elif printf '%s\n' "$VERSIONS" | grep -qxF "${{ env.VERSION_CODE }}"; then
+            echo "::notice::${GROUP}:${ARTIFACT}:${{ env.VERSION_CODE }} 은 이미 게시돼 있어 build·publish 를 건너뜁니다(태그·Release 는 확인)."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
 
       - name: Verify Java
         run: |
@@ -61,10 +82,12 @@ jobs:
           echo "JAVA_HOME: $JAVA_HOME"
 
       - name: build
+        if: steps.published.outputs.exists != 'true'
         run: |
           ./gradlew :library:assembleRelease
 
       - name: publish
+        if: steps.published.outputs.exists != 'true'
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
