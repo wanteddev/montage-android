@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       base_ref:
-        description: "비교 기준 커밋·태그. 여기에는 있고 main 에는 없는 노드를 내린다. 비우면 게시만 한다"
+        description: "비교 기준(태그·SHA·브랜치 이름). 여기에는 있고 main 에는 없는 노드를 내린다. main 의 조상이어야 하며, 아니거나 찾지 못하면 경고만 남기고 게시만 한다. 비우면 게시만 한다"
         required: false
         default: ""
 
