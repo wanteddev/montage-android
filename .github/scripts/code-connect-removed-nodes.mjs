@@ -65,8 +65,30 @@ if (figmaDir) {
   }
 }
 
-const before = new Set(beforeDocs.map((d) => d.figmaNode))
-const after = new Set(afterDocs.map((d) => d.figmaNode))
-for (const node of [...before].filter((n) => !after.has(n)).sort()) {
-  console.log(node)
+// 같은 노드라도 URL 표기가 다를 수 있다(파일 이름 slug, node-id 의 '-'·':'·'%3A', &m=dev 같은 추가 파라미터).
+// CLI 처럼 fileKey + nodeId 로 비교해야, 표기만 바뀐 노드를 "사라진" 것으로 보고 내리지 않는다.
+// 해석할 수 없는 URL 은 문자열 그대로 비교한다.
+const nodeKey = (url) => {
+  try {
+    const u = new URL(url)
+    const seg = u.pathname.split('/').filter(Boolean)
+    const i = seg.findIndex((s) => s === 'design' || s === 'file')
+    if (i < 0 || !seg[i + 1]) return url
+    const fileKey = seg[i + 2] === 'branch' && seg[i + 3] ? seg[i + 3] : seg[i + 1]
+    const nodeId = u.searchParams.get('node-id')
+    if (!nodeId) return url
+    return `${fileKey}:${nodeId.replace(/-/g, ':')}`
+  } catch {
+    return url
+  }
+}
+
+const after = new Set(afterDocs.map((d) => nodeKey(d.figmaNode)))
+const removed = new Map() // key → before 의 원래 URL(unpublish 에 그대로 넘긴다)
+for (const d of beforeDocs) {
+  const k = nodeKey(d.figmaNode)
+  if (!after.has(k) && !removed.has(k)) removed.set(k, d.figmaNode)
+}
+for (const url of [...removed.values()].sort()) {
+  console.log(url)
 }
