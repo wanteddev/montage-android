@@ -98,12 +98,19 @@ jobs:
         working-directory: montage-main/figma
         env:
           FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+        # CLI 는 일부 노드 게시가 거부돼도(UI 로 만든 매핑과 충돌, 플랜 제한, 노드별 오류) 로그만 남기고 exit 0 으로 끝난다.
+        # 출력에서 그 흔적을 찾아 실패로 끝낸다. 실패하면 다음 Unpublish 단계도 돌지 않는다.
         run: |
+          set -o pipefail
           node --version
           npx -y "$CODE_CONNECT" connect publish \
             -c figma.config.json \
             --exit-on-unreadable-files \
-            --batch-size 50
+            --batch-size 50 2>&1 | tee "$RUNNER_TEMP/publish.log"
+          if grep -qE 'Failed to upload to Figma|already have UI-created Code Connect mappings' "$RUNNER_TEMP/publish.log"; then
+            echo "::error::일부 컴포넌트를 Figma 에 게시하지 못했습니다. 위 로그의 'Failed to upload' 또는 'UI-created' 항목을 확인하세요."
+            exit 1
+          fi
 
       # 기준 커밋과 main 의 parse 결과를 비교해, 기준에만 있는 노드를 내린다.
       # 노드 단위 비교라 파일을 옮기거나 이름을 바꿔도 같은 노드가 남아 있으면 내리지 않는다.
