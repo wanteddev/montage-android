@@ -15,6 +15,10 @@ on:
         required: true
         default: "main"
 
+# GITHUB_TOKEN 은 쓰지 않는다. 저장소는 토큰 없이 받고(공개 저장소), 문서 커밋은 WANTED_DEV_TOKEN 으로 push 한다.
+# (같은 job 에서 다른 저장소의 액션 validate-docs 를 실행하므로 GITHUB_TOKEN 권한은 주지 않는다)
+permissions: {}
+
 jobs:
   # 기존 CI 파일에 있던 디자인 시스템 문서 업데이트 Job을 그대로 가져옵니다.
   update_ds_docs:
@@ -26,15 +30,24 @@ jobs:
     if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
 
     steps:
+      # 공개 저장소라 토큰 없이 받는다. self-hosted 러너는 작업 폴더를 CD 와 함께 쓰므로
+      # 토큰을 remote URL 에 남기지 않는다(예전 런이 남긴 토큰도 여기서 지운다). push 는 마지막 단계에서 토큰을 명시한다.
+      # 수동 실행 입력(branch)은 셸에 직접 펼치지 않고 env 로 받는다(명령 치환 주입 방지). 브랜치 이름 형식도 확인한다.
       - name: Checkout code
+        env:
+          TARGET_BRANCH: ${{ github.event.inputs.branch || 'main' }}
         run: |
-          TARGET_BRANCH="${{ github.event.inputs.branch || 'main' }}"
+          if ! git check-ref-format --branch "$TARGET_BRANCH" >/dev/null 2>&1; then
+            echo "::error::브랜치 이름이 올바르지 않습니다: $TARGET_BRANCH"
+            exit 1
+          fi
           if [ -d .git ]; then
+            git remote set-url origin https://github.com/wanteddev/montage-android.git
             git fetch origin "$TARGET_BRANCH"
             git checkout "$TARGET_BRANCH"
             git reset --hard "origin/$TARGET_BRANCH"
           else
-            git clone --branch "$TARGET_BRANCH" https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/wanteddev/montage-android.git .
+            git clone --branch "$TARGET_BRANCH" https://github.com/wanteddev/montage-android.git .
           fi
 
       - name: Verify Java
@@ -85,7 +98,12 @@ jobs:
           files: library/document/md/*.{md,mdx}
           mobile-source: true
 
+      # 문서 커밋은 PR 없이 main 에 바로 push 한다(의도 — main ruleset 우회 권한이 있는 WANTED_DEV_TOKEN 으로).
+      # 토큰은 push URL 에만 넣고 remote 설정에는 남기지 않는다.
       - name: Commit & Push Design System Docs
+        env:
+          PUSH_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+          TARGET_BRANCH: ${{ github.event.inputs.branch || 'main' }}
         run: |
           git config --local user.name "deploy-bot"
           git config --local user.email "deploy-bot@github.com"
@@ -108,4 +126,4 @@ jobs:
           git commit -m "docs: update Design System documentation and mdx [skip ci]"
           
           echo "🚀 Pushing changes..."
-          git push
+          git push "https://x-access-token:${PUSH_TOKEN}@github.com/wanteddev/montage-android.git" "HEAD:refs/heads/${TARGET_BRANCH}"

@@ -1,0 +1,199 @@
+name: Code Connect Publish on Merge
+
+# main 대상 PR 이 머지될 때 루트 figma/ 의 Compose Code Connect 를 Figma 에 게시하고,
+# 그 PR 에서 사라진 컴포넌트(노드)는 Figma 에서 내린다(unpublish).
+#
+# 흐름: android master 머지 → android sync-design-system.yml 이 이 저장소 루트 figma/ 로 복사(develop)
+#       → develop 이 main 에 머지될 때 이 워크플로가 게시.
+# figma/ 의 원본은 android core/wanted-library-design-system/figma/ 다. 이 저장소에서 직접 고치지 않는다(다음 sync 에 덮어쓰인다).
+#
+# 다른 워크플로와 같은 이유로 main push 대신 PR 머지(pull_request_target)로 실행한다(gihub_packages.yml 주석 참고).
+# PR 코드는 checkout 하지 않고 항상 main 을 받는다.
+on:
+  pull_request_target:
+    types: [ closed ]
+    branches:
+      - main
+    # figma/ 가 바뀐 PR 만 실행한다.
+    paths:
+      - 'figma/**'
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: "비교 기준(태그·SHA·브랜치 이름). 여기에는 있고 main 에는 없는 노드를 내린다. main 의 조상이어야 하며, 아니거나 찾지 못하면 경고만 남기고 게시만 한다. 비우면 게시만 한다"
+        required: false
+        default: ""
+
+env:
+  # 버전을 고정한다. 올릴 때는 로컬에서 parse 결과를 먼저 확인한다.
+  CODE_CONNECT: "@figma/code-connect@2.1.0"
+  # figma.config.json 의 label. montage-web(React)·montage-ios(SwiftUI) 스니펫과 겹치지 않게 바꾸지 않는다.
+  LABEL: Compose
+
+# 공개 저장소를 토큰 없이 clone 하고 Figma 는 FIGMA_TOKEN 으로 부른다. GITHUB_TOKEN 권한은 필요 없다.
+permissions: {}
+
+jobs:
+  publish:
+    if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
+    # 게시가 겹치면 서로 다른 버전으로 덮어쓸 수 있어 한 번에 하나만 돌린다. 진행 중인 실행은 취소하지 않는다.
+    # queue: max — 기본(single)은 대기 실행을 하나만 두고 앞선 대기 실행을 취소한다. 그러면 figma/ 를 바꾼 머지 셋이
+    # 겹칠 때 가운데 실행이 cancelled 되고, 마지막 실행은 자기 머지 직전과만 비교하므로 가운데 머지에서 지운 노드가 남는다.
+    # max 는 대기 실행을 머지 순서대로(FIFO) 모두 돌린다.
+    # 실행이 실패하면 그 머지에서 지운 노드는 다음 실행이 다시 보지 않는다. 실패한 실행을 다시 실행(re-run)하거나,
+    # 실패한 실행마다 그 머지 직전 커밋을 base_ref 로 넣어 수동 실행한다(여러 번 실패했으면 각각).
+    concurrency:
+      group: code-connect-publish
+      cancel-in-progress: false
+      queue: max
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # actions/checkout 은 엔터프라이즈 정책으로 막혀 있어 git clone 으로 받는다(auto-deploy-docs.yml 과 같음).
+      # 비교 기준 커밋을 꺼내야 해서 이력은 받고 파일 내용(blob)은 필요할 때만 받는다.
+      - name: Checkout main
+        run: |
+          rm -rf montage-main montage-base
+          git clone --filter=blob:none --branch main https://github.com/${{ github.repository }}.git montage-main
+
+      # 비교 기준: PR 머지면 머지 커밋의 첫 부모(머지 직전 main), 수동 실행이면 입력한 base_ref.
+      - name: Resolve base
+        id: base
+        working-directory: montage-main
+        env:
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          INPUT_BASE: ${{ github.event.inputs.base_ref }}
+        run: |
+          set -euo pipefail
+          if [ -n "${MERGE_SHA:-}" ]; then
+            git fetch -q origin "$MERGE_SHA"
+            BASE=$(git rev-parse "${MERGE_SHA}^1")
+          elif [ -n "${INPUT_BASE:-}" ]; then
+            # 태그·SHA·브랜치 이름(develop 처럼 origin/ 없이) 모두 받는다. fetch 한 것은 FETCH_HEAD 로도 찾는다.
+            BASE=""
+            FETCHED=""
+            git fetch -q origin "$INPUT_BASE" 2>/dev/null && FETCHED=FETCH_HEAD || true
+            for ref in "$INPUT_BASE" "origin/$INPUT_BASE" $FETCHED; do
+              if BASE=$(git rev-parse -q --verify "${ref}^{commit}"); then break; fi
+              BASE=""
+            done
+            # 해석하지 못했거나 main 의 조상이 아니면 비교하지 않고 게시만 한다(job 을 멈추지 않는다).
+            # 조상 검사: main 과 무관한 커밋의 figma.config.json 으로 parse 하지 않게 한다.
+            if [ -z "$BASE" ]; then
+              echo "::warning::base_ref '${INPUT_BASE}' 를 찾지 못해 unpublish 없이 게시만 합니다."
+            elif ! git merge-base --is-ancestor "$BASE" HEAD; then
+              echo "::warning::base_ref '${INPUT_BASE}'(${BASE}) 가 main 의 조상이 아니어서 unpublish 없이 게시만 합니다."
+              BASE=""
+            fi
+          else
+            BASE=""
+          fi
+          echo "base=${BASE}" >> "$GITHUB_OUTPUT"
+          echo "비교 기준: ${BASE:-(없음 — 게시만 함)}"
+
+      - name: Check figma config
+        id: check
+        run: |
+          if [ -f montage-main/figma/figma.config.json ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            # 이 워크플로는 figma/** 가 바뀐 머지에서 돌기 때문에, 여기 오면 figma/ 가 지워졌을 가능성이 크다.
+            # Figma 의 Compose 스니펫은 그대로 남으므로 사람이 보도록 경고와 요약을 남긴다(전체 unpublish 는 사람이 판단한다).
+            MSG="figma/figma.config.json 이 main 에 없어 Code Connect 게시·unpublish 를 건너뜁니다. figma/ 를 지운 것이 의도라면 Figma 의 Compose 스니펫을 수동으로 내려야 합니다(README 의 unpublish --label Compose)."
+            echo "::warning::${MSG}"
+            echo "### ⚠️ Code Connect 건너뜀" >> "$GITHUB_STEP_SUMMARY"
+            echo "${MSG}" >> "$GITHUB_STEP_SUMMARY"
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 템플릿의 source 링크는 원본 저장소(비공개 android)를 가리킨다.
+      # Figma Dev Mode 에서 누구나 열 수 있게 공개 저장소(montage-android main)의 같은 파일로 바꿔서 게시한다.
+      # 커밋하지 않고 CI 작업 폴더에서만 바꾼다.
+      - name: Rewrite source links
+        if: steps.check.outputs.exists == 'true'
+        working-directory: montage-main/figma
+        run: |
+          # blob(파일)·tree(폴더, 아이콘 drawable) 링크를 모두 바꾼다.
+          grep -rlZE 'github.com/wanteddev/android/(blob|tree)/master/core/wanted-library-design-system/' . \
+            | xargs -0 -r sed -i -E 's#github.com/wanteddev/android/(blob|tree)/master/core/wanted-library-design-system/#github.com/wanteddev/montage-android/\1/main/library/#g'
+          if grep -rn 'github.com/wanteddev/android/' .; then
+            echo "::warning::android 저장소를 가리키는 링크가 남았습니다. 위 줄을 확인하세요."
+          fi
+
+      # 게시 전에 토큰 없이 parse 해서 검사한다. 하나라도 걸리면 게시·unpublish 모두 하지 않고 실패한다.
+      # - include 가 템플릿(*.figma.ts, *.figma.batch.json)을 놓침 → 그 컴포넌트가 조용히 갱신되지 않는다(CLI 는 exit 0)
+      # - 템플릿이 있는데 Compose 문서가 없음(label 변경 등)
+      # ubuntu-latest 에 Node 가 깔려 있다(Code Connect 는 Node 18 이상). parse 에는 토큰이 필요 없어 주지 않는다.
+      - name: Parse and validate
+        id: parse
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          set -euo pipefail
+          node --version
+          (cd montage-main/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > "$RUNNER_TEMP/after.json"
+          node montage-main/.github/scripts/code-connect-removed-nodes.mjs --validate "$RUNNER_TEMP/after.json" "$LABEL" \
+            --figma-dir montage-main/figma
+          echo "✅ 템플릿 $(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1])).length)' "$RUNNER_TEMP/after.json")개 문서를 읽었습니다."
+
+      - name: Publish Code Connect
+        if: steps.check.outputs.exists == 'true'
+        working-directory: montage-main/figma
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+        # CLI 는 일부 노드 게시가 거부돼도(UI 로 만든 매핑과 충돌, 플랜 제한, 노드별 오류) 로그만 남기고 exit 0 으로 끝난다.
+        # 출력에서 그 흔적을 찾아 실패로 끝낸다. 실패하면 다음 Unpublish 단계도 돌지 않는다.
+        run: |
+          set -o pipefail
+          npx -y "$CODE_CONNECT" connect publish \
+            -c figma.config.json \
+            --exit-on-unreadable-files \
+            --batch-size 50 2>&1 | tee "$RUNNER_TEMP/publish.log"
+          if grep -qE 'Failed to upload to Figma|already have UI-created Code Connect mappings' "$RUNNER_TEMP/publish.log"; then
+            echo "::error::일부 컴포넌트를 Figma 에 게시하지 못했습니다. 위 로그의 'Failed to upload' 또는 'UI-created' 항목을 확인하세요."
+            exit 1
+          fi
+
+      # 기준 커밋을 토큰 없이 parse 한다. 게시가 끝난 뒤에 하므로, 기준 커밋의 템플릿이 깨져 parse 가 실패해도
+      # 이번 머지의 게시는 막지 않는다(이 단계가 실패하면 unpublish 만 건너뛰고 job 은 실패로 남는다).
+      - name: Parse base
+        id: parse_base
+        if: steps.check.outputs.exists == 'true' && steps.base.outputs.base != ''
+        env:
+          BASE: ${{ steps.base.outputs.base }}
+        run: |
+          set -euo pipefail
+          HAS_BEFORE=false
+          git -C montage-main worktree add -q --detach ../montage-base "$BASE"
+          if [ -f montage-base/figma/figma.config.json ]; then
+            (cd montage-base/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > "$RUNNER_TEMP/before.json"
+            HAS_BEFORE=true
+          else
+            echo "기준 커밋($BASE)에 figma/ 가 없어 내릴 것이 없습니다."
+          fi
+          echo "has_before=${HAS_BEFORE}" >> "$GITHUB_OUTPUT"
+
+      # 기준 커밋(Parse base)과 main(Parse and validate)의 parse 결과를 비교해, 기준에만 있는 노드를 내린다.
+      # 노드 단위 비교라 파일을 옮기거나 이름을 바꿔도 같은 노드가 남아 있으면 내리지 않는다.
+      # main 에서 figma/ 가 통째로 사라지면 위 단계들이 건너뛰므로 이 단계도 돌지 않는다(전체 삭제는 사람이 판단한다).
+      # 토큰은 unpublish 에만 쓴다.
+      - name: Unpublish removed components
+        if: steps.check.outputs.exists == 'true' && steps.parse_base.outputs.has_before == 'true'
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+        run: |
+          set -euo pipefail
+          # parse 가 템플릿을 못 읽었으면(결과가 비었거나 놓친 파일이 있으면, 기준 커밋 쪽 포함) 스크립트가 exit 3 으로 멈춘다
+          # — 전부 내리는 사고와, 지운 노드를 못 보고 넘어가는 일을 막는다.
+          node montage-main/.github/scripts/code-connect-removed-nodes.mjs "$RUNNER_TEMP/before.json" "$RUNNER_TEMP/after.json" "$LABEL" \
+            --figma-dir montage-main/figma --before-figma-dir montage-base/figma > removed.txt
+          if [ ! -s removed.txt ]; then
+            echo "✅ 사라진 컴포넌트가 없습니다."
+            exit 0
+          fi
+
+          echo "🗑️ 내릴 노드 $(wc -l < removed.txt)개:"
+          cat removed.txt
+          # --label 을 꼭 함께 넘긴다. 빼면 React·SwiftUI 스니펫까지 지워질 수 있다.
+          while IFS= read -r node; do
+            (cd montage-main/figma && npx -y "$CODE_CONNECT" connect unpublish --node "$node" --label "$LABEL")
+          done < removed.txt

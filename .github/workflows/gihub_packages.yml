@@ -22,25 +22,29 @@ jobs:
     # (문서 봇의 'docs:' 커밋은 main 에 직접 push 되므로 이 워크플로우를 실행하지 않는다)
     if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
     # job 수준에 둬서 머지 없이 닫힌 PR(job skip)이 대기 중인 배포를 밀어내지 않게 한다.
-    # 실행 중·대기 중 배포는 취소하지 않는다.
+    # 실행 중·대기 중 배포는 취소하지 않는다(queue: max — 기본 single 은 앞선 대기 실행을 취소한다).
     concurrency:
       group: cd-main
       cancel-in-progress: false
+      queue: max
     runs-on: self-hosted
     permissions:
       contents: write
       packages: write
       actions: read
     steps:
+      # 공개 저장소라 토큰 없이 받는다. self-hosted 러너는 작업 폴더를 문서 워크플로와 함께 쓰므로
+      # 토큰을 remote URL 에 남기지 않는다(예전 런이 남긴 토큰도 여기서 지운다). 태그 push 는 그 단계에서 토큰을 명시한다.
       - name: Checkout code
         run: |
           if [ -d .git ]; then
+            git remote set-url origin https://github.com/wanteddev/montage-android.git
             git fetch origin main
             git checkout main
             git reset --hard origin/main
             git clean -fdx
           else
-            git clone --branch main https://x-access-token:${{ secrets.WANTED_DEV_TOKEN }}@github.com/wanteddev/montage-android.git .
+            git clone --branch main https://github.com/wanteddev/montage-android.git .
           fi
           git fetch --unshallow || true
 
@@ -54,6 +58,27 @@ jobs:
         run: |
           echo ${{env.VERSION_CODE}}
 
+      # 버전을 올리지 않은 PR(ci·문서·figma/ sync 등)도 main 에 머지되면 이 워크플로가 돈다.
+      # 이미 GitHub Packages 에 있는 버전을 다시 올리면 409 Conflict 로 실패하므로, 있으면 build·publish 를 건너뛰고
+      # 태그·Release 단계는 그대로 돌린다(둘 다 이미 있으면 건너뛰므로 멱등하다 — 앞선 런이 publish 뒤에 실패했어도 재실행으로 복구된다).
+      # 조회가 실패하면 건너뛰지 않는다(예전처럼 publish 를 시도하고, 이미 있으면 409 로 실패해 드러난다).
+      - name: Check published version
+        id: published
+        env:
+          GH_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+        run: |
+          GROUP=$(grep '^groupId=' library/publish.properties | cut -d '=' -f2 | tr -d ' ')
+          ARTIFACT=$(grep '^artifactId=' library/publish.properties | cut -d '=' -f2 | tr -d ' ')
+          if ! VERSIONS=$(gh api --paginate "orgs/wanteddev/packages/maven/${GROUP}.${ARTIFACT}/versions" -q '.[].name'); then
+            echo "::warning::GitHub Packages 버전 조회에 실패해 publish 를 그대로 시도합니다."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          elif printf '%s\n' "$VERSIONS" | grep -qxF "${{ env.VERSION_CODE }}"; then
+            echo "::notice::${GROUP}:${ARTIFACT}:${{ env.VERSION_CODE }} 은 이미 게시돼 있어 build·publish 를 건너뜁니다(태그·Release 는 확인)."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
 
       - name: Verify Java
         run: |
@@ -61,10 +86,12 @@ jobs:
           echo "JAVA_HOME: $JAVA_HOME"
 
       - name: build
+        if: steps.published.outputs.exists != 'true'
         run: |
           ./gradlew :library:assembleRelease
 
       - name: publish
+        if: steps.published.outputs.exists != 'true'
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
@@ -74,25 +101,51 @@ jobs:
       - name: Create & Push Tag
         env:
           GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+          ALREADY_PUBLISHED: ${{ steps.published.outputs.exists }}
         run: |
           git config --local user.name "deploy-bot"
           git config --local user.email "deploy-bot@github.com"
-          
-          # 이미 존재하는 태그는 건너뛰기
-          if git rev-parse "v${{env.VERSION_CODE}}" >/dev/null 2>&1; then
-            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists locally"
-          else
-            echo "✅ Creating tag v${{env.VERSION_CODE}}"
-            git tag v${{env.VERSION_CODE}}
+          TAG="v${{env.VERSION_CODE}}"
+
+          # 원격에 태그가 이미 있으면 아무것도 하지 않는다(대상 커밋을 찾을 필요도 없다).
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null; then
+            echo "⚠️ Tag ${TAG} already exists on remote, skipping"
+            exit 0
           fi
-          
-          # 원격에 태그가 없는 경우만 푸시
-          if git ls-remote --tags origin | grep -q "refs/tags/v${{env.VERSION_CODE}}"; then
-            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists on remote, skipping push"
-          else
-            echo "🚀 Pushing tag v${{env.VERSION_CODE}}"
-            git push https://x-access-token:${GITHUB_TOKEN}@github.com/wanteddev/montage-android.git v${{env.VERSION_CODE}}
+
+          # 태그 대상: 이번 런이 publish 했으면 지금 빌드한 HEAD.
+          # 이미 게시된 버전인데 태그가 없으면(앞선 런이 publish 뒤에 실패) HEAD 가 아니라 main 에 그 버전이 들어온 커밋에 단다 —
+          # 그사이 다른 머지가 들어왔어도 JitPack(태그로 빌드)과 GitHub Packages 의 내용이 어긋나지 않게 한다.
+          # --first-parent + --diff-merges=first-parent: main 의 커밋(squash 커밋 또는 release 머지 커밋)을 고른다.
+          #   release 브랜치 안의 범프 커밋을 고르면 그 뒤 수정이 빠지고, 머지 충돌 해결로만 들어온 버전 줄은 머지 커밋에서만 보인다.
+          # -G 로 'version=<버전>' 줄 전체가 바뀐 커밋만 본다(주석 등에 같은 글자가 있어도 걸리지 않음).
+          TARGET=HEAD
+          if [ "$ALREADY_PUBLISHED" = "true" ]; then
+            VERSION_RE=$(printf '%s' "${{env.VERSION_CODE}}" | sed 's/[.]/\\./g')
+            TARGET=$(git log -1 -s --format=%H --first-parent --diff-merges=first-parent \
+              -G"^version=${VERSION_RE}[[:space:]]*$" HEAD -- library/publish.properties)
+            if [ -z "$TARGET" ]; then
+              echo "::error::main 에서 version=${{env.VERSION_CODE}} 이 들어온 커밋을 찾지 못해 태그를 달지 않습니다. 태그를 손으로 확인하세요."
+              exit 1
+            fi
+            # 그 뒤 라이브러리 빌드 입력이 바뀌었으면 실제로 게시된 커밋이 어느 것인지 알 수 없다
+            # (예: 버전을 올린 커밋의 빌드가 실패하고, 같은 버전으로 고친 다음 커밋이 게시된 뒤 태그 전에 중단).
+            # 추정해서 달면 JitPack(태그 빌드)과 GitHub Packages 내용이 달라지므로, 사람이 확인하도록 멈춘다.
+            # publish.properties 는 버전이 같음을 이미 확인했으므로 비교에서 뺀다.
+            if ! git diff --quiet "$TARGET" HEAD -- library gradle build.gradle.kts settings.gradle.kts gradle.properties ':(exclude)library/publish.properties'; then
+              echo "::error::v${{env.VERSION_CODE}} 은 이미 게시됐지만 태그가 없고, 버전이 들어온 커밋(${TARGET}) 뒤로 라이브러리 빌드 입력이 바뀌어 게시된 커밋을 특정할 수 없습니다. 게시된 커밋을 확인해 태그를 손으로 다세요."
+              git diff --stat "$TARGET" HEAD -- library gradle build.gradle.kts settings.gradle.kts gradle.properties ':(exclude)library/publish.properties' | tail -5
+              exit 1
+            fi
+            echo "이미 게시된 버전이라 태그 대상을 그 버전이 들어온 커밋 ${TARGET} 로 잡습니다(그 뒤 라이브러리 빌드 입력 변경 없음)."
           fi
+
+          # 로컬에 남은 같은 이름 태그(재사용 작업 폴더)는 지우고 대상에 다시 단다.
+          git tag -d "${TAG}" >/dev/null 2>&1 || true
+          echo "✅ Creating tag ${TAG} at ${TARGET}"
+          git tag "${TAG}" "$TARGET"
+          echo "🚀 Pushing tag ${TAG}"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/wanteddev/montage-android.git "${TAG}"
 
       - name: Create GitHub Release
         env:
