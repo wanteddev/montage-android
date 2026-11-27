@@ -32,9 +32,15 @@ jobs:
     steps:
       # 공개 저장소라 토큰 없이 받는다. self-hosted 러너는 작업 폴더를 CD 와 함께 쓰므로
       # 토큰을 remote URL 에 남기지 않는다(예전 런이 남긴 토큰도 여기서 지운다). push 는 마지막 단계에서 토큰을 명시한다.
+      # 수동 실행 입력(branch)은 셸에 직접 펼치지 않고 env 로 받는다(명령 치환 주입 방지). 브랜치 이름 형식도 확인한다.
       - name: Checkout code
+        env:
+          TARGET_BRANCH: ${{ github.event.inputs.branch || 'main' }}
         run: |
-          TARGET_BRANCH="${{ github.event.inputs.branch || 'main' }}"
+          if ! git check-ref-format --branch "$TARGET_BRANCH" >/dev/null 2>&1; then
+            echo "::error::브랜치 이름이 올바르지 않습니다: $TARGET_BRANCH"
+            exit 1
+          fi
           if [ -d .git ]; then
             git remote set-url origin https://github.com/wanteddev/montage-android.git
             git fetch origin "$TARGET_BRANCH"
