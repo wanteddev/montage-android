@@ -1,0 +1,50 @@
+name: Code Connect Validate on PR
+
+# figma/ 를 바꾸는 PR 에서, 머지하기 전에 Code Connect 템플릿을 토큰 없이 parse 해 검사한다.
+# 깨진 템플릿·include 누락·label 변경을 main 머지(게시) 전에 PR 에서 드러낸다.
+# 검사 내용은 code-connect-publish.yml 의 "Parse and validate" 단계와 같다(같은 스크립트·같은 CLI 버전).
+# pull_request 이벤트라 secret 이 없고 GITHUB_TOKEN 은 읽기 전용이다 — PR 코드를 받아 돌려도 안전하다.
+on:
+  pull_request:
+    paths:
+      - 'figma/**'
+      - '.github/scripts/code-connect-removed-nodes.mjs'
+      - '.github/workflows/code-connect-publish.yml'
+      - '.github/workflows/code-connect-validate.yml'
+
+permissions:
+  contents: read
+
+env:
+  # code-connect-publish.yml 과 같은 값으로 맞춘다.
+  CODE_CONNECT: "@figma/code-connect@2.1.0"
+  LABEL: Compose
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # actions/checkout 은 엔터프라이즈 정책으로 막혀 있어 git clone 으로 받는다. PR 머지 결과(refs/pull/N/merge)를 검사한다.
+      - name: Checkout PR merge result
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          rm -rf montage-pr
+          git init -q montage-pr
+          git -C montage-pr fetch -q --depth 1 "https://github.com/${{ github.repository }}.git" "refs/pull/${PR_NUMBER}/merge"
+          git -C montage-pr checkout -q FETCH_HEAD
+
+      - name: Parse and validate
+        run: |
+          set -euo pipefail
+          if [ ! -f montage-pr/figma/figma.config.json ]; then
+            echo "::notice::이 PR 에는 figma/figma.config.json 이 없어 검사할 것이 없습니다(figma/ 를 지우는 PR 이면 main 머지 때 경고가 남습니다)."
+            exit 0
+          fi
+          node --version
+          (cd montage-pr/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > "$RUNNER_TEMP/after.json"
+          node montage-pr/.github/scripts/code-connect-removed-nodes.mjs --validate "$RUNNER_TEMP/after.json" "$LABEL" \
+            --figma-dir montage-pr/figma
+          echo "✅ 템플릿 $(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1])).length)' "$RUNNER_TEMP/after.json")개 문서를 읽었습니다."
