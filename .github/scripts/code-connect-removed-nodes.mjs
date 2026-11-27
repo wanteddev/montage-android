@@ -93,7 +93,8 @@ if (opt['--figma-dir']) checkParse(afterAll, opt['--figma-dir'], label, '지금'
 if (opt['--before-figma-dir']) checkParse(beforeAll, opt['--before-figma-dir'], label, '기준 커밋')
 
 // 같은 노드라도 URL 표기가 다를 수 있다(파일 이름 slug, node-id 의 '-'·':'·'%3A', &m=dev 같은 추가 파라미터).
-// CLI 처럼 fileKey + nodeId 로 비교해야, 표기만 바뀐 노드를 "사라진" 것으로 보고 내리지 않는다.
+// CLI 2.1.0 과 같게 fileKey + nodeId 로 비교해야, 표기만 바뀐 노드를 "사라진" 것으로 보고 내리지 않는다.
+// fileKey 는 CLI(getKeyFromFigmaNode·parseFigmaNode)처럼 /design/ 또는 /file/ 바로 뒤의 키다 — /branch/<키> 는 보지 않는다.
 // 해석할 수 없는 URL 은 문자열 그대로 비교한다.
 const nodeKey = (url) => {
   try {
@@ -101,7 +102,7 @@ const nodeKey = (url) => {
     const seg = u.pathname.split('/').filter(Boolean)
     const i = seg.findIndex((s) => s === 'design' || s === 'file')
     if (i < 0 || !seg[i + 1]) return url
-    const fileKey = seg[i + 2] === 'branch' && seg[i + 3] ? seg[i + 3] : seg[i + 1]
+    const fileKey = seg[i + 1]
     const nodeId = u.searchParams.get('node-id')
     if (!nodeId) return url
     return `${fileKey}:${nodeId.replace(/-/g, ':')}`
