@@ -22,10 +22,11 @@ jobs:
     # (문서 봇의 'docs:' 커밋은 main 에 직접 push 되므로 이 워크플로우를 실행하지 않는다)
     if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
     # job 수준에 둬서 머지 없이 닫힌 PR(job skip)이 대기 중인 배포를 밀어내지 않게 한다.
-    # 실행 중·대기 중 배포는 취소하지 않는다.
+    # 실행 중·대기 중 배포는 취소하지 않는다(queue: max — 기본 single 은 앞선 대기 실행을 취소한다).
     concurrency:
       group: cd-main
       cancel-in-progress: false
+      queue: max
     runs-on: self-hosted
     permissions:
       contents: write
