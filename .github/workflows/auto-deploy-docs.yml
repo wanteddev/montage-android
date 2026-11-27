@@ -12,6 +12,9 @@ on:
   # 문서 복구 후에는 이 워크플로우도 수동 실행한다.
   workflow_dispatch:
 
+# 공개 저장소를 토큰 없이 clone 하고, montage-web 호출은 GitHub App 토큰으로 한다. GITHUB_TOKEN 권한은 필요 없다.
+permissions: {}
+
 jobs:
   sync-and-deploy:
     if: >-

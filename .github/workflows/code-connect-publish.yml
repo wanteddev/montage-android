@@ -30,6 +30,9 @@ env:
   # figma.config.json 의 label. montage-web(React)·montage-ios(SwiftUI) 스니펫과 겹치지 않게 바꾸지 않는다.
   LABEL: Compose
 
+# 공개 저장소를 토큰 없이 clone 하고 Figma 는 FIGMA_TOKEN 으로 부른다. GITHUB_TOKEN 권한은 필요 없다.
+permissions: {}
+
 jobs:
   publish:
     if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
