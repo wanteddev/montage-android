@@ -101,35 +101,38 @@ jobs:
         run: |
           git config --local user.name "deploy-bot"
           git config --local user.email "deploy-bot@github.com"
+          TAG="v${{env.VERSION_CODE}}"
+
+          # 원격에 태그가 이미 있으면 아무것도 하지 않는다(대상 커밋을 찾을 필요도 없다).
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null; then
+            echo "⚠️ Tag ${TAG} already exists on remote, skipping"
+            exit 0
+          fi
 
           # 태그 대상: 이번 런이 publish 했으면 지금 빌드한 HEAD.
-          # 이미 게시된 버전인데 태그가 없으면(앞선 런이 publish 뒤에 실패) HEAD 가 아니라 그 버전을 올린 커밋에 단다 —
+          # 이미 게시된 버전인데 태그가 없으면(앞선 런이 publish 뒤에 실패) HEAD 가 아니라 main 에 그 버전이 들어온 커밋에 단다 —
           # 그사이 다른 머지가 들어왔어도 JitPack(태그로 빌드)과 GitHub Packages 의 내용이 어긋나지 않게 한다.
+          # --first-parent + --diff-merges=first-parent: main 의 커밋(squash 커밋 또는 release 머지 커밋)을 고른다.
+          #   release 브랜치 안의 범프 커밋을 고르면 그 뒤 수정이 빠지고, 머지 충돌 해결로만 들어온 버전 줄은 머지 커밋에서만 보인다.
+          # -G 로 'version=<버전>' 줄 전체가 바뀐 커밋만 본다(주석 등에 같은 글자가 있어도 걸리지 않음).
           TARGET=HEAD
           if [ "$ALREADY_PUBLISHED" = "true" ]; then
-            TARGET=$(git log -1 --format=%H -S"version=${{env.VERSION_CODE}}" -- library/publish.properties)
+            VERSION_RE=$(printf '%s' "${{env.VERSION_CODE}}" | sed 's/[.]/\\./g')
+            TARGET=$(git log -1 -s --format=%H --first-parent --diff-merges=first-parent \
+              -G"^version=${VERSION_RE}[[:space:]]*$" HEAD -- library/publish.properties)
             if [ -z "$TARGET" ]; then
-              echo "::error::version=${{env.VERSION_CODE}} 을 넣은 커밋을 찾지 못해 태그를 달지 않습니다. 태그를 손으로 확인하세요."
+              echo "::error::main 에서 version=${{env.VERSION_CODE}} 이 들어온 커밋을 찾지 못해 태그를 달지 않습니다. 태그를 손으로 확인하세요."
               exit 1
             fi
-            echo "이미 게시된 버전이라 태그 대상을 버전을 올린 커밋 ${TARGET} 로 잡습니다."
+            echo "이미 게시된 버전이라 태그 대상을 그 버전이 들어온 커밋 ${TARGET} 로 잡습니다."
           fi
 
-          # 이미 존재하는 태그는 건너뛰기
-          if git rev-parse "v${{env.VERSION_CODE}}" >/dev/null 2>&1; then
-            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists locally"
-          else
-            echo "✅ Creating tag v${{env.VERSION_CODE}} at ${TARGET}"
-            git tag v${{env.VERSION_CODE}} "$TARGET"
-          fi
-          
-          # 원격에 태그가 없는 경우만 푸시
-          if git ls-remote --tags origin | grep -q "refs/tags/v${{env.VERSION_CODE}}"; then
-            echo "⚠️ Tag v${{env.VERSION_CODE}} already exists on remote, skipping push"
-          else
-            echo "🚀 Pushing tag v${{env.VERSION_CODE}}"
-            git push https://x-access-token:${GITHUB_TOKEN}@github.com/wanteddev/montage-android.git v${{env.VERSION_CODE}}
-          fi
+          # 로컬에 남은 같은 이름 태그(재사용 작업 폴더)는 지우고 대상에 다시 단다.
+          git tag -d "${TAG}" >/dev/null 2>&1 || true
+          echo "✅ Creating tag ${TAG} at ${TARGET}"
+          git tag "${TAG}" "$TARGET"
+          echo "🚀 Pushing tag ${TAG}"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/wanteddev/montage-android.git "${TAG}"
 
       - name: Create GitHub Release
         env:
