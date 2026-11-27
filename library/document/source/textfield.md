@@ -37,7 +37,7 @@
 *
 * @param value TextFieldValue: 입력된 텍스트와 커서·선택 영역 상태를 포함한 값입니다. single line 이고 포커스가 없으면 넘치는 값은 말줄임(…) 처리됩니다.
 * @param placeholder String: 값이 비어 있을 때 힌트로 표시될 문자열입니다.
-* @param error Boolean: 에러(Negative) 상태 여부입니다. true 면 red ring 과 border 를 표시합니다.
+* @param error Boolean: 에러(Negative) 상태 여부입니다. true 면 border 를 red 로 표시하고, 포커스 시 red ring 을 표시합니다.
 * @param enabled Boolean: 입력 가능 여부입니다.
 * @param trailingButtonEnabled Boolean: 우측 버튼 활성화 여부입니다.
 * @param complete Boolean: 완료(Positive) 상태 여부입니다. 포커스가 없을 때 우측에 체크 아이콘을 표시합니다.
@@ -62,8 +62,6 @@
 * @param onValueChange (TextFieldValue) -> Unit: 값 변경 시 콜백입니다.
 * @param focusRequester FocusRequester: 포커스 요청에 사용하는 FocusRequester 입니다.
 */
-
-/** #4 Container 바깥쪽 1px border(underlay) 색상입니다. line border 아래에 깔려 색을 깎지 않습니다. */
 
 /** #4 Container border 색상입니다. Negative + Focused 는 opacity 를 52% 로 올려 강조합니다. */
 

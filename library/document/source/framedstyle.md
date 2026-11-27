@@ -3,8 +3,17 @@
 *
 * 프레임 스타일을 적용하는 Modifier 확장 함수입니다.
 *
-* 테두리, 그림자, 모서리 둥글기 등을 적용하여 카드나 입력 필드 등에 프레임 스타일을 부여합니다.
-* 상태(Normal, Negative, Selected)에 따라 다른 색상과 테두리 굵기가 적용됩니다.
+* 여러 요소를 프레임으로 감싸 그룹화하고, 그룹 단위의 선택 상태를 강조할 때 사용합니다.
+* 상태에 맞는 1dp 테두리를 그리고, 선택 상태는 1dp 상태 색 border 아래에 1dp surface/neutral/primary Base border 를 깔고
+* 컴포넌트 바깥 4dp Ring 으로 강조합니다. 선택(selected)과 상태(status)는 서로 독립된 축입니다.
+* 배경은 그리지 않고, shadow 를 지정했을 때만 background/neutral/primary 를 깝니다.
+*
+* 상태별 외형:
+* - Normal: 테두리 line/neutral/secondary
+* - Normal + selected: 테두리 line/brand/strong + Base surface/neutral/primary + 바깥 Ring line/brand/focus
+* - Negative: 테두리 line/negative/primary
+* - Negative + selected: 테두리 line/negative/strong + Base surface/neutral/primary + 바깥 Ring line/negative/focus
+* - disabled: 상태와 관계없이 테두리·Base·Ring 의 컬러 토큰은 그대로 두고 현재 알파값에 43% 를 곱합니다(예: line/brand/strong 43% → 약 18.5%)
 *
 * 사용 예시:
 * ```
@@ -12,17 +21,18 @@
 *     modifier = Modifier
 *         .size(100.dp)
 *         .framedStyle(
-*             status = WantedFramedStyleStatus.Selected,
+*             selected = true,
+*             status = WantedFramedStyleStatus.Normal,
 *             enabled = true
 *         )
 * )
 * ```
 *
-* @param status WantedFramedStyleStatus: 프레임 상태입니다. Normal, Negative, Selected 중 하나를 선택합니다.
-* @param shape RoundedCornerShape: 모서리 둥글기 형태입니다. 기본값은 12dp입니다.
-* @param enabled Boolean: 활성화 여부입니다. false일 경우 Negative·Selected 상태의 테두리 opacity 만 43% 에서 18.5% 로 낮아지며, Normal 상태는 변화가 없습니다.
-* @param focused Boolean: 포커스 여부입니다. true일 경우 컴포넌트 외곽에 4dp Focus Ring을 그립니다.
-* @param shadow WantedShadowStyle: 적용할 섀도우 스타일입니다. 기본값은 XSmall입니다.
+* @param selected Boolean: 선택 여부입니다. true일 경우 상태 색 테두리 아래 Base 를 깔고 바깥 4dp Ring 을 그립니다.
+* @param status WantedFramedStyleStatus: 프레임 상태입니다. Normal, Negative 중 하나를 선택합니다.
+* @param shape RoundedCornerShape: 모서리 둥글기 형태입니다. 기본값은 14dp입니다.
+* @param enabled Boolean: 활성화 여부입니다. false일 경우 상태와 관계없이 테두리·Base·Ring 의 컬러 토큰은 그대로 두고 현재 알파값에 43% 를 곱합니다.
+* @param shadow WantedShadowStyle?: 적용할 섀도우 스타일입니다. 기본값은 null 로 그림자와 배경을 그리지 않습니다. 지정하면 배경 background/neutral/primary 를 함께 깝니다.
 * @return Modifier: 스타일이 적용된 Modifier를 반환합니다.
 */
 
@@ -49,10 +59,9 @@
 /**
 * enum class WantedFramedStyleStatus
 *
-* 프레임 스타일의 상태를 정의하는 enum 클래스입니다.
+* 프레임 스타일의 상태를 정의하는 enum 클래스입니다. 선택 여부는 `framedStyle` 의 `selected` 로 따로 지정합니다.
 *
-* 각 상태에 따라 테두리 색상과 두께가 달라집니다:
+* 각 상태에 따라 테두리 색상이 달라집니다(테두리 굵기는 모두 1dp):
 * - Normal: 일반 상태입니다. 기본 테두리 색상이 적용됩니다.
 * - Negative: 오류 또는 부정적인 상태입니다. 빨간색 계열 테두리가 적용됩니다.
-* - Selected: 선택된 상태입니다. 파란색 계열의 2dp 테두리가 적용됩니다.
 */

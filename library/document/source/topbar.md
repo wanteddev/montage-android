@@ -24,6 +24,7 @@
 * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다. background 가 false 일 때만 쓰이며, 처음 위치에서 벗어나 스크롤된 동안 배경을 칠합니다.
 * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
 * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
+* @param toolbar (@Composable ColumnScope.() -> Unit)?: 내비게이션 바 바로 아래(간격 0)에 가로 전체 폭으로 그리는 toolbar 슬롯입니다. 기본값 null 이면 그리지 않고, Variant.Floating 이면 무시합니다. 배경은 앱바 배경을 함께 씁니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 */
 
@@ -52,6 +53,7 @@
 * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
 * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
 * @param title (@Composable () -> Unit)?: 타이틀 슬롯입니다.
+* @param toolbar (@Composable ColumnScope.() -> Unit)?: 내비게이션 바 바로 아래(간격 0)에 가로 전체 폭으로 그리는 toolbar 슬롯입니다. 기본값 null 이면 그리지 않고, Variant.Floating 이면 무시합니다. 배경은 앱바 배경을 함께 씁니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 */
 
@@ -80,6 +82,7 @@
 * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
 * @param title String: 타이틀 텍스트입니다.
 * @param navigationIcon (@Composable () -> Unit)?: 좌측 아이콘 슬롯입니다.
+* @param toolbar (@Composable ColumnScope.() -> Unit)?: 내비게이션 바 바로 아래(간격 0)에 가로 전체 폭으로 그리는 toolbar 슬롯입니다. 기본값 null 이면 그리지 않고, Variant.Floating 이면 무시합니다. 배경은 앱바 배경을 함께 씁니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 */
 
@@ -106,6 +109,7 @@
 * @param scrollableState ScrollableState?: 스크롤 상태를 관리하는 객체입니다.
 * @param titleAlignCenter Boolean: 타이틀 중앙 정렬 여부입니다.
 * @param title String: 타이틀 텍스트입니다.
+* @param toolbar (@Composable ColumnScope.() -> Unit)?: 내비게이션 바 바로 아래(간격 0)에 가로 전체 폭으로 그리는 toolbar 슬롯입니다. 기본값 null 이면 그리지 않고, Variant.Floating 이면 무시합니다. 배경은 앱바 배경을 함께 씁니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 * @param onClickBack () -> Unit: 뒤로 가기 버튼 클릭 시 호출되는 콜백입니다.
 */
@@ -146,6 +150,7 @@
 * @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
 * @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 foregroundBrandPrimary 색상을 사용합니다.
 * @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
+* @param toolbar (@Composable ColumnScope.() -> Unit)?: 내비게이션 바 바로 아래(간격 0)에 가로 전체 폭으로 그리는 toolbar 슬롯입니다. 기본값 null 이면 그리지 않고, Variant.Floating 이면 무시합니다. 배경은 앱바 배경을 함께 씁니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 * @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.
 * @param onValueChange (TextFieldValue) -> Unit: 검색어 변경 시 호출되는 콜백입니다.
@@ -190,6 +195,7 @@
 * @param textStyle TextStyle?: 검색 텍스트의 스타일입니다. null이면 size별 기본 typography를 사용합니다.
 * @param cursorBrush Brush?: 커서의 브러시(색상)입니다. null이면 foregroundBrandPrimary 색상을 사용합니다.
 * @param focusRequester FocusRequester?: 포커스 요청을 위한 객체입니다.
+* @param toolbar (@Composable ColumnScope.() -> Unit)?: 내비게이션 바 바로 아래(간격 0)에 가로 전체 폭으로 그리는 toolbar 슬롯입니다. 기본값 null 이면 그리지 않고, Variant.Floating 이면 무시합니다. 배경은 앱바 배경을 함께 씁니다.
 * @param actions (@Composable RowScope.() -> Unit)?: 우측 액션 슬롯입니다.
 * @param onClickBack () -> Unit: 뒤로가기 버튼 클릭 시 호출되는 콜백입니다.
 * @param onValueChange (String) -> Unit: 검색어 변경 시 호출되는 콜백입니다.
@@ -235,4 +241,43 @@
 * @param badge (@Composable () -> Unit)?: 배지 콘텐츠입니다.
 * @param interactionEffect IconButtonInteractionEffect: 인터랙션 피드백 방식입니다. 기본값 [IconButtonInteractionEffect.Dim]
 * @param onClick () -> Unit: 버튼 클릭 시 호출되는 콜백입니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
+*/
+
+/**
+* object WantedTopAppBarToolbarDefaults
+*
+* TopAppBar toolbar 영역의 Slot 프리셋 기본 값입니다.
+*
+* @property SlotVerticalPadding Dp: Slot 콘텐츠의 상하 여백입니다.
+* @property SlotHorizontalPadding Dp: Slot 콘텐츠의 좌우 여백입니다. 가로 스크롤 시 콘텐츠 처음과 끝에만 붙습니다.
+* @property SlotItemSpacing Dp: Slot 아이템 사이 간격입니다.
+*/
+
+/**
+* Variant 가 toolbar 영역을 그리는지 여부입니다. Floating 은 toolbar 를 쓰지 않습니다.
+*/
+
+/**
+* fun WantedTopAppBarToolbarSlot(...)
+*
+* TopAppBar toolbar 영역에 넣는 Slot 프리셋입니다.
+*
+* 아이템을 가로로 배치하고 세로 중앙 정렬합니다. 폭을 넘으면 줄바꿈·말줄임 없이 가로 스크롤하며, 좌우 20dp 여백은 콘텐츠 처음과 끝에만 붙습니다.
+* 하단에 1dp 구분선(lineNeutralTertiary)을 그립니다. 배경은 칠하지 않으며 TopAppBar 배경을 그대로 씁니다.
+*
+* 사용 예시:
+* ```kotlin
+* WantedTopAppBar(
+*     title = "제목",
+*     toolbar = {
+*         WantedTopAppBarToolbarSlot {
+*             WantedChip(text = "필터1", onClick = {})
+*             WantedChip(text = "필터2", onClick = {})
+*         }
+*     }
+* )
+* ```
+*
+* @param modifier Modifier: 컴포넌트에 적용할 Modifier입니다.
+* @param content @Composable RowScope.() -> Unit: 가로로 배치할 아이템 슬롯입니다.
 */

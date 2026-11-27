@@ -36,7 +36,7 @@
 * @param selectDataList List<WantedSelectData>: Bottom sheet 에 표시할 선택 가능한 항목 리스트입니다. 비어 있으면 Bottom sheet 를 열지 않습니다.
 * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
 * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
-* @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+* @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
 * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목 선택 시 즉시 반영됩니다.
 * @param selectedData WantedSelectData?: Bottom sheet 진입 시 체크 표시할 항목입니다.
 * @param bottomSheetType WantedModalContract.ModalType: Bottom sheet 형식입니다. (Flexible, Fixed 등)
@@ -88,7 +88,7 @@
 * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
 * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
 * @param errorDataList List<WantedSelectData>: 오류로 표시할 항목 리스트입니다. 포함된 Chip 이 negative 스타일로 표시됩니다. 컨테이너 상태는 status 가 결정합니다.
-* @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+* @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
 * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목을 토글할 때마다 즉시 반영되고 Bottom sheet 가 열린 상태로 유지됩니다.
 * @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
 * @param selectType WantedSelectDefaults.SelectType: Bottom sheet 항목의 선택 UI 타입입니다. (CheckMark, CheckBox, Radio)
@@ -131,7 +131,7 @@
 * @param selectValueList List<String>: Bottom sheet 에 표시할 선택 가능한 항목 리스트입니다. 비어 있으면 Bottom sheet 를 열지 않습니다.
 * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
 * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
-* @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+* @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
 * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목 선택 시 즉시 반영됩니다.
 * @param selectedValue String?: Bottom sheet 진입 시 체크 표시할 항목입니다.
 * @param bottomSheetType WantedModalContract.ModalType: Bottom sheet 형식입니다. (Flexible, Fixed 등)
@@ -178,7 +178,7 @@
 * @param modifier Modifier: 레이아웃 및 스타일을 설정합니다.
 * @param status WantedSelectDefaults.Status: 셀렉트 박스의 상태입니다. (Normal, Negative) Negative 면 border 가 red 로 바뀌고 focus 시 red ring 을 표시합니다.
 * @param errorList List<String>: 오류로 표시할 항목 리스트입니다. 포함된 Chip 이 negative 스타일로 표시됩니다. 컨테이너 상태는 status 가 결정합니다.
-* @param focused Boolean: 포커스 상태 여부입니다. true 면 primary ring 과 border 를 표시하고 chevron 이 위를 향합니다.
+* @param focused Boolean: 포커스 상태 여부입니다. true 면 바깥 ring 과 강조 border 를 표시하고(status 가 Negative 면 red, 아니면 primary) chevron 이 위를 향합니다.
 * @param confirmText String: Bottom sheet 확인 버튼 텍스트입니다. 비어 있으면 항목을 토글할 때마다 즉시 반영되고 Bottom sheet 가 열린 상태로 유지됩니다.
 * @param overflow Boolean: 선택 항목이 가로로 넘칠 때 줄바꿈할지 여부입니다. Chip 렌더는 false 면 가로 스크롤, true 면 줄바꿈하고, Text 렌더는 false 면 1줄 말줄임, true 면 여러 줄로 표시합니다.
 * @param selectType WantedSelectDefaults.SelectType: Bottom sheet 항목의 선택 UI 타입입니다. (CheckMark, CheckBox, Radio)
@@ -190,8 +190,6 @@
 * @param onClick () -> Unit: 셀렉트 박스 클릭 시 호출되는 콜백입니다. Bottom sheet 노출과 별개로 호출됩니다. clickOnce 를 쓰는 디자인 시스템 컴포넌트의 직전 클릭(다른 컴포넌트 포함)으로부터 200ms 안의 클릭은 무시됩니다.
 * @param onSelectList (List<String>) -> Unit: 항목 선택이 반영됐을 때 호출되는 콜백입니다.
 */
-
-/** #3 상태 색 border 뒤에 깔리는 underlay border 색상입니다. */
 
 /** #3 Container border 색상입니다. Negative + Focused 는 opacity 를 52% 로 올려 강조합니다. */
 
@@ -266,6 +264,18 @@
 * - Large: 큰 크기입니다. (최소 높이 48dp)
 * - Medium: 중간 크기입니다. (최소 높이 40dp)
 */
+
+/**
+* [WantedSelect] 선택 바텀시트 항목의 testTag.
+*
+* 소비자는 E2E(Maestro, `maestro/`)·UiAutomator 다. 항목 셀(`WantedListCell`) 글자는 터치 레이어에 가려
+* 접근성 트리에 노출되지 않아 텍스트로는 찾을 수 없다(예: 회원가입 국가 시트). 바텀시트 목록이
+* `testTagsAsResourceId` 를 켜 두므로 이 값이 그대로 resource-id 가 된다.
+*/
+
+    /** 항목 태그 접두사. 전체 태그는 [item]. */
+
+    /** 항목 태그: [WantedSelectData.id], 비어 있으면 [WantedSelectData.text] 를 붙인다. 예) 국가 일본 → `wanted_select_item:jp`. */
 
 /**
 * fun WantedMultiSelectChipListOverflow(...)

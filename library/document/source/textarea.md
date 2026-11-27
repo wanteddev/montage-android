@@ -46,8 +46,6 @@
 * @param onValueChange (TextFieldValue) -> Unit: 값 변경 콜백입니다.
 */
 
-/** 상태 색 border 아래에 깔리는 underlay border 색상입니다. 상태 색 위를 덮지 않습니다. */
-
 /** Container border 색상입니다. Negative + Focused 는 opacity 를 52% 로 올려 강조합니다. */
 
 /**

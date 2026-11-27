@@ -38,7 +38,7 @@
 *
 * @param contentColor Color: 콘텐츠 색상입니다.
 * @param backgroundColor Color: 배경 색상입니다. 기본값은 contentColor에 OPACITY_8을 적용한 색입니다.
-* @param outLineColor Color: 테두리 색상입니다. 기본값은 contentColor입니다.
+* @param outLineColor Color: 테두리 색상입니다. 기본값은 contentColor에 OPACITY_43을 적용한 색입니다(Line/Accent 토큰과 같은 규칙).
 */
 
 /**
@@ -64,9 +64,9 @@
 * )
 * ```
 *
-* @param contentColor Color: 콘텐츠 색상입니다. 기본값은 cyan 계열 색상입니다.
-* @param backgroundColor Color: 배경 색상입니다. 기본값은 contentColor에 OPACITY_8을 적용한 색입니다.
-* @param outLineColor Color: 테두리 색상입니다. 기본값은 contentColor입니다.
+* @param contentColor Color: 콘텐츠 색상입니다. 기본값은 foregroundAccentCyan 색상입니다.
+* @param backgroundColor Color: 배경 색상입니다. contentColor 가 기본값이면 surfaceAccentCyan, 다른 색이면 contentColor에 OPACITY_8을 적용한 색입니다.
+* @param outLineColor Color: 테두리 색상입니다. contentColor 가 기본값이면 lineAccentCyan, 다른 색이면 contentColor에 OPACITY_43을 적용한 색입니다.
 * @return WantedContentBadgeDefault: 강조 배지 구성을 반환합니다.
 */
 
@@ -89,4 +89,28 @@
 *
 * @param contentColor Color: 콘텐츠 색상입니다. 기본값은 foregroundNeutralTertiary 색상입니다.
 * @return WantedContentBadgeDefault: 중립 배지 구성을 반환합니다.
+*/
+
+/**
+* Accent 배지 배경 기본값을 정합니다.
+*
+* 기본 글자색(cyan)이면 Figma 배경 토큰을 그대로 쓰고, 글자색을 바꾼 호출부는 기존처럼 글자색에 OPACITY_8을 적용합니다.
+* 배경 토큰은 글자색과 다른 단계의 색이라 글자색에서 계산할 수 없습니다.
+* 기본 여부는 색 값으로 판정하므로, 호출부가 기본 글자색과 같은 색을 직접 넘겨도 토큰이 적용됩니다.
+*
+* @param contentColor Color: 배지의 글자색입니다.
+* @param defaultContentColor Color: 기본 글자색(foregroundAccentCyan)입니다.
+* @param defaultBackgroundColor Color: 기본 배경 토큰(surfaceAccentCyan)입니다.
+* @return Color: 배지의 배경색을 반환합니다.
+*/
+
+/**
+* Accent 배지 테두리 기본값을 정합니다.
+*
+* 기본 글자색(cyan)이면 Figma 테두리 토큰을 쓰고, 다른 글자색이면 같은 규칙(글자색 × OPACITY_43)으로 계산합니다.
+*
+* @param contentColor Color: 배지의 글자색입니다.
+* @param defaultContentColor Color: 기본 글자색(foregroundAccentCyan)입니다.
+* @param defaultOutLineColor Color: 기본 테두리 토큰(lineAccentCyan)입니다.
+* @return Color: 배지의 테두리색을 반환합니다.
 */
