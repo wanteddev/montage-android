@@ -32,15 +32,18 @@ jobs:
       packages: write
       actions: read
     steps:
+      # 공개 저장소라 토큰 없이 받는다. self-hosted 러너는 작업 폴더를 문서 워크플로와 함께 쓰므로
+      # 토큰을 remote URL 에 남기지 않는다(예전 런이 남긴 토큰도 여기서 지운다). 태그 push 는 그 단계에서 토큰을 명시한다.
       - name: Checkout code
         run: |
           if [ -d .git ]; then
+            git remote set-url origin https://github.com/wanteddev/montage-android.git
             git fetch origin main
             git checkout main
             git reset --hard origin/main
             git clean -fdx
           else
-            git clone --branch main https://x-access-token:${{ secrets.WANTED_DEV_TOKEN }}@github.com/wanteddev/montage-android.git .
+            git clone --branch main https://github.com/wanteddev/montage-android.git .
           fi
           git fetch --unshallow || true
 
