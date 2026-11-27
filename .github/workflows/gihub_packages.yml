@@ -97,16 +97,30 @@ jobs:
       - name: Create & Push Tag
         env:
           GITHUB_TOKEN: ${{ secrets.WANTED_DEV_TOKEN }}
+          ALREADY_PUBLISHED: ${{ steps.published.outputs.exists }}
         run: |
           git config --local user.name "deploy-bot"
           git config --local user.email "deploy-bot@github.com"
-          
+
+          # 태그 대상: 이번 런이 publish 했으면 지금 빌드한 HEAD.
+          # 이미 게시된 버전인데 태그가 없으면(앞선 런이 publish 뒤에 실패) HEAD 가 아니라 그 버전을 올린 커밋에 단다 —
+          # 그사이 다른 머지가 들어왔어도 JitPack(태그로 빌드)과 GitHub Packages 의 내용이 어긋나지 않게 한다.
+          TARGET=HEAD
+          if [ "$ALREADY_PUBLISHED" = "true" ]; then
+            TARGET=$(git log -1 --format=%H -S"version=${{env.VERSION_CODE}}" -- library/publish.properties)
+            if [ -z "$TARGET" ]; then
+              echo "::error::version=${{env.VERSION_CODE}} 을 넣은 커밋을 찾지 못해 태그를 달지 않습니다. 태그를 손으로 확인하세요."
+              exit 1
+            fi
+            echo "이미 게시된 버전이라 태그 대상을 버전을 올린 커밋 ${TARGET} 로 잡습니다."
+          fi
+
           # 이미 존재하는 태그는 건너뛰기
           if git rev-parse "v${{env.VERSION_CODE}}" >/dev/null 2>&1; then
             echo "⚠️ Tag v${{env.VERSION_CODE}} already exists locally"
           else
-            echo "✅ Creating tag v${{env.VERSION_CODE}}"
-            git tag v${{env.VERSION_CODE}}
+            echo "✅ Creating tag v${{env.VERSION_CODE}} at ${TARGET}"
+            git tag v${{env.VERSION_CODE}} "$TARGET"
           fi
           
           # 원격에 태그가 없는 경우만 푸시
