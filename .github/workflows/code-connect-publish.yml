@@ -124,7 +124,9 @@ jobs:
           (cd montage-base/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > before.json
           (cd montage-main/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > after.json
 
-          node montage-main/.github/scripts/code-connect-removed-nodes.mjs before.json after.json "$LABEL" > removed.txt
+          # parse 가 템플릿을 못 읽었으면(결과가 비었거나 놓친 파일이 있으면) 스크립트가 exit 3 으로 멈춘다 — 전부 내리는 사고를 막는다.
+          node montage-main/.github/scripts/code-connect-removed-nodes.mjs before.json after.json "$LABEL" \
+            --figma-dir montage-main/figma > removed.txt
           if [ ! -s removed.txt ]; then
             echo "✅ 사라진 컴포넌트가 없습니다."
             exit 0
