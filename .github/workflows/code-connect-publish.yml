@@ -36,7 +36,10 @@ permissions: {}
 jobs:
   publish:
     if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
-    # 게시가 겹치면 서로 다른 버전으로 덮어쓸 수 있어 한 번에 하나만 돌린다. 대기 중인 게시는 취소하지 않는다.
+    # 게시가 겹치면 서로 다른 버전으로 덮어쓸 수 있어 한 번에 하나만 돌린다. 진행 중인 실행은 취소하지 않는다.
+    # 주의: GitHub 는 대기 실행을 하나만 둔다 — figma/ 를 바꾼 머지 셋이 겹치면 가운데 실행이 cancelled 되고,
+    # 마지막 실행은 자기 머지 직전과만 비교하므로 가운데 머지에서 지운 노드는 내려가지 않는다.
+    # 실행이 실패·취소됐을 때도 같다. 그때는 수동 실행에 base_ref=<처리되지 않은 머지 직전 커밋>을 넣어 다시 돌린다.
     concurrency:
       group: code-connect-publish
       cancel-in-progress: false
