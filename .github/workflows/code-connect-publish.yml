@@ -117,7 +117,36 @@ jobs:
             echo "::warning::android 저장소를 가리키는 링크가 남았습니다. 위 줄을 확인하세요."
           fi
 
-      # ubuntu-latest 에 Node 가 깔려 있다(Code Connect 는 Node 18 이상).
+      # 게시 전에 토큰 없이 parse 해서 검사한다. 하나라도 걸리면 게시·unpublish 모두 하지 않고 실패한다.
+      # - include 가 템플릿(*.figma.ts, *.figma.batch.json)을 놓침 → 그 컴포넌트가 조용히 갱신되지 않는다(CLI 는 exit 0)
+      # - 템플릿이 있는데 Compose 문서가 없음(label 변경 등)
+      # 비교 기준이 있으면 기준 커밋도 parse 하고 같은 검사를 한다(기준 쪽이 놓치면 그 사이 지운 노드를 못 본다 — Unpublish 단계에서 검사).
+      # ubuntu-latest 에 Node 가 깔려 있다(Code Connect 는 Node 18 이상). parse 에는 토큰이 필요 없어 주지 않는다.
+      - name: Parse and validate
+        id: parse
+        if: steps.check.outputs.exists == 'true'
+        env:
+          BASE: ${{ steps.base.outputs.base }}
+        run: |
+          set -euo pipefail
+          node --version
+          (cd montage-main/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > "$RUNNER_TEMP/after.json"
+          node montage-main/.github/scripts/code-connect-removed-nodes.mjs --validate "$RUNNER_TEMP/after.json" "$LABEL" \
+            --figma-dir montage-main/figma
+          echo "✅ 템플릿 $(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1])).length)' "$RUNNER_TEMP/after.json")개 문서를 읽었습니다."
+
+          HAS_BEFORE=false
+          if [ -n "$BASE" ]; then
+            git -C montage-main worktree add -q --detach ../montage-base "$BASE"
+            if [ -f montage-base/figma/figma.config.json ]; then
+              (cd montage-base/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > "$RUNNER_TEMP/before.json"
+              HAS_BEFORE=true
+            else
+              echo "기준 커밋($BASE)에 figma/ 가 없어 내릴 것이 없습니다."
+            fi
+          fi
+          echo "has_before=${HAS_BEFORE}" >> "$GITHUB_OUTPUT"
+
       - name: Publish Code Connect
         if: steps.check.outputs.exists == 'true'
         working-directory: montage-main/figma
@@ -127,7 +156,6 @@ jobs:
         # 출력에서 그 흔적을 찾아 실패로 끝낸다. 실패하면 다음 Unpublish 단계도 돌지 않는다.
         run: |
           set -o pipefail
-          node --version
           npx -y "$CODE_CONNECT" connect publish \
             -c figma.config.json \
             --exit-on-unreadable-files \
@@ -137,28 +165,20 @@ jobs:
             exit 1
           fi
 
-      # 기준 커밋과 main 의 parse 결과를 비교해, 기준에만 있는 노드를 내린다.
+      # 기준 커밋과 main 의 parse 결과(Parse and validate 단계)를 비교해, 기준에만 있는 노드를 내린다.
       # 노드 단위 비교라 파일을 옮기거나 이름을 바꿔도 같은 노드가 남아 있으면 내리지 않는다.
       # main 에서 figma/ 가 통째로 사라지면 위 단계들이 건너뛰므로 이 단계도 돌지 않는다(전체 삭제는 사람이 판단한다).
+      # 토큰은 unpublish 에만 쓴다.
       - name: Unpublish removed components
-        if: steps.check.outputs.exists == 'true' && steps.base.outputs.base != ''
+        if: steps.check.outputs.exists == 'true' && steps.parse.outputs.has_before == 'true'
         env:
           FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          BASE: ${{ steps.base.outputs.base }}
         run: |
           set -euo pipefail
-          git -C montage-main worktree add -q --detach ../montage-base "$BASE"
-          if [ ! -f montage-base/figma/figma.config.json ]; then
-            echo "기준 커밋($BASE)에 figma/ 가 없어 내릴 것이 없습니다."
-            exit 0
-          fi
-
-          (cd montage-base/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > before.json
-          (cd montage-main/figma && npx -y "$CODE_CONNECT" connect parse -c figma.config.json --exit-on-unreadable-files) > after.json
-
-          # parse 가 템플릿을 못 읽었으면(결과가 비었거나 놓친 파일이 있으면) 스크립트가 exit 3 으로 멈춘다 — 전부 내리는 사고를 막는다.
-          node montage-main/.github/scripts/code-connect-removed-nodes.mjs before.json after.json "$LABEL" \
-            --figma-dir montage-main/figma > removed.txt
+          # parse 가 템플릿을 못 읽었으면(결과가 비었거나 놓친 파일이 있으면, 기준 커밋 쪽 포함) 스크립트가 exit 3 으로 멈춘다
+          # — 전부 내리는 사고와, 지운 노드를 못 보고 넘어가는 일을 막는다.
+          node montage-main/.github/scripts/code-connect-removed-nodes.mjs "$RUNNER_TEMP/before.json" "$RUNNER_TEMP/after.json" "$LABEL" \
+            --figma-dir montage-main/figma --before-figma-dir montage-base/figma > removed.txt
           if [ ! -s removed.txt ]; then
             echo "✅ 사라진 컴포넌트가 없습니다."
             exit 0
