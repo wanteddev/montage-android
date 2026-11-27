@@ -74,7 +74,12 @@ jobs:
           if [ -f montage-main/figma/figma.config.json ]; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
-            echo "⚠️ figma/figma.config.json 이 없어 게시를 건너뜁니다."
+            # 이 워크플로는 figma/** 가 바뀐 머지에서 돌기 때문에, 여기 오면 figma/ 가 지워졌을 가능성이 크다.
+            # Figma 의 Compose 스니펫은 그대로 남으므로 사람이 보도록 경고와 요약을 남긴다(전체 unpublish 는 사람이 판단한다).
+            MSG="figma/figma.config.json 이 main 에 없어 Code Connect 게시·unpublish 를 건너뜁니다. figma/ 를 지운 것이 의도라면 Figma 의 Compose 스니펫을 수동으로 내려야 합니다(README 의 unpublish --label Compose)."
+            echo "::warning::${MSG}"
+            echo "### ⚠️ Code Connect 건너뜀" >> "$GITHUB_STEP_SUMMARY"
+            echo "${MSG}" >> "$GITHUB_STEP_SUMMARY"
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
