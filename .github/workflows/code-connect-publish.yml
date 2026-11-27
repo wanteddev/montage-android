@@ -60,8 +60,22 @@ jobs:
             git fetch -q origin "$MERGE_SHA"
             BASE=$(git rev-parse "${MERGE_SHA}^1")
           elif [ -n "${INPUT_BASE:-}" ]; then
-            git fetch -q origin "$INPUT_BASE" || true
-            BASE=$(git rev-parse --verify "${INPUT_BASE}^{commit}")
+            # 태그·SHA·브랜치 이름(develop 처럼 origin/ 없이) 모두 받는다. fetch 한 것은 FETCH_HEAD 로도 찾는다.
+            BASE=""
+            FETCHED=""
+            git fetch -q origin "$INPUT_BASE" 2>/dev/null && FETCHED=FETCH_HEAD || true
+            for ref in "$INPUT_BASE" "origin/$INPUT_BASE" $FETCHED; do
+              if BASE=$(git rev-parse -q --verify "${ref}^{commit}"); then break; fi
+              BASE=""
+            done
+            # 해석하지 못했거나 main 의 조상이 아니면 비교하지 않고 게시만 한다(job 을 멈추지 않는다).
+            # 조상 검사: main 과 무관한 커밋의 figma.config.json 으로 parse 하지 않게 한다.
+            if [ -z "$BASE" ]; then
+              echo "::warning::base_ref '${INPUT_BASE}' 를 찾지 못해 unpublish 없이 게시만 합니다."
+            elif ! git merge-base --is-ancestor "$BASE" HEAD; then
+              echo "::warning::base_ref '${INPUT_BASE}'(${BASE}) 가 main 의 조상이 아니어서 unpublish 없이 게시만 합니다."
+              BASE=""
+            fi
           else
             BASE=""
           fi
