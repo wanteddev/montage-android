@@ -128,7 +128,16 @@ jobs:
               echo "::error::main 에서 version=${{env.VERSION_CODE}} 이 들어온 커밋을 찾지 못해 태그를 달지 않습니다. 태그를 손으로 확인하세요."
               exit 1
             fi
-            echo "이미 게시된 버전이라 태그 대상을 그 버전이 들어온 커밋 ${TARGET} 로 잡습니다."
+            # 그 뒤 라이브러리 빌드 입력이 바뀌었으면 실제로 게시된 커밋이 어느 것인지 알 수 없다
+            # (예: 버전을 올린 커밋의 빌드가 실패하고, 같은 버전으로 고친 다음 커밋이 게시된 뒤 태그 전에 중단).
+            # 추정해서 달면 JitPack(태그 빌드)과 GitHub Packages 내용이 달라지므로, 사람이 확인하도록 멈춘다.
+            # publish.properties 는 버전이 같음을 이미 확인했으므로 비교에서 뺀다.
+            if ! git diff --quiet "$TARGET" HEAD -- library gradle build.gradle.kts settings.gradle.kts gradle.properties ':(exclude)library/publish.properties'; then
+              echo "::error::v${{env.VERSION_CODE}} 은 이미 게시됐지만 태그가 없고, 버전이 들어온 커밋(${TARGET}) 뒤로 라이브러리 빌드 입력이 바뀌어 게시된 커밋을 특정할 수 없습니다. 게시된 커밋을 확인해 태그를 손으로 다세요."
+              git diff --stat "$TARGET" HEAD -- library gradle build.gradle.kts settings.gradle.kts gradle.properties ':(exclude)library/publish.properties' | tail -5
+              exit 1
+            fi
+            echo "이미 게시된 버전이라 태그 대상을 그 버전이 들어온 커밋 ${TARGET} 로 잡습니다(그 뒤 라이브러리 빌드 입력 변경 없음)."
           fi
 
           # 로컬에 남은 같은 이름 태그(재사용 작업 폴더)는 지우고 대상에 다시 단다.
